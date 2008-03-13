@@ -42,232 +42,231 @@ HUD_COLOR_BORDER3 = [202, 199, 231]
 
 class Observer:
   
-    def __init__(self, name):
-        self.name = name
-        self.subject_list = []
+  def __init__(self, name):
+    self.name = name
+    self.subjectList = []
 
-    def add_subject(self, subject):
-        self.subject_list.append(subject)
-        subject.register(self)
+  def addSubject(self, subject):
+    self.subjectList.append(subject)
+    subject.register(self)
 
-    def notify(self, caller):
-        pass
+  def notify(self, caller):
+     pass
   
-    def p3dtop2d(self, cord3d):
-        x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
-        y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
-        y2d = (y2d * TILE_SZ[1])
+  def p3dToP2d(self, cord3d):
+    x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
+    y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
+    y2d = (y2d * TILE_SZ[1])
+   
+    # 0: suelo 
+    if self.getType() == 0:
+      x2d = x2d - (TILE_SZ[0])
+    # 1: personaje
+    if self.getType() == 1:
+      x2d = x2d - (CHAR_SZ[0])
+      y2d = y2d - (CHAR_SZ[1] / 4)
+    # 2: objeto -------------------------->> MODIFICAR
+    if self.getType() == 2:
+      x2d = x2d - 55
+      y2d = y2d + 8
     
-        # 0: suelo 
-        if self.get_type() == 0:
-            x2d = x2d - (TILE_SZ[0])
-        # 1: personaje
-        if self.get_type() == 1:
-            x2d = x2d - (CHAR_SZ[0])
-            y2d = y2d - (CHAR_SZ[1] / 4)
-        # 2: objeto -------------------------->> MODIFICAR
-        if self.get_type() == 2:
-            x2d = x2d - 55
-            y2d = y2d + 8
-    
-        cord2d = [math.floor((x2d/math.sqrt(3)) + SCREEN_OR[0]), math.floor(y2d + SCREEN_OR[1])]
-        return cord2d
+    cord2d = [math.floor((x2d/math.sqrt(3)) + SCREEN_OR[0]), math.floor(y2d + SCREEN_OR[1])]
+    return cord2d
   
 #*****************************************************
 # CLASE OBS_HUD (subclase de OBSERVER)
 # Observador de HUD
 
-class Obs_Hud(Observer):
+class ObserverHud(Observer):
   
-    def paint(self):
-        self.paint_hud()
+  def paint(self):
+    self.paintHud()
 
-    def paint_hud(self):
-        pygame.draw.rect(screen, HUD_COLOR_BORDER1, (HUD_OR[0], HUD_OR[1], HUD_SZ[0] - 1, HUD_SZ[1] - 1))
-        pygame.draw.rect(screen, HUD_COLOR_BORDER2, (HUD_OR[0] + 2,HUD_OR[1] + 2, HUD_SZ[0] - 5, HUD_SZ[1] - 5))
-        pygame.draw.rect(screen, HUD_COLOR_BORDER3, (HUD_OR[0] + 10, HUD_OR[1] + 10, HUD_SZ[0] - 21, HUD_SZ[1] - 21))
-        pygame.draw.rect(screen, HUD_COLOR_BASE, (HUD_OR[0] + 12, HUD_OR[1] + 12, HUD_SZ[0] - 25, HUD_SZ[1] - 25))
-        pygame.display.update()
+  def paintHud(self):
+    pygame.draw.rect(screen, HUD_COLOR_BORDER1, (HUD_OR[0], HUD_OR[1], HUD_SZ[0] - 1, HUD_SZ[1] - 1))
+    pygame.draw.rect(screen, HUD_COLOR_BORDER2, (HUD_OR[0] + 2,HUD_OR[1] + 2, HUD_SZ[0] - 5, HUD_SZ[1] - 5))
+    pygame.draw.rect(screen, HUD_COLOR_BORDER3, (HUD_OR[0] + 10, HUD_OR[1] + 10, HUD_SZ[0] - 21, HUD_SZ[1] - 21))
+    pygame.draw.rect(screen, HUD_COLOR_BASE, (HUD_OR[0] + 12, HUD_OR[1] + 12, HUD_SZ[0] - 25, HUD_SZ[1] - 25))
+    pygame.display.update()
 
 #*****************************************************
 # CLASE OBS_ROOM (subclase de OBSERVER)
 # Observador de una habitacion
 
-class Obs_Room(Observer):
+class ObserverRoom(Observer):
 
-    def __init__(self, name):
-        self.name = name
-        self.subject_list = []
-        self.tile_list = []
-        for x in range(SCENE_SZ[0]):
-          for z in range(SCENE_SZ[1]):
-              var_pos = self.p3dtop2d([x, 0, z])
-              pos = [int(var_pos[0]),int(var_pos[1])]
-              self.tile_list.append([])
-              self.tile_list[x].append(Obs_tile([pos[0] - SCREEN_OR[0], pos[1]-SCREEN_OR[1]], [pos[0] + SCREEN_OR[0], pos[1] + SCREEN_OR[1]], TILE_STONE, TILE_SZ))
+  def __init__(self, name):
+    self.name = name
+    self.subjectList = []
+    self.tileList = []
+    for x in range(SCENE_SZ[0]):
+      for z in range(SCENE_SZ[1]):
+        varPos = self.p3dToP2d([x, 0, z])
+        pos = [int(varPos[0]),int(varPos[1])]
+        self.tileList.append([])
+        self.tileList[x].append(ObserverTile([pos[0] - SCREEN_OR[0], pos[1]-SCREEN_OR[1]], [pos[0] + SCREEN_OR[0], pos[1] + SCREEN_OR[1]], TILE_STONE, TILE_SZ))
         
-    def insert_player(self,player):
-        self.obs_player = player
+  def insertPlayer(self,player):
+    self.observerPlayer = player
       
-    def draw(self):
-        self.paint_floor(self.subject_list[0].get_sprite())
-        self.obs_player.draw()
+  def draw(self):
+    self.paintFloor(self.subjectList[0].getSprite())
+    self.observerPlayer.draw()
     
-    def paint_floor(self, tile_name):
-        pygame.draw.rect(screen, (0, 0, 0), (0, 0, GAMEZONE_SZ[0], GAMEZONE_SZ[1]))
-        tile = os.path.join("data", tile_name)
-        tile_surface = pygame.image.load(tile)
-        for x in range(SCENE_SZ[0]):
-            for z in range(SCENE_SZ[1]):
-                screen.blit(tile_surface, self.p3dtop2d([x, 0, z]))
+  def paintFloor(self, tile_name):
+    pygame.draw.rect(screen, (0, 0, 0), (0, 0, GAMEZONE_SZ[0], GAMEZONE_SZ[1]))
+    tile = os.path.join("data", tile_name)
+    tileSurface = pygame.image.load(tile)
+    for x in range(SCENE_SZ[0]):
+      for z in range(SCENE_SZ[1]):
+        screen.blit(tileSurface, self.p3dToP2d([x, 0, z]))
 
-    def find_tile(self,pos):
-        #x, y = pygame.mouse.get_pos()
-        for x in range(SCENE_SZ[0]):
-            for z in range(SCENE_SZ[1]):
-                #self.tile_list[x].[z].
-                pass
-    
-        # devuelve la posicion [x,z] en la que ha pinchado el usuario
+  def findTile(self,pos):
+    #x, y = pygame.mouse.get_pos()
+    for x in range(SCENE_SZ[0]):
+      for z in range(SCENE_SZ[1]):
+        #self.tileList[x].[z].
         pass
+    # devuelve la posicion [x,z] en la que ha pinchado el usuario
 
-    def get_type(self):
-        return 0
+  def getType(self):
+    return 0
 
 #*****************************************************
 # CLASE OBS_TILE (subclase de OBSERVER)
 # Observador de una baldosa
 
-class Obs_tile(Observer):
+class ObserverTile(Observer):
 
-    def __init__(self, top_left, bot_right, sprite, size):
-        self.top_left = top_left
-        self.bot_right = bot_right
-        self.id = id
-        self.sprite = sprite
-        self.size = size
-        self.observers = []
+  def __init__(self, topLeft, bottomRight, sprite, size):
+    self.topLeft = topLeft
+    self.bottomRight = bottomRight
+    self.id = id
+    self.sprite = sprite
+    self.size = size
+    self.observers = []
   
-    def contained(self, pos):
-        if self.bot_right[0] > pos[0] > self.top_left[0]:
-            if self.bot_right[1] > pos[1] > self.top_left[1]:
-                return true
-        return false
+  def contained(self, pos):
+    if self.bottomRight[0] > pos[0] > self.topLeft[0]:
+      if self.bottomRight[1] > pos[1] > self.topLeft[1]:
+        return true
+    return false
 
-    def on_blank(self, pos):
-        ini_pos = [pos[0]-self.top_left[0], pos[1]-self.top_left[1]]
-        if ini_pos[0] < (TILE_SZ[0] / 2):
-            if ini_pos[1] < (TILE_SZ[1] / 2):
-                if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 1
-                    return true
-            else:
-                ini_pos[1] -= (TILE_SZ[1] / 2)
-                ini_pos[1] = (tile_size[1] / 2) - ini_pos[1]
-                if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 2
-                    return true
+  def onBlank(self, pos):
+    iniPos = [pos[0]-self.topLeft[0], pos[1]-self.topLeft[1]]
+    if iniPos[0] < (TILE_SZ[0] / 2):
+      if iniPos[1] < (TILE_SZ[1] / 2):
+        if iniPos[0] <= (iniPos[0] * 2): #cuadrante 1
+          return true
+      else:
+        iniPos[1] -= (TILE_SZ[1] / 2)
+        iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
+        if iniPos[0] <= (iniPos[0] * 2): #cuadrante 2
+          return true
+    else:
+      if iniPos[1] < (TILE_SZ[1] / 2):
+        iniPos[0] -= (TILE_SZ[0] / 2)
+        iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
+        if iniPos[0] <= (iniPos[0] * 2): #cuadrante 3
+          return true
         else:
-            if ini_pos[1] < (TILE_SZ[1] / 2):
-                ini_pos[0] -= (TILE_SZ[0] / 2)
-                ini_pos[0] = (tile_size[0] / 2) - ini_pos[0]
-                if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 3
-                    return true
-            else:
-                ini_pos[0] -= (TILE_SZ[0] / 2)
-                ini_pos[1] -= (TILE_SZ[1] / 2)
-                ini_pos[0] = (tile_size[0] / 2) - ini_pos[0]
-                ini_pos[1] = (tile_size[1] / 2) - ini_pos[1]
-                if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 4
-                    return true
-        return false    
+          iniPos[0] -= (TILE_SZ[0] / 2)
+          iniPos[1] -= (TILE_SZ[1] / 2)
+          iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
+          iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
+          if iniPos[0] <= (iniPos[0] * 2): #cuadrante 4
+            return true
+    return false    
     
 #*****************************************************
 # CLASE OBS_ITEM (subclase de OBSERVER)
 # Observador de un item generico
 
-class Obs_Item(Observer):
-    pass
+class ObserverItem(Observer):
+
+  pass
 
 #*****************************************************
 # CLASE OBS_PLAYER (subclase de OBS_ITEM)
 # Observador de un jugador
 
-class Obs_Player(Obs_Item):
+class ObserverPlayer(ObserverItem):
 
-    def draw(self):
-        for ind in range(self.subject_list.__len__()):
-            self.draw_one(ind)
+  def draw(self):
+    for ind in range(self.subjectList.__len__()):
+      self.drawOne(ind)
 
-    def draw_one(self, caller):
-        pos = self.subject_list[caller].get_position()
-        var_pos = [pos[0], pos[1], pos[2]]
-        event = self.subject_list[caller].get_state()
-        sprite = self.subject_list[caller].get_sprite()
-        if event == "standing_down":
-            self.paint_pl(sprite, pos, caller)
-        if event == "walking_up":
-            self.paint_pl(sprite, pos, caller)
-        if event == "walking_down":
-            self.paint_pl(sprite, pos, caller)
-        if event == "walking_left":
-            self.paint_pl(sprite, pos, caller)
-        if event == "walking_right":
-            self.paint_pl(sprite, pos, caller)
+  def drawOne(self, caller):
+    pos = self.subjectList[caller].getPosition()
+    varPos = [pos[0], pos[1], pos[2]]
+    event = self.subjectList[caller].getState()
+    sprite = self.subjectList[caller].getSprite()
+    if event == "standing_down":
+      self.paintPlayer(sprite, pos, caller)
+    if event == "walking_up":
+      self.paintPlayer(sprite, pos, caller)
+    if event == "walking_down":
+      self.paintPlayer(sprite, pos, caller)
+    if event == "walking_left":
+      self.paintPlayer(sprite, pos, caller)
+    if event == "walking_right":
+      self.paintPlayer(sprite, pos, caller)
       
-    def paint_pl(self, sprite, cord3d, caller):
-        pl = os.path.join("data", sprite)
-        pl_surface = pygame.image.load(pl)
-        state = self.subject_list[caller].get_state_frame()
-        dir = self.subject_list[caller].get_dir()
-        screen.blit(pl_surface, self.p3dtop2d(cord3d, state, dir))
-        pygame.display.update()
+  def paintPlayer(self, sprite, cord3d, caller):
+    pl = os.path.join("data", sprite)
+    plSurface = pygame.image.load(pl)
+    state = self.subjectList[caller].getStateFrame()
+    dir = self.subjectList[caller].getDir()
+    screen.blit(plSurface, self.p3dToP2d(cord3d, state, dir))
+    pygame.display.update()
 
-    def p3dtop2d(self, cord3d, state, dir):
-        x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
-        y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
-        y2d = (y2d * TILE_SZ[1])
+  def p3dToP2d(self, cord3d, state, dir):
+    x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
+    y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
+    y2d = (y2d * TILE_SZ[1])
     
-        x2d = x2d - (CHAR_SZ[0])
-        y2d = y2d - (CHAR_SZ[1] / 4)
+    x2d = x2d - (CHAR_SZ[0])
+    y2d = y2d - (CHAR_SZ[1] / 4)
     
-        x2d = math.floor((x2d / math.sqrt(3)) + SCREEN_OR[0])
-        y2d = math.floor(y2d + SCREEN_OR[1])
+    x2d = math.floor((x2d / math.sqrt(3)) + SCREEN_OR[0])
+    y2d = math.floor(y2d + SCREEN_OR[1])
    
-        if dir == 1: #arriba
-            x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
-            y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
-        if dir == 2: #abajo
-            x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)
-            y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
-        if dir == 3: #izquierda
-            x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)  
-            y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
-        if dir == 4: #derecha
-            x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
-            y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
+    if dir == 1: #arriba
+      x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
+      y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
+    if dir == 2: #abajo
+      x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)
+      y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
+    if dir == 3: #izquierda
+      x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)  
+      y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
+    if dir == 4: #derecha
+      x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
+      y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
       
-        cord2d = [x2d, y2d]
-        return cord2d
+    cord2d = [x2d, y2d]
+    return cord2d
 
-    def get_type(self):
-        return 1
+  def getType(self):
+    return 1
 
 #*****************************************************
 # CLASE OBS_OBJECT (subclase de OBS_ITEM)
 # Observador de un objeto
 
-class Obs_Object(Obs_Item):
+class ObserverObject(ObserverItem):
 
-    def notify(self, caller, event):
-        self.paint_obj(obj_book_sprite1, [3, 0, 2])
+  def notify(self, caller, event):
+    self.paintObject(OBJ_BOOK_SPRITE1, [3, 0, 2])
 
-    def paint_obj(self, sprite, cord3d):
-        pl = os.path.join("data", sprite)
-        pl_surface = pygame.image.load(pl)
-        screen.blit(pl_surface, self.p3dtop2d(cord3d))
-        pygame.display.update()
+  def paintObject(self, sprite, cord3d):
+    pl = os.path.join("data", sprite)
+    plSurface = pygame.image.load(pl)
+    screen.blit(plSurface, self.p3dToP2d(cord3d))
+    pygame.display.update()
 
-    def get_type(self):
-        return 2
+  def getType(self):
+    return 2
 
 """ =====================================================================================
 #========================================================================================  
@@ -279,174 +278,171 @@ class Obs_Object(Obs_Item):
 
 class Subject:
   
-    def __init__(self, name, id, sprite, size):
-        self.name = name
-        self.sprite = sprite
-        self.size = size
-        self.id = id
-        self.observers = []
+  def __init__(self, name, id, sprite, size):
+    self.name = name
+    self.sprite = sprite
+    self.size = size
+    self.id = id
+    self.observers = []
     
-    def register(self, observer):
-        self.observers.append(observer)
+  def register(self, observer):
+    self.observers.append(observer)
     
-    def unregister(self, observer):
-        self.observers.remove(observer)
+  def unregister(self, observer):
+    self.observers.remove(observer)
     
-    def get_name(self):
-        return self.name
+  def getName(self):
+    return self.name
 
-    def get_sprite(self):
-        return self.sprite
+  def getSprite(self):
+    return self.sprite
   
-    def get_size(self):
-        return self.size
+  def getSize(self):
+    return self.size
 
 #*****************************************************
 # CLASE SUB_HUD (subclase de SUBJECT)
 # Objeto de tipo HUD
 
-class Sub_Hud(Subject):
+class SubjectHud(Subject):
 
-    pass
+  pass
 
 #*****************************************************
 # CLASE SUB_ROOM (subclase de SUBJECT)
 # Objeto de tipo habitacion
 # Incluye informacion del suelo
 
-class Sub_Room(Subject):
+class SubjectRoom(Subject):
 
-    def __init__(self, name, id, sprite):
-        self.name = name
-        self.id = id
-        self.sprite = sprite
-        self.observers = []
-        self.players = []
-        self.objects = []
+  def __init__(self, name, id, sprite):
+    self.name = name
+    self.id = id
+    self.sprite = sprite
+    self.observers = []
+    self.players = []
+    self.objects = []
     
-    def insert_floor(self, floor):
-        self.floor = floor
+  def insertFloor(self, floor):
+    self.floor = floor
 
-    def insert_player(self, player):
-        self.players.append(player)
+  def insertPlayer(self, player):
+    self.players.append(player)
     
-    def insert_object(self, object):
-        self.objects.append(object)
+  def insertObject(self, object):
+    self.objects.append(object)
     
-    def notify(self):
-        self.notify_observers(id)
-        for player in self.players:
-            player.notify()  
+  def notify(self):
+    self.notify_observers(id)
+    for player in self.players:
+      player.notify()  
   
-    def tick(self):
-        for player in self.players:
-            player.tick()  
+  def tick(self):
+    for player in self.players:
+      player.tick()  
     
 #*****************************************************
 # CLASE SUB_ITEM (subclase de SUBJECT)
 # Objeto generico
 
-class Sub_Item(Subject):
+class SubjectItem(Subject):
   
-    def __init__(self, name, id, sprite, size, position):
-        self.observers = []
-        self.name = name
-        self.sprite = sprite
-        self.size = size
-        self.position = position
-        self.id = id
+  def __init__(self, name, id, sprite, size, position):
+    self.observers = []
+    self.name = name
+    self.sprite = sprite
+    self.size = size
+    self.position = position
+    self.id = id
     
-    def get_position(self):
-        return self.position
+  def getPosition(self):
+    return self.position
 
-    def set_position(self, position):
-        self.position = position
+  def setPosition(self, position):
+    self.position = position
   
 #*****************************************************
 # CLASE SUB_PLAYER (subclase de SUB_ITEM)
 # Jugador
 
-class Sub_Player(Sub_Item):
+class SubjectPlayer(SubjectItem):
  
-    def __init__(self, name, id, sprite, size, position):
-        self.observers = []
-        self.name = name
-        self.sprite = sprite
-        self.size = size
-        self.position = position
-        self.id = id
-        self.state = "standing_down"
-        self.state_frame = 0
+  def __init__(self, name, id, sprite, size, position):
+    self.observers = []
+    self.name = name
+    self.sprite = sprite
+    self.size = size
+    self.position = position
+    self.id = id
+    self.state = "standing_down"
+    self.stateFrame = 0
     
-    def move_one(self, dir):
-        if self.state_frame <> 0:
-            pass
-        else:
-            if dir <> 0:
-                self.state_frame = 0
-            if dir == 1 and self.position[2] > 0:
-                self.state = "walking_up"  
-            if dir == 2 and self.position[2] < (SCENE_SZ[1] - 1):
-                self.state = "walking_down"  
-            if dir == 3 and self.position[0] > 0:
-                self.state = "walking_left"  
-            if dir == 4 and self.position[0] < (SCENE_SZ[0] - 1):
-                self.state = "walking_right"
+  def moveOne(self, dir):
+    if self.stateFrame <> 0:
+      pass
+    else:
+      if dir <> 0:
+        self.stateFrame = 0
+      if dir == 1 and self.position[2] > 0:
+        self.state = "walking_up"  
+      if dir == 2 and self.position[2] < (SCENE_SZ[1] - 1):
+        self.state = "walking_down"  
+      if dir == 3 and self.position[0] > 0:
+        self.state = "walking_left"  
+      if dir == 4 and self.position[0] < (SCENE_SZ[0] - 1):
+        self.state = "walking_right"
   
-    def get_state(self):
-        return self.state
+  def getState(self):
+    return self.state
 
-    def get_state_frame(self):
-        return self.state_frame
+  def getStateFrame(self):
+    return self.stateFrame
 
-    def get_dir(self):
-        if self.state == "standing_up" or self.state == "standing_down" or self.state == "standing_left" or self.state == "standing_right":
-            return 0
+  def getDir(self):
+    if self.state == "standing_up" or self.state == "standing_down" or self.state == "standing_left" or self.state == "standing_right":
+      return 0
+    if self.state == "walking_up":
+      return 1
+    if self.state == "walking_down":
+      return 2
+    if self.state == "walking_left":
+       return 3
+    if self.state == "walking_right":
+      return 4
+
+  def tick(self):
+    if self.state == "walking_up" or self.state == "walking_down" or self.state == "walking_left" or self.state == "walking_right":
+      if self.stateFrame == (MAX_FRAMES - 1):
+        pos = self.getPosition()
         if self.state == "walking_up":
-            return 1
+          self.setPosition([pos[0], pos[1], pos[2] - 1])
         if self.state == "walking_down":
-            return 2
+          self.setPosition([pos[0], pos[1], pos[2] + 1])
         if self.state == "walking_left":
-            return 3
+          self.setPosition([pos[0] - 1, pos[1], pos[2]])  
         if self.state == "walking_right":
-          return 4
-
-    def tick(self):
-        if self.state == "walking_up" or self.state == "walking_down" or self.state == "walking_left" or self.state == "walking_right":
-            if self.state_frame == (MAX_FRAMES - 1):
-                pos = self.get_position()
-                if self.state == "walking_up":
-                    self.set_position([pos[0], pos[1], pos[2] - 1])
-                if self.state == "walking_down":
-                    self.set_position([pos[0], pos[1], pos[2] + 1])
-                if self.state == "walking_left":
-                    self.set_position([pos[0] - 1, pos[1], pos[2]])  
-                if self.state == "walking_right":
-                    self.set_position([pos[0] + 1, pos[1], pos[2]])  
-                self.state = "standing_down"
-                self.state_frame = 0
-            else:
-                self.state_frame += 1
+          self.setPosition([pos[0] + 1, pos[1], pos[2]])  
+        self.state = "standing_down"
+        self.stateFrame = 0
+      else:
+        self.stateFrame += 1
         
-    def notify(self):
-        self.notify_observers(self.state)
+  def notify(self):
+    self.notify_observers(self.state)
         
 #*****************************************************
 # CLASE SUB_OBJECT (subclase de SUB_ITEM)
 # Objeto no jugador
 
-class Sub_Object(Sub_Item):
+class SubjectObject(SubjectItem):
   
-    def __init__(self, name, id, sprite, size, position):
-        self.observers = []
-        self.name = name
-        self.sprite = sprite
-        self.size = size
-        self.position = position
-        self.id = id
-  
-    def metodo_provisional(self): 
-        self.name = self.name
+  def __init__(self, name, id, sprite, size, position):
+    self.observers = []
+    self.name = name
+    self.sprite = sprite
+    self.size = size
+    self.position = position
+    self.id = id
 
 """ =====================================================================================
 #========================================================================================  
@@ -454,23 +450,23 @@ class Sub_Object(Sub_Item):
 
 def input(events):
 
-    for event in events:
-        if event.type == QUIT: 
-             sys.exit(0)
-        if event.type == KEYDOWN:
-            if event.key == K_UP:
-                sub_player1.move_one(1)
-            if event.key == K_DOWN:
-                sub_player1.move_one(2)
-            if event.key == K_LEFT:
-                sub_player1.move_one(3)
-            if event.key == K_RIGHT:
-                sub_player1.move_one(4)
-            if event.key == MOUSEBUTTONDOWN:
-                #sub_player1.
-                pass
-            if event.key == K_ESCAPE:
-                sys.exit(0)
+  for event in events:
+    if event.type == QUIT: 
+      sys.exit(0)
+    if event.type == KEYDOWN:
+      if event.key == K_UP:
+        subPlayer1.moveOne(1)
+      if event.key == K_DOWN:
+        subPlayer1.moveOne(2)
+      if event.key == K_LEFT:
+        subPlayer1.moveOne(3)
+      if event.key == K_RIGHT:
+        subPlayer1.moveOne(4)
+      if event.key == MOUSEBUTTONDOWN:
+        #subPlayer1.
+        pass
+      if event.key == K_ESCAPE:
+        sys.exit(0)
           
 """ =====================================================================================
 #========================================================================================  
@@ -480,41 +476,41 @@ pygame.init()
 screen = pygame.display.set_mode(SCREEN_SZ)
 pygame.display.set_caption('GenteGuada 0.01')
 
-sub_hud = Sub_Hud("hud", 0, " ", [0,0])
-sub_room = Sub_Room("room1", 0, TILE_STONE)
-sub_player1 = Sub_Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
-sub_player2 = Sub_Player("player", 0, PLAYER_SPRITE2, CHAR_SZ, (4, 0, 4))
-sub_room.insert_player(sub_player1)
-sub_room.insert_player(sub_player2)
-#sub_object = Sub_Object("book", obj_book_sprite1, CHAR_SZ,[3,0,2])
+subHud = SubjectHud("hud", 0, " ", [0,0])
+subRoom = SubjectRoom("room1", 0, TILE_STONE)
+subPlayer1 = SubjectPlayer("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
+subPlayer2 = SubjectPlayer("player", 0, PLAYER_SPRITE2, CHAR_SZ, (4, 0, 4))
+subRoom.insertPlayer(subPlayer1)
+subRoom.insertPlayer(subPlayer2)
+#sub_object = SubjectObject("book", obj_book_sprite1, CHAR_SZ,[3,0,2])
 
-obs_hud = Obs_Hud("<observer HUD>")
-obs_hud.add_subject(sub_hud)
-obs_room = Obs_Room("<observer Room>")
-obs_room.add_subject(sub_room)
-obs_player = Obs_Player("<observer jugador>")
-obs_player.add_subject(sub_player1)
-obs_player.add_subject(sub_player2)
-obs_room.insert_player(obs_player)
-#obs_object = Obs_Object("<observer objeto>",sub_object)
+obsHud = ObserverHud("<observer HUD>")
+obsHud.addSubject(subHud)
+obsRoom = ObserverRoom("<observer Room>")
+obsRoom.addSubject(subRoom)
+observerPlayer = ObserverPlayer("<observer jugador>")
+observerPlayer.addSubject(subPlayer1)
+observerPlayer.addSubject(subPlayer2)
+obsRoom.insertPlayer(observerPlayer)
+#obs_object = ObserverObject("<observer objeto>",sub_object)
 
-#sub_hud.notify_observers ("<pinta HUD>")
-#sub_room.notify_observers ("<pinta suelo>")
-#sub_player1.notify_observers ("standing_down")
-#sub_player2.notify_observers ("standing_down")
+#subHud.notify_observers ("<pinta HUD>")
+#subRoom.notify_observers ("<pinta suelo>")
+#subPlayer1.notify_observers ("standing_down")
+#subPlayer2.notify_observers ("standing_down")
 
-time_passed = 0
+timePassed = 0
 clock = pygame.time.Clock()
 
 while True:
   clock = pygame.time.Clock()
-  time_passed = time_passed + clock.tick(30)
-  time_passed_seconds = time_passed / 1000.0
-  if time_passed_seconds >= 0.02:
-    time_passed = 0
-    sub_room.tick()
-    obs_room.draw()
-    obs_hud.paint_hud()
+  timePassed = timePassed + clock.tick(30)
+  timePassedSeconds = timePassed / 1000.0
+  if timePassedSeconds >= 0.02:
+    timePassed = 0
+    subRoom.tick()
+    obsRoom.draw()
+    obsHud.paintHud()
   input(pygame.event.get()) 
     
   
