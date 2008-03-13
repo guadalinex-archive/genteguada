@@ -6,35 +6,35 @@ import signal
 import pygame
 from pygame.locals import *
 
-tile_sz = [100, 50]
-tile2tile = 55.901699437
-#tile2tile = math.sqrt(pow(tile_sz[0],2)+pow(tile_sz[1],2))
+TILE_SZ = [100, 50]
+TILE2TILE = 55.901699437
+#tile2tile = math.sqrt(pow(TILE_SZ[0],2)+pow(TILE_SZ[1],2))
 #55.901699437
-char_sz = [50, 50]
-char_pos = [0, 0, 0]
-screen_sz = [800, 600]
-screen_or = [screen_sz[0]/2, 20]
-scene_sz = [7, 7]
-gamezone_sz = [800, 400]
-hud_sz = [800, 200]
-hud_or = [0, gamezone_sz[1]]
+CHAR_SZ = [50, 50]
+CHAR_POS = [0, 0, 0]
+SCREEN_SZ = [800, 600]
+SCREEN_OR = [SCREEN_SZ[0]/2, 20]
+SCENE_SZ = [7, 7]
+GAMEZONE_SZ = [800, 400]
+HUD_SZ = [800, 200]
+HUD_OR = [0, GAMEZONE_SZ[1]]
 
-animations = 5
-max_frames = 5
-anim_delay = 0.2
-speed = 55.901699437
+ANIMATIONS = 5
+MAX_FRAMES = 5
+ANIM_DELAY = 0.2
+SPEED = 55.901699437
 
-tile_stone = "tile_stone.png"
-player_sprite1 = "black_mage.gif"
-player_sprite2 = "black_mage_red.gif"
-obj_book_sprite1 = "book.png"
-sin30r = math.sin(math.radians(30))
-cos30r = math.cos(math.radians(30))
+TILE_STONE = "tile_stone.png"
+PLAYER_SPRITE1 = "black_mage.gif"
+PLAYER_SPRITE2 = "black_mage_red.gif"
+OBJ_BOOK_SPRITE1 = "book.png"
+SIN30R = math.sin(math.radians(30))
+COS30R = math.cos(math.radians(30))
 
-hud_color_base = [177, 174, 200]
-hud_color_border1 = [104, 102, 119]
-hud_color_border2 = [138, 136, 160]
-hud_color_border3 = [202, 199, 231]
+HUD_COLOR_BASE = [177, 174, 200]
+HUD_COLOR_BORDER1 = [104, 102, 119]
+HUD_COLOR_BORDER2 = [138, 136, 160]
+HUD_COLOR_BORDER3 = [202, 199, 231]
 
 #***************************************************** 
 # CLASE OBSERVADOR
@@ -54,23 +54,23 @@ class Observer:
         pass
   
     def p3dtop2d(self, cord3d):
-        x2d = (cord3d[0] - cord3d[2]) * cos30r * tile_sz[0]
-        y2d = ((cord3d[0] + cord3d[2]) * sin30r) - cord3d[1]
-        y2d = (y2d * tile_sz[1])
+        x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
+        y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
+        y2d = (y2d * TILE_SZ[1])
     
         # 0: suelo 
         if self.get_type() == 0:
-            x2d = x2d - (tile_sz[0])
+            x2d = x2d - (TILE_SZ[0])
         # 1: personaje
         if self.get_type() == 1:
-            x2d = x2d - (char_sz[0])
-            y2d = y2d - (char_sz[1] / 4)
+            x2d = x2d - (CHAR_SZ[0])
+            y2d = y2d - (CHAR_SZ[1] / 4)
         # 2: objeto -------------------------->> MODIFICAR
         if self.get_type() == 2:
             x2d = x2d - 55
             y2d = y2d + 8
     
-        cord2d = [math.floor((x2d/math.sqrt(3)) + screen_or[0]), math.floor(y2d + screen_or[1])]
+        cord2d = [math.floor((x2d/math.sqrt(3)) + SCREEN_OR[0]), math.floor(y2d + SCREEN_OR[1])]
         return cord2d
   
 #*****************************************************
@@ -83,10 +83,10 @@ class Obs_Hud(Observer):
         self.paint_hud()
 
     def paint_hud(self):
-        pygame.draw.rect(screen, hud_color_border1, (hud_or[0], hud_or[1], hud_sz[0] - 1, hud_sz[1] - 1))
-        pygame.draw.rect(screen, hud_color_border2, (hud_or[0] + 2,hud_or[1] + 2, hud_sz[0] - 5, hud_sz[1] - 5))
-        pygame.draw.rect(screen, hud_color_border3, (hud_or[0] + 10, hud_or[1] + 10, hud_sz[0] - 21, hud_sz[1] - 21))
-        pygame.draw.rect(screen, hud_color_base, (hud_or[0] + 12, hud_or[1] + 12, hud_sz[0] - 25, hud_sz[1] - 25))
+        pygame.draw.rect(screen, HUD_COLOR_BORDER1, (HUD_OR[0], HUD_OR[1], HUD_SZ[0] - 1, HUD_SZ[1] - 1))
+        pygame.draw.rect(screen, HUD_COLOR_BORDER2, (HUD_OR[0] + 2,HUD_OR[1] + 2, HUD_SZ[0] - 5, HUD_SZ[1] - 5))
+        pygame.draw.rect(screen, HUD_COLOR_BORDER3, (HUD_OR[0] + 10, HUD_OR[1] + 10, HUD_SZ[0] - 21, HUD_SZ[1] - 21))
+        pygame.draw.rect(screen, HUD_COLOR_BASE, (HUD_OR[0] + 12, HUD_OR[1] + 12, HUD_SZ[0] - 25, HUD_SZ[1] - 25))
         pygame.display.update()
 
 #*****************************************************
@@ -99,12 +99,12 @@ class Obs_Room(Observer):
         self.name = name
         self.subject_list = []
         self.tile_list = []
-        for x in range(scene_sz[0]):
-          for z in range(scene_sz[1]):
+        for x in range(SCENE_SZ[0]):
+          for z in range(SCENE_SZ[1]):
               var_pos = self.p3dtop2d([x, 0, z])
               pos = [int(var_pos[0]),int(var_pos[1])]
               self.tile_list.append([])
-              self.tile_list[x].append(Obs_tile([pos[0] - screen_or[0], pos[1]-screen_or[1]], [pos[0] + screen_or[0], pos[1] + screen_or[1]], tile_stone, tile_sz))
+              self.tile_list[x].append(Obs_tile([pos[0] - SCREEN_OR[0], pos[1]-SCREEN_OR[1]], [pos[0] + SCREEN_OR[0], pos[1] + SCREEN_OR[1]], TILE_STONE, TILE_SZ))
         
     def insert_player(self,player):
         self.obs_player = player
@@ -114,17 +114,17 @@ class Obs_Room(Observer):
         self.obs_player.draw()
     
     def paint_floor(self, tile_name):
-        pygame.draw.rect(screen, (0, 0, 0), (0, 0, gamezone_sz[0], gamezone_sz[1]))
+        pygame.draw.rect(screen, (0, 0, 0), (0, 0, GAMEZONE_SZ[0], GAMEZONE_SZ[1]))
         tile = os.path.join("data", tile_name)
         tile_surface = pygame.image.load(tile)
-        for x in range(scene_sz[0]):
-            for z in range(scene_sz[1]):
+        for x in range(SCENE_SZ[0]):
+            for z in range(SCENE_SZ[1]):
                 screen.blit(tile_surface, self.p3dtop2d([x, 0, z]))
 
     def find_tile(self,pos):
         #x, y = pygame.mouse.get_pos()
-        for x in range(scene_sz[0]):
-            for z in range(scene_sz[1]):
+        for x in range(SCENE_SZ[0]):
+            for z in range(SCENE_SZ[1]):
                 #self.tile_list[x].[z].
                 pass
     
@@ -156,24 +156,24 @@ class Obs_tile(Observer):
 
     def on_blank(self, pos):
         ini_pos = [pos[0]-self.top_left[0], pos[1]-self.top_left[1]]
-        if ini_pos[0] < (tile_sz[0] / 2):
-            if ini_pos[1] < (tile_sz[1] / 2):
+        if ini_pos[0] < (TILE_SZ[0] / 2):
+            if ini_pos[1] < (TILE_SZ[1] / 2):
                 if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 1
                     return true
             else:
-                ini_pos[1] -= (tile_sz[1] / 2)
+                ini_pos[1] -= (TILE_SZ[1] / 2)
                 ini_pos[1] = (tile_size[1] / 2) - ini_pos[1]
                 if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 2
                     return true
         else:
-            if ini_pos[1] < (tile_sz[1] / 2):
-                ini_pos[0] -= (tile_sz[0] / 2)
+            if ini_pos[1] < (TILE_SZ[1] / 2):
+                ini_pos[0] -= (TILE_SZ[0] / 2)
                 ini_pos[0] = (tile_size[0] / 2) - ini_pos[0]
                 if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 3
                     return true
             else:
-                ini_pos[0] -= (tile_sz[0] / 2)
-                ini_pos[1] -= (tile_sz[1] / 2)
+                ini_pos[0] -= (TILE_SZ[0] / 2)
+                ini_pos[1] -= (TILE_SZ[1] / 2)
                 ini_pos[0] = (tile_size[0] / 2) - ini_pos[0]
                 ini_pos[1] = (tile_size[1] / 2) - ini_pos[1]
                 if ini_pos[0] <= (ini_pos[0] * 2): #cuadrante 4
@@ -222,28 +222,28 @@ class Obs_Player(Obs_Item):
         pygame.display.update()
 
     def p3dtop2d(self, cord3d, state, dir):
-        x2d = (cord3d[0] - cord3d[2]) * cos30r * tile_sz[0]
-        y2d = ((cord3d[0] + cord3d[2])*sin30r) - cord3d[1]
-        y2d = (y2d * tile_sz[1])
+        x2d = (cord3d[0] - cord3d[2]) * COS30R * TILE_SZ[0]
+        y2d = ((cord3d[0] + cord3d[2]) * SIN30R) - cord3d[1]
+        y2d = (y2d * TILE_SZ[1])
     
-        x2d = x2d - (char_sz[0])
-        y2d = y2d - (char_sz[1] / 4)
+        x2d = x2d - (CHAR_SZ[0])
+        y2d = y2d - (CHAR_SZ[1] / 4)
     
-        x2d = math.floor((x2d / math.sqrt(3)) + screen_or[0])
-        y2d = math.floor(y2d + screen_or[1])
+        x2d = math.floor((x2d / math.sqrt(3)) + SCREEN_OR[0])
+        y2d = math.floor(y2d + SCREEN_OR[1])
    
         if dir == 1: #arriba
-            x2d = x2d + (((tile_sz[0] / 2)*state) / 5)
-            y2d = y2d - (((tile_sz[1] / 2)*state) / 5)
+            x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
+            y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
         if dir == 2: #abajo
-            x2d = x2d - (((tile_sz[0] / 2)*state) / 5)
-            y2d = y2d + (((tile_sz[1] / 2)*state) / 5)
+            x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)
+            y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
         if dir == 3: #izquierda
-            x2d = x2d - (((tile_sz[0] / 2)*state) / 5)  
-            y2d = y2d - (((tile_sz[1] / 2)*state) / 5)
+            x2d = x2d - (((TILE_SZ[0] / 2)*state) / 5)  
+            y2d = y2d - (((TILE_SZ[1] / 2)*state) / 5)
         if dir == 4: #derecha
-            x2d = x2d + (((tile_sz[0] / 2)*state) / 5)
-            y2d = y2d + (((tile_sz[1] / 2)*state) / 5)
+            x2d = x2d + (((TILE_SZ[0] / 2)*state) / 5)
+            y2d = y2d + (((TILE_SZ[1] / 2)*state) / 5)
       
         cord2d = [x2d, y2d]
         return cord2d
@@ -386,11 +386,11 @@ class Sub_Player(Sub_Item):
                 self.state_frame = 0
             if dir == 1 and self.position[2] > 0:
                 self.state = "walking_up"  
-            if dir == 2 and self.position[2] < (scene_sz[1] - 1):
+            if dir == 2 and self.position[2] < (SCENE_SZ[1] - 1):
                 self.state = "walking_down"  
             if dir == 3 and self.position[0] > 0:
                 self.state = "walking_left"  
-            if dir == 4 and self.position[0] < (scene_sz[0] - 1):
+            if dir == 4 and self.position[0] < (SCENE_SZ[0] - 1):
                 self.state = "walking_right"
   
     def get_state(self):
@@ -413,7 +413,7 @@ class Sub_Player(Sub_Item):
 
     def tick(self):
         if self.state == "walking_up" or self.state == "walking_down" or self.state == "walking_left" or self.state == "walking_right":
-            if self.state_frame == (max_frames - 1):
+            if self.state_frame == (MAX_FRAMES - 1):
                 pos = self.get_position()
                 if self.state == "walking_up":
                     self.set_position([pos[0], pos[1], pos[2] - 1])
@@ -477,16 +477,16 @@ def input(events):
 #==================================================================================== """  
   
 pygame.init()
-screen = pygame.display.set_mode(screen_sz)
+screen = pygame.display.set_mode(SCREEN_SZ)
 pygame.display.set_caption('GenteGuada 0.01')
 
 sub_hud = Sub_Hud("hud", 0, " ", [0,0])
-sub_room = Sub_Room("room1", 0, tile_stone)
-sub_player1 = Sub_Player("player", 0, player_sprite1, char_sz, (2, 0, 2))
-sub_player2 = Sub_Player("player", 0, player_sprite2, char_sz, (4, 0, 4))
+sub_room = Sub_Room("room1", 0, TILE_STONE)
+sub_player1 = Sub_Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
+sub_player2 = Sub_Player("player", 0, PLAYER_SPRITE2, CHAR_SZ, (4, 0, 4))
 sub_room.insert_player(sub_player1)
 sub_room.insert_player(sub_player2)
-#sub_object = Sub_Object("book", obj_book_sprite1, char_sz,[3,0,2])
+#sub_object = Sub_Object("book", obj_book_sprite1, CHAR_SZ,[3,0,2])
 
 obs_hud = Obs_Hud("<observer HUD>")
 obs_hud.add_subject(sub_hud)
