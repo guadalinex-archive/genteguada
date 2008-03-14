@@ -122,12 +122,13 @@ class ObserverRoom(Observer):
         screen.blit(tileSurface, self.p3dToP2d([x, 0, z]))
 
   def findTile(self,pos):
-    #x, y = pygame.mouse.get_pos()
+    print pos[0], "---", pos[1]
     for x in range(SCENE_SZ[0]):
       for z in range(SCENE_SZ[1]):
-        #self.tileList[x].[z].
-        pass
-    # devuelve la posicion [x,z] en la que ha pinchado el usuario
+        if self.tileList[x][z].contained(pos):
+          if not self.tileList[x][z].onBlank(pos):
+            print x, "---", z
+            return [x,z]
 
   def getType(self):
     return 0
@@ -149,34 +150,34 @@ class ObserverTile(Observer):
   def contained(self, pos):
     if self.bottomRight[0] > pos[0] > self.topLeft[0]:
       if self.bottomRight[1] > pos[1] > self.topLeft[1]:
-        return true
-    return false
+        return 1
+    return 0
 
   def onBlank(self, pos):
     iniPos = [pos[0]-self.topLeft[0], pos[1]-self.topLeft[1]]
     if iniPos[0] < (TILE_SZ[0] / 2):
       if iniPos[1] < (TILE_SZ[1] / 2):
         if iniPos[0] <= (iniPos[0] * 2): #cuadrante 1
-          return true
+          return 1
       else:
         iniPos[1] -= (TILE_SZ[1] / 2)
         iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
         if iniPos[0] <= (iniPos[0] * 2): #cuadrante 2
-          return true
+          return 1
     else:
       if iniPos[1] < (TILE_SZ[1] / 2):
         iniPos[0] -= (TILE_SZ[0] / 2)
         iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
         if iniPos[0] <= (iniPos[0] * 2): #cuadrante 3
-          return true
+          return 1
         else:
           iniPos[0] -= (TILE_SZ[0] / 2)
           iniPos[1] -= (TILE_SZ[1] / 2)
           iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
           iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
           if iniPos[0] <= (iniPos[0] * 2): #cuadrante 4
-            return true
-    return false    
+            return 1
+    return 0    
     
 #*****************************************************
 # CLASE OBS_ITEM (subclase de OBSERVER)
@@ -462,11 +463,14 @@ def input(events):
         subPlayer1.moveOne(3)
       if event.key == K_RIGHT:
         subPlayer1.moveOne(4)
-      if event.key == MOUSEBUTTONDOWN:
-        #subPlayer1.
-        pass
       if event.key == K_ESCAPE:
         sys.exit(0)
+    if event.type == MOUSEBUTTONDOWN:
+      #print "pinchapincha"
+      #subPlayer1.
+      x, y = pygame.mouse.get_pos()
+      obsRoom.findTile([x,y])
+      pass
           
 """ =====================================================================================
 #========================================================================================  
