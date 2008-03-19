@@ -1,0 +1,14 @@
+Source: genteguada-client
+Section: python
+Priority: optional
+Maintainer: Joseba Mariscal <jmariscal@infoglobal.es>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: genteguada-client
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python2.4
+Description: juego colaborativo 3D
+ Juego colaborativo 3D a traves de Internet, en el que el objetivo sera 
+ colaborar con otros jugadores para conseguir premios.
+
