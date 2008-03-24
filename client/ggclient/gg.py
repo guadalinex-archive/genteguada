@@ -37,13 +37,13 @@ class GG:
         sys.exit(0)
       if event.type == KEYDOWN:
         if event.key == K_UP:
-          subPlayer1.moveOne(1)
+          self.player1.moveOne(1)
         if event.key == K_DOWN:
-          subPlayer1.moveOne(2)
+          self.player1.moveOne(2)
         if event.key == K_LEFT:
-          subPlayer1.moveOne(3)
+          self.player1.moveOne(3)
         if event.key == K_RIGHT:
-          subPlayer1.moveOne(4)
+          self.player1.moveOne(4)
         if event.key == K_ESCAPE:
           sys.exit(0)
       if event.type == MOUSEBUTTONDOWN:
@@ -62,19 +62,19 @@ class GG:
 
     hud = Hud("hud", 0, " ", HUD_SZ)
     self.room = Room("room1", 0, TILE_STONE)
-    player1 = Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
+    self.player1 = Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
     item = Item("libro", 0, OBJ_BOOK_SPRITE1, [40, 40], (5, 0, 5))
-    self.room.insertPlayer(player1)
+    self.room.insertPlayer(self.player1)
     self.room.insertItem(item)
 
     isoViewHud = IsoViewHud("<observer Hud>")
     self.isoviewRoom = IsoViewRoom("<observer Room>")
     self.isoviewRoom.addModel(self.room)
-    isoViewPlayer = IsoViewPlayer("<observer Player>")
-    isoViewPlayer.addModel(player1)
+    self.isoViewPlayer = IsoViewPlayer("<observer Player>")
+    self.isoViewPlayer.addModel(self.player1)
     isoViewItem = IsoViewItem("<observer Item>")
     isoViewItem.addModel(item)
-    self.isoviewRoom.insertPlayer(isoViewPlayer)
+    self.isoviewRoom.insertPlayer(self.isoViewPlayer)
     self.isoviewRoom.insertItem(isoViewItem)
 
     isoViewHud.paintHud()
