@@ -13,6 +13,8 @@ class GenteGuadaProtocol(Protocol):
     de nuestra factoria
     """
     print "conexion"
+    for clients in self.factory.clients:
+      clients.transport.write("Nuevo cliente conectado\n")
     self.factory.clients.append(self)
 
   def dataReceived(self, data):
@@ -39,4 +41,6 @@ class GenteGuadaProtocol(Protocol):
     """
     print reason.value
     self.factory.clients.remove(self)
+    for clients in self.factory.clients:
+      clients.transport.write("Cliente desconectado\n")
 
