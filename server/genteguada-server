@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+import sys	
+
+sys.path.append("/usr/share/genteguada-server")
+
+import ggserver.server
+
+if __name__ == "__main__":
+  ggServer = ggserver.server.Server()
+  ggServer.start()  
+
