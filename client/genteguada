@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
-from ggclient.gg import *
+import sys
+
+sys.path.append("/usr/share/genteguada-client")
+
+#from ggclient.gg import *
+import ggclient.gg
 
 if __name__ == "__main__":
-  gg = GG()
+  gg = ggclient.gg.GG()
   gg.start()  
     
   

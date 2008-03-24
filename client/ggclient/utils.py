@@ -1,6 +1,11 @@
 import math
+import os
 
-DATA_PATH = "data"
+if os.path.isdir("data"):
+  DATA_PATH = "data"
+else:
+  DATA_PATH = "/usr/share/pixmaps/genteguada-client"
+
 TILE_SZ = [100, 50]
 #TILE2TILE = 55.901699437
 #tile2tile = math.sqrt(pow(TILE_SZ[0],2)+pow(TILE_SZ[1],2))

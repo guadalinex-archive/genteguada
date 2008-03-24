@@ -24,7 +24,9 @@ class doc(setuptools.Command):
     except:
       print "No se encuentra pydoc. No puedo seguir"
       sys.exit(256)
-
+    
+    if not os.path.isdir(self.doc_dst):
+      os.mkdir(self.doc_dst)
     os.chdir(self.doc_dst)
     print "Generando documentacion de %s..."%self.doc_src,
     pydoc.writedoc(self.doc_src)
