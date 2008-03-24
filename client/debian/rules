@@ -39,9 +39,10 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	$(PYTHON2.5) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/share/
+	$(PYTHON2.5) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/share/$(PACKAGE)
 	$(PYTHON2.5) setup.py build_scripts --build-dir=$(PACKAGEDIR)/usr/bin/
 	dh_installdocs doc/*
+	dh_install data/* /usr/share/pixmaps/$(PACKAGE) 
 	rm -f build-stamp configure-stamp
 
 binary-indep: build install
