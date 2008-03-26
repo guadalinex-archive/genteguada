@@ -3,6 +3,7 @@
 import sys	
 
 sys.path.append("/usr/share/genteguada-server")
+sys.path.append("../common")
 
 import ggserver.server
 

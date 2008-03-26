@@ -1,5 +1,7 @@
 
 from twisted.internet.protocol import Protocol
+import cPickle
+import ggcommon.eventos
 
 class GenteGuadaProtocol(Protocol):
   """
@@ -27,8 +29,10 @@ class GenteGuadaProtocol(Protocol):
       data => datos enviados al servidor
     """
     print data
+    event = ggcommon.eventos.Event()
+    miEventoSerializado = cPickle.dumps(event)
     for clients in self.factory.clients:
-      clients.transport.write(data)
+      clients.transport.write(miEventoSerializado)
 
   def connectionLost(self, reason):
     """
