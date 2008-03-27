@@ -4,7 +4,8 @@ import sys
 import time
 import signal
 import pygame
-
+import time
+    
 from pygame.locals import *
 
 from isoview_hud import *
@@ -60,34 +61,20 @@ class GG:
     screen = pygame.display.set_mode(SCREEN_SZ)
     pygame.display.set_caption('GenteGuada 0.01')
 
-    hud = Hud("hud", 0, " ", HUD_SZ)
     self.room = Room("room1", 0, TILE_STONE)
     self.player1 = Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
-    item = Item("libro", 0, OBJ_BOOK_SPRITE1, [40, 40], (5, 0, 5))
     self.room.insertPlayer(self.player1)
-    self.room.insertItem(item)
 
-    isoViewHud = IsoViewHud("<observer Hud>")
     self.isoviewRoom = IsoViewRoom("<observer Room>")
     self.isoviewRoom.addModel(self.room)
-    self.isoViewPlayer = IsoViewPlayer("<observer Player>")
+    self.isoViewPlayer = IsoViewPlayer("<observer Player>", screen)
     self.isoViewPlayer.addModel(self.player1)
-    isoViewItem = IsoViewItem("<observer Item>")
-    isoViewItem.addModel(item)
     self.isoviewRoom.insertPlayer(self.isoViewPlayer)
-    self.isoviewRoom.insertItem(isoViewItem)
 
-    isoViewHud.paintHud()
-
-    timePassed = 0
-    clock = pygame.time.Clock()
+    #isoViewHud.paintHud()
 
     while True:
-      clock = pygame.time.Clock()
-      timePassed = timePassed + clock.tick(30)
-      timePassedSeconds = timePassed / 1000.0
-      if timePassedSeconds >= 0.02:
-        timePassed = 0
-        self.room.tick()
-        self.isoviewRoom.draw(screen)
+      time.sleep(0.05)
+      self.room.tick()
+      self.isoviewRoom.draw(screen)
       self.input(pygame.event.get()) 
