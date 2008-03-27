@@ -1,6 +1,5 @@
 from item import *
 import ggcommon.eventos
-print dir(ggcommon)
 
 class Player(Item):
   """ Clase Player.
@@ -24,7 +23,6 @@ class Player(Item):
     self.state = "standing_down"
     self.stateFrame = 0
     self.destination = position
-    self.eventos = {"Move":ggcommon.eventos.MovePlayerEvent()}
     
   def moveOne(self, dir):
     """ Mueve al jugador una casilla en una direccion.
@@ -113,6 +111,7 @@ class Player(Item):
       self.stateFrame = 0
       self.state = state
       self.destination = destination
+      self.triggerEvent('destination', destination=self.destination)
       #self.state = self.views[0].getNextDir(self.position, destination)
       #self.state = getNextDirection(self.position, destination)
 

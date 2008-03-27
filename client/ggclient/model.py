@@ -1,4 +1,5 @@
 from utils import *
+import ggcommon.eventos
 
 class Model:
   """ Clase Model.
@@ -18,6 +19,22 @@ class Model:
     self.id = id
     self.views = []
     
+  def onEvent(self, eventType, method):
+    self.views.append([eventType, method])
+    
+  def triggerEvent(self, eventType, **params):
+    for type,method in self.views:
+      if type == eventType:
+        event = ggcommon.eventos.Event(self, eventType, params)
+        method(event)
+    
+  def removeEvent(self, eventType):
+    i=0
+    for type,method in self.views:
+      if type == eventType:
+        del(self.views[i])
+      i += 1  
+        
   def register(self, view):
     """ Registra una vista como visor de este subject.
     view: vista a registrar.

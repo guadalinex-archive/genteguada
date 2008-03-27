@@ -6,22 +6,12 @@ class Event:
   tienen que heredar de esta clase
   """
 
-  def __init__(self):
+  def __init__(self, producer, name, params):
     """
     Constructor de la clase
     """
-    self.name = "Evento Padre"
-    self.listeners = []
+    self.producer = producer
+    self.name = name
+    self.params = params
     
-  def register(self,listener):
-    self.listeners.append(listener)
-
-  def emit(self):
-    pass
   
-  
-class MovePlayerEvent(Event):
-  
-  def emit(self, idplayer, x, y):
-    for listener in self.listeners:
-      listener.movePlayer(idplayer, x, y)
