@@ -43,7 +43,7 @@ class IsoViewRoom(IsoView):
     """
     self.paintFloor(self.modelList[0].getSprite(), screen)
     self.isoViewPlayer.draw(screen)
-    self.isoViewItem.draw(screen)
+    #self.isoViewItem.draw(screen)
     
   def paintFloor(self, tile_name, screen):
     """ Pinta el suelo de la habitacion.

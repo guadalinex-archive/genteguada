@@ -7,14 +7,32 @@ class IsoViewPlayer(IsoViewItem):
   Define a la vista de un item de tipo jugador.
   """
 
+  def __init__(self, name, screen):
+    """ Constructor de la clase.
+    name: nombre de la vista.
+    """  
+    self.name = name
+    self.modelList = []
+    self.screen = screen
+    
+  def movePlayer(self, idplayer, x, y):
+    self.drawOne(idplayer)
+
+  def addModel(self, model):
+    """ Anade un modelo a la lista de elementos controlados por la vista
+    model: elemento a anadir
+    """
+    self.modelList.append(model)
+    model.eventos["Move"].register(self)
+
   def draw(self, screen):
     """ Realiza llamadas para pintar en pantalla todos los jugadores observados.
     screen: controlador de pantalla.
     """
     for ind in range(self.modelList.__len__()):
-      self.drawOne(ind, screen)
+      self.drawOne(ind)
 
-  def drawOne(self, caller, screen):
+  def drawOne(self, caller):
     """ Pinta un jugador moviendose en una direccion en pantalla.
     caller: jugador a pintar
     screen: controlador de pantalla
@@ -26,23 +44,23 @@ class IsoViewPlayer(IsoViewItem):
     event = self.modelList[caller].getState()
     sprite = self.modelList[caller].getSprite()
     if event == "standing_down":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_up":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_down":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_left":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_right":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_topleft":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_bottomright":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_bottomleft":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
     if event == "walking_topright":
-      self.paintPlayer(sprite, pos, caller, screen)
+      self.paintPlayer(sprite, pos, caller, self.screen)
       
   def paintPlayer(self, sprite, cord3d, caller, screen):
     """ Pinta un jugador en pantalla.
