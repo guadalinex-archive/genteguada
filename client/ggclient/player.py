@@ -14,12 +14,7 @@ class Player(Item):
     size: tamano del grafico del jugador.
     position: posicion en la que se encuentra el jugador.
     """
-    self.views = []
-    self.name = name
-    self.sprite = sprite
-    self.size = size
-    self.position = position
-    self.id = id
+    Item.__init__(self, name, id, sprite, size, position)
     self.state = "standing_down"
     self.stateFrame = 0
     self.destination = position
@@ -37,22 +32,22 @@ class Player(Item):
         self.state = "walking_up"
         self.destination = [self.position[0], self.position[1], \
                             self.position[2] - 1]
-        self.eventos["Move"].emit(self.id, self.destination[0], self.destination[2])
       if dir == 2 and self.position[2] < (SCENE_SZ[1] - 1):
         self.state = "walking_down"
         self.destination = [self.position[0], self.position[1], \
                             self.position[2] + 1]
-        self.eventos["Move"].emit(self.id, self.destination[0], self.destination[2])
       if dir == 3 and self.position[0] > 0:
         self.state = "walking_left"
         self.destination = [self.position[0] - 1, self.position[1], \
                             self.position[2]]
-        self.eventos["Move"].emit(self.id, self.destination[0], self.destination[2])
       if dir == 4 and self.position[0] < (SCENE_SZ[0] - 1):
         self.state = "walking_right"
         self.destination = [self.position[0] + 1, self.position[1], \
                             self.position[2]]
-        self.eventos["Move"].emit(self.id, self.destination[0], self.destination[2])
+        
+  def setName(self, name):
+    self.name = name
+    self.triggerEvent('change name', name=self.name)
         
   def getPosition(self):
     """ Devuelve la posicion en la que se encuentra el jugador.
