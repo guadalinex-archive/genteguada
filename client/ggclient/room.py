@@ -12,10 +12,7 @@ class Room(Model):
     id: identificador.
     sprite: grafico asignado a las baldosas de la habitacion.
     """
-    self.name = name
-    self.id = id
-    self.sprite = sprite
-    self.views = []
+    Model.__init__(self, name, id, sprite, [0, 0])
     self.players = []
     self.items = []
     self.blocked = []
@@ -23,7 +20,6 @@ class Room(Model):
       self.blocked.append([])
       for j in range(0, SCENE_SZ[1]):
         self.blocked[i].append(0)
-    #print self.blocked[2][3] 
         
   def insertFloor(self, floor):
     """ Asigna el suelo de la habitacion.

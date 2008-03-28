@@ -13,12 +13,8 @@ class Item(Model):
     size: tamano del item.
     position: posicion en la que se encuentra el item.
     """
-    self.views = []
-    self.name = name
-    self.sprite = sprite
-    self.size = size
+    Model.__init__(self, name, id, sprite, size)
     self.position = position
-    self.id = id
     
   def getPosition(self):
     """ Devuelve la posicion en la que se encuentra el item.

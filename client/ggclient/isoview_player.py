@@ -23,8 +23,7 @@ class IsoViewPlayer(IsoViewItem):
     model: elemento a anadir
     """
     self.modelList.append(model)
-    model.eventos["Move"].register(self)
-
+    
   def draw(self, screen):
     """ Realiza llamadas para pintar en pantalla todos los jugadores observados.
     screen: controlador de pantalla.

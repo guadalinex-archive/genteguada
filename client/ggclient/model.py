@@ -17,23 +17,24 @@ class Model:
     self.sprite = sprite
     self.size = size
     self.id = id
+    self.events = []
     self.views = []
     
   def onEvent(self, eventType, method):
-    self.views.append([eventType, method])
+    self.events.append([eventType, method])
     
   def triggerEvent(self, eventType, **params):
-    for type,method in self.views:
+    for type,method in self.events:
       if type == eventType:
         event = ggcommon.eventos.Event(self, eventType, params)
         method(event)
     
-  def removeEvent(self, eventType):
-    i=0
-    for type,method in self.views:
-      if type == eventType:
-        del(self.views[i])
-      i += 1  
+  def deleteEvent(self, eventType=None):
+    if eventType:
+      result = [self.events[x] for x in range(len(self.events)) if not self.events[x][0] == eventType]
+      self.events = result
+    else:
+      self.events = []
         
   def register(self, view):
     """ Registra una vista como visor de este subject.
