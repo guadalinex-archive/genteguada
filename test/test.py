@@ -30,7 +30,7 @@ class TestEventos(unittest.TestCase):
     assert self.eventCount == 1
     assert self.lastEvent.params['destination'] == [2, 0, 1]
     assert self.lastEvent.producer == player
-    assert self.lastEvent.name == 'destinationte'
+    assert self.lastEvent.name == 'destination'
 
   def testDeleteEventByType(self):
     player = ggclient.player.Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
