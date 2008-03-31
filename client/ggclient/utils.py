@@ -35,6 +35,10 @@ HUD_COLOR_BORDER1 = [104, 102, 119]
 HUD_COLOR_BORDER2 = [138, 136, 160]
 HUD_COLOR_BORDER3 = [202, 199, 231]
 
+DIR = {1: "walking_up", 2: "walking_down", 3: "walking_left", 4: "walking_right",
+       5: "walking_topleft", 6: "walking_bottomright", 7: "walking_bottomleft",
+       8: "walking_topright"}
+
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
   pos1: posicion de inicio.
