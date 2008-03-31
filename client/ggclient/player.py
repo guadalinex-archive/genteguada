@@ -119,9 +119,8 @@ class Player(Item):
     self.state == "walking_left" or self.state == "walking_right" or \
     self.state == "walking_topleft" or self.state == "walking_bottomright" or \
     self.state == "walking_bottomleft" or self.state == "walking_topright":
-      if self.stateFrame == (MAX_FRAMES - 1):
-        #print self.position, " >> ", self.destination, " >> ", state
-        print "==================== Finalizacion de movimiento ===================="""
+      if self.stateFrame == (MAX_FRAMES):
+        #print "============= Finalizacion de movimiento ============="""
         pos = self.getPosition()
         if self.state == "walking_up":
           self.position = [pos[0], pos[1], pos[2] - 1]
@@ -143,7 +142,7 @@ class Player(Item):
         if self.position <> self.destination:
           #self.state = self.views[0].getNextDir(self.position, destination)
           #self.state = getNextDirection(self.position, self.destination)
-          print self.stateFrame, " }}} ", self.state, " }}} ", self.position, " }}} ", self.destination
+          #print self.stateFrame, " }}} ", self.state, " }}} ", self.position, " }}} ", self.destination
           self.state = state
         else:
           self.state = "standing_down"

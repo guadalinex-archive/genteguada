@@ -74,7 +74,7 @@ class GG:
     #isoViewHud.paintHud()
 
     while True:
-      time.sleep(0.05)
+      time.sleep(0.02)
       self.room.tick()
       self.isoviewRoom.draw(screen)
       self.input(pygame.event.get()) 

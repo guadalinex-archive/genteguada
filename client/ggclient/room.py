@@ -78,7 +78,78 @@ class Room(Model):
     pos1: posicion de inicio.
     pos2: posicion de destino.
     """
+   
+    # REHACER TODO
     
+    # comprobar si se encuentra en la vertical
+    #   si es asi, mover a 1 o 2
+    
+    # comprobar si se encuentra en la horizontal
+    #   si es asi, mover a 3 o 4
+    
+    # comprobar si se encuentra en una diagonal
+    #   si es asi, mover a 5 o 6
+    
+    # comprobar si se encuentra en otra diagonal
+    #   si es asi, mover a 7 u 8
+    
+    # despues, hacer lista de distancias, ordenar, y elegir el primero
+ 
+    #print pos1, pos2
+    
+    if pos1 == pos2: return "standing_down"
+
+    dir = []
+    dir.append([pos1[0], pos1[1], pos1[2] - 1]) #up
+    dir.append([pos1[0], pos1[1], pos1[2] + 1]) #down
+    dir.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
+    dir.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
+    dir.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
+    dir.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
+    dir.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
+    dir.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
+
+    for i in range(0, len(dir)):
+      if (pos2 == dir[i]) and (0 < dir[i][0] < SCENE_SZ[0]) and (0 < dir[i][2] < SCENE_SZ[1]):
+        return DIR[i+1]
+
+    if pos1[0] == pos2[0]:
+      if pos1[2] > pos2[2] and not self.blocked[pos1[0] - 1][pos1[2]]:
+        return "walking_up"
+      elif pos1[2] > pos2[2] and not self.blocked[pos1[0] + 1][pos1[2]]:
+        return "walking_down"
+    
+    if pos1[2] == pos2[2]:
+      if pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] - 1]:
+        return "walking_left"
+      elif pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] + 1]:
+        return "walking_right"
+    
+    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2]):
+      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] - 1]:
+        return "walking_topleft"
+      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] + 1]:
+        return "walking_bottomright"
+    
+    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2])*(-1):
+      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] + 1]:
+        return "walking_bottomleft"
+      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] - 1]:
+        return "walking_topright"
+
+    dist = []
+    for i in range(0, len(dir)):
+      dist.append([DIR[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
+    dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
+    
+    while len(dist) > 0:
+      first = dist.pop()
+      if (0 < first[2][0] < SCENE_SZ[0]) and (0 < first[2][2] < SCENE_SZ[1]):
+        if self.blocked[first[2][0]][first[2][2]] == 0:
+          return first[0]
+    return "standing down"
+    
+    """
     directions = []
     directions.append([pos1[0], pos1[1], pos1[2] - 1]) #up
     directions.append([pos1[0], pos1[1], pos1[2] + 1]) #down
@@ -136,6 +207,7 @@ class Room(Model):
             print pos1, " >> ", pos2, " >>", first[0]
             return first[0]
     return "standing down"
+    """
 
   def isCloser(self, ori, pos, dest):
     """ Indica si la posicion "pos2" esta mas cerca de "dest" que "ori". \
