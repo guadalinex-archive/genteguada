@@ -17,12 +17,15 @@ SCENE_SZ = [7, 7]
 GAMEZONE_SZ = [800, 400]
 HUD_SZ = [800, 200]
 HUD_OR = [0, GAMEZONE_SZ[1]]
+#BG_FULL_OR = [37, 20]
+BG_FULL_OR = [0, 0]
 
 ANIMATIONS = 5
 MAX_FRAMES = 5
 ANIM_DELAY = 0.2
 SPEED = 55.901699437
 
+BG_FULL = "fondo.png"
 TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"

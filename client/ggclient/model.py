@@ -21,15 +21,25 @@ class Model:
     self.views = []
     
   def onEvent(self, eventType, method):
+    """ Indica la accion a realizar ante un evento.
+    eventType: tipo de evento.
+    method: metodo que se lanzara.
+    """
     self.events.append([eventType, method])
     
   def triggerEvent(self, eventType, **params):
+    """ Activa un evento.
+    eventType: tipo de evento.
+    params: datos sobre el evento.
+    """
     for type,method in self.events:
       if type == eventType:
         event = ggcommon.eventos.Event(self, eventType, params)
         method(event)
     
   def deleteEvent(self, eventType=None):
+    """ Elimina un evento de la lista de escuchas.
+    """
     if eventType:
       result = [self.events[x] for x in range(len(self.events)) if not self.events[x][0] == eventType]
       self.events = result
