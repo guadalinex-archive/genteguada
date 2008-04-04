@@ -36,45 +36,45 @@ class GG:
     for event in events:
       if event.type == QUIT: 
         sys.exit(0)
-      if event.type == KEYDOWN:
-        if event.key == K_UP:
-          self.player1.moveOne(1)
-        if event.key == K_DOWN:
-          self.player1.moveOne(2)
-        if event.key == K_LEFT:
-          self.player1.moveOne(3)
-        if event.key == K_RIGHT:
-          self.player1.moveOne(4)
-        if event.key == K_ESCAPE:
-          sys.exit(0)
+      if event.type == KEYDOWN and event.key == K_ESCAPE:
+        sys.exit(0)
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoviewRoom.findTile([x,y])
         if dest <> [-1, -1]:
           self.room.setPlayerDestination(0, [dest[0], 0, dest[1]])
-          
+
+  def startMovementEventFired(self, event):
+    """ Dispara una serie de metodos al detectar un evento de movimiento.
+    event: datos del evento de movimiento.
+    """
+    self.isoviewRoom.newAction(event)
+    #id=self.id, sprite=self.sprite, pActual=self.position, pDestin=self.destination, dir=self.state, state=0
+
   def start(self):
     """ Inicia el programa. Crea e inicializa subjects y observers y pone en \
     marcha el bucle principal.
     """
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SZ)
-    pygame.display.set_caption('GenteGuada 0.01')
+    pygame.display.set_caption('GenteGuada 0.02')
 
-    self.room = Room("room1", 0, TILE_STONE)
+    self.room = Room("room1", 0, TILE_STONE, BG_FULL)
     self.player1 = Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
+    self.player1.onEvent('position', self.startMovementEventFired)
+    self.player1.onEvent('destination', self.startMovementEventFired)
     self.room.insertPlayer(self.player1)
 
     self.isoviewRoom = IsoViewRoom("<observer Room>")
     self.isoviewRoom.addModel(self.room)
     self.isoViewPlayer = IsoViewPlayer("<observer Player>", screen)
     self.isoViewPlayer.addModel(self.player1)
-    self.isoviewRoom.insertPlayer(self.isoViewPlayer)
+    self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer)
 
-    #isoViewHud.paintHud()
+    self.isoviewRoom.drawFirst(screen)
+    pygame.display.update()
 
     while True:
-      time.sleep(0.02)
+      time.sleep(0.2)
       self.room.tick()
-      self.isoviewRoom.draw(screen)
       self.input(pygame.event.get()) 
