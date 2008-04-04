@@ -18,6 +18,7 @@ class Player(Item):
     self.state = "standing_down"
     self.stateFrame = 0
     self.destination = position
+    self.visited = []
         
   def getPosition(self):
     """ Devuelve la posicion en la que se encuentra el jugador.
@@ -60,11 +61,15 @@ class Player(Item):
     """ Asigna una nueva posicion a un jugador.
     position: posicion del jugador.
     """
+    if self.position == position:
+      self.visited = []
+    self.visited.append(position)
+    pActualAux = self.position
     self.position = position
     self.triggerEvent('position', id=self.id, sprite=self.sprite, \
-                        pActual=self.position, pDestin=self.destination, \
+                        pActual=pActualAux, pDestin=self.position, \
                         dir=self.state)
-
+    
   def setDestination(self, state, destination):
     """ Asigna un punto de destino al movimiento del jugador.
     state: direccion del siguiente movimiento.
@@ -72,10 +77,16 @@ class Player(Item):
     """
     self.state = state
     self.destination = destination
-    self.triggerEvent('destination', id=self.id, sprite=self.sprite, \
-                        pActual=self.position, pDestin=self.destination, \
-                        dir=self.state)
-
+    
+  def hasBeenVisited(self, pos):
+    """ Indica si una celda ha sido visitada en el ultimo movimiento del jugador.
+    pos: posicion de la celda a comprobar.
+    """
+    for i in range(0, len(self.visited)):
+      if self.visited[i] == pos:
+        return 1
+    return 0
+    
   def tick(self, state):
     """ Procedimiento que actualiza posiciones de movimientos, e incrementa \
     el estado de las animaciones en las que se encuentren los jugadores.
