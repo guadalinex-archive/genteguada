@@ -55,5 +55,9 @@ class TestRemoteObject(unittest.TestCase):
     assert result.__class__ == ggcommon.remotecommand.RExecuteResult
     assert result.do() == param1+ "  "+ param2
 
+    print "Ejecutamos un metodo que nos da una excepcion"
+    result = model.name()
+    assert result.__class__ == ggcommon.remotecommand.RExecuteExceptionMethodNotFound
+
 if __name__ == "__main__":
   test = unittest.main()
