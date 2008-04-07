@@ -61,14 +61,13 @@ class Player(Item):
     """ Asigna una nueva posicion a un jugador.
     position: posicion del jugador.
     """
-    if self.position == position:
+    if self.destination == position:
       self.visited = []
     self.visited.append(position)
     pActualAux = self.position
     self.position = position
     self.triggerEvent('position', id=self.id, sprite=self.sprite, \
-                        pActual=pActualAux, pDestin=self.position, \
-                        dir=self.state)
+                        pActual=pActualAux, pDestin=self.position, dir=self.state)
     
   def setDestination(self, state, destination):
     """ Asigna un punto de destino al movimiento del jugador.
@@ -87,34 +86,32 @@ class Player(Item):
         return 1
     return 0
     
-  def tick(self, state):
+  def tick(self, direction):
     """ Procedimiento que actualiza posiciones de movimientos, e incrementa \
     el estado de las animaciones en las que se encuentren los jugadores.
-    state: direccion del siguiente movimiento.
+    direction: direccion del siguiente movimiento.
     """
-    if self.state == "walking_up" or self.state == "walking_down" or \
-    self.state == "walking_left" or self.state == "walking_right" or \
-    self.state == "walking_topleft" or self.state == "walking_bottomright" or \
-    self.state == "walking_bottomleft" or self.state == "walking_topright":
+    if self.position == self.destination:
+      self.state = "standing_down"
+      return
+    if self.state <> "standing_down":
       pos = self.getPosition()
+      self.state = direction
       if self.state == "walking_up":
-        self.setPosition([pos[0], pos[1], pos[2] - 1])
+        next = [pos[0], pos[1], pos[2] - 1]
       if self.state == "walking_down":
-        self.setPosition([pos[0], pos[1], pos[2] + 1])
+        next = [pos[0], pos[1], pos[2] + 1]
       if self.state == "walking_left":
-        self.setPosition([pos[0] - 1, pos[1], pos[2]])
+        next = [pos[0] - 1, pos[1], pos[2]]
       if self.state == "walking_right":
-        self.setPosition([pos[0] + 1, pos[1], pos[2]]) 
+        next = [pos[0] + 1, pos[1], pos[2]]
       if self.state == "walking_topleft":
-        self.setPosition([pos[0] - 1, pos[1], pos[2] - 1])
+        next = [pos[0] - 1, pos[1], pos[2] - 1]
       if self.state == "walking_bottomright": 
-        self.setPosition([pos[0] + 1, pos[1], pos[2] + 1]) 
+        next = [pos[0] + 1, pos[1], pos[2] + 1]
       if self.state == "walking_bottomleft":
-        self.setPosition([pos[0] - 1, pos[1], pos[2] + 1]) 
+        next = [pos[0] - 1, pos[1], pos[2] + 1]
       if self.state == "walking_topright":
-        self.setPosition([pos[0] + 1, pos[1], pos[2] - 1]) 
-      if self.position <> self.destination:
-        self.state = state
-      else:
-        self.state = "standing_down"
-  
+        next = [pos[0] + 1, pos[1], pos[2] - 1]
+      self.setPosition(next)
+      

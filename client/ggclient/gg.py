@@ -64,6 +64,7 @@ class GG:
     self.player1.onEvent('position', self.startMovementEventFired)
     self.player1.onEvent('destination', self.startMovementEventFired)
     self.room.insertPlayer(self.player1)
+    self.room.setBlockedTile([4, 0, 4])
 
     self.isoviewRoom = IsoViewRoom("<observer Room>")
     self.isoviewRoom.addModel(self.room)
@@ -75,6 +76,6 @@ class GG:
     pygame.display.update()
 
     while True:
-      time.sleep(0.2)
+      time.sleep(TICK_DELAY)
       self.room.tick()
       self.input(pygame.event.get()) 
