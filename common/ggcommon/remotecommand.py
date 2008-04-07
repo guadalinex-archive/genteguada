@@ -16,6 +16,16 @@ class RCommand: #{{{
 
 #}}}
 
+class RExecuteResult(RCommand): #{{{
+
+  def __init__(self,result):
+    RCommand.__init__(self)
+    self._result = result
+
+  def do(self):
+    return self._result
+#}}}
+
 class RExecuteCommand(RCommand): #{{{
 
   def __init__(self, modelID, methodName, args):
@@ -33,7 +43,8 @@ class RExecuteCommand(RCommand): #{{{
     model = rServer.getModelByID(self._modelID)
     method = getattr(model, self._methodName, self._args)
     if callable(method):
-        return method(*self._args)
-    raise remotecommand.InvalidRemoteMethod(self)
+        result = method(*self._args)
+        return RExecuteResult(result)
+    raise remotemodel.InvalidRemoteMethod(self)
 #}}}
 
