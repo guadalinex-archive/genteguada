@@ -21,7 +21,7 @@ class Room(Model):
       self.blocked.append([])
       for j in range(0, SCENE_SZ[1]):
         self.blocked[i].append(0)
-        
+    
   def getPlayerState(self, player):
     """ Devuelve el estado en el que se encuentra un jugador.
     player: jugador a consultar.
@@ -60,100 +60,32 @@ class Room(Model):
     dir.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
 
     for i in range(0, len(dir)):
-      if (pos2 == dir[i]) and (0 < dir[i][0] < SCENE_SZ[0]) and (0 < dir[i][2] < SCENE_SZ[1]):
-        return DIR[i+1]
-
-    if pos1[0] == pos2[0]:
-      if pos1[2] > pos2[2] and not self.blocked[pos1[0] - 1][pos1[2]]:
-        return "walking_up"
-      elif pos1[2] > pos2[2] and not self.blocked[pos1[0] + 1][pos1[2]]:
-        return "walking_down"
-    if pos1[2] == pos2[2]:
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] - 1]:
-        return "walking_left"
-      elif pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] + 1]:
-        return "walking_right"
-    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2]):
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] - 1]:
-        return "walking_topleft"
-      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] + 1]:
-        return "walking_bottomright"
-    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2])*(-1):
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] + 1]:
-        return "walking_bottomleft"
-      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] - 1]:
-        return "walking_topright"
-
+      if (pos2 == dir[i]) and (0 <= dir[i][0] <= SCENE_SZ[0]) and (0 <= dir[i][2] <= SCENE_SZ[1]):
+        if self.blocked[dir[i][0]][dir[i][2]] == 0:
+          return DIR[i+1]
+    
     dist = []
     for i in range(0, len(dir)):
       dist.append([DIR[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (0 < first[2][0] < SCENE_SZ[0]) and (0 < first[2][2] < SCENE_SZ[1]):
+      if (1 <= first[2][0] <= SCENE_SZ[0]) and (0 <= first[2][2] <= SCENE_SZ[1]):
         if self.blocked[first[2][0]][first[2][2]] == 0:
           if not self.players[caller].hasBeenVisited(first[2]):
             return first[0]
-    return "standing down"
-
-    """
-    if pos1 == pos2: return "standing_down"
-
-    dir = []
-    dir.append([pos1[0], pos1[1], pos1[2] - 1]) #up
-    dir.append([pos1[0], pos1[1], pos1[2] + 1]) #down
-    dir.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
-    dir.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
-    dir.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
-    dir.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
-    dir.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
-    dir.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
-
-    for i in range(0, len(dir)):
-      if (pos2 == dir[i]) and (0 < dir[i][0] < SCENE_SZ[0]) and (0 < dir[i][2] < SCENE_SZ[1]):
-        return DIR[i+1]
-
-    if pos1[0] == pos2[0]:
-      if pos1[2] > pos2[2] and not self.blocked[pos1[0] - 1][pos1[2]]:
-        return "walking_up"
-      elif pos1[2] > pos2[2] and not self.blocked[pos1[0] + 1][pos1[2]]:
-        return "walking_down"
-    if pos1[2] == pos2[2]:
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] - 1]:
-        return "walking_left"
-      elif pos1[0] > pos2[0] and not self.blocked[pos1[0]][pos1[2] + 1]:
-        return "walking_right"
-    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2]):
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] - 1]:
-        return "walking_topleft"
-      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] + 1]:
-        return "walking_bottomright"
-    if (pos1[0]-pos2[0]) == (pos1[2]-pos2[2])*(-1):
-      if pos1[0] > pos2[0] and not self.blocked[pos1[0] - 1][pos1[2] + 1]:
-        return "walking_bottomleft"
-      if pos1[0] < pos2[0] and not self.blocked[pos1[0] + 1][pos1[2] - 1]:
-        return "walking_topright"
-
-    dist = []
-    for i in range(0, len(dir)):
-      dist.append([DIR[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
-    dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
-    while len(dist) > 0:
-      first = dist.pop()
-      if (0 < first[2][0] < SCENE_SZ[0]) and (0 < first[2][2] < SCENE_SZ[1]):
-        if self.blocked[first[2][0]][first[2][2]] == 0:
-          return first[0]
-    return "standing down"
-    """
+    return "standing_down"
 
   def setPlayerDestination(self, player, destination):
     """ Indiva el destino del movimiento de un jugador.
     player: jugador.
     destination: destino del movimiento.
     """
-    for ind in range(self.players.__len__()):
-      if self.players[ind].getId() == player:
-        self.players[ind].setDestination(self.getNextDirection(self.players[ind].getId(), self.players[ind].getPosition(), destination), destination)
+    if self.blocked[destination[0]][destination[2]] == 0:
+      for ind in range(self.players.__len__()):
+        if self.players[ind].getId() == player:
+          direction = self.getNextDirection(self.players[ind].getId(), self.players[ind].getPosition(), destination)
+          self.players[ind].setDestination(direction, destination)
 
   def setBlockedTile(self, pos):
     """ Pone una celda de la habitacion como bloqueada al paso.
@@ -220,4 +152,16 @@ class Room(Model):
     los jugadores asignados.
     """
     for player in self.players:
-      player.tick(self.getNextDirection(player.getId(), player.getPosition(), player.getDestination()))  
+      direction = self.getNextDirection(player.getId(), player.getPosition(), player.getDestination())
+      if direction <> "standing_down":
+        pos = player.getPosition()
+        self.blocked[pos[0]][pos[2]] = 0
+        if direction == "walking_up": self.blocked[pos[0]][pos[2] - 1] = 1
+        if direction == "walking_down": self.blocked[pos[0]][pos[2] + 1] = 1
+        if direction == "walking_left": self.blocked[pos[0] - 1][pos[2]] = 1
+        if direction == "walking_right": self.blocked[pos[0] + 1][pos[2]] = 1
+        if direction == "walking_topleft": self.blocked[pos[0] - 1][pos[2] - 1] = 1
+        if direction == "walking_bottomright": self.blocked[pos[0] + 1][pos[2] + 1] = 1
+        if direction == "walking_bottomleft": self.blocked[pos[0] - 1][pos[2] + 1] = 1
+        if direction == "walking_topright": self.blocked[pos[0] + 1][pos[2] - 1] = 1
+        player.tick(direction)

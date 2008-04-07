@@ -6,6 +6,7 @@ if os.path.isdir("data"):
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada-client"
 
+TICK_DELAY = 0.1
 TILE_SZ = [100, 50]
 #TILE2TILE = 55.901699437
 #tile2tile = math.sqrt(pow(TILE_SZ[0],2)+pow(TILE_SZ[1],2))
