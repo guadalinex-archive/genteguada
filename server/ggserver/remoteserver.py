@@ -5,12 +5,17 @@ import thread
 import sys
 import pickle
 import testmodel
+import ggcommon.remotecommand
 
 #{{{ class RServerHandler
 def objectToSerialize(object):
   if isinstance(object, testmodel.Model):
     return object.objectToSerialize(getRServer())
-  return object
+  elif isinstance(object, ggcommon.remotecommand.RExecuteResult):
+    object._result = objectToSerialize(object._result)
+    return object
+  else:
+    return object
 
 class RServerHandler(SocketServer.BaseRequestHandler):
 
