@@ -45,15 +45,3 @@ class RemoteMethod: #{{{
     return rClient.sendCommand(remotecommand.RExecuteCommand(self._modelID, self._methodName, args))
 #}}}
 
-class InvalidRemoteMethod(Exception): #{{{
-
-  def __init__(self, remoteMethod):
-    self._remoteMethodName = remoteMethod._methodName
-    self._remoteModelID = remoteMethod._modelID
-
-  def __str__(self):
-    return "InvalidRemoteMethod '" + self._remoteMethodName + "' in model " + str(self._remoteModelID)
-#}}}
-
-
-
