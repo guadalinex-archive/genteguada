@@ -1,3 +1,12 @@
+genteguada-client (0.0.3-1) unstable; urgency=low
+
+  * Uso de grupos de sprite 
+  * Celdas de habitacion bloqueadas
+  * Solucionado error de busqueda de camino
+  * Listado de casillas visitadas
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Tue, 08 Apr 2008 12:58:55 +0200
+
 genteguada-client (0.0.2-1) unstable; urgency=low
 
   * segunda version 
