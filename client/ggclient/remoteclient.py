@@ -30,7 +30,7 @@ class RClientThread(threading.Thread): #{{{
     self.socket.send(serializedCommand)
     answerData = self.socket.recv(1024)
     answer = pickle.loads(answerData)
-    return answer
+    return answer.do()
 #}}}
 
 #{{{ class RClient

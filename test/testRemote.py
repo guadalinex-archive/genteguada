@@ -23,41 +23,43 @@ class TestRemoteObject(unittest.TestCase):
     
     print "Ejecutamos el metodo foo sin argumentos"
     result = model.foo()
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    assert result.do() == "foo"
+    assert result.__class__ == str
+    assert result == "foo"
 
     print "Ejecutamos el metodo bar sin argumentos"
     result = model.bar()
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    assert result.do() == "bar"
+    assert result.__class__ == str
+    assert result== "bar"
 
     print "Obtenemos un modelo a partir del root model"
-    result = model.player()
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    player = result.do()
+    player = model.player()
     assert isinstance(player,ggcommon.remotemodel.RemoteModel)
 
     print "Ejecutamos un metodo del objeto obtenido a partir del root"
     result = player.name()
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    assert result.do() == "maradona"
+    assert result.__class__ == str
+    assert result == "maradona"
 
     print "Ejecutamos un metodo del rootModel pasando un parametro"
     param = "Antonio"
     result = model.saluda(param)
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    assert result.do() == "Hola "+str(param)
+    assert result.__class__ == str
+    assert result == "Hola "+str(param)
 
     print "Ejecutamos un metodo del rootModel pasando dos parametros"
     param1 = "Luis"
     param2 = "Garcia"
     result = model.nombreApellidos(param1,param2)
-    assert result.__class__ == ggcommon.remotecommand.RExecuteResult
-    assert result.do() == param1+ "  "+ param2
+    assert result.__class__ == str
+    assert result == param1+ "  "+ param2
 
     print "Ejecutamos un metodo que nos da una excepcion"
-    result = model.name()
-    assert result.__class__ == ggcommon.remotecommand.RExecuteExceptionMethodNotFound
+    raiseException = False
+    try:
+      result = model.name()
+    except:
+      raiseException = True
+    assert raiseException == True
 
 if __name__ == "__main__":
   test = unittest.main()
