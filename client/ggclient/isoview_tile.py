@@ -1,6 +1,7 @@
-from isoview import *
+import utils
+import isoview
 
-class IsoViewTile(IsoView):
+class IsoViewTile(isoview.IsoView):
   """ Clase IsoViewTile.
   Define a la vista de una baldosa de la habitacion.
   """
@@ -12,30 +13,30 @@ class IsoViewTile(IsoView):
     size: tamano de la baldosa.
     blocked: indica si se puede pasar a traves de ella.
     """
-    self.topLeft = topLeft
-    self.bottomRight = bottomRight
-    self.id = id
-    self.sprite = sprite
-    self.size = size
-    self.views = []
-    self.blocked = blocked
+    self._topLeft = topLeft
+    self._bottomRight = bottomRight
+    self._id = id
+    self._sprite = sprite
+    self._size = size
+    self._views = []
+    self._blocked = blocked
     
   def getBlocked(self):
     """ Indica si la baldosa esta bloqueada al paso.
     """
-    return self.blocked
+    return self._blocked
   
   def setBlocked(self, blocked):
     """ Pone una baldosa como bloqueada para pasar.
     """
-    self.blocked = blocked
+    self._blocked = blocked
   
   def contained(self, pos):
     """ Indica si un punto 2d esta contenido en la baldosa.
     pos: punto a comprobar.
     """
-    if self.bottomRight[0] > pos[0] > self.topLeft[0]:
-      if self.bottomRight[1] > pos[1] > self.topLeft[1]:
+    if self._bottomRight[0] > pos[0] > self._topLeft[0]:
+      if self._bottomRight[1] > pos[1] > self._topLeft[1]:
         return 1
     return 0
 
@@ -44,31 +45,31 @@ class IsoViewTile(IsoView):
     corresponde a una zona transparente de la imagen o al cuerpo de la baldosa.
     pos: posicion en la que ha pinchado el usuario.
     """
-    iniPos = [pos[0]-self.topLeft[0], pos[1]-self.topLeft[1]]
-    if iniPos[0] < (TILE_SZ[0] / 2):
-      if iniPos[1] < (TILE_SZ[1] / 2):
+    iniPos = [pos[0]-self._topLeft[0], pos[1]-self._topLeft[1]]
+    if iniPos[0] < (utils.TILE_SZ[0] / 2):
+      if iniPos[1] < (utils.TILE_SZ[1] / 2):
         #top left corner
-        if (iniPos[0] + (iniPos[1] * 2)) <= (TILE_SZ[0]/2):
+        if (iniPos[0] + (iniPos[1] * 2)) <= (utils.TILE_SZ[0]/2):
           return 1
       else:
         #bottom left corner
-        iniPos[1] -= (TILE_SZ[1] / 2)
-        iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (TILE_SZ[0]/2):
+        iniPos[1] -= (utils.TILE_SZ[1] / 2)
+        iniPos[1] = (utils.TILE_SZ[1] / 2) - iniPos[1]
+        if (iniPos[0] + (iniPos[1] * 2)) <= (utils.TILE_SZ[0]/2):
           return 1
     else:
-      if iniPos[1] < (TILE_SZ[1] / 2):
+      if iniPos[1] < (utils.TILE_SZ[1] / 2):
         #top right corner
-        iniPos[0] -= (TILE_SZ[0] / 2)
-        iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (TILE_SZ[0]/2):
+        iniPos[0] -= (utils.TILE_SZ[0] / 2)
+        iniPos[0] = (utils.TILE_SZ[0] / 2) - iniPos[0]
+        if (iniPos[0] + (iniPos[1] * 2)) <= (utils.TILE_SZ[0]/2):
           return 1
       else:
         #bottom right corner
-        iniPos[0] -= (TILE_SZ[0] / 2)
-        iniPos[1] -= (TILE_SZ[1] / 2)
-        iniPos[0] = (TILE_SZ[0] / 2) - iniPos[0]
-        iniPos[1] = (TILE_SZ[1] / 2) - iniPos[1]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (TILE_SZ[0]/2):
+        iniPos[0] -= (utils.TILE_SZ[0] / 2)
+        iniPos[1] -= (utils.TILE_SZ[1] / 2)
+        iniPos[0] = (utils.TILE_SZ[0] / 2) - iniPos[0]
+        iniPos[1] = (utils.TILE_SZ[1] / 2) - iniPos[1]
+        if (iniPos[0] + (iniPos[1] * 2)) <= (utils.TILE_SZ[0]/2):
           return 1
     return 0    

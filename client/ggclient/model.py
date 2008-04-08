@@ -1,4 +1,3 @@
-from utils import *
 import ggcommon.eventos
 
 class Model:
@@ -13,26 +12,41 @@ class Model:
     sprite: grafico usado para representarla.
     size: tamano del subject.
     """
-    self.name = name
-    self.sprite = sprite
-    self.size = size
-    self.id = id
-    self.events = []
-    self.views = []
+    self._name = name
+    self._sprite = sprite
+    self._size = size
+    self._id = id
+    self._events = []
+    self._views = []
     
+  def getName(self):
+    """ Devuelve la etiqueta de la clase.
+    """
+    return self._name
+
+  def getSprite(self):
+    """ Devuelve el grafico usado para representar la clase.
+    """
+    return self._sprite
+  
+  def getSize(self):
+    """ Devuelve el tamano del objeto.
+    """
+    return self._size
+
   def onEvent(self, eventType, method):
     """ Indica la accion a realizar ante un evento.
     eventType: tipo de evento.
     method: metodo que se lanzara.
     """
-    self.events.append([eventType, method])
+    self._events.append([eventType, method])
     
   def triggerEvent(self, eventType, **params):
     """ Activa un evento.
     eventType: tipo de evento.
     params: datos sobre el evento.
     """
-    for type,method in self.events:
+    for type,method in self._events:
       if type == eventType:
         event = ggcommon.eventos.Event(self, eventType, params)
         method(event)
@@ -41,34 +55,20 @@ class Model:
     """ Elimina un evento de la lista de escuchas.
     """
     if eventType:
-      result = [self.events[x] for x in range(len(self.events)) if not self.events[x][0] == eventType]
-      self.events = result
+      result = [self._events[x] for x in range(len(self._events)) if not self._events[x][0] == eventType]
+      self._events = result
     else:
-      self.events = []
+      self._events = []
         
   def register(self, view):
     """ Registra una vista como visor de este subject.
     view: vista a registrar.
     """
-    self.views.append(view)
+    self._views.append(view)
     
   def unregister(self, view):
     """ Elimina de la lista de registrados una vista de este subject.
     vista: vista a eliminar.
     """
-    self.views.remove(view)
-    
-  def getName(self):
-    """ Devuelve la etiqueta de la clase.
-    """
-    return self.name
-
-  def getSprite(self):
-    """ Devuelve el grafico usado para representar la clase.
-    """
-    return self.sprite
+    self._views.remove(view)
   
-  def getSize(self):
-    """ Devuelve el tamano del objeto.
-    """
-    return self.size
