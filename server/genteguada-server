@@ -6,7 +6,7 @@ sys.path.append("/usr/share/genteguada-server")
 sys.path.append("../common")
 
 import ggserver.testmodel
-import ggserver.testmodel
+import ggserver.remoteserver
 
 if __name__ == "__main__":
   rootModel = ggserver.testmodel.TestModel()

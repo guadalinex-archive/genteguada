@@ -14,6 +14,14 @@ def objectToSerialize(object):
   elif isinstance(object, ggcommon.remotecommand.RExecuteResult):
     object._result = objectToSerialize(object._result)
     return object
+  elif isinstance(object,list) or isinstance(object,tuple): 
+    for i in range(len(object)):
+      object[i] = objectToSerialize(object[i])
+    return object
+  elif isinstance(object,dict):
+    for key in object.keys():
+      object[key] = objectToSerialize(object[key])
+    return object
   else:
     return object
 

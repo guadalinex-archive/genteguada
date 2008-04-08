@@ -1,3 +1,9 @@
+genteguada-common (0.0.3-1) unstable; urgency=low
+
+  * Definicion de objeto remoto y metodo remoto
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Tue, 08 Apr 2008 13:13:25 +0200
+
 genteguada-common (0.0.2-1) unstable; urgency=low
 
   * Segunda version 
