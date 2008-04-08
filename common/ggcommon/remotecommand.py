@@ -26,15 +26,14 @@ class RExecuteResult(RCommand): #{{{
     return self._result
 #}}}
 
-class RExecuteExceptionMethodNotFound(RCommand): #{{{
+class RExecuteException(RCommand): #{{{
 
-  def __init__(self,remoteMethod):
+  def __init__(self,exception):
     RCommand.__init__(self)
-    self._remoteMethodName = remoteMethod._methodName
-    self._remoteModelID = remoteMethod._modelID
+    self._exception = exception
 
   def do(self):
-    raise Excepction("InvalidRemoteMethod '" + self._remoteMethodName + "' in model " + str(self._remoteModelID))
+    raise self._exception
 #}}}
 
 class RExecuteCommand(RCommand): #{{{
@@ -52,11 +51,15 @@ class RExecuteCommand(RCommand): #{{{
       print "ejecutando en cliente"
       sys.exit(0)
     model = rServer.getModelByID(self._modelID)
-    method = getattr(model, self._methodName, self._args)
-    if callable(method):
-      result = method(*self._args)
-      return RExecuteResult(result)
+    try:
+      method = getattr(model, self._methodName)
+    except AttributeError,e:
+      return RExecuteException(e)
     else:
-      return RExecuteExceptionMethodNotFound(self)
+      try:
+        result = method(*self._args)
+      except Exception,e:
+        return RExecuteException(e)
+      return RExecuteResult(result)
 #}}}
 
