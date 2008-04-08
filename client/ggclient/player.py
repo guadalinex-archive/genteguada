@@ -1,9 +1,9 @@
-from item import *
+import model
 import ggcommon.eventos
 
-class Player(Item):
+class Player(model.Model):
   """ Clase Player.
-  Define el comportamiento de un item jugador.
+  Define el comportamiento de un objeto, jugador o no.
   """
  
   def __init__(self, name, id, sprite, size, position):
@@ -14,104 +14,105 @@ class Player(Item):
     size: tamano del grafico del jugador.
     position: posicion en la que se encuentra el jugador.
     """
-    Item.__init__(self, name, id, sprite, size, position)
-    self.state = "standing_down"
-    self.stateFrame = 0
-    self.destination = position
-    self.visited = []
+    model.Model.__init__(self, name, id, sprite, size)
+    self._position = position
+    self._state = "standing_down"
+    self._stateFrame = 0
+    self._destination = position
+    self._visited = []
         
   def getPosition(self):
-    """ Devuelve la posicion en la que se encuentra el jugador.
+    """ Devuelve la posicion en la que se encuentra el objeto.
     """
-    return self.position
+    return self._position
  
   def getState(self):
-    """ Devuelve la animacion en la que se encuentra el jugador.
+    """ Devuelve la animacion en la que se encuentra el objeto.
     """
-    return self.state
+    return self._state
 
   def getStateFrame(self):
-    """ Devuelve el estado de la animacion en la que se encuentra el jugador.
+    """ Devuelve el estado de la animacion en la que se encuentra el objeto.
     """
-    return self.stateFrame
+    return self._stateFrame
 
   def getId(self):
-    """ Devuelve el identificador del jugador.
+    """ Devuelve el identificador del objeto.
     """
-    return self.id
+    return self._id
 
   def getDir(self):
-    """ Devuelve el codigo de direccion de movimiento del jugador.
+    """ Devuelve el codigo de direccion de movimiento del objeto.
     """
-    for i in range (1, len(DIR)+1):
-      if self.state == DIR[i]:
+    for i in range (1, len(utils.DIR)+1):
+      if self._state == utils.DIR[i]:
         return i
     return 0  
 
   def getDestination(self):
     """ Devuelve el destino del movimiento.
     """
-    return self.destination
+    return self._destination
         
   def setName(self, name):
-    self.name = name
+    self._name = name
     self.triggerEvent('name', name=self.name)
       
   def setPosition(self, position):
-    """ Asigna una nueva posicion a un jugador.
-    position: posicion del jugador.
+    """ Asigna una nueva posicion a un objeto.
+    position: posicion del objeto.
     """
-    if self.destination == position:
-      self.visited = []
-    self.visited.append(position)
-    pActualAux = self.position
-    self.position = position
-    self.triggerEvent('position', id=self.id, sprite=self.sprite, \
-                        pActual=pActualAux, pDestin=self.position, dir=self.state)
+    if self._destination == position:
+      self._visited = []
+    self._visited.append(position)
+    pActualAux = self._position
+    self._position = position
+    self.triggerEvent('position', id=self._id, sprite=self._sprite, \
+                        pActual=pActualAux, pDestin=self._position, dir=self._state)
     
   def setDestination(self, state, destination):
-    """ Asigna un punto de destino al movimiento del jugador.
+    """ Asigna un punto de destino al movimiento del objeto.
     state: direccion del siguiente movimiento.
     destiantion: destino del movimiento.
     """
-    self.state = state
-    self.destination = destination
+    self._state = state
+    self._destination = destination
     
   def hasBeenVisited(self, pos):
-    """ Indica si una celda ha sido visitada en el ultimo movimiento del jugador.
+    """ Indica si una celda ha sido visitada en el ultimo movimiento del objeto.
     pos: posicion de la celda a comprobar.
     """
-    for i in range(0, len(self.visited)):
-      if self.visited[i] == pos:
+    for i in range(0, len(self._visited)):
+      if self._visited[i] == pos:
         return 1
     return 0
     
   def tick(self, direction):
     """ Procedimiento que actualiza posiciones de movimientos, e incrementa \
-    el estado de las animaciones en las que se encuentren los jugadores.
+    el estado de las animaciones en las que se encuentren los objetos.
     direction: direccion del siguiente movimiento.
     """
-    if self.position == self.destination:
-      self.state = "standing_down"
+    if self._position == self._destination:
+      self._state = "standing_down"
       return
-    if self.state <> "standing_down":
+    if self._state <> "standing_down":
       pos = self.getPosition()
-      self.state = direction
-      if self.state == "walking_up":
+      self._state = direction
+      if self._state == "walking_up":
         next = [pos[0], pos[1], pos[2] - 1]
-      if self.state == "walking_down":
+      if self._state == "walking_down":
         next = [pos[0], pos[1], pos[2] + 1]
-      if self.state == "walking_left":
+      if self._state == "walking_left":
         next = [pos[0] - 1, pos[1], pos[2]]
-      if self.state == "walking_right":
+      if self._state == "walking_right":
         next = [pos[0] + 1, pos[1], pos[2]]
-      if self.state == "walking_topleft":
+      if self._state == "walking_topleft":
         next = [pos[0] - 1, pos[1], pos[2] - 1]
-      if self.state == "walking_bottomright": 
+      if self._state == "walking_bottomright": 
         next = [pos[0] + 1, pos[1], pos[2] + 1]
-      if self.state == "walking_bottomleft":
+      if self._state == "walking_bottomleft":
         next = [pos[0] - 1, pos[1], pos[2] + 1]
-      if self.state == "walking_topright":
+      if self._state == "walking_topright":
         next = [pos[0] + 1, pos[1], pos[2] - 1]
       self.setPosition(next)
       

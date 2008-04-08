@@ -1,6 +1,6 @@
-from model import *
+import model
 
-class Hud(Model):
+class Hud(model.Model):
   """ Clase Hud.
   Incluira atributos y metodos necesarios para el control del HUD.
   """
