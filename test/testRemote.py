@@ -53,13 +53,22 @@ class TestRemoteObject(unittest.TestCase):
     assert result.__class__ == str
     assert result == param1+ "  "+ param2
 
-    print "Ejecutamos un metodo que nos da una excepcion"
-    raiseException = False
+    print "Ejecutamos un metodo que nos da una excepcion ya que no se encuentra definido"
+    raisedExceptionMethodNoFound = False
     try:
       result = model.name()
     except:
-      raiseException = True
-    assert raiseException == True
+      raisedExceptionMethodNoFound = True
+    assert raisedExceptionMethodNoFound == True
+
+    print "Ejecutamos un metodo que nos da una excepcion por error de codigo del metodo 1/0"
+    result = model.metodoError()
+    raisedExceptionMethodError = False
+    try:
+      result = model.metodoError()
+    except:
+      raisedExceptionMethodError = True
+    assert raisedExceptionMethodError == True
 
 if __name__ == "__main__":
   test = unittest.main()

@@ -54,6 +54,10 @@ class TestModel(Model): #{{{
   def saluda(self,name):
     return  "Hola "+name
 
+  def metodoError(self):
+    result = 1/0
+    return result
+
   def nombreApellidos(self,nombre,apellidos):
     return nombre +"  "+apellidos
 #}}}
