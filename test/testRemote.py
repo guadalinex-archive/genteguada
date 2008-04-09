@@ -62,13 +62,52 @@ class TestRemoteObject(unittest.TestCase):
     assert raisedExceptionMethodNoFound == True
 
     print "Ejecutamos un metodo que nos da una excepcion por error de codigo del metodo 1/0"
-    result = model.metodoError()
     raisedExceptionMethodError = False
     try:
       result = model.metodoError()
     except:
       raisedExceptionMethodError = True
     assert raisedExceptionMethodError == True
+
+    print "ejecutamos un metodo que nos devuelve una lista"
+    result = model.listaJugadores()
+    assert result.__class__ == list
+    for i in range(len(result)):
+      assert isinstance(result[i],ggcommon.remotemodel.RemoteModel)
+      name = result[i].name()
+      assert name == "maradona"
+      
+    print "ejecutamos un metodo que nos devuelve una tupla"
+    result = model.tuplaJugadores()
+    assert result.__class__ == tuple
+    for i in range(len(result)):
+      assert isinstance(result[i],ggcommon.remotemodel.RemoteModel)
+      name = result[i].name()
+      assert name == "maradona"
+
+    print "ejecutamos un metodo que nos devuelve un diccionario"
+    result = model.dictJugadores()
+    assert result.__class__ == dict
+    for key in result.keys():
+      assert isinstance(result[key],ggcommon.remotemodel.RemoteModel)
+      name = result[key].name()
+      assert name == "maradona"
+
+    print "ejecutamos un metodo pasando por parametro un remotemodel"
+    result = model.getName(player)
+    assert result == "maradona"
+
+    print "ejecutamos un metodo pasando por parametro una lista de remotemodel"
+    result = model.getListName([player])
+    assert result == "maradona"
+
+    print "ejecutamos un metodo pasando por parametro una tupla de remotemodel"
+    result = model.getTupleName((player,))
+    assert result == "maradona"
+    
+    print "ejecutamos un metodo pasando por parametro una diccionario de remotemodel"
+    result = model.getDictName({"1":player})
+    assert result == "maradona"
 
 if __name__ == "__main__":
   test = unittest.main()

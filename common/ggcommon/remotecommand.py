@@ -8,43 +8,52 @@ except:
 
 class RCommand: #{{{
 
-  def __init__(self):
+  def __init__(self): #{{{
     pass
+  #}}}
 
-  def do(self):
+  def do(self): #{{{
     raise Exception('subclasses must implements do()')
+  #}}}
 
 #}}}
 
 class RExecuteResult(RCommand): #{{{
 
-  def __init__(self,result):
+  def __init__(self,result): #{{{
     RCommand.__init__(self)
     self._result = result
+  #}}}
 
-  def do(self):
+  def do(self): #{{{ 
     return self._result
+  #}}}
+
 #}}}
 
-class RExecuteException(RCommand): #{{{
+class RExceptionRaise(RCommand): #{{{
 
-  def __init__(self,exception):
+  def __init__(self,exception): #{{{
     RCommand.__init__(self)
     self._exception = exception
+  #}}}
 
-  def do(self):
+  def do(self): #{{{
     raise self._exception
+  #}}}
+
 #}}}
 
 class RExecuteCommand(RCommand): #{{{
 
-  def __init__(self, modelID, methodName, args):
+  def __init__(self, modelID, methodName, args): #{{{
     RCommand.__init__(self)
     self._modelID    = modelID
     self._methodName = methodName
     self._args       = args
+  #}}}
 
-  def do(self):
+  def do(self): #{{{
     try:
       rServer = ggserver.remoteserver.getRServer()
     except:
@@ -54,12 +63,46 @@ class RExecuteCommand(RCommand): #{{{
     try:
       method = getattr(model, self._methodName)
     except AttributeError,e:
-      return RExecuteException(e)
+      return RExceptionRaise(e)
     else:
+      if self._args:
+        arguments = []
+        for i in range(len(self._args)):
+          arguments.append(self.etherRealize(self._args[i],rServer))
+        self._args = tuple(arguments)
       try:
         result = method(*self._args)
       except Exception,e:
-        return RExecuteException(e)
+        return RExceptionRaise(e)
       return RExecuteResult(result)
+  #}}}
+
+  def etherRealize(self,arg,rserver): #{{{
+
+    if isinstance(arg, remotemodel.RemoteModel):
+      return rserver.getModelByID(arg._modelID)
+
+    elif isinstance(arg,list): 
+      resultArg = []
+      for i in range(len(arg)):
+        resultArg.append(self.etherRealize(arg[i],rserver))
+      return resultArg
+
+    elif isinstance(arg,tuple):
+      resultArg = []
+      for i in range(len(arg)):
+        resultArg.append(self.etherRealize(arg[i],rserver))
+      return tuple(resultArg)
+
+    elif isinstance(arg,dict):
+      resultArg = {}
+      for key in arg.keys():
+        resultArg[self.etherRealize(key,rserver)] = self.etherRealize(arg[key],rserver)
+      return resultArg
+
+    else:
+      return arg
+  #}}}
+
 #}}}
 
