@@ -60,5 +60,30 @@ class TestModel(Model): #{{{
 
   def nombreApellidos(self,nombre,apellidos):
     return nombre +"  "+apellidos
+
+  def listaJugadores(self):
+    return [TestPlayer(),TestPlayer()]
+
+  def tuplaJugadores(self):
+    return (TestPlayer(),TestPlayer())
+
+  def dictJugadores(self):
+    return {"1":TestPlayer(),"2":TestPlayer()}
+
+  def getName(self,player):
+    return player.name()
+
+  def getListName(self,listplayer):
+    return listplayer[0].name()
+
+  def getTupleName(self,tupleplayer):
+    return tupleplayer[0].name()
+
+  def getDictName(self,dictplayer):
+    for key in dictplayer.keys():
+      name = dictplayer[key].name()
+    return name
+
+
 #}}}
 
