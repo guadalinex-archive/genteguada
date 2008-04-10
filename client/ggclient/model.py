@@ -34,7 +34,7 @@ class Model:
     """
     return self._size
 
-  def onEvent(self, eventType, method):
+  def subscribeEvent(self, eventType, method):
     """ Indica la accion a realizar ante un evento.
     eventType: tipo de evento.
     method: metodo que se lanzara.
@@ -51,6 +51,13 @@ class Model:
         event = ggcommon.eventos.Event(self, eventType, params)
         method(event)
     
+  def unsubscribeEventObserver(self, observer, eventType=None):
+    pass
+
+  def unsubscribeEventMethod(self, method, eventType=None):
+    pass
+  
+
   def deleteEvent(self, eventType=None):
     """ Elimina un evento de la lista de escuchas.
     """
