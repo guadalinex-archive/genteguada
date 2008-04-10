@@ -16,7 +16,6 @@ class Room(model.Model):
     """
     model.Model.__init__(self, name, id, sprite, [0, 0])
     self._players = []
-    self._items = []
     self._blocked = []
     self._spriteFull = spriteFull
     for i in range(0, utils.SCENE_SZ[0]):
@@ -41,6 +40,24 @@ class Room(model.Model):
     spriteFull: grafico a devolver.
     """
     return self._spriteFull
+
+  def setBlockedTile(self, pos):
+    """ Pone una celda de la habitacion como bloqueada al paso.
+    pos: posicion de la celda.
+    """
+    self._blocked[pos[0]][pos[2]] = 1
+
+  def setUnblockedTile(self, pos):
+    """ Pone una celda de la habitacion como vacia, permitiendo el paso.
+    pos: posicion de la celda.
+    """
+    self._blocked[pos[0]][pos[2]] = 0
+    
+  def _setSpriteFull(self, spriteFull):
+    """ Asigna un sprite para mostrar en el fondo.
+    spriteFull: nombre del sprite.
+    """
+    self._spriteFull = spriteFull
 
   def getNextDirection(self, caller, pos1, pos2):
     """ Obtiene la siguiente posicion en el trayecto de un jugador entre 2 puntos.
@@ -78,30 +95,29 @@ class Room(model.Model):
             return first[0]
     return "standing_down"
 
-  def setPlayerDestination(self, player, destination):
-    """ Indiva el destino del movimiento de un jugador.
+  def clickedByPlayer(self, player, target):
+    """ Indica que un jugador ha hecho click en una posicion.
     player: jugador.
-    destination: destino del movimiento.
+    target: objetivo del click.
     """
-    if self._blocked[destination[0]][destination[2]] == 0:
+    #if self._blocked[target[0]][target[2]] == 0:
+    for ind in range(self._players.__len__()):
+      if self._players[ind].getId() == player:
+        clickerLabel = self._players[ind].getName()
+          
+    if self.getBlocked(target) == 0:
       for ind in range(self._players.__len__()):
         if self._players[ind].getId() == player:
-          direction = self.getNextDirection(self._players[ind].getId(), self._players[ind].getPosition(), destination)
-          self._players[ind].setDestination(direction, destination)
-
-  def setBlockedTile(self, pos):
-    """ Pone una celda de la habitacion como bloqueada al paso.
-    pos: posicion de la celda.
-    """
-    self._blocked[pos[0]][pos[2]] = 1
-
-  def setUnblockedTile(self, pos):
-    """ Pone una celda de la habitacion como vacia, permitiendo el paso.
-    pos: posicion de la celda.
-    """
-    self._blocked[pos[0]][pos[2]] = 0
-
-
+          direction = self.getNextDirection(self._players[ind].getId(), self._players[ind].getPosition(), target)
+          self._players[ind].setDestination(direction, target)
+          self.triggerEvent('click on tile', pl=self._players[ind].getName(), room=self._id, tg=target)
+    else:
+      for ind2 in range(self._players.__len__()):
+        posAux = self._players[ind2].getPosition()
+        posAux2 = [posAux[0], posAux[1], posAux[2]]
+        if posAux2 == target:
+          self._players[ind2].clickedByPlayer(player, clickerLabel, self.getName())
+      
   def insertFloor(self, floor):
     """ Asigna el suelo de la habitacion.
     floor: suelo de la habitacion.
@@ -113,6 +129,7 @@ class Room(model.Model):
     player: jugador a asignar.
     """
     self._players.append(player)
+    self.setBlockedTile(player.getPosition())
 
   def insertItem(self, item):
     """ Asigna un item no jugador a la habitacion.

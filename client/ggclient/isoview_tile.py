@@ -13,6 +13,7 @@ class IsoViewTile(isoview.IsoView):
     size: tamano de la baldosa.
     blocked: indica si se puede pasar a traves de ella.
     """
+    self._type = -1
     self._topLeft = topLeft
     self._bottomRight = bottomRight
     self._id = id
@@ -21,6 +22,21 @@ class IsoViewTile(isoview.IsoView):
     self._views = []
     self._blocked = blocked
     
+  def getTopLeft(self):
+    """ Devuelve la coordenada superior izquierda.
+    """
+    return self._topLeft
+  
+  def getBottomRight(self):
+    """ Devuelve la coordenada inferior derecha.
+    """
+    return self._bottomRight
+  
+  def getId(self):
+    """ Devuelve el identificador de la baldosa.
+    """
+    return self._id
+
   def getBlocked(self):
     """ Indica si la baldosa esta bloqueada al paso.
     """

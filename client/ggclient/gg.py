@@ -56,7 +56,7 @@ class GG:
         x, y = pygame.mouse.get_pos()
         dest = self.isoviewRoom.findTile([x,y])
         if dest <> [-1, -1]:
-          self.room.setPlayerDestination(0, [dest[0], 0, dest[1]])
+          self.room.clickedByPlayer(self.activePlayer, [dest[0], 0, dest[1]])
 
   def startMovementEventFired(self, event):
     """ Dispara una serie de metodos al detectar un evento de movimiento.
@@ -65,6 +65,21 @@ class GG:
     self.isoviewRoom.newAction(event)
     #id=self.id, sprite=self.sprite, pActual=self.position, pDestin=self.destination, dir=self.state, state=0
 
+  def clickOnTileEventFired(self, event):
+    """ Dispara una serie de metodos al detectar un evento de clic en pantalla.
+    event: datos del evento.
+    """
+    #self.isoviewRoom.newAction(event)
+    print "El jugador", event.params['pl'], "hizo clic en la celda", event.params['tg']
+      
+    #id=self.id, sprite=self.sprite, pActual=self.position, pDestin=self.destination, dir=self.state, state=0
+  
+  def clickOnPlayerEventFired(self, event):
+    """ Dispara una serie de metodos al detectar un evento de clic sobre otro jugador.
+    event: datos del evento.
+    """
+    print "El jugador", event.params['clicker'], "hizo clic en", event.params['pl'], "de la habitacion", event.params['room']
+  
   def start(self):
     """ Inicia el programa. Crea e inicializa subjects y observers y pone en \
     marcha el bucle principal.
@@ -73,17 +88,27 @@ class GG:
     screen = pygame.display.set_mode(utils.SCREEN_SZ)
     pygame.display.set_caption('GenteGuada 0.02')
 
-    self.room = room.Room("room1", 0, utils.TILE_STONE, utils.BG_FULL)
-    self.player1 = player.Player("player", 0, utils.PLAYER_SPRITE1, utils.CHAR_SZ, (0, 0, 0))
+    self.activeRoom = 0
+    self.activePlayer = 0
+    self.room = room.Room("room1", self.activeRoom, utils.TILE_STONE, utils.BG_FULL)
+    self.room.onEvent('click on tile', self.clickOnTileEventFired)
+    self.player1 = player.Player("player1", self.activePlayer, utils.PLAYER_SPRITE1, utils.CHAR_SZ, (0, 0, 0))
     self.player1.onEvent('position', self.startMovementEventFired)
     self.player1.onEvent('destination', self.startMovementEventFired)
+    self.player1.onEvent('click on player', self.clickOnPlayerEventFired)
+    self.player2 = player.Player("player2", 1, utils.PLAYER_SPRITE2, utils.CHAR_SZ, (4, 0, 4))
+    self.player2.onEvent('position', self.startMovementEventFired)
+    self.player2.onEvent('destination', self.startMovementEventFired)
+    self.player2.onEvent('click on player', self.clickOnPlayerEventFired)
     self.room.insertPlayer(self.player1)
-    self.room.setBlockedTile([2, 0, 2])
+    self.room.insertPlayer(self.player2)
+    #self.room.setBlockedTile([2, 0, 2])
     
     self.isoviewRoom = isoview_room.IsoViewRoom("<observer Room>")
     self.isoviewRoom.addModel(self.room)
     self.isoViewPlayer = isoview_player.IsoViewPlayer("<observer Player>", 0, screen)
     self.isoViewPlayer.addModel(self.player1)
+    self.isoViewPlayer.addModel(self.player2)
     self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer)
 
     self.isoviewRoom.drawFirst(screen)
