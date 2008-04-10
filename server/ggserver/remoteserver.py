@@ -7,45 +7,13 @@ import testmodel
 import ggcommon.remotecommand
 import copy
 
+import ggcommon.utils
+
+
 # global to hold the rserver singleton instance
 global _rServerSingleton
 _rServerSingleton = None
 
-def objectToSerialize(object): #{{{
-  """
-  Movel esta funcion a utils, 
-  """
-  
-  if isinstance(object, testmodel.Model):
-    return object.objectToSerialize(getRServer())
-
-  elif isinstance(object, ggcommon.remotecommand.RExecutionResult):
-    #llamar a esta funcion desde el objeto, igual que en el model
-    resultObject = copy.copy(object)
-    resultObject._result = objectToSerialize(resultObject._result)
-    return resultObject
-
-  elif isinstance(object,list): 
-    resultObject = []
-    for i in range(len(object)):
-      resultObject.append(objectToSerialize(object[i]))
-    return resultObject
-
-  elif isinstance(object,tuple):
-    resultObject = []
-    for i in range(len(object)):
-      resultObject.append(objectToSerialize(object[i]))
-    return tuple(resultObject)
-
-  elif isinstance(object,dict):
-    resultObject = {}
-    for key in object.keys():
-      resultObject[objectToSerialize(key)] = objectToSerialize(object[key])
-    return resultObject
-
-  else:
-    return object
-#}}}
 
 def getRServer(): #{{{
   if _rServerSingleton == None:
@@ -100,7 +68,7 @@ class RServer: #{{{
 class RServerHandler(SocketServer.BaseRequestHandler): #{{{
 
   def _sendRootModel(self): #{{{
-    _objectToSerialize = objectToSerialize(getRServer().getRootModel())
+    _objectToSerialize = ggcommon.utils.objectToSerialize(getRServer().getRootModel(), getRServer())
     serializedRootModel = pickle.dumps(_objectToSerialize)
     self.request.send(serializedRootModel)
   #}}}
@@ -116,7 +84,7 @@ class RServerHandler(SocketServer.BaseRequestHandler): #{{{
       if (len(commandData) != 0):
         command = pickle.loads(commandData)
         answer = command.do()
-        answerToSerialize = objectToSerialize(answer)
+        answerToSerialize = ggcommon.utils.objectToSerialize(answer, getRServer())
         serializedAnswer = pickle.dumps(answerToSerialize)
         self.request.send(serializedAnswer)
   #}}}

@@ -17,6 +17,9 @@ class RCommand: #{{{
 
   def do(self): #{{{
     raise Exception('subclasses must implements do()')
+
+  def objectToSerialize(self, server):
+    return self
   #}}}
 
 #}}}
@@ -103,6 +106,11 @@ class RExecutionResult(RExecutionAnswerer): #{{{
   def do(self): #{{{ 
     return self._result
   #}}}
+
+
+  def objectToSerialize(self, server):
+    self._result = utils.objectToSerialize(self._result, server)
+    return self
 
 #}}}
 

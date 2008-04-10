@@ -3,6 +3,7 @@ import unittest
 
 sys.path.append("../client")
 sys.path.append("../common")
+#sys.path.append("../server")
 
 import ggclient.remoteclient
 import ggcommon.remotemodel
