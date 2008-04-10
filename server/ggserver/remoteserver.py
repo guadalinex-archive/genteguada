@@ -40,7 +40,7 @@ class RServer: #{{{
   def registerModel(self, model): #{{{
     if model in self._models.values():
       return
-    modelID = id(model)
+    modelID = ggcommon.utils.nextID()
     model.setID(modelID)
     self._models[modelID] = model
   #}}}
