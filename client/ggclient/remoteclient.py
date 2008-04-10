@@ -6,6 +6,9 @@ import sys
 import select
 import ggcommon.remotecommand
 
+import ggcommon.utils
+
+
 global _rClientSingleton
 _rClientSingleton = None
 
@@ -32,12 +35,16 @@ class RClient: #{{{
     self._commandsList      = []
     self._commandsListMutex = threading.Semaphore(1)
 
+    self._remoteSuscriptions = {}  ## TODO: Use weak references
+    self._remoteSuscriptionsMutex = threading.Semaphore(1)
+
     self._start()
   #}}}
 
   def _addCommand(self, command):
     self._commandsListMutex.acquire()
     self._commandsList.append(command)
+    #print str(len(self._commandsList)) + " commands in the list (appended)"
     self._commandsListMutex.release()
     
 
@@ -62,6 +69,7 @@ class RClient: #{{{
   def sendCommand(self, command): #{{{
     serializedCommand = pickle.dumps(command)
     self._thread.getSocket().send(serializedCommand)
+    self._thread.getSocket().flush()
   #}}}
 
 
@@ -78,14 +86,28 @@ class RClient: #{{{
 
       if found:
         self._commandsList.remove(found)
+        #print str(len(self._commandsList)) + " commands in the list (removed)"
 
       self._commandsListMutex.release()
 
       if not found:
-        time.sleep(0.05)
+        time.sleep(0.02)
 
     return found
-    
+
+  def registerRemoteSuscription(self, suscription):
+    suscriptionID = ggcommon.utils.nextID()
+    self._remoteSuscriptionsMutex.acquire()
+    self._remoteSuscriptions[suscriptionID] = suscription
+    self._remoteSuscriptionsMutex.release()
+    return suscriptionID
+
+
+  def getRemoteSuscriptionByID(self, suscriptionID):
+    self._remoteSuscriptionsMutex.acquire()
+    result = self._remoteSuscriptions[suscriptionID]
+    self._remoteSuscriptionsMutex.release()
+    return result
 
   def _start(self): #{{{
     self._thread = RClientThread(self)
@@ -106,6 +128,7 @@ class RClientThread(threading.Thread): #{{{
 
   def _receiveRootModel(self): #{{{
     data = self.getSocket().recv(1024)
+    print 'client received ' + str(len(data)) + 'bytes'
     rootModel = pickle.loads(data)
     self.rClient.setRootModel(rootModel)
   #}}}
@@ -130,8 +153,12 @@ class RClientThread(threading.Thread): #{{{
     self._receiveRootModel()
 
     while True:
-      commmandData = self.getSocket().recv(1024)
-      command = pickle.loads(commmandData)
-      self.rClient._addCommand(command)
+      commandData = self.getSocket().recv(1024)
+      command = pickle.loads(commandData)
+
+      if isinstance(command, ggcommon.remotecommand.RExecutionAnswerer):
+        self.rClient._addCommand(command)
+      else:
+        command.do()
 
 #}}}

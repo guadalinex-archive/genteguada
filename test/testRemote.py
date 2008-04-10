@@ -1,5 +1,8 @@
 import sys
 import unittest
+import thread
+import time
+import random
 
 sys.path.append("../client")
 sys.path.append("../common")
@@ -12,6 +15,10 @@ import models
 
 
 class TestRemoteObject(unittest.TestCase):
+
+  def setUp(self):
+    self.lastEvent = None
+
  
   def testRemoteModel(self):
     print "Conectando con el server"
@@ -30,7 +37,7 @@ class TestRemoteObject(unittest.TestCase):
 
   def useModel(self, model, prefix):
     print prefix + "model class: " + str(model.__class__)
-
+    """
     print prefix + "Ejecutamos el metodo foo sin argumentos"
     result = model.foo()
     assert result == "foo"
@@ -48,14 +55,14 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "Ejecutamos un metodo del rootModel pasando un parametro"
     param = "Antonio"
-    result = model.saluda(param)
-    assert result == "Hola "+str(param)
+    result = model.sayHello(param)
+    assert result == "Hello " + param
 
     print prefix + "Ejecutamos un metodo del rootModel pasando dos parametros"
     param1 = "Luis"
     param2 = "Garcia"
-    result = model.nombreApellidos(param1,param2)
-    assert result == param1+ "  "+ param2
+    result = model.fullName(param1, param2)
+    assert result == param1+ " " + param2
 
     print prefix + "Ejecutamos un metodo que nos da una excepcion ya que no se encuentra definido"
     raisedExceptionMethodNoFound = False
@@ -74,21 +81,21 @@ class TestRemoteObject(unittest.TestCase):
     assert raisedExceptionMethodError == True
 
     print prefix + "ejecutamos un metodo que nos devuelve una lista"
-    result = model.listaJugadores()
+    result = model.listPlayers()
     assert result.__class__ == list
     for i in range(len(result)):
       name = result[i].name()
       assert name == "maradona"
       
     print prefix + "ejecutamos un metodo que nos devuelve una tupla"
-    result = model.tuplaJugadores()
+    result = model.tuplePlayers()
     assert result.__class__ == tuple
     for i in range(len(result)):
       name = result[i].name()
       assert name == "maradona"
 
     print prefix + "ejecutamos un metodo que nos devuelve un diccionario"
-    result = model.dictJugadores()
+    result = model.dictPlayers()
     assert result.__class__ == dict
     for key in result.keys():
       name = result[key].name()
@@ -109,7 +116,59 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "ejecutamos un metodo pasando por parametro una diccionario de remotemodel"
     result = model.getDictName({"1":player})
     assert result == "maradona"
+    """
+    """
+    print prefix + "Ejecucion desde multiples hilos"
+    t1 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Luis"))
+    t2 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Peter"))
+    t3 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Mary"))
+    t4 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Ana"))
+    t5 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Guido"))
+    t6 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Alan Kay"))
+    t7 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Gossling"))
 
+    time.sleep(5)
+    """
+
+    print prefix + "Nos suscribimos a eventos"
+    assert self.lastEvent == None
+    model.subscribeEvent('position', self.eventFired)
+    #time.sleep(1)
+    model.subscribeEvent('name',     self.eventFired)
+    assert self.lastEvent == None
+
+    print prefix + "Cambiamos la posicion"
+    model.setPosition([1,2])
+    assert self.lastEvent.name == 'position'
+    assert self.lastEvent.producer == model
+    assert self.lastEvent.params['position'] == [1,2]
+
+    print prefix + "Cambiamos la posicion, nuevamente"
+    model.setPosition([2,4])
+    assert self.lastEvent.name == 'position'
+    assert self.lastEvent.producer == model
+    assert self.lastEvent.params['position'] == [2,4]
+    """
+    print prefix + "Cambiamos el nombre"
+    model.setName('Guido')
+    assert self.lastEvent.name == 'name'
+    assert self.lastEvent.producer == model
+    assert self.lastEvent.params['name'] == 'Guido'
+    """
+
+  def eventFired(self, event):
+    self.lastEvent = event
+
+  def checkSayHello(self, prefix, model, name):
+    result1 = model.sayHello(name)
+    print prefix + result1
+    assert result1 == ("Hello " + name)
+
+    #time.sleep(random.random() * 0.2)
+
+    result2 = model.fullName(name, "Smith")
+    print prefix + result2
+    assert result2 == (name + " Smith")
 
 
 if __name__ == "__main__":

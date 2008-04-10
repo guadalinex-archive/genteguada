@@ -67,9 +67,10 @@ class RServer: #{{{
 class RServerHandler(SocketServer.BaseRequestHandler): #{{{
 
   def _sendRootModel(self): #{{{
-    _objectToSerialize = ggcommon.utils.objectToSerialize(getRServer().getRootModel(), getRServer())
-    serializedRootModel = pickle.dumps(_objectToSerialize)
-    self.request.send(serializedRootModel)
+    #_objectToSerialize = ggcommon.utils.objectToSerialize(getRServer().getRootModel(), getRServer())
+    #serializedRootModel = pickle.dumps(_objectToSerialize)
+    #self.request.send(serializedRootModel)
+    self._sendObject(getRServer().getRootModel())
   #}}}
 
   def setup(self): #{{{
@@ -80,13 +81,28 @@ class RServerHandler(SocketServer.BaseRequestHandler): #{{{
   def handle(self): #{{{
     while 1:
       commandData = self.request.recv(1024)
-      if (len(commandData) != 0):
+      if (len(commandData) == 0):
+        time.sleep(0.01)
+      else:
+        print 'server received ' + str(len(commandData)) + 'bytes'
         command = pickle.loads(commandData)
+        command.setServerHandler(self)
         answer = command.do()
-        answerToSerialize = ggcommon.utils.objectToSerialize(answer, getRServer())
-        serializedAnswer = pickle.dumps(answerToSerialize)
-        self.request.send(serializedAnswer)
+        if answer:
+          self._sendObject(answer)
+        #answerToSerialize = ggcommon.utils.objectToSerialize(answer, getRServer())
+        #serializedAnswer = pickle.dumps(answerToSerialize)
+        #self.request.send(serializedAnswer)
   #}}}
+
+  def _sendObject(self, object):
+    toSerialize = ggcommon.utils.objectToSerialize(object, getRServer())
+    serialized = pickle.dumps(toSerialize)
+    self.request.send(serialized)
+    #self.request.flush()
+
+  def sendCommand(self, command):
+    self._sendObject(command)
 
   def finish(self): #{{{
     print self.client_address, 'desconectado'

@@ -1,3 +1,4 @@
+import utils
 
 class Event:
 
@@ -15,3 +16,10 @@ class Event:
     self.params = params
     
   
+  def objectToSerialize(self, rServer):
+
+    eventToSerialize = Event(utils.objectToSerialize(self.producer, rServer),
+                             utils.objectToSerialize(self.name, rServer),
+                             utils.objectToSerialize(self.params, rServer))
+
+    return eventToSerialize

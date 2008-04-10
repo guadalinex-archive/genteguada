@@ -6,6 +6,7 @@ except:
   print "client only execution"
 
 import ggcommon.remotecommand
+import ggcommon.eventos
 
 
 
@@ -33,6 +34,9 @@ def objectToSerialize(object, rServer): #{{{
     return object.objectToSerialize(rServer)
 
   elif isinstance(object, ggcommon.remotecommand.RCommand):
+    return object.objectToSerialize(rServer)
+
+  elif isinstance(object, ggcommon.eventos.Event):
     return object.objectToSerialize(rServer)
 
   elif isinstance(object,list): 
