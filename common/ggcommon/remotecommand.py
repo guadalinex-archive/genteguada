@@ -34,6 +34,14 @@ class RExecuterCommand(RCommand): #{{{
     self._args       = args
   #}}}
 
+
+  def isYourAnswer(self, command):
+    if not isinstance(command, RExecutionAnswerer):
+      return False
+
+    return command._executionID == self._executionID
+
+
   def do(self): #{{{
     try:
       rServer = ggserver.remoteserver.getRServer()

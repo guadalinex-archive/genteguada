@@ -11,7 +11,6 @@ class RemoteModel: #{{{
 
   def __init__(self, id): #{{{
     self._modelID = id
-    print "Constructor del RemoteModel en el servidor"
   #}}}
 
   def __str__(self): #{{{
@@ -49,7 +48,13 @@ class RemoteMethod: #{{{
     except:
       print "ejecutando en servidor"
       sys.exit(0)
-    return rClient.sendCommand(remotecommand.RExecuterCommand(self._modelID, self._methodName, args))
+
+    executer = remotecommand.RExecuterCommand(self._modelID, self._methodName, args)
+    rClient.sendCommand(executer)
+
+    answerer = rClient.waitForExecutionAnswerer(executer)
+    return answerer.do()
+
   #}}}
 
 #}}}
