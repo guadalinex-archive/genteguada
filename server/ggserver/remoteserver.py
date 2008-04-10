@@ -3,7 +3,6 @@ import SocketServer
 import thread
 import sys
 import pickle
-import testmodel
 import ggcommon.remotecommand
 import copy
 
