@@ -33,6 +33,43 @@ class RemoteModel: #{{{
     self.__dict__ = args
   #}}}
 
+
+
+
+  def subscribeEvent(self, eventType, method):
+    """ Indica la accion a realizar ante un evento.
+    eventType: tipo de evento.
+    method: metodo que se lanzara.
+    """
+    rClient = ggclient.remoteclient.getRClient()
+    suscription = [eventType, method]
+    suscriptionID = rClient.registerRemoteSuscription(suscription)
+
+    rClient.sendCommand(remotecommand.REventSuscriber(self._modelID, eventType, suscriptionID))
+
+    
+  def triggerEvent(self, eventType, **params):
+    """ Activa un evento.
+    eventType: tipo de evento.
+    params: datos sobre el evento.
+    """
+    raise Exception('RemoteModel can\'t raise events')
+
+    
+  def unsubscribeEventObserver(self, observer, eventType=None):
+    raise Exception('NOT FINISHED!')
+
+  def unsubscribeEventMethod(self, method, eventType=None):
+    raise Exception('NOT FINISHED!')
+
+
+  def __eq__(self, comparand):
+    if not isinstance(comparand, RemoteModel):
+      return False
+
+    return self._modelID == comparand._modelID
+
+
 #}}}
 
 class RemoteMethod: #{{{

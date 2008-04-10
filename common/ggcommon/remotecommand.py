@@ -1,18 +1,24 @@
 import sys
 import remotemodel
 import utils
+import traceback
+
+try:
+  import ggclient.remoteclient
+except:
+  print "ejecutando en el server"
 
 try:
   import ggserver.remoteserver
 except:
-  print "ejecutando en cliente"
+  print "ejecutando en el cliente"
 
 
 
 class RCommand: #{{{
 
   def __init__(self): #{{{
-    pass
+    self._serverHandler = None
   #}}}
 
   def do(self): #{{{
@@ -21,6 +27,10 @@ class RCommand: #{{{
   def objectToSerialize(self, server):
     return self
   #}}}
+
+
+  def setServerHandler(self, serverHandler):
+    self._serverHandler = serverHandler
 
 #}}}
 
@@ -32,6 +42,8 @@ class RExecuterCommand(RCommand): #{{{
     self._modelID    = modelID
     self._methodName = methodName
     self._args       = args
+
+    print 'created an RExecuterCommand with ID ' + str( self._executionID )
   #}}}
 
 
@@ -60,13 +72,16 @@ class RExecuterCommand(RCommand): #{{{
           arguments.append(self.etherRealize(self._args[i],rServer))
         self._args = tuple(arguments)
       try:
+        print ' executing method ' + self._methodName + ' in ' + str(model)
         result = method(*self._args)
+        print '   method ' + self._methodName + ' in ' + str(model) + ' answered ' + str(result)
       except Exception,e:
+        traceback.print_exc()   # TODO: Ver como meter esto en el LOG
         return RExceptionRaiser(self._executionID, e)
       return RExecutionResult(self._executionID, result)
   #}}}
 
-  def etherRealize(self,arg,rserver): #{{{
+  def etherRealize(self, arg, rserver): #{{{
 
     if isinstance(arg, remotemodel.RemoteModel):
       return rserver.getModelByID(arg._modelID)
@@ -100,6 +115,9 @@ class RExecutionAnswerer(RCommand): #{{{
   def __init__(self, executionID): #{{{
     RCommand.__init__(self)
     self._executionID = executionID
+
+    print 'created an RExecutionAnswerer with ID ' + str( self._executionID )
+
   #}}}
 
 #}}}  
@@ -136,3 +154,35 @@ class RExceptionRaiser(RExecutionAnswerer): #{{{
 #}}}
 
 
+
+
+class REventSuscriber(RCommand):
+  def __init__(self, modelID, eventType, suscriptionID):
+    RCommand.__init__(self)
+    self._modelID       = modelID
+    self._eventType     = eventType
+    self._suscriptionID = suscriptionID
+  
+  def do(self):
+    model = ggserver.remoteserver.getRServer().getModelByID(self._modelID)
+    model.subscribeEvent(self._eventType, self.eventFired)
+
+  def eventFired(self, event):
+    command = REventTriggerer(self._suscriptionID, event)
+    self._serverHandler.sendCommand(command)
+
+
+class REventTriggerer(RCommand):
+  def __init__(self, suscriptionID, event):
+    RCommand.__init__(self)
+    self._suscriptionID = suscriptionID
+    self._event         = event
+
+  def objectToSerialize(self, server):
+    self._event = utils.objectToSerialize(self._event, server)
+    return self
+
+  def do(self):
+    rClient = ggclient.remoteclient.getRClient()
+    suscription = rClient.getRemoteSuscriptionByID(self._suscriptionID)
+    suscription[1](self._event)

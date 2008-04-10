@@ -22,6 +22,29 @@ class TestModel(ggserver.model.Model): #{{{
   def __init__(self):
     ggserver.model.Model.__init__(self)
     self._player = TestPlayer()
+    self._position = [0,0]
+    self._name = ''
+
+  def setPosition(self, position):
+      if self._position == position:
+          return
+
+      self._position = position
+      self.triggerEvent('position', position=self.getPosition())
+
+  def getPosition(self):
+      return self._position
+
+  def setName(self, name):
+      if self._name == name:
+          return
+
+      self._name = name
+      self.triggerEvent('name', name=self.getName())
+
+  def getName(self):
+      return self._name
+
 
   def foo(self):
     return 'foo'
@@ -32,24 +55,24 @@ class TestModel(ggserver.model.Model): #{{{
   def player(self):
     return self._player
 
-  def saluda(self,name):
-    return  "Hola "+name
+  def sayHello(self,name):
+    return "Hello " + name
 
   def metodoError(self):
     result = 1/0
     return result
 
-  def nombreApellidos(self,nombre,apellidos):
-    return nombre +"  "+apellidos
+  def fullName(self, name, lastName):
+    return name + " " + lastName
 
-  def listaJugadores(self):
-    return [TestPlayer(),TestPlayer()]
+  def listPlayers(self):
+    return [TestPlayer(), TestPlayer()]
 
-  def tuplaJugadores(self):
-    return (TestPlayer(),TestPlayer())
+  def tuplePlayers(self):
+    return (TestPlayer(), TestPlayer())
 
-  def dictJugadores(self):
-    return {"1":TestPlayer(),"2":TestPlayer()}
+  def dictPlayers(self):
+    return {"1":TestPlayer(), "2":TestPlayer()}
 
   def getName(self,player):
     return player.name()
