@@ -1,10 +1,13 @@
 import sys
 import remotemodel
+import utils
 
 try:
   import ggserver.remoteserver
 except:
   print "ejecutando en cliente"
+
+
 
 class RCommand: #{{{
 
@@ -18,36 +21,11 @@ class RCommand: #{{{
 
 #}}}
 
-class RExecuteResult(RCommand): #{{{
-
-  def __init__(self,result): #{{{
-    RCommand.__init__(self)
-    self._result = result
-  #}}}
-
-  def do(self): #{{{ 
-    return self._result
-  #}}}
-
-#}}}
-
-class RExceptionRaise(RCommand): #{{{
-
-  def __init__(self,exception): #{{{
-    RCommand.__init__(self)
-    self._exception = exception
-  #}}}
-
-  def do(self): #{{{
-    raise self._exception
-  #}}}
-
-#}}}
-
-class RExecuteCommand(RCommand): #{{{
+class RExecuterCommand(RCommand): #{{{
 
   def __init__(self, modelID, methodName, args): #{{{
     RCommand.__init__(self)
+    self._executionID = utils.nextID() 
     self._modelID    = modelID
     self._methodName = methodName
     self._args       = args
@@ -63,7 +41,7 @@ class RExecuteCommand(RCommand): #{{{
     try:
       method = getattr(model, self._methodName)
     except AttributeError,e:
-      return RExceptionRaise(e)
+      return RExceptionRaiser(self._executionID, e)
     else:
       if self._args:
         arguments = []
@@ -73,8 +51,8 @@ class RExecuteCommand(RCommand): #{{{
       try:
         result = method(*self._args)
       except Exception,e:
-        return RExceptionRaise(e)
-      return RExecuteResult(result)
+        return RExceptionRaiser(self._executionID, e)
+      return RExecutionResult(self._executionID, result)
   #}}}
 
   def etherRealize(self,arg,rserver): #{{{
@@ -105,4 +83,40 @@ class RExecuteCommand(RCommand): #{{{
   #}}}
 
 #}}}
+
+class RExecutionAnswerer(RCommand): #{{{
+
+  def __init__(self, executionID): #{{{
+    RCommand.__init__(self)
+    self._executionID = executionID
+  #}}}
+
+#}}}  
+
+class RExecutionResult(RExecutionAnswerer): #{{{
+
+  def __init__(self, executionID, result): #{{{
+    RExecutionAnswerer.__init__(self, executionID)
+    self._result = result
+  #}}}
+
+  def do(self): #{{{ 
+    return self._result
+  #}}}
+
+#}}}
+
+class RExceptionRaiser(RExecutionAnswerer): #{{{
+
+  def __init__(self, executionID, exception): #{{{
+    RExecutionAnswerer.__init__(self, executionID)
+    self._exception = exception
+  #}}}
+
+  def do(self): #{{{
+    raise self._exception
+  #}}}
+
+#}}}
+
 
