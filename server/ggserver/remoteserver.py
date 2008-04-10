@@ -12,11 +12,15 @@ global _rServerSingleton
 _rServerSingleton = None
 
 def objectToSerialize(object): #{{{
+  """
+  Movel esta funcion a utils, 
+  """
   
   if isinstance(object, testmodel.Model):
     return object.objectToSerialize(getRServer())
 
-  elif isinstance(object, ggcommon.remotecommand.RExecuteResult):
+  elif isinstance(object, ggcommon.remotecommand.RExecutionResult):
+    #llamar a esta funcion desde el objeto, igual que en el model
     resultObject = copy.copy(object)
     resultObject._result = objectToSerialize(resultObject._result)
     return resultObject
