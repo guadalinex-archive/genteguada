@@ -1,5 +1,6 @@
 import os
 import pygame
+
 import utils
 import isoview
 import isoview_tile
@@ -13,13 +14,12 @@ class IsoViewRoom(isoview.IsoView):
     """ Constructor de la clase.
     name: nombre de la habitacion.
     """
-    self._name = name
-    self._modelList = []
+    isoview.IsoView.__init__(self, name)
     self._spritesList = []
     self._tileList = []
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        varPos = self.p3dToP2d([x, 0, z])
+        varPos = self._p3dToP2d([x, 0, z])
         pos = [int(varPos[0]),int(varPos[1])]
         self._tileList.append([])
         self._tileList[x].append(isoview_tile.IsoViewTile(\
@@ -78,7 +78,7 @@ class IsoViewRoom(isoview.IsoView):
     tileSurface = pygame.image.load(tile)
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        screen.blit(tileSurface, self.p3dToP2d([x, 0, z]))
+        screen.blit(tileSurface, self._p3dToP2d([x, 0, z]))
 
   def findTile(self,pos):
     """ Encuentra la posicion 3d de la baldosa a la que corresponden unas \
@@ -91,11 +91,6 @@ class IsoViewRoom(isoview.IsoView):
           if not self._tileList[x][z].onBlank(pos):
             return [x, z]
     return [-1, -1]
-
-  def getType(self):
-    """ Devuelve un valor indicando que esta es una clase tipo IsoViewRoom.
-    """
-    return 0
   
   def newAction(self, event):
     """ Ejecuta un metodo tras recibir informacion sobre un evento.

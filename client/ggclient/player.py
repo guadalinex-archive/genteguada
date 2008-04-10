@@ -36,11 +36,11 @@ class Player(model.Model):
     """
     return self._stateFrame
 
-  def getId(self):
-    """ Devuelve el identificador del objeto.
+  def getDestination(self):
+    """ Devuelve el destino del movimiento.
     """
-    return self._id
-
+    return self._destination
+  
   def getDir(self):
     """ Devuelve el codigo de direccion de movimiento del objeto.
     """
@@ -48,17 +48,8 @@ class Player(model.Model):
       if self._state == utils.DIR[i]:
         return i
     return 0  
-
-  def getDestination(self):
-    """ Devuelve el destino del movimiento.
-    """
-    return self._destination
-        
-  def setName(self, name):
-    self._name = name
-    self.triggerEvent('name', name=self.name)
       
-  def setPosition(self, position):
+  def _setPosition(self, position):
     """ Asigna una nueva posicion a un objeto.
     position: posicion del objeto.
     """
@@ -70,6 +61,18 @@ class Player(model.Model):
     self.triggerEvent('position', id=self._id, sprite=self._sprite, \
                         pActual=pActualAux, pDestin=self._position, dir=self._state)
     
+  def _setState(self, state):
+    """ Asigna un nuevo estado al jugador.
+    state: estado a asignar.
+    """
+    self._state = state
+
+  def _setStateFrame(self, stateFrame):
+    """ Modifica el estado de la animacion en la que se encuentra el objeto.
+    stateFrame: nuevo estado de la animacion.
+    """
+    self._stateFrame = stateFrame
+
   def setDestination(self, state, destination):
     """ Asigna un punto de destino al movimiento del objeto.
     state: direccion del siguiente movimiento.
@@ -77,6 +80,14 @@ class Player(model.Model):
     """
     self._state = state
     self._destination = destination
+    
+  def clickedByPlayer(self, player, clickerLabel, roomName):
+    """ Al recibir un click por parte de otro jugador, activa un evento.
+    player: identificador del jugador que efectua el click.
+    clickerLabel: etiqueta del jugador que efectua el click.
+    roomName: etiqueta de la habitacion en la que se encuentra el jugador.
+    """
+    self.triggerEvent('click on player', pl=self.getName(), clicker=clickerLabel, target=self.getPosition(), room=roomName)
     
   def hasBeenVisited(self, pos):
     """ Indica si una celda ha sido visitada en el ultimo movimiento del objeto.
@@ -114,5 +125,5 @@ class Player(model.Model):
         next = [pos[0] - 1, pos[1], pos[2] + 1]
       if self._state == "walking_topright":
         next = [pos[0] + 1, pos[1], pos[2] - 1]
-      self.setPosition(next)
+      self._setPosition(next)
       

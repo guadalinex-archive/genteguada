@@ -14,7 +14,7 @@ class IsoViewPlayer(isoview.IsoView):
     name: nombre de la vista.
     type: indica si el objeto es un jugador (0) o un item (1).
     screen: controlador de pantalla.
-    """  
+    """
     self._name = name
     self._type = type
     self._modelList = []
@@ -24,6 +24,29 @@ class IsoViewPlayer(isoview.IsoView):
     self._screen = screen
     self._allPlayers = pygame.sprite.RenderUpdates()
     
+  def getBg(self):
+    """ Devuelve el fondo para el repintado y limpia de sprites de jugadores.
+    """
+    return self._bg
+  
+  def getScreen(self):
+    """ Devuelve el controlador de pantalla.
+    """
+    return self._screen
+    
+  def setBg(self, bg):
+    """ Asigna un fondo a las animaciones de los jugadores.
+    bg: grafico de fondo.
+    """
+    self._bg = bg
+    self._bg.rect.topleft = utils.BG_FULL_OR
+    
+  def _setScreen(self, screen):
+    """ Asigna el controlador de pantalla.
+    screen: controlador de pantalla.
+    """
+    self._screen = screen
+
   def newAction(self, event):
     """ Ejecuta un evento correspondiente a una nueva accion.
     event: informacion del evento.
@@ -35,19 +58,12 @@ class IsoViewPlayer(isoview.IsoView):
     """
     for i in range(0, len(self._modelDataList)):
       if self._modelDataList[i]["id"] == event.params["id"]:
-        self._spritesList[i].rect.topleft = self.p3dToP2d(event.params["pDestin"])
+        self._spritesList[i].rect.topleft = self._p3dToP2d(event.params["pDestin"])
         self._modelDataList[i]["pActual"] = event.params["pDestin"]
         self._modelDataList[i]["pDestin"] = event.params["pDestin"]
         self._allPlayers.update()                     
         self._allPlayers.clear(self._screen, self._bg.image)
         pygame.display.update(self._allPlayers.draw(self._screen))
-
-  def setBg(self, bg):
-    """ Asigna un fondo a las animaciones de los jugadores.
-    bg: grafico de fondo.
-    """
-    self._bg = bg
-    self._bg.rect.topleft = utils.BG_FULL_OR
 
   def addModel(self, model):
     """ Anade un modelo a la lista de elementos controlados por la vista
@@ -57,7 +73,7 @@ class IsoViewPlayer(isoview.IsoView):
     img = pygame.sprite.Sprite()
     img.image = pygame.image.load(imgPath)
     img.rect = img.image.get_rect()
-    img.rect.topleft = self.p3dToP2d(model.getPosition())
+    img.rect.topleft = self._p3dToP2d(model.getPosition())
     self._allPlayers.add(img)
     self._spritesList.append(img)
     self._modelList.append(model)
@@ -104,10 +120,10 @@ class IsoViewPlayer(isoview.IsoView):
     plSurface = pygame.image.load(pl)
     state = self._modelList[caller].getStateFrame()
     dir = self._modelList[caller].getDir()
-    screen.blit(plSurface, self.p3dToP2d(cord3d, state, dir))
+    screen.blit(plSurface, self._p3dToP2d(cord3d, state, dir))
     pygame.display.update()
     
-  def p3dToP2d(self, cord3d):
+  def _p3dToP2d(self, cord3d):
     """ Convierte un punto con coordenadas 3d virtuales en 2d con cord fisicas.
     cord3d: punto 3d a convertir.
     """
@@ -144,8 +160,3 @@ class IsoViewPlayer(isoview.IsoView):
       
     cord2d = [x2d, y2d]
     return cord2d
-
-  def getType(self):
-    """ Devuelve un valor indicando que esta es una clase tipo IsoViewPlayer.
-    """
-    return 1
