@@ -1,42 +1,19 @@
-import ggcommon.remotemodel
+import model
 
-class Model: #{{{
-
-  def __init__(self):
-    self._id = None
-
-  def hasID(self):
-    return (self._id != None)
-
-  def setID(self, id):
-    self._id = id
-
-  def getID(self):
-    return self._id
-
-  def __str__(self):
-    return '<Model ID: ' + str(self.getID()) +'>'
-
-  def objectToSerialize(self, server):
-    if not self.hasID():
-      server.registerModel(self)
-    return ggcommon.remotemodel.RemoteModel(self.getID())
-#}}}
-
-class TestPlayer(Model): #{{{
+class TestPlayer(model.Model): #{{{
     
   def __init__(self):
-    Model.__init__(self)
+    model.Model.__init__(self)
 
   def name(self):
     print 'server side execution of name'
     return 'maradona'
 #}}}
 
-class TestModel(Model): #{{{
+class TestModel(model.Model): #{{{
     
   def __init__(self):
-    Model.__init__(self)
+    model.Model.__init__(self)
     self._player = TestPlayer()
 
   def foo(self):
