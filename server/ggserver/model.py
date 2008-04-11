@@ -1,5 +1,6 @@
 import threading
 import ggcommon.remotemodel
+import traceback
 
 
 class Model: #{{{
@@ -42,18 +43,27 @@ class Model: #{{{
     params: datos sobre el evento.
     """
     self._eventsMutex.acquire()
-    try:
-      for type, method in self._events:
-        if type == eventType:
-          event = ggcommon.eventos.Event(self, eventType, params)
+    eventsCopy = self._events
+    self._eventsMutex.release()
+    for type, method in eventsCopy:
+      if type == eventType:
+        event = ggcommon.eventos.Event(self, eventType, params)
+        try:
           method(event)
-    finally:
-      self._eventsMutex.release()
+        except:
+          traceback.print_exc()
+          print sys.exc_info()[1]
 
     
   def unsubscribeEventObserver(self, observer, eventType=None):
+    toRemove = []
     self._eventsMutex.acquire()
-    pass # actually do it!
+    for event in self._events:
+      if id(event[1].im_self) == id(observer):
+        if eventType == None or eventType == event[0]: 
+          toRemove.append(event)
+    for event in toRemove:
+      self._events.remove(event)
     self._eventsMutex.release()
 
   def unsubscribeEventMethod(self, method, eventType=None):

@@ -5,8 +5,11 @@ import sys
 import pickle
 import ggcommon.remotecommand
 import copy
+import time
 
 import ggcommon.utils
+import struct
+import traceback
 
 
 # global to hold the rserver singleton instance
@@ -80,6 +83,41 @@ class RServerHandler(SocketServer.BaseRequestHandler): #{{{
 
   def handle(self): #{{{
     while 1:
+      size = struct.calcsize("i")
+      size = self.request.recv(size)
+      if len(size):
+        size = struct.unpack("i", size)[0]
+        commandData = ""
+        while len(commandData) < size:
+          commandData = self.request.recv(size - len(commandData))
+        command = pickle.loads(commandData)
+        command.setServerHandler(self)
+        answer = command.do()
+        if answer:
+          self._sendObject(answer)
+      else:
+        break
+
+      """ 
+      commandData = self.request.recv(1024)
+      if (len(commandData) == 0):
+        time.sleep(0.01)
+      else:
+        print 'server received ' + str(len(commandData)) + 'bytes'
+        command = pickle.loads(commandData)
+        command.setServerHandler(self)
+        answer = command.do()
+        if answer:
+          self._sendObject(answer)
+        #answerToSerialize = ggcommon.utils.objectToSerialize(answer, getRServer())
+        #serializedAnswer = pickle.dumps(answerToSerialize)
+        #self.request.send(serializedAnswer)
+      """
+  #}}}
+
+  """
+  def handle(self): #{{{
+    while 1:
       commandData = self.request.recv(1024)
       if (len(commandData) == 0):
         time.sleep(0.01)
@@ -94,15 +132,21 @@ class RServerHandler(SocketServer.BaseRequestHandler): #{{{
         #serializedAnswer = pickle.dumps(answerToSerialize)
         #self.request.send(serializedAnswer)
   #}}}
-
+  """
   def _sendObject(self, object):
     toSerialize = ggcommon.utils.objectToSerialize(object, getRServer())
     serialized = pickle.dumps(toSerialize)
-    self.request.send(serialized)
+    try:
+      self.request.send(serialized)
+      return True
+    except:
+      print sys.exc_info()[1]
+      traceback.print_exc()
+      return False
     #self.request.flush()
 
   def sendCommand(self, command):
-    self._sendObject(command)
+    return self._sendObject(command)
 
   def finish(self): #{{{
     print self.client_address, 'desconectado'

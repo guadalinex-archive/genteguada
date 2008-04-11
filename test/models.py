@@ -5,8 +5,6 @@ sys.path.append("../server")
 import ggserver.model
 
 
-
-
 class TestPlayer(ggserver.model.Model): #{{{
     
   def __init__(self):
@@ -15,7 +13,6 @@ class TestPlayer(ggserver.model.Model): #{{{
   def name(self):
     return 'maradona'
 #}}}
-
 
 class TestModel(ggserver.model.Model): #{{{
     
@@ -40,9 +37,9 @@ class TestModel(ggserver.model.Model): #{{{
           return
 
       self._name = name
-      self.triggerEvent('name', name=self.getName())
+      self.triggerEvent('name', name=self.getMyName())
 
-  def getName(self):
+  def getMyName(self):
       return self._name
 
 

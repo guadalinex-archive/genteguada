@@ -6,12 +6,12 @@ import traceback
 try:
   import ggclient.remoteclient
 except:
-  print "ejecutando en el server"
+  print sys.exc_info()[1]
 
 try:
   import ggserver.remoteserver
 except:
-  print "ejecutando en el cliente"
+  print sys.exc_info()[1]
 
 
 
@@ -42,8 +42,6 @@ class RExecuterCommand(RCommand): #{{{
     self._modelID    = modelID
     self._methodName = methodName
     self._args       = args
-
-    print 'created an RExecuterCommand with ID ' + str( self._executionID )
   #}}}
 
 
@@ -58,12 +56,14 @@ class RExecuterCommand(RCommand): #{{{
     try:
       rServer = ggserver.remoteserver.getRServer()
     except:
-      print "ejecutando en cliente"
+      print sys.exc_info()[1]
+      traceback.print_exc()
       sys.exit(0)
     model = rServer.getModelByID(self._modelID)
     try:
       method = getattr(model, self._methodName)
     except AttributeError,e:
+      traceback.print_exc()
       return RExceptionRaiser(self._executionID, e)
     else:
       if self._args:
@@ -72,12 +72,11 @@ class RExecuterCommand(RCommand): #{{{
           arguments.append(self.etherRealize(self._args[i],rServer))
         self._args = tuple(arguments)
       try:
-        print ' executing method ' + self._methodName + ' in ' + str(model)
         result = method(*self._args)
-        print '   method ' + self._methodName + ' in ' + str(model) + ' answered ' + str(result)
-      except Exception,e:
-        traceback.print_exc()   # TODO: Ver como meter esto en el LOG
-        return RExceptionRaiser(self._executionID, e)
+      except:
+        traceback.print_exc()
+        print sys.exc_info()[1]
+        return RExceptionRaiser(self._executionID, sys.exc_info()[1])
       return RExecutionResult(self._executionID, result)
   #}}}
 
@@ -115,9 +114,6 @@ class RExecutionAnswerer(RCommand): #{{{
   def __init__(self, executionID): #{{{
     RCommand.__init__(self)
     self._executionID = executionID
-
-    print 'created an RExecutionAnswerer with ID ' + str( self._executionID )
-
   #}}}
 
 #}}}  
@@ -169,7 +165,15 @@ class REventSuscriber(RCommand):
 
   def eventFired(self, event):
     command = REventTriggerer(self._suscriptionID, event)
-    self._serverHandler.sendCommand(command)
+    if not self._serverHandler.sendCommand(command):
+      self.unsubscribeEventObserver()
+
+  def unsubscribeEventObserver(self):
+    model = ggserver.remoteserver.getRServer().getModelByID(self._modelID)
+    model.unsubscribeEventObserver(self)
+
+
+      
 
 
 class REventTriggerer(RCommand):
