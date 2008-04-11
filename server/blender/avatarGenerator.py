@@ -31,6 +31,7 @@ def renderScene(renderFileName):
 
 #Cambia la textura del objeto
 def changeTexture(objectName,pathNewTexture,defaultTexture):  
+	print objectName,pathNewTexture,defaultTexture
 	if gender == "female":
 		defaultTexture = "g" + defaultTexture[0].upper() + defaultTexture[1:]
 	newTexture = Blender.Image.Load(pathNewTexture)
@@ -41,27 +42,45 @@ def changeTexture(objectName,pathNewTexture,defaultTexture):
 			f.image = newTexture
 
 #Situa el tipo de peinado en la capa 1 para ser renderizado
-def hairSelection(typeHair):
-	hair = Blender.Object.Get(typeHair)
-	hair.layers = [1]
+#def hairSelection(typeHair):
+#	hair = Blender.Object.Get(typeHair)
+#	hair.layers = [1]
 	
 #Escala el objeto dentro de unos limites minimos y maximos
 def scaleObject(nameObject, dimX, dimY, dimZ):
   obj = Blender.Object.Get(nameObject)
-  if float(dimX) >= 1 and float(dimX) <= 2:
-		print "escalamos X"
-	  #size = (float(dimX),) + size[1:]
-		obj.SizeX = float(dimX)
-  if float(dimY) >= 1 and float(dimY) <= 2:
-		print "escalamos Y"
-		#auxsize = size
-		#size = size[:1] + (float(dimY),) + auxsize[-1:]
-		obj.SizeY = float(dimY)
-  if float(dimZ) >= 1 and float(dimZ) <= 1.2:
-    print "escalamos Z"
-    #size = size[:2] + (float(dimZ),)
-    obj.SizeZ = float(dimZ)
+  print obj.getLocation(),obj.getSize()
+#  if float(dimX) >= 1 and float(dimX) <= 2:
+#		print "escalamos X"
+#		obj.SizeX = float(dimX)
+#  if float(dimY) >= 1 and float(dimY) <= 2:
+#		print "escalamos Y"
+#		obj.SizeY = float(dimY)
+#  if float(dimZ) >= 1 and float(dimZ) <= 2:
+#    obj.SizeZ = float(dimZ)
+  obj.SizeX = float(dimX)
+  obj.SizeY = float(dimY)
+  obj.SizeZ = float(dimZ)
   Blender.Redraw()
+  print obj.getLocation(),obj.getSize()
+
+#Escala el objeto proporcionalemente a la imagen pasada por parametro
+def scaleProportionalObject(nameObject, face):
+	image = Blender.Image.Load(face)
+	width = image.getSize()[0]
+	height = image.getSize()[1]
+
+	if height >= width:
+		proportion = float(width) / float(height)
+		newWidth = 1 * proportion
+		newHeight = 1 
+	else:
+		proportion = float(height) / float(width)
+		newWidth = 1
+		newHeight = 1 * proportion
+	print width,height,proportion,newWidth,newHeight
+	scaleObject(nameObject, newWidth, newWidth, newHeight)
+	
 
 
 #Asignacion de argumentos a las variables locales
@@ -70,7 +89,7 @@ gender = os.getenv('gender')
 dimX = os.getenv('dimX')
 dimY = os.getenv('dimY')
 dimZ = os.getenv('dimZ')
-face = os.getenv('face')
+mask = os.getenv('mask')
 hair = os.getenv('hair')
 skin = os.getenv('skin')
 sleeve = os.getenv('sleeve')
@@ -83,11 +102,11 @@ shoes = os.getenv('shoes')
 if gender == "male":
 	print "Genero seleccionado male"
 	avatar= "boy"
-	avatarParts = ["boyHead","boyBody","boyLeftArm","boyRightArm","boyLeftLeg","boyRightLeg"]
+	avatarParts = ["boyHead", "boyHair", "boyEars", "boyMask", "boyBody", "boyLeftArm","boyRightArm","boyLeftLeg","boyRightLeg"]
 elif gender == "female":
 	print "Genero seleccionado female"
 	avatar = "girl"
-	avatarParts = ["girlHead","girlBody","girlLeftArm","girlRightArm","girlLeftLeg","girlRightLeg"]
+	avatarParts = ["girlHead", "girlHair", "girlEars", "girlMask", "girlBody","girlLeftArm","girlRightArm","girlLeftLeg","girlRightLeg"]
 
 #Activamos el avatar seleccionado en la capa 1 para realizar el render	
 for part in avatarParts:
@@ -98,22 +117,34 @@ for part in avatarParts:
 if dimX <> "" and dimY <> "" and dimZ <> "":
   print "Escalamos cabeza"
   scaleObject(avatar + "Head",dimX,dimY,dimZ)
+  scaleObject(avatar + "Hair",dimX,dimY,dimZ)
+  scaleObject(avatar + "Mask",dimX,dimY,dimZ)
+#  scaleObject(avatar + "Body",dimX,dimY,dimZ)
 
-if face <> "":
-  print "Cambiamos textura cara"
-  texturePath = face
-  objectName = avatar + "Head"
-  changeTexture(objectName, texturePath, "defaultFace.tga")
+if mask <> "":
+#	if dimX <> "" and dimY <> "" and dimZ <> "":
+#		print "Escalamos cabeza"
+#		scaleObject(avatar + "Head",dimX,dimY,dimZ)
+#	else:
+#		scaleProportionalObject(avatar + "Head", face)
+	print "Cambiamos textura careta"
+	texturePath = mask
+	changeTexture(avatar + "Mask", texturePath, "defaultMask.tga")
+#else:
+#	if dimX <> "" and dimY <> "" and dimZ <> "":
+#		print "Escalamos cabeza"
+#		scaleObject(avatar + "Head", dimX, dimY, dimZ)
 	
 if hair <> "":
   print "Cambiamos textura pelo"
   texturePath = os.path.join(os.path.abspath("."), "textures/" + gender + "/hair/" + hair)
-  changeTexture(avatar + "Head", texturePath, "defaultHair.tga")
+  changeTexture(avatar + "Hair", texturePath, "defaultHair.tga")
 	
 if skin <> "":
   print "Cambiamos textura piel"
   texturePath = os.path.join(os.path.abspath("."), "textures/" + gender +"/skin/" + skin)
-  changeTexture(avatar + "Head", texturePath, "defaultFaceSkin.tga")
+  changeTexture(avatar + "Head", texturePath, "defaultSkin.tga")
+  changeTexture(avatar + "Ears", texturePath, "defaultSkin.tga")
   changeTexture(avatar + "LeftArm", texturePath, "defaultSkin.tga")
   changeTexture(avatar + "RightArm", texturePath, "defaultSkin.tga")
   changeTexture(avatar + "LeftLeg", texturePath, "defaultSkin.tga")
@@ -197,21 +228,21 @@ for rot in rotations:
   rotateObject("boyHead",rot)
   if rot == 0:
 	  renderScene("avatarS.png")
-  elif rot == 45:
-	  renderScene("avatarSO.png")
-  elif rot == 90:
-	  renderScene("avatarO.png")
-  elif rot == 135:
-	  renderScene("avatarNO.png")
-  elif rot == 180:
-	  renderScene("avatarN.png")
-  elif rot == 225:
-	  renderScene("avatarNE.png")
-  elif rot == 270:
-	  renderScene("avatarE.png")
-  elif rot == 315:
-	  renderScene("avatarSE.png")
-
+#  elif rot == 45:
+#	  renderScene("avatarSO.png")
+#  elif rot == 90:
+#	  renderScene("avatarO.png")
+#  elif rot == 135:
+#	  renderScene("avatarNO.png")
+#  elif rot == 180:
+#	  renderScene("avatarN.png")
+#  elif rot == 225:
+#	  renderScene("avatarNE.png")
+#  elif rot == 270:
+#	  renderScene("avatarE.png")
+#  elif rot == 315:
+#	  renderScene("avatarSE.png")
+#
 
 
 
