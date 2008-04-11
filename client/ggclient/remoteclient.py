@@ -7,6 +7,8 @@ import select
 import ggcommon.remotecommand
 
 import ggcommon.utils
+import struct
+import traceback
 
 
 global _rClientSingleton
@@ -68,8 +70,12 @@ class RClient: #{{{
 
   def sendCommand(self, command): #{{{
     serializedCommand = pickle.dumps(command)
+
+    sizeCommand = len(serializedCommand)
+    size = struct.pack("i",sizeCommand)
+    self._thread.getSocket().send(size)
+
     self._thread.getSocket().send(serializedCommand)
-    self._thread.getSocket().flush()
   #}}}
 
 
@@ -128,7 +134,6 @@ class RClientThread(threading.Thread): #{{{
 
   def _receiveRootModel(self): #{{{
     data = self.getSocket().recv(1024)
-    print 'client received ' + str(len(data)) + 'bytes'
     rootModel = pickle.loads(data)
     self.rClient.setRootModel(rootModel)
   #}}}

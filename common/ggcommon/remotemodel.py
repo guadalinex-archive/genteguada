@@ -1,10 +1,11 @@
 import sys
 import remotecommand
+import traceback
 
 try:
   import ggclient.remoteclient
 except:
-  print "ejecutando en servidor"
+  print sys.exc_info()[1]
 
 
 class RemoteModel: #{{{
@@ -83,7 +84,8 @@ class RemoteMethod: #{{{
     try:
       rClient = ggclient.remoteclient.getRClient()
     except:
-      print "ejecutando en servidor"
+      print sys.exc_info()[1]
+      traceback.print_exc()
       sys.exit(0)
 
     executer = remotecommand.RExecuterCommand(self._modelID, self._methodName, args)

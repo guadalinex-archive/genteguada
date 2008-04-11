@@ -28,16 +28,13 @@ class TestRemoteObject(unittest.TestCase):
     model = client.getRootModel()
     self.useModel(model, "REMOTE: ")
 
-
   def testLocalModel(self):
     print "Ejecutando test con model local"
     model = models.TestModel()
     self.useModel(model, "LOCAL: ")
 
-
   def useModel(self, model, prefix):
     print prefix + "model class: " + str(model.__class__)
-    """
     print prefix + "Ejecutamos el metodo foo sin argumentos"
     result = model.foo()
     assert result == "foo"
@@ -116,7 +113,7 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "ejecutamos un metodo pasando por parametro una diccionario de remotemodel"
     result = model.getDictName({"1":player})
     assert result == "maradona"
-    """
+
     """
     print prefix + "Ejecucion desde multiples hilos"
     t1 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Luis"))
@@ -137,6 +134,7 @@ class TestRemoteObject(unittest.TestCase):
     model.subscribeEvent('name',     self.eventFired)
     assert self.lastEvent == None
 
+
     print prefix + "Cambiamos la posicion"
     model.setPosition([1,2])
     assert self.lastEvent.name == 'position'
@@ -148,13 +146,13 @@ class TestRemoteObject(unittest.TestCase):
     assert self.lastEvent.name == 'position'
     assert self.lastEvent.producer == model
     assert self.lastEvent.params['position'] == [2,4]
-    """
+    #time.sleep(1)
+
     print prefix + "Cambiamos el nombre"
     model.setName('Guido')
     assert self.lastEvent.name == 'name'
     assert self.lastEvent.producer == model
     assert self.lastEvent.params['name'] == 'Guido'
-    """
 
   def eventFired(self, event):
     self.lastEvent = event
