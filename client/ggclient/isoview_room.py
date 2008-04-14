@@ -10,11 +10,12 @@ class IsoViewRoom(isoview.IsoView):
   Define a la vista de una habitacion.
   """
 
-  def __init__(self, name):
+  def __init__(self, name, screen):
     """ Constructor de la clase.
     name: nombre de la habitacion.
     """
     isoview.IsoView.__init__(self, name)
+    self.screen = screen
     self._spritesList = []
     self._tileList = []
     for x in range(utils.SCENE_SZ[0]):
@@ -45,18 +46,18 @@ class IsoViewRoom(isoview.IsoView):
     """
     self._isoViewItem = item
 
-  def drawFirst(self, screen):
-    self.paintFloorFull(self._modelList[0].getSpriteFull(), screen)
-    self._isoViewPlayer.drawFirst(screen)
+  def drawFirst(self):
+    self.paintFloorFull(self._modelList[0].getSpriteFull())
+    self._isoViewPlayer.drawFirst(self.screen)
   
-  def draw(self, screen):
+  def draw(self):
     """ Pinta el suelo, jugadores y objetos de la habitacion.
     screen: controlador de pantalla.
     """
-    self.paintFloorFull(self._modelList[0].getSpriteFull(), screen)
-    self.isoViewPlayer.draw(screen)
+    self.paintFloorFull(self._modelList[0].getSpriteFull(), self.screen)
+    self.isoViewPlayer.draw(self.screen)
     
-  def paintFloorFull(self, spriteFull, screen):
+  def paintFloorFull(self, spriteFull):
     """ Pinta el suelo de una habitacion con un solo sprite.
     screen: controlador de pantalla.
     """
@@ -66,9 +67,9 @@ class IsoViewRoom(isoview.IsoView):
     bg.image = pygame.image.load(bgPath)
     bg.rect = bg.image.get_rect()
     bg.rect.topleft = utils.BG_FULL_OR
-    screen.blit(bg.image, bg.rect)
+    self.screen.blit(bg.image, bg.rect)
 
-  def paintFloor(self, tile_name, screen):
+  def paintFloor(self, tile_name):
     """ Pinta el suelo de la habitacion.
     tile_name: grafico de cada baldosa.
     screen: controlador de pantalla.
@@ -78,7 +79,7 @@ class IsoViewRoom(isoview.IsoView):
     tileSurface = pygame.image.load(tile)
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        screen.blit(tileSurface, self._p3dToP2d([x, 0, z]))
+        self.screen.blit(tileSurface, self._p3dToP2d([x, 0, z]))
 
   def findTile(self,pos):
     """ Encuentra la posicion 3d de la baldosa a la que corresponden unas \

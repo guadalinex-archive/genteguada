@@ -39,9 +39,10 @@ class IsoView:
   def notify(self, caller):
      pass
   
-  def _p3dToP2d(self, cord3d):
+  def _p3dToP2d(self, cord3d, size=None):
     """ Convierte un punto con coordenadas 3d virtuales en 2d con cord fisicas
     cord3d: punto 3d a convertir
+    size: tamano del modelo.
     """
     x2d = (cord3d[0] - cord3d[2]) * utils.COS30R * utils.TILE_SZ[0]
     y2d = ((cord3d[0] + cord3d[2]) * utils.SIN30R) - cord3d[1]

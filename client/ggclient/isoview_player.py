@@ -58,6 +58,7 @@ class IsoViewPlayer(isoview.IsoView):
     """
     for i in range(0, len(self._modelDataList)):
       if self._modelDataList[i]["id"] == event.params["id"]:
+        #self._spritesList[i].rect.topleft = self._p3dToP2d(event.params["pDestin"], self._modelList[i].getSize())
         self._spritesList[i].rect.topleft = self._p3dToP2d(event.params["pDestin"])
         self._modelDataList[i]["pActual"] = event.params["pDestin"]
         self._modelDataList[i]["pDestin"] = event.params["pDestin"]
@@ -73,7 +74,8 @@ class IsoViewPlayer(isoview.IsoView):
     img = pygame.sprite.Sprite()
     img.image = pygame.image.load(imgPath)
     img.rect = img.image.get_rect()
-    img.rect.topleft = self._p3dToP2d(model.getPosition())
+    #img.rect.topleft = self._p3dToP2d(model.getPosition())
+    img.rect.topleft = self._p3dToP2d(model.getPosition(), model.getSize())
     self._allPlayers.add(img)
     self._spritesList.append(img)
     self._modelList.append(model)
@@ -123,16 +125,22 @@ class IsoViewPlayer(isoview.IsoView):
     screen.blit(plSurface, self._p3dToP2d(cord3d, state, dir))
     pygame.display.update()
     
-  def _p3dToP2d(self, cord3d):
+  def _p3dToP2d(self, cord3d, size=None):
     """ Convierte un punto con coordenadas 3d virtuales en 2d con cord fisicas.
     cord3d: punto 3d a convertir.
+    size: tamano del modelo.
     """
     x2d = (cord3d[0] - cord3d[2]) * utils.COS30R * utils.TILE_SZ[0]
     y2d = ((cord3d[0] + cord3d[2]) * utils.SIN30R) - cord3d[1]
     y2d = (y2d * utils.TILE_SZ[1])
     
-    x2d = x2d - (utils.CHAR_SZ[0])
-    y2d = y2d - (utils.CHAR_SZ[1] / 4)
+    if size:
+      print size
+      x2d = x2d - (size[0])
+      y2d = y2d - (size[1] / 4)
+    else:
+      x2d = x2d - (utils.CHAR_SZ[0])
+      y2d = y2d - (utils.CHAR_SZ[1] / 4)
     
     x2d = math.floor((x2d / math.sqrt(3)) + utils.SCREEN_OR[0])
     y2d = math.floor(y2d + utils.SCREEN_OR[1])
