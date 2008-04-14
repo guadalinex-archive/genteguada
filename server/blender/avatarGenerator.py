@@ -8,8 +8,8 @@ import os
 
 #Rotamos el objeto tantos grados como señala el parametro de entrada
 def rotateObject(nameObject,rotation):
-  obj = Blender.Object.Get(nameObject)
-  obj.RotZ = float(rotation) * (3.1416/180)		#Convertimos a radianes
+	obj = Blender.Object.Get(nameObject)
+	obj.RotZ = float(rotation) * (3.1416/180)		#Convertimos a radianes
 
 #Renderiza la escena
 def renderScene(renderFileName):
@@ -31,7 +31,6 @@ def renderScene(renderFileName):
 
 #Cambia la textura del objeto
 def changeTexture(objectName,pathNewTexture,defaultTexture):  
-	print objectName,pathNewTexture,defaultTexture
 	if gender == "female":
 		defaultTexture = "g" + defaultTexture[0].upper() + defaultTexture[1:]
 	newTexture = Blender.Image.Load(pathNewTexture)
@@ -40,6 +39,7 @@ def changeTexture(objectName,pathNewTexture,defaultTexture):
 	for f in faces:
 		if f.image.getName() == defaultTexture:
 			f.image = newTexture
+	Blender.Redraw()
 
 #Situa el tipo de peinado en la capa 1 para ser renderizado
 #def hairSelection(typeHair):
@@ -49,20 +49,15 @@ def changeTexture(objectName,pathNewTexture,defaultTexture):
 #Escala el objeto dentro de unos limites minimos y maximos
 def scaleObject(nameObject, dimX, dimY, dimZ):
   obj = Blender.Object.Get(nameObject)
-  print obj.getLocation(),obj.getSize()
-#  if float(dimX) >= 1 and float(dimX) <= 2:
-#		print "escalamos X"
-#		obj.SizeX = float(dimX)
-#  if float(dimY) >= 1 and float(dimY) <= 2:
-#		print "escalamos Y"
-#		obj.SizeY = float(dimY)
-#  if float(dimZ) >= 1 and float(dimZ) <= 2:
-#    obj.SizeZ = float(dimZ)
-  obj.SizeX = float(dimX)
-  obj.SizeY = float(dimY)
-  obj.SizeZ = float(dimZ)
+  print obj.getSize()
+  print  obj.SizeX + dimX
+  obj.SizeX = obj.SizeX + dimX
+  print  obj.SizeY + dimY
+  obj.SizeY = obj.SizeY + dimY
+  print  obj.SizeZ + dimZ
+  obj.SizeZ = obj.SizeZ + dimZ
   Blender.Redraw()
-  print obj.getLocation(),obj.getSize()
+  print obj.getSize()
 
 #Escala el objeto proporcionalemente a la imagen pasada por parametro
 def scaleProportionalObject(nameObject, face):
@@ -84,17 +79,15 @@ def scaleProportionalObject(nameObject, face):
 
 
 #Asignacion de argumentos a las variables locales
-
 gender = os.getenv('gender')
-dimX = os.getenv('dimX')
-dimY = os.getenv('dimY')
-dimZ = os.getenv('dimZ')
+headSize = os.getenv('headSize')
 mask = os.getenv('mask')
 hair = os.getenv('hair')
 skin = os.getenv('skin')
+bodySize = os.getenv('bodySize')
 sleeve = os.getenv('sleeve')
 shirt = os.getenv('shirt')
-typetrousers = os.getenv('typetrousers')
+typeTrousers = os.getenv('typeTrousers')
 trousers = os.getenv('trousers')
 skirt = os.getenv('skirt')
 shoes = os.getenv('shoes')
@@ -102,11 +95,11 @@ shoes = os.getenv('shoes')
 if gender == "male":
 	print "Genero seleccionado male"
 	avatar= "boy"
-	avatarParts = ["boyHead", "boyHair", "boyEars", "boyMask", "boyBody", "boyLeftArm","boyRightArm","boyLeftLeg","boyRightLeg"]
+	avatarParts = ["boyCenter", "boyHead", "boyHair", "boyMask", "boyBody", "boyLeftArm", "boyRightArm", "boyLeftLeg", "boyRightLeg"]
 elif gender == "female":
 	print "Genero seleccionado female"
 	avatar = "girl"
-	avatarParts = ["girlHead", "girlHair", "girlEars", "girlMask", "girlBody","girlLeftArm","girlRightArm","girlLeftLeg","girlRightLeg"]
+	avatarParts = ["girlCenter", "girlHead", "girlHair", "girlMask", "girlBody", "girlLeftArm", "girlRightArm", "girlLeftLeg", "girlRightLeg"]
 
 #Activamos el avatar seleccionado en la capa 1 para realizar el render	
 for part in avatarParts:
@@ -114,26 +107,27 @@ for part in avatarParts:
   obj.layers = [1]
 
 
-if dimX <> "" and dimY <> "" and dimZ <> "":
-  print "Escalamos cabeza"
-  scaleObject(avatar + "Head",dimX,dimY,dimZ)
-  scaleObject(avatar + "Hair",dimX,dimY,dimZ)
-  scaleObject(avatar + "Mask",dimX,dimY,dimZ)
-#  scaleObject(avatar + "Body",dimX,dimY,dimZ)
+if headSize <> "":
+	print "headSize=",headSize
+	valueSizeDefault = 0
+	valueSize = 0
+	if headSize == "L":
+		print "Cambiamos tamaño cabeza L"
+ 		valueSize = 0.1
+	elif headSize == "M":
+		print "Cambiamos tamaño cabeza M"
+ 		valueSize = 0.2
+	elif headSize == "XL":
+		print "Cambiamos tamaño cabeza XL"
+ 		valueSize = 0.3
+	scaleObject(avatar + "Head", valueSize, valueSize, valueSize)
+	scaleObject(avatar + "Hair", valueSize, valueSize, valueSize)
+	scaleObject(avatar + "Mask",valueSize, valueSize, valueSize)
 
 if mask <> "":
-#	if dimX <> "" and dimY <> "" and dimZ <> "":
-#		print "Escalamos cabeza"
-#		scaleObject(avatar + "Head",dimX,dimY,dimZ)
-#	else:
-#		scaleProportionalObject(avatar + "Head", face)
 	print "Cambiamos textura careta"
 	texturePath = mask
 	changeTexture(avatar + "Mask", texturePath, "defaultMask.tga")
-#else:
-#	if dimX <> "" and dimY <> "" and dimZ <> "":
-#		print "Escalamos cabeza"
-#		scaleObject(avatar + "Head", dimX, dimY, dimZ)
 	
 if hair <> "":
   print "Cambiamos textura pelo"
@@ -144,11 +138,29 @@ if skin <> "":
   print "Cambiamos textura piel"
   texturePath = os.path.join(os.path.abspath("."), "textures/" + gender +"/skin/" + skin)
   changeTexture(avatar + "Head", texturePath, "defaultSkin.tga")
-  changeTexture(avatar + "Ears", texturePath, "defaultSkin.tga")
   changeTexture(avatar + "LeftArm", texturePath, "defaultSkin.tga")
   changeTexture(avatar + "RightArm", texturePath, "defaultSkin.tga")
-  changeTexture(avatar + "LeftLeg", texturePath, "defaultSkin.tga")
-  changeTexture(avatar + "RightLeg", texturePath, "defaultSkin.tga")
+  if gender == "female":
+		changeTexture(avatar + "LeftLeg", texturePath, "undefined.tga")
+		changeTexture(avatar + "RightLeg", texturePath, "undefined.tga")
+
+if bodySize <> "":
+	valueSizeDefault = 0
+	valueSize = 0
+	if bodySize == "L":
+		print "Cambiamos tamaño cuerpo L"
+ 		valueSize = 0.1
+	elif bodySize == "M":
+		print "Cambiamos tamaño cuerpo M"
+ 		valueSize = 0.2
+	elif bodySize == "XL":
+		print "Cambiamos tamaño cuerpo XL"
+ 		valueSize = 0.3
+	scaleObject(avatar + "Body", valueSize, valueSizeDefault, valueSize)
+	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSize)
+	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSize)
+	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSize)
+	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSize)
 	
 if shirt <> "" and gender == "male":
   print "Cambiamos textura cuerpo chico"
@@ -161,59 +173,58 @@ if skirt <> "" and gender == "female":
   changeTexture("girlBody", texturePath, "defaultSkirt.tga")
 	
 if sleeve == "0":  #Manga corta
-	if skin <> "":
-		print "Cambiamos textura manga corta"
-		if gender == "male":
-			texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
-			changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
-			changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
-		elif gender == "female":
-			texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + shirt)
-			changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
-			changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
-		
+	print "Cambiamos textura manga corta"
+	if gender == "male":
+		texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
+		changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
+		changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
+	elif gender == "female":
+		texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + shirt)
+		changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
+		changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
+
+	if skin <> "":		
 		texturePath = os.path.join(os.path.abspath("."), "textures/" + gender + "/skin/" + skin)
 		changeTexture(avatar + "LeftArm", texturePath, "undefined.tga")
 		changeTexture(avatar + "RightArm", texturePath, "undefined.tga")
 		
 elif sleeve == "1": #Manga larga
-	if skin <> "": 
-		print "Cambiamos textura manga larga"
-		if gender == "male":
-			texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
-			changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
-			changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
-			changeTexture(avatar + "LeftArm", texturePath, "undefined.tga")
-			changeTexture(avatar + "RightArm", texturePath, "undefined.tga")
-		elif gender == "female":
-			texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + skirt)
-			changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
-			changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
-			changeTexture(avatar + "LeftArm", texturePath, "undefined.tga")
-			changeTexture(avatar + "RightArm", texturePath, "undefined.tga")
+	print "Cambiamos textura manga larga"
+	if gender == "male":
+		texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
+		changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
+		changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
+	elif gender == "female":
+		texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + skirt)
+		changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
+		changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
+		
+	changeTexture(avatar + "LeftArm", texturePath, "undefined.tga")
+	changeTexture(avatar + "RightArm", texturePath, "undefined.tga")
 	
 if trousers <> "":
   print "Cambiamos textura pantalon"
   texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
   changeTexture("boyBody", texturePath, "defaultTrousers.tga")
 	
-if typetrousers == "0" and gender == "male":
-	if skin <> "": #Pantalon corto
-	  print "Cambiamos textura pantalon corto"
-	  texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
-	  changeTexture("boyLeftLeg", texturePath, "defaultTrousers.tga")
-	  changeTexture("boyRightLeg", texturePath, "defaultTrousers.tga")
+if typeTrousers == "0" and gender == "male":
+	#Pantalon corto
+	print "Cambiamos textura pantalon corto"
+	texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
+	changeTexture("boyLeftLeg", texturePath, "defaultTrousers.tga")
+	changeTexture("boyRightLeg", texturePath, "defaultTrousers.tga")
+	if skin <> "": 
 	  texturePath = os.path.join(os.path.abspath("."), "textures/male/skin/" + skin)
 	  changeTexture("boyLeftLeg", texturePath, "undefined.tga")
 	  changeTexture("boyRightLeg", texturePath, "undefined.tga")
-elif typetrousers == "1" and gender == "male":
-	if skin <> "": #Pantalon largo
-	  print "Cambiamos textura pantalon largo"
-	  texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
-	  changeTexture("boyLeftLeg", texturePath, "defaultTrousers.tga")
-	  changeTexture("boyRightLeg", texturePath, "defaultTrousers.tga")
-	  changeTexture("boyLeftLeg", texturePath, "undefined.tga")
-	  changeTexture("boyRightLeg",texturePath,"undefined.tga")
+elif typeTrousers == "1" and gender == "male":
+	#Pantalon largo
+	print "Cambiamos textura pantalon largo"
+	texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
+	changeTexture("boyLeftLeg", texturePath, "defaultTrousers.tga")
+	changeTexture("boyRightLeg", texturePath, "defaultTrousers.tga")
+	changeTexture("boyLeftLeg", texturePath, "undefined.tga")
+	changeTexture("boyRightLeg",texturePath,"undefined.tga")
 	
 if shoes <> "":
   print "Cambiamos textura zapatos"
@@ -224,8 +235,7 @@ if shoes <> "":
 #Generamos una imagen por cada rotacion del personaje
 rotations = [0, 45, 90, 135, 180, 225, 270, 315]
 for rot in rotations:
-  rotateObject("boyBody",rot)
-  rotateObject("boyHead",rot)
+  rotateObject(avatar + "Center", rot)
   if rot == 0:
 	  renderScene("avatarS.png")
 #  elif rot == 45:
@@ -242,7 +252,6 @@ for rot in rotations:
 #	  renderScene("avatarE.png")
 #  elif rot == 315:
 #	  renderScene("avatarSE.png")
-#
 
 
 
