@@ -1,7 +1,7 @@
 import threading
 import ggcommon.remotemodel
 import traceback
-
+import copy
 
 class Model: #{{{
 
@@ -43,7 +43,7 @@ class Model: #{{{
     params: datos sobre el evento.
     """
     self._eventsMutex.acquire()
-    eventsCopy = self._events
+    eventsCopy = copy.copy(self._events)
     self._eventsMutex.release()
     for type, method in eventsCopy:
       if type == eventType:
@@ -68,7 +68,7 @@ class Model: #{{{
 
   def unsubscribeEventMethod(self, method, eventType=None):
     self._eventsMutex.acquire()
-    pass # actually do it!
+    raise "actually do it!"
     self._eventsMutex.release()
 
 

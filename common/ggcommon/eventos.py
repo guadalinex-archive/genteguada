@@ -23,3 +23,6 @@ class Event:
                              utils.objectToSerialize(self.params, rServer))
 
     return eventToSerialize
+
+  def __repr__(self):
+    return "EVENT Name: "+str(self.name)+" Producer: "+str(self.producer)+" Params: "+str(self.params)

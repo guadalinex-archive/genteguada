@@ -113,7 +113,6 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "ejecutamos un metodo pasando por parametro una diccionario de remotemodel"
     result = model.getDictName({"1":player})
     assert result == "maradona"
-
     """
     print prefix + "Ejecucion desde multiples hilos"
     t1 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Luis"))
@@ -127,10 +126,11 @@ class TestRemoteObject(unittest.TestCase):
     time.sleep(5)
     """
 
+    model.setPosition([0,0])
+    model.setName('')
     print prefix + "Nos suscribimos a eventos"
     assert self.lastEvent == None
     model.subscribeEvent('position', self.eventFired)
-    #time.sleep(1)
     model.subscribeEvent('name',     self.eventFired)
     assert self.lastEvent == None
 
@@ -146,7 +146,6 @@ class TestRemoteObject(unittest.TestCase):
     assert self.lastEvent.name == 'position'
     assert self.lastEvent.producer == model
     assert self.lastEvent.params['position'] == [2,4]
-    #time.sleep(1)
 
     print prefix + "Cambiamos el nombre"
     model.setName('Guido')
