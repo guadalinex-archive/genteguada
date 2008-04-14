@@ -133,7 +133,13 @@ class RClientThread(threading.Thread): #{{{
   #}}}
 
   def _receiveRootModel(self): #{{{
-    data = self.getSocket().recv(1024)
+    size = struct.calcsize("i")
+    size = self.getSocket().recv(size)
+    if len(size):
+      size = struct.unpack("i", size)[0]
+      data = ""
+      while len(data) < size:
+        data = self.getSocket().recv(size - len(data))
     rootModel = pickle.loads(data)
     self.rClient.setRootModel(rootModel)
   #}}}
@@ -158,12 +164,19 @@ class RClientThread(threading.Thread): #{{{
     self._receiveRootModel()
 
     while True:
-      commandData = self.getSocket().recv(1024)
-      command = pickle.loads(commandData)
-
-      if isinstance(command, ggcommon.remotecommand.RExecutionAnswerer):
-        self.rClient._addCommand(command)
+      size = struct.calcsize("i")
+      size = self.getSocket().recv(size)
+      if len(size):
+        size = struct.unpack("i", size)[0]
+        commandData = ""
+        while len(commandData) < size:
+          commandData = self.getSocket().recv(size - len(commandData))
+        command = pickle.loads(commandData)
+        if isinstance(command, ggcommon.remotecommand.RExecutionAnswerer):
+          self.rClient._addCommand(command)
+        else:
+          command.do()
       else:
-        command.do()
+        self.getSocket.close()
 
 #}}}
