@@ -12,6 +12,8 @@ import struct
 import traceback
 import logging
 
+import struct
+
 logger = logging.getLogger('genteguada')
 hdlr = logging.FileHandler('genteguada.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -123,20 +125,19 @@ class RServerHandler(SocketServer.BaseRequestHandler): #{{{
 
   def _sendObject(self, object):
     toSerialize = ggcommon.utils.objectToSerialize(object, getRServer())
-    logger.info("Serializamos el objeto "+str(object))
     serialized = pickle.dumps(toSerialize)
+    sizeSerialized = len(serialized)
     try:
-      logger.info("Enviamos el objeto al cliente "+str(object))
+      size = struct.pack("i",sizeSerialized)
+      self.request.send(size)
       self.request.send(serialized)
       return True
     except:
-      logger.error("Ocurrio un error al enviar el "+str(object)+" al cliente "+str(self.client_address))
       print sys.exc_info()[1]
       traceback.print_exc()
       return False
 
   def sendCommand(self, command):
-    logger.info("Enviamos comando")
     return self._sendObject(command)
 
   def finish(self): #{{{
