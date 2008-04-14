@@ -113,9 +113,7 @@ class Room(model.Model):
           self.triggerEvent('click on tile', pl=self._players[ind].getName(), room=self._id, tg=target)
     else:
       for ind2 in range(self._players.__len__()):
-        posAux = self._players[ind2].getPosition()
-        posAux2 = [posAux[0], posAux[1], posAux[2]]
-        if posAux2 == target:
+        if self._players[ind2].getPosition() == target:
           self._players[ind2].clickedByPlayer(player, clickerLabel, self.getName())
       
   def insertFloor(self, floor):

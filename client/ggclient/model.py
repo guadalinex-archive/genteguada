@@ -117,8 +117,43 @@ class Model:
         method(event)
     
   def unsubscribeEventObserver(self, observer, eventType=None):
-    pass
+    if eventType <> None:
+      #elimina una suscripcion hecha por un observador a un evento
+      #p.uno.im_self.__class__
+      pass
+    else:
+      #elimina todas las suscripciones hechas por un jugador
+      pass    
 
   def unsubscribeEventMethod(self, method, eventType=None):
-    pass
-  
+    if eventType:
+      #elimina una suscripcion a un metodo para un evento concreto
+      result = [self._events[x] for x in range(len(self._events)) \
+                if self._events[x][0] <> eventType and self._events[x][1] <> method]
+      self._events = result  
+    else:
+      #elimina todas las suscripciones a un evento
+      result = [self._events[x] for x in range(len(self._events)) \
+                if self._events[x][1] <> method]
+      self._events = result
+
+  """
+  def deleteEvent(self, eventType=None):
+    if eventType:
+      result = [self._events[x] for x in range(len(self._events)) if not self._events[x][0] == eventType]
+      self._events = result
+    else:
+      self._events = []
+  """
+
+  def register(self, view):
+    """ Registra una vista como visor de este subject.
+    view: vista a registrar.
+    """
+    self._views.append(view)
+    
+  def unregister(self, view):
+    """ Elimina de la lista de registrados una vista de este subject.
+    vista: vista a eliminar.
+    """
+    self._views.remove(view)
