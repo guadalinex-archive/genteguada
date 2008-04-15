@@ -1,9 +1,9 @@
 import sys
 
+#sys.path.append("../igorpc")
 sys.path.append("../server")
 
 import ggserver.model
-
 
 class TestPlayer(ggserver.model.Model): #{{{
     
