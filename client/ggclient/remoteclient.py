@@ -140,8 +140,8 @@ class RClientThread(threading.Thread): #{{{
       data = ""
       while len(data) < size:
         data = self.getSocket().recv(size - len(data))
-    rootModel = pickle.loads(data)
-    self.rClient.setRootModel(rootModel)
+      rootModel = pickle.loads(data)
+      self.rClient.setRootModel(rootModel)
   #}}}
 
 
@@ -177,6 +177,6 @@ class RClientThread(threading.Thread): #{{{
         else:
           command.do()
       else:
-        self.getSocket.close()
+        self.getSocket().close()
 
 #}}}
