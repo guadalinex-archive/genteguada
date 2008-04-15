@@ -1,3 +1,9 @@
+genteguada-client (0.0.4-1) unstable; urgency=low
+
+  * Integrado el sistema de eventos cliente en el cliente
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Tue, 15 Apr 2008 10:49:36 +0200
+
 genteguada-client (0.0.3-1) unstable; urgency=low
 
   * Uso de grupos de sprite 

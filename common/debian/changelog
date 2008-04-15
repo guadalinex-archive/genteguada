@@ -1,3 +1,9 @@
+genteguada-common (0.0.4-1) unstable; urgency=low
+
+  * Definido eventos distribuidos
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Tue, 15 Apr 2008 10:47:05 +0200
+
 genteguada-common (0.0.3-1) unstable; urgency=low
 
   * Definicion de objeto remoto y metodo remoto
