@@ -4,12 +4,9 @@ import thread
 import time
 import random
 
-sys.path.append("../client")
-sys.path.append("../common")
-#sys.path.append("../server")
+sys.path.append("../../dmvc")
 
-import ggclient.remoteclient
-import ggcommon.remotemodel
+import dMVC.remoteclient
 
 import models
 
@@ -22,7 +19,7 @@ class TestRemoteObject(unittest.TestCase):
  
   def testRemoteModel(self):
     print "Conectando con el server"
-    client = ggclient.remoteclient.RClient("127.0.0.1")
+    client = dMVC.remoteclient.RClient("127.0.0.1")
     
     print "Ejecutando test con model remoto"
     model = client.getRootModel()
