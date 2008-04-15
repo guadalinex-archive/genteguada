@@ -48,6 +48,11 @@ class Player(model.Model):
       if self._state == utils.DIR[i]:
         return i
     return 0  
+  
+  def testSetPosition(self, position):
+    """ Version publica del metodo _setPosition. Usar SOLO para realizar test.
+    """
+    self._setPosition(position)
       
   def _setPosition(self, position):
     """ Asigna una nueva posicion a un objeto.

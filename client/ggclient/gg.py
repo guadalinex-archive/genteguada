@@ -131,12 +131,29 @@ class GG:
     self.textRect = pygame.Rect((utils.CHAT_OR[0], utils.CHAT_OR[1], utils.CHAT_SZ[0], utils.CHAT_SZ[1]))
     
     self.isoviewRoom.drawFirst()
-    pygame.display.update()
     self.isoviewHud.paint()
     pygame.display.update()
     
+    insertado = 0
+    accTime = 0
+    clock = pygame.time.Clock()
+    
     while True:
+      """
       time.sleep(utils.TICK_DELAY)
+      accTime = accTime + clock.tick(30)
+      if accTime/1000.0 >= 2 and insertado == 0:
+        accTime = 0
+        self.player3 = player.Player("Jugador Azul2", self.activePlayer, utils.PLAYER_SPRITE1, utils.CHAR_SZ, [5, 0, 3])
+        self.player3.subscribeEvent('click on player', self.clickOnPlayerEventFired)
+        self.room.insertPlayer(self.player2)
+        self.isoViewPlayer.addModel(self.player2)
+        self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer)
+        self.isoviewRoom.drawFirst()
+        pygame.display.update()
+        self.printOnChat("Jugador Azul2 insertado")
+        insertado = 1
+      """  
       self.room.tick()
       self.input(pygame.event.get())
-    
+      
