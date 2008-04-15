@@ -1,23 +1,19 @@
 import sys
+import dMVC.model
 
-#sys.path.append("../igorpc")
-sys.path.append("../server")
-
-import ggserver.model
-
-class TestPlayer(ggserver.model.Model): #{{{
+class TestPlayer(dMVC.model.Model): #{{{
     
   def __init__(self):
-    ggserver.model.Model.__init__(self)
+    dMVC.model.Model.__init__(self)
 
   def name(self):
     return 'maradona'
 #}}}
 
-class TestModel(ggserver.model.Model): #{{{
+class TestModel(dMVC.model.Model): #{{{
     
   def __init__(self):
-    ggserver.model.Model.__init__(self)
+    dMVC.model.Model.__init__(self)
     self._player = TestPlayer()
     self._position = [0,0]
     self._name = ''
