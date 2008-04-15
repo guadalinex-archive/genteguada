@@ -2,6 +2,7 @@ import threading
 import remotemodel
 import traceback
 import copy
+import events
 
 class Model: #{{{
 
