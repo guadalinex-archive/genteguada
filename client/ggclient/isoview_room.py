@@ -99,3 +99,5 @@ class IsoViewRoom(isoview.IsoView):
     """
     self._isoViewPlayer.newAction(event)
 
+  def isoViewRoom(self):
+    pass

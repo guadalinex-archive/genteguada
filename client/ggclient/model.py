@@ -75,6 +75,11 @@ class Model:
     """    
     return self._id
 
+  def testSetName(self, name):
+    """ Version publica del metodo _setName. Usar SOLO para realizar test.
+    """
+    self._setName(name)
+
   def _setName(self, name):
     """ Asigna una nueva etiqueta para el objeto.
     name: etiqueta del objeto.

@@ -135,7 +135,6 @@ class IsoViewPlayer(isoview.IsoView):
     y2d = (y2d * utils.TILE_SZ[1])
     
     if size:
-      print size
       x2d = x2d - (size[0])
       y2d = y2d - (size[1] / 4)
     else:
