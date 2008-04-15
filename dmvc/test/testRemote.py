@@ -1,11 +1,7 @@
-import sys
 import unittest
 import thread
 import time
 import random
-
-sys.path.append("../../dmvc")
-
 import dMVC.remoteclient
 
 import models
