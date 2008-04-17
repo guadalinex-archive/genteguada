@@ -88,8 +88,10 @@ class RemoteModel: #{{{
 
 
   def __transplantMethods(self, donorClass):
-    for function in donorClass.__dict__.values():
-      if callable(function):
+    for key in dir(donorClass):
+      method = getattr(donorClass, key)
+      if callable(method):
+        function = method.im_func
         if 'flag' in function.__dict__.keys():
           if function.__dict__['flag'] == 'localMethod':
             self.__dict__[function.func_name] = new.instancemethod(function, self)
