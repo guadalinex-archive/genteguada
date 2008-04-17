@@ -8,6 +8,11 @@ class TestPlayer(dMVC.model.Model): #{{{
 
   def name(self):
     return 'maradona'
+
+  @dMVC.model.localMethod
+  def localMethod(self):
+    print '----> executing model local method in ' + str(self)
+
 #}}}
 
 class TestModel(dMVC.model.Model): #{{{
@@ -80,6 +85,11 @@ class TestModel(dMVC.model.Model): #{{{
     for key in dictplayer.keys():
       name = dictplayer[key].name()
     return name
+
+
+  @dMVC.model.localMethod
+  def localMethod(self):
+    print '----> executing model local method in ' + str(self)
 
 
 #}}}

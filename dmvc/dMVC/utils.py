@@ -1,6 +1,7 @@
 
 import threading
 import model
+import remotemodel
 import remotecommand
 import events
 import logging
@@ -88,3 +89,62 @@ def objectToSerialize(object, rServer): #{{{
     return object
 #}}}
 
+
+
+
+
+
+def serverEtherRealize(arg, rServer): #{{{
+
+  if isinstance(arg, remotemodel.RemoteModel):
+    return arg.serverEtherRealize(rServer)
+
+  elif isinstance(arg,list): 
+    resultArg = []
+    for i in range(len(arg)):
+      resultArg.append(serverEtherRealize(arg[i],rServer))
+    return resultArg
+
+  elif isinstance(arg,tuple):
+    resultArg = []
+    for i in range(len(arg)):
+      resultArg.append(serverEtherRealize(arg[i],rServer))
+    return tuple(resultArg)
+
+  elif isinstance(arg,dict):
+    resultArg = {}
+    for key in arg.keys():
+      resultArg[serverEtherRealize(key,rServer)] = serverEtherRealize(arg[key],rServer)
+    return resultArg
+
+  else:
+    return arg
+  #}}}
+
+
+def clientEtherRealize(arg, rClient): #{{{
+
+  if isinstance(arg, remotemodel.RemoteModel):
+    return arg.clientEtherRealize(rClient)
+
+  elif isinstance(arg,list): 
+    resultArg = []
+    for i in range(len(arg)):
+      resultArg.append(clientEtherRealize(arg[i],rClient))
+    return resultArg
+
+  elif isinstance(arg,tuple):
+    resultArg = []
+    for i in range(len(arg)):
+      resultArg.append(clientEtherRealize(arg[i],rClient))
+    return tuple(resultArg)
+
+  elif isinstance(arg,dict):
+    resultArg = {}
+    for key in arg.keys():
+      resultArg[clientEtherRealize(key,rClient)] = clientEtherRealize(arg[key],rClient)
+    return resultArg
+
+  else:
+    return arg
+  #}}}

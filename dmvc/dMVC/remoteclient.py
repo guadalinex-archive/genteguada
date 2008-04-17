@@ -43,7 +43,7 @@ class RClient:
     if self.__rootModel != None:
       utils.logger.error("The receiver already has a rootModel")
       raise Exception('The receiver already has a rootModel')
-    self.__rootModel = model
+    self.__rootModel = utils.clientEtherRealize(model, self)
     self.__rootModelSemaphore.release()
   #}}}
 

@@ -5,6 +5,15 @@ import remotemodel
 import copy
 import events
 
+
+def localMethod(func):
+  """
+  flag a method to be a ever-local method.  it means the method will be copied to the remotemodel representing the model in the client side.
+  """
+  func.flag = 'localMethod'
+  return func
+
+
 class Model: 
 
   def __init__(self): #{{{
@@ -21,7 +30,7 @@ class Model:
 
   def __str__(self): #{{{
     utils.logger.debug("Model.__str__")
-    return '<Model ID: ' + str(self.__id) +'>'
+    return '<Model ID: ' + str(self.__id) + ' (' + self.__class__.__module__ + '.' + self.__class__.__name__ + ')>'
   #}}}
 
   def objectToSerialize(self, server): #{{{
@@ -29,7 +38,9 @@ class Model:
     if self.__id == None:
       utils.logger.info("Register model into server")
       server.registerModel(self)
-    return remotemodel.RemoteModel(self.__id)
+    return remotemodel.RemoteModel(self.__id,
+                                   self.__class__.__module__,
+                                   self.__class__.__name__)
   #}}}
 
   def subscribeEvent(self, eventType, method): #{{{

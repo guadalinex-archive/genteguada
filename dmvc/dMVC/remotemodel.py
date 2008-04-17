@@ -4,26 +4,39 @@ import traceback
 
 import remoteclient
 import utils
+import new
+
 
 class RemoteModel: #{{{
 
-  def __init__(self, id): #{{{
-    self._modelID = id
+  def __init__(self, modelID, modelModuleName, modelClassName): #{{{
+    self.__modelID         = modelID
+    self.__modelModuleName = modelModuleName
+    self.__modelClassName  = modelClassName
   #}}}
 
   def __str__(self): #{{{
-    return '<RemoteModel modelID: ' + str(self._modelID) +'>'
+    return '<RemoteModel modelID: ' + str(self.__modelID) + ' (' + self.__modelModuleName + '.' + self.__modelClassName + ')>'
+  #}}}
+
+  def __repr__(self): #{{{
+    return self.__str__()
   #}}}
 
   def __getattr__(self, attrName): #{{{
     if attrName == "__getinitargs__":       # allows it to be safely pickled
       raise AttributeError()
-    return RemoteMethod(self._modelID, attrName)
+    return RemoteMethod(self.__modelID, attrName)
   #}}}
 
   # Pickling support, otherwise pickle uses __getattr__:
   def __getstate__(self): #{{{
-    return self.__dict__
+    dict = {}
+    for key in self.__dict__.keys():
+      value = self.__dict__[key]
+      if not callable(value):
+        dict[key] = value
+    return dict
   #}}}
 
   def __setstate__(self, args): #{{{
@@ -32,6 +45,8 @@ class RemoteModel: #{{{
   #}}}
 
 
+  def getModelID(self):
+    return self.__modelID
 
 
   def subscribeEvent(self, eventType, method):
@@ -43,7 +58,7 @@ class RemoteModel: #{{{
     suscription = [eventType, method]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
 
-    rClient.sendCommand(remotecommand.REventSuscriber(self._modelID, eventType, suscriptionID))
+    rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID))
 
     
   def triggerEvent(self, eventType, **params):
@@ -65,10 +80,36 @@ class RemoteModel: #{{{
     if not isinstance(comparand, RemoteModel):
       return False
 
-    return self._modelID == comparand._modelID
+    return self.__modelID == comparand.getModelID()
 
+
+  def serverEtherRealize(self, rServer):
+    return rServer.getModelByID(self.__modelID)
+
+
+  def __transplantMethods(self, donorClass):
+    for function in donorClass.__dict__.values():
+      if callable(function):
+        if 'flag' in function.__dict__.keys():
+          if function.__dict__['flag'] == 'localMethod':
+            self.__dict__[function.func_name] = new.instancemethod(function, self)
+
+  def __findModelClass(self):
+    __import__(self.__modelModuleName)
+    mod = sys.modules[self.__modelModuleName]
+    klass = getattr(mod, self.__modelClassName)
+    return klass
+
+
+  def clientEtherRealize(self, rClient):
+    self.__transplantMethods(self.__findModelClass())
+    return self
 
 #}}}
+
+
+
+
 
 class RemoteMethod: #{{{
 
