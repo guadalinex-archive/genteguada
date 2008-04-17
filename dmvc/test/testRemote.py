@@ -28,6 +28,10 @@ class TestRemoteObject(unittest.TestCase):
 
   def useModel(self, model, prefix):
     print prefix + "model class: " + str(model.__class__)
+
+    print prefix + "client side execution"
+    model.localMethod()
+
     print prefix + "Ejecutamos el metodo foo sin argumentos"
     result = model.foo()
     assert result == "foo"
@@ -38,6 +42,9 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "Obtenemos un modelo a partir del root model"
     player = model.player()
+
+    print prefix + "player client side execution"
+    player.localMethod()
 
     print prefix + "Ejecutamos un metodo del objeto obtenido a partir del root"
     result = player.name()
