@@ -3,7 +3,7 @@ import remotecommand
 import traceback
 
 import remoteclient
-
+import utils
 
 class RemoteModel: #{{{
 
@@ -39,7 +39,7 @@ class RemoteModel: #{{{
     eventType: tipo de evento.
     method: metodo que se lanzara.
     """
-    rClient = remoteclient.getRClient()
+    rClient = utils.getRClient()
     suscription = [eventType, method]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
 
@@ -79,7 +79,7 @@ class RemoteMethod: #{{{
 
   def __call__(self, *args): #{{{
     try:
-      rClient = remoteclient.getRClient()
+      rClient = utils.getRClient()
     except:
       print sys.exc_info()[1]
       traceback.print_exc()

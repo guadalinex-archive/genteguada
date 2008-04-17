@@ -46,7 +46,7 @@ class RExecuterCommand(RCommand): #{{{
 
   def do(self): #{{{
     try:
-      rServer = remoteserver.getRServer()
+      rServer = utils.getRServer()
     except:
       print sys.exc_info()[1]
       traceback.print_exc()
@@ -152,7 +152,7 @@ class REventSuscriber(RCommand):
     self._suscriptionID = suscriptionID
   
   def do(self):
-    model = remoteserver.getRServer().getModelByID(self._modelID)
+    model = utils.getRServer().getModelByID(self._modelID)
     model.subscribeEvent(self._eventType, self.eventFired)
 
   def eventFired(self, event):
@@ -161,7 +161,7 @@ class REventSuscriber(RCommand):
       self.unsubscribeEventObserver()
 
   def unsubscribeEventObserver(self):
-    model = remoteserver.getRServer().getModelByID(self._modelID)
+    model = utils.getRServer().getModelByID(self._modelID)
     model.unsubscribeEventObserver(self)
 
 
@@ -179,6 +179,7 @@ class REventTriggerer(RCommand):
     return self
 
   def do(self):
-    rClient = remoteclient.getRClient()
+    rClient = utils.getRClient()
     suscription = rClient.getRemoteSuscriptionByID(self._suscriptionID)
     suscription[1](self._event)
+

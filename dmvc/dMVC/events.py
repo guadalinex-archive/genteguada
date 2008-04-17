@@ -1,28 +1,37 @@
+
 import utils
 
 class Event:
 
-  """
-  Clase padre de los eventos, todos los eventos definidos en el juego
-  tienen que heredar de esta clase
-  """
-
-  def __init__(self, producer, name, params):
-    """
-    Constructor de la clase
-    """
-    self.producer = producer
-    self.name = name
-    self.params = params
-    
+  def __init__(self, producer, name, params): #{{{
+    utils.logger.debug("Event.__init__")
+    self.__producer = producer
+    self.__name = name
+    self.__params = params
+  #}}}
   
-  def objectToSerialize(self, rServer):
-
-    eventToSerialize = Event(utils.objectToSerialize(self.producer, rServer),
-                             utils.objectToSerialize(self.name, rServer),
-                             utils.objectToSerialize(self.params, rServer))
-
+  def objectToSerialize(self, rServer): #{{{
+    utils.logger.debug("Event.objectToSerialize rServer: "+str(rServer))
+    eventToSerialize = Event(utils.objectToSerialize(self.__producer, rServer), utils.objectToSerialize(self.__name, rServer), utils.objectToSerialize(self.__params, rServer))
     return eventToSerialize
+  #}}}
 
-  def __repr__(self):
-    return "EVENT Name: "+str(self.name)+" Producer: "+str(self.producer)+" Params: "+str(self.params)
+  def __repr__(self): #{{{
+    utils.logger.debug("Event.__repr__")
+    return "EVENT Name: "+str(self.__name)+" Producer: "+str(self.__producer)+" Params: "+str(self.__params)
+  #}}}
+
+  def getProducer(self): #{{{
+    utils.logger.debug("Event.getProducer")
+    return self.__producer
+  #}}}
+
+  def getName(self): #{{{
+    utils.logger.debug("Event.getName")
+    return self.__name
+  #}}}
+
+  def getParams(self): #{{{
+    utils.logger.debug("Event.getParams")
+    return self.__params
+  #}}}
