@@ -6,98 +6,90 @@ import isoview
 import isoview_tile
 
 class IsoViewRoom(isoview.IsoView):
-  """ Clase IsoViewRoom.
-  Define a la vista de una habitacion.
+  """ IsoViewRoom class.
+  Defines the room view.
   """
 
   def __init__(self, name, screen):
-    """ Constructor de la clase.
-    name: nombre de la habitacion.
+    """ Class constructor.
+    name: room label.
     """
     isoview.IsoView.__init__(self, name)
-    self.screen = screen
-    self._spritesList = []
-    self._tileList = []
+    self.__screen = screen
+    self.__spritesList = []
+    self.__tileList = []
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        varPos = self._p3dToP2d([x, 0, z])
+        varPos = self.p3dToP2d([x, 0, z], [utils.TILE_SZ[0], -5])
         pos = [int(varPos[0]),int(varPos[1])]
-        self._tileList.append([])
-        self._tileList[x].append(isoview_tile.IsoViewTile(\
+        self.__tileList.append([])
+        self.__tileList[x].append(isoview_tile.IsoViewTile(\
             [pos[0], pos[1]], \
             [pos[0] + utils.TILE_SZ[0], pos[1] + utils.TILE_SZ[1]], \
             utils.TILE_STONE, utils.TILE_SZ, 0))
         
   def insertIsoViewPlayer(self,player):
-    """ Inserta un observador de jugadores.
-    player: observador de jugadores.
+    """ Inserts a new player view.
+    player: player view.
     """
-    self._isoViewPlayer = player
-    bgPath = os.path.join(utils.DATA_PATH, self._modelList[0].getSpriteFull())
+    self.__isoViewPlayer = player
+    bgPath = os.path.join(utils.DATA_PATH, self.getModelList()[0].getSpriteFull())
     bg = pygame.sprite.Sprite()
     bg.image = pygame.image.load(bgPath)
     bg.rect = bg.image.get_rect()
     bg.rect.topleft = utils.BG_FULL_OR
     player.setBg(bg)
   
-  def insertItem(self,item):
-    """ Inserta un observador de items no jugadores.
-    item: observador de items no jugadores.
-    """
-    self._isoViewItem = item
-
   def drawFirst(self):
-    self.paintFloorFull(self._modelList[0].getSpriteFull())
-    self._isoViewPlayer.drawFirst(self.screen)
+    """ Draws the room and all its components on screen for the first time.
+    """
+    self.paintFloorFull(self.getModelList()[0].getSpriteFull())
+    self.__isoViewPlayer.drawFirst(self.__screen)
   
   def draw(self):
-    """ Pinta el suelo, jugadores y objetos de la habitacion.
-    screen: controlador de pantalla.
+    """ Paints floor, players and items on the room.
+    screen: screen handler.
     """
-    self.paintFloorFull(self._modelList[0].getSpriteFull(), self.screen)
-    self.isoViewPlayer.draw(self.screen)
+    self.paintFloorFull(self.getModelList()[0].getSpriteFull(), self.__screen)
+    self.isoViewPlayer.draw(self.__screen)
     
   def paintFloorFull(self, spriteFull):
-    """ Pinta el suelo de una habitacion con un solo sprite.
-    screen: controlador de pantalla.
+    """ Paints the room's floor using a single sprite.
+    screen: screen handler.
     """
-    self._modelList[0].getSpriteFull()
+    self.getModelList()[0].getSpriteFull()
     bgPath = os.path.join(utils.DATA_PATH, spriteFull)
     bg = pygame.sprite.Sprite()
     bg.image = pygame.image.load(bgPath)
     bg.rect = bg.image.get_rect()
     bg.rect.topleft = utils.BG_FULL_OR
-    self.screen.blit(bg.image, bg.rect)
+    self.__screen.blit(bg.image, bg.rect)
 
-  def paintFloor(self, tile_name):
-    """ Pinta el suelo de la habitacion.
-    tile_name: grafico de cada baldosa.
-    screen: controlador de pantalla.
+  def paintFloor(self, tileName):
+    """ Paints the roo floor.
+    tileName: tile sprite.
+    screen: screen handler.
     """
     pygame.draw.rect(screen, (0, 0, 0), (0, 0, utils.GAMEZONE_SZ[0], utils.GAMEZONE_SZ[1]))
-    tile = os.path.join(utils.DATA_PATH, tile_name)
+    tile = os.path.join(utils.DATA_PATH, tileName)
     tileSurface = pygame.image.load(tile)
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        self.screen.blit(tileSurface, self._p3dToP2d([x, 0, z]))
+        self.__screen.blit(tileSurface, self.__p3dToP2d([x, 0, z]))
 
   def findTile(self,pos):
-    """ Encuentra la posicion 3d de la baldosa a la que corresponden unas \
-    coordenadas 2d.
-    pos: coordenadas 2d de pantalla.
+    """ Gets the 3d tile coords that match a 2d point.
+    pos: 2d coords.
     """
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
-        if self._tileList[x][z].contained(pos):
-          if not self._tileList[x][z].onBlank(pos):
+        if self.__tileList[x][z].contained(pos):
+          if not self.__tileList[x][z].onBlank(pos):
             return [x, z]
     return [-1, -1]
   
   def newAction(self, event):
-    """ Ejecuta un metodo tras recibir informacion sobre un evento.
-    event: informacion sobre el evento.    
+    """ Runs a method after receiving an event.
+    event: event info.    
     """
-    self._isoViewPlayer.newAction(event)
-
-  def isoViewRoom(self):
-    pass
+    self.__isoViewPlayer.newAction(event)

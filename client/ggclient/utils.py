@@ -7,6 +7,7 @@ if os.path.isdir("data"):
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada-client"
 
+VERSION = "GenteGuada 0.0.3.1"
 TICK_DELAY = 0.1
 TILE_SZ = [100, 50]
 #TILE2TILE = 55.901699437

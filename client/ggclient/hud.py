@@ -1,8 +1,8 @@
-import model
+import ggmodel
 
-class Hud(model.Model):
-  """ Clase Hud.
-  Incluira atributos y metodos necesarios para el control del HUD.
+class Hud(ggmodel.GGModel):
+  """ HUD class.
+  Includes attributes and methods to handle the HUD.
   """
 
   pass
