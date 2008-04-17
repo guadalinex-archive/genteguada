@@ -1,20 +1,20 @@
 import math
 import operator
 import utils
-import model
+import ggmodel
 
-class Room(model.Model):
-  """ Clase Room.
-  Define atributos y metodos de una habitacion.
+class Room(ggmodel.GGModel):
+  """ Room class.
+  Defines atributes and methods for a single room.
   """
 
   def __init__(self, name, id, sprite, spriteFull):
-    """ Constructor de la clase.
-    name: etiqueta de la habitacion.
-    id: identificador.
-    sprite: grafico asignado a las baldosas de la habitacion.
+    """ Class constructor.
+    name: room label.
+    id: identifier.
+    sprite: sprite used to paint the room tiles on screen.
     """
-    model.Model.__init__(self, name, id, sprite, [0, 0])
+    ggmodel.GGModel.__init__(self, name, id, sprite, [0, 0])
     self._players = []
     self._blocked = []
     self._spriteFull = spriteFull
@@ -24,46 +24,46 @@ class Room(model.Model):
         self._blocked[i].append(0)
     
   def getPlayerState(self, player):
-    """ Devuelve el estado en el que se encuentra un jugador.
-    player: jugador a consultar.
+    """ Returns the player state.
+    player: player to check.
     """
     return self._players[player].getState()
  
   def getBlocked(self, pos):
-    """ Indica si una celda esta libre o bloqueada.
-    pos: posicion de la celda.
+    """ Checks if a tile is blocked.
+    pos: tile position.
     """
     return self._blocked[pos[0]][pos[2]]
   
   def getSpriteFull(self):
-    """ Devuelve el nombre del grafico de la habitacion completa.
-    spriteFull: grafico a devolver.
+    """ Returns the background image name.
+    spriteFull: image name.
     """
     return self._spriteFull
 
   def setBlockedTile(self, pos):
-    """ Pone una celda de la habitacion como bloqueada al paso.
-    pos: posicion de la celda.
+    """ Sets a tile as blocked.
+    pos: tile position.
     """
     self._blocked[pos[0]][pos[2]] = 1
 
   def setUnblockedTile(self, pos):
-    """ Pone una celda de la habitacion como vacia, permitiendo el paso.
-    pos: posicion de la celda.
+    """ Sets a tile as unblocked or passable.
+    pos: tile position.
     """
     self._blocked[pos[0]][pos[2]] = 0
     
   def _setSpriteFull(self, spriteFull):
-    """ Asigna un sprite para mostrar en el fondo.
-    spriteFull: nombre del sprite.
+    """ Sets a new sprite to be used as background image.
+    spriteFull: sprite name.
     """
     self._spriteFull = spriteFull
 
   def getNextDirection(self, caller, pos1, pos2):
-    """ Obtiene la siguiente posicion en el trayecto de un jugador entre 2 puntos.
-    caller: jugador
-    pos1: posicion de inicio.
-    pos2: posicion de destino.
+    """ Returns the direction that the player must follow, according to a rute between 2 points.
+    caller: player
+    pos1: starting point.
+    pos2: ending point.
     """
 
     if pos1 == pos2: return "standing_down"
@@ -117,30 +117,23 @@ class Room(model.Model):
           self._players[ind2].clickedByPlayer(player, clickerLabel, self.getName())
       
   def insertFloor(self, floor):
-    """ Asigna el suelo de la habitacion.
-    floor: suelo de la habitacion.
+    """ Sets a new room floor.
+    floor: room floor.
     """
     self._floor = floor
 
   def insertPlayer(self, player):
-    """ Asigna un jugador a la habitacion.
-    player: jugador a asignar.
+    """ Inserts a new player on the room.
+    player: new player.
     """
     self._players.append(player)
     self.setBlockedTile(player.getPosition())
 
-  def insertItem(self, item):
-    """ Asigna un item no jugador a la habitacion.
-    player: objeto a asignar.
-    """
-    self._items.append(item)
-
   def isCloser(self, ori, pos, dest):
-    """ Indica si la posicion "pos2" esta mas cerca de "dest" que "ori". \
-    Todas las coordenadas son puntos 3d.
-    ori: punto de origen.
-    pos: punto a comprobar.
-    dest: punto de destino.
+    """ Checks if "pos2" is closer to "dest" than "ori"
+    ori: starting point.
+    pos: point to check.
+    dest: ending point.
     """
     dist1 = math.sqrt(pow((dest[0] - ori[0]), 2) + pow((dest[2] - ori[2]), 2))
     dist2 = math.sqrt(pow((dest[0] - pos[0]), 2) + pow((dest[2] - pos[2]), 2))
@@ -150,23 +143,15 @@ class Room(model.Model):
       return 0
     
   def p2pDistance(self, point1, point2):
-    """ Obtiene la distancia entre dos puntos.
-    point1 = punto inicial.
-    point2 = punto final.
+    """ Returns the distance between two points.
+    point1 = starting point.
+    point2 = ending point.
     """
     if point1 == point2: return 0
     return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
 
-  def notify(self):
-    """ Indica a las vistas asignadas que se ha producido un cambio.
-    """
-    self._notify_views(id)
-    for player in self._players:
-      player.notify()  
-  
   def tick(self):
-    """ Realiza las llamadas para actualizar posiciones y estados para todos \
-    los jugadores asignados.
+    """ Updates positions and states for all players.
     """
     for player in self._players:
       direction = self.getNextDirection(player.getId(), player.getPosition(), player.getDestination())

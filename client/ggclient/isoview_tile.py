@@ -2,66 +2,65 @@ import utils
 import isoview
 
 class IsoViewTile(isoview.IsoView):
-  """ Clase IsoViewTile.
-  Define a la vista de una baldosa de la habitacion.
+  """ IsoViewTile class.
+  Defines a room tile view
   """
 
   def __init__(self, topLeft, bottomRight, sprite, size, blocked):
-    """ Constructor de la clase.
-    topLeft: coordenada superior izquierda (origen) de la baldosa.
-    bottomRight: coordenada inferior derecha de la baldosa.
-    size: tamano de la baldosa.
-    blocked: indica si se puede pasar a traves de ella.
+    """ Class constructor.
+    topLeft: top left tile coord.
+    bottomRight: lower right tile coord.
+    size: tile size.
+    blocked: Indicates if the tile is passable or blocked.
     """
-    self._type = -1
-    self._topLeft = topLeft
-    self._bottomRight = bottomRight
-    self._id = id
-    self._sprite = sprite
-    self._size = size
-    self._views = []
-    self._blocked = blocked
+    self.__type = -1
+    self.__topLeft = topLeft
+    self.__bottomRight = bottomRight
+    self.__id = id
+    self.__sprite = sprite
+    self.__size = size
+    self.__views = []
+    self.__blocked = blocked
     
   def getTopLeft(self):
-    """ Devuelve la coordenada superior izquierda.
+    """ Returns the top left coord.
     """
-    return self._topLeft
+    return self.__topLeft
   
   def getBottomRight(self):
-    """ Devuelve la coordenada inferior derecha.
+    """ Returns the lower right coord.
     """
-    return self._bottomRight
+    return self.__bottomRight
   
   def getId(self):
-    """ Devuelve el identificador de la baldosa.
+    """ Returns the tile Id.
     """
-    return self._id
+    return self.__id
 
   def getBlocked(self):
-    """ Indica si la baldosa esta bloqueada al paso.
+    """ Returns the tile blocked state.
     """
-    return self._blocked
+    return self.__blocked
   
   def setBlocked(self, blocked):
-    """ Pone una baldosa como bloqueada para pasar.
+    """ Set the tile as blocked.
     """
-    self._blocked = blocked
+    self.__blocked = blocked
   
   def contained(self, pos):
-    """ Indica si un punto 2d esta contenido en la baldosa.
-    pos: punto a comprobar.
+    """ Returns if a point is contained on a tile.
+    pos: point.
     """
-    if self._bottomRight[0] > pos[0] > self._topLeft[0]:
-      if self._bottomRight[1] > pos[1] > self._topLeft[1]:
+    if self.__bottomRight[0] > pos[0] > self.__topLeft[0]:
+      if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
         return 1
     return 0
 
   def onBlank(self, pos):
-    """ Indica si la posicion en la que ha pinchado el usuario en la baldosa \
-    corresponde a una zona transparente de la imagen o al cuerpo de la baldosa.
-    pos: posicion en la que ha pinchado el usuario.
+    """ Checks if one point is located on the blank zones of the tile sprite.
+    pos: point.
     """
-    iniPos = [pos[0]-self._topLeft[0], pos[1]-self._topLeft[1]]
+    iniPos = [pos[0] - self.__topLeft[0], pos[1] - self.__topLeft[1]]
     if iniPos[0] < (utils.TILE_SZ[0] / 2):
       if iniPos[1] < (utils.TILE_SZ[1] / 2):
         #top left corner
