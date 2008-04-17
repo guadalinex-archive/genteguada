@@ -5,4 +5,6 @@ class Hud(ggmodel.GGModel):
   Includes attributes and methods to handle the HUD.
   """
 
-  pass
+  def __init__(self):
+    pass
+  

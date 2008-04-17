@@ -88,10 +88,11 @@ class GG:
 
     self.activeRoom = 0
     self.activePlayer = 0
+    
+    self.hud = hud.Hud()
     self.room = room.Room("Lobby", self.activeRoom, utils.TILE_STONE, utils.BG_FULL)
     self.room.subscribeEvent('click on tile', self.clickOnTileEventFired)
-    self.player1 = player.Player("Blue Player", self.activePlayer, utils.PLAYER_SPRITE1,
-                                 utils.CHAR_SZ, [0, 0, 0], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4])
+    self.player1 = player.Player("Blue Player", 0, utils.PLAYER_SPRITE1, utils.CHAR_SZ, [0, 0, 0], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4])
     self.player2 = player.Player("Red Player", 1, utils.PLAYER_SPRITE2, utils.CHAR_SZ, [4, 0, 4], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4])
     self.book1 = player.Player("Book", 2, utils.OBJ_BOOK_SPRITE1, [50, 35], [6, 0, 4], [58, -15])
     self.player1.subscribeEvent('position', self.startMovementEventFired)
@@ -101,18 +102,20 @@ class GG:
     self.player2.subscribeEvent('destination', self.startMovementEventFired)
     self.player2.subscribeEvent('click on player', self.clickOnPlayerEventFired)
     self.book1.subscribeEvent('click on player', self.clickOnPlayerEventFired)
+    
     self.room.insertPlayer(self.player1)
     self.room.insertPlayer(self.player2)
     self.room.insertPlayer(self.book1)
     
-    self.isoviewHud = isoview_hud.IsoViewHud("<observer Hud", self.screen)
-    self.isoviewRoom = isoview_room.IsoViewRoom("<observer Room>", self.screen)
-    self.isoviewRoom.addModel(self.room)
-    self.isoViewPlayer = isoview_player.IsoViewPlayer("<observer Player>", 0, self.screen)
-    self.isoViewPlayer.addPlayer(self.player1)
-    self.isoViewPlayer.addPlayer(self.player2)
-    self.isoViewPlayer.addPlayer(self.book1)
-    self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer)
+    self.isoviewHud = isoview_hud.IsoViewHud("<observer Hud", self.screen, self.hud)
+    self.isoviewRoom = isoview_room.IsoViewRoom("<observer Room>", self.screen, self.room)
+    self.isoViewPlayer1 = isoview_player.IsoViewPlayer("<Blue Player observer>", 0, self.screen, self.player1)
+    self.isoViewPlayer2 = isoview_player.IsoViewPlayer("<Red Player observer>", 0, self.screen, self.player2)
+    self.isoViewPlayer3 = isoview_player.IsoViewPlayer("<Book observer>", 0, self.screen, self.book1)
+    
+    self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer1)
+    self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer2)
+    self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer3)
 
     self.textFont = pygame.font.Font(None, 22)
     self.textRect = pygame.Rect((utils.CHAT_OR[0], utils.CHAT_OR[1], utils.CHAT_SZ[0], utils.CHAT_SZ[1]))

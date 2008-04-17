@@ -19,7 +19,7 @@ class GGModel(dMVC.model.Model):
     self.__size = size
     self.__id = id
     self.__events = []
-    self.__views = []
+    self.__view = None
     
   def getName(self):
     """ Returns the class label.
@@ -112,7 +112,7 @@ class GGModel(dMVC.model.Model):
     """ Registers a view as an observer of this object.
     view: view to be registered.
     """
-    self.__views.append(view)
+    self.__view = view
     
   def unregister(self, view):
     """ Registers a view as an observer of this object.

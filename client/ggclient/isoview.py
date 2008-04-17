@@ -6,12 +6,13 @@ class IsoView:
   It defines atributes and methods for a generic view.
   """
   
-  def __init__(self, name):
+  def __init__(self, name, model):
     """ Class constructor.
     name: view name.
     """  
     self.__name = name
-    self.__modelList = []
+    self.__model = model
+    model.register(self)
     self.__type = 0
 
   def getName(self):
@@ -19,10 +20,10 @@ class IsoView:
     """
     return self.__name
   
-  def getModelList(self):
+  def getModel(self):
     """ Returns the list of observed models.
     """
-    return self.__modelList
+    return self.__model
   
   def getType(self):
     """ Returns the type of the viewed model, beeing: -1: tile, 0: player, 1: object.
@@ -34,13 +35,6 @@ class IsoView:
     """
     self.__name = name
     
-  def addModel(self, model):
-    """ Adds a model to the controlled models list
-    model: new model.
-    """
-    self.__modelList.append(model)
-    model.register(self)
-  
   def p3dToP2d(self, cord3d, offset):
     """ Returns the physical 2d coordinates of a 3d virtual point.
     cord3d: 3d virtual point.

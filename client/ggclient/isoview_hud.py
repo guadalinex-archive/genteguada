@@ -7,12 +7,12 @@ class IsoViewHud(isoview.IsoView):
   Defines the HUD.
   """
   
-  def __init__(self, name, screen):
+  def __init__(self, name, screen, model):
     """ Class constructor.
     name: HUD label.
     screen: screen handler.
     """
-    isoview.IsoView.__init__(self, name)
+    isoview.IsoView.__init__(self, name, model)
     self.screen = screen
     
   def paint(self):
