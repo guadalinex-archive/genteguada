@@ -1,182 +1,144 @@
+
+import utils
 import threading
 import socket
 import time
 import pickle
-import sys
-import select
 import remotecommand
-
-import utils
 import struct
-import traceback
+import thread
 
-
-global _rClientSingleton
-_rClientSingleton = None
-
-def getRClient(): #{{{
-  if _rClientSingleton == None:
-    raise Exception("RClient has to be instanciated before calling getRClient()")
-  return _rClientSingleton
-#}}}
-
-class RClient: #{{{ 
+class RClient: 
 
   def __init__(self, serverIP, port=8000): #{{{
-    global _rClientSingleton
-    if not (_rClientSingleton == None):
+    utils.logger.debug("RClient.__init__")
+    try:
+      utils.getRClient()
+      utils.logger.error("Can't create more then one instance of RClient")
       raise Exception("Can't create more then one instance of RClient")
-    _rClientSingleton = self
-
-    self._serverIP = serverIP
-    self._serverPort = port
-    self._rootModel = None
-    self._rootModelSemaphore = threading.Semaphore(0)
-    self._thread = None
-
-    self._commandsList      = []
-    self._commandsListMutex = threading.Semaphore(1)
-
-    self._remoteSuscriptions = {}  ## TODO: Use weak references
-    self._remoteSuscriptionsMutex = threading.Semaphore(1)
-
-    self._start()
+    except:
+      utils.setRClient(self)
+      self.__serverIP = serverIP
+      self.__serverPort = port
+      self.__rootModel = None
+      self.__rootModelSemaphore = threading.Semaphore(0)
+      self.__commandsList      = []
+      self.__commandsListMutex = threading.Semaphore(1)
+      self.__remoteSuscriptions = {}  ## TODO: Use weak references
+      self.__remoteSuscriptionsMutex = threading.Semaphore(1)
+      self.__socket = None
+      self.__socketSemaphore = threading.Semaphore(0)
+      thread.start_new(self.__start,())
   #}}}
 
-  def _addCommand(self, command):
-    self._commandsListMutex.acquire()
-    self._commandsList.append(command)
-    #print str(len(self._commandsList)) + " commands in the list (appended)"
-    self._commandsListMutex.release()
-    
-
-  def hasRootModel(self): #{{{
-    return not (self._rootModel == None)
+  def __addCommand(self, command): #{{{
+    utils.logger.debug("RClient.addCommand command: "+str(command))
+    self.__commandsListMutex.acquire()
+    self.__commandsList.append(command)
+    self.__commandsListMutex.release()
   #}}}
 
   def setRootModel(self, model): #{{{
-    if self._rootModel != None:
+    utils.logger.debug("RClient.setRootModel model: "+str(model))
+    if self.__rootModel != None:
+      utils.logger.error("The receiver already has a rootModel")
       raise Exception('The receiver already has a rootModel')
-    self._rootModel = model
-    self._rootModelSemaphore.release()
+    self.__rootModel = model
+    self.__rootModelSemaphore.release()
   #}}}
 
   def getRootModel(self): #{{{
-    self._rootModelSemaphore.acquire()
-    result = self._rootModel
-    self._rootModelSemaphore.release()   
+    utils.logger.debug("RClient.getRootModel")
+    self.__rootModelSemaphore.acquire()
+    result = self.__rootModel
+    self.__rootModelSemaphore.release()   
     return result
   #}}}
 
   def sendCommand(self, command): #{{{
+    utils.logger.debug("RClient.sendCommand command: "+str(command))
     serializedCommand = pickle.dumps(command)
-
     sizeCommand = len(serializedCommand)
     size = struct.pack("i",sizeCommand)
-    self._thread.getSocket().send(size)
-
-    self._thread.getSocket().send(serializedCommand)
+    self.__socket.send(size)
+    self.__socket.send(serializedCommand)
   #}}}
 
-
-  def waitForExecutionAnswerer(self, executerCommand):
+  def waitForExecutionAnswerer(self, executerCommand): #{{{
+    utils.logger.debug("RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand))
     found = None
-
     while not found:
-      self._commandsListMutex.acquire()
-
-      for each in self._commandsList:
+      self.__commandsListMutex.acquire()
+      for each in self.__commandsList:
         if executerCommand.isYourAnswer(each):
           found = each
           break
-
       if found:
-        self._commandsList.remove(found)
-        #print str(len(self._commandsList)) + " commands in the list (removed)"
-
-      self._commandsListMutex.release()
-
+        self.__commandsList.remove(found)
+      self.__commandsListMutex.release()
       if not found:
         time.sleep(0.02)
-
     return found
+  #}}}
 
-  def registerRemoteSuscription(self, suscription):
+  def registerRemoteSuscription(self, suscription): #{{{
+    utils.logger.debug("RClient.registerRemoteSuscription suscription: "+str(suscription))
     suscriptionID = utils.nextID()
-    self._remoteSuscriptionsMutex.acquire()
-    self._remoteSuscriptions[suscriptionID] = suscription
-    self._remoteSuscriptionsMutex.release()
+    self.__remoteSuscriptionsMutex.acquire()
+    self.__remoteSuscriptions[suscriptionID] = suscription
+    self.__remoteSuscriptionsMutex.release()
     return suscriptionID
+  #}}}
 
-
-  def getRemoteSuscriptionByID(self, suscriptionID):
-    self._remoteSuscriptionsMutex.acquire()
-    result = self._remoteSuscriptions[suscriptionID]
-    self._remoteSuscriptionsMutex.release()
+  def getRemoteSuscriptionByID(self, suscriptionID): #{{{
+    utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
+    self.__remoteSuscriptionsMutex.acquire()
+    result = self.__remoteSuscriptions[suscriptionID]
+    self.__remoteSuscriptionsMutex.release()
     return result
-
-  def _start(self): #{{{
-    self._thread = RClientThread(self)
-    self._thread.start()
   #}}}
 
-#}}}
-
-class RClientThread(threading.Thread): #{{{
-
-  def __init__(self, rClient): #{{{
-    threading.Thread.__init__(self)
-    self.rClient = rClient
-
-    self._socket          = None
-    self._socketSemaphore = threading.Semaphore(0)
+  def __connect(self): #{{{
+    utils.logger.debug("RClient.connect")
+    self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.__socket.connect((self.__serverIP, self.__serverPort))
+    utils.logger.info("the client connect to server")
+    self.__socketSemaphore.release()
   #}}}
 
-  def _receiveRootModel(self): #{{{
+  def __receiveRootModel(self): #{{{
+    utils.logger.debug("RClient.receiveRootModel")
     size = struct.calcsize("i")
-    size = self.getSocket().recv(size)
+    size = self.__socket.recv(size)
     if len(size):
       size = struct.unpack("i", size)[0]
       data = ""
       while len(data) < size:
-        data = self.getSocket().recv(size - len(data))
+        data = self.__socket.recv(size - len(data))
       rootModel = pickle.loads(data)
-      self.rClient.setRootModel(rootModel)
+      self.setRootModel(rootModel)
   #}}}
 
-
-  def getSocket(self):
-    self._socketSemaphore.acquire()
-    result = self._socket
-    self._socketSemaphore.release()
-    return result
-
-
-  def _connect(self):
-    self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self._socket.connect((self.rClient._serverIP, self.rClient._serverPort))
-    self._socketSemaphore.release()
-
-
-  def run(self): #{{{
-    self._connect()
-
-    self._receiveRootModel()
-
+  def __start(self): #{{{
+    utils.logger.debug("RClient.start")
+    self.__connect()
+    self.__receiveRootModel()
+    sizeInt = struct.calcsize("i")
     while True:
-      size = struct.calcsize("i")
-      size = self.getSocket().recv(size)
+      size = self.__socket.recv(sizeInt)
       if len(size):
         size = struct.unpack("i", size)[0]
         commandData = ""
+        utils.logger.debug("Receive from the server a command with "+str(size)+" bytes of size")
         while len(commandData) < size:
-          commandData = self.getSocket().recv(size - len(commandData))
+          commandData = self.__socket.recv(size - len(commandData))
         command = pickle.loads(commandData)
+        utils.logger.debug("Receive from the server the command")
         if isinstance(command, remotecommand.RExecutionAnswerer):
-          self.rClient._addCommand(command)
+          self.__addCommand(command)
         else:
           command.do()
       else:
-        self.getSocket().close()
+        self.__socket.close()
+  #}}}
 
-#}}}

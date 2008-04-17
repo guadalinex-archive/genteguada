@@ -1,13 +1,21 @@
+
 import threading
-
 import model
-
 import remotecommand
 import events
+import logging
 
 
+#Logger #{{{
+logger = logging.getLogger('dMVC')
+hdlr = logging.FileHandler('dMVC.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.DEBUG)
+#}}}
 
-#---------------------------------------------------------
+#nextID #{{{
 __ID_MUTEX = threading.Semaphore(1)
 __ID = 0
 
@@ -19,11 +27,33 @@ def nextID():
   result = __ID
   __ID_MUTEX.release() 
   return result
-#---------------------------------------------------------
-  
+#}}}
 
+#rServerSingleton #{{{
+__rServerSingleton = None
 
+def getRServer(): 
+  if __rServerSingleton == None:
+    raise Exception("RServer has to be instanciated before calling getRServer()")
+  return __rServerSingleton
 
+def setRServer(rserver):
+  global __rServerSingleton
+  __rServerSingleton = rserver
+#}}}
+
+#rClientSingleton #{{{
+__rClientSingleton = None
+
+def getRClient(): 
+  if __rClientSingleton == None:
+    raise Exception("RClient has to be instanciated before calling getRClient()")
+  return __rClientSingleton
+
+def setRClient(rclient):
+  global __rClientSingleton
+  __rClientSingleton = rclient
+#}}}
 
 def objectToSerialize(object, rServer): #{{{
 
@@ -57,3 +87,4 @@ def objectToSerialize(object, rServer): #{{{
   else:
     return object
 #}}}
+
