@@ -1,0 +1,14 @@
+Source: dmvc
+Section: python
+Priority: optional
+Maintainer: Joseba Mariscal <jmariscal@infoglobal.es>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: dmvc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python2.4
+Description: distributed model view controller
+ Juego colaborativo 3D a traves de Internet, en el que el objetivo sera 
+ colaborar con otros jugadores para conseguir premios.
+

@@ -130,21 +130,21 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "Cambiamos la posicion"
     model.setPosition([1,2])
-    assert self.lastEvent.name == 'position'
-    assert self.lastEvent.producer == model
-    assert self.lastEvent.params['position'] == [1,2]
+    assert self.lastEvent.getName() == 'position'
+    assert self.lastEvent.getProducer() == model
+    assert self.lastEvent.getParams()['position'] == [1,2]
 
     print prefix + "Cambiamos la posicion, nuevamente"
     model.setPosition([2,4])
-    assert self.lastEvent.name == 'position'
-    assert self.lastEvent.producer == model
-    assert self.lastEvent.params['position'] == [2,4]
+    assert self.lastEvent.getName() == 'position'
+    assert self.lastEvent.getProducer() == model
+    assert self.lastEvent.getParams()['position'] == [2,4]
 
     print prefix + "Cambiamos el nombre"
     model.setName('Guido')
-    assert self.lastEvent.name == 'name'
-    assert self.lastEvent.producer == model
-    assert self.lastEvent.params['name'] == 'Guido'
+    assert self.lastEvent.getName() == 'name'
+    assert self.lastEvent.getProducer() == model
+    assert self.lastEvent.getParams()['name'] == 'Guido'
 
   def eventFired(self, event):
     self.lastEvent = event
