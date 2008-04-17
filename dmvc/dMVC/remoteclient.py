@@ -8,10 +8,13 @@ import remotecommand
 import struct
 import thread
 
-class RClient: 
+import synchronized
+
+class RClient(synchronized.Synchronized): 
 
   def __init__(self, serverIP, port=8000): #{{{
     utils.logger.debug("RClient.__init__")
+    synchronized.Synchronized.__init__(self)
     try:
       utils.getRClient()
       utils.logger.error("Can't create more then one instance of RClient")
@@ -23,19 +26,16 @@ class RClient:
       self.__rootModel = None
       self.__rootModelSemaphore = threading.Semaphore(0)
       self.__commandsList      = []
-      self.__commandsListMutex = threading.Semaphore(1)
       self.__remoteSuscriptions = {}  ## TODO: Use weak references
-      self.__remoteSuscriptionsMutex = threading.Semaphore(1)
       self.__socket = None
       self.__socketSemaphore = threading.Semaphore(0)
       thread.start_new(self.__start,())
   #}}}
 
+  @synchronized.synchronized(lockName='commandsList')
   def __addCommand(self, command): #{{{
     utils.logger.debug("RClient.addCommand command: "+str(command))
-    self.__commandsListMutex.acquire()
     self.__commandsList.append(command)
-    self.__commandsListMutex.release()
   #}}}
 
   def setRootModel(self, model): #{{{
@@ -64,37 +64,42 @@ class RClient:
     self.__socket.send(serializedCommand)
   #}}}
 
+
+
+  @synchronized.synchronized(lockName='commandsList')
+  def __getAnswer(self, executerCommand):
+    found = None
+    for each in self.__commandsList:
+      if executerCommand.isYourAnswer(each):
+        found = each
+        break
+    if found:
+      self.__commandsList.remove(found)
+    return found
+
+
   def waitForExecutionAnswerer(self, executerCommand): #{{{
     utils.logger.debug("RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand))
     found = None
     while not found:
-      self.__commandsListMutex.acquire()
-      for each in self.__commandsList:
-        if executerCommand.isYourAnswer(each):
-          found = each
-          break
-      if found:
-        self.__commandsList.remove(found)
-      self.__commandsListMutex.release()
+      found = self.__getAnswer(executerCommand)
       if not found:
-        time.sleep(0.02)
+        time.sleep(0.025)
     return found
   #}}}
 
+  @synchronized.synchronized(lockName='remoteSuscriptions')
   def registerRemoteSuscription(self, suscription): #{{{
     utils.logger.debug("RClient.registerRemoteSuscription suscription: "+str(suscription))
     suscriptionID = utils.nextID()
-    self.__remoteSuscriptionsMutex.acquire()
     self.__remoteSuscriptions[suscriptionID] = suscription
-    self.__remoteSuscriptionsMutex.release()
     return suscriptionID
   #}}}
 
+  @synchronized.synchronized(lockName='remoteSuscriptions')
   def getRemoteSuscriptionByID(self, suscriptionID): #{{{
     utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
-    self.__remoteSuscriptionsMutex.acquire()
     result = self.__remoteSuscriptions[suscriptionID]
-    self.__remoteSuscriptionsMutex.release()
     return result
   #}}}
 
