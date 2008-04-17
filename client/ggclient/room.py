@@ -15,49 +15,49 @@ class Room(ggmodel.GGModel):
     sprite: sprite used to paint the room tiles on screen.
     """
     ggmodel.GGModel.__init__(self, name, id, sprite, [0, 0])
-    self._players = []
-    self._blocked = []
-    self._spriteFull = spriteFull
+    self.__players = []
+    self.__blocked = []
+    self.__spriteFull = spriteFull
     for i in range(0, utils.SCENE_SZ[0]):
-      self._blocked.append([])
+      self.__blocked.append([])
       for j in range(0, utils.SCENE_SZ[1]):
-        self._blocked[i].append(0)
+        self.__blocked[i].append(0)
     
   def getPlayerState(self, player):
     """ Returns the player state.
     player: player to check.
     """
-    return self._players[player].getState()
+    return self.__players[player].getState()
  
   def getBlocked(self, pos):
     """ Checks if a tile is blocked.
     pos: tile position.
     """
-    return self._blocked[pos[0]][pos[2]]
+    return self.__blocked[pos[0]][pos[2]]
   
   def getSpriteFull(self):
     """ Returns the background image name.
     spriteFull: image name.
     """
-    return self._spriteFull
+    return self.__spriteFull
 
   def setBlockedTile(self, pos):
     """ Sets a tile as blocked.
     pos: tile position.
     """
-    self._blocked[pos[0]][pos[2]] = 1
+    self.__blocked[pos[0]][pos[2]] = 1
 
   def setUnblockedTile(self, pos):
     """ Sets a tile as unblocked or passable.
     pos: tile position.
     """
-    self._blocked[pos[0]][pos[2]] = 0
+    self.__blocked[pos[0]][pos[2]] = 0
     
-  def _setSpriteFull(self, spriteFull):
+  def setSpriteFull(self, spriteFull):
     """ Sets a new sprite to be used as background image.
     spriteFull: sprite name.
     """
-    self._spriteFull = spriteFull
+    self.__spriteFull = spriteFull
 
   def getNextDirection(self, caller, pos1, pos2):
     """ Returns the direction that the player must follow, according to a rute between 2 points.
@@ -77,10 +77,10 @@ class Room(ggmodel.GGModel):
     dir.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
     dir.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
     dir.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
-
+    
     for i in range(0, len(dir)):
       if (pos2 == dir[i]) and (0 <= dir[i][0] <= utils.SCENE_SZ[0]) and (0 <= dir[i][2] <= utils.SCENE_SZ[1]):
-        if self._blocked[dir[i][0]][dir[i][2]] == 0:
+        if self.getBlocked(dir[i]) == 0:
           return utils.DIR[i+1]
     
     dist = []
@@ -89,9 +89,10 @@ class Room(ggmodel.GGModel):
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (1 <= first[2][0] <= utils.SCENE_SZ[0]) and (0 <= first[2][2] <= utils.SCENE_SZ[1]):
-        if self._blocked[first[2][0]][first[2][2]] == 0:
-          if not self._players[caller].hasBeenVisited(first[2]):
+      if (0 <= first[2][0] <= utils.SCENE_SZ[0]) and (0 <= first[2][2] <= utils.SCENE_SZ[1]):
+        if self.getBlocked(first[2]) == 0:
+        #if self.__blocked[first[2][0]][first[2][2]] == 0:
+          if not self.__players[caller].hasBeenVisited(first[2]):
             return first[0]
     return "standing_down"
 
@@ -100,33 +101,33 @@ class Room(ggmodel.GGModel):
     player: jugador.
     target: objetivo del click.
     """
-    #if self._blocked[target[0]][target[2]] == 0:
-    for ind in range(self._players.__len__()):
-      if self._players[ind].getId() == player:
-        clickerLabel = self._players[ind].getName()
+    #if self.__blocked[target[0]][target[2]] == 0:
+    for ind in range(self.__players.__len__()):
+      if self.__players[ind].getId() == player:
+        clickerLabel = self.__players[ind].getName()
           
     if self.getBlocked(target) == 0:
-      for ind in range(self._players.__len__()):
-        if self._players[ind].getId() == player:
-          direction = self.getNextDirection(self._players[ind].getId(), self._players[ind].getPosition(), target)
-          self._players[ind].setDestination(direction, target)
-          self.triggerEvent('click on tile', pl=self._players[ind].getName(), room=self._id, tg=target)
+      for ind in range(self.__players.__len__()):
+        if self.__players[ind].getId() == player:
+          direction = self.getNextDirection(self.__players[ind].getId(), self.__players[ind].getPosition(), target)
+          self.__players[ind].setDestination(direction, target)
+          self.triggerEvent('click on tile', pl=self.__players[ind].getName(), room=self.getId(), tg=target)
     else:
-      for ind2 in range(self._players.__len__()):
-        if self._players[ind2].getPosition() == target:
-          self._players[ind2].clickedByPlayer(player, clickerLabel, self.getName())
+      for ind2 in range(self.__players.__len__()):
+        if self.__players[ind2].getPosition() == target:
+          self.__players[ind2].clickedByPlayer(player, clickerLabel, self.getName())
       
   def insertFloor(self, floor):
     """ Sets a new room floor.
     floor: room floor.
     """
-    self._floor = floor
+    self.__floor = floor
 
   def insertPlayer(self, player):
     """ Inserts a new player on the room.
     player: new player.
     """
-    self._players.append(player)
+    self.__players.append(player)
     self.setBlockedTile(player.getPosition())
 
   def isCloser(self, ori, pos, dest):
@@ -153,17 +154,17 @@ class Room(ggmodel.GGModel):
   def tick(self):
     """ Updates positions and states for all players.
     """
-    for player in self._players:
+    for player in self.__players:
       direction = self.getNextDirection(player.getId(), player.getPosition(), player.getDestination())
       if direction <> "standing_down":
         pos = player.getPosition()
-        self._blocked[pos[0]][pos[2]] = 0
-        if direction == "walking_up": self._blocked[pos[0]][pos[2] - 1] = 1
-        if direction == "walking_down": self._blocked[pos[0]][pos[2] + 1] = 1
-        if direction == "walking_left": self._blocked[pos[0] - 1][pos[2]] = 1
-        if direction == "walking_right": self._blocked[pos[0] + 1][pos[2]] = 1
-        if direction == "walking_topleft": self._blocked[pos[0] - 1][pos[2] - 1] = 1
-        if direction == "walking_bottomright": self._blocked[pos[0] + 1][pos[2] + 1] = 1
-        if direction == "walking_bottomleft": self._blocked[pos[0] - 1][pos[2] + 1] = 1
-        if direction == "walking_topright": self._blocked[pos[0] + 1][pos[2] - 1] = 1
+        self.setUnblockedTile(pos)
+        if direction == "walking_up": self.__blocked[pos[0]][pos[2] - 1] = 1
+        if direction == "walking_down": self.__blocked[pos[0]][pos[2] + 1] = 1
+        if direction == "walking_left": self.__blocked[pos[0] - 1][pos[2]] = 1
+        if direction == "walking_right": self.__blocked[pos[0] + 1][pos[2]] = 1
+        if direction == "walking_topleft": self.__blocked[pos[0] - 1][pos[2] - 1] = 1
+        if direction == "walking_bottomright": self.__blocked[pos[0] + 1][pos[2] + 1] = 1
+        if direction == "walking_bottomleft": self.__blocked[pos[0] - 1][pos[2] + 1] = 1
+        if direction == "walking_topright": self.__blocked[pos[0] + 1][pos[2] - 1] = 1
         player.tick(direction)

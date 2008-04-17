@@ -15,32 +15,32 @@ class Player(ggmodel.GGModel):
     position: player position.
     """
     ggmodel.GGModel.__init__(self, name, id, sprite, size)
-    self._position = position
-    self._state = "standing_down"
-    self._stateFrame = 0
-    self._destination = position
-    self._offset = offset
-    self._visited = []
+    self.__position = position
+    self.__state = "standing_down"
+    self.__stateFrame = 0
+    self.__destination = position
+    self.__offset = offset
+    self.__visited = []
         
   def getPosition(self):
     """ Returns the player position.
     """
-    return self._position
+    return self.__position
  
   def getState(self):
     """ Returns the player state.
     """
-    return self._state
+    return self.__state
 
   def getStateFrame(self):
     """ Returns the player frame state.
     """
-    return self._stateFrame
+    return self.__stateFrame
 
   def getDestination(self):
     """ Returns the player movement destination.
     """
-    return self._destination
+    return self.__destination
   
   def getDir(self):
     """ Returns the player movement direction.
@@ -53,44 +53,44 @@ class Player(ggmodel.GGModel):
   def getOffset(self):
     """ Returns the player sprite offset.
     """
-    return self._offset
+    return self.__offset
   
   def testSetPosition(self, position):
     """ Public version for _setPosition. To be used ONLY on tests.
     """
-    self._setPosition(position)
+    self.setPosition(position)
       
-  def _setPosition(self, position):
+  def setPosition(self, position):
     """ Sets a new position for the player.
     position: new position.
     """
-    if self._destination == position:
-      self._visited = []
-    self._visited.append(position)
-    pActualAux = self._position
-    self._position = position
-    self.triggerEvent('position', id=self._id, sprite=self.getSprite(), \
-                        pActual=pActualAux, pDestin=self._position, dir=self._state)
+    if self.getDestination() == position:
+      self.__visited = []
+    self.__visited.append(position)
+    pActualAux = self.getPosition()
+    self.__position = position
+    self.triggerEvent('position', id=self.getId(), sprite=self.getSprite(), \
+                        pActual=pActualAux, pDestin=self.__position, dir=self.__state)
     
-  def _setState(self, state):
+  def setState(self, state):
     """ Sets a new player state.
     state: new state.
     """
-    self._state = state
+    self.__state = state
 
-  def _setStateFrame(self, stateFrame):
+  def setStateFrame(self, stateFrame):
     """ Sets a new player state frame.
     stateFrame: new state frame.
     """
-    self._stateFrame = stateFrame
+    self.__stateFrame = stateFrame
 
   def setDestination(self, state, destination):
     """ Sets a new movement destination point.
     state: direction for the next move.
     destiantion: movement destination.
     """
-    self._state = state
-    self._destination = destination
+    self.__state = state
+    self.__destination = destination
     
   def clickedByPlayer(self, player, clickerLabel, roomName):
     """ Triggers an event after being clicked by another player (clicker).
@@ -104,8 +104,8 @@ class Player(ggmodel.GGModel):
     """ Checks if a tile has been visited since the player's last move.
     pos: tile to check.
     """
-    for i in range(0, len(self._visited)):
-      if self._visited[i] == pos:
+    for i in range(0, len(self.__visited)):
+      if self.__visited[i] == pos:
         return 1
     return 0
     
@@ -113,10 +113,10 @@ class Player(ggmodel.GGModel):
     """ This method updates the movement positions and animation states of the player.
     direction: direction of the next move.
     """
-    if self._position == self._destination:
-      self._state = "standing_down"
+    if self.__position == self.__destination:
+      self.__state = "standing_down"
       return
-    if self._state <> "standing_down":
+    if self.__state <> "standing_down":
       pos = self.getPosition()
       self._state = direction
       if self._state == "walking_up":
@@ -135,5 +135,5 @@ class Player(ggmodel.GGModel):
         next = [pos[0] - 1, pos[1], pos[2] + 1]
       if self._state == "walking_topright":
         next = [pos[0] + 1, pos[1], pos[2] - 1]
-      self._setPosition(next)
+      self.setPosition(next)
       
