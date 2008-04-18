@@ -6,7 +6,7 @@ class Player(ggmodel.GGModel):
   Defines an object behaviour, either if it is a player object or a non-player object.
   """
  
-  def __init__(self, name, id, sprite, size, position, offset):
+  def __init__(self, name, id, sprite, size, position, offset, username=None, password=None):
     """ Class builder.
     name: label.
     id: identifier.
@@ -20,6 +20,8 @@ class Player(ggmodel.GGModel):
     self.__stateFrame = 0
     self.__destination = position
     self.__offset = offset
+    if username: self.__username = username
+    if password: self.__password = password
     self.__visited = []
         
   def getPosition(self):
@@ -49,6 +51,23 @@ class Player(ggmodel.GGModel):
       if self._state == utils.DIR[i]:
         return i
     return 0  
+  
+  def getPassword(self):
+    """ Returns the player password.
+    """
+    return self.__password
+  
+  def getUsername(self):
+    """ Returns the player username.
+    """
+    return self.__username
+  
+  def checkUser(self, username, password):
+    """ Checks if username and password match for current player.
+    """
+    if self.getUsername() == username and self.getPassword() == password:
+      return 1
+    return 0
   
   def getOffset(self):
     """ Returns the player sprite offset.
