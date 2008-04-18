@@ -5,7 +5,7 @@ import unittest
 sys.path.append("../client")
 sys.path.append("../common")
 
-from ggclient.utils import *
+import ggclient.utils
 import ggclient.room
 import ggclient.player
 import ggclient.isoview_room
@@ -20,11 +20,12 @@ class TestEventos(unittest.TestCase):
     self.lastEvent = None
  
   def testCreateRoom(self):
-    room = ggclient.room.Room("room1", 0, TILE_STONE, BG_FULL)
-    assert room._id == 0
+    room = ggclient.room.Room("room1", 0, ggclient.utils.TILE_STONE, ggclient.utils.BG_FULL)
+    assert room.getId() == 0
   
   def testSetDestination(self):
-    player = ggclient.player.Player("player", 0, PLAYER_SPRITE1, CHAR_SZ, (2, 0, 2))
+    player = ggclient.player.Player("player", 0, ggclient.utils.PLAYER_SPRITE1,
+              ggclient.utils.CHAR_SZ, (2, 0, 2), [ggclient.utils.CHAR_SZ[0], ggclient.utils.CHAR_SZ[1]/4])
     player.subscribeEvent('position', self.positionEventFired)
     player.testSetPosition([2, 0, 1])
     assert self.eventCount == 1
