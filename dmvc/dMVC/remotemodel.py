@@ -95,6 +95,7 @@ class RemoteModel: #{{{
         function = method.im_func
         if 'flag' in function.__dict__.keys():
           if function.__dict__['flag'] == 'localMethod':
+            utils.logger.debug("Transplanting method " + str(function.func_name) + " in " + str(self) + " from " + str(donorClass))
             self.__dict__[function.func_name] = new.instancemethod(function, self)
 
   def __findModelClass(self):
