@@ -27,7 +27,7 @@ class TestEventos(unittest.TestCase):
     player = ggclient.player.Player("player", 0, ggclient.utils.PLAYER_SPRITE1,
               ggclient.utils.CHAR_SZ, (2, 0, 2), [ggclient.utils.CHAR_SZ[0], ggclient.utils.CHAR_SZ[1]/4])
     player.subscribeEvent('position', self.positionEventFired)
-    player.testSetPosition([2, 0, 1])
+    player.setPosition([2, 0, 1])
     assert self.eventCount == 1
     assert self.lastEvent.params['pDestin'] == [2, 0, 1]
     assert self.lastEvent.producer == player

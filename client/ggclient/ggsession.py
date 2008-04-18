@@ -1,7 +1,6 @@
 import ggmodel
 import room
 import player
-import utils
 
 class GGSession(ggmodel.GGModel):
     """ GGSession class.

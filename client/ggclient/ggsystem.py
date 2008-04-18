@@ -32,6 +32,7 @@ class GGSystem(ggmodel.GGModel):
         for player in self.__players:
           if player.checkUser(username, password):
             return player
+      return None
     
     def createRoom(self, name, id, sprite, spriteFull):
       """ Creates a room and appends it to the room list.

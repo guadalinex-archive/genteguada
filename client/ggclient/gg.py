@@ -19,6 +19,7 @@ import hud
 import room
 import player
 import ggsystem
+import ggsession
 
 class GG:
   """ GG Class
