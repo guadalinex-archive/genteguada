@@ -5,11 +5,18 @@ import remotemodel
 import remotecommand
 import events
 import logging
+import logging.handlers
+import sys
 
 
 #Logger #{{{
 logger = logging.getLogger('dMVC')
-hdlr = logging.FileHandler('dMVC.log')
+
+# log to file
+#hdlr = logging.handlers.RotatingFileHandler("dMVC.log","a",200000,5)
+# log to console
+hdlr = logging.StreamHandler(sys.stdout)
+
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
