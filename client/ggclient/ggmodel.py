@@ -6,7 +6,7 @@ class GGModel(dMVC.model.Model):
   Defines a generic model, its attributes and behaviour.
   """
   
-  def __init__(self, name, id, sprite, size):
+  def __init__(self, name, id, sprite=None, size=None):
     """ Class constructor.
     name: class label.
     id: class identifier.
@@ -15,8 +15,8 @@ class GGModel(dMVC.model.Model):
     """
     dMVC.model.Model.__init__(self)
     self.__name = name
-    self.__sprite = sprite
-    self.__size = size
+    if sprite: self.__sprite = sprite
+    if size:  self.__size = size
     self.__id = id
     self.__events = []
     self.__view = None

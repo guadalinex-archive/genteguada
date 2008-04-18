@@ -18,6 +18,7 @@ import isoview_player
 import hud
 import room
 import player
+import ggsystem
 
 class GG:
   """ GG Class
@@ -42,7 +43,8 @@ class GG:
         x, y = pygame.mouse.get_pos()
         dest = self.isoviewRoom.findTile([x,y])
         if dest <> [-1, -1]:
-          self.room.clickedByPlayer(self.activePlayer, [dest[0], 0, dest[1]])
+          self.ggsystem.getRoom(self.activeRoom).clickedByPlayer(self.activePlayer, [dest[0], 0, dest[1]])
+          #self.room.clickedByPlayer(self.activePlayer, [dest[0], 0, dest[1]])
 
   def startMovementEventFired(self, event):
     """ Starts some methods after receiving a movement event.
@@ -93,32 +95,33 @@ class GG:
     
     # Creating Models
     self.hud = hud.Hud()
-    self.room = room.Room("Lobby", self.activeRoom, utils.TILE_STONE, utils.BG_FULL)
-    self.player1 = player.Player("Blue Player", 0, utils.PLAYER_SPRITE1, utils.CHAR_SZ, [0, 0, 0], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4])
-    self.player2 = player.Player("Red Player", 1, utils.PLAYER_SPRITE2, utils.CHAR_SZ, [4, 0, 4], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4])
-    self.book1 = player.Player("Book", 2, utils.OBJ_BOOK_SPRITE1, [50, 35], [6, 0, 4], [58, -15])
+    self.ggsystem = ggsystem.GGSystem()
+    self.ggsystem.createRoom("Lobby", 0, utils.TILE_STONE, utils.BG_FULL)
+    self.ggsystem.createPlayer("Blue Player", 0, utils.PLAYER_SPRITE1, utils.CHAR_SZ, [0, 0, 0], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4], "blueplayer", "1234")
+    self.ggsystem.createPlayer("Red Player", 1, utils.PLAYER_SPRITE2, utils.CHAR_SZ, [4, 0, 4], [utils.CHAR_SZ[0], utils.CHAR_SZ[1]/4], "redplayer", "1234")
+    self.ggsystem.createPlayer("Book", 2, utils.OBJ_BOOK_SPRITE1, [50, 35], [6, 0, 4], [58, -15], None, None)
     
     # Subscribing models to events
-    self.room.subscribeEvent('click on tile', self.clickOnTileEventFired)
-    self.player1.subscribeEvent('position', self.startMovementEventFired)
-    self.player1.subscribeEvent('destination', self.startMovementEventFired)
-    self.player1.subscribeEvent('click on player', self.clickOnPlayerEventFired)
-    self.player2.subscribeEvent('position', self.startMovementEventFired)
-    self.player2.subscribeEvent('destination', self.startMovementEventFired)
-    self.player2.subscribeEvent('click on player', self.clickOnPlayerEventFired)
-    self.book1.subscribeEvent('click on player', self.clickOnPlayerEventFired)
-
-    # Adding players to active room    
-    self.room.insertPlayer(self.player1)
-    self.room.insertPlayer(self.player2)
-    self.room.insertPlayer(self.book1)
+    self.ggsystem.getRoom(0).subscribeEvent('click on tile', self.clickOnTileEventFired)
+    self.ggsystem.getPlayer(0).subscribeEvent('position', self.startMovementEventFired)
+    self.ggsystem.getPlayer(0).subscribeEvent('destination', self.startMovementEventFired)
+    self.ggsystem.getPlayer(0).subscribeEvent('click on player', self.clickOnPlayerEventFired)
+    self.ggsystem.getPlayer(1).subscribeEvent('position', self.startMovementEventFired)
+    self.ggsystem.getPlayer(1).subscribeEvent('destination', self.startMovementEventFired)
+    self.ggsystem.getPlayer(1).subscribeEvent('click on player', self.clickOnPlayerEventFired)
+    self.ggsystem.getPlayer(2).subscribeEvent('click on player', self.clickOnPlayerEventFired)
+    
+    # Adding players to active room
+    self.ggsystem.insertPlayerIntoRoom(0, 0)
+    self.ggsystem.insertPlayerIntoRoom(1, 0)
+    self.ggsystem.insertPlayerIntoRoom(2, 0)
     
     # Creating views with associated models
     self.isoviewHud = isoview_hud.IsoViewHud("<observer Hud", self.screen, self.hud)
-    self.isoviewRoom = isoview_room.IsoViewRoom("<observer Room>", self.screen, self.room)
-    self.isoViewPlayer1 = isoview_player.IsoViewPlayer("<Blue Player observer>", 0, self.screen, self.player1)
-    self.isoViewPlayer2 = isoview_player.IsoViewPlayer("<Red Player observer>", 0, self.screen, self.player2)
-    self.isoViewPlayer3 = isoview_player.IsoViewPlayer("<Book observer>", 0, self.screen, self.book1)
+    self.isoviewRoom = isoview_room.IsoViewRoom("<observer Room>", self.screen, self.ggsystem.getRoom(0))
+    self.isoViewPlayer1 = isoview_player.IsoViewPlayer("<Blue Player observer>", 0, self.screen, self.ggsystem.getPlayer(0))
+    self.isoViewPlayer2 = isoview_player.IsoViewPlayer("<Red Player observer>", 0, self.screen, self.ggsystem.getPlayer(1))
+    self.isoViewPlayer3 = isoview_player.IsoViewPlayer("<Book observer>", 0, self.screen, self.ggsystem.getPlayer(2))
 
     # Adding model views to active room view
     self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer1)
@@ -133,6 +136,6 @@ class GG:
     # Main loop
     while True:
       time.sleep(utils.TICK_DELAY)
-      self.room.tick()
+      self.ggsystem.tick()
       self.input(pygame.event.get())
       
