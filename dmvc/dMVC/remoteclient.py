@@ -31,7 +31,6 @@ class RClient(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='commandsList')
   def __addCommand(self, command): #{{{
-    #utils.logger.debug("RClient.addCommand command: "+str(command))
     self.__commandsList.append(command)
   #}}}
 
@@ -45,7 +44,6 @@ class RClient(synchronized.Synchronized):
   #}}}
 
   def getRootModel(self): #{{{
-    #utils.logger.debug("RClient.getRootModel")
     self.__rootModelSemaphore.acquire()
     result = self.__rootModel
     self.__rootModelSemaphore.release()   

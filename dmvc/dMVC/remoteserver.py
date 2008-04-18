@@ -23,13 +23,11 @@ class RServer(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='models')
   def getModelByID(self, id): #{{{
-    #utils.logger.debug("RServer.getModelByID id: "+str(id))
     return self.__models[id]
   #}}}
 
   @synchronized.synchronized(lockName='models')
   def registerModel(self, model): #{{{
-    #utils.logger.debug("RServer.registerModel model: "+str(model))
     if model in self.__models.values():
       utils.logger.error("The model "+str(model)+" is allready register")
       return
@@ -40,7 +38,6 @@ class RServer(synchronized.Synchronized):
   #}}}
 
   def getRootModel(self): #{{{
-    #utils.logger.debug("RServer.getRootModel")
     return self.__rootModel
   #}}}
 
@@ -88,15 +85,13 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         answer = command.do()
         utils.logger.debug("Run the command " + str(command) + " from the client "+str(self.client_address)+ " and the result is "+str(answer))
         if answer:
-          #utils.logger.debug("Send the answer "+str(answer)+" to client "+str(self.client_address))
           self.__sendObject(answer)
       else:
-        #utils.logger.debug("Close the connection with "+str(self.client_address))
         break
   #}}}
 
   def __sendObject(self, object): #{{{
-    utils.logger.debug("RServerHandler.sendObject client: "+str(self.client_address)+" object: "+str(object))
+    utils.logger.debug("Sendind object " + str(object) + " to client: "+str(self.client_address))
     toSerialize = dMVC.objectToSerialize(object, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
@@ -111,7 +106,6 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def sendCommand(self, command): #{{{
-    #utils.logger.debug("RServerHandler.sendCommand client: "+str(self.client_address)+" command: "+str(command))
     return self.__sendObject(command)
   #}}}
 
