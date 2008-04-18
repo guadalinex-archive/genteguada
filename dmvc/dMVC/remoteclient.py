@@ -104,7 +104,7 @@ class RClient(synchronized.Synchronized):
     utils.logger.debug("RClient.connect")
     self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.__socket.connect((self.__serverIP, self.__serverPort))
-    utils.logger.info("the client connect to server")
+    utils.logger.debug("the client connect to server")
     self.__socketSemaphore.release()
   #}}}
 

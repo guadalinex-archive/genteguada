@@ -37,7 +37,6 @@ class Model(synchronized.Synchronized):
   def objectToSerialize(self, server): #{{{
     #utils.logger.debug("Model.objectToSerialize server: "+str(server))
     if self.__id == None:
-      #utils.logger.info("Register model into server")
       server.registerModel(self)
     return remotemodel.RemoteModel(self.__id,
                                    self.__class__.__module__,
@@ -54,7 +53,7 @@ class Model(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='subscriptions')
   def triggerEvent(self, eventType, **params): #{{{
-    utils.logger.debug("Model.triggerEvent eventType: "+str(eventType)+ " params: "+str(params))
+    utils.logger.debug("Model " + str(self) + " triggered eventType: "+str(eventType)+ " params: "+str(params))
     subscriptionsCopy = copy.copy(self.__subscriptions)
     for type, method in subscriptionsCopy:
       if type == eventType:
