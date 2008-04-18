@@ -29,14 +29,14 @@ class RServer(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='models')
   def registerModel(self, model): #{{{
-    utils.logger.debug("RServer.registerModel model: "+str(model))
+    #utils.logger.debug("RServer.registerModel model: "+str(model))
     if model in self.__models.values():
-      utils.logger.error("The molel "+str(model)+" is allready register")
+      utils.logger.error("The model "+str(model)+" is allready register")
       return
     modelID = utils.nextID()
     model.setID(modelID)
-    utils.logger.info("Register the model with id "+str(id))
     self.__models[modelID] = model
+    utils.logger.debug("Registered the model " + str(model) + " with id "+str(modelID))
   #}}}
 
   def getRootModel(self): #{{{
@@ -49,7 +49,7 @@ class RServer(synchronized.Synchronized):
     con = SocketServer.ThreadingTCPServer(('', self.__port), RServerHandler)
     con.request_queue_size = 500
     thread.start_new(con.serve_forever, ())
-    utils.logger.info("Server listen...")
+    utils.logger.debug("Server listen...")
     #TODO habra que eliminar este import porque para cerrar el servidor habra que hacerlo de otro manera
     import sys
     while 1:
@@ -68,8 +68,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def setup(self): #{{{
-    utils.logger.debug("RServerHandler.setup client:  "+str(self.client_address))
-    utils.logger.info("Conect client "+str(self.client_address))
+    utils.logger.debug("Conect client "+str(self.client_address))
     self.__sendRootModel()
   #}}}
 
@@ -87,12 +86,12 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
         answer = command.do()
-        utils.logger.info("Run the command " + str(command) + " from the client "+str(self.client_address)+ " and the result is "+str(answer))
+        utils.logger.debug("Run the command " + str(command) + " from the client "+str(self.client_address)+ " and the result is "+str(answer))
         if answer:
           #utils.logger.debug("Send the answer "+str(answer)+" to client "+str(self.client_address))
           self.__sendObject(answer)
       else:
-        utils.logger.info("Close the connection with "+str(self.client_address))
+        #utils.logger.debug("Close the connection with "+str(self.client_address))
         break
   #}}}
 
@@ -117,6 +116,5 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def finish(self): #{{{
-    utils.logger.debug("RServerHandler.finish client: "+str(self.client_address))
-    utils.logger.info("Close the connection with "+str(self.client_address))
+    utils.logger.debug("Close the connection with "+str(self.client_address))
   #}}}
