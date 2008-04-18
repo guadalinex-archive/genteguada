@@ -23,7 +23,7 @@ class RServer(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='models')
   def getModelByID(self, id): #{{{
-    utils.logger.debug("RServer.getModelByID id: "+str(id))
+    #utils.logger.debug("RServer.getModelByID id: "+str(id))
     return self.__models[id]
   #}}}
 
@@ -40,7 +40,7 @@ class RServer(synchronized.Synchronized):
   #}}}
 
   def getRootModel(self): #{{{
-    utils.logger.debug("RServer.getRootModel")
+    #utils.logger.debug("RServer.getRootModel")
     return self.__rootModel
   #}}}
 
@@ -81,16 +81,15 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       if len(size):
         size = struct.unpack("i", size)[0]
         commandData = ""
-        utils.logger.debug("Receive from the client "+str(self.client_address)+" a command with "+str(size)+" bytes of size")
         while len(commandData) < size:
           commandData = self.request.recv(size - len(commandData))
         command = pickle.loads(commandData)
-        utils.logger.debug("Receive from the client "+str(self.client_address)+" the command")
+        utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
         answer = command.do()
-        utils.logger.info("Run the commnad from the client "+str(self.client_address)+ " and the result is "+str(answer))
+        utils.logger.info("Run the command " + str(command) + " from the client "+str(self.client_address)+ " and the result is "+str(answer))
         if answer:
-          utils.logger.debug("Send the answer "+str(answer)+" to client "+str(self.client_address))
+          #utils.logger.debug("Send the answer "+str(answer)+" to client "+str(self.client_address))
           self.__sendObject(answer)
       else:
         utils.logger.info("Close the connection with "+str(self.client_address))
@@ -113,7 +112,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def sendCommand(self, command): #{{{
-    utils.logger.debug("RServerHandler.sendCommand client: "+str(self.client_address)+" command: "+str(command))
+    #utils.logger.debug("RServerHandler.sendCommand client: "+str(self.client_address)+" command: "+str(command))
     return self.__sendObject(command)
   #}}}
 

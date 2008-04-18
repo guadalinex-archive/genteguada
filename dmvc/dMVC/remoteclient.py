@@ -31,7 +31,7 @@ class RClient(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='commandsList')
   def __addCommand(self, command): #{{{
-    utils.logger.debug("RClient.addCommand command: "+str(command))
+    #utils.logger.debug("RClient.addCommand command: "+str(command))
     self.__commandsList.append(command)
   #}}}
 
@@ -45,7 +45,7 @@ class RClient(synchronized.Synchronized):
   #}}}
 
   def getRootModel(self): #{{{
-    utils.logger.debug("RClient.getRootModel")
+    #utils.logger.debug("RClient.getRootModel")
     self.__rootModelSemaphore.acquire()
     result = self.__rootModel
     self.__rootModelSemaphore.release()   
@@ -131,11 +131,10 @@ class RClient(synchronized.Synchronized):
       if len(size):
         size = struct.unpack("i", size)[0]
         commandData = ""
-        utils.logger.debug("Receive from the server a command with "+str(size)+" bytes of size")
         while len(commandData) < size:
           commandData = self.__socket.recv(size - len(commandData))
         command = pickle.loads(commandData)
-        utils.logger.debug("Receive from the server the command")
+        utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
         if isinstance(command, remotecommand.RExecutionAnswerer):
           self.__addCommand(command)
         else:
