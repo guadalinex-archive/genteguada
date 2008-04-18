@@ -4,6 +4,7 @@ import threading
 import remotemodel
 import copy
 import events
+import traceback
 
 
 
@@ -57,7 +58,7 @@ class Model(synchronized.Synchronized):
         try:
           method(event)
         except:
-          utils.logger.exception("Failed exec method "+str(method))
+          utils.logger.exception('Exception while event triggering')
   #}}}
     
   @synchronized.synchronized(lockName='subscriptions')

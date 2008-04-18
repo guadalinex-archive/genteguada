@@ -96,12 +96,12 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
     try:
-      size = struct.pack("i",sizeSerialized)
+      size = struct.pack("i", sizeSerialized)
       self.request.send(size)
       self.request.send(serialized)
       return True
     except:
-      utils.logger.exception("The object can't send")
+      utils.logger.exception("Can''t send an object, probable conexion lost")
       return False
   #}}}
 

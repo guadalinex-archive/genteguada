@@ -21,6 +21,7 @@ def setRServer(rserver):
   __rServerSingleton = rserver
 #}}}
 
+
 #rClientSingleton #{{{
 __rClientSingleton = None
 
