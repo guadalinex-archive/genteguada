@@ -53,8 +53,7 @@ class RExecuterCommand(RCommand): #{{{
     model = rServer.getModelByID(self._modelID)
     try:
       method = getattr(model, self._methodName)
-    except AttributeError,e:
-      traceback.print_exc()
+    except AttributeError, e:
       return RExceptionRaiser(self._executionID, e)
     else:
       if self._args:
@@ -65,8 +64,7 @@ class RExecuterCommand(RCommand): #{{{
       try:
         result = method(*self._args)
       except:
-        traceback.print_exc()
-        print sys.exc_info()[1]
+        utils.logger.exception('Exception in remote method invocation')
         return RExceptionRaiser(self._executionID, sys.exc_info()[1])
       return RExecutionResult(self._executionID, result)
   #}}}
@@ -142,6 +140,7 @@ class REventSuscriber(RCommand):
   def eventFired(self, event):
     command = REventTriggerer(self._suscriptionID, event)
     if not self._serverHandler.sendCommand(command):
+      utils.logger.debug("Can't send event to client, unsuscribing (" + str(self) + ")")
       self.unsubscribeEventObserver()
 
   def unsubscribeEventObserver(self):

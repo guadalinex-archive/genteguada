@@ -7,8 +7,8 @@ import pickle
 import remotecommand
 import struct
 import thread
-
 import synchronized
+
 
 class RClient(synchronized.Synchronized): 
 
@@ -18,15 +18,27 @@ class RClient(synchronized.Synchronized):
 
     dMVC.setRClient(self)
 
-    self.__serverIP = serverIP
+    self.__serverIP   = serverIP
     self.__serverPort = port
-    self.__rootModel = None
+
+    self.__rootModel          = None
     self.__rootModelSemaphore = threading.Semaphore(0)
-    self.__commandsList      = []
+
+    self.__commandsList = []
+
     self.__remoteSuscriptions = {}  ## TODO: Use weak references
+
     self.__socket = None
-    self.__socketSemaphore = threading.Semaphore(0)
+    self.__connect()
+
     thread.start_new(self.__start,())
+  #}}}
+
+  def __connect(self): #{{{
+    utils.logger.debug("connecting to server")
+    self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.__socket.connect((self.__serverIP, self.__serverPort))
+    utils.logger.debug("connected to server")
   #}}}
 
   @synchronized.synchronized(lockName='commandsList')
@@ -34,7 +46,8 @@ class RClient(synchronized.Synchronized):
     self.__commandsList.append(command)
   #}}}
 
-  def setRootModel(self, model): #{{{
+
+  def __setRootModel(self, model): #{{{
     utils.logger.debug("RClient.setRootModel model: "+str(model))
     if self.__rootModel != None:
       utils.logger.error("The receiver already has a rootModel")
@@ -43,6 +56,7 @@ class RClient(synchronized.Synchronized):
     self.__rootModelSemaphore.release()
   #}}}
 
+
   def getRootModel(self): #{{{
     self.__rootModelSemaphore.acquire()
     result = self.__rootModel
@@ -50,15 +64,15 @@ class RClient(synchronized.Synchronized):
     return result
   #}}}
 
+
   def sendCommand(self, command): #{{{
-    utils.logger.debug("RClient.sendCommand command: "+str(command))
     serializedCommand = pickle.dumps(command)
     sizeCommand = len(serializedCommand)
-    size = struct.pack("i",sizeCommand)
+    size = struct.pack("i", sizeCommand)
+    utils.logger.debug("Sending command: " + str(command) + ' (' + str(sizeCommand) + 'b)')
     self.__socket.send(size)
     self.__socket.send(serializedCommand)
   #}}}
-
 
 
   @synchronized.synchronized(lockName='commandsList')
@@ -83,6 +97,7 @@ class RClient(synchronized.Synchronized):
     return found
   #}}}
 
+
   @synchronized.synchronized(lockName='remoteSuscriptions')
   def registerRemoteSuscription(self, suscription): #{{{
     utils.logger.debug("RClient.registerRemoteSuscription suscription: "+str(suscription))
@@ -91,6 +106,7 @@ class RClient(synchronized.Synchronized):
     return suscriptionID
   #}}}
 
+
   @synchronized.synchronized(lockName='remoteSuscriptions')
   def getRemoteSuscriptionByID(self, suscriptionID): #{{{
     utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
@@ -98,30 +114,22 @@ class RClient(synchronized.Synchronized):
     return result
   #}}}
 
-  def __connect(self): #{{{
-    utils.logger.debug("RClient.connect")
-    self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.__socket.connect((self.__serverIP, self.__serverPort))
-    utils.logger.debug("the client connect to server")
-    self.__socketSemaphore.release()
-  #}}}
 
   def __receiveRootModel(self): #{{{
     utils.logger.debug("RClient.receiveRootModel")
-    size = struct.calcsize("i")
-    size = self.__socket.recv(size)
+    size = self.__socket.recv(struct.calcsize("i"))
     if len(size):
       size = struct.unpack("i", size)[0]
       data = ""
       while len(data) < size:
         data = self.__socket.recv(size - len(data))
       rootModel = pickle.loads(data)
-      self.setRootModel(rootModel)
+      self.__setRootModel(rootModel)
   #}}}
 
+
   def __start(self): #{{{
-    utils.logger.debug("RClient.start")
-    self.__connect()
+    utils.logger.debug("Starting connection thread")
     self.__receiveRootModel()
     sizeInt = struct.calcsize("i")
     while True:
@@ -140,4 +148,3 @@ class RClient(synchronized.Synchronized):
       else:
         self.__socket.close()
   #}}}
-
