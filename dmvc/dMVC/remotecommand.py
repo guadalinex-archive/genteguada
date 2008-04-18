@@ -1,3 +1,4 @@
+import dMVC
 import sys
 import remotemodel
 import utils
@@ -45,12 +46,7 @@ class RExecuterCommand(RCommand): #{{{
 
 
   def do(self): #{{{
-    try:
-      rServer = utils.getRServer()
-    except:
-      print sys.exc_info()[1]
-      traceback.print_exc()
-      sys.exit(0)
+    rServer = dMVC.getRServer()
     model = rServer.getModelByID(self._modelID)
     try:
       method = getattr(model, self._methodName)
@@ -61,7 +57,7 @@ class RExecuterCommand(RCommand): #{{{
       if self._args:
         arguments = []
         for i in range(len(self._args)):
-          arguments.append(utils.serverEtherRealize(self._args[i],rServer))
+          arguments.append(dMVC.serverMaterialize(self._args[i],rServer))
         self._args = tuple(arguments)
       try:
         result = method(*self._args)
@@ -92,13 +88,13 @@ class RExecutionResult(RExecutionAnswerer): #{{{
   #}}}
 
   def do(self): #{{{ 
-    rClient = utils.getRClient()
-    return utils.clientEtherRealize(self._result, rClient)
+    rClient = dMVC.getRClient()
+    return dMVC.clientMaterialize(self._result, rClient)
   #}}}
 
 
   def objectToSerialize(self, server):
-    self._result = utils.objectToSerialize(self._result, server)
+    self._result = dMVC.objectToSerialize(self._result, server)
     return self
 
 #}}}
@@ -127,7 +123,7 @@ class REventSuscriber(RCommand):
     self._suscriptionID = suscriptionID
   
   def do(self):
-    model = utils.getRServer().getModelByID(self._modelID)
+    model = dMVC.getRServer().getModelByID(self._modelID)
     model.subscribeEvent(self._eventType, self.eventFired)
 
   def eventFired(self, event):
@@ -136,7 +132,7 @@ class REventSuscriber(RCommand):
       self.unsubscribeEventObserver()
 
   def unsubscribeEventObserver(self):
-    model = utils.getRServer().getModelByID(self._modelID)
+    model = dMVC.getRServer().getModelByID(self._modelID)
     model.unsubscribeEventObserver(self)
 
 
@@ -150,11 +146,11 @@ class REventTriggerer(RCommand):
     self._event         = event
 
   def objectToSerialize(self, server):
-    self._event = utils.objectToSerialize(self._event, server)
+    self._event = dMVC.objectToSerialize(self._event, server)
     return self
 
   def do(self):
-    rClient = utils.getRClient()
+    rClient = dMVC.getRClient()
     suscription = rClient.getRemoteSuscriptionByID(self._suscriptionID)
     suscription[1](self._event)
 

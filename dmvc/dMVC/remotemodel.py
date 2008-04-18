@@ -1,3 +1,4 @@
+import dMVC
 import sys
 import remotecommand
 import traceback
@@ -54,7 +55,7 @@ class RemoteModel: #{{{
     eventType: tipo de evento.
     method: metodo que se lanzara.
     """
-    rClient = utils.getRClient()
+    rClient = dMVC.getRClient()
     suscription = [eventType, method]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
 
@@ -83,7 +84,7 @@ class RemoteModel: #{{{
     return self.__modelID == comparand.getModelID()
 
 
-  def serverEtherRealize(self, rServer):
+  def serverMaterialize(self, rServer):
     return rServer.getModelByID(self.__modelID)
 
 
@@ -103,7 +104,7 @@ class RemoteModel: #{{{
     return klass
 
 
-  def clientEtherRealize(self, rClient):
+  def clientMaterialize(self, rClient):
     self.__transplantMethods(self.__findModelClass())
     return self
 
@@ -121,12 +122,7 @@ class RemoteMethod: #{{{
   #}}}
 
   def __call__(self, *args): #{{{
-    try:
-      rClient = utils.getRClient()
-    except:
-      print sys.exc_info()[1]
-      traceback.print_exc()
-      sys.exit(0)
+    rClient = dMVC.getRClient()
 
     executer = remotecommand.RExecuterCommand(self._modelID, self._methodName, args)
     rClient.sendCommand(executer)

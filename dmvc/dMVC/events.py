@@ -1,4 +1,4 @@
-
+import dMVC
 import utils
 
 class Event:
@@ -6,13 +6,19 @@ class Event:
   def __init__(self, producer, name, params): #{{{
     utils.logger.debug("Event.__init__")
     self.__producer = producer
-    self.__name = name
-    self.__params = params
+    self.__name     = name
+    self.__params   = params
   #}}}
   
   def objectToSerialize(self, rServer): #{{{
     utils.logger.debug("Event.objectToSerialize rServer: "+str(rServer))
-    eventToSerialize = Event(utils.objectToSerialize(self.__producer, rServer), utils.objectToSerialize(self.__name, rServer), utils.objectToSerialize(self.__params, rServer))
+
+    producerToSerialize = dMVC.objectToSerialize(self.__producer, rServer)
+    nameToSerialize     = dMVC.objectToSerialize(self.__name, rServer)
+    paramsToSerialize   = dMVC.objectToSerialize(self.__params, rServer)
+
+    eventToSerialize = Event(producerToSerialize, nameToSerialize, paramsToSerialize)
+
     return eventToSerialize
   #}}}
 
