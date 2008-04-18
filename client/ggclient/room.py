@@ -128,6 +128,7 @@ class Room(ggmodel.GGModel):
     player: new player.
     """
     self.__players.append(player)
+    player.setCurrentRoom(self)
     self.setBlockedTile(player.getPosition())
 
   def isCloser(self, ori, pos, dest):
