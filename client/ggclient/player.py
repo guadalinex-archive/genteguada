@@ -20,6 +20,7 @@ class Player(ggmodel.GGModel):
     self.__stateFrame = 0
     self.__destination = position
     self.__offset = offset
+    self.__currentRoom = None
     if username: self.__username = username
     if password: self.__password = password
     self.__visited = []
@@ -62,23 +63,11 @@ class Player(ggmodel.GGModel):
     """
     return self.__username
   
-  def checkUser(self, username, password):
-    """ Checks if username and password match for current player.
-    """
-    if self.getUsername() == username and self.getPassword() == password:
-      return 1
-    return 0
-  
   def getOffset(self):
     """ Returns the player sprite offset.
     """
     return self.__offset
   
-  def testSetPosition(self, position):
-    """ Public version for _setPosition. To be used ONLY on tests.
-    """
-    self.setPosition(position)
-      
   def setPosition(self, position):
     """ Sets a new position for the player.
     position: new position.
@@ -110,6 +99,18 @@ class Player(ggmodel.GGModel):
     """
     self.__state = state
     self.__destination = destination
+    
+  def setCurrentRoom(self, room):
+    """ Sets room where the player is.
+    """
+    self.__currentRoom = room
+    
+  def checkUser(self, username, password):
+    """ Checks if username and password match for current player.
+    """
+    if self.getUsername() == username and self.getPassword() == password:
+      return 1
+    return 0
     
   def clickedByPlayer(self, player, clickerLabel, roomName):
     """ Triggers an event after being clicked by another player (clicker).

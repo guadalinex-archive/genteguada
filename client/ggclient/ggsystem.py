@@ -1,7 +1,6 @@
 import ggmodel
 import room
 import player
-import utils
 
 class GGSystem(ggmodel.GGModel):
     """ GGSystem class.
