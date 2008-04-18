@@ -1,31 +1,33 @@
-
+import dMVC
 import utils
 import SocketServer
 import thread
 import pickle
 import struct
+import synchronized
 
-class RServer: 
+class RServer(synchronized.Synchronized):
 
   def __init__(self, rootModel, port=8000): #{{{
     utils.logger.debug("RServer.__init__")
-    try:
-      utils.getRServer()
-      utils.logger.error("Can't create more then one instance of RServer")
-      raise Exception("Can't create more then one instance of RServer")
-    except:
-      utils.setRServer(self)
-      self.__models = {}
-      self.__port = port
-      self.__rootModel = rootModel
-      self.__start()
+    synchronized.Synchronized.__init__(self)
+
+    dMVC.setRServer(self)
+
+    self.__models = {}
+    self.__port = port
+    self.__rootModel = rootModel
+    self.__start()
   #}}}
 
+
+  @synchronized.synchronized(lockName='models')
   def getModelByID(self, id): #{{{
     utils.logger.debug("RServer.getModelByID id: "+str(id))
     return self.__models[id]
   #}}}
 
+  @synchronized.synchronized(lockName='models')
   def registerModel(self, model): #{{{
     utils.logger.debug("RServer.registerModel model: "+str(model))
     if model in self.__models.values():
@@ -62,7 +64,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
   def __sendRootModel(self): #{{{
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
-    self.__sendObject(utils.getRServer().getRootModel())
+    self.__sendObject(dMVC.getRServer().getRootModel())
   #}}}
 
   def setup(self): #{{{
@@ -97,7 +99,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
   def __sendObject(self, object): #{{{
     utils.logger.debug("RServerHandler.sendObject client: "+str(self.client_address)+" object: "+str(object))
-    toSerialize = utils.objectToSerialize(object, utils.getRServer())
+    toSerialize = dMVC.objectToSerialize(object, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
     try:
@@ -119,5 +121,3 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     utils.logger.debug("RServerHandler.finish client: "+str(self.client_address))
     utils.logger.info("Close the connection with "+str(self.client_address))
   #}}}
-
-

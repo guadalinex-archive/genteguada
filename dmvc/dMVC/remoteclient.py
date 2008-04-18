@@ -1,4 +1,4 @@
-
+import dMVC
 import utils
 import threading
 import socket
@@ -15,21 +15,18 @@ class RClient(synchronized.Synchronized):
   def __init__(self, serverIP, port=8000): #{{{
     utils.logger.debug("RClient.__init__")
     synchronized.Synchronized.__init__(self)
-    try:
-      utils.getRClient()
-      utils.logger.error("Can't create more then one instance of RClient")
-      raise Exception("Can't create more then one instance of RClient")
-    except:
-      utils.setRClient(self)
-      self.__serverIP = serverIP
-      self.__serverPort = port
-      self.__rootModel = None
-      self.__rootModelSemaphore = threading.Semaphore(0)
-      self.__commandsList      = []
-      self.__remoteSuscriptions = {}  ## TODO: Use weak references
-      self.__socket = None
-      self.__socketSemaphore = threading.Semaphore(0)
-      thread.start_new(self.__start,())
+
+    dMVC.setRClient(self)
+
+    self.__serverIP = serverIP
+    self.__serverPort = port
+    self.__rootModel = None
+    self.__rootModelSemaphore = threading.Semaphore(0)
+    self.__commandsList      = []
+    self.__remoteSuscriptions = {}  ## TODO: Use weak references
+    self.__socket = None
+    self.__socketSemaphore = threading.Semaphore(0)
+    thread.start_new(self.__start,())
   #}}}
 
   @synchronized.synchronized(lockName='commandsList')
@@ -43,7 +40,7 @@ class RClient(synchronized.Synchronized):
     if self.__rootModel != None:
       utils.logger.error("The receiver already has a rootModel")
       raise Exception('The receiver already has a rootModel')
-    self.__rootModel = utils.clientEtherRealize(model, self)
+    self.__rootModel = dMVC.clientMaterialize(model, self)
     self.__rootModelSemaphore.release()
   #}}}
 
