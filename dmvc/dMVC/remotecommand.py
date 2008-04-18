@@ -25,6 +25,9 @@ class RCommand: #{{{
   def setServerHandler(self, serverHandler):
     self._serverHandler = serverHandler
 
+  def __str__(self):
+    return str(self.__class__.__name__) + ': '
+
 #}}}
 
 class RExecuterCommand(RCommand): #{{{
@@ -69,6 +72,9 @@ class RExecuterCommand(RCommand): #{{{
   #}}}
 
 
+  def __str__(self):
+    return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + ', modelID=' + str(self._modelID) + ', ' + str(self._methodName) + str(self._args)
+
 #}}}
 
 class RExecutionAnswerer(RCommand): #{{{
@@ -78,6 +84,8 @@ class RExecutionAnswerer(RCommand): #{{{
     self._executionID = executionID
   #}}}
 
+  def __str__(self):
+    return RCommand.__str__(self) + 'executionID=' + str(self._executionID)
 #}}}  
 
 class RExecutionResult(RExecutionAnswerer): #{{{
@@ -97,6 +105,8 @@ class RExecutionResult(RExecutionAnswerer): #{{{
     self._result = dMVC.objectToSerialize(self._result, server)
     return self
 
+  def __str__(self):
+    return RExecutionAnswerer.__str__(self) + ', result=' + str(self._result)
 #}}}
 
 class RExceptionRaiser(RExecutionAnswerer): #{{{
@@ -109,6 +119,9 @@ class RExceptionRaiser(RExecutionAnswerer): #{{{
   def do(self): #{{{
     raise self._exception
   #}}}
+
+  def __str__(self):
+    return RExecutionAnswerer.__str__(self) + ', exception=' + str(self._exception)
 
 #}}}
 
@@ -135,6 +148,9 @@ class REventSuscriber(RCommand):
     model = dMVC.getRServer().getModelByID(self._modelID)
     model.unsubscribeEventObserver(self)
 
+  def __str__(self):
+    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + ', eventType=' + str(self._eventType) + ', suscriptionID=' + str(self._suscriptionID)
+
 
       
 
@@ -153,4 +169,7 @@ class REventTriggerer(RCommand):
     rClient = dMVC.getRClient()
     suscription = rClient.getRemoteSuscriptionByID(self._suscriptionID)
     suscription[1](self._event)
+
+  def __str__(self):
+    return RCommand.__str__(self) + 'suscriptionID=' + str(self._suscriptionID) + ', event=' + str(self._event)
 

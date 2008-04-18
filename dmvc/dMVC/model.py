@@ -18,26 +18,26 @@ def localMethod(func):
 class Model(synchronized.Synchronized): 
 
   def __init__(self): #{{{
-    utils.logger.debug("Model.__init__")
+    #utils.logger.debug("Model.__init__")
     self.__id = None
     synchronized.Synchronized.__init__(self)
     self.__subscriptions = []
   #}}}
 
   def setID(self, id): #{{{
-    utils.logger.debug("Model.setID id: "+str(id))
+    #utils.logger.debug("Model.setID id: "+str(id))
     self.__id = id
   #}}}
 
   def __str__(self): #{{{
-    utils.logger.debug("Model.__str__")
+    #utils.logger.debug("Model.__str__")
     return '<Model ID: ' + str(self.__id) + ' (' + self.__class__.__module__ + '.' + self.__class__.__name__ + ')>'
   #}}}
 
   def objectToSerialize(self, server): #{{{
-    utils.logger.debug("Model.objectToSerialize server: "+str(server))
+    #utils.logger.debug("Model.objectToSerialize server: "+str(server))
     if self.__id == None:
-      utils.logger.info("Register model into server")
+      #utils.logger.info("Register model into server")
       server.registerModel(self)
     return remotemodel.RemoteModel(self.__id,
                                    self.__class__.__module__,
@@ -90,7 +90,7 @@ class Model(synchronized.Synchronized):
   #}}}
 
   def __eq__(self, comparand): #{{{
-    utils.logger.debug("Model.__eq__")
+    #utils.logger.debug("Model.__eq__")
     return id(self) == id(comparand)
   #}}}
 
