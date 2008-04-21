@@ -20,6 +20,7 @@ import room
 import player
 import ggsystem
 import ggsession
+import gglobby
 
 class GG:
   """ GG Class
@@ -129,6 +130,9 @@ class GG:
     self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer2)
     self.isoviewRoom.insertIsoViewPlayer(self.isoViewPlayer3)
 
+    self.gglobby = gglobby.GGLobby(self.ggsystem)
+    self.ggsession = self.gglobby.login("blueplayer", "1234")
+    
     # Drawing interface & game zone for the first time
     self.isoviewRoom.drawFirst()
     self.isoviewHud.paint()

@@ -14,6 +14,12 @@ class GGSession(ggmodel.GGModel):
       self.__player = player
       
     def getPlayer(self):
+      """ Returns the active player.
+      """
       return self.__player
     
+    def getPosition(self):
+      """ Returns the active player's position.
+      """
+      return self.__player.getPosition()
       
