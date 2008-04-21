@@ -1,0 +1,7 @@
+
+WeakReference al diccionario de subscripciones en el cliente
+WeakReference al diccionario de modelos en el servidor
+Metodos del modelo proteguidos para que el cliente no pueda ejecutarlos, mediante un decorador
+Estadisticas del servidor
+Ping del servidor al cliente para ver los que se han caido
+
