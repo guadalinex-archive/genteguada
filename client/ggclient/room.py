@@ -31,7 +31,6 @@ class GGRoom(ggmodel.GGModel):
 
   def insertItem(self, item):
     self.__items.append(item)
-    #item.setCurrentRoom(self)
     self.setBlockedTile(item.getPosition())
 
   def defaultView(self, screen):
@@ -58,16 +57,14 @@ class GGRoom(ggmodel.GGModel):
     target: objetivo del click.
     """
     clickerLabel = player.getUsername()
-          
     if not self.getBlocked(target):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(direction, target)
       #self.triggerEvent('click on tile', pl=player.getUsername(), room=self, tg=target)
-    
     else:
       for ind2 in range(self.__players.__len__()):
         if self.__players[ind2].getPosition() == target:
-          self.__players[ind2].clickedByPlayer(player, clickerLabel)
+          self.__players[ind2].clickedBy(player)
           
     
   def getNextDirection(self, player, pos1, pos2):

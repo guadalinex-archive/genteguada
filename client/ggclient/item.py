@@ -25,4 +25,8 @@ class GGItem(ggmodel.GGModel):
   def defaultView(self, screen):
     return isoview_item.IsoViewItem(self, screen)
   
+  def clickedBy(self, clicker):
+    self.triggerEvent('clicked by', player=clicker, item=self, target=self.getPosition())
+  
+  
   

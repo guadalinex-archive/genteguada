@@ -66,9 +66,6 @@ class GGPlayer(item.GGItem):
     self.__heading = heading
     self.__destination = destination
   
-  def clickedByPlayer(self, player, clickerLabel):
-    self.triggerEvent('click on player', player=self, clicker=clickerLabel, target=self.getPosition())
-  
   def tick(self, direction):
     if self.getPosition() == self.__destination:
       self.__heading = "standing_down"
