@@ -23,7 +23,6 @@ class GGRoom(ggmodel.GGModel):
 
   def getSpriteFull(self):
     return self.__spriteFull
-
   
   def insertPlayer(self, player):
     self.__players.append(player)
@@ -59,10 +58,12 @@ class GGRoom(ggmodel.GGModel):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(direction, target)
       #self.triggerEvent('click on tile', pl=player.getUsername(), room=self, tg=target)
+    
     else:
       for ind2 in range(self.__players.__len__()):
         if self.__players[ind2].getPosition() == target:
           self.__players[ind2].clickedByPlayer(player, clickerLabel)
+          
     
   def getNextDirection(self, player, pos1, pos2):
     if pos1 == pos2: return "standing_down"

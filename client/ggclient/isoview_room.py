@@ -48,6 +48,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Draws the room and all its components on screen for the first time.
     """
     for player in self.getModel().getPlayers():
+      player.subscribeEvent('position', self.startMovementEventFired)
       isoviewplayer = player.defaultView(self.getScreen())
       self.__isoViewPlayers.append(isoviewplayer)
       self.__allPlayers.add(isoviewplayer.getImg())
@@ -96,7 +97,7 @@ class IsoViewRoom(isoview.IsoView):
     event: event info.    
     """
     for player in self.__isoViewPlayers:
-      if player == event.params["player"]:
+      if player.getModel() == event.getParams()["player"]:
         player.newAction(event)
     self.draw()
     
@@ -104,6 +105,5 @@ class IsoViewRoom(isoview.IsoView):
     """ Starts some methods after receiving a movement event.
     event: movement event data.
     """
-    print "ejecutando **********************************************"
     self.newAction(event)
    

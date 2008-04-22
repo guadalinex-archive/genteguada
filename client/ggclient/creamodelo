@@ -8,6 +8,8 @@ from pygame.locals import *
 
 import ggsystem
 
+import isoview_hud
+
 def input(events):
   for event in events:
     if event.type == QUIT: 
