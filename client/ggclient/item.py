@@ -1,4 +1,5 @@
 import ggmodel
+import isoview_item
 
 class GGItem(ggmodel.GGModel):
   
@@ -20,5 +21,8 @@ class GGItem(ggmodel.GGModel):
   
   def setPosition(self, pos):
     self.__position = pos
-    
+  
+  def defaultView(self, screen):
+    return isoview_item.IsoViewItem(self, screen)
+  
   

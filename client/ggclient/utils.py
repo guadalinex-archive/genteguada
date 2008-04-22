@@ -33,6 +33,7 @@ BG_FULL = "fondo.png"
 TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"
+OAK_SPRITE = "oak.png"
 NINO_SZ = [64, 100]
 NINO_SPRITE = "nino.png"
 NINA_SPRITE = "nina.png"

@@ -3,6 +3,7 @@ import utils
 import room
 import player
 import ggsession
+import item
 
 class GGSystem(dMVC.model.Model):
     """ GGSystem class.
@@ -31,8 +32,11 @@ class GGSystem(dMVC.model.Model):
       return None
       
     def createRoom(self, spriteFull):
-      self.__rooms.append(room.GGRoom(spriteFull))
-    
+      room_ = room.GGRoom(spriteFull)
+      item_ = item.GGItem(utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
+      room_.insertItem(item_)
+      self.__rooms.append(room_)
+      
     def createPlayer(self, sprite, size, position, offset, username, password):
       self.__players.append(player.GGPlayer(sprite, size, position, offset, username, password))  
     
