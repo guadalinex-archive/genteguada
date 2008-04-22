@@ -1,8 +1,10 @@
-import ggmodel
+import dMVC.model
+import utils
 import room
 import player
+import ggsession
 
-class GGSystem(ggmodel.GGModel):
+class GGSystem(dMVC.model.Model):
     """ GGSystem class.
     Includes room and player objects, and some procedures to manage data.
     """
@@ -10,20 +12,44 @@ class GGSystem(ggmodel.GGModel):
     def __init__(self):
       """ Initializes the model attributes and both room and player lists.
       """
-      ggmodel.GGModel.__init__(self, "System model", 0)
+      dMVC.model.Model.__init__(self)
       self.__rooms = []
       self.__players = []
+      # llamadas solo para realizar pruebas
+      self.createRoom(utils.BG_FULL)
+      self.createPlayer(utils.NINO_SPRITE, utils.CHAR_SZ, [0, 0, 0], [2*utils.CHAR_SZ[0]-10, utils.CHAR_SZ[1]], "pepe", "1234")
+      self.createPlayer(utils.NINO_SPRITE, utils.CHAR_SZ, [2, 0, 2], [2*utils.CHAR_SZ[0]-10, utils.CHAR_SZ[1]], "pepe2", "12345")
+      self.insertPlayerIntoRoom(self.__players[0], self.__rooms[0])
+      self.insertPlayerIntoRoom(self.__players[1], self.__rooms[0])
       
-    def getRoom(self, id):
-      """ Returns a specific room.
+    def login(self, username, password):
+      """ Attempts to login on an user. If succesfull, returns a ggsession model.
       """
+      for player in self.__players:
+        if player.checkUser(username, password):
+          return ggsession.GGSession(player)
+      return None
+      
+    def createRoom(self, spriteFull):
+      self.__rooms.append(room.GGRoom(spriteFull))
+    
+    def createPlayer(self, sprite, size, position, offset, username, password):
+      self.__players.append(player.GGPlayer(sprite, size, position, offset, username, password))  
+    
+    def insertPlayerIntoRoom(self, player, room):
+      room.insertPlayer(player)
+    
+    def tick(self):
+      for room in self.__rooms:
+        room.tick()    
+      
+    """  
+    def getRoom(self, id):
       for room in self.__rooms:
         if id == room.getId():
           return room
     
     def getPlayer(self, id=None, username=None, password=None):
-      """ Searchs and returns a player, either by his id or by his username & password.
-      """
       if id <> None:
         for player in self.__players:
           if id == player.getId():
@@ -34,25 +60,9 @@ class GGSystem(ggmodel.GGModel):
             return player
       return None
     
-    def createRoom(self, name, id, sprite, spriteFull):
-      """ Creates a room and appends it to the room list.
-      """
-      self.__rooms.append(room.Room(name, id, sprite, spriteFull))
     
-    def createPlayer(self, name, id, sprite, size, position, offset, username, password):
-      """ Creates a player and appends him to the player list.
-      """
-      self.__players.append(player.Player(name, id, sprite, size, position, offset, username, password))  
     
-    def insertPlayerIntoRoom(self, idPlayer, idRoom):
-      """ Inserts an existing player into a room.
-      """
-      self.getRoom(idRoom).insertPlayer(self.getPlayer(idPlayer))
     
-    def tick(self):
-      """ Calls for an update on all rooms, including players on them.
-      """
-      for room in self.__rooms:
-        room.tick()
-    
+
+    """
     

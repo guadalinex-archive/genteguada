@@ -2,8 +2,8 @@ import math
 import os
 import pygame
 
-if os.path.isdir("data"):
-  DATA_PATH = "data"
+if os.path.isdir("../data"):
+  DATA_PATH = "../data"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada-client"
 
@@ -33,6 +33,7 @@ BG_FULL = "fondo.png"
 TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"
+NINO_SPRITE = "0001_.png"
 OBJ_BOOK_SPRITE1 = "book.png"
 SIN30R = math.sin(math.radians(30))
 COS30R = math.cos(math.radians(30))

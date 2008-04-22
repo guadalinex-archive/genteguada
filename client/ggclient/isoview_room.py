@@ -10,21 +10,20 @@ class IsoViewRoom(isoview.IsoView):
   Defines the room view.
   """
 
-  def __init__(self, name, screen, model):
+  def __init__(self, model, screen):
     """ Class constructor.
     name: room label.
     """
-    isoview.IsoView.__init__(self, name, model)
+    isoview.IsoView.__init__(self, model, screen)
     bgPath = os.path.join(utils.DATA_PATH, model.getSpriteFull())
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath)
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = utils.BG_FULL_OR
-    self.__screen = screen
-    self.__spritesList = []
-    self.__tileList = []
-    self.__isoViewPlayer = []
+    self.__isoViewPlayers = []
+    self.__isoViewItems = []
     self.__allPlayers = pygame.sprite.RenderUpdates()
+    self.__tileList = []
     for x in range(utils.SCENE_SZ[0]):
       for z in range(utils.SCENE_SZ[1]):
         varPos = self.p3dToP2d([x, 0, z], [utils.TILE_SZ[0], -5])
@@ -35,18 +34,29 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0] + utils.TILE_SZ[0], pos[1] + utils.TILE_SZ[1]], \
             utils.TILE_STONE, utils.TILE_SZ, 0))
         
+    #model.subscribeEvent('click on tile', self.clickOnTileEventFired)
+        
   def insertIsoViewPlayer(self,player):
     """ Inserts a new player view.
     player: player view.
     """
-    self.__isoViewPlayer.append(player)
+    player.getModel().subscribeEvent('position', self.startMovementEventFired)
+    self.__isoViewPlayers.append(player)
     self.__allPlayers.add(player.getImg())
 
   def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
     """
+    for player in self.getModel().getPlayers():
+      isoviewplayer = player.defaultView(self.getScreen())
+      self.__isoViewPlayers.append(isoviewplayer)
+      self.__allPlayers.add(isoviewplayer.getImg())
+    for item in self.getModel().getItems():
+      isoviewitem = item.defaultView(self.getScreen())
+      self.__isoViewItems.append(isoviewitem)
+      self.__allPlayers.add(isoviewitem.getImg())
     self.paintFloorFull()
-    self.__allPlayers.draw(self.__screen)
+    self.__allPlayers.draw(self.getScreen())
     pygame.display.update()
   
   def draw(self):
@@ -61,14 +71,14 @@ class IsoViewRoom(isoview.IsoView):
     """ Paints all players on screen.
     """
     self.__allPlayers.update()                     
-    self.__allPlayers.clear(self.__screen, self.__bg.image)
-    pygame.display.update(self.__allPlayers.draw(self.__screen))
+    self.__allPlayers.clear(self.getScreen(), self.__bg.image)
+    pygame.display.update(self.__allPlayers.draw(self.getScreen()))
     
   def paintFloorFull(self):
     """ Paints the room's floor using a single sprite.
     screen: screen handler.
     """
-    self.__screen.blit(self.__bg.image, self.__bg.rect)
+    self.getScreen().blit(self.__bg.image, self.__bg.rect)
 
   def findTile(self,pos):
     """ Gets the 3d tile coords that match a 2d point.
@@ -85,7 +95,15 @@ class IsoViewRoom(isoview.IsoView):
     """ Runs a method after receiving an event.
     event: event info.    
     """
-    for player in self.__isoViewPlayer:
-      if player.getModelData("id") == event.params["id"]:
+    for player in self.__isoViewPlayers:
+      if player == event.params["player"]:
         player.newAction(event)
-    self.draw()    
+    self.draw()
+    
+  def startMovementEventFired(self, event):
+    """ Starts some methods after receiving a movement event.
+    event: movement event data.
+    """
+    print "ejecutando **********************************************"
+    self.newAction(event)
+   

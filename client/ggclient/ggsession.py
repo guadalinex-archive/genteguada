@@ -1,16 +1,14 @@
-import ggmodel
-import room
-import player
+import dMVC.model
 
-class GGSession(ggmodel.GGModel):
+class GGSession(dMVC.model.Model):
     """ GGSession class.
     Includes room and player objects, and some procedures to manage data.
     """
     
-    def __init__(self, name, id, player):
+    def __init__(self, player):
       """ Initializes session attributes.
       """
-      ggmodel.GGModel.__init__(self, name, id)
+      dMVC.model.Model.__init__(self)
       self.__player = player
       
     def getPlayer(self):
@@ -18,8 +16,7 @@ class GGSession(ggmodel.GGModel):
       """
       return self.__player
     
+    """
     def getPosition(self):
-      """ Returns the active player's position.
-      """
       return self.__player.getPosition()
-      
+    """
