@@ -18,10 +18,10 @@ class GGSystem(dMVC.model.Model):
       self.__players = []
       # llamadas solo para realizar pruebas
       self.createRoom(utils.BG_FULL)
-      self.createPlayer(utils.NINO_SPRITE, utils.NINO_SZ, [0, 0, 0], [2*utils.CHAR_SZ[0]-35, utils.CHAR_SZ[1]], "pepe", "1234")
-      self.createPlayer(utils.NINA_SPRITE, utils.NINO_SZ, [2, 0, 2], [2*utils.CHAR_SZ[0]-35, utils.CHAR_SZ[1]], "pepe2", "12345")
-      self.insertPlayerIntoRoom(self.__players[0], self.__rooms[0])
-      self.insertPlayerIntoRoom(self.__players[1], self.__rooms[0])
+      if self.createPlayer(utils.NINO_SPRITE, utils.NINO_SZ, [0, 0, 0], [2*utils.CHAR_SZ[0]-35, utils.CHAR_SZ[1]], "pepe", "1234"):
+        self.insertPlayerIntoRoom(self.__players[0], self.__rooms[0])
+      if self.createPlayer(utils.NINA_SPRITE, utils.NINO_SZ, [2, 0, 2], [2*utils.CHAR_SZ[0]-35, utils.CHAR_SZ[1]], "pepe2", "12345"):
+        self.insertPlayerIntoRoom(self.__players[1], self.__rooms[0])
       
     def login(self, username, password):
       """ Attempts to login on an user. If succesfull, returns a ggsession model.
@@ -38,7 +38,11 @@ class GGSystem(dMVC.model.Model):
       self.__rooms.append(room_)
       
     def createPlayer(self, sprite, size, position, offset, username, password):
-      self.__players.append(player.GGPlayer(sprite, size, position, offset, username, password))  
+      for pl in self.__players:
+        if pl.checkUser(username, password):
+          return False
+      self.__players.append(player.GGPlayer(sprite, size, position, offset, username, password))
+      return True
     
     def insertPlayerIntoRoom(self, player, room):
       room.insertPlayer(player)

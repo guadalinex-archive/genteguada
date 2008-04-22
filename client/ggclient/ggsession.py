@@ -1,4 +1,5 @@
 import dMVC.model
+import isoview_hud
 
 class GGSession(dMVC.model.Model):
     """ GGSession class.
@@ -16,7 +17,8 @@ class GGSession(dMVC.model.Model):
       """
       return self.__player
     
-    """
-    def getPosition(self):
-      return self.__player.getPosition()
-    """
+    def defaultView(self, screen):
+      """ Esto debería ser IsoViewSession.
+      """
+      return isoview_hud.IsoViewHud(self, screen)
+    

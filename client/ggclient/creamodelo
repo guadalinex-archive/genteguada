@@ -10,12 +10,6 @@ import ggsystem
 
 import isoview_hud
 
-def input(events):
-  for event in events:
-    if event.type == QUIT: 
-      sys.exit(0)
-    if event.type == KEYDOWN and event.key == K_ESCAPE:
-      sys.exit(0)
       
 def input(events, room, player, isoviewroom):
   for event in events:
@@ -28,9 +22,7 @@ def input(events, room, player, isoviewroom):
       dest = isoviewroom.findTile([x,y])
       if dest <> [-1, -1]:
         room.clickedByPlayer(player, [dest[0], 0, dest[1]])
-        #self.room.clickedByPlayer(self.activePlayer, [dest[0], 0, dest[1]])
-      
-
+        
 if __name__ == "__main__":
   
   pygame.init()
@@ -43,8 +35,15 @@ if __name__ == "__main__":
   room = player.getCurrentRoom()
   isoviewroom = room.defaultView(screen)
   
+  #hud = session.getHud()
+  isoHud = session.defaultView(screen)
+  #isoHud = isoviewhud.IsoViewHud()
+  
   isoviewroom.drawFirst()
+  isoHud.paint()
   pygame.display.update()
+  
+  isoHud.printOnChat("lalala")
   
   while True:
     time.sleep(utils.TICK_DELAY)

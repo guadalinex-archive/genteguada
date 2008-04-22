@@ -49,10 +49,12 @@ class IsoViewRoom(isoview.IsoView):
     """
     for player in self.getModel().getPlayers():
       player.subscribeEvent('position', self.startMovementEventFired)
+      player.subscribeEvent('clicked by', self.clickOnEventFired)
       isoviewplayer = player.defaultView(self.getScreen())
       self.__isoViewPlayers.append(isoviewplayer)
       self.__allPlayers.add(isoviewplayer.getImg())
     for item in self.getModel().getItems():
+      item.subscribeEvent('clicked by', self.clickOnEventFired)
       isoviewitem = item.defaultView(self.getScreen())
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
@@ -106,4 +108,10 @@ class IsoViewRoom(isoview.IsoView):
     event: movement event data.
     """
     self.newAction(event)
+    
+  def clickOnEventFired(self, event):
+    print "clicked by **************************"
+    print event
+    print event.getParams().getUsername()
+    pass
    
