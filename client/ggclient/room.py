@@ -29,6 +29,11 @@ class GGRoom(ggmodel.GGModel):
     player.setCurrentRoom(self)
     self.setBlockedTile(player.getPosition())
 
+  def insertItem(self, item):
+    self.__items.append(item)
+    #item.setCurrentRoom(self)
+    self.setBlockedTile(item.getPosition())
+
   def defaultView(self, screen):
     return isoview_room.IsoViewRoom(self, screen)
   
