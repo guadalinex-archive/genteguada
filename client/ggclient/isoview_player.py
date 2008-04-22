@@ -20,7 +20,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: even info.
     """
     #self.triggerEvent('position', player=self, pActual=pActualAux, pDestin=self.__position, dir=self.__heading)
-    self.getImg().rect.topleft = self.p3dToP2d(event.params["pDestin"], event.params["player"].getOffset())
-    self.__modelData["pActual"] = event.params["pDestin"]
-    self.__modelData["pDestin"] = event.params["pDestin"]
+    self.getImg().rect.topleft = self.p3dToP2d(event.getParams()["pDestin"], event.getParams()["player"].getOffset())
+    self.__modelData["pActual"] = event.getParams()["pDestin"]
+    self.__modelData["pDestin"] = event.getParams()["pDestin"]
     

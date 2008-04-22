@@ -54,7 +54,6 @@ class GGPlayer(item.GGItem):
     self.__visited.append(position)
     pActualAux = self.getPosition()
     self.setPosition(position)
-    print "eventooooooooo **************************************"
     self.triggerEvent('position', player=self, pActual=pActualAux, pDestin=self.getPosition(), dir=self.getHeading())
   
   def hasBeenVisited(self, pos):
@@ -68,7 +67,7 @@ class GGPlayer(item.GGItem):
     self.__destination = destination
   
   def clickedByPlayer(self, player, clickerLabel):
-    self.triggerEvent('click on player', pl=self.getName(), clicker=clickerLabel, target=self.getPosition())
+    self.triggerEvent('click on player', player=self, clicker=clickerLabel, target=self.getPosition())
   
   def tick(self, direction):
     if self.getPosition() == self.__destination:
