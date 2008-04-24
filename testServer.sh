@@ -1,5 +1,7 @@
 #/bin/sh
 
+# $Id$:
+
 clear
 echo "executing server side tests"
 echo "---------------------------"
