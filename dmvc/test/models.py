@@ -22,6 +22,14 @@ class TestModel(dMVC.model.Model): #{{{
     self._player = TestPlayer()
     self._position = [0,0]
     self._name = ''
+    self._constant = 'CONSTANT'
+
+  def variablesToSerialize(self):
+    return ['_constant']
+
+  @dMVC.model.localMethod
+  def getConstant(self):
+    return self._constant
 
   def getListPlayer(self):
     return self._listPlayer
@@ -97,8 +105,7 @@ class TestModel(dMVC.model.Model): #{{{
 
 
   @dMVC.model.localMethod
-  def localMethod(self):
-    print '----> executing model local method in ' + str(self)
-
+  def localFunctionExecution(self, func):
+    func()
 
 #}}}

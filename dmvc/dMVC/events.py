@@ -18,6 +18,13 @@ class Event:
     return eventToSerialize
   #}}}
 
+  def clientMaterialize(self, rClient):
+    self.__producer = dMVC.clientMaterialize(self.__producer, rClient)
+    self.__name     = dMVC.clientMaterialize(self.__name,     rClient)
+    self.__params   = dMVC.clientMaterialize(self.__params,   rClient)
+
+    return self
+
   def __repr__(self): #{{{
     return "Event: "+str(self.__name)+", producer: "+str(self.__producer)+", params: "+str(self.__params)
   #}}}

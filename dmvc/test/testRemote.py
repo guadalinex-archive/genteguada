@@ -29,11 +29,19 @@ class TestRemoteObject(unittest.TestCase):
     model = models.TestModel()
     self.useModel(model, "LOCAL: ")
 
+  def setLocalExecution(self, bool):
+    self.localExecuted = bool
+
   def useModel(self, model, prefix):
     print prefix + "model class: " + str(model.__class__)
 
     print prefix + "client side execution"
-    model.localMethod()
+    self.setLocalExecution(False)
+    def localFunc():
+      print "********* ejecuting local function **********"
+      self.setLocalExecution(True)
+    model.localFunctionExecution(localFunc)
+    assert self.localExecuted == True
 
     print prefix + "Ejecutamos el metodo foo sin argumentos"
     result = model.foo()
@@ -153,6 +161,11 @@ class TestRemoteObject(unittest.TestCase):
     assert lastEvent.getProducer() == model
     assert lastEvent.getParams()['position'] == [4,8]
     assert self.name == 'foo'
+
+    print prefix + "probamos un metodo local sobre una variable local"
+    k = model.getConstant()
+    assert k == 'CONSTANT'
+
   
   def eventFired(self, event):
     self.name =  event.getProducer().foo()

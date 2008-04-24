@@ -111,6 +111,9 @@ def clientMaterialize(arg, rClient): #{{{
   if isinstance(arg, remotemodel.RemoteModel):
     return arg.clientMaterialize(rClient)
 
+  elif isinstance(arg, events.Event):
+    return arg.clientMaterialize(rClient)
+
   elif isinstance(arg,list): 
     resultArg = []
     for i in range(len(arg)):

@@ -111,7 +111,7 @@ class RClient(synchronized.Synchronized):
     while not found:
       found = self.__getAnswer(executerCommand)
       if not found:
-        time.sleep(0.025)
+        time.sleep(0.01)
     return found
   #}}}
 
