@@ -1,7 +1,7 @@
 #/bin/sh
 
-# $Id$
-# $Rev$
+# $svn:Id$
+# $svn:Rev$
 
 clear
 echo "executing server side tests"
