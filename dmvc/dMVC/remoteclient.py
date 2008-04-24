@@ -32,7 +32,7 @@ class RClient(synchronized.Synchronized):
     self.__socket = None
     self.__connect()
 
-    self.q = Queue.Queue()
+    self.queue = Queue.Queue()
     
     threadProcessCommand = threading.Thread(target=self.process_command)
     threadProcessCommand.setDaemon(True)
@@ -45,7 +45,7 @@ class RClient(synchronized.Synchronized):
   def process_command(self):
     while True:
       time.sleep(0.2)
-      command = self.q.get()
+      command = self.queue.get()
       command.do()
 
   def __connect(self): #{{{
@@ -160,7 +160,7 @@ class RClient(synchronized.Synchronized):
         else:
           #command.do()
           #thread.start_new(command.do, ())
-          self.q.put(command)
+          self.queue.put(command)
       else:
         self.__socket.close()
   #}}}

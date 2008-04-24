@@ -19,11 +19,11 @@ class IsoViewItem(isoview.IsoView):
     position = model.getPosition()
     self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
     self.__modelData = ({"sprite":self.__sprite, "pActual":position})
+    self.__parent = parent
+    self.getModel().subscribeEvent('chat', parent.pruebaChat)
 
   def getSprite(self):
     return self.__sprite
-    self.__parent = parent
-    self.getModel().subscribeEvent('chat', parent.pruebaChat)
     
   def getModelData(self, info):
     """ Returns specific info from the model data.
