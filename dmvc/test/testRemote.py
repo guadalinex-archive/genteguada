@@ -11,6 +11,7 @@ class TestRemoteObject(unittest.TestCase):
 
   def setUp(self):
     self.lastEvent = None
+    self.name = None
 
  
   def testRemoteModel(self):
@@ -113,18 +114,6 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "ejecutamos un metodo pasando por parametro una diccionario de remotemodel"
     result = model.getDictName({"1":player})
     assert result == "maradona"
-    """
-    print prefix + "Ejecucion desde multiples hilos"
-    t1 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Luis"))
-    t2 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Peter"))
-    t3 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Mary"))
-    t4 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Ana"))
-    t5 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Guido"))
-    t6 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Alan Kay"))
-    t7 = thread.start_new_thread(self.checkSayHello, (prefix, model, "Gossling"))
-
-    time.sleep(5)
-    """
 
     model.setPosition([0,0])
     model.setName('')
@@ -137,66 +126,49 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "Cambiamos la posicion"
     model.setPosition([1,2])
+    while self.isNoneLastEvent():
+      time.sleep(0.2)
     assert self.lastEvent.getName() == 'position'
     assert self.lastEvent.getProducer() == model
     assert self.lastEvent.getParams()['position'] == [1,2]
+    self.lastEvent = None
 
     print prefix + "Cambiamos la posicion, nuevamente"
     model.setPosition([2,4])
+    while self.isNoneLastEvent():
+      time.sleep(0.2)
     assert self.lastEvent.getName() == 'position'
     assert self.lastEvent.getProducer() == model
     assert self.lastEvent.getParams()['position'] == [2,4]
+    self.lastEvent = None
 
     print prefix + "Cambiamos el nombre"
     model.setName('Guido')
+    while self.isNoneLastEvent():
+      time.sleep(0.2)
     assert self.lastEvent.getName() == 'name'
     assert self.lastEvent.getProducer() == model
     assert self.lastEvent.getParams()['name'] == 'Guido'
-    """
-    print prefix + "Probando la collecion"
-    player = model.player()
-    listPlayer = model.getListPlayer()
-    assert listPlayer.getLen() == 0
-    listPlayer.subscribeEvent('newItem', self.eventFired)
-    listPlayer.subscribeEvent('deleteItem', self.eventFired)
-    model.newPlayer(player)
-    assert listPlayer.getLen() == 1
-    assert self.lastEvent.getName() == 'newItem'
-    assert self.lastEvent.getProducer() == listPlayer
-    assert self.lastEvent.getParams()['position'] == 0
-    assert self.lastEvent.getParams()['item'] == player
-    model.deletePlayer(player)
-    assert listPlayer.getLen() == 0
-    assert self.lastEvent.getName() == 'deleteItem'
-    assert self.lastEvent.getProducer() == listPlayer
-    assert self.lastEvent.getParams()['position'] == 0
-    assert self.lastEvent.getParams()['item'] == player
-    """
-    model.subscribeEvent('position', self.eventFiredWithRPC)
+    self.lastEvent = None
+
     model.setPosition([4,8])
-
+    while self.isNoneLastEvent():
+      time.sleep(0.2)
+    assert self.lastEvent.getName() == 'position'
+    assert self.lastEvent.getProducer() == model
+    assert self.lastEvent.getParams()['position'] == [4,8]
+    assert self.name == 'foo'
+    self.lastEvent = None
+  
   def eventFired(self, event):
+    self.name =  event.getProducer().foo()
     self.lastEvent = event
 
-  def eventFiredWithRPC(self, event):
-    self.lastEvent = event
-    print "========================"
-    print "RPC Event"
-    print event.getProducer().foo()
-    print "========================"
-
-
-  def checkSayHello(self, prefix, model, name):
-    result1 = model.sayHello(name)
-    print prefix + result1
-    assert result1 == ("Hello " + name)
-
-    #time.sleep(random.random() * 0.2)
-
-    result2 = model.fullName(name, "Smith")
-    print prefix + result2
-    assert result2 == (name + " Smith")
-
+  def isNoneLastEvent(self):
+    if self.lastEvent is None:
+      return True
+    else:
+      return False
 
 if __name__ == "__main__":
   test = unittest.main()
