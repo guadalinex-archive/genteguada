@@ -1,9 +1,28 @@
 
 - WeakReference al diccionario de subscripciones en el cliente
+
 - WeakReference al diccionario de modelos en el servidor
+
 - Metodos del modelo proteguidos para que el cliente no pueda ejecutarlos, mediante un decorador
+
 - Estadisticas del servidor
+
 - Ping del servidor al cliente para ver los que se han caido
 
 - Queue para ejecución de comandos en el RClient
-- Envío de constantes del Model al RClient
+  - waitForNewEvent para el testRemote
+
+- Envío de constantes del Model al RClient (para cosas como getOffset, getSprite, etc)
+  - ¿Aspects?
+
+
+
+
+
+GenteGuada:
+-----------
+
+- sacar los diccionarios con "caches" de datos, esto hay que resolverlo en el framework.
+
+- para que el avatar "camine", no hace falta más que mandar un evento 'position' con la nueva posición.
+
