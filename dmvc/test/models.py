@@ -1,5 +1,6 @@
 import sys
 import dMVC.model
+import dMVC.collection
 
 class TestPlayer(dMVC.model.Model): #{{{
     
@@ -22,6 +23,16 @@ class TestModel(dMVC.model.Model): #{{{
     self._player = TestPlayer()
     self._position = [0,0]
     self._name = ''
+    self._listPlayer = dMVC.collection.Collection()
+
+  def getListPlayer(self):
+    return self._listPlayer
+
+  def newPlayer(self,player):
+    self._listPlayer.remove(player)
+
+  def deletePlayer(self,player):
+    self._listPlayer.append(player)
 
   def setPosition(self, position):
       if self._position == position:

@@ -153,6 +153,26 @@ class TestRemoteObject(unittest.TestCase):
     assert self.lastEvent.getProducer() == model
     assert self.lastEvent.getParams()['name'] == 'Guido'
 
+    print prefix + "Probando la collecion"
+    player = model.player()
+    listPlayer = model.getListPlayer()
+    assert listPlayer.getLen() == 0
+    listPlayer.subscribeEvent('newItem', self.eventFired)
+    listPlayer.subscribeEvent('deleteItem', self.eventFired)
+    model.newPlayer(player)
+    assert listPlayer.getLen() == 1
+    assert self.lastEvent.getName() == 'newItem'
+    assert self.lastEvent.getProducer() == listPlayer
+    assert self.lastEvent.getParams()['position'] == 0
+    assert self.lastEvent.getParams()['item'] == player
+    model.deletePlayer(player)
+    assert listPlayer.getLen() == 0
+    assert self.lastEvent.getName() == 'deleteItem'
+    assert self.lastEvent.getProducer() == listPlayer
+    assert self.lastEvent.getParams()['position'] == 0
+    assert self.lastEvent.getParams()['item'] == player
+
+
   def eventFired(self, event):
     self.lastEvent = event
 

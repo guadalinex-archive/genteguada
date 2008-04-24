@@ -1,0 +1,52 @@
+#!/usr/bin/python
+import dMVC.remoteclient
+import pygame
+import GG.utils
+import GG.model.ggsystem
+import time
+from pygame.locals import *
+import sys
+
+
+class GenteGuada:
+
+  def input(self,events):
+    for event in events:
+      if event.type == QUIT: 
+        sys.exit(0)
+      if event.type == KEYDOWN and event.key == K_ESCAPE:
+        sys.exit(0)
+      if event.type == MOUSEBUTTONDOWN:
+        x, y = pygame.mouse.get_pos()
+        dest = self.isoviewroom.findTile([x,y])
+        if dest <> [-1, -1]:
+          self.room.clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+
+  def start(self):
+    pygame.init()
+    screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
+    pygame.display.set_caption(GG.utils.VERSION)
+    
+    #remoto
+    client = dMVC.remoteclient.RClient("127.0.0.1")
+    sy = client.getRootModel()
+    #local
+    #sy = GG.model.ggsystem.GGSystem()
+
+    session = sy.login("pepe", "1234")
+    self.player = session.getPlayer()
+    self.room = self.player.getCurrentRoom()
+    self.isoviewroom = self.room.defaultView(screen)
+    isoHud = session.defaultView(screen)
+    self.isoviewroom.drawFirst()
+    isoHud.paint()
+    pygame.display.update()
+    isoHud.printOnChat("lalala")
+    while True:
+      time.sleep(GG.utils.TICK_DELAY)
+      self.input(pygame.event.get())
+      #sy.tick()
+
+if __name__ == "__main__":
+  GenteGuada().start()
+  

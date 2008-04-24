@@ -18,7 +18,7 @@ class GGSession(dMVC.model.Model):
       return self.__player
     
     def defaultView(self, screen):
-      """ Esto debería ser IsoViewSession.
+      """ Esto deberia ser IsoViewSession.
       """
       return isoview_hud.IsoViewHud(self, screen)
     
