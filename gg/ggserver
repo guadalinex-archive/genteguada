@@ -3,9 +3,9 @@
 #import sys	
 #import models
 
-import ggcommon.ggsystem
+import GG.model.ggsystem
 import dMVC.remoteserver
 
 if __name__ == "__main__":
-  rootModel = ggcommon.ggsystem.GGSystem()
+  rootModel = GG.model.ggsystem.GGSystem()
   dMVC.remoteserver.RServer(rootModel)

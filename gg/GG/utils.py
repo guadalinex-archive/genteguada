@@ -2,8 +2,8 @@ import math
 import os
 import pygame
 
-if os.path.isdir("../data"):
-  DATA_PATH = "../data"
+if os.path.isdir("gg/GG/data"):
+  DATA_PATH = "gg/GG/data"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada-client"
 
