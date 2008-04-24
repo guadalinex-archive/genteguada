@@ -26,14 +26,6 @@ class GGPlayer(item.GGItem):
   def getCurrentRoom(self):
     return self.__currentRoom
   
-  def setCurrentRoom(self, room):
-    self.__currentRoom = room
-  
-  def checkUser(self, username, password):
-    if self.getUsername() == username and self.getPassword() == password:
-      return 1
-    return 0
-  
   def getPassword(self):
     return self.__password
   
@@ -43,12 +35,15 @@ class GGPlayer(item.GGItem):
   def getHeading(self):
     return self.__heading
   
-  @dMVC.model.localMethod
-  def defaultView(self, screen):
-    return GG.isoview.isoview_player.IsoViewPlayer(self, screen)
-  
   def getDestination(self):
     return self.__destination
+  
+  def setCurrentRoom(self, room):
+    self.__currentRoom = room
+  
+  def setDestination(self, heading, destination):
+    self.__heading = heading
+    self.__destination = destination
   
   def setNewPosition(self, position):
     if self.getDestination() == position:
@@ -58,15 +53,20 @@ class GGPlayer(item.GGItem):
     self.setPosition(position)
     self.triggerEvent('position', player=self, pActual=pActualAux, pDestin=self.getPosition(), dir=self.getHeading())
   
+  def checkUser(self, username, password):
+    if self.getUsername() == username and self.getPassword() == password:
+      return 1
+    return 0
+  
+  @dMVC.model.localMethod
+  def defaultView(self, screen, room, parent):
+    return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
+  
   def hasBeenVisited(self, pos):
     for i in range(0, len(self.__visited)):
       if self.__visited[i] == pos:
         return 1
     return 0
-  
-  def setDestination(self, heading, destination):
-    self.__heading = heading
-    self.__destination = destination
   
   def tick(self, direction):
     if self.getPosition() == self.__destination:
@@ -92,32 +92,3 @@ class GGPlayer(item.GGItem):
     if self.__heading == "walking_topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.setNewPosition(next)
-  
-  """  
-  def getState(self):
-    return self.__state
-
-  def getStateFrame(self):
-    return self.__stateFrame
-
-  
-  def getDir(self):
-    for i in range (1, len(utils.DIR)+1):
-      if self._state == utils.DIR[i]:
-        return i
-    return 0  
-  
-  
-  def setState(self, state):
-    self.__state = state
-
-  def setStateFrame(self, stateFrame):
-    self.__stateFrame = stateFrame
-
-    
-    
-    
-    
-    
-  
-  """    

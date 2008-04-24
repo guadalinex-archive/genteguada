@@ -14,6 +14,11 @@ class IsoViewHud(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__textFont = pygame.font.Font(None, 22)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
+    
+  def pruebaChat(self, events):
+    #string = events.getParams()["actor"].getUsername() + " clicked on " + events.getParams()["receiver"].getUsername()
+    string = events.getParams()["actor"].getUsername() + " clicked on "
+    self.printOnChat(string)
   
   def getTextFont(self):
     return self.__textFont

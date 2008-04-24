@@ -2,6 +2,7 @@ import math
 import operator
 import GG.utils
 import ggmodel
+import GG.model.item
 import GG.isoview.isoview_room
 import dMVC.model
 
@@ -24,20 +25,7 @@ class GGRoom(ggmodel.GGModel):
 
   def getSpriteFull(self):
     return self.__spriteFull
-  
-  def insertPlayer(self, player):
-    self.__players.append(player)
-    player.setCurrentRoom(self)
-    self.setBlockedTile(player.getPosition())
 
-  def insertItem(self, item):
-    self.__items.append(item)
-    self.setBlockedTile(item.getPosition())
-  
-  @dMVC.model.localMethod
-  def defaultView(self, screen):
-    return GG.isoview.isoview_room.IsoViewRoom(self, screen)
-  
   def getPlayers(self):
     return self.__players
   
@@ -46,12 +34,35 @@ class GGRoom(ggmodel.GGModel):
 
   def getBlocked(self, pos):
     return pos in self.__blocked
-  
+    
   def setBlockedTile(self, pos):
     self.__blocked.append(pos)
 
   def setUnblockedTile(self, pos):
     self.__blocked.remove(pos)
+
+  def removePlayer(self, model, position):
+    for player in self.__players:
+      if player == model:
+        self.__players.remove(model)
+    
+  def insertPlayer(self, player):
+    self.__players.append(player)
+    player.setCurrentRoom(self)
+    self.setBlockedTile(player.getPosition())
+
+  def insertItem(self, item):
+    self.__items.append(item)
+    self.setBlockedTile(item.getPosition())
+
+  def loadItems(self):
+    item_ = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
+    self.setBlockedTile([6, 0, 6])
+    self.__items.append(item_)
+  
+  @dMVC.model.localMethod
+  def defaultView(self, screen):
+    return GG.isoview.isoview_room.IsoViewRoom(self, screen)
 
   def clickedByPlayer(self, player, target):
     """ Indica que un jugador ha hecho click en una posicion.
@@ -62,13 +73,14 @@ class GGRoom(ggmodel.GGModel):
     if not self.getBlocked(target):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(direction, target)
-      #self.triggerEvent('click on tile', pl=player.getUsername(), room=self, tg=target)
     else:
-      for ind2 in range(self.__players.__len__()):
-        if self.__players[ind2].getPosition() == target:
-          self.__players[ind2].clickedBy(player)
+      for pl in self.__players:
+        if pl.getPosition() == target:
+          pl.clickedBy(player)
+      for item in self.__items:
+        if item.getPosition() == target:
+          item.clickedBy(player)
           
-    
   def getNextDirection(self, player, pos1, pos2):
     if pos1 == pos2: return "standing_down"
 
@@ -99,7 +111,6 @@ class GGRoom(ggmodel.GGModel):
             return first[0]
     return "standing_down"  
     
-    
   def isCloser(self, ori, pos, dest):
     dist1 = math.sqrt(pow((dest[0] - ori[0]), 2) + pow((dest[2] - ori[2]), 2))
     dist2 = math.sqrt(pow((dest[0] - pos[0]), 2) + pow((dest[2] - pos[2]), 2))
@@ -127,34 +138,4 @@ class GGRoom(ggmodel.GGModel):
         if direction == "walking_bottomright": self.setBlockedTile([pos[0] + 1, pos[1], pos[2] + 1])
         if direction == "walking_bottomleft": self.setBlockedTile([pos[0] - 1, pos[1], pos[2] + 1])
         if direction == "walking_topright": self.setBlockedTile([pos[0] + 1, pos[1], pos[2] - 1])
-        player.tick(direction)  
-    
-    
-    
-    
-  """    
-  def getPlayerState(self, player):
-    return self.__players[player].getState()
- 
-  
-  
-  def setUnblockedTile(self, pos):
-    self.__blocked[pos[0]][pos[2]] = 0
-    self.__blocked.delete([2, 4])
-    
-  def setSpriteFull(self, spriteFull):
-    self.__spriteFull = spriteFull
-
-  
-
-          
-
-      
-  def insertFloor(self, floor):
-    self.__floor = floor
-
-
-
-  
-  
-  """
+        player.tick(direction)    

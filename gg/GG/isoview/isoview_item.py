@@ -6,7 +6,7 @@ import isoview
 
 class IsoViewItem(isoview.IsoView):
   
-  def __init__(self, model, screen):
+  def __init__(self, model, screen, parent):
     """ Class constructor.
     screen: screen handler.
     """
@@ -18,6 +18,8 @@ class IsoViewItem(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = self.p3dToP2d(model.getPosition(), model.getOffset())
     self.__modelData = ({"sprite":model.getSprite(), "pActual":model.getPosition()})
+    self.__parent = parent
+    self.getModel().subscribeEvent('chat', parent.pruebaChat)
     
   def getModelData(self, info):
     """ Returns specific info from the model data.
@@ -36,4 +38,5 @@ class IsoViewItem(isoview.IsoView):
     self.__allPlayers.update()                     
     self.__allPlayers.clear(screen, self.__bg.image)
     pygame.display.update(self.__allPlayers.draw(screen))
+    
     

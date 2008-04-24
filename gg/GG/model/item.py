@@ -24,11 +24,12 @@ class GGItem(ggmodel.GGModel):
     self.__position = pos
   
   @dMVC.model.localMethod 
-  def defaultView(self, screen):
-    return GG.isoview.isoview_item.IsoViewItem(self, screen)
+  def defaultView(self, screen, parent):
+    return GG.isoview.isoview_item.IsoViewItem(self, screen, parent)
   
   def clickedBy(self, clicker):
-    self.triggerEvent('clicked by', player=clicker, item=self, target=self.getPosition())
+    self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
+#    self.triggerEvent('clicked by', player=clicker, item=self, target=self.getPosition())
   
   
   

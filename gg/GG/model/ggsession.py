@@ -22,4 +22,3 @@ class GGSession(dMVC.model.Model):
     """ Esto deberia ser IsoViewSession.
     """
     return GG.isoview.isoview_hud.IsoViewHud(self, screen)
-    
