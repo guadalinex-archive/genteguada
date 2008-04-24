@@ -33,7 +33,11 @@ class RClient(synchronized.Synchronized):
     self.__connect()
 
     self.q = Queue.Queue()
-    thread.start_new(self.process_command,())
+    
+    threadProcessCommand = threading.Thread(target=self.process_command)
+    threadProcessCommand.setDaemon(True)
+    threadProcessCommand.start()
+    #thread.start_new(self.process_command,())
 
     thread.start_new(self.__start,())
   #}}}
@@ -54,7 +58,6 @@ class RClient(synchronized.Synchronized):
   @synchronized.synchronized(lockName='commandsList')
   def __addCommand(self, command): #{{{
     self.__commandsList.append(command)
-    print "APPEND:::::: "+str(self.__commandsList)
   #}}}
 
 
@@ -95,7 +98,6 @@ class RClient(synchronized.Synchronized):
         break
     if found:
       self.__commandsList.remove(found)
-      print "REMOVE:::::: "+str(self.__commandsList) + " ::::::::::::: "+str(found)
     return found
 
 
@@ -145,13 +147,10 @@ class RClient(synchronized.Synchronized):
     self.__receiveRootModel()
     sizeInt = struct.calcsize("i")
     while True:
-      print "Esperando proximo comando ========================="
       size = self.__socket.recv(sizeInt)
-      print "esperando size==============================="
       if len(size):
         size = struct.unpack("i", size)[0]
         commandData = ""
-        print "esperando size "+ str(size)
         while len(commandData) < size:
           commandData = self.__socket.recv(size - len(commandData))
         command = pickle.loads(commandData)
@@ -163,6 +162,5 @@ class RClient(synchronized.Synchronized):
           #thread.start_new(command.do, ())
           self.q.put(command)
       else:
-        print "CLOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         self.__socket.close()
   #}}}
