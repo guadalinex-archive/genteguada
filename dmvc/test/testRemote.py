@@ -2,6 +2,8 @@ import unittest
 import thread
 import time
 import random
+import Queue
+
 import dMVC.remoteclient
 
 import models
@@ -10,7 +12,7 @@ import models
 class TestRemoteObject(unittest.TestCase):
 
   def setUp(self):
-    self.lastEvent = None
+    self.eventQueue = Queue.Queue()
     self.name = None
 
  
@@ -118,57 +120,48 @@ class TestRemoteObject(unittest.TestCase):
     model.setPosition([0,0])
     model.setName('')
     print prefix + "Nos suscribimos a eventos"
-    assert self.lastEvent == None
+    assert self.eventQueue.empty()
     model.subscribeEvent('position', self.eventFired)
     model.subscribeEvent('name',     self.eventFired)
-    assert self.lastEvent == None
+    assert self.eventQueue.empty()
 
 
     print prefix + "Cambiamos la posicion"
     model.setPosition([1,2])
-    while self.isNoneLastEvent():
-      time.sleep(0.2)
-    assert self.lastEvent.getName() == 'position'
-    assert self.lastEvent.getProducer() == model
-    assert self.lastEvent.getParams()['position'] == [1,2]
-    self.lastEvent = None
+    lastEvent = self.getLastEvent()
+    assert lastEvent.getName() == 'position'
+    assert lastEvent.getProducer() == model
+    assert lastEvent.getParams()['position'] == [1,2]
 
     print prefix + "Cambiamos la posicion, nuevamente"
     model.setPosition([2,4])
-    while self.isNoneLastEvent():
-      time.sleep(0.2)
-    assert self.lastEvent.getName() == 'position'
-    assert self.lastEvent.getProducer() == model
-    assert self.lastEvent.getParams()['position'] == [2,4]
-    self.lastEvent = None
+    lastEvent = self.getLastEvent()
+    assert lastEvent.getName() == 'position'
+    assert lastEvent.getProducer() == model
+    assert lastEvent.getParams()['position'] == [2,4]
 
     print prefix + "Cambiamos el nombre"
     model.setName('Guido')
-    while self.isNoneLastEvent():
-      time.sleep(0.2)
-    assert self.lastEvent.getName() == 'name'
-    assert self.lastEvent.getProducer() == model
-    assert self.lastEvent.getParams()['name'] == 'Guido'
-    self.lastEvent = None
+    lastEvent = self.getLastEvent()
+    assert lastEvent.getName() == 'name'
+    assert lastEvent.getProducer() == model
+    assert lastEvent.getParams()['name'] == 'Guido'
 
     model.setPosition([4,8])
-    while self.isNoneLastEvent():
-      time.sleep(0.2)
-    assert self.lastEvent.getName() == 'position'
-    assert self.lastEvent.getProducer() == model
-    assert self.lastEvent.getParams()['position'] == [4,8]
+    lastEvent = self.getLastEvent()
+    assert lastEvent.getName() == 'position'
+    assert lastEvent.getProducer() == model
+    assert lastEvent.getParams()['position'] == [4,8]
     assert self.name == 'foo'
-    self.lastEvent = None
   
   def eventFired(self, event):
     self.name =  event.getProducer().foo()
-    self.lastEvent = event
+    self.eventQueue.put(event)
 
-  def isNoneLastEvent(self):
-    if self.lastEvent is None:
-      return True
-    else:
-      return False
+  def getLastEvent(self):
+    result = self.eventQueue.get()
+    self.eventQueue.task_done()
+    return result
 
 if __name__ == "__main__":
   test = unittest.main()
