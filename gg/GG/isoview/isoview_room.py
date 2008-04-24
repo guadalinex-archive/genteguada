@@ -34,9 +34,7 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
         
-    #model.subscribeEvent('click on tile', self.clickOnTileEventFired)
-        
-  def insertIsoViewPlayer(self,player):
+  def insertIsoViewPlayer(self, player):
     """ Inserts a new player view.
     player: player view.
     """
@@ -44,18 +42,19 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewPlayers.append(player)
     self.__allPlayers.add(player.getImg())
 
-  def drawFirst(self):
+  def removeIsoViewPlayer(self, player):
+    self.__allPlayers.remove(player.getImg())
+    self.__isoViewPlayers.remove(player)
+     
+  def drawFirst(self, parent):
     """ Draws the room and all its components on screen for the first time.
     """
     for player in self.getModel().getPlayers():
-      player.subscribeEvent('position', self.startMovementEventFired)
-      player.subscribeEvent('clicked by', self.clickOnEventFired)
-      isoviewplayer = player.defaultView(self.getScreen())
+      isoviewplayer = player.defaultView(self.getScreen(), self, parent)
       self.__isoViewPlayers.append(isoviewplayer)
       self.__allPlayers.add(isoviewplayer.getImg())
     for item in self.getModel().getItems():
-      item.subscribeEvent('clicked by', self.clickOnEventFired)
-      isoviewitem = item.defaultView(self.getScreen())
+      isoviewitem = item.defaultView(self.getScreen(), parent)
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
     self.paintFloorFull()
@@ -66,7 +65,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
-    self.paintFloorFull()
     self.paintPlayers()
     pygame.display.update()
     
@@ -108,10 +106,4 @@ class IsoViewRoom(isoview.IsoView):
     event: movement event data.
     """
     self.newAction(event)
-    
-  def clickOnEventFired(self, event):
-    print "clicked by **************************"
-    print event
-    print event.getParams().getUsername()
-    pass
-   
+  

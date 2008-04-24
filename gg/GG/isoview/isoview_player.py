@@ -5,15 +5,17 @@ import isoview_item
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
   
-  def __init__(self, model, screen):
+  def __init__(self, model, screen, room, parent):
     """ Class constructor.
     screen: screen handler.
     """
-    isoview_item.IsoViewItem.__init__(self, model, screen)
+    isoview_item.IsoViewItem.__init__(self, model, screen, parent)
+    self.__ivroom = room
     self.__modelData = ({"sprite":model.getSprite(), \
       "pActual":model.getPosition(), "pDestin":model.getDestination(), \
       "dir":model.getHeading(), "step": 0})
-
+    self.getModel().subscribeEvent('position', room.startMovementEventFired)
+    
   def newAction(self, event):
     """ Runs an event associated with a new action.
     event: even info.

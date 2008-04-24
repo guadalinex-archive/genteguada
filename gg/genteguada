@@ -36,12 +36,13 @@ class GenteGuada:
     session = sy.login("pepe", "1234")
     self.player = session.getPlayer()
     self.room = self.player.getCurrentRoom()
-    self.isoviewroom = self.room.defaultView(screen)
     isoHud = session.defaultView(screen)
-    self.isoviewroom.drawFirst()
+    self.isoviewroom = self.room.defaultView(screen)
+    
+    self.isoviewroom.drawFirst(isoHud)
     isoHud.paint()
     pygame.display.update()
-    isoHud.printOnChat("lalala")
+    isoHud.printOnChat("Inicio del juego. Chat vacio.")
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())
