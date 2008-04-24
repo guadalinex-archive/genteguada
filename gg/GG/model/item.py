@@ -6,22 +6,23 @@ class GGItem(ggmodel.GGModel):
   
   def __init__(self, sprite, size, position, offset):
     ggmodel.GGModel.__init__(self)
-    self.__sprite = sprite
-    self.__size = size
+    self.__sprite   = sprite
+    self.__size     = size # TODO: REMOVE!!!!
     self.__position = position
-    self.__offset = offset
-    
-  def getSprite(self):
-    return self.__sprite
+    self.__offset   = offset
     
   def getPosition(self):
     return self.__position
- 
-  def getOffset(self):
-    return self.__offset
   
   def setPosition(self, pos):
     self.__position = pos
+
+  def getSprite(self):
+    return self.__sprite
+
+  def getOffset(self):
+    return self.__offset
+
   
   @dMVC.model.localMethod 
   def defaultView(self, screen, parent):

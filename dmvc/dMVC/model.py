@@ -5,7 +5,7 @@ import remotemodel
 import copy
 import events
 import traceback
-
+import dMVC
 
 
 def localMethod(func):
@@ -21,8 +21,11 @@ class Model(synchronized.Synchronized):
   def __init__(self): #{{{
     self.__id = None
     synchronized.Synchronized.__init__(self)
-    self.__subscriptions = []
+    self.__subscriptions  = []
   #}}}
+
+  def variablesToSerialize(self):
+    return []
 
   def setID(self, id): #{{{
     self.__id = id
@@ -35,9 +38,15 @@ class Model(synchronized.Synchronized):
   def objectToSerialize(self, server): #{{{
     if self.__id == None:
       server.registerModel(self)
+
+    variablesDict = {}
+    for variable in self.variablesToSerialize():
+      variablesDict[variable] = dMVC.objectToSerialize(getattr(self, variable), server)
+
     return remotemodel.RemoteModel(self.__id,
                                    self.__class__.__module__,
-                                   self.__class__.__name__)
+                                   self.__class__.__name__,
+                                   variablesDict)
   #}}}
 
 

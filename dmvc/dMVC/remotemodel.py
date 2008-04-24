@@ -10,10 +10,11 @@ import new
 
 class RemoteModel: #{{{
 
-  def __init__(self, modelID, modelModuleName, modelClassName): #{{{
+  def __init__(self, modelID, modelModuleName, modelClassName, variablesDict): #{{{
     self.__modelID         = modelID
     self.__modelModuleName = modelModuleName
     self.__modelClassName  = modelClassName
+    self.__variablesDict   = variablesDict
   #}}}
 
   def __str__(self): #{{{
@@ -88,6 +89,12 @@ class RemoteModel: #{{{
     return rServer.getModelByID(self.__modelID)
 
 
+  def __transplantVariables(self):
+    for key in self.__variablesDict.keys():
+      value = self.__variablesDict[key]
+      utils.logger.debug("Transplanting variable " + str(key) + " in " + str(self) + " with value " + str(value))
+      setattr(self, key, value)
+
   def __transplantMethods(self, donorClass):
     for key in dir(donorClass):
       method = getattr(donorClass, key)
@@ -106,6 +113,7 @@ class RemoteModel: #{{{
 
 
   def clientMaterialize(self, rClient):
+    self.__transplantVariables()
     self.__transplantMethods(self.__findModelClass())
     return self
 
