@@ -12,12 +12,16 @@ class IsoViewItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__sprite = model.getSprite()
-    imgPath = os.path.join(GG.utils.DATA_PATH, model.getSprite())
+    imgPath = os.path.join(GG.utils.DATA_PATH, self.__sprite)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath)
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = self.p3dToP2d(model.getPosition(), model.getOffset())
-    self.__modelData = ({"sprite":model.getSprite(), "pActual":model.getPosition()})
+    position = model.getPosition()
+    self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
+    self.__modelData = ({"sprite":self.__sprite, "pActual":position})
+
+  def getSprite(self):
+    return self.__sprite
     self.__parent = parent
     self.getModel().subscribeEvent('chat', parent.pruebaChat)
     

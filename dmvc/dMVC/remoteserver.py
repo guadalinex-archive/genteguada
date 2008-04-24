@@ -91,12 +91,12 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def __sendObject(self, object): #{{{
-    utils.logger.debug("Sendind object " + str(object) + " to client: "+str(self.client_address))
     toSerialize = dMVC.objectToSerialize(object, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
     try:
       size = struct.pack("i", sizeSerialized)
+      utils.logger.debug("Sendind object " + str(object) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
       self.request.send(size)
       self.request.send(serialized)
       return True

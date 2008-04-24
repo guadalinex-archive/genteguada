@@ -152,7 +152,7 @@ class TestRemoteObject(unittest.TestCase):
     assert self.lastEvent.getName() == 'name'
     assert self.lastEvent.getProducer() == model
     assert self.lastEvent.getParams()['name'] == 'Guido'
-
+    """
     print prefix + "Probando la collecion"
     player = model.player()
     listPlayer = model.getListPlayer()
@@ -171,10 +171,20 @@ class TestRemoteObject(unittest.TestCase):
     assert self.lastEvent.getProducer() == listPlayer
     assert self.lastEvent.getParams()['position'] == 0
     assert self.lastEvent.getParams()['item'] == player
-
+    """
+    model.subscribeEvent('position', self.eventFiredWithRPC)
+    model.setPosition([4,8])
 
   def eventFired(self, event):
     self.lastEvent = event
+
+  def eventFiredWithRPC(self, event):
+    self.lastEvent = event
+    print "========================"
+    print "RPC Event"
+    print event.getProducer().foo()
+    print "========================"
+
 
   def checkSayHello(self, prefix, model, name):
     result1 = model.sayHello(name)
