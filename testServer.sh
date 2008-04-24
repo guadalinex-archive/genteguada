@@ -1,6 +1,6 @@
 #/bin/sh
 
-# $Id$:
+# $Id:$
 
 clear
 echo "executing server side tests"
