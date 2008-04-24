@@ -25,27 +25,32 @@ class RClient(synchronized.Synchronized):
     self.__rootModel          = None
     self.__rootModelSemaphore = threading.Semaphore(0)
 
-    self.__commandsList = []
+    self.__answersCommandsList = []
 
     self.__remoteSuscriptions = {}  ## TODO: Use weak references
 
     self.__socket = None
     self.__connect()
 
-    self.queue = Queue.Queue()
+    self.__commandQueue = Queue.Queue()
     
     threadProcessCommand = threading.Thread(target=self.process_command)
     threadProcessCommand.setDaemon(True)
     threadProcessCommand.start()
-    #thread.start_new(self.process_command,())
 
     thread.start_new(self.__start,())
   #}}}
 
   def process_command(self):
     while True:
-      command = self.queue.get()
-      command.do()
+      command = self.__commandQueue.get()
+      try:
+        command.do()
+      except:
+        utils.logger.exception('exception in process_command')
+      finally:
+        self.__commandQueue.task_done()
+
 
   def __connect(self): #{{{
     utils.logger.debug("connecting to server")
@@ -55,8 +60,8 @@ class RClient(synchronized.Synchronized):
   #}}}
 
   @synchronized.synchronized(lockName='commandsList')
-  def __addCommand(self, command): #{{{
-    self.__commandsList.append(command)
+  def __addAnswererCommand(self, command): #{{{
+    self.__answersCommandsList.append(command)
   #}}}
 
 
@@ -91,12 +96,12 @@ class RClient(synchronized.Synchronized):
   @synchronized.synchronized(lockName='commandsList')
   def __getAnswer(self, executerCommand):
     found = None
-    for each in self.__commandsList:
+    for each in self.__answersCommandsList:
       if executerCommand.isYourAnswer(each):
         found = each
         break
     if found:
-      self.__commandsList.remove(found)
+      self.__answersCommandsList.remove(found)
     return found
 
 
@@ -143,23 +148,24 @@ class RClient(synchronized.Synchronized):
 
   def __start(self): #{{{
     utils.logger.debug("Starting connection thread")
-    self.__receiveRootModel()
-    sizeInt = struct.calcsize("i")
-    while True:
-      size = self.__socket.recv(sizeInt)
-      if len(size):
-        size = struct.unpack("i", size)[0]
-        commandData = ""
-        while len(commandData) < size:
-          commandData = self.__socket.recv(size - len(commandData))
-        command = pickle.loads(commandData)
-        utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
-        if isinstance(command, remotecommand.RExecutionAnswerer):
-          self.__addCommand(command)
+    try:
+      self.__receiveRootModel()
+      sizeInt = struct.calcsize("i")
+      while True:
+        size = self.__socket.recv(sizeInt)
+        if len(size):
+          size = struct.unpack("i", size)[0]
+          commandData = ""
+          while len(commandData) < size:
+            commandData = self.__socket.recv(size - len(commandData))
+          command = pickle.loads(commandData)
+          utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
+          if isinstance(command, remotecommand.RExecutionAnswerer):
+            self.__addAnswererCommand(command)
+          else:
+            self.__commandQueue.put(command)
         else:
-          #command.do()
-          #thread.start_new(command.do, ())
-          self.queue.put(command)
-      else:
-        self.__socket.close()
+          self.__socket.close()
+    except:
+      utils.logger.exception('exception in __start')
   #}}}
