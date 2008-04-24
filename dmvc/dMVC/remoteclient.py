@@ -44,7 +44,6 @@ class RClient(synchronized.Synchronized):
 
   def process_command(self):
     while True:
-      time.sleep(0.2)
       command = self.queue.get()
       command.do()
 
