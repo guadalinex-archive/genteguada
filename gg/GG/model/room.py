@@ -13,9 +13,7 @@ class GGRoom(ggmodel.GGModel):
 
   def __init__(self, spriteFull):
     """ Class constructor.
-    name: room label.
-    id: identifier.
-    sprite: sprite used to paint the room tiles on screen.
+    spriteFull: sprite used to paint the room floor on screen.
     """
     ggmodel.GGModel.__init__(self)
     self.__players = []
@@ -24,50 +22,77 @@ class GGRoom(ggmodel.GGModel):
     self.__blocked = []
 
   def getSpriteFull(self):
+    """ Returns the sprite used to paint the floor.
+    """
     return self.__spriteFull
 
   def getPlayers(self):
+    """ Return the players whose are on the room.
+    """
     return self.__players
   
   def getItems(self):
+    """ Return the items whose are on the room.
+    """
     return self.__items
 
   def getBlocked(self, pos):
+    """ Checks if a tile is blocked or not.
+    pos: tile position.
+    """
     return pos in self.__blocked
     
   def setBlockedTile(self, pos):
+    """ Sets a room tile as blocked.
+    pos: tile position.
+    """
     self.__blocked.append(pos)
 
   def setUnblockedTile(self, pos):
+    """ Sets a room tile as unblocked.
+    pos: tile position.
+    """
     self.__blocked.remove(pos)
 
-  def removePlayer(self, model, position):
+  def removePlayer(self, model):
+    """ Removes a player from the room.
+    model: player.
+    """
     for player in self.__players:
       if player == model:
         self.__players.remove(model)
     
   def insertPlayer(self, player):
+    """ Inserts a new player into the room.
+    player: new player.
+    """
     self.__players.append(player)
     player.setCurrentRoom(self)
     self.setBlockedTile(player.getPosition())
 
   def insertItem(self, item):
+    """ Inserts a new item into the room.
+    item: new item.
+    """
     self.__items.append(item)
     self.setBlockedTile(item.getPosition())
 
   def loadItems(self):
-    item_ = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
-    self.setBlockedTile([6, 0, 6])
-    self.__items.append(item_)
-  
+    """ Load new items and appends them on the room.
+    """
+    self.insertItem(GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170]))
+    
   @dMVC.model.localMethod
   def defaultView(self, screen):
+    """ Creates a view object associated with this room.
+    screen: screen handler.
+    """
     return GG.isoview.isoview_room.IsoViewRoom(self, screen)
 
   def clickedByPlayer(self, player, target):
-    """ Indica que un jugador ha hecho click en una posicion.
-    player: jugador.
-    target: objetivo del click.
+    """ Indicates players inside that a player has made click on another one.
+    player: active player.
+    target: click target player.
     """
     clickerLabel = player.getUsername()
     if not self.getBlocked(target):
@@ -82,6 +107,11 @@ class GGRoom(ggmodel.GGModel):
           item.clickedBy(player)
           
   def getNextDirection(self, player, pos1, pos2):
+    """ Gets the direction of a player's movement between 2 points.
+    player:
+    pos1: starting point.
+    pos2: ending point.
+    """
     if pos1 == pos2: return "standing_down"
 
     dir = []
@@ -112,6 +142,11 @@ class GGRoom(ggmodel.GGModel):
     return "standing_down"  
     
   def isCloser(self, ori, pos, dest):
+    """ Checks if a point is closer to a destination than another point.
+    ori: origin point.
+    pos: point to check.
+    dest: destination point.
+    """
     dist1 = math.sqrt(pow((dest[0] - ori[0]), 2) + pow((dest[2] - ori[2]), 2))
     dist2 = math.sqrt(pow((dest[0] - pos[0]), 2) + pow((dest[2] - pos[2]), 2))
     if dist1 > dist2:
@@ -120,11 +155,17 @@ class GGRoom(ggmodel.GGModel):
       return 0
     
   def p2pDistance(self, point1, point2):
+    """ Calculates the distance between 2 points.
+    point1: starting point.
+    point2: ending point.
+    """
     if point1 == point2: return 0
     return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
   
     
   def tick(self):
+    """ Calls for an update on all player movements.
+    """
     for player in self.__players:
       direction = self.getNextDirection(player, player.getPosition(), player.getDestination())
       if direction <> "standing_down":

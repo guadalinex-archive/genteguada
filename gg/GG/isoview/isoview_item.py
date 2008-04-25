@@ -5,10 +5,14 @@ import GG.utils
 import isoview
 
 class IsoViewItem(isoview.IsoView):
+  """ IsoViewItem class.
+  Defines an item view.
+  """
   
   def __init__(self, model, screen, parent):
     """ Class constructor.
     screen: screen handler.
+    parent: isoview_hud handler.
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__sprite = model.getSprite()
@@ -23,6 +27,8 @@ class IsoViewItem(isoview.IsoView):
     self.getModel().subscribeEvent('chat', parent.pruebaChat)
 
   def getSprite(self):
+    """ Returns the sprite name of the item.
+    """
     return self.__sprite
     
   def getModelData(self, info):
