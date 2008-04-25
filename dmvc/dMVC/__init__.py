@@ -6,36 +6,36 @@ import events
 
 
 #rServerSingleton #{{{
-__rServerSingleton = None
+__RSERVER_SINGLETON = None
 
 def getRServer(): 
-  global __rServerSingleton
-  if __rServerSingleton == None:
+  global __RSERVER_SINGLETON
+  if __RSERVER_SINGLETON == None:
     raise Exception("RServer has to be instanciated before calling getRServer()")
-  return __rServerSingleton
+  return __RSERVER_SINGLETON
 
 def setRServer(rserver):
-  global __rServerSingleton
-  if __rServerSingleton != None:
+  global __RSERVER_SINGLETON
+  if __RSERVER_SINGLETON != None:
     raise Exception("Can't create more then one instance of RServer")
-  __rServerSingleton = rserver
+  __RSERVER_SINGLETON = rserver
 #}}}
 
 
 #rClientSingleton #{{{
-__rClientSingleton = None
+__RCLIENT_SINGLETON = None
 
 def getRClient():
-  global __rClientSingleton
-  if __rClientSingleton == None:
+  global __RCLIENT_SINGLETON
+  if __RCLIENT_SINGLETON == None:
     raise Exception("RClient has to be instanciated before calling getRClient()")
-  return __rClientSingleton
+  return __RCLIENT_SINGLETON
 
 def setRClient(rclient):
-  global __rClientSingleton
-  if __rClientSingleton != None:
+  global __RCLIENT_SINGLETON
+  if __RCLIENT_SINGLETON != None:
     raise Exception("Can't create more then one instance of RClient")
-  __rClientSingleton = rclient
+  __RCLIENT_SINGLETON = rclient
 #}}}
 
 
