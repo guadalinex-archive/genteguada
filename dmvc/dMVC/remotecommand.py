@@ -49,8 +49,8 @@ class RExecuterCommand(RCommand): #{{{
     model = rServer.getModelByID(self._modelID)
     try:
       method = getattr(model, self._methodName)
-    except AttributeError, e:
-      return RExceptionRaiser(self._executionID, e)
+    except AttributeError, ex:
+      return RExceptionRaiser(self._executionID, ex)
     else:
       if self._args:
         arguments = []

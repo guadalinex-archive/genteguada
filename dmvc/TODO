@@ -1,3 +1,7 @@
+- implementar 
+  	      RemoteModel.unsubscribeEventObserver
+  	      RemoteModel.unsubscribeEventMethod
+
 
 - WeakReference al diccionario de subscripciones en el cliente
 
