@@ -1,9 +1,7 @@
 import dMVC
 import sys
 import remotecommand
-import traceback
 
-import remoteclient
 import utils
 import new
 
@@ -33,12 +31,12 @@ class RemoteModel: #{{{
 
   # Pickling support, otherwise pickle uses __getattr__:
   def __getstate__(self): #{{{
-    dict = {}
+    newDict = {}
     for key in self.__dict__.keys():
       value = self.__dict__[key]
       if not callable(value):
-        dict[key] = value
-    return dict
+        newDict[key] = value
+    return newDict
   #}}}
 
   def __setstate__(self, args): #{{{

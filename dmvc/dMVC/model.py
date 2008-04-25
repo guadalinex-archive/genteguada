@@ -1,10 +1,8 @@
 import synchronized
 import utils
-import threading
 import remotemodel
 import copy
 import events
-import traceback
 import dMVC
 
 
@@ -27,8 +25,8 @@ class Model(synchronized.Synchronized):
   def variablesToSerialize(self):
     return []
 
-  def setID(self, id): #{{{
-    self.__id = id
+  def setID(self, newId): #{{{
+    self.__id = newId
   #}}}
 
   def __str__(self): #{{{
@@ -61,8 +59,8 @@ class Model(synchronized.Synchronized):
   def triggerEvent(self, eventType, **params): #{{{
     utils.logger.debug("Model " + str(self) + " triggered eventType: "+str(eventType)+ " params: "+str(params))
     subscriptionsCopy = copy.copy(self.__subscriptions)
-    for type, method in subscriptionsCopy:
-      if type == eventType:
+    for typ, method in subscriptionsCopy:
+      if typ == eventType:
         event = events.Event(self, eventType, params)
         try:
           method(event)

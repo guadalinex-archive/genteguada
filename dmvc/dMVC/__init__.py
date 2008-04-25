@@ -40,37 +40,37 @@ def setRClient(rclient):
 
 
 
-def objectToSerialize(object, rServer): #{{{
+def objectToSerialize(obj, rServer): #{{{
 
-  if isinstance(object, model.Model):
-    return object.objectToSerialize(rServer)
+  if isinstance(obj, model.Model):
+    return obj.objectToSerialize(rServer)
 
-  elif isinstance(object, remotecommand.RCommand):
-    return object.objectToSerialize(rServer)
+  elif isinstance(obj, remotecommand.RCommand):
+    return obj.objectToSerialize(rServer)
 
-  elif isinstance(object, events.Event):
-    return object.objectToSerialize(rServer)
+  elif isinstance(obj, events.Event):
+    return obj.objectToSerialize(rServer)
 
-  elif isinstance(object,list): 
+  elif isinstance(obj, list): 
     resultObject = []
-    for each in object:
+    for each in obj:
       resultObject.append(objectToSerialize(each, rServer))
     return resultObject
 
-  elif isinstance(object,tuple):
+  elif isinstance(obj, tuple):
     resultObject = []
-    for each in object:
+    for each in obj:
       resultObject.append(objectToSerialize(each, rServer))
     return tuple(resultObject)
 
-  elif isinstance(object,dict):
+  elif isinstance(obj, dict):
     resultObject = {}
-    for key in object.keys():
-      resultObject[objectToSerialize(key, rServer)] = objectToSerialize(object[key], rServer)
+    for key in obj.keys():
+      resultObject[objectToSerialize(key, rServer)] = objectToSerialize(obj[key], rServer)
     return resultObject
 
   else:
-    return object
+    return obj
 #}}}
 
 
@@ -83,22 +83,22 @@ def serverMaterialize(arg, rServer): #{{{
   if isinstance(arg, remotemodel.RemoteModel):
     return arg.serverMaterialize(rServer)
 
-  elif isinstance(arg,list): 
+  elif isinstance(arg, list): 
     resultArg = []
     for i in range(len(arg)):
-      resultArg.append(serverMaterialize(arg[i],rServer))
+      resultArg.append(serverMaterialize(arg[i], rServer))
     return resultArg
 
-  elif isinstance(arg,tuple):
+  elif isinstance(arg, tuple):
     resultArg = []
     for i in range(len(arg)):
-      resultArg.append(serverMaterialize(arg[i],rServer))
+      resultArg.append(serverMaterialize(arg[i], rServer))
     return tuple(resultArg)
 
-  elif isinstance(arg,dict):
+  elif isinstance(arg, dict):
     resultArg = {}
     for key in arg.keys():
-      resultArg[serverMaterialize(key,rServer)] = serverMaterialize(arg[key],rServer)
+      resultArg[serverMaterialize(key, rServer)] = serverMaterialize(arg[key], rServer)
     return resultArg
 
   else:
@@ -114,22 +114,22 @@ def clientMaterialize(arg, rClient): #{{{
   elif isinstance(arg, events.Event):
     return arg.clientMaterialize(rClient)
 
-  elif isinstance(arg,list): 
+  elif isinstance(arg, list): 
     resultArg = []
     for i in range(len(arg)):
-      resultArg.append(clientMaterialize(arg[i],rClient))
+      resultArg.append(clientMaterialize(arg[i], rClient))
     return resultArg
 
-  elif isinstance(arg,tuple):
+  elif isinstance(arg, tuple):
     resultArg = []
     for i in range(len(arg)):
-      resultArg.append(clientMaterialize(arg[i],rClient))
+      resultArg.append(clientMaterialize(arg[i], rClient))
     return tuple(resultArg)
 
-  elif isinstance(arg,dict):
+  elif isinstance(arg, dict):
     resultArg = {}
     for key in arg.keys():
-      resultArg[clientMaterialize(key,rClient)] = clientMaterialize(arg[key],rClient)
+      resultArg[clientMaterialize(key, rClient)] = clientMaterialize(arg[key], rClient)
     return resultArg
 
   else:
