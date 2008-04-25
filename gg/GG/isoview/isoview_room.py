@@ -55,12 +55,14 @@ class IsoViewRoom(isoview.IsoView):
     """ Draws the room and all its components on screen for the first time.
     parent: isoview hud handler.
     """
+    """
     for player in self.getModel().getPlayers():
       isoviewplayer = player.defaultView(self.getScreen(), self, parent)
       self.__isoViewPlayers.append(isoviewplayer)
       self.__allPlayers.add(isoviewplayer.getImg())
+    """  
     for item in self.getModel().getItems():
-      isoviewitem = item.defaultView(self.getScreen(), parent)
+      isoviewitem = item.defaultView(self.getScreen(), self, parent)
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
     self.paintFloorFull()
@@ -84,7 +86,7 @@ class IsoViewRoom(isoview.IsoView):
       self.__allPlayers.remove(image)
     allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
     while len(allPlayersTemp):
-      self.__allPlayers.append(allPlayersTemp.pop())
+      self.__allPlayers.append(allPlayersTemp.pop()[0])
     
   def paintPlayers(self):
     """ Paints all players on screen.
@@ -110,19 +112,4 @@ class IsoViewRoom(isoview.IsoView):
           if not self.__tileList[x][z].onBlank(pos):
             return [x, z]
     return [-1, -1]
-  
-  def newAction(self, event):
-    """ Runs a method after receiving an event.
-    event: event info.    
-    """
-    for player in self.__isoViewPlayers:
-      if player.getModel() == event.getParams()["player"]:
-        player.newAction(event)
-    self.draw()
-    
-  def startMovementEventFired(self, event):
-    """ Starts some methods after receiving a movement event.
-    event: movement event data.
-    """
-    self.newAction(event)
-  
+   

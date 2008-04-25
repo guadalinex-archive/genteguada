@@ -64,7 +64,7 @@ class GGSystem(dMVC.model.Model):
     player: player to be inserted.
     room: existing room.
     """
-    room.insertPlayer(player)
+    room.insertItem(player)
 
   def start(self):
     """ Starts the program.

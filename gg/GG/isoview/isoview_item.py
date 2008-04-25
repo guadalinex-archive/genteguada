@@ -9,13 +9,14 @@ class IsoViewItem(isoview.IsoView):
   Defines an item view.
   """
   
-  def __init__(self, model, screen, parent):
+  def __init__(self, model, screen, room, parent):
     """ Class constructor.
     screen: screen handler.
     parent: isoview_hud handler.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__sprite = model.getSprite()
+    self.__ivroom = room
+    self.__sprite = model.spriteImg
     imgPath = os.path.join(GG.utils.DATA_PATH, self.__sprite)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath)
@@ -24,7 +25,7 @@ class IsoViewItem(isoview.IsoView):
     self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
     self.__parent = parent
     self.getModel().subscribeEvent('chat', parent.pruebaChat)
-
+    
   def getSprite(self):
     """ Returns the sprite name of the item.
     """
@@ -43,4 +44,5 @@ class IsoViewItem(isoview.IsoView):
     self.__allPlayers.clear(screen, self.__bg.image)
     pygame.display.update(self.__allPlayers.draw(screen))
     
-    
+  def getIVRoom(self):
+    return self.__ivroom

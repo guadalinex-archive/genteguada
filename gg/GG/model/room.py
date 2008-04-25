@@ -16,7 +16,6 @@ class GGRoom(ggmodel.GGModel):
     spriteFull: sprite used to paint the room floor on screen.
     """
     ggmodel.GGModel.__init__(self)
-    self.__players = []
     self.__items = []
     self.spriteFull = spriteFull
     self.__blocked = []
@@ -30,13 +29,8 @@ class GGRoom(ggmodel.GGModel):
     """
     return self.spriteFull
 
-  def getPlayers(self):
-    """ Return the players whose are on the room.
-    """
-    return self.__players
-  
   def getItems(self):
-    """ Return the items whose are on the room.
+    """ Return the items shown on the room.
     """
     return self.__items
 
@@ -58,27 +52,19 @@ class GGRoom(ggmodel.GGModel):
     """
     self.__blocked.remove(pos)
 
-  def removePlayer(self, model):
+  def removeItem(self, model):
     """ Removes a player from the room.
     model: player.
     """
-    for player in self.__players:
-      if player == model:
-        self.__players.remove(model)
+    if model in self.__items:
+      self.__items.remove(model)
     
-  def insertPlayer(self, player):
-    """ Inserts a new player into the room.
-    player: new player.
-    """
-    self.__players.append(player)
-    player.setCurrentRoom(self)
-    self.setBlockedTile(player.getPosition())
-
   def insertItem(self, item):
     """ Inserts a new item into the room.
     item: new item.
     """
     self.__items.append(item)
+    item.setCurrentRoom(self)
     self.setBlockedTile(item.getPosition())
 
   def loadItems(self):
@@ -103,9 +89,6 @@ class GGRoom(ggmodel.GGModel):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(direction, target)
     else:
-      for pl in self.__players:
-        if pl.getPosition() == target:
-          pl.clickedBy(player)
       for item in self.__items:
         if item.getPosition() == target:
           item.clickedBy(player)
@@ -170,17 +153,6 @@ class GGRoom(ggmodel.GGModel):
   def tick(self):
     """ Calls for an update on all player movements.
     """
-    for player in self.__players:
-      direction = self.getNextDirection(player, player.getPosition(), player.getDestination())
-      if direction <> "standing_down":
-        pos = player.getPosition()
-        self.setUnblockedTile(pos)
-        if direction == "walking_up": self.setBlockedTile([pos[0], pos[1], pos[2] - 1])
-        if direction == "walking_down": self.setBlockedTile([pos[0], pos[1], pos[2] + 1])
-        if direction == "walking_left": self.setBlockedTile([pos[0] - 1, pos[1], pos[2]])
-        if direction == "walking_right": self.setBlockedTile([pos[0] + 1, pos[1], pos[2]])
-        if direction == "walking_topleft": self.setBlockedTile([pos[0] - 1, pos[1], pos[2] - 1])
-        if direction == "walking_bottomright": self.setBlockedTile([pos[0] + 1, pos[1], pos[2] + 1])
-        if direction == "walking_bottomleft": self.setBlockedTile([pos[0] - 1, pos[1], pos[2] + 1])
-        if direction == "walking_topright": self.setBlockedTile([pos[0] + 1, pos[1], pos[2] - 1])
-        player.tick(direction)    
+    for item in self.__items:
+      item.tick()
+      
