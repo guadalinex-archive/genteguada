@@ -57,6 +57,7 @@ load-plugins=
 
 # Disable the message(s) with the given id(s).
 #disable-msg=
+disable-msg=C0111
 
 
 [REPORTS]
