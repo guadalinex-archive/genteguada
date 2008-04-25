@@ -1,10 +1,6 @@
 import dMVC
 import sys
-import remotemodel
 import utils
-import traceback
-import remoteclient
-import remoteserver
 
 
 
@@ -59,7 +55,7 @@ class RExecuterCommand(RCommand): #{{{
       if self._args:
         arguments = []
         for i in range(len(self._args)):
-          arguments.append(dMVC.serverMaterialize(self._args[i],rServer))
+          arguments.append(dMVC.serverMaterialize(self._args[i], rServer))
         self._args = tuple(arguments)
       try:
         result = method(*self._args)
@@ -71,7 +67,8 @@ class RExecuterCommand(RCommand): #{{{
 
 
   def __str__(self):
-    return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + ', modelID=' + str(self._modelID) + ', ' + str(self._methodName) + str(self._args)
+    return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + \
+        ', modelID=' + str(self._modelID) + ', ' + str(self._methodName) + str(self._args)
 
 #}}}
 
@@ -148,7 +145,8 @@ class REventSuscriber(RCommand):
     model.unsubscribeEventObserver(self)
 
   def __str__(self):
-    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + ', eventType=' + str(self._eventType) + ', suscriptionID=' + str(self._suscriptionID)
+    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + \
+        ', eventType=' + str(self._eventType) + ', suscriptionID=' + str(self._suscriptionID)
 
 
       

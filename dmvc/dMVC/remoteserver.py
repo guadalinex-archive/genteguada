@@ -22,8 +22,8 @@ class RServer(synchronized.Synchronized):
 
 
   @synchronized.synchronized(lockName='models')
-  def getModelByID(self, id): #{{{
-    return self.__models[id]
+  def getModelByID(self, theId): #{{{
+    return self.__models[theId]
   #}}}
 
   @synchronized.synchronized(lockName='models')
@@ -83,20 +83,21 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
         answer = command.do()
-        utils.logger.debug("Run the command " + str(command) + " from the client "+str(self.client_address)+ " and the result is "+str(answer))
+        utils.logger.debug("Run the command " + str(command) + " from the client " + \
+                             str(self.client_address)+ " and the result is "+str(answer))
         if answer:
           self.__sendObject(answer)
       else:
         break
   #}}}
 
-  def __sendObject(self, object): #{{{
-    toSerialize = dMVC.objectToSerialize(object, dMVC.getRServer())
+  def __sendObject(self, obj): #{{{
+    toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
     try:
       size = struct.pack("i", sizeSerialized)
-      utils.logger.debug("Sendind object " + str(object) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
+      utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
       self.request.send(size)
       self.request.send(serialized)
       return True

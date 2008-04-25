@@ -38,7 +38,7 @@ class RClient(synchronized.Synchronized):
     threadProcessCommand.setDaemon(True)
     threadProcessCommand.start()
 
-    thread.start_new(self.__start,())
+    thread.start_new(self.__start, ())
   #}}}
 
   def process_command(self):

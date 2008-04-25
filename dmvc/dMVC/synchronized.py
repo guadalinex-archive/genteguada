@@ -23,10 +23,11 @@ def synchronized(lockName):
 class Synchronized:
   def __init__(self, debug=False):
     self.debug = debug
+
+    self.__locks = {}
     self.__initLocks()
 
   def __initLocks(self):
-    self.__locks = {}
     for key in dir(self):
       function = getattr(self, key)
       if callable(function):
@@ -36,6 +37,7 @@ class Synchronized:
             if self.debug:
               print 'creating the lock ' + lockName + ' in ' + str(self)
             self.__locks[lockName] = threading.RLock()
+
 
   def getLockNamed(self, lockName):
     return self.__locks[lockName]
