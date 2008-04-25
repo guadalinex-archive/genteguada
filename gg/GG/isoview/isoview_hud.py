@@ -9,6 +9,7 @@ class IsoViewHud(isoview.IsoView):
   
   def __init__(self, model, screen):
     """ Class constructor.
+    model: ggsession model.
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
@@ -16,14 +17,20 @@ class IsoViewHud(isoview.IsoView):
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
     
   def pruebaChat(self, events):
+    """ Procedimiento de prueba para el chat del Hud.
+    """
     #string = events.getParams()["actor"].getUsername() + " clicked on " + events.getParams()["receiver"].getUsername()
     string = events.getParams()["actor"].getUsername() + " clicked on "
     self.printOnChat(string)
   
   def getTextFont(self):
+    """ Returns the font used to print text on chat.
+    """
     return self.__textFont
   
   def getTextRect(self):
+    """ Returns the rectangle used to print text on chat.
+    """
     return self.__textRect
     
   def paint(self):

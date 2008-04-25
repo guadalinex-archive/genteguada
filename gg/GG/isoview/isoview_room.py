@@ -12,7 +12,8 @@ class IsoViewRoom(isoview.IsoView):
 
   def __init__(self, model, screen):
     """ Class constructor.
-    name: room label.
+    model: room model.
+    screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
     bgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
@@ -43,11 +44,15 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers.add(player.getImg())
 
   def removeIsoViewPlayer(self, player):
+    """ Removes an isometric player viewer from the viewers list.
+    player: player view to be removed.
+    """
     self.__allPlayers.remove(player.getImg())
     self.__isoViewPlayers.remove(player)
      
   def drawFirst(self, parent):
     """ Draws the room and all its components on screen for the first time.
+    parent: isoview hud handler.
     """
     for player in self.getModel().getPlayers():
       isoviewplayer = player.defaultView(self.getScreen(), self, parent)

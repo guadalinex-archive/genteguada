@@ -28,6 +28,8 @@ class GGSystem(dMVC.model.Model):
       
   def login(self, username, password):
     """ Attempts to login on an user. If succesfull, returns a ggsession model.
+    username: user name.
+    password: user password.
     """
     for player in self.__players:
       if player.checkUser(username, password):
@@ -35,11 +37,22 @@ class GGSystem(dMVC.model.Model):
     return None
       
   def createRoom(self, spriteFull):
+    """ Creates a new room.
+    spriteFull: sprite used to paint the room floor.
+    """
     room_ = room.GGRoom(spriteFull)
     room_.loadItems()
     self.__rooms.append(room_)
       
   def createPlayer(self, sprite, size, position, offset, username, password):
+    """ Creates a new player.
+    sprite: sprite used to paint the player.
+    size: sprite size.
+    position: sprite position.
+    offset: user sprite offset on screen.
+    username: player user name.
+    password: player password.
+    """
     for pl in self.__players:
       if pl.checkUser(username, password):
         return False
@@ -47,13 +60,21 @@ class GGSystem(dMVC.model.Model):
     return True
     
   def insertPlayerIntoRoom(self, player, room):
+    """ Inserts a new player into a room.
+    player: player to be inserted.
+    room: existing room.
+    """
     room.insertPlayer(player)
 
   def start(self):
+    """ Starts the program.
+    """
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.tick()
     
   def tick(self):
+    """ Calls for a time tick on all rooms.
+    """
     for room in self.__rooms:
       room.tick()    

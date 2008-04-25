@@ -8,6 +8,7 @@ class GGSession(dMVC.model.Model):
     
   def __init__(self, player):
     """ Initializes session attributes.
+    player: session user.
     """
     dMVC.model.Model.__init__(self)
     self.__player = player
@@ -20,5 +21,6 @@ class GGSession(dMVC.model.Model):
   @dMVC.model.localMethod
   def defaultView(self, screen):
     """ Esto deberia ser IsoViewSession.
+    screen: screen handler.
     """
     return GG.isoview.isoview_hud.IsoViewHud(self, screen)

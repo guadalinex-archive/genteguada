@@ -9,9 +9,9 @@ import sys
 logger = logging.getLogger('dMVC')
 
 # log to file
-#hdlr = logging.handlers.RotatingFileHandler("dMVC.log","a",200000,5)
+hdlr = logging.handlers.RotatingFileHandler("dMVC.log","a",200000,5)
 # log to console
-hdlr = logging.StreamHandler(sys.stdout)
+#hdlr = logging.StreamHandler(sys.stdout)
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
