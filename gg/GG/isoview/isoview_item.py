@@ -45,4 +45,6 @@ class IsoViewItem(isoview.IsoView):
     pygame.display.update(self.__allPlayers.draw(screen))
     
   def getIVRoom(self):
+    """ Returns the isometric view room object.
+    """
     return self.__ivroom

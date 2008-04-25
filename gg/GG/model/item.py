@@ -64,4 +64,7 @@ class GGItem(ggmodel.GGModel):
     self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
     
   def tick(self):
+    """ Call for an update on item position.
+    Not used at the moment.
+    """
     pass

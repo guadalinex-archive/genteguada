@@ -19,7 +19,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('position', self.changedPosition)
     
   def changedPosition(self, event):
-    """ Runs an event associated with a new action.
+    """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
     self.getImg().rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
