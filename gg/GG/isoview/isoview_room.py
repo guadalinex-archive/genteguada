@@ -35,6 +35,8 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0], pos[1]], \
             [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
+    self.getModel().subscribeEvent('addItem', self.itemAdded)
+    self.getModel().subscribeEvent('removeItem', self.itemRemoved)
         
   def insertIsoViewPlayer(self, player):
     """ Inserts a new player view.
@@ -55,12 +57,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Draws the room and all its components on screen for the first time.
     parent: isoview hud handler.
     """
-    """
-    for player in self.getModel().getPlayers():
-      isoviewplayer = player.defaultView(self.getScreen(), self, parent)
-      self.__isoViewPlayers.append(isoviewplayer)
-      self.__allPlayers.add(isoviewplayer.getImg())
-    """  
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, parent)
       self.__isoViewItems.append(isoviewitem)
@@ -112,4 +108,16 @@ class IsoViewRoom(isoview.IsoView):
           if not self.__tileList[x][z].onBlank(pos):
             return [x, z]
     return [-1, -1]
+  
+  def itemAdded(self, event):
+    """ Updates the room view when an item add event happens.
+    event: even info.
+    """
+    pass
+  
+  def itemRemoved(self, event):
+    """ Updates the room view when an item remove event happens.
+    event: even info.
+    """
+    pass
    

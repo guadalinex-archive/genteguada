@@ -52,12 +52,6 @@ class GGRoom(ggmodel.GGModel):
     """
     self.__blocked.remove(pos)
 
-  def removeItem(self, model):
-    """ Removes a player from the room.
-    model: player.
-    """
-    if model in self.__items:
-      self.__items.remove(model)
     
   def insertItem(self, item):
     """ Inserts a new item into the room.
@@ -66,6 +60,25 @@ class GGRoom(ggmodel.GGModel):
     self.__items.append(item)
     item.setCurrentRoom(self)
     self.setBlockedTile(item.getPosition())
+    
+  def addItem(self, item):
+    """ Adds a new item into the room and calls for an update on the room view.
+    item: new item.
+    """
+    self.__items.append(item)
+    item.setCurrentRoom(self)
+    self.setBlockedTile(item.getPosition())
+    self.triggerEvent('addItem', item=item)
+    
+  def removeItem(self, item):
+    """ Removes a player from the room.
+    item: player.
+    """
+    if item in self.__items:
+      self.setUnblockedTile(item.getPosition())
+      self.__items.remove(item)
+      self.triggerEvent('removeItem', item=item)
+      #self.unsubscribeEvent( 
 
   def loadItems(self):
     """ Load new items and appends them on the room.
