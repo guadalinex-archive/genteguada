@@ -45,9 +45,10 @@ class RClient(synchronized.Synchronized):
     while True:
       command = self.__commandQueue.get()
       try:
-        command.do()
-      except:
-        utils.logger.exception('exception in process_command')
+        try:
+          command.do()
+        except:
+          utils.logger.exception('exception in process_command')
       finally:
         self.__commandQueue.task_done()
 
