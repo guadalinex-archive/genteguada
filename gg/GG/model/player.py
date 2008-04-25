@@ -21,18 +21,12 @@ class GGPlayer(item.GGItem):
     self.__heading = "standing_down"
     self.__stateFrame = 0
     self.__destination = position
-    self.__currentRoom = None
     self.username = username
     self.__password = password
     self.__visited = []
 
   def variablesToSerialize(self):
     return ['username']
-  
-  def getCurrentRoom(self):
-    """ Returns the room where the player is.
-    """
-    return self.__currentRoom
   
   def getPassword(self):
     """ Returns the user password.
@@ -63,12 +57,6 @@ class GGPlayer(item.GGItem):
     self.__heading = heading
     self.__destination = destination
   
-  def setCurrentRoom(self, room):
-    """ Sets a new room for the player.
-    room: new room.
-    """
-    self.__currentRoom = room
-  
   def setNewPosition(self, position):
     """ Sets a new location for the player.
     position: new location.
@@ -78,7 +66,7 @@ class GGPlayer(item.GGItem):
     self.__visited.append(position)
     pActualAux = self.getPosition()
     self.setPosition(position)
-    self.triggerEvent('position', player=self, pActual=pActualAux, pDestin=self.getPosition(), dir=self.getHeading())
+    self.triggerEvent('position', position=self.getPosition(), dir=self.getHeading())
   
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
@@ -107,15 +95,34 @@ class GGPlayer(item.GGItem):
         return 1
     return 0
   
-  def tick(self, direction):
+  def tick(self):
     """ Calls for an update on player's position an movement direction.
-    direction: movement direction.
     """
+    direction = self.getCurrentRoom().getNextDirection(self, self.getPosition(), self.getDestination())
+    if direction <> "standing_down":
+      pos = self.getPosition()
+      self.getCurrentRoom().setUnblockedTile(pos)
+      if direction == "walking_up":
+        self.getCurrentRoom().setBlockedTile([pos[0], pos[1], pos[2] - 1])
+      elif direction == "walking_down":
+        self.getCurrentRoom().setBlockedTile([pos[0], pos[1], pos[2] + 1])
+      elif direction == "walking_left":
+        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2]])
+      elif direction == "walking_right":
+        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2]])
+      elif direction == "walking_topleft":
+        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2] - 1])
+      elif direction == "walking_bottomright":
+        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2] + 1])
+      elif direction == "walking_bottomleft":
+        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2] + 1])
+      elif direction == "walking_topright":
+        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2] - 1])
+      
     if self.getPosition() == self.__destination:
       self.__heading = "standing_down"
       return
     #if self.__heading <> "standing_down":
-    pos = self.getPosition()
     self.__heading = direction
     if self.__heading == "walking_up":
       next = [pos[0], pos[1], pos[2] - 1]
