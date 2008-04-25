@@ -22,10 +22,13 @@ class GGPlayer(item.GGItem):
     self.__stateFrame = 0
     self.__destination = position
     self.__currentRoom = None
-    self.__username = username
+    self.username = username
     self.__password = password
     self.__visited = []
 
+  def variablesToSerialize(self):
+    return ['username']
+  
   def getCurrentRoom(self):
     """ Returns the room where the player is.
     """
@@ -36,10 +39,11 @@ class GGPlayer(item.GGItem):
     """
     return self.__password
   
+  @dMVC.model.localMethod 
   def getUsername(self):
     """ Returns the user name.
     """
-    return self.__username
+    return self.username
   
   def getHeading(self):
     """ Returns the direction the player is heading to.

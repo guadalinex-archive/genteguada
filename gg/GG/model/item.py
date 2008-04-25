@@ -15,11 +15,14 @@ class GGItem(ggmodel.GGModel):
     offset: offset for that position.
     """
     ggmodel.GGModel.__init__(self)
-    self.__sprite   = sprite
+    self.sprite   = sprite
     self.__size     = size # TODO: REMOVE!!!!
     self.__position = position
     self.__offset   = offset
-    
+  
+  def variablesToSerialize(self):
+    return ['sprite']
+  
   def getPosition(self):
     """ Returns the item position.
     """
@@ -30,10 +33,11 @@ class GGItem(ggmodel.GGModel):
     """
     self.__position = pos 
 
+  @dMVC.model.localMethod 
   def getSprite(self):
     """ Returns the sprite name used to paint the item on screen.
     """
-    return self.__sprite
+    return self.sprite
     
   def getOffset(self):
     """ Returns the item screen offset.

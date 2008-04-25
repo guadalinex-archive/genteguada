@@ -18,13 +18,17 @@ class GGRoom(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.__players = []
     self.__items = []
-    self.__spriteFull = spriteFull
+    self.spriteFull = spriteFull
     self.__blocked = []
 
+  def variablesToSerialize(self):
+    return ['spriteFull']
+  
+  @dMVC.model.localMethod 
   def getSpriteFull(self):
     """ Returns the sprite used to paint the floor.
     """
-    return self.__spriteFull
+    return self.spriteFull
 
   def getPlayers(self):
     """ Return the players whose are on the room.

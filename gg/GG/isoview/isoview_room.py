@@ -23,7 +23,8 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
     self.__isoViewItems = []
-    self.__allPlayers = pygame.sprite.RenderUpdates()
+    #self.__allPlayers = pygame.sprite.RenderUpdates()
+    self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
     for x in range(GG.utils.SCENE_SZ[0]):
       for z in range(GG.utils.SCENE_SZ[1]):
@@ -73,9 +74,22 @@ class IsoViewRoom(isoview.IsoView):
     self.paintPlayers()
     pygame.display.update()
     
+  def orderSprites(self):
+    """ Order the sprites according to their position.
+    """
+    #allPlayersTemp = pygame.sprite.OrderedUpdates()
+    allPlayersTemp = []
+    for image in self.__allPlayers:
+      allPlayersTemp.append([image, image.rect.topleft[1]])
+      self.__allPlayers.remove(image)
+    allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
+    while len(allPlayersTemp):
+      self.__allPlayers.append(allPlayersTemp.pop())
+    
   def paintPlayers(self):
     """ Paints all players on screen.
     """
+    #self.orderSprites()
     self.__allPlayers.update()                     
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
     pygame.display.update(self.__allPlayers.draw(self.getScreen()))
