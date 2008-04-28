@@ -1,7 +1,6 @@
 import item
 import GG.isoview.isoview_player
 import dMVC.model
-#import ggcommon.eventos
 
 class GGPlayer(item.GGItem):
   """ Player class.
@@ -18,56 +17,39 @@ class GGPlayer(item.GGItem):
     password: user password.
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
-    self.__heading = "standing_down"
-    self.__stateFrame = 0
-    self.__destination = position
     self.username = username
+    self.__destination = position
     self.__password = password
     self.__visited = []
 
   def variablesToSerialize(self):
     return ['username']
   
-  def getPassword(self):
-    """ Returns the user password.
-    """
-    return self.__password
-  
   @dMVC.model.localMethod 
   def getUsername(self):
     """ Returns the user name.
     """
     return self.username
-  
-  def getHeading(self):
-    """ Returns the direction the player is heading to.
+
+  def getPassword(self):
+    """ Returns the user password.
     """
-    return self.__heading
+    return self.__password
   
   def getDestination(self):
     """ Returns the player's movement destination.
     """
     return self.__destination
   
-  def setDestination(self, heading, destination):
+  def setDestination(self, destination):
     """ Sets a new destination for the player movement.
     heading: movement direction.
     destination: movement destination.
     """
-    self.__heading = heading
-    self.__destination = destination
-  
-  def setNewPosition(self, position):
-    """ Sets a new location for the player.
-    position: new location.
-    """
-    if self.getDestination() == position:
-      self.__visited = []
-    self.__visited.append(position)
-    pActualAux = self.getPosition()
-    self.setPosition(position)
-    self.triggerEvent('position', position=self.getPosition(), dir=self.getHeading())
-  
+    if self.__destination <> destination:
+      self.__destination = destination
+      self.triggerEvent('destinationChanged', destination=destination)
+      
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.
@@ -98,46 +80,30 @@ class GGPlayer(item.GGItem):
   def tick(self):
     """ Calls for an update on player's position an movement direction.
     """
-    direction = self.getCurrentRoom().getNextDirection(self, self.getPosition(), self.getDestination())
-    if direction <> "standing_down":
-      pos = self.getPosition()
-      self.getCurrentRoom().setUnblockedTile(pos)
-      if direction == "walking_up":
-        self.getCurrentRoom().setBlockedTile([pos[0], pos[1], pos[2] - 1])
-      elif direction == "walking_down":
-        self.getCurrentRoom().setBlockedTile([pos[0], pos[1], pos[2] + 1])
-      elif direction == "walking_left":
-        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2]])
-      elif direction == "walking_right":
-        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2]])
-      elif direction == "walking_topleft":
-        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2] - 1])
-      elif direction == "walking_bottomright":
-        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2] + 1])
-      elif direction == "walking_bottomleft":
-        self.getCurrentRoom().setBlockedTile([pos[0] - 1, pos[1], pos[2] + 1])
-      elif direction == "walking_topright":
-        self.getCurrentRoom().setBlockedTile([pos[0] + 1, pos[1], pos[2] - 1])
-      
     if self.getPosition() == self.__destination:
-      self.__heading = "standing_down"
+      self.setState("standing")
       return
-    #if self.__heading <> "standing_down":
-    self.__heading = direction
-    if self.__heading == "walking_up":
+    direction = self.getRoom().getNextDirection(self, self.getPosition(), self.getDestination())
+    if direction == "none":
+      self.setDestination(self.getPosition())
+      return
+    pos = self.getPosition()
+    self.setState("walking")
+    self.setHeading(direction)
+    if self.getHeading() == "up":
       next = [pos[0], pos[1], pos[2] - 1]
-    if self.__heading == "walking_down":
+    if self.getHeading() == "down":
       next = [pos[0], pos[1], pos[2] + 1]
-    if self.__heading == "walking_left":
+    if self.getHeading() == "left":
       next = [pos[0] - 1, pos[1], pos[2]]
-    if self.__heading == "walking_right":
+    if self.getHeading() == "right":
       next = [pos[0] + 1, pos[1], pos[2]]
-    if self.__heading == "walking_topleft":
+    if self.getHeading() == "topleft":
       next = [pos[0] - 1, pos[1], pos[2] - 1]
-    if self.__heading == "walking_bottomright": 
+    if self.getHeading() == "bottomright": 
       next = [pos[0] + 1, pos[1], pos[2] + 1]
-    if self.__heading == "walking_bottomleft":
+    if self.getHeading() == "bottomleft":
       next = [pos[0] - 1, pos[1], pos[2] + 1]
-    if self.__heading == "walking_topright":
+    if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
-    self.setNewPosition(next)
+    self.setPosition(next)
