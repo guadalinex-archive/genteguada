@@ -16,9 +16,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     parent: isoview_hud handler.
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
-    self.getModel().subscribeEvent('position', self.changedPosition)
+    self.getModel().subscribeEvent('positionChanged', self.positionChanged)
     
-  def changedPosition(self, event):
+  def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """

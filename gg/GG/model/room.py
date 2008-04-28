@@ -16,10 +16,10 @@ class GGRoom(ggmodel.GGModel):
     spriteFull: sprite used to paint the room floor on screen.
     """
     ggmodel.GGModel.__init__(self)
-    self.__items = []
     self.spriteFull = spriteFull
-    self.__blocked = []
-
+    self.__items = []
+    #self.loadItems()
+    
   def variablesToSerialize(self):
     return ['spriteFull']
   
@@ -38,59 +38,46 @@ class GGRoom(ggmodel.GGModel):
     """ Checks if a tile is blocked or not.
     pos: tile position.
     """
-    return pos in self.__blocked
-    
-  def setBlockedTile(self, pos):
-    """ Sets a room tile as blocked.
-    pos: tile position.
-    """
-    self.__blocked.append(pos)
-
-  def setUnblockedTile(self, pos):
-    """ Sets a room tile as unblocked.
-    pos: tile position.
-    """
-    self.__blocked.remove(pos)
-
-    
-  def insertItem(self, item):
-    """ Inserts a new item into the room.
-    item: new item.
-    """
-    self.__items.append(item)
-    item.setCurrentRoom(self)
-    self.setBlockedTile(item.getPosition())
+    #return pos in self.__blocked
+    for item in self.__items:
+      if item.getPosition() == pos:
+        return True
+    return False  
     
   def addItem(self, item):
     """ Adds a new item into the room and calls for an update on the room view.
     item: new item.
     """
-    self.__items.append(item)
-    item.setCurrentRoom(self)
-    self.setBlockedTile(item.getPosition())
-    self.triggerEvent('addItem', item=item)
+    if not self.getBlocked(item.getPosition()):
+      self.__items.append(item)
+      item.setRoom(self)
+      self.triggerEvent('itemAdded', item=item)
+      return True
+    return False
     
   def removeItem(self, item):
-    """ Removes a player from the room.
+    """ Removes an item from the room.
     item: player.
     """
     if item in self.__items:
-      self.setUnblockedTile(item.getPosition())
       self.__items.remove(item)
-      self.triggerEvent('removeItem', item=item)
-      #self.unsubscribeEvent( 
-
+      self.triggerEvent('itemRemoved', item=item)
+      return True
+    return False
+      #self.unsubscribeEventObserver(self)
+      
   def loadItems(self):
     """ Load new items and appends them on the room.
     """
-    self.insertItem(GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170]))
+    self.addItem(GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170]))
     
   @dMVC.model.localMethod
-  def defaultView(self, screen):
+  def defaultView(self, screen, hud):
     """ Creates a view object associated with this room.
     screen: screen handler.
+    hud: isoview hud object.
     """
-    return GG.isoview.isoview_room.IsoViewRoom(self, screen)
+    return GG.isoview.isoview_room.IsoViewRoom(self, screen, hud)
 
   def clickedByPlayer(self, player, target):
     """ Indicates players inside that a player has made click on another one.
@@ -100,7 +87,7 @@ class GGRoom(ggmodel.GGModel):
     clickerLabel = player.getUsername()
     if not self.getBlocked(target):
       direction = self.getNextDirection(player, player.getPosition(), target)
-      player.setDestination(direction, target)
+      player.setDestination(target)
     else:
       for item in self.__items:
         if item.getPosition() == target:
@@ -112,8 +99,6 @@ class GGRoom(ggmodel.GGModel):
     pos1: starting point.
     pos2: ending point.
     """
-    if pos1 == pos2: return "standing_down"
-
     dir = []
     dir.append([pos1[0], pos1[1], pos1[2] - 1]) #up
     dir.append([pos1[0], pos1[1], pos1[2] + 1]) #down
@@ -127,11 +112,11 @@ class GGRoom(ggmodel.GGModel):
     for i in range(0, len(dir)):
       if (pos2 == dir[i]) and (0 <= dir[i][0] <= GG.utils.SCENE_SZ[0]) and (0 <= dir[i][2] <= GG.utils.SCENE_SZ[1]):
         if self.getBlocked(dir[i]) == 0:
-          return GG.utils.DIR[i+1]
+          return GG.utils.HEADING[i+1]
     
     dist = []
     for i in range(0, len(dir)):
-      dist.append([GG.utils.DIR[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
+      dist.append([GG.utils.HEADING[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
@@ -139,7 +124,7 @@ class GGRoom(ggmodel.GGModel):
         if self.getBlocked(first[2]) == 0:
           if not player.hasBeenVisited(first[2]):
             return first[0]
-    return "standing_down"  
+    return "none"  
     
   def isCloser(self, ori, pos, dest):
     """ Checks if a point is closer to a destination than another point.

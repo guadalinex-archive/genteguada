@@ -10,19 +10,21 @@ class IsoViewRoom(isoview.IsoView):
   Defines the room view.
   """
 
-  def __init__(self, model, screen):
+  def __init__(self, model, screen, hud):
     """ Class constructor.
     model: room model.
     screen: screen handler.
+    isoview hud object.
     """
     isoview.IsoView.__init__(self, model, screen)
+    self.__parent = hud
     bgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath)
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
-    self.__isoViewItems = []
+    #self.__isoViewItems = []
     #self.__allPlayers = pygame.sprite.RenderUpdates()
     self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
@@ -35,31 +37,32 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0], pos[1]], \
             [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
-    self.getModel().subscribeEvent('addItem', self.itemAdded)
-    self.getModel().subscribeEvent('removeItem', self.itemRemoved)
-        
-  def insertIsoViewPlayer(self, player):
-    """ Inserts a new player view.
-    player: player view.
+    self.getModel().subscribeEvent('itemAdded', self.itemAdded)
+    self.getModel().subscribeEvent('itemRemoved', self.itemRemoved)
+    
+  def addIsoViewItem(self, item):
+    """ Inserts a new item view.
+    item: item view.
     """
-    player.getModel().subscribeEvent('position', self.startMovementEventFired)
-    self.__isoViewPlayers.append(player)
-    self.__allPlayers.add(player.getImg())
-
-  def removeIsoViewPlayer(self, player):
+    self.__isoViewPlayers.append(item)
+    self.__allPlayers.add(item.getImg())
+    self.draw()
+    
+  def removeIsoViewItem(self, player):
     """ Removes an isometric player viewer from the viewers list.
     player: player view to be removed.
     """
-    self.__allPlayers.remove(player.getImg())
     self.__isoViewPlayers.remove(player)
+    self.__allPlayers.remove(player.getImg())
+    self.draw()
      
-  def drawFirst(self, parent):
+  def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
     parent: isoview hud handler.
     """
     for item in self.getModel().getItems():
-      isoviewitem = item.defaultView(self.getScreen(), self, parent)
-      self.__isoViewItems.append(isoviewitem)
+      isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
+      self.__isoViewPlayers.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
     self.paintFloorFull()
     self.__allPlayers.draw(self.getScreen())
@@ -78,16 +81,18 @@ class IsoViewRoom(isoview.IsoView):
     #allPlayersTemp = pygame.sprite.OrderedUpdates()
     allPlayersTemp = []
     for image in self.__allPlayers:
+    #  print image.rect.topleft[1]
       allPlayersTemp.append([image, image.rect.topleft[1]])
       self.__allPlayers.remove(image)
     allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
+    self.__allPlayers = allPlayersTemp
     while len(allPlayersTemp):
+      print allPlayersTemp[0]
       self.__allPlayers.append(allPlayersTemp.pop()[0])
     
   def paintPlayers(self):
     """ Paints all players on screen.
     """
-    #self.orderSprites()
     self.__allPlayers.update()                     
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
     pygame.display.update(self.__allPlayers.draw(self.getScreen()))
@@ -113,11 +118,12 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    pass
+    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self.getModel(), self.__parent))
   
   def itemRemoved(self, event):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
-    pass
-   
+    for ivplayer in self.__isoViewPlayers:
+      if ivplayer.getModel() == event.getParams()['item']:
+        self.removeIsoViewItem(ivplayer)

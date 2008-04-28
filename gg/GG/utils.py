@@ -30,6 +30,7 @@ ANIM_DELAY = 0.2
 SPEED = 55.901699437
 
 BG_FULL = "fondo.png"
+BG_FULL2 = "fondo2.png"
 TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"
@@ -48,9 +49,10 @@ HUD_COLOR_BORDER3 = [202, 199, 231]
 CHAT_COLOR_BG = [61, 61, 91]
 CHAT_COLOR_FONT = [216, 216, 216]
 
-DIR = {1: "walking_up", 2: "walking_down", 3: "walking_left", 4: "walking_right",
-       5: "walking_topleft", 6: "walking_bottomright", 7: "walking_bottomleft",
-       8: "walking_topright"}
+HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
+           5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
+
+STATE = {1: "standing", 2: "walking"}
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
@@ -59,24 +61,24 @@ def getNextDirection(pos1, pos2):
   """
   if pos1[0] < pos2[0]:
     if pos1[2] < pos2[2]:
-      return "walking_bottomright"
+      return "bottomright"
     elif pos1[2] > pos2[2]:
-      return "walking_topright"
+      return "topright"
     else:
-      return "walking_right"
+      return "right"
   elif pos1[0] > pos2[0]:
     if pos1[2] < pos2[2]:
-      return "walking_bottomleft"
+      return "bottomleft"
     elif pos1[2] > pos2[2]:
-      return "walking_topleft"
+      return "topleft"
     else:
-      return "walking_left"
+      return "left"
   elif pos1[0] == pos2[0]:
     if pos1[2] < pos2[2]:
-      return "walking_down" 
+      return "down" 
     elif pos1[2] > pos2[2]:
-      return "walking_up"
-  return "standing_down"
+      return "up"
+  return "down"
 
 
 class TextRectException:
