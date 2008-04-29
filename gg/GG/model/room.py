@@ -18,7 +18,6 @@ class GGRoom(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
-    self.loadItems()
     
   def variablesToSerialize(self):
     return ['spriteFull']
@@ -65,14 +64,7 @@ class GGRoom(ggmodel.GGModel):
       return True
     return False
       #self.unsubscribeEventObserver(self)
-      
-  def loadItems(self):
-    """ Load new items and appends them on the room.
-    """
-    #self.addItem(GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170]))
-    self.addItem(GG.model.item.GGItem(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8]))    
-    self.addItem(GG.model.item.GGItem(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 5], [0, 0]))    
-    
+  
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
     """ Creates a view object associated with this room.
