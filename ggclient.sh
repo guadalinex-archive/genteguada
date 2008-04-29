@@ -6,4 +6,4 @@ echo "-----------------"
 echo
 
 export PYTHONPATH="./dmvc"
-python gg/ggclient
+python gg/genteguada -e remoto

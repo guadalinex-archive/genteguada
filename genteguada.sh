@@ -6,4 +6,4 @@ echo "--------------------------"
 echo
 
 export PYTHONPATH="./dmvc"
-python gg/genteguada
+python gg/genteguada -e local 
