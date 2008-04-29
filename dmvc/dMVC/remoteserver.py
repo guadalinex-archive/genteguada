@@ -53,6 +53,7 @@ class RServer(synchronized.Synchronized):
       data = raw_input('')
       if data.rstrip() == "quit": 
         con.server_close()
+        print utils.statServer
         sys.exit(0)
   #}}}
 
@@ -82,6 +83,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         command = pickle.loads(commandData)
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
+        command.stat(size)
         answer = command.do()
         utils.logger.debug("Run the command " + str(command) + " from the client " + \
                              str(self.client_address)+ " and the result is "+str(answer))

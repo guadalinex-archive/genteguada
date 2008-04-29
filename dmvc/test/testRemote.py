@@ -18,6 +18,7 @@ class TestRemoteObject(unittest.TestCase):
  
   def testRemoteModel(self):
     print "Conectando con el server"
+    #client = dMVC.remoteclient.RClient("192.168.0.33")
     client = dMVC.remoteclient.RClient("127.0.0.1")
     
     print "Ejecutando test con model remoto"
@@ -165,6 +166,12 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "probamos un metodo local sobre una variable local"
     k = model.getConstant()
     assert k == 'CONSTANT'
+
+    subplayer = model.getSubPlayer()
+    print subplayer
+    print dir(subplayer)
+    print subplayer.getConstHeredada()
+    print subplayer.constHeredada
 
   
   def eventFired(self, event):

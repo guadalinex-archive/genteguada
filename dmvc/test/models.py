@@ -5,6 +5,14 @@ class TestPlayer(dMVC.model.Model): #{{{
     
   def __init__(self):
     dMVC.model.Model.__init__(self)
+    self.constHeredada = "Constante heredada"
+
+  def variablesToSerialize(self):
+    return ['constHeredada']
+
+  @dMVC.model.localMethod
+  def getConstHeredada(self):
+    return self.constHeredada
 
   def name(self):
     return 'maradona'
@@ -15,11 +23,21 @@ class TestPlayer(dMVC.model.Model): #{{{
 
 #}}}
 
+class TestSubPlayer(TestPlayer):
+  
+  def __init__(self):
+    TestPlayer.__init__(self)
+    self.noFunciona = "PUFF"
+
+  def variablesToSerialize(self): 
+    return TestPlayer.variablesToSerialize(self) + ['noFunciona']
+
 class TestModel(dMVC.model.Model): #{{{
     
   def __init__(self):
     dMVC.model.Model.__init__(self)
     self._player = TestPlayer()
+    self._subPlayer = TestSubPlayer()
     self._position = [0,0]
     self._name = ''
     self._constant = 'CONSTANT'
@@ -30,6 +48,9 @@ class TestModel(dMVC.model.Model): #{{{
   @dMVC.model.localMethod
   def getConstant(self):
     return self._constant
+
+  def getSubPlayer(self):
+    return self._subPlayer
 
   def getListPlayer(self):
     return self._listPlayer

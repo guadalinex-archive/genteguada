@@ -20,9 +20,6 @@
   - ¿Aspects?
 
 
-
-
-
 GenteGuada:
 -----------
 
@@ -30,3 +27,4 @@ GenteGuada:
 
 - para que el avatar "camine", no hace falta más que mandar un evento 'position' con la nueva posición.
 
+- setattribute de remote model, cambiar para que las variables que serializamos no puedan ser modificadas
