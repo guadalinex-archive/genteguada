@@ -16,7 +16,20 @@ class RCommand: #{{{
   def objectToSerialize(self, server):
     return self
   #}}}
+  
+  def stat(self,size):
+    utils.statServer.count((self.getCommandType(), str(self.getClass()), str(self.getMethod())), size )
+ 
+  def getCommandType(self):
+    return ""
 
+  def getClass(self):
+    rServer = dMVC.getRServer()
+    model = rServer.getModelByID(self._modelID)
+    return model.__class__.__name__
+
+  def getMethod(self):
+    return "" 
 
   def setServerHandler(self, serverHandler):
     self._serverHandler = serverHandler
@@ -36,6 +49,11 @@ class RExecuterCommand(RCommand): #{{{
     self._args       = args
   #}}}
 
+  def getMethod(self):
+    return self._methodName
+
+  def getCommandType(self):
+    return "RPC"
 
   def isYourAnswer(self, command):
     if not isinstance(command, RExecutionAnswerer):
@@ -129,7 +147,13 @@ class REventSuscriber(RCommand):
     self._modelID       = modelID
     self._eventType     = eventType
     self._suscriptionID = suscriptionID
-  
+
+  def getCommandType(self):
+    return "EventSubscribe"
+
+  def getMethod(self):
+    return self._eventType
+
   def do(self):
     model = dMVC.getRServer().getModelByID(self._modelID)
     model.subscribeEvent(self._eventType, self.eventFired)

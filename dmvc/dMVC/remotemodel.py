@@ -15,6 +15,7 @@ class RemoteModel: #{{{
     self.__variablesDict   = variablesDict
   #}}}
 
+  
   def __str__(self): #{{{
     return '<RemoteModel modelID: ' + str(self.__modelID) + ' (' + self.__modelModuleName + '.' + self.__modelClassName + ')>'
   #}}}

@@ -52,6 +52,7 @@ class GenteGuada:
     self.player = session.getPlayer()
     self.room = self.player.getRoom()
     self.isoviewroom = self.room.defaultView(screen, isoHud)
+    self.isoviewroom.drawFirst()
     
     self.isoviewroom.drawFirst()
     isoHud.paint()
