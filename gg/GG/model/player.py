@@ -26,7 +26,8 @@ class GGPlayer(item.GGItem):
     self.__inventory = []
     
   def variablesToSerialize(self):
-    return ['username']
+    parentVars = item.GGItem.variablesToSerialize(self)
+    return parentVars + ['username']
   
   @dMVC.model.localMethod 
   def getUsername(self):
