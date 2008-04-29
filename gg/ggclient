@@ -14,8 +14,17 @@ class GenteGuada:
     for event in events:
       if event.type == QUIT: 
         sys.exit(0)
-      if event.type == KEYDOWN and event.key == K_ESCAPE:
-        sys.exit(0)
+      if event.type == KEYDOWN:
+        if event.key == K_ESCAPE:
+          sys.exit(0)
+        elif event.key == K_q:
+          self.sy.insertItemIntoRoom(self.tree, self.room, 0)
+        elif event.key == K_a:
+          self.sy.removeItem(self.tree, 0)
+        elif event.key == K_o:
+          self.sy.insertItemIntoRoom(self.girl, self.room, 1)
+        elif event.key == K_l:
+          self.sy.removeItem(self.girl, 1)
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoviewroom.findTile([x,y])
@@ -29,19 +38,25 @@ class GenteGuada:
     
     #remoto
     client = dMVC.remoteclient.RClient("127.0.0.1")
-    sy = client.getRootModel()
+    self.sy = client.getRootModel()
     #local
-    #sy = GG.model.ggsystem.GGSystem()
+    #self.sy = GG.model.ggsystem.GGSystem()
 
-    session = sy.login("pepe", "1234")
-    self.player = session.getPlayer()
-    self.room = self.player.getCurrentRoom()
-    self.isoviewroom = self.room.defaultView(screen)
+    # Declaraciones solo para pruebas
+    self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
+    self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
+                    
+    session = self.sy.login("pepe", "1234")
     isoHud = session.defaultView(screen)
-    self.isoviewroom.drawFirst(isoHud)
+    
+    self.player = session.getPlayer()
+    self.room = self.player.getRoom()
+    self.isoviewroom = self.room.defaultView(screen, isoHud)
+    
+    self.isoviewroom.drawFirst()
     isoHud.paint()
     pygame.display.update()
-    isoHud.printOnChat("Inicio del Juego. Chat vacio")
+    isoHud.printOnChat("Inicio del juego. Chat vacio.")
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())
