@@ -1,7 +1,8 @@
 import dMVC.model
 import GG.isoview.isoview_hud
+import ggmodel
 
-class GGSession(dMVC.model.Model):
+class GGSession(ggmodel.GGModel):
   """ GGSession class.
   Includes room and player objects, and some procedures to manage data.
   """
@@ -10,7 +11,7 @@ class GGSession(dMVC.model.Model):
     """ Initializes session attributes.
     player: session user.
     """
-    dMVC.model.Model.__init__(self)
+    ggmodel.GGModel.__init__(self)
     self.__player = player
       
   def getPlayer(self):
