@@ -28,6 +28,11 @@ class IsoViewItem(isoview.IsoView):
     self.getModel().subscribeEvent('position', self.positionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
+  def getParent(self):
+    """ Returns the isoview hud handler.
+    """
+    return self.__parent
+  
   def getSprite(self):
     """ Returns the sprite name of the item.
     """

@@ -26,6 +26,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving an inventory added event.
     event: event info.
     """
-    #parent.
+    self.getParent().addInventoryItem(event.getParams()["item"])
+    #self.getParent().paintItemOnInventory(event.getParams()["item"].spriteName, len(self.getModel().getInventory()) - 1)
     
-    pass

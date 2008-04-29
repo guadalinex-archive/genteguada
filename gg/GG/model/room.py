@@ -90,15 +90,6 @@ class GGRoom(ggmodel.GGModel):
     target: click target player.
     """
     clickerLabel = player.getUsername()
-    direction = self.getNextDirection(player, player.getPosition(), target)
-    player.setDestination(target)
-    
-    if self.getBlocked(target):
-      for item in self.__items:
-        if item.getPosition() == target:
-          item.clickedBy(player)
-    """
-    clickerLabel = player.getUsername()
     if not self.getBlocked(target):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(target)
@@ -106,7 +97,6 @@ class GGRoom(ggmodel.GGModel):
       for item in self.__items:
         if item.getPosition() == target:
           item.clickedBy(player)
-    """
     
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.

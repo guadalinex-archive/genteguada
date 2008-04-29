@@ -143,7 +143,7 @@ class GGPlayer(item.GGItem):
     """ Triggers an avent when the player receives a click by another player.
     clicker: player who clicks.
     """
-    self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
+    self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
     
   
   def tick(self):

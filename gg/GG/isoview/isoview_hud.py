@@ -2,6 +2,7 @@ import os
 import pygame
 import GG.utils
 import isoview
+import isoview_inventoryitem
 
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
@@ -14,15 +15,24 @@ class IsoViewHud(isoview.IsoView):
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
+    self.__isoviewinventory = []
     self.__textFont = pygame.font.Font(None, 22)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
+    
+  def addInventoryItem(self, item):
+    """
+    """
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item.getSpriteInventory(), item.getLabel())
+    self.__isoviewinventory.append(invItem)
+    n = 0
+    for inventoryitem in self.__isoviewinventory:
+      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
+      n += 1
     
   def pruebaChat(self, events):
     """ Procedimiento de prueba para el chat del Hud.
     """
-    #string = events.getParams()["actor"].getUsername() + " clicked on " + events.getParams()["receiver"].getUsername()
-    string = events.getParams()["actor"].getUsername() + " clicked on item."
-    self.printOnChat(string)
+    self.printOnChat(events.getParams()["msg"])
   
   def getTextFont(self):
     """ Returns the font used to print text on chat.
@@ -40,12 +50,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintHud()
     self.paintChat()
     self.paintInventory()
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 0)
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 1)
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 2)
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 3)
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 4)
-    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 5)
+    #self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 0)
     pygame.display.update()
 
   def paintHud(self):
