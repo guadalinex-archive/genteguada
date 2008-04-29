@@ -36,11 +36,11 @@ class GGSystem(dMVC.model.Model):
     """
     self.createRoom(GG.utils.BG_FULL)
     self.createRoom(GG.utils.BG_FULL2)
+    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8]))    
+    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 5], [0, 0]))    
     if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
       self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
-        #if self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345"):
-    #  self.insertItemIntoRoom(self.__players[1], self.__rooms[0])
-
+        
   def createRoom(self, spriteFull):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
