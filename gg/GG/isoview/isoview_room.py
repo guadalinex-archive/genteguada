@@ -40,22 +40,6 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('itemAdded', self.itemAdded)
     self.getModel().subscribeEvent('itemRemoved', self.itemRemoved)
     
-  def addIsoViewItem(self, item):
-    """ Inserts a new item view.
-    item: item view.
-    """
-    self.__isoViewPlayers.append(item)
-    self.__allPlayers.add(item.getImg())
-    self.draw()
-    
-  def removeIsoViewItem(self, player):
-    """ Removes an isometric player viewer from the viewers list.
-    player: player view to be removed.
-    """
-    self.__isoViewPlayers.remove(player)
-    self.__allPlayers.remove(player.getImg())
-    self.draw()
-     
   def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
     parent: isoview hud handler.
@@ -127,3 +111,20 @@ class IsoViewRoom(isoview.IsoView):
     for ivplayer in self.__isoViewPlayers:
       if ivplayer.getModel() == event.getParams()['item']:
         self.removeIsoViewItem(ivplayer)
+        
+  def addIsoViewItem(self, item):
+    """ Inserts a new item view.
+    item: item view.
+    """
+    self.__isoViewPlayers.append(item)
+    self.__allPlayers.add(item.getImg())
+    self.draw()
+    
+  def removeIsoViewItem(self, player):
+    """ Removes an isometric player viewer from the viewers list.
+    player: player view to be removed.
+    """
+    self.__isoViewPlayers.remove(player)
+    self.__allPlayers.remove(player.getImg())
+    self.draw()
+  

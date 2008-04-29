@@ -24,3 +24,10 @@ class GGSession(dMVC.model.Model):
     screen: screen handler.
     """
     return GG.isoview.isoview_hud.IsoViewHud(self, screen)
+
+  def logout(self):
+    """
+    """
+    #lanzar evento removePlayer a la habitacion
+    pass
+

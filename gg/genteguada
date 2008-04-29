@@ -18,13 +18,13 @@ class GenteGuada:
         if event.key == K_ESCAPE:
           sys.exit(0)
         elif event.key == K_q:
-          self.sy.insertItemIntoRoom(self.arbol, self.room, 0)
+          self.sy.insertItemIntoRoom(self.tree, self.room, 0)
         elif event.key == K_a:
-          self.sy.removeItemFromRoom(self.arbol, self.room, 0)
+          self.sy.removeItem(self.tree, 0)
         elif event.key == K_o:
-          self.sy.insertItemIntoRoom(self.nina, self.room, 1)
+          self.sy.insertItemIntoRoom(self.girl, self.room, 1)
         elif event.key == K_l:
-          self.sy.removeItemFromRoom(self.nina, self.room, 1)
+          self.sy.removeItem(self.girl, 1)
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoviewroom.findTile([x,y])
@@ -43,8 +43,8 @@ class GenteGuada:
     self.sy = GG.model.ggsystem.GGSystem()
 
     # Declaraciones solo para pruebas
-    self.arbol = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
-    self.nina = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
+    self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
+    self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
                     
     session = self.sy.login("pepe", "1234")
     isoHud = session.defaultView(screen)

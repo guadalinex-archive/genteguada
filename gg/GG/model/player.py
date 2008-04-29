@@ -18,6 +18,8 @@ class GGPlayer(item.GGItem):
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.username = username
+    self.__heading = "down"
+    self.__state = "standing"
     self.__destination = position
     self.__password = password
     self.__visited = []
@@ -31,6 +33,16 @@ class GGPlayer(item.GGItem):
     """
     return self.username
 
+  def getHeading(self):
+    """ Returns the direction the player is heading to.
+    """
+    return self.__heading
+  
+  def getState(self):
+    """ Returns the player's state.
+    """
+    return self.__state
+  
   def getPassword(self):
     """ Returns the user password.
     """
@@ -41,6 +53,20 @@ class GGPlayer(item.GGItem):
     """
     return self.__destination
   
+  def setHeading(self, heading):
+    """ Sets a new heading direction for the item.
+    """
+    if self.__heading <> heading:
+      self.__heading = heading
+      self.triggerEvent('headingChanged', heading=heading)
+
+  def setState(self, state):
+    """ Sets a new state for the item.
+    """
+    if self.__state <> state:
+      self.__state = state
+      self.triggerEvent('stateChanged', state=state)
+
   def setDestination(self, destination):
     """ Sets a new destination for the player movement.
     heading: movement direction.
@@ -49,7 +75,7 @@ class GGPlayer(item.GGItem):
     if self.__destination <> destination:
       self.__destination = destination
       self.triggerEvent('destinationChanged', destination=destination)
-      
+
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.
