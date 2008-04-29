@@ -44,6 +44,7 @@ NINO_SZ = [64, 100]
 NINO_SPRITE = "nino.png"
 NINA_SPRITE = "nina.png"
 BOOK_SPRITE = "book.png"
+DOOR_DOWN_SPRITE = "door_down.png"
 SIN30R = math.sin(math.radians(30))
 COS30R = math.cos(math.radians(30))
 

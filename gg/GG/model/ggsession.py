@@ -14,10 +14,21 @@ class GGSession(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.__player = player
       
+  # self.__player
+  
   def getPlayer(self):
     """ Returns the active player.
     """
     return self.__player
+
+  def setPlayer(self, player):
+    """ Sets a new active player.
+    """
+    if self.__player <> player:
+      self.__player = player
+      self.triggerEvent('player', player=player)
+      return True
+    return False
     
   @dMVC.model.localMethod
   def defaultView(self, screen):
@@ -29,6 +40,6 @@ class GGSession(ggmodel.GGModel):
   def logout(self):
     """
     """
-    #lanzar evento removePlayer a la habitacion
+    #lanzar evento removePlayer a la habitacion. Metodo por definir.
     pass
 

@@ -20,39 +20,43 @@ class GGItem(ggmodel.GGModel):
     self.__position = position
     self.__room = None
 
+  def variablesToSerialize(self):
+    return ['spriteName', 'offset']
+  
   @dMVC.model.localMethod 
   def getOffset(self):
     """ Returns the item screen offset.
     """
     return self.offset
   
-  def variablesToSerialize(self):
-    return ['spriteName', 'offset']
-  
-  def getRoom(self):
-    """ Returns the room where the player is.
-    """
-    return self.__room
+  # self.__position
   
   def getPosition(self):
     """ Returns the item position.
     """
     return self.__position
 
+  def setPosition(self, pos):
+    """ Sets a new position for the item.
+    """
+    if self.__position <> pos:
+      self.__position = pos
+      self.triggerEvent('position', position=pos)
+
+  # self.__room
+    
+  def getRoom(self):
+    """ Returns the room where the player is.
+    """
+    return self.__room
+  
   def setRoom(self, room):
     """ Sets a new room for the player.
     room: new room.
     """
     if self.__room <> room:
       self.__room = room
-      self.triggerEvent('roomChanged', room=room)
-
-  def setPosition(self, pos):
-    """ Sets a new position for the item.
-    """
-    if self.__position <> pos:
-      self.__position = pos
-      self.triggerEvent('positionChanged', position=pos)
+      self.triggerEvent('room', room=room)
 
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):

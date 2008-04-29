@@ -37,12 +37,11 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0], pos[1]], \
             [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
-    self.getModel().subscribeEvent('itemAdded', self.itemAdded)
-    self.getModel().subscribeEvent('itemRemoved', self.itemRemoved)
+    self.getModel().subscribeEvent('addItem', self.itemAdded)
+    self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     
   def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
-    parent: isoview hud handler.
     """
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)

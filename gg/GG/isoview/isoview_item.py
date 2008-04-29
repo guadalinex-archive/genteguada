@@ -25,6 +25,8 @@ class IsoViewItem(isoview.IsoView):
     self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
     self.__parent = parent
     self.getModel().subscribeEvent('chat', parent.pruebaChat)
+    self.getModel().subscribeEvent('position', self.positionChanged)
+    #self.getModel().subscribeEvent('room', self.roomChanged)
     
   def getSprite(self):
     """ Returns the sprite name of the item.
@@ -36,6 +38,11 @@ class IsoViewItem(isoview.IsoView):
     """
     return self.__img
     
+  def getIVRoom(self):
+    """ Returns the isometric view room object.
+    """
+    return self.__ivroom
+  
   def draw(self, screen):
     """ Runs some methods to paint on screen all players.
     screen: screen handler.
@@ -43,8 +50,11 @@ class IsoViewItem(isoview.IsoView):
     self.__allPlayers.update()                     
     self.__allPlayers.clear(screen, self.__bg.image)
     pygame.display.update(self.__allPlayers.draw(screen))
-    
-  def getIVRoom(self):
-    """ Returns the isometric view room object.
+  
+  def positionChanged(self, event):
+    """ Updates the item position and draws the room after receiving a position change event.
+    event: even info.
     """
-    return self.__ivroom
+    self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
+    self.__ivroom.draw()
+  
