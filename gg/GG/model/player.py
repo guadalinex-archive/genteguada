@@ -99,11 +99,8 @@ class GGPlayer(item.GGItem):
     """ Adds a new item to the player's inventory.
     item: new item.
     """
-    if not item in self.__inventory:
-      self.__inventory.append(item)
-      self.triggerEvent('addInventory', item=item)
-      return True
-    return False
+    self.__inventory.append(item)
+    self.triggerEvent('addInventory', item=item)
     
   def removeInventory(self, item):
     """ Removes an item from the player's inventory.
@@ -124,13 +121,6 @@ class GGPlayer(item.GGItem):
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
 
-  def addToInventory(self, item):
-    """ Adds a new item to the player inventory list.
-    item: new item for the inventory.    
-    """
-    self.__inventory.append(item)
-    self.triggerEvent('inventoryAdded', item=item)
-
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.
@@ -140,7 +130,6 @@ class GGPlayer(item.GGItem):
       return 1
     return 0
   
-  
   def hasBeenVisited(self, pos):
     """ Checks if a tile has been visited by the player on the last movement.
     pos: tile position.
@@ -149,6 +138,13 @@ class GGPlayer(item.GGItem):
       if self.__visited[i] == pos:
         return 1
     return 0
+  
+  def clickedBy(self, clicker):
+    """ Triggers an avent when the player receives a click by another player.
+    clicker: player who clicks.
+    """
+    self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
+    
   
   def tick(self):
     """ Calls for an update on player's position an movement direction.
