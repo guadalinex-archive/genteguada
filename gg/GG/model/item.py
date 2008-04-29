@@ -17,8 +17,6 @@ class GGItem(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.spriteName = spriteName
     self.offset   = offset
-    self.__heading = "down"
-    self.__state = "standing"
     self.__position = position
     self.__room = None
 
@@ -31,16 +29,6 @@ class GGItem(ggmodel.GGModel):
   def variablesToSerialize(self):
     return ['spriteName', 'offset']
   
-  def getHeading(self):
-    """ Returns the direction the player is heading to.
-    """
-    return self.__heading
-  
-  def getState(self):
-    """ Returns the player's state.
-    """
-    return self.__state
-  
   def getRoom(self):
     """ Returns the room where the player is.
     """
@@ -50,20 +38,6 @@ class GGItem(ggmodel.GGModel):
     """ Returns the item position.
     """
     return self.__position
-
-  def setHeading(self, heading):
-    """ Sets a new heading direction for the item.
-    """
-    if self.__heading <> heading:
-      self.__heading = heading
-      self.triggerEvent('headingChanged', heading=heading)
-
-  def setState(self, state):
-    """ Sets a new state for the item.
-    """
-    if self.__state <> state:
-      self.__state = state
-      self.triggerEvent('stateChanged', state=state)
 
   def setRoom(self, room):
     """ Sets a new room for the player.

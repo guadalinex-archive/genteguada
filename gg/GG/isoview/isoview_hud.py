@@ -1,3 +1,4 @@
+import os
 import pygame
 import GG.utils
 import isoview
@@ -38,6 +39,13 @@ class IsoViewHud(isoview.IsoView):
     """
     self.paintHud()
     self.paintChat()
+    self.paintInventory()
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 0)
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 1)
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 2)
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 3)
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 4)
+    self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 5)
     pygame.display.update()
 
   def paintHud(self):
@@ -48,7 +56,7 @@ class IsoViewHud(isoview.IsoView):
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER2,
               (GG.utils.HUD_OR[0] + 2, GG.utils.HUD_OR[1] + 2, GG.utils.HUD_SZ[0] - 5, GG.utils.HUD_SZ[1] - 5))
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER3,
-              (GG.utils.HUD_OR[0] +10, GG.utils.HUD_OR[1] +10, GG.utils.HUD_SZ[0] -21, GG.utils.HUD_SZ[1] -21))
+              (GG.utils.HUD_OR[0] + 10, GG.utils.HUD_OR[1] + 10, GG.utils.HUD_SZ[0] - 21, GG.utils.HUD_SZ[1] - 21))
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BASE,
               (GG.utils.HUD_OR[0] + 12, GG.utils.HUD_OR[1] + 12, GG.utils.HUD_SZ[0] - 25, GG.utils.HUD_SZ[1] - 25))
 
@@ -58,6 +66,28 @@ class IsoViewHud(isoview.IsoView):
     pygame.draw.rect(self.getScreen(), GG.utils.CHAT_COLOR_BG,
               (GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0] - 1, GG.utils.CHAT_SZ[1] - 1))
     
+  def paintItemOnInventory(self, spriteName, position):
+    """ Paints an item on the hud inventory.
+    spriteName: sprite name.
+    position: position in the inventory that the item will be painted into.
+    """
+    if position >= GG.utils.INV_ITEM_COUNT[0]*GG.utils.INV_ITEM_COUNT[1]:
+      return
+    imgPath = os.path.join(GG.utils.DATA_PATH, spriteName)
+    img = pygame.sprite.Sprite()
+    img.image = pygame.image.load(imgPath)
+    img.rect = img.image.get_rect()
+    img.rect.topleft = [GG.utils.INV_OR[0] + (GG.utils.INV_ITEM_SZ[0]*(position%GG.utils.INV_ITEM_COUNT[0])),
+                        GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))]
+    self.getScreen().blit(img.image, img.rect)
+  
+  def paintInventory(self):
+    """ 
+    """
+    pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
+              (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
+    pass
+  
   def printOnChat(self, string):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.

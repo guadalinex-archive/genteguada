@@ -22,6 +22,10 @@ HUD_SZ = [800, 200]
 HUD_OR = [0, GAMEZONE_SZ[1]]
 CHAT_SZ = [400, 160]
 CHAT_OR = [20, GAMEZONE_SZ[1]+20]
+INV_SZ = [300, 160]
+INV_OR = [40 + CHAT_SZ[0], GAMEZONE_SZ[1]+20]
+INV_ITEM_SZ = [50, 50]
+INV_ITEM_COUNT = [3, 2]
 BG_FULL_OR = [0, 0]
 
 ANIMATIONS = 5
@@ -35,10 +39,11 @@ TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"
 OAK_SPRITE = "oak.png"
+PENGUIN_SPRITE = "andatuz_01.png"
 NINO_SZ = [64, 100]
 NINO_SPRITE = "nino.png"
 NINA_SPRITE = "nina.png"
-OBJ_BOOK_SPRITE1 = "book.png"
+BOOK_SPRITE = "book.png"
 SIN30R = math.sin(math.radians(30))
 COS30R = math.cos(math.radians(30))
 
@@ -48,6 +53,7 @@ HUD_COLOR_BORDER2 = [138, 136, 160]
 HUD_COLOR_BORDER3 = [202, 199, 231]
 CHAT_COLOR_BG = [61, 61, 91]
 CHAT_COLOR_FONT = [216, 216, 216]
+INV_COLOR_BG = [0, 0, 0]
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}

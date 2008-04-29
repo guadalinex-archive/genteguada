@@ -7,7 +7,7 @@ import item
 import thread
 import time
 
-class GGSystem:
+class GGSystem(dMVC.model.Model):
   """ GGSystem class.
   Includes room and player objects, and some procedures to manage data.
   """
@@ -15,15 +15,10 @@ class GGSystem:
   def __init__(self):
     """ Initializes the model attributes and both room and player lists.
     """
-    #dMVC.model.Model.__init__(self)
+    dMVC.model.Model.__init__(self)
     self.__rooms = []
     self.__players = []
-    # llamadas solo para realizar pruebas
-    self.createRoom(GG.utils.BG_FULL)
-    if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
-      self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
-    #if self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345"):
-    #  self.insertItemIntoRoom(self.__players[1], self.__rooms[0])
+    self.loadData()
     thread.start_new(self.start,())
       
   def login(self, username, password):
@@ -36,20 +31,22 @@ class GGSystem:
         return ggsession.GGSession(player)
     return None
 
-  def logout(self, username, password):
+  def loadData(self):
+    """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    
-    """
-    for player in self.__players:
-      if player.checkUser(username, password):
-        pass
-      
+    self.createRoom(GG.utils.BG_FULL)
+    self.createRoom(GG.utils.BG_FULL2)
+    if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
+      self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
+        #if self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345"):
+    #  self.insertItemIntoRoom(self.__players[1], self.__rooms[0])
+
   def createRoom(self, spriteFull):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    room_ = room.GGRoom(spriteFull)
-    self.__rooms.append(room_)
+    #room_ = room.GGRoom(spriteFull)
+    self.__rooms.append(room.GGRoom(spriteFull))
       
   def createPlayer(self, sprite, size, position, offset, username, password):
     """ Creates a new player.
@@ -79,15 +76,14 @@ class GGSystem:
             return
         self.__players.append(item)
     
-  def removeItemFromRoom(self, item, room, isPlayer):
-    """ Removes an item from a room.
+  def removeItem(self, item, isPlayer):
+    """ Removes an item.
     item: existing item.
-    room: existing room.
     player: flag used to check it the item is a player or not.
     """
-    if room.removeItem(item):
-      if isPlayer and item in self.__players:
-        self.__players.remove(item)
+    item.getRoom().removeItem(item)    
+    if isPlayer and item in self.__players:
+      self.__players.remove(item)
     
   def start(self):
     """ Starts the program.
