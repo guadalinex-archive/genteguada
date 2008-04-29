@@ -26,6 +26,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving an inventory added event.
     event: event info.
     """
-    
+    #parent.
     
     pass
