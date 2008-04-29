@@ -1,23 +1,24 @@
 import item
+import GG.utils
 import GG.isoview.isoview_item
 import dMVC.model
 
-class GGPenguin(item.GGItem):
-  """ Penguin class.
-  Defines a penguin object behaviour.
+class GGBook(item.GGItem):
+  """ Book class.
+  Defines a book object behaviour.
   """
  
-  def __init__(self, sprite, size, position, offset, spriteInventory, pickable, label):
+  def __init__(self, spriteName, size, position, offset, spriteInventory, pickable, label):
     """ Class builder.
-    sprite: sprite used to paint the penguin.
-    size: penguin sprite size.
-    position: penguin position.
-    offset: image offset on screen.
     spriteName: sprite used to paint the book on the screen game zone.
+    size: book sprite size.
+    position: book position.
+    offset: image offset on screen.
+    spriteInventory: sprite used to paint the book on the screen inventory zone.
     pickable: sets the book as a pickable item by a player.
     label: book's label
     """
-    item.GGItem.__init__(self, sprite, size, position, offset)
+    item.GGItem.__init__(self, spriteName, size, position, offset)
     self.__spriteInventory = spriteInventory
     self.__pickable = pickable
     self.__label = label
@@ -38,7 +39,7 @@ class GGPenguin(item.GGItem):
       self.triggerEvent('spriteInventory', spriteInventory=spriteInventory)
       return True
     return False
-  
+
   # self.__pickable
   
   def getPickable(self):
@@ -52,7 +53,7 @@ class GGPenguin(item.GGItem):
     """
     if self.__pickable <> pickable:
       self.__pickable = pickable
-      self.triggerEvent('state', state=state)
+      self.triggerEvent('pickable', pickable=pickable)
       return True
     return False
 
@@ -74,11 +75,11 @@ class GGPenguin(item.GGItem):
     return False
 
   def clickedBy(self, clicker):
-    """ Triggers an event when the penguin receives a click by a player.
+    """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
     if self.__pickable and GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       self.getRoom().removeItem(self)
       clicker.addInventory(self)
-      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes Pinguino Misterioso")
+      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.__label)
   

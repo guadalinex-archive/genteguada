@@ -44,6 +44,7 @@ NINO_SZ = [64, 100]
 NINO_SPRITE = "nino.png"
 NINA_SPRITE = "nina.png"
 BOOK_SPRITE = "book.png"
+BOOK_SPRITE_INV = "book.png"
 DOOR_DOWN_SPRITE = "door_down.png"
 SIN30R = math.sin(math.radians(30))
 COS30R = math.cos(math.radians(30))
@@ -87,6 +88,28 @@ def getNextDirection(pos1, pos2):
       return "up"
   return "down"
 
+def checkNeighbour(pos1, pos2):
+  """ Checks if 2 points are neighbours or not.
+  pos1: point 1.
+  pos2: point 2.
+  """
+  if [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] - 1]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] + 1]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2]]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2]]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] - 1]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] + 1]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] + 1]:
+    return True
+  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] - 1]:
+    return True
+  return False  
 
 class TextRectException:
   

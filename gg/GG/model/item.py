@@ -70,8 +70,6 @@ class GGItem(ggmodel.GGModel):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    self.room.removeItem(self)
-    clicker.addInventory(self)
     self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
     
   def tick(self):
