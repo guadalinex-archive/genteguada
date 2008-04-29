@@ -28,10 +28,51 @@ class GGRoom(ggmodel.GGModel):
     """
     return self.spriteFull
 
+  # self.__items
+
   def getItems(self):
     """ Return the items shown on the room.
     """
     return self.__items
+
+  def setItems(self, items):
+    """ Sets a new items list on the room.
+    items: item list.
+    """
+    if self.__items <> items:
+      self.__items = items
+      self.triggerEvent('items', items=items)
+      return True
+    return False
+
+  def addItem(self, item):
+    """ Adds a new item into the room and calls for an update on the room view.
+    item: new item.
+    """
+    if not self.getBlocked(item.getPosition()) and not item in self.__items:
+      self.__items.append(item)
+      item.setRoom(self)
+      self.triggerEvent('addItem', item=item)
+      return True
+    return False
+    
+  def removeItem(self, item):
+    """ Removes an item from the room.
+    item: player.
+    """
+    if item in self.__items:
+      self.__items.remove(item)
+      self.triggerEvent('removeItem', item=item)
+      return True
+    return False
+
+  @dMVC.model.localMethod
+  def defaultView(self, screen, hud):
+    """ Creates a view object associated with this room.
+    screen: screen handler.
+    hud: isoview hud object.
+    """
+    return GG.isoview.isoview_room.IsoViewRoom(self, screen, hud)
 
   def getBlocked(self, pos):
     """ Checks if a tile is blocked or not.
@@ -42,41 +83,20 @@ class GGRoom(ggmodel.GGModel):
       if item.getPosition() == pos:
         return True
     return False  
-    
-  def addItem(self, item):
-    """ Adds a new item into the room and calls for an update on the room view.
-    item: new item.
-    """
-    if not self.getBlocked(item.getPosition()):
-      self.__items.append(item)
-      item.setRoom(self)
-      self.triggerEvent('itemAdded', item=item)
-      return True
-    return False
-    
-  def removeItem(self, item):
-    """ Removes an item from the room.
-    item: player.
-    """
-    if item in self.__items:
-      self.__items.remove(item)
-      self.triggerEvent('itemRemoved', item=item)
-      return True
-    return False
-      #self.unsubscribeEventObserver(self)
   
-  @dMVC.model.localMethod
-  def defaultView(self, screen, hud):
-    """ Creates a view object associated with this room.
-    screen: screen handler.
-    hud: isoview hud object.
-    """
-    return GG.isoview.isoview_room.IsoViewRoom(self, screen, hud)
-
   def clickedByPlayer(self, player, target):
     """ Indicates players inside that a player has made click on another one.
     player: active player.
     target: click target player.
+    """
+    clickerLabel = player.getUsername()
+    direction = self.getNextDirection(player, player.getPosition(), target)
+    player.setDestination(target)
+    
+    if self.getBlocked(target):
+      for item in self.__items:
+        if item.getPosition() == target:
+          item.clickedBy(player)
     """
     clickerLabel = player.getUsername()
     if not self.getBlocked(target):
@@ -86,7 +106,8 @@ class GGRoom(ggmodel.GGModel):
       for item in self.__items:
         if item.getPosition() == target:
           item.clickedBy(player)
-          
+    """
+    
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
     player:

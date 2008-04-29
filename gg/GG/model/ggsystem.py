@@ -21,6 +21,80 @@ class GGSystem(dMVC.model.Model):
     self.loadData()
     thread.start_new(self.start,())
       
+  # self.__rooms
+  
+  def getRooms(self):
+    """ Returns the rooms list.
+    """
+    return self.__rooms
+  
+  def setRooms(self, rooms):
+    """ Sets a new rooms list.
+    rooms: new rooms list.
+    """
+    if self.__rooms <> rooms:
+      self.__rooms = rooms
+      self.triggerEvent('rooms', rooms=rooms)
+      return True
+    return False
+  
+  def addRoom(self, room):
+    """ Adds a new room to the rooms list.
+    room: new room.
+    """
+    if not room in self.__rooms:
+      self.__rooms.add(room)
+      self.triggerEvent('addRoom', room=room)
+      return True
+    return False
+    
+  def removeRoom(self, room):
+    """ Remove a room from the rooms list.
+    room: room to be removed.
+    """
+    if room in self.__rooms:
+      self.__rooms.remove(room)
+      self.triggerEvent('removeRoom', room=room)
+      return True
+    return False
+    
+  # self.__players
+  
+  def getPlayers(self):
+    """ Returns the players list.
+    """
+    return self.__players
+  
+  def setPlayers(self, players):
+    """ Sets a new players list.
+    players: new players list.
+    """
+    if self.__players <> players:
+      self.__players = players
+      self.triggerEvent('players', players=players)
+      return True
+    return False
+    
+  def addPlayer(self, player):
+    """ Adds a new player to the players list.
+    player: new player.
+    """
+    if not player in self.__players:
+      self.__players.add(player)
+      self.triggerEvent('addPlayer', player=player)
+      return True
+    return False
+    
+  def removePlayer(self, player):
+    """ Remove a player from the players list.
+    player: player to be removed.
+    """
+    if player in self.__players:
+      self.__players.remove(player)
+      self.triggerEvent('removePlayer', player=player)
+      return True
+    return False
+
   def login(self, username, password):
     """ Attempts to login on an user. If succesfull, returns a ggsession model.
     username: user name.
@@ -37,7 +111,8 @@ class GGSystem(dMVC.model.Model):
     self.createRoom(GG.utils.BG_FULL)
     self.createRoom(GG.utils.BG_FULL2)
     self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8]))    
-    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 5], [0, 0]))    
+    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [60, -13]))    
+    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95]))    
     if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
       self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
         
@@ -45,7 +120,6 @@ class GGSystem(dMVC.model.Model):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    #room_ = room.GGRoom(spriteFull)
     self.__rooms.append(room.GGRoom(spriteFull))
       
   def createPlayer(self, sprite, size, position, offset, username, password):
@@ -71,9 +145,9 @@ class GGSystem(dMVC.model.Model):
     """
     if room.addItem(item):
       if isPlayer:
-        for player in self.__players:
-          if player.checkUser(item.getUsername(), item.getPassword()):
-            return
+        if item in self.__players:
+          #if player.checkUser(item.getUsername(), item.getPassword()):
+          return
         self.__players.append(item)
     
   def removeItem(self, item, isPlayer):

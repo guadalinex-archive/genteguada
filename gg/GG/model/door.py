@@ -19,7 +19,35 @@ class GGDoor(item.GGItem):
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.__heading = heading
     self.__destinationRoom = destinationRoom  
+
+  # self.__heading
+
+  def getHeading(self):
+    """ Returns the direction the door is heading to.
+    """
+    return self.__heading
   
+  def setHeading(self, heading):
+    """ Sets a new heading direction for the item.
+    """
+    if self.__heading <> heading:
+      self.__heading = heading
+      self.triggerEvent('heading', heading=heading)
+
+  # self.__destinationRoom
+  
+  def getDestinationRoom(self):
+    """ Returns the room that the door connects to.
+    """
+    return self.__destinationRoom
+  
+  def setDestinationRoom(self, destinationRoom):
+    """ Sets a new room connected to the door.
+    """
+    if self.__destinationRoom <> destinationRoom:
+      self.__destinationRoom = destinationRoom
+      self.triggerEvent('destinationRoom', destinationRoom=destinationRoom)
+
   def clickedBy(self, clicker):
     """ Triggers an event when the door receives a click by a player.
     clicker: player who clicks.
@@ -27,6 +55,16 @@ class GGDoor(item.GGItem):
     # comprueba que el jugador este .
     pPos = clicker.getPosition()
     dPos = self.getPosition()
-    #if self.__heading == "up":   
-    self.triggerEvent('teleport', clicker=clicker, destinationRoom=self.__destinationRoom)
-    #   procesa cambios en el modelo.
+    if self.__heading == "up" and pPos == [dPos[0], dPos[1], dPos[2] - 1]:
+      # cambios en el modelo
+      self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
+    elif self.__heading == "down" and pPos == [dPos[0], dPos[1], dPos[2] + 1]:
+      # cambios en el modelo
+      self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
+    elif self.__heading == "left" and pPos == [dPos[0] - 1, dPos[1], dPos[2]]:
+      # cambios en el modelo
+      self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
+    elif self.__heading == "right" and pPos == [dPos[0] + 1, dPos[1], dPos[2]]:
+      # cambios en el modelo
+      self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
+    

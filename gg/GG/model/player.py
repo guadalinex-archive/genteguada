@@ -18,12 +18,13 @@ class GGPlayer(item.GGItem):
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.username = username
+    self.__password = password
+    self.__visited = []
     self.__heading = "down"
     self.__state = "standing"
     self.__destination = position
-    self.__password = password
-    self.__visited = []
-
+    self.__inventory = []
+    
   def variablesToSerialize(self):
     return ['username']
   
@@ -33,40 +34,41 @@ class GGPlayer(item.GGItem):
     """
     return self.username
 
+  # self.__heading
+
   def getHeading(self):
     """ Returns the direction the player is heading to.
     """
     return self.__heading
-  
-  def getState(self):
-    """ Returns the player's state.
-    """
-    return self.__state
-  
-  def getPassword(self):
-    """ Returns the user password.
-    """
-    return self.__password
-  
-  def getDestination(self):
-    """ Returns the player's movement destination.
-    """
-    return self.__destination
   
   def setHeading(self, heading):
     """ Sets a new heading direction for the item.
     """
     if self.__heading <> heading:
       self.__heading = heading
-      self.triggerEvent('headingChanged', heading=heading)
+      self.triggerEvent('heading', heading=heading)
 
+  # self.__state
+  
+  def getState(self):
+    """ Returns the player's state.
+    """
+    return self.__state
+  
   def setState(self, state):
     """ Sets a new state for the item.
     """
     if self.__state <> state:
       self.__state = state
-      self.triggerEvent('stateChanged', state=state)
+      self.triggerEvent('state', state=state)
 
+  # self.__destination
+  
+  def getDestination(self):
+    """ Returns the player's movement destination.
+    """
+    return self.__destination
+  
   def setDestination(self, destination):
     """ Sets a new destination for the player movement.
     heading: movement direction.
@@ -74,16 +76,44 @@ class GGPlayer(item.GGItem):
     """
     if self.__destination <> destination:
       self.__destination = destination
-      self.triggerEvent('destinationChanged', destination=destination)
+      self.triggerEvent('destination', destination=destination)
 
-  def checkUser(self, username, password):
-    """ Searchs for an user by his user name and password.
-    username: user name.
-    password: user password.
+  # self.__inventory
+  
+  def getInventory(self):
+    """ Return the player's inventory.
     """
-    if self.getUsername() == username and self.getPassword() == password:
-      return 1
-    return 0
+    return self.__inventory
+
+  def setInventory(self, inventory):
+    """ Sets a new player's inventory.
+    inventory: new player's inventory.
+    """
+    if self.__inventory <> inventory:
+      self.__inventory = inventory
+      self.triggerEvent('inventory', inventory=inventory)
+      return True
+    return False
+
+  def addInventory(self, item):
+    """ Adds a new item to the player's inventory.
+    item: new item.
+    """
+    if not item in self.__inventory:
+      self.__inventory.append(item)
+      self.triggerEvent('addInventory', item=item)
+      return True
+    return False
+    
+  def removeInventory(self, item):
+    """ Removes an item from the player's inventory.
+    item: item to be removed.
+    """
+    if item in self.__inventory:
+      self.__inventory.remove(item)
+      self.triggerEvent('removeInventory', item=item)
+      return True
+    return False
   
   @dMVC.model.localMethod
   def defaultView(self, screen, room, parent):
@@ -93,6 +123,23 @@ class GGPlayer(item.GGItem):
     parent: hud or session view object.
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
+
+  def addToInventory(self, item):
+    """ Adds a new item to the player inventory list.
+    item: new item for the inventory.    
+    """
+    self.__inventory.append(item)
+    self.triggerEvent('inventoryAdded', item=item)
+
+  def checkUser(self, username, password):
+    """ Searchs for an user by his user name and password.
+    username: user name.
+    password: user password.
+    """
+    if self.username == username and self.__password == password:
+      return 1
+    return 0
+  
   
   def hasBeenVisited(self, pos):
     """ Checks if a tile has been visited by the player on the last movement.

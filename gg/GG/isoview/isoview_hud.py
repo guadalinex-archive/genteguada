@@ -21,7 +21,7 @@ class IsoViewHud(isoview.IsoView):
     """ Procedimiento de prueba para el chat del Hud.
     """
     #string = events.getParams()["actor"].getUsername() + " clicked on " + events.getParams()["receiver"].getUsername()
-    string = events.getParams()["actor"].getUsername() + " clicked on "
+    string = events.getParams()["actor"].getUsername() + " clicked on item."
     self.printOnChat(string)
   
   def getTextFont(self):

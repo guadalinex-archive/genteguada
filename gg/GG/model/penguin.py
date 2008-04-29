@@ -18,10 +18,19 @@ class GGPenguin(item.GGItem):
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.__destinationRoom = destinationRoom  
   
+  # self.__destinationRoom
+  
   def getDestinationRoom(self):
-    """ Returns the room that the player will be teleported to.
+    """ Returns the room that the door connects to.
     """
     return self.__destinationRoom
+  
+  def setDestinationRoom(self, destinationRoom):
+    """ Sets a new room connected to the door.
+    """
+    if self.__destinationRoom <> destinationRoom:
+      self.__destinationRoom = destinationRoom
+      self.triggerEvent('destinationRoom', destinationRoom=destinationRoom)
   
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
