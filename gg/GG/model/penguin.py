@@ -18,26 +18,25 @@ class GGPenguin(item.GGItem):
     label: book's label
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
-    self.__spriteInventory = spriteInventory
+    self.spriteInventory = spriteInventory
+    self.label = label
     self.__pickable = pickable
-    self.__label = label
     
-  # self.__spriteInventory
+  def variablesToSerialize(self):
+    parentVars = item.GGItem.variablesToSerialize(self)
+    return parentVars + ['spriteInventory', 'label']
   
+  @dMVC.model.localMethod 
   def getSpriteInventory(self):
-    """ Returns the inventory zone sprite.
+    """ Returns name of the sprite used to pain the penguin on the inventory.
     """
-    return self.__spriteInventory
-
-  def setSpriteInventory(self, spriteInventory):
-    """ Sets the inventory zone sprite with a new value.
-    spriteInventory: new spriteInventory value.
+    return self.spriteInventory    
+  
+  @dMVC.model.localMethod 
+  def getLabel(self):
+    """ Returns penguin label.
     """
-    if self.__spriteInventory <> spriteInventory:
-      self.__spriteInventory = spriteInventory
-      self.triggerEvent('spriteInventory', spriteInventory=spriteInventory)
-      return True
-    return False
+    return self.label    
   
   # self.__pickable
   
@@ -56,23 +55,6 @@ class GGPenguin(item.GGItem):
       return True
     return False
 
-  # self.__label
-  
-  def getLabel(self):
-    """ Returns the book's label.
-    """
-    return self.__label
-
-  def setLabel(self, label):
-    """ Sets a new content for the book's label.
-    label: new label content.
-    """
-    if self.__label <> label:
-      self.__label = label
-      self.triggerEvent('label', label=label)
-      return True
-    return False
-
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
     clicker: player who clicks.
@@ -81,5 +63,5 @@ class GGPenguin(item.GGItem):
       self.getRoom().removeItem(self)
       self.setRoom(None)
       clicker.addInventory(self)
-      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes Pinguino Misterioso")
+      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
   

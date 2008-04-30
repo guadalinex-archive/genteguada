@@ -15,7 +15,7 @@ class IsoViewHud(isoview.IsoView):
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__isoviewinventory = []
+    self.__isoviewInventory = []
     self.__textFont = pygame.font.Font(None, 22)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
   
@@ -33,16 +33,16 @@ class IsoViewHud(isoview.IsoView):
     """
     """
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
-    self.__isoviewinventory.append(invItem)
+    self.__isoviewInventory.append(invItem)
     self.paintInventory()
     
   def removeInventoryItem(self, item):
     """
     """
-    for ivInventoryItem in self.__isoviewinventory:
+    for ivInventoryItem in self.__isoviewInventory:
       if ivInventoryItem.getModel().getLabel() == item.getLabel():
         toBeRemoved = ivInventoryItem
-    self.__isoviewinventory.remove(toBeRemoved)
+    self.__isoviewInventory.remove(toBeRemoved)
     self.paintInventory()
     
   def pruebaChat(self, events):
@@ -55,7 +55,7 @@ class IsoViewHud(isoview.IsoView):
     player: player who clicks.
     target: clicked point.
     """
-    if not len(self.__isoviewinventory):
+    if not len(self.__isoviewInventory):
       return
     if GG.utils.INV_OR[0] < target[0] < (GG.utils.INV_OR[0] + GG.utils.INV_SZ[0]):
       if GG.utils.INV_OR[1] < target[1] < (GG.utils.INV_OR[1] + GG.utils.INV_SZ[1]):
@@ -72,9 +72,8 @@ class IsoViewHud(isoview.IsoView):
           j += 1
         # click on an inventory item, itemPos
         if k:
-          self.printOnChat(self.__isoviewinventory[itemPos].getLabel())
-          self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewinventory[itemPos].getModel())
-        #  self.removeInventoryItem(self.__isoviewinventory[itemPos])
+          self.printOnChat(self.__isoviewInventory[itemPos].getLabel())
+          self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewInventory[itemPos].getModel())
           
   # Paint methods
     
@@ -84,7 +83,6 @@ class IsoViewHud(isoview.IsoView):
     self.paintHud()
     self.paintChat()
     self.paintInventory()
-    #self.paintItemOnInventory(GG.utils.PENGUIN_SPRITE, 0)
     pygame.display.update()
 
   def paintHud(self):
@@ -126,7 +124,7 @@ class IsoViewHud(isoview.IsoView):
     pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
               (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
     n = 0
-    for inventoryitem in self.__isoviewinventory:
+    for inventoryitem in self.__isoviewInventory:
       self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
       n += 1
     
