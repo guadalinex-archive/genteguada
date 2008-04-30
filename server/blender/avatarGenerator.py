@@ -79,7 +79,8 @@ def scaleProportionalObject(nameObject, face):
 gender = os.getenv('gender')
 headSize = os.getenv('headSize')
 mask = os.getenv('mask')
-hair = os.getenv('hair')
+hairStyle = os.getenv('hairStyle')
+hairColour = os.getenv('hairColour')
 skin = os.getenv('skin')
 bodySize = os.getenv('bodySize')
 sleeve = os.getenv('sleeve')
@@ -92,11 +93,11 @@ shoes = os.getenv('shoes')
 if gender == "male":
 	print "Gender selected male"
 	avatar= "boy"
-	avatarParts = ["boyHead", "boyHair", "boyMask", "boyBody", "boyLeftArm", "boyRightArm", "boyLeftLeg", "boyRightLeg"]
+	avatarParts = ["boyHead", "boyHair" + hairStyle, "boyMask", "boyBody", "boyLeftArm", "boyRightArm", "boyLeftLeg", "boyRightLeg"]
 elif gender == "female":
 	print "Gender selected female"
 	avatar = "girl"
-	avatarParts = ["girlHead", "girlHair", "girlMask", "girlBody", "girlLeftArm", "girlRightArm", "girlLeftLeg", "girlRightLeg"]
+	avatarParts = ["girlHead", "girlHair" + hairStyle, "girlMask", "girlBody", "girlLeftArm", "girlRightArm", "girlLeftLeg", "girlRightLeg"]
 
 
 #Active the selected avatar to layer 1 to render	
@@ -118,7 +119,8 @@ if headSize <> "":
 		print "Head size selected XL"
  		valueSize = 0.3
 	scaleObject(avatar + "Head", valueSize, valueSize, valueSize)
-	scaleObject(avatar + "Hair", valueSize, valueSize, valueSize)
+	if hairStyle <> "0":
+		scaleObject(avatar + "Hair" + hairStyle, valueSize, valueSize, valueSize)
 	scaleObject(avatar + "Mask",valueSize, valueSize, valueSize)
 
 if mask <> "":
@@ -126,10 +128,10 @@ if mask <> "":
 	texturePath = mask
 	changeTexture(avatar + "Mask", texturePath, "defaultMask.tga")
 	
-if hair <> "":
+if hairColour <> "" and hairStyle <> "0":
   print "Hair texture updated"
-  texturePath = os.path.join(os.path.abspath("."), "textures/" + gender + "/hair/" + hair)
-  changeTexture(avatar + "Hair", texturePath, "defaultHair.tga")
+  texturePath = os.path.join(os.path.abspath("."), "textures/" + gender + "/hair/" + hairColour)
+  changeTexture(avatar + "Hair" + hairStyle, texturePath, "defaultHair.tga")
 	
 if skin <> "":
   print "Skin texture updated"
@@ -171,12 +173,12 @@ if skirt <> "" and gender == "female":
 	
 if sleeve == "0":  #Short sleeve
 	print "Short sleeve selected"
-	if gender == "male":
+	if gender == "male" and shirt <> "":
 		texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
 		changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
 		changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
-	elif gender == "female":
-		texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + shirt)
+	elif gender == "female" and skirt <> "":
+		texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + skirt)
 		changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
 		changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
 
@@ -188,11 +190,17 @@ if sleeve == "0":  #Short sleeve
 elif sleeve == "1": #Long sleeve
 	print "Long sleeve selected"
 	if gender == "male":
-		texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
+		if shirt == "":
+	 	  texturePath = os.path.join(os.path.abspath("."), "textures/male/default/defaultShirt.tga")
+		else:
+		  texturePath = os.path.join(os.path.abspath("."), "textures/male/shirt/" + shirt)
 		changeTexture("boyLeftArm", texturePath, "defaultShirt.tga")
 		changeTexture("boyRightArm", texturePath, "defaultShirt.tga")
 	elif gender == "female":
-		texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + skirt)
+		if skirt == "":
+	 	  texturePath = os.path.join(os.path.abspath("."), "textures/female/default/gDefaultSkirt.tga")
+		else:
+		  texturePath = os.path.join(os.path.abspath("."), "textures/female/skirt/" + skirt)
 		changeTexture("girlLeftArm", texturePath, "defaultSkirt.tga")
 		changeTexture("girlRightArm", texturePath, "defaultSkirt.tga")
 		
@@ -204,7 +212,7 @@ if trousers <> "":
   texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
   changeTexture("boyBody", texturePath, "defaultTrousers.tga")
 	
-if typeTrousers == "0" and gender == "male":
+if typeTrousers == "0" and gender == "male" and trousers <> "":
 	#Shorts
 	print "Shorts selected"
 	texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
@@ -217,7 +225,10 @@ if typeTrousers == "0" and gender == "male":
 elif typeTrousers == "1" and gender == "male":
 	#Trousers
 	print "Trousers selected"
-	texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
+	if trousers == "":
+	  texturePath = os.path.join(os.path.abspath("."), "textures/male/default/defaultTrousers.tga")
+	else:
+	  texturePath = os.path.join(os.path.abspath("."), "textures/male/trousers/" + trousers)
 	changeTexture("boyLeftLeg", texturePath, "defaultTrousers.tga")
 	changeTexture("boyRightLeg", texturePath, "defaultTrousers.tga")
 	changeTexture("boyLeftLeg", texturePath, "undefined.tga")
