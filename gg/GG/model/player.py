@@ -19,8 +19,8 @@ class GGPlayer(item.GGItem):
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.username = username
-    self.__password = password
-    self.__visited = []
+    self.__password = password # Not used outside this class
+    self.__visited = [] # Not used outside this class
     self.__heading = "down"
     self.__state = "standing"
     self.__destination = position
