@@ -40,3 +40,6 @@ class IsoView:
     
     cord2d = [x2d, y2d]
     return cord2d
+
+  def unsubscribeAllEvents(self):
+    self.getModel().unsubscribeEventObserver(self)

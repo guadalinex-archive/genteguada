@@ -66,4 +66,4 @@ class IsoViewItem(isoview.IsoView):
     """
     self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
     self.__ivroom.draw()
-  
+

@@ -16,7 +16,7 @@ class IsoViewHud(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
-    self.__textFont = pygame.font.Font(None, 22)
+    self.__textFont = pygame.font.Font(None, 16)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
   
   def getTextFont(self):
@@ -80,13 +80,14 @@ class IsoViewHud(isoview.IsoView):
   def paint(self):
     """ Paints all HUD parts on screen.
     """
-    self.paintHud()
+    self.paintBackground()
     self.paintChat()
+    self.paintTextBox()
     self.paintInventory()
     pygame.display.update()
 
-  def paintHud(self):
-    """ Paints the HUD on screen.
+  def paintBackground(self):
+    """ Paints the HUD background on screen.
     """
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
               (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
@@ -102,6 +103,20 @@ class IsoViewHud(isoview.IsoView):
     """
     pygame.draw.rect(self.getScreen(), GG.utils.CHAT_COLOR_BG,
               (GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0] - 1, GG.utils.CHAT_SZ[1] - 1))
+  
+  def paintTextBox(self):
+    pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
+              (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
+  
+  def paintInventory(self):
+    """ 
+    """
+    pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
+              (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
+    n = 0
+    for inventoryitem in self.__isoviewInventory:
+      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
+      n += 1
     
   def paintItemOnInventory(self, spriteName, position):
     """ Paints an item on the hud inventory.
@@ -118,15 +133,6 @@ class IsoViewHud(isoview.IsoView):
                         GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))]
     self.getScreen().blit(img.image, img.rect)
   
-  def paintInventory(self):
-    """ 
-    """
-    pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
-              (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
-    n = 0
-    for inventoryitem in self.__isoviewInventory:
-      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
-      n += 1
     
   def printOnChat(self, string):
     """ Prints a string on the HUD chat window.
@@ -136,3 +142,10 @@ class IsoViewHud(isoview.IsoView):
     self.getScreen().blit(renderedText, self.getTextRect().topleft)
     pygame.display.update()
     
+  def printFullChat(self, chat):
+    """ Prints
+    
+    200 chars max por linea de texto
+        
+    """
+    pass

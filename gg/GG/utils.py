@@ -20,12 +20,13 @@ SCENE_SZ = [7, 7]
 GAMEZONE_SZ = [800, 400]
 HUD_SZ = [800, 200]
 HUD_OR = [0, GAMEZONE_SZ[1]]
-CHAT_SZ = [400, 160]
+CHAT_SZ = [400, 120]
 CHAT_OR = [20, GAMEZONE_SZ[1]+20]
+TEXT_BOX_SZ = [400, 30]
+TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+30]
 INV_OR = [40 + CHAT_SZ[0], GAMEZONE_SZ[1]+20]
 INV_ITEM_SZ = [50, 50]
 INV_ITEM_COUNT = [5, 3]
-#INV_SZ = [300, 160]
 INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0], INV_ITEM_SZ[1]*INV_ITEM_COUNT[1]]
 BG_FULL_OR = [0, 0]
 
@@ -57,6 +58,7 @@ HUD_COLOR_BORDER3 = [202, 199, 231]
 CHAT_COLOR_BG = [61, 61, 91]
 CHAT_COLOR_FONT = [216, 216, 216]
 INV_COLOR_BG = [0, 0, 0]
+TEXT_BOX_COLOR_BG = [255, 255, 255]
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
