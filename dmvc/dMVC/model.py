@@ -49,9 +49,9 @@ class Model(synchronized.Synchronized):
 
 
   @synchronized.synchronized(lockName='subscriptions')
-  def subscribeEvent(self, eventType, method): #{{{
+  def subscribeEvent(self, eventType, method, suscriptionID = None): #{{{
     utils.logger.debug("Subscribed event="+str(eventType)+", method: "+str(method) + ', model=' + str(self))
-    self.__subscriptions.append([eventType, method])
+    self.__subscriptions.append([eventType, method, suscriptionID])
   #}}}
     
 
@@ -59,7 +59,7 @@ class Model(synchronized.Synchronized):
   def triggerEvent(self, eventType, **params): #{{{
     utils.logger.debug("Model " + str(self) + " triggered eventType: "+str(eventType)+ " params: "+str(params))
     subscriptionsCopy = copy.copy(self.__subscriptions)
-    for typ, method in subscriptionsCopy:
+    for typ, method, subscriptionID in subscriptionsCopy:
       if typ == eventType:
         event = events.Event(self, eventType, params)
         try:
@@ -91,6 +91,18 @@ class Model(synchronized.Synchronized):
     for subscription in toRemove:
       self.__subscriptions.remove(subscription)
   #}}}
+
+  @synchronized.synchronized(lockName='subscriptions')
+  def unsubscribeEventById(self, subscriptionIDs): #{{{
+    utils.logger.debug("Model.unsubscribeEventByIDs subscriptionIDs: "+str(subscriptionIDs))
+    toRemove = []
+    for subscription in self.__subscriptions:
+      if subscription[2] in  subscriptionIDs:
+        toRemove.append(subscription)
+    for subscription in toRemove:
+      self.__subscriptions.remove(subscription)
+  #}}}
+
 
   def __eq__(self, comparand): #{{{
     return id(self) == id(comparand)
