@@ -127,5 +127,6 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
+    player.unsubscribeAllEvents()
     self.draw()
   
