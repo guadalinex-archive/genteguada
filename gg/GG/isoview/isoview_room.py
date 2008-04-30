@@ -18,8 +18,8 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    print "========================"
-    print model
+    #print "========================"
+    #print model
     bgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath)

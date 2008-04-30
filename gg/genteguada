@@ -30,6 +30,8 @@ class GenteGuada:
         dest = self.isoviewroom.findTile([x,y])
         if dest <> [-1, -1]:
           self.room.clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+        else:
+          self.isoHud.clickedByPlayer(self.player, [x, y])
 
   def start(self,params):
     pygame.init()
@@ -47,16 +49,16 @@ class GenteGuada:
     self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
                     
     session = self.sy.login(params.user, params.password)
-    isoHud = session.defaultView(screen)
+    self.isoHud = session.defaultView(screen)
     
     self.player = session.getPlayer()
     self.room = self.player.getRoom()
-    self.isoviewroom = self.room.defaultView(screen, isoHud)
+    self.isoviewroom = self.room.defaultView(screen, self.isoHud)
     
     self.isoviewroom.drawFirst()
-    isoHud.paint()
+    self.isoHud.paint()
     pygame.display.update()
-    isoHud.printOnChat("Inicio del juego. Chat vacio.")
+    self.isoHud.printOnChat("Inicio del juego. Chat vacio.")
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())

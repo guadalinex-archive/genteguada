@@ -1,5 +1,6 @@
 import item
 import GG.isoview.isoview_player
+import GG.utils
 import dMVC.model
 
 class GGPlayer(item.GGItem):
@@ -121,7 +122,19 @@ class GGPlayer(item.GGItem):
     parent: hud or session view object.
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
-
+  
+  def clickOnInventoryItem(self, item):
+    """ Removes an item from the inventory and drops it in front of the player.
+    item: item to drop.
+    """
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    if dropLocation == [-1, -1, -1] or self.getRoom().getBlocked(dropLocation):
+      return False
+    item.setPosition(dropLocation)
+    self.getRoom().addItem(item)
+    self.removeInventory(item)
+    self.triggerEvent('chat', actor=item, receiver=self, msg=item.getLabel()+" depositado en el suelo")
+    
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.

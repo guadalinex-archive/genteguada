@@ -18,9 +18,9 @@ class IsoViewItem(isoview.IsoView):
     self.__ivroom = room
     #self.__sprite = model.getSpriteName()
     #print self.__sprite
-    print "========================"
+    #print "========================"
     #print dir(model)
-    print model.getSpriteName()
+    #print model.getSpriteName()
     imgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteName())
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath)

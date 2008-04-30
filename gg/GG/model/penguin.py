@@ -79,6 +79,7 @@ class GGPenguin(item.GGItem):
     """
     if self.__pickable and GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       self.getRoom().removeItem(self)
+      self.setRoom(None)
       clicker.addInventory(self)
       self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes Pinguino Misterioso")
   
