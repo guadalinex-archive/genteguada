@@ -20,12 +20,17 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     #self.getModel().subscribeEvent('state', self.stateChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
     self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
-    #self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
+    self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
 
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.
     event: event info.
     """
     self.getParent().addInventoryItem(event.getParams()["item"])
-    #self.getParent().paintItemOnInventory(event.getParams()["item"].spriteName, len(self.getModel().getInventory()) - 1)
+    
+  def inventoryRemoved(self, event):
+    """ Triggers after receivint an inventory removed event.
+    event: event info.
+    """
+    self.getParent().removeInventoryItem(event.getParams()["item"])
     

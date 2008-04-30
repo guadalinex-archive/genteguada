@@ -18,21 +18,6 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewinventory = []
     self.__textFont = pygame.font.Font(None, 22)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
-    
-  def addInventoryItem(self, item):
-    """
-    """
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item.getSpriteInventory(), item.getLabel())
-    self.__isoviewinventory.append(invItem)
-    n = 0
-    for inventoryitem in self.__isoviewinventory:
-      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
-      n += 1
-    
-  def pruebaChat(self, events):
-    """ Procedimiento de prueba para el chat del Hud.
-    """
-    self.printOnChat(events.getParams()["msg"])
   
   def getTextFont(self):
     """ Returns the font used to print text on chat.
@@ -43,6 +28,55 @@ class IsoViewHud(isoview.IsoView):
     """ Returns the rectangle used to print text on chat.
     """
     return self.__textRect
+  
+  def addInventoryItem(self, item):
+    """
+    """
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
+    self.__isoviewinventory.append(invItem)
+    self.paintInventory()
+    
+  def removeInventoryItem(self, item):
+    """
+    """
+    for ivInventoryItem in self.__isoviewinventory:
+      if ivInventoryItem.getModel().getLabel() == item.getLabel():
+        toBeRemoved = ivInventoryItem
+    self.__isoviewinventory.remove(toBeRemoved)
+    self.paintInventory()
+    
+  def pruebaChat(self, events):
+    """ Procedimiento de prueba para el chat del Hud.
+    """
+    self.printOnChat(events.getParams()["msg"])
+    
+  def clickedByPlayer(self, player, target):
+    """ Indicates that a player has made click the isoview hud object.
+    player: player who clicks.
+    target: clicked point.
+    """
+    if not len(self.__isoviewinventory):
+      return
+    if GG.utils.INV_OR[0] < target[0] < (GG.utils.INV_OR[0] + GG.utils.INV_SZ[0]):
+      if GG.utils.INV_OR[1] < target[1] < (GG.utils.INV_OR[1] + GG.utils.INV_SZ[1]):
+        # click on the inventory
+        auxTarget = [target[0] - GG.utils.INV_OR[0], target[1] - GG.utils.INV_OR[1]]
+        i = j = k = itemPos = 0
+        while j < GG.utils.INV_ITEM_COUNT[1] and not k:
+          while i < GG.utils.INV_ITEM_COUNT[0] and not k:
+            if GG.utils.INV_ITEM_SZ[0]*i < auxTarget[0] < (GG.utils.INV_ITEM_SZ[0]*i + GG.utils.INV_ITEM_SZ[0]-1):
+              if GG.utils.INV_ITEM_SZ[1]*j < auxTarget[1] < (GG.utils.INV_ITEM_SZ[1]*j + GG.utils.INV_ITEM_SZ[1]-1):
+                k = 1
+                itemPos = j*GG.utils.INV_ITEM_COUNT[0] + i
+            i += 1
+          j += 1
+        # click on an inventory item, itemPos
+        if k:
+          self.printOnChat(self.__isoviewinventory[itemPos].getLabel())
+          self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewinventory[itemPos].getModel())
+        #  self.removeInventoryItem(self.__isoviewinventory[itemPos])
+          
+  # Paint methods
     
   def paint(self):
     """ Paints all HUD parts on screen.
@@ -91,8 +125,11 @@ class IsoViewHud(isoview.IsoView):
     """
     pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
               (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
-    pass
-  
+    n = 0
+    for inventoryitem in self.__isoviewinventory:
+      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
+      n += 1
+    
   def printOnChat(self, string):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.

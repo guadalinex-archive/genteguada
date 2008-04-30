@@ -22,10 +22,11 @@ HUD_SZ = [800, 200]
 HUD_OR = [0, GAMEZONE_SZ[1]]
 CHAT_SZ = [400, 160]
 CHAT_OR = [20, GAMEZONE_SZ[1]+20]
-INV_SZ = [300, 160]
 INV_OR = [40 + CHAT_SZ[0], GAMEZONE_SZ[1]+20]
 INV_ITEM_SZ = [50, 50]
-INV_ITEM_COUNT = [3, 2]
+INV_ITEM_COUNT = [5, 3]
+#INV_SZ = [300, 160]
+INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0], INV_ITEM_SZ[1]*INV_ITEM_COUNT[1]]
 BG_FULL_OR = [0, 0]
 
 ANIMATIONS = 5
@@ -111,6 +112,29 @@ def checkNeighbour(pos1, pos2):
     return True
   return False  
 
+def getFrontPosition(pos, heading):
+  """ Returns the tile coords in front of the player.
+  pos: player's position.
+  heading: direction that the player is heading to.
+  """
+  if heading == "up" and pos[2] <> 0:
+    return [pos[0], pos[1], pos[2] - 1]
+  elif heading == "down" and pos[2] <> (SCENE_SZ[1] - 1):
+    return [pos[0], pos[1], pos[2] + 1]
+  elif heading == "left" and pos[0] <> 0:
+    return [pos[0] - 1, pos[1], pos[2]]
+  elif heading == "right" and pos[0] <> (SCENE_SZ[0] - 1):
+    return [pos[0] + 1, pos[1], pos[2]]
+  elif heading == "topleft" and pos[0] <> 0 and pos[2] <> 0:
+    return [pos[0] - 1, pos[1], pos[2] - 1]
+  elif heading == "bottomright" and pos[0] <> (SCENE_SZ[0] - 1) and pos[2] <> (SCENE_SZ[1] - 1):
+    return [pos[0] + 1, pos[1], pos[2] + 1]
+  elif heading == "bottomleft" and pos[0] <> 0 and pos[2] <> (SCENE_SZ[1] - 1):
+    return [pos[0] - 1, pos[1], pos[2] + 1]
+  elif heading == "topright" and pos[2] <> 0 and pos[0] <> (SCENE_SZ[0] - 1):
+    return [pos[0] + 1, pos[1], pos[2] - 1]
+  return [-1, -1, -1]
+    
 class TextRectException:
   
   def __init__(self, message = None):

@@ -1,11 +1,14 @@
+import isoview
 
-class IsoViewInventoryItem:
+class IsoViewInventoryItem(isoview.IsoView):
     
-  def __init__(self, spriteName, label):
+  def __init__(self, model, screen):
     """
     """
-    self.__spriteName = spriteName
-    self.__label = label
+    isoview.IsoView.__init__(self, model, screen)
+    self.__spriteName = model.getSpriteInventory()
+    self.__label = model.getLabel()
+    self.__count = 0
     
   def getSpriteName(self):
     """
@@ -16,3 +19,18 @@ class IsoViewInventoryItem:
     """
     """
     return self.__label
+  
+  def getCount(self):
+    """
+    """
+    return self.__count
+  
+  def increaseCount(self):
+    """
+    """
+    self.__count += 1
+    
+  def decreaseCount(self):
+    """
+    """
+    self.__count -= 1
