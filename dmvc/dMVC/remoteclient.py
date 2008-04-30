@@ -45,13 +45,9 @@ class RClient(synchronized.Synchronized):
     while True:
       command = self.__commandQueue.get()
       try:
-        try:
-          command.do()
-        except:
-          utils.logger.exception('exception in process_command')
-      finally:
-        self.__commandQueue.task_done()
-
+        command.do()
+      except:
+        utils.logger.exception('exception in process_command')
 
   def __connect(self): #{{{
     utils.logger.debug("connecting to server")
@@ -125,12 +121,44 @@ class RClient(synchronized.Synchronized):
     return suscriptionID
   #}}}
 
+  @synchronized.synchronized(lockName='remoteSuscriptions')
+  def unsubscribeEventObserver(self, observer, eventType): #{{{
+    utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
+    toRemove = []
+    for key in self.__remoteSuscriptions.keys():
+      subscriptionMethod = self.__remoteSuscriptions[key][1]
+      subscriptionEventType = self.__remoteSuscriptions[key][0]
+      if id(subscriptionMethod.im_self) == id(observer):
+        if eventType == None or eventType == subscriptionEventType: 
+          toRemove.append(key)
+    for key in toRemove:
+      del self.__remoteSuscriptions[key]
+    return toRemove
+  #}}}
+
+  @synchronized.synchronized(lockName='remoteSuscriptions')
+  def unsubscribeEventMethod(self, method, eventType): #{{{
+    utils.logger.debug("RClient.unsubscribeEventMethod method: "+str(method)+" , event type: "+str(eventType))
+    toRemove = []
+    for key in self.__remoteSuscriptions.keys():
+      subscriptionMethod = self.__remoteSuscriptions[key][1]
+      subscriptionEventType = self.__remoteSuscriptions[key][0]
+      if subscriptionMethod == method:
+        if eventType == None or eventType == subscriptionEventType: 
+          toRemove.append(key)
+    for key in toRemove:
+      del self.__remoteSuscriptions[key]
+  #}}}
+
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
   def getRemoteSuscriptionByID(self, suscriptionID): #{{{
     utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
-    result = self.__remoteSuscriptions[suscriptionID]
-    return result
+    if suscriptionID in self.__remoteSuscriptions.keys():
+      result = self.__remoteSuscriptions[suscriptionID]
+      return result
+    else:
+      return False
   #}}}
 
 

@@ -162,16 +162,20 @@ class TestRemoteObject(unittest.TestCase):
     assert lastEvent.getProducer() == model
     assert lastEvent.getParams()['position'] == [4,8]
     assert self.name == 'foo'
+  
+    print prefix + "probamos a desuscribirnos de los eventos"
+    model.unsubscribeEventObserver(self)
+    model.setPosition([40,80])
+    assert self.eventQueue.empty()
 
     print prefix + "probamos un metodo local sobre una variable local"
     k = model.getConstant()
     assert k == 'CONSTANT'
 
+    print prefix + "Herencia de atributos serializados del padre"
     subplayer = model.getSubPlayer()
-    print subplayer
-    print dir(subplayer)
-    print subplayer.getConstHeredada()
-    print subplayer.constHeredada
+    constHeredada = subplayer.constHeredada
+    assert constHeredada == "Constante heredada"
 
   
   def eventFired(self, event):
@@ -180,7 +184,6 @@ class TestRemoteObject(unittest.TestCase):
 
   def getLastEvent(self):
     result = self.eventQueue.get()
-    self.eventQueue.task_done()
     return result
 
 if __name__ == "__main__":
