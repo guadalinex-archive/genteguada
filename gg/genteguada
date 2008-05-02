@@ -68,7 +68,7 @@ class GenteGuada:
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
 parser.add_option("-e",dest="execution",help="local/remoto",default="local") 
-parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
+parser.add_option("-i",dest="ip",help="ip",default="192.168.0.154") 
 parser.add_option("-u",dest="user",help="usuario",default="pepe") 
 parser.add_option("-p",dest="password",help="clave",default="1234") 
 (params, args) = parser.parse_args()

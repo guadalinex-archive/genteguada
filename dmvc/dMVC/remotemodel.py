@@ -131,13 +131,16 @@ class RemoteMethod: #{{{
   #}}}
 
   def __call__(self, *args): #{{{
-    rClient = dMVC.getRClient()
+    initTime = utils.statClient.initClientCount()
 
+    rClient = dMVC.getRClient()
     executer = remotecommand.RExecuterCommand(self._modelID, self._methodName, args)
     rClient.sendCommand(executer)
-
     answerer = rClient.waitForExecutionAnswerer(executer)
-    return answerer.do()
+    result = answerer.do()
+
+    utils.statClient.stopClientCount(initTime)
+    return result
 
   #}}}
 

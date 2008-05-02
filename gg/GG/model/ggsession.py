@@ -14,8 +14,8 @@ class GGSession(ggmodel.GGModel):
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
-    self.__chat = []
-    self.__chat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
+    self.__messagesChat = []
+    self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
   # self.__player
   
@@ -35,38 +35,38 @@ class GGSession(ggmodel.GGModel):
 
   # self.__chat
   
-  def getChat(self):
+  def getMessagesChat(self):
     """ Returns the chat log.
     """
-    return self.__chat
+    return self.__messagesChat
   
-  def setChat(self, chat):
+  def setMessagesChat(self, messagesChat):
     """ Sets the session's chat with a new log.
     chat: new log.
     """
-    if self.__chat <> chat:
-      self.__chat = chat
-      self.triggerEvent('chat', chat=chat)
+    if self.__messagesChat <> messagesChat:
+      self.__messagesChat = chat
+      self.triggerEvent('messagesChat', messagesChat=messagesChat)
       return True
     return False
       
-  def addChat(self, chat):
+  def addMessageChat(self, messageChat):
     """ Adds a new string to the chat log.
     chat: new string.
     """
-    if not string in self.__chat:
-      self.__chat.append(chat)
-      self.triggerEvent('addChat', chat=chat)
+    if not messageChat in self.__messagesChat:
+      self.__messagesChat.append(messageChat)
+      self.triggerEvent('addMessageChat', messageChat=messageChat)
       return True
     return False
     
-  def removeChat(self, chat):
+  def removeMessageChat(self, messageChat):
     """ Removes a string from the chat log.
     chat: string to be removed.
     """
-    if chat in self.__chat:
-      self.__chat.remove(chat)
-      self.triggerEvent('removeChat', chat=chat)
+    if messageChat in self.__messageChat:
+      self.__messagesChat.remove(messageChat)
+      self.triggerEvent('removeMessageChat', messageChat=messageChat)
       return True
     return False
     

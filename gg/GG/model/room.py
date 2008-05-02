@@ -5,6 +5,7 @@ import ggmodel
 import GG.model.item
 import GG.isoview.isoview_room
 import dMVC.model
+import player
 
 class GGRoom(ggmodel.GGModel):
   """ Room class.
@@ -158,4 +159,16 @@ class GGRoom(ggmodel.GGModel):
     """
     for item in self.__items:
       item.tick()
+
+  def getPlayers(self):
+    result = []
+    for item in self.__items:
+      if isinstance(item,player.GGPlayer):
+        result.append(item)
+    return result
+
+  def addMessageChat(self,message):
+    players = self.getPlayers()
+    for player in players:
+      player.addMessageChat(message)
       

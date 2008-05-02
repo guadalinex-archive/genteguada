@@ -25,6 +25,10 @@ class GGPlayer(item.GGItem):
     self.__state = "standing"
     self.__destination = position
     self.__inventory = []
+    self.__session = None
+
+  def setSession(self,session):
+    self.__session = session
     
   def variablesToSerialize(self):
     parentVars = item.GGItem.variablesToSerialize(self)
@@ -190,3 +194,7 @@ class GGPlayer(item.GGItem):
     if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.setPosition(next)
+
+  def addMessageChat(self,message):
+    if self.__session:
+      self.__session.addMessageChat(message)

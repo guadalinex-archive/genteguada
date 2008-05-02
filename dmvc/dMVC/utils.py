@@ -37,5 +37,6 @@ def nextID():
 #}}}
 
 
-
 statServer = statistic.Statistics("server")
+statClient = statistic.Statistics("client")
+

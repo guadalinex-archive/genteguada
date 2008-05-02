@@ -16,9 +16,12 @@ class RCommand: #{{{
   def objectToSerialize(self, server):
     return self
   #}}}
-  
-  def stat(self,size):
-    utils.statServer.count((self.getCommandType(), str(self.getClass()), str(self.getMethod())), size )
+
+  def initStat(self, size):
+    return utils.statServer.initCount((self.getCommandType(), str(self.getClass()), str(self.getMethod())), size )
+
+  def stopStat(self, size, initTime):
+    utils.statServer.stopCount((self.getCommandType(), str(self.getClass()), str(self.getMethod())), size, initTime )
  
   def getCommandType(self):
     return ""

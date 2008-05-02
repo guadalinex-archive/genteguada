@@ -76,7 +76,8 @@ class GGItem(ggmodel.GGModel):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
+    self.__room.addMessageChat(str(self)+" recibe click")
+    #self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
     
   def tick(self):
     """ Call for an update on item position.
