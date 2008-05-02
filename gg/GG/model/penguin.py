@@ -20,20 +20,24 @@ class GGPenguin(item.GGItem):
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.spriteInventory = spriteInventory
     self.label = label
+    #TODO tengo dudas de que pickable se pueda modificar desde fuera, por lo tanto seria una variable "Mega"-privada de la que habiamos hablado
     self.__pickable = pickable
     
   def variablesToSerialize(self):
+    #TODO esto es una solucin de emergencia mientras que no se arregle en el dMVC
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
   
   @dMVC.model.localMethod 
   def getSpriteInventory(self):
+    #TODO al ser una variable publica habria que eliminar este metodo
     """ Returns name of the sprite used to pain the penguin on the inventory.
     """
     return self.spriteInventory    
   
   @dMVC.model.localMethod 
   def getLabel(self):
+    #TODO al ser una variable publica habria que eliminar este metodo
     """ Returns penguin label.
     """
     return self.label    

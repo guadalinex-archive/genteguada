@@ -83,8 +83,11 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         command = pickle.loads(commandData)
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
-        command.stat(size)
+        #Estadisticas de lo que recibe el servidor y tarda en procesarlas
+        initTime = command.initStat(size)
+        #command.stat(size)
         answer = command.do()
+        command.stopStat(size,initTime)
         utils.logger.debug("Run the command " + str(command) + " from the client " + \
                              str(self.client_address)+ " and the result is "+str(answer))
         if answer:
