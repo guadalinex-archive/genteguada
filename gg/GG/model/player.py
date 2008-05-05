@@ -25,11 +25,8 @@ class GGPlayer(item.GGItem):
     self.__state = "standing"
     self.__destination = position
     self.__inventory = []
-    self.__session = None
+    #self.__session = None
 
-  def setSession(self,session):
-    self.__session = session
-    
   def variablesToSerialize(self):
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['username']
@@ -161,9 +158,9 @@ class GGPlayer(item.GGItem):
     """ Triggers an avent when the player receives a click by another player.
     clicker: player who clicks.
     """
-    self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
-    
-  
+    #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
+    self.getRoom().addMessageChat(str(self)+" recibe click")
+      
   def tick(self):
     """ Calls for an update on player's position an movement direction.
     """
@@ -195,6 +192,14 @@ class GGPlayer(item.GGItem):
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.setPosition(next)
 
+  """
   def addMessageChat(self,message):
     if self.__session:
       self.__session.addMessageChat(message)
+  """
+  
+  def changeRoom(self, room):
+    if self.getRoom():
+      self.getRoom().removeItem(self)
+    room.addItem(self)
+    #self.triggerEvent('changeActiveRoom', room=room)

@@ -28,7 +28,7 @@ class IsoViewItem(isoview.IsoView):
     position = model.getPosition()
     self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
     self.__parent = parent
-    self.getModel().subscribeEvent('chat', parent.pruebaChat)
+    #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
@@ -52,6 +52,12 @@ class IsoViewItem(isoview.IsoView):
     """
     return self.__ivroom
   
+  def setIVRoom(self, ivroom):
+    """ Sets a new isoview room for the item.
+    ivroom: new isoview room.
+    """
+    self.__ivroom = ivroom
+  
   def draw(self, screen):
     """ Runs some methods to paint on screen all players.
     screen: screen handler.
@@ -66,4 +72,3 @@ class IsoViewItem(isoview.IsoView):
     """
     self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
     self.__ivroom.draw()
-

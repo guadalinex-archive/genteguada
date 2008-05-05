@@ -6,6 +6,7 @@ import ggsession
 import item
 import book
 import penguin
+import door
 import thread
 import time
 
@@ -105,28 +106,29 @@ class GGSystem(dMVC.model.Model):
     for player in self.__players:
       if player.checkUser(username, password):
         session = ggsession.GGSession(player)
-        player.setSession(session)
+        #player.setSession(session)
         return session 
     return None
 
   def loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    self.createRoom(GG.utils.BG_FULL)
-    self.createRoom(GG.utils.BG_FULL2)
+    self.createRoom(GG.utils.BG_FULL, "habitacion 1")
+    self.createRoom(GG.utils.BG_FULL2, "habitacion 2")
     myPinguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
     myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [60, -13], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
     self.__rooms[0].addItem(myPinguin)    
     self.__rooms[0].addItem(myBook)    
-    self.__rooms[0].addItem(GG.model.item.GGItem(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95]))    
+    self.__rooms[0].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", self.__rooms[1]))    
+    self.__rooms[1].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", self.__rooms[0]))    
     if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
       self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
         
-  def createRoom(self, spriteFull):
+  def createRoom(self, spriteFull, label):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    self.__rooms.append(room.GGRoom(spriteFull))
+    self.__rooms.append(room.GGRoom(spriteFull, label))
       
   def createPlayer(self, sprite, size, position, offset, username, password):
     """ Creates a new player.

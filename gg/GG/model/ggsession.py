@@ -14,6 +14,7 @@ class GGSession(ggmodel.GGModel):
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
+    #self.__room = 
     self.__messagesChat = []
     self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
@@ -82,3 +83,4 @@ class GGSession(ggmodel.GGModel):
     """
     #lanzar evento removePlayer a la habitacion. Metodo por definir.
     pass
+

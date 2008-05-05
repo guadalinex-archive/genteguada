@@ -64,8 +64,9 @@ class GGPenguin(item.GGItem):
     clicker: player who clicks.
     """
     if self.__pickable and GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+      clicker.addInventory(self)
+      self.getRoom().addMessageChat(str(self)+" Obtienes")
       self.getRoom().removeItem(self)
       self.setRoom(None)
-      clicker.addInventory(self)
-      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
+#      self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
   
