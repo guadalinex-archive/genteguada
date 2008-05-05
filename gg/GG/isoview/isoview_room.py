@@ -42,6 +42,12 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     
+    #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
+    
+  def getIsoViewPlayers(self):
+    return self.__isoViewPlayers
+  
+  
   def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
     """
@@ -57,8 +63,12 @@ class IsoViewRoom(isoview.IsoView):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
+    print self.getModel().label
     self.paintPlayers()
     pygame.display.update()
+    
+  def getIsoviewPlayers(self):
+    return self.__isoViewPlayers
     
   def orderSprites(self):
     """ Order the sprites according to their position.
@@ -72,7 +82,7 @@ class IsoViewRoom(isoview.IsoView):
     allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
     self.__allPlayers = allPlayersTemp
     while len(allPlayersTemp):
-      print allPlayersTemp[0]
+      #print allPlayersTemp[0]
       self.__allPlayers.append(allPlayersTemp.pop()[0])
     
   def paintPlayers(self):
@@ -103,7 +113,16 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
+    #print event.getParams()['item']
+    #print "elemento anadido", len(self.__allPlayers)
     self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self.getModel(), self.__parent))
+    if isinstance(event.getParams()['item'],player.GGPlayer):
+      if event.getParams()['item'].getSession != None:
+        event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
+        
+  def changeActiveRoom(self, event):
+    #print "evento en ejecucion"
+    pass
   
   def itemRemoved(self, event):
     """ Updates the room view when an item remove event happens.

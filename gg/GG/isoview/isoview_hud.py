@@ -16,9 +16,18 @@ class IsoViewHud(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
+    
+    self.__player = self.getModel().getPlayer()
+    self.__player.subscribeEvent('room', self.roomChanged)
+    self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.__textFont = pygame.font.Font(None, 16)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
-  
+    #self.getModel().subscribeEvent('messagesChat', self.messaggesChatChanged)
+    self.getModel().subscribeEvent('addMessageChat', self.messagesChatAdded)
+    #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
+    #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
+    
+    
   def getTextFont(self):
     """ Returns the font used to print text on chat.
     """
@@ -30,20 +39,58 @@ class IsoViewHud(isoview.IsoView):
     return self.__textRect
   
   def addInventoryItem(self, item):
-    """
+    """ Adds a new isoview inventory item.
+    item: new isoview inventory item.
     """
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
     self.__isoviewInventory.append(invItem)
     self.paintInventory()
     
   def removeInventoryItem(self, item):
-    """
+    """ Removes an item from the inventory item list.
+    item: item to be removed.
     """
     for ivInventoryItem in self.__isoviewInventory:
       if ivInventoryItem.getModel().getLabel() == item.getLabel():
         toBeRemoved = ivInventoryItem
     self.__isoviewInventory.remove(toBeRemoved)
     self.paintInventory()
+    
+  def drawFirst(self):
+    """ Draws the room and hud view on screen for the first time.
+    """
+    if self.__isoviewRoom:
+      self.__isoviewRoom.drawFirst()
+    self.paint()
+    
+  def draw(self):
+    """ Updates the changed zones on the room view and draws the hud.
+    """
+    if self.__isoviewRoom:
+      self.__isoviewRoom.draw()
+    self.paint()
+    
+  def roomChanged(self, event):
+    """ Triggers after receiving a change room event.
+    event: event info.
+    """
+    if self.__isoviewRoom:
+      for item in self.__isoviewRoom.getIsoViewPlayers():
+        item.unsubscribeAllEvents()
+      self.__isoviewRoom.unsubscribeAllEvents()
+      self.__isoviewRoom = None
+    if event.getParams()["room"] != None:
+      self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
+      self.__isoviewRoom.drawFirst()
+    else:
+      self.__isoviewRoom.unsubscribeAllEvents()
+      self.__isoviewRoom = None
+    self.draw()
+      
+  def getIsoviewRoom(self):
+    """ Returns the isometric view room.
+    """
+    return self.__isoviewRoom
     
   def pruebaChat(self, events):
     """ Procedimiento de prueba para el chat del Hud.
@@ -111,6 +158,7 @@ class IsoViewHud(isoview.IsoView):
   def paintInventory(self):
     """ 
     """
+    print "Objetos en inventario: ", len(self.getModel().getPlayer().getInventory())
     pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
               (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
     n = 0
@@ -124,7 +172,7 @@ class IsoViewHud(isoview.IsoView):
     position: position in the inventory that the item will be painted into.
     """
     if position >= GG.utils.INV_ITEM_COUNT[0]*GG.utils.INV_ITEM_COUNT[1]:
-      return
+      return 
     imgPath = os.path.join(GG.utils.DATA_PATH, spriteName)
     img = pygame.sprite.Sprite()
     img.image = pygame.image.load(imgPath)
@@ -134,10 +182,11 @@ class IsoViewHud(isoview.IsoView):
     self.getScreen().blit(img.image, img.rect)
   
     
-  def printOnChat(self, string):
+  def messagesChatAdded(self, event):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.
     """
+    string = event.getParams()["messageChat"]
     renderedText = GG.utils.renderTextRect(string, self.getTextFont(), self.getTextRect(), GG.utils.CHAT_COLOR_FONT, GG.utils.CHAT_COLOR_BG, 0)
     self.getScreen().blit(renderedText, self.getTextRect().topleft)
     pygame.display.update()

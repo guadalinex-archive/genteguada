@@ -34,3 +34,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.getParent().removeInventoryItem(event.getParams()["item"])
     
+  def roomChanged(self, event):
+    """
+    """
+    room = event.getParams()["room"]
+    if room == None:
+      pass

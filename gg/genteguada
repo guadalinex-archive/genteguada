@@ -25,9 +25,15 @@ class GenteGuada:
           self.sy.insertItemIntoRoom(self.girl, self.room, 1)
         elif event.key == K_l:
           self.sy.removeItem(self.girl, 1)
+        elif event.key == K_v:
+          #self.room = self.player.getRoom()
+          pass
+          #self.isoviewroom = None
+          #self.isoviewroom = self.room.defaultView(self.screen, self.isoHud)
+          #self.isoviewroom.drawFirst()
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
-        dest = self.isoviewroom.findTile([x,y])
+        dest = self.isoHud.getIsoviewRoom().findTile([x,y])
         if dest <> [-1, -1]:
           self.room.clickedByPlayer(self.player, [dest[0], 0, dest[1]])
         else:
@@ -35,7 +41,7 @@ class GenteGuada:
 
   def start(self,params):
     pygame.init()
-    screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
+    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)
     
     if params.execution == "remoto":
@@ -49,16 +55,17 @@ class GenteGuada:
     self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
                     
     session = self.sy.login(params.user, params.password)
-    self.isoHud = session.defaultView(screen)
-    
     self.player = session.getPlayer()
     self.room = self.player.getRoom()
-    self.isoviewroom = self.room.defaultView(screen, self.isoHud)
-    
+    self.isoHud = session.defaultView(self.screen)
+    self.isoHud.drawFirst()
+    """
+    self.isoviewroom = self.room.defaultView(self.screen, self.isoHud)
     self.isoviewroom.drawFirst()
     self.isoHud.paint()
+    """
     pygame.display.update()
-    self.isoHud.printOnChat("Inicio del juego. Chat vacio.")
+    #self.isoHud.printOnChat("Inicio del juego. Chat vacio.")
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())

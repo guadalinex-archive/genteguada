@@ -56,14 +56,25 @@ class GGItem(ggmodel.GGModel):
     """
     return self.__room
   
+  def clearRoom(self):
+    if self.__room == None:
+      raise "Error en limpieza de room"
+    self.__setRoom(None)
+    
   def setRoom(self, room):
     """ Sets a new room for the player.
     room: new room.
     """
-    if self.__room <> room:
-      self.__room = room
-      self.triggerEvent('room', room=room)
-
+    if self.__room != None:
+      raise "Error: el item ya tiene un room"
+    if room == None:
+      raise "Error: habitacion = None"
+    self.__setRoom(room)
+      
+  def __setRoom(self, room):
+    self.__room = room
+    self.triggerEvent('room', room=room)
+  
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.

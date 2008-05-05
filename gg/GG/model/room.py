@@ -12,13 +12,14 @@ class GGRoom(ggmodel.GGModel):
   Defines atributes and methods for a single room.
   """
 
-  def __init__(self, spriteFull):
+  def __init__(self, spriteFull, label):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     """
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
+    self.label = label
     
   def variablesToSerialize(self):
     return ['spriteFull']
@@ -63,6 +64,7 @@ class GGRoom(ggmodel.GGModel):
     """
     if item in self.__items:
       self.__items.remove(item)
+      item.clearRoom()
       self.triggerEvent('removeItem', item=item)
       return True
     return False
@@ -81,6 +83,7 @@ class GGRoom(ggmodel.GGModel):
     """
     #return pos in self.__blocked
     for item in self.__items:
+      #print "*************", item
       if item.getPosition() == pos:
         return True
     return False  

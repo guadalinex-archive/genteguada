@@ -60,8 +60,11 @@ class GGDoor(item.GGItem):
       # cambios en el modelo
       self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
     elif self.__heading == "down" and pPos == [dPos[0], dPos[1], dPos[2] + 1]:
-      # cambios en el modelo
-      self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
+      # self.getRoom().removeItem(clicker)
+      clicker.changeRoom(self.__destinationRoom)
+      # self.__destinationRoom.addItem(clicker)
+      # clicker.setPosition([0, 0, 6])
+      # self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
     elif self.__heading == "left" and pPos == [dPos[0] - 1, dPos[1], dPos[2]]:
       # cambios en el modelo
       self.triggerEvent('openedDoor', clicker=clicker, destinationRoom=self.__destinationRoom)
