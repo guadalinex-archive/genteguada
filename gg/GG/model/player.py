@@ -122,6 +122,7 @@ class GGPlayer(item.GGItem):
     room: room view object.
     parent: hud or session view object.
     """
+    print "avatar creado", self
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
   def clickOnInventoryItem(self, item):

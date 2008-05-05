@@ -27,7 +27,6 @@ class IsoViewHud(isoview.IsoView):
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
     
-    
   def getTextFont(self):
     """ Returns the font used to print text on chat.
     """
@@ -75,16 +74,15 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__isoviewRoom:
-      for item in self.__isoviewRoom.getIsoViewPlayers():
-        item.unsubscribeAllEvents()
       self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
+
     if event.getParams()["room"] != None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.drawFirst()
-    else:
-      self.__isoviewRoom.unsubscribeAllEvents()
-      self.__isoviewRoom = None
+    #else:
+    #  self.__isoviewRoom.unsubscribeAllEvents()
+    #  self.__isoviewRoom = None
     self.draw()
       
   def getIsoviewRoom(self):
