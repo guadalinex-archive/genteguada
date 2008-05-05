@@ -65,7 +65,12 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 
 STATE = {1: "standing", 2: "walking"}
 
-#NINO_SPRITES = {}
+NINO_SPRITES = {1: "nino_up.png", 2: "nino_down.png", 3: "nino_left.png",
+                4: "nino_right.png", 5: "nino_topleft.png", 6: "nino_bottomright.png",
+                7: "nino_bottomleft.png", 8: "nino_topright.png"}
+
+NINA_SPRITES = {1: "nina.png", 2: "nina.png", 3: "nina.png", 4: "nina.png",
+                5: "nina.png", 6: "nina.png", 7: "nina.png", 8: "nina.png"}
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.

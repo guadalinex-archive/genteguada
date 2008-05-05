@@ -16,11 +16,15 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     parent: isoview_hud handler.
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
-    #self.getModel().subscribeEvent('heading', self.headingChanged)
+    self.getModel().subscribeEvent('heading', self.headingChanged)
     #self.getModel().subscribeEvent('state', self.stateChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
     self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
     self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
+
+  def headingChanged(self, event):
+    print "direccion cambiada"
+    
 
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.
