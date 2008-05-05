@@ -128,7 +128,7 @@ if mask <> "":
 	texturePath = mask
 	changeTexture(avatar + "Mask", texturePath, "defaultMask.tga")
 	
-if hairColour <> "" and hairStyle <> "0":
+if hairColour <> "" and hairStyle <> "":
   print "Hair texture updated"
   texturePath = os.path.join(os.path.abspath("."), "textures/" + gender + "/hair/" + hairColour)
   changeTexture(avatar + "Hair" + hairStyle, texturePath, "defaultHair.tga")
