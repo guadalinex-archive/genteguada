@@ -120,7 +120,7 @@ class GGSystem(dMVC.model.Model):
     self.__rooms[0].addItem(myPinguin)    
     self.__rooms[0].addItem(myBook)    
     self.__rooms[0].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", self.__rooms[1]))    
-    self.__rooms[1].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", self.__rooms[0]))    
+    self.__rooms[1].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [58, 95], "down", self.__rooms[0]))    
     if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
       self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
         
