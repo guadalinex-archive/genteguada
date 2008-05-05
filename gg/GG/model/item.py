@@ -95,3 +95,6 @@ class GGItem(ggmodel.GGModel):
     Not used at the moment.
     """
     pass
+  
+  def abandonRoom(self):
+    self.__room.removeItem(self)

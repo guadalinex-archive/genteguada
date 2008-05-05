@@ -25,14 +25,14 @@ class GGSession(ggmodel.GGModel):
     """
     return self.__player
 
+  """
   def setPlayer(self, player):
-    """ Sets a new active player.
-    """
     if self.__player <> player:
       self.__player = player
       self.triggerEvent('player', player=player)
       return True
     return False
+  """
 
   # self.__chat
   
@@ -81,6 +81,5 @@ class GGSession(ggmodel.GGModel):
   def logout(self):
     """
     """
-    #lanzar evento removePlayer a la habitacion. Metodo por definir.
-    pass
-
+    self.__player.abandonRoom()
+    

@@ -39,9 +39,14 @@ class IsoViewRoom(isoview.IsoView):
             [pos[0], pos[1]], \
             [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
+  
+    for item in self.getModel().getItems():
+      isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
+      self.__isoViewPlayers.append(isoviewitem)
+      self.__allPlayers.add(isoviewitem.getImg())
+
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
-    
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
     
   def getIsoViewPlayers(self):
@@ -51,10 +56,6 @@ class IsoViewRoom(isoview.IsoView):
   def drawFirst(self):
     """ Draws the room and all its components on screen for the first time.
     """
-    for item in self.getModel().getItems():
-      isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
-      self.__isoViewPlayers.append(isoviewitem)
-      self.__allPlayers.add(isoviewitem.getImg())
     self.paintFloorFull()
     self.__allPlayers.draw(self.getScreen())
     pygame.display.update()
@@ -113,9 +114,10 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
+    print "anadido", event.getParams()['item']
     #print event.getParams()['item']
     #print "elemento anadido", len(self.__allPlayers)
-    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self.getModel(), self.__parent))
+    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
     if isinstance(event.getParams()['item'],player.GGPlayer):
       if event.getParams()['item'].getSession != None:
         event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
@@ -128,9 +130,15 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
+    print "player removed"
+    removed = False
     for ivplayer in self.__isoViewPlayers:
       if ivplayer.getModel() == event.getParams()['item']:
         self.removeIsoViewItem(ivplayer)
+        removed = True
+    if not removed:
+      raise "Error: vista de item no eliminada"
+        
         
   def addIsoViewItem(self, item):
     """ Inserts a new item view.
@@ -149,3 +157,8 @@ class IsoViewRoom(isoview.IsoView):
     player.unsubscribeAllEvents()
     self.draw()
   
+  def unsubscribeAllEvents(self):
+    isoview.IsoView.unsubscribeAllEvents(self)
+    for item in self.__isoViewPlayers:
+      item.unsubscribeAllEvents()
+      

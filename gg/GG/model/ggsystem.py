@@ -23,18 +23,17 @@ class GGSystem(dMVC.model.Model):
     self.__players = []
     self.loadData()
     thread.start_new(self.start,())
+     
+  def getEntryRoom(self):
+    return self.__rooms[0]
       
+  """
   # self.__rooms
   
   def getRooms(self):
-    """ Returns the rooms list.
-    """
     return self.__rooms
   
   def setRooms(self, rooms):
-    """ Sets a new rooms list.
-    rooms: new rooms list.
-    """
     if self.__rooms <> rooms:
       self.__rooms = rooms
       self.triggerEvent('rooms', rooms=rooms)
@@ -42,9 +41,6 @@ class GGSystem(dMVC.model.Model):
     return False
   
   def addRoom(self, room):
-    """ Adds a new room to the rooms list.
-    room: new room.
-    """
     if not room in self.__rooms:
       self.__rooms.add(room)
       self.triggerEvent('addRoom', room=room)
@@ -52,14 +48,12 @@ class GGSystem(dMVC.model.Model):
     return False
     
   def removeRoom(self, room):
-    """ Remove a room from the rooms list.
-    room: room to be removed.
-    """
     if room in self.__rooms:
       self.__rooms.remove(room)
       self.triggerEvent('removeRoom', room=room)
       return True
     return False
+  """
     
   # self.__players
   
@@ -103,32 +97,36 @@ class GGSystem(dMVC.model.Model):
     username: user name.
     password: user password.
     """
+    # comprobar que el jugador no tiene iniciada sesion y que no tenga habitacion
     for player in self.__players:
-      if player.checkUser(username, password):
+      if player.checkUser(username, password) and player.getRoom() == None:
+        #self.getEntryRoom().addItem(player)
+        player.changeRoom(self.getEntryRoom())
+        #self.insertItemIntoRoom(player, self.getEntryRoom(), 1)
         session = ggsession.GGSession(player)
-        #player.setSession(session)
         return session 
     return None
 
   def loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    self.createRoom(GG.utils.BG_FULL, "habitacion 1")
-    self.createRoom(GG.utils.BG_FULL2, "habitacion 2")
+    room1 = self.createRoom(GG.utils.BG_FULL, "habitacion 1")
+    room2 = self.createRoom(GG.utils.BG_FULL2, "habitacion 2")
     myPinguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
     myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [60, -13], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
-    self.__rooms[0].addItem(myPinguin)    
-    self.__rooms[0].addItem(myBook)    
-    self.__rooms[0].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", self.__rooms[1]))    
-    self.__rooms[1].addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [58, 95], "down", self.__rooms[0]))    
-    if self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234"):
-      self.insertItemIntoRoom(self.__players[0], self.__rooms[0], 1)
+    room1.addItem(myPinguin)    
+    room1.addItem(myBook)    
+    room1.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", room2))    
+    room2.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [58, 95], "down", room1))    
+    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234")
         
   def createRoom(self, spriteFull, label):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    self.__rooms.append(room.GGRoom(spriteFull, label))
+    newRoom = room.GGRoom(spriteFull, label)
+    self.__rooms.append(newRoom)
+    return newRoom
       
   def createPlayer(self, sprite, size, position, offset, username, password):
     """ Creates a new player.

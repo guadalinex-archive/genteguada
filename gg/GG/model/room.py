@@ -35,6 +35,7 @@ class GGRoom(ggmodel.GGModel):
   def getItems(self):
     """ Return the items shown on the room.
     """
+    print self.__items
     return self.__items
 
   def setItems(self, items):
@@ -63,11 +64,12 @@ class GGRoom(ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
-      self.__items.remove(item)
+      print "eliminado", item
       item.clearRoom()
+      self.__items.remove(item)
       self.triggerEvent('removeItem', item=item)
-      return True
-    return False
+      return
+    raise "Error: item no eliminado"
 
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):

@@ -18,11 +18,11 @@ class GenteGuada:
         if event.key == K_ESCAPE:
           sys.exit(0)
         elif event.key == K_q:
-          self.sy.insertItemIntoRoom(self.tree, self.room, 0)
+          self.sy.insertItemIntoRoom(self.tree, self.session.getPlayer().getRoom(), 0)
         elif event.key == K_a:
           self.sy.removeItem(self.tree, 0)
         elif event.key == K_o:
-          self.sy.insertItemIntoRoom(self.girl, self.room, 1)
+          self.sy.insertItemIntoRoom(self.girl, self.session.getPlayer().getRoom(), 1)
         elif event.key == K_l:
           self.sy.removeItem(self.girl, 1)
         elif event.key == K_v:
@@ -56,7 +56,7 @@ class GenteGuada:
                     
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
-    self.room = self.player.getRoom()
+    #self.room = self.player.getRoom()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.drawFirst()
     """
