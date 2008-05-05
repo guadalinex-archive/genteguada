@@ -53,7 +53,7 @@ class RServer(synchronized.Synchronized):
       data = raw_input('')
       if data.rstrip() == "quit": 
         con.server_close()
-        print utils.statServer
+        utils.statServer.strServer()
         sys.exit(0)
   #}}}
 
