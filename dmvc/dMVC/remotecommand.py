@@ -211,6 +211,7 @@ class REventTriggerer(RCommand):
   def do(self):
     rClient = dMVC.getRClient()
     self._event = dMVC.clientMaterialize(self._event, rClient)
+    utils.statEventTriggered.addEvent(self)
     suscription = rClient.getRemoteSuscriptionByID(self._suscriptionID)
     if suscription:
       suscription[1](self._event)

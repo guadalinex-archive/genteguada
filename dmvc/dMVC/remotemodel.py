@@ -27,7 +27,7 @@ class RemoteModel: #{{{
   def __getattr__(self, attrName): #{{{
     if attrName == "__getinitargs__":       # allows it to be safely pickled
       raise AttributeError()
-    return RemoteMethod(self.__modelID, attrName)
+    return RemoteMethod(self.__modelID, attrName, self.__modelClassName)
   #}}}
 
   # Pickling support, otherwise pickle uses __getattr__:
@@ -125,9 +125,10 @@ class RemoteModel: #{{{
 
 class RemoteMethod: #{{{
 
-  def __init__(self, modelID, methodName): #{{{
+  def __init__(self, modelID, methodName, className): #{{{
     self._modelID = modelID
     self._methodName = methodName
+    self._className = className
   #}}}
 
   def __call__(self, *args): #{{{
@@ -139,7 +140,7 @@ class RemoteMethod: #{{{
     answerer = rClient.waitForExecutionAnswerer(executer)
     result = answerer.do()
 
-    utils.statClient.stopClientCount(initTime)
+    utils.statClient.stopClientCount(initTime, (self._className, self._modelID, self._methodName))
     return result
 
   #}}}

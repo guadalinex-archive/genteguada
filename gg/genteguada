@@ -13,24 +13,24 @@ class GenteGuada:
   def input(self,events):
     for event in events:
       if event.type == QUIT: 
+        print dMVC.utils.statClient.strClient()
+        print dMVC.utils.statEventTriggered.strEvent()
         sys.exit(0)
       if event.type == KEYDOWN:
         if event.key == K_ESCAPE:
+          print dMVC.utils.statClient.strClient()
+          print dMVC.utils.statEventTriggered.strEvent()
           sys.exit(0)
         elif event.key == K_q:
-          self.sy.insertItemIntoRoom(self.tree, self.session.getPlayer().getRoom(), 0)
+          self.sy.insertItemIntoRoom(self.tree, self.player.getRoom(), 0)
         elif event.key == K_a:
           self.sy.removeItem(self.tree, 0)
         elif event.key == K_o:
-          self.sy.insertItemIntoRoom(self.girl, self.session.getPlayer().getRoom(), 1)
+          self.sy.insertItemIntoRoom(self.girl, self.player.getRoom(), 1)
         elif event.key == K_l:
           self.sy.removeItem(self.girl, 1)
         elif event.key == K_v:
-          #self.room = self.player.getRoom()
           pass
-          #self.isoviewroom = None
-          #self.isoviewroom = self.room.defaultView(self.screen, self.isoHud)
-          #self.isoviewroom.drawFirst()
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
@@ -56,20 +56,12 @@ class GenteGuada:
                     
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
-    #self.room = self.player.getRoom()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.drawFirst()
-    """
-    self.isoviewroom = self.room.defaultView(self.screen, self.isoHud)
-    self.isoviewroom.drawFirst()
-    self.isoHud.paint()
-    """
     pygame.display.update()
-    #self.isoHud.printOnChat("Inicio del juego. Chat vacio.")
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())
-      #sy.tick()
 
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
