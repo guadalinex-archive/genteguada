@@ -170,8 +170,9 @@ class GGRoom(ggmodel.GGModel):
         result.append(item)
     return result
 
+  """
   def addMessageChat(self,message):
     players = self.getPlayers()
     for player in players:
       player.addMessageChat(message)
-      
+  """
