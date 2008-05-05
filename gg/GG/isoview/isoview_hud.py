@@ -119,8 +119,10 @@ class IsoViewHud(isoview.IsoView):
           j += 1
         # click on an inventory item, itemPos
         if k:
-          self.printOnChat(self.__isoviewInventory[itemPos].getLabel())
+          #self.printOnChat(self.__isoviewInventory[itemPos].getLabel())
           self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewInventory[itemPos].getModel())
+    self.paintInventory()
+    pygame.display.update()
           
   # Paint methods
     

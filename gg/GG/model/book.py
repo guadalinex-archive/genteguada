@@ -66,9 +66,12 @@ class GGBook(item.GGItem):
     """
     if self.__pickable and GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.addInventory(self)
-      self.getRoom().addMessageChat(str(self)+" Obtienes")
+      #self.getRoom().addMessageChat(str(self)+" Obtienes")
       self.getRoom().removeItem(self)
       #TODO creo que en el removeItem debe de estar el setRoom(None)
-      self.setRoom(None)
+      
+      #print self.getRoom()
+      #self.clearRoom()
+      
       #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
   
