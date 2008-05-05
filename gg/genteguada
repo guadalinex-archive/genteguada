@@ -35,7 +35,7 @@ class GenteGuada:
         x, y = pygame.mouse.get_pos()
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
         if dest <> [-1, -1]:
-          self.room.clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+          self.session.getPlayer().getRoom().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
         else:
           self.isoHud.clickedByPlayer(self.player, [x, y])
 
@@ -54,10 +54,10 @@ class GenteGuada:
     self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
     self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
                     
-    session = self.sy.login(params.user, params.password)
-    self.player = session.getPlayer()
+    self.session = self.sy.login(params.user, params.password)
+    self.player = self.session.getPlayer()
     self.room = self.player.getRoom()
-    self.isoHud = session.defaultView(self.screen)
+    self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.drawFirst()
     """
     self.isoviewroom = self.room.defaultView(self.screen, self.isoHud)
