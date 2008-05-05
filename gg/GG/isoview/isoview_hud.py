@@ -76,7 +76,7 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
 
-    if event.getParams()["room"] != None:
+    if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.drawFirst()
     #else:
