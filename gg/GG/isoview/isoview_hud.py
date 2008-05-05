@@ -16,9 +16,7 @@ class IsoViewHud(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
-    
     self.__player = self.getModel().getPlayer()
-    self.__player.subscribeEvent('room', self.roomChanged)
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.__textFont = pygame.font.Font(None, 16)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
@@ -26,7 +24,8 @@ class IsoViewHud(isoview.IsoView):
     self.getModel().subscribeEvent('addMessageChat', self.messagesChatAdded)
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
-    
+    self.__player.subscribeEvent('room', self.roomChanged)    
+
   def getTextFont(self):
     """ Returns the font used to print text on chat.
     """

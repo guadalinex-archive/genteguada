@@ -35,7 +35,8 @@ class GenteGuada:
         x, y = pygame.mouse.get_pos()
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
         if dest <> [-1, -1]:
-          self.session.getPlayer().getRoom().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+          if self.session.getPlayer().getRoom():
+            self.session.getPlayer().getRoom().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
         else:
           self.isoHud.clickedByPlayer(self.player, [x, y])
 
