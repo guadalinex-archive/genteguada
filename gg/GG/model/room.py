@@ -35,7 +35,7 @@ class GGRoom(ggmodel.GGModel):
   def getItems(self):
     """ Return the items shown on the room.
     """
-    print self.__items
+    #print self.__items
     return self.__items
 
   def setItems(self, items):
@@ -55,6 +55,7 @@ class GGRoom(ggmodel.GGModel):
     if not self.getBlocked(item.getPosition()) and not item in self.__items:
       self.__items.append(item)
       item.setRoom(self)
+      print self.label, item
       self.triggerEvent('addItem', item=item)
       return True
     return False
@@ -64,7 +65,7 @@ class GGRoom(ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
-      print "eliminado", item
+      #print "eliminado", item
       item.clearRoom()
       self.__items.remove(item)
       self.triggerEvent('removeItem', item=item)

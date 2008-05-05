@@ -64,7 +64,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
-    print self.getModel().label
+    #print self.getModel().label
     self.paintPlayers()
     pygame.display.update()
     
@@ -118,9 +118,9 @@ class IsoViewRoom(isoview.IsoView):
     #print event.getParams()['item']
     #print "elemento anadido", len(self.__allPlayers)
     self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
-    if isinstance(event.getParams()['item'],player.GGPlayer):
-      if event.getParams()['item'].getSession != None:
-        event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
+    #if isinstance(event.getParams()['item'],player.GGPlayer):
+    #  if event.getParams()['item'].getSession != None:
+    #    event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
         
   def changeActiveRoom(self, event):
     #print "evento en ejecucion"

@@ -65,6 +65,8 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 
 STATE = {1: "standing", 2: "walking"}
 
+#NINO_SPRITES = {}
+
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
   pos1: posicion de inicio.
