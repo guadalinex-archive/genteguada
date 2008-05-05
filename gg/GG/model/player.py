@@ -8,7 +8,7 @@ class GGPlayer(item.GGItem):
   Defines a player object behaviour.
   """
  
-  def __init__(self, sprite, size, position, offset, username, password):
+  def __init__(self, sprite, spriteList, size, position, offset, username, password):
     """ Class builder.
     sprite: sprite used to paint the player.
     size: player sprite size.
@@ -19,6 +19,7 @@ class GGPlayer(item.GGItem):
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.username = username
+    self.spriteList = spriteList
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = "down"
@@ -29,7 +30,7 @@ class GGPlayer(item.GGItem):
 
   def variablesToSerialize(self):
     parentVars = item.GGItem.variablesToSerialize(self)
-    return parentVars + ['username']
+    return parentVars + ['username', 'spriteList']
   
   @dMVC.model.localMethod 
   def getUsername(self):

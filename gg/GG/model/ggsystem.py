@@ -118,7 +118,7 @@ class GGSystem(dMVC.model.Model):
     room1.addItem(myBook)    
     room1.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", room2))    
     room2.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [58, 95], "down", room1))    
-    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234")
+    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234")
         
   def createRoom(self, spriteFull, label):
     """ Creates a new room.
@@ -128,7 +128,7 @@ class GGSystem(dMVC.model.Model):
     self.__rooms.append(newRoom)
     return newRoom
       
-  def createPlayer(self, sprite, size, position, offset, username, password):
+  def createPlayer(self, sprite, spriteList, size, position, offset, username, password):
     """ Creates a new player.
     sprite: sprite used to paint the player.
     size: sprite size.
@@ -140,7 +140,7 @@ class GGSystem(dMVC.model.Model):
     for pl in self.__players:
       if pl.checkUser(username, password):
         return False
-    self.__players.append(player.GGPlayer(sprite, size, position, offset, username, password))
+    self.__players.append(player.GGPlayer(sprite, spriteList, size, position, offset, username, password))
     return True
     
   def insertItemIntoRoom(self, item, room, isPlayer):
