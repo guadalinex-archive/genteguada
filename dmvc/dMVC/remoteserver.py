@@ -87,7 +87,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         initTime = command.initStat(size)
         #command.stat(size)
         answer = command.do()
-        command.stopStat(size,initTime)
+        command.stopStat(size, initTime)
         utils.logger.debug("Run the command " + str(command) + " from the client " + \
                              str(self.client_address)+ " and the result is "+str(answer))
         if answer:

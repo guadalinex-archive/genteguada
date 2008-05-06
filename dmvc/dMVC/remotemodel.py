@@ -76,7 +76,7 @@ class RemoteModel: #{{{
 
   def unsubscribeEventMethod(self, method, eventType=None):
     rClient = dMVC.getRClient()
-    rClient.unsubscribeEventMethod(method,eventType)
+    rClient.unsubscribeEventMethod(method, eventType)
 
   def __eq__(self, comparand):
     if not isinstance(comparand, RemoteModel):
