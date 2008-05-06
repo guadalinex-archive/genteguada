@@ -41,14 +41,7 @@ def setRClient(rclient):
 
 
 def objectToSerialize(obj, rServer): #{{{
-
-  if isinstance(obj, model.Model):
-    return obj.objectToSerialize(rServer)
-
-  elif isinstance(obj, remotecommand.RCommand):
-    return obj.objectToSerialize(rServer)
-
-  elif isinstance(obj, events.Event):
+  if hasattr(obj, 'objectToSerialize'):
     return obj.objectToSerialize(rServer)
 
   elif isinstance(obj, list): 
@@ -78,60 +71,55 @@ def objectToSerialize(obj, rServer): #{{{
 
 
 
-def serverMaterialize(arg, rServer): #{{{
+def serverMaterialize(obj, rServer): #{{{
+  if hasattr(obj, 'serverMaterialize'):
+    return obj.serverMaterialize(rServer)
 
-  if isinstance(arg, remotemodel.RemoteModel):
-    return arg.serverMaterialize(rServer)
+  elif isinstance(obj, list): 
+    resultObj = []
+    for i in range(len(obj)):
+      resultObj.append(serverMaterialize(obj[i], rServer))
+    return resultObj
 
-  elif isinstance(arg, list): 
-    resultArg = []
-    for i in range(len(arg)):
-      resultArg.append(serverMaterialize(arg[i], rServer))
-    return resultArg
+  elif isinstance(obj, tuple):
+    resultObj = []
+    for i in range(len(obj)):
+      resultObj.append(serverMaterialize(obj[i], rServer))
+    return tuple(resultObj)
 
-  elif isinstance(arg, tuple):
-    resultArg = []
-    for i in range(len(arg)):
-      resultArg.append(serverMaterialize(arg[i], rServer))
-    return tuple(resultArg)
-
-  elif isinstance(arg, dict):
-    resultArg = {}
-    for key in arg.keys():
-      resultArg[serverMaterialize(key, rServer)] = serverMaterialize(arg[key], rServer)
-    return resultArg
+  elif isinstance(obj, dict):
+    resultObj = {}
+    for key in obj.keys():
+      resultObj[serverMaterialize(key, rServer)] = serverMaterialize(obj[key], rServer)
+    return resultObj
 
   else:
-    return arg
+    return obj
   #}}}
 
 
-def clientMaterialize(arg, rClient): #{{{
+def clientMaterialize(obj, rClient): #{{{
+  if hasattr(obj, 'clientMaterialize'):
+    return obj.clientMaterialize(rClient)
 
-  if isinstance(arg, remotemodel.RemoteModel):
-    return arg.clientMaterialize(rClient)
+  elif isinstance(obj, list): 
+    resultObj = []
+    for i in range(len(obj)):
+      resultObj.append(clientMaterialize(obj[i], rClient))
+    return resultObj
 
-  elif isinstance(arg, events.Event):
-    return arg.clientMaterialize(rClient)
+  elif isinstance(obj, tuple):
+    resultObj = []
+    for i in range(len(obj)):
+      resultObj.append(clientMaterialize(obj[i], rClient))
+    return tuple(resultObj)
 
-  elif isinstance(arg, list): 
-    resultArg = []
-    for i in range(len(arg)):
-      resultArg.append(clientMaterialize(arg[i], rClient))
-    return resultArg
-
-  elif isinstance(arg, tuple):
-    resultArg = []
-    for i in range(len(arg)):
-      resultArg.append(clientMaterialize(arg[i], rClient))
-    return tuple(resultArg)
-
-  elif isinstance(arg, dict):
-    resultArg = {}
-    for key in arg.keys():
-      resultArg[clientMaterialize(key, rClient)] = clientMaterialize(arg[key], rClient)
-    return resultArg
+  elif isinstance(obj, dict):
+    resultObj = {}
+    for key in obj.keys():
+      resultObj[clientMaterialize(key, rClient)] = clientMaterialize(obj[key], rClient)
+    return resultObj
 
   else:
-    return arg
+    return obj
   #}}}

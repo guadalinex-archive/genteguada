@@ -2,7 +2,7 @@ import time
 
 class Statistics:
 
-  def __init__(self,side):
+  def __init__(self, side):
     self.__valuesServer = {}
     self.__valuesClient = {}
     self.__valuesEvent = {}
@@ -31,7 +31,7 @@ class Statistics:
     var += "\n"
     print var
 
-  def countServer(self,key,size,execTime):
+  def countServer(self, key, size, execTime):
     if key in self.__valuesServer.keys():
       self.__valuesServer[key]["count"] += 1
       self.__valuesServer[key]["totalSize"] += size
@@ -39,30 +39,30 @@ class Statistics:
       self.__valuesServer[key]["size"] = self.__valuesServer[key]["totalSize"] / self.__valuesServer[key]["count"]
       self.__valuesServer[key]["time"] = self.__valuesServer[key]["totalTime"] / self.__valuesServer[key]["count"]
     else:
-      data = {"count":1,"size":size,"totalSize":size,"totalTime":execTime,"time":execTime}
+      data = {"count":1, "size":size, "totalSize":size, "totalTime":execTime, "time":execTime}
       self.__valuesServer[key] = data 
 
-  def initCount(self,key,size):
+  def initCount(self, key, size):
     return time.time()
 
-  def stopCount(self,key,size, initTime):
+  def stopCount(self, key, size, initTime):
     execTime = time.time() - initTime
-    self.countServer(key,size,execTime)
+    self.countServer(key, size, execTime)
 
   def initClientCount(self):
     return time.time()
 
-  def stopClientCount(self,initTime, key):
+  def stopClientCount(self, initTime, key):
     execTime = time.time() - initTime
-    self.countClient(key,execTime)
+    self.countClient(key, execTime)
 
-  def countClient(self,key,execTime):
+  def countClient(self, key, execTime):
     if key in self.__valuesClient.keys():
       self.__valuesClient[key]["count"] += 1
       self.__valuesClient[key]["totalTime"] += execTime
       self.__valuesClient[key]["time"] = self.__valuesClient[key]["totalTime"] / self.__valuesClient[key]["count"]
     else:
-      data = {"count":1,"totalTime":execTime,"time":execTime}
+      data = {"count":1, "totalTime":execTime, "time":execTime}
       self.__valuesClient[key] = data
 
   def addEvent(self, key):
