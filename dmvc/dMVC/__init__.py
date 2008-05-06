@@ -1,8 +1,3 @@
-import model
-import remotemodel
-import remotecommand
-import events
-
 
 
 #rServerSingleton #{{{
@@ -40,26 +35,21 @@ def setRClient(rclient):
 
 
 
+
 def objectToSerialize(obj, rServer): #{{{
   if hasattr(obj, 'objectToSerialize'):
     return obj.objectToSerialize(rServer)
 
   elif isinstance(obj, list): 
-    resultObject = []
-    for each in obj:
-      resultObject.append(objectToSerialize(each, rServer))
-    return resultObject
+    return map(lambda each: objectToSerialize(each, rServer), obj)
 
   elif isinstance(obj, tuple):
-    resultObject = []
-    for each in obj:
-      resultObject.append(objectToSerialize(each, rServer))
-    return tuple(resultObject)
+    return tuple(map(lambda each: objectToSerialize(each, rServer), obj))
 
   elif isinstance(obj, dict):
     resultObject = {}
-    for key in obj.keys():
-      resultObject[objectToSerialize(key, rServer)] = objectToSerialize(obj[key], rServer)
+    for key, value in obj.iteritems():
+      resultObject[objectToSerialize(key, rServer)] = objectToSerialize(value, rServer)
     return resultObject
 
   else:
@@ -76,21 +66,15 @@ def serverMaterialize(obj, rServer): #{{{
     return obj.serverMaterialize(rServer)
 
   elif isinstance(obj, list): 
-    resultObj = []
-    for i in range(len(obj)):
-      resultObj.append(serverMaterialize(obj[i], rServer))
-    return resultObj
+    return map(lambda each: serverMaterialize(each, rServer), obj)
 
   elif isinstance(obj, tuple):
-    resultObj = []
-    for i in range(len(obj)):
-      resultObj.append(serverMaterialize(obj[i], rServer))
-    return tuple(resultObj)
+    return tuple(map(lambda each: serverMaterialize(each, rServer), obj))
 
   elif isinstance(obj, dict):
     resultObj = {}
-    for key in obj.keys():
-      resultObj[serverMaterialize(key, rServer)] = serverMaterialize(obj[key], rServer)
+    for key, value in obj.iteritems():
+      resultObj[serverMaterialize(key, rServer)] = serverMaterialize(value, rServer)
     return resultObj
 
   else:
@@ -103,21 +87,15 @@ def clientMaterialize(obj, rClient): #{{{
     return obj.clientMaterialize(rClient)
 
   elif isinstance(obj, list): 
-    resultObj = []
-    for i in range(len(obj)):
-      resultObj.append(clientMaterialize(obj[i], rClient))
-    return resultObj
+    return map(lambda each: clientMaterialize(each, rClient), obj)
 
   elif isinstance(obj, tuple):
-    resultObj = []
-    for i in range(len(obj)):
-      resultObj.append(clientMaterialize(obj[i], rClient))
-    return tuple(resultObj)
+    return tuple(map(lambda each: clientMaterialize(each, rClient), obj))
 
   elif isinstance(obj, dict):
     resultObj = {}
-    for key in obj.keys():
-      resultObj[clientMaterialize(key, rClient)] = clientMaterialize(obj[key], rClient)
+    for key, value in obj.iteritems():
+      resultObj[clientMaterialize(key, rClient)] = clientMaterialize(value, rClient)
     return resultObj
 
   else:

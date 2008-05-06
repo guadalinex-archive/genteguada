@@ -31,9 +31,9 @@ class Synchronized:
     for key in dir(self):
       function = getattr(self, key)
       if callable(function):
-        if 'lockName' in function.__dict__.keys():
+        if 'lockName' in function.__dict__:
           lockName = function.__dict__['lockName']
-          if not lockName in self.__locks.keys():
+          if not lockName in self.__locks:
             if self.debug:
               print 'creating the lock ' + lockName + ' in ' + str(self)
             self.__locks[lockName] = threading.RLock()
