@@ -49,16 +49,6 @@ class GGPenguin(item.GGItem):
     """
     return self.__pickable
 
-  def setPickable(self, pickable):
-    """ Sets the pickable flag with a new value.
-    pickable: new flag value.
-    """
-    if self.__pickable <> pickable:
-      self.__pickable = pickable
-      self.triggerEvent('state', state=state)
-      return True
-    return False
-
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
     clicker: player who clicks.

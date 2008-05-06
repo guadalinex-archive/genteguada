@@ -46,6 +46,10 @@ class IsoViewItem(isoview.IsoView):
     """ Returns a sprite.
     """
     return self.__img
+  
+  def setImg(self, img):
+    imgPath = os.path.join(GG.utils.DATA_PATH, img)
+    self.__img.image = pygame.image.load(imgPath)
     
   def getIVRoom(self):
     """ Returns the isometric view room object.
