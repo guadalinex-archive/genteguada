@@ -27,14 +27,17 @@ class RemoteModel: #{{{
   def __getattr__(self, attrName): #{{{
     if attrName == "__getinitargs__":       # allows it to be safely pickled
       raise AttributeError()
+
+    #if attrName in self.__variablesDict:
+    #  return self.__variablesDict[attrName]
+
     return RemoteMethod(self.__modelID, attrName, self.__modelClassName)
   #}}}
 
   # Pickling support, otherwise pickle uses __getattr__:
   def __getstate__(self): #{{{
     newDict = {}
-    for key in self.__dict__.keys():
-      value = self.__dict__[key]
+    for key, value in self.__dict__.iteritems():
       if not callable(value):
         newDict[key] = value
     return newDict
@@ -90,17 +93,17 @@ class RemoteModel: #{{{
 
 
   def __transplantVariables(self):
-    for key in self.__variablesDict.keys():
-      value = self.__variablesDict[key]
+    for key, value in self.__variablesDict.iteritems():
       utils.logger.debug("Transplanting variable " + str(key) + " in " + str(self) + " with value " + str(value))
       setattr(self, key, value)
+
 
   def __transplantMethods(self, donorClass):
     for key in dir(donorClass):
       method = getattr(donorClass, key)
       if callable(method):
         function = method.im_func
-        if 'flag' in function.__dict__.keys():
+        if 'flag' in function.__dict__:
           if function.__dict__['flag'] == 'localMethod':
             utils.logger.debug("Transplanting method " + str(function.func_name) + " in " + str(self) + " from " + str(donorClass))
             self.__dict__[function.func_name] = new.instancemethod(function, self)
@@ -126,9 +129,9 @@ class RemoteModel: #{{{
 class RemoteMethod: #{{{
 
   def __init__(self, modelID, methodName, className): #{{{
-    self._modelID = modelID
+    self._modelID    = modelID
     self._methodName = methodName
-    self._className = className
+    self._className  = className
   #}}}
 
   def __call__(self, *args): #{{{

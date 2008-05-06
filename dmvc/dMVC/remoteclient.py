@@ -125,9 +125,9 @@ class RClient(synchronized.Synchronized):
   def unsubscribeEventObserver(self, observer, eventType): #{{{
     utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
     toRemove = []
-    for key in self.__remoteSuscriptions.keys():
-      subscriptionMethod = self.__remoteSuscriptions[key][1]
-      subscriptionEventType = self.__remoteSuscriptions[key][0]
+    for key, value in self.__remoteSuscriptions.iteritems():
+      subscriptionMethod = value[1]
+      subscriptionEventType = value[0]
       if id(subscriptionMethod.im_self) == id(observer):
         if eventType == None or eventType == subscriptionEventType: 
           toRemove.append(key)
@@ -140,9 +140,9 @@ class RClient(synchronized.Synchronized):
   def unsubscribeEventMethod(self, method, eventType): #{{{
     utils.logger.debug("RClient.unsubscribeEventMethod method: "+str(method)+" , event type: "+str(eventType))
     toRemove = []
-    for key in self.__remoteSuscriptions.keys():
-      subscriptionMethod = self.__remoteSuscriptions[key][1]
-      subscriptionEventType = self.__remoteSuscriptions[key][0]
+    for key, value in self.__remoteSuscriptions.iteritems():
+      subscriptionMethod = value[1]
+      subscriptionEventType = value[0]
       if subscriptionMethod == method:
         if eventType == None or eventType == subscriptionEventType: 
           toRemove.append(key)
@@ -154,9 +154,8 @@ class RClient(synchronized.Synchronized):
   @synchronized.synchronized(lockName='remoteSuscriptions')
   def getRemoteSuscriptionByID(self, suscriptionID): #{{{
     utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
-    if suscriptionID in self.__remoteSuscriptions.keys():
-      result = self.__remoteSuscriptions[suscriptionID]
-      return result
+    if suscriptionID in self.__remoteSuscriptions:
+      return self.__remoteSuscriptions[suscriptionID]
     else:
       return False
   #}}}

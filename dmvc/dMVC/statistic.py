@@ -12,11 +12,11 @@ class Statistics:
     var = ""
     var += "\n<Stadistc side: "+self.__side+">"
     var += "\nValues ::"
-    for key in self.__valuesServer.keys():
+    for key, value in self.__valuesServer.iteritems():
       var += "\n\t"+str(key)+" :: "
-      var += str(self.__valuesServer[key]["count"]) +" :: "
-      var += str(self.__valuesServer[key]["size"]) +" :: "+ str(self.__valuesServer[key]["totalSize"])+ " :: "
-      var += str(self.__valuesServer[key]["time"]) +" :: "+ str(self.__valuesServer[key]["totalTime"])+ " :: "
+      var += str(value["count"]) +" :: "
+      var += str(value["size"]) +" :: "+ str(value["totalSize"])+ " :: "
+      var += str(value["time"]) +" :: "+ str(value["totalTime"])+ " :: "
     var += "\n"
     print var
 
@@ -24,20 +24,21 @@ class Statistics:
     var = ""
     var += "\n<Stadistc side: "+self.__side+">"
     var += "\nValues ::"
-    for key in self.__valuesClient.keys():
+    for key, value in self.__valuesClient.iteritems():
       var += "\n\t"+str(key)+" :: "
-      var += str(self.__valuesClient[key]["count"]) +" :: "
-      var += str(self.__valuesClient[key]["time"]) +" :: "+ str(self.__valuesClient[key]["totalTime"])+ " :: "
+      var += str(value["count"]) +" :: "
+      var += str(value["time"]) +" :: "+ str(value["totalTime"])+ " :: "
     var += "\n"
     print var
 
   def countServer(self, key, size, execTime):
-    if key in self.__valuesServer.keys():
-      self.__valuesServer[key]["count"] += 1
-      self.__valuesServer[key]["totalSize"] += size
-      self.__valuesServer[key]["totalTime"] += execTime
-      self.__valuesServer[key]["size"] = self.__valuesServer[key]["totalSize"] / self.__valuesServer[key]["count"]
-      self.__valuesServer[key]["time"] = self.__valuesServer[key]["totalTime"] / self.__valuesServer[key]["count"]
+    if key in self.__valuesServer:
+      value = self.__valuesServer[key]
+      value["count"] += 1
+      value["totalSize"] += size
+      value["totalTime"] += execTime
+      value["size"] = value["totalSize"] / value["count"]
+      value["time"] = value["totalTime"] / value["count"]
     else:
       data = {"count":1, "size":size, "totalSize":size, "totalTime":execTime, "time":execTime}
       self.__valuesServer[key] = data 
@@ -57,16 +58,17 @@ class Statistics:
     self.countClient(key, execTime)
 
   def countClient(self, key, execTime):
-    if key in self.__valuesClient.keys():
-      self.__valuesClient[key]["count"] += 1
-      self.__valuesClient[key]["totalTime"] += execTime
-      self.__valuesClient[key]["time"] = self.__valuesClient[key]["totalTime"] / self.__valuesClient[key]["count"]
+    if key in self.__valuesClient:
+      value = self.__valuesClient[key]
+      value["count"] += 1
+      value["totalTime"] += execTime
+      value["time"] = value["totalTime"] / value["count"]
     else:
       data = {"count":1, "totalTime":execTime, "time":execTime}
       self.__valuesClient[key] = data
 
   def addEvent(self, key):
-    if key in self.__valuesEvent.keys():
+    if key in self.__valuesEvent:
       self.__valuesEvent[key] += 1
     else:
       self.__valuesEvent[key] = 1
@@ -75,9 +77,9 @@ class Statistics:
     var = ""
     var += "\n<Stadistc side: "+self.__side+">"
     var += "\nValues ::"
-    for key in self.__valuesEvent.keys():
+    for key, value in self.__valuesEvent.iteritems():
       var += "\n\t"+str(key)+" :: "
-      var += str(self.__valuesEvent[key]) +" :: "
+      var += str(value) +" :: "
     var += "\n"
     print var
 
