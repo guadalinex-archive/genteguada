@@ -123,7 +123,6 @@ class GGPlayer(item.GGItem):
     room: room view object.
     parent: hud or session view object.
     """
-    print "avatar creado", self
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
   def clickOnInventoryItem(self, item):
@@ -157,11 +156,12 @@ class GGPlayer(item.GGItem):
     return 0
   
   def clickedBy(self, clicker):
-    """ Triggers an avent when the player receives a click by another player.
+    """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
     #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
-    self.getRoom().addMessageChat(str(self)+" recibe click")
+    pass
+    #self.getRoom().addMessageChat(str(self)+" recibe click")
       
   def tick(self):
     """ Calls for an update on player's position an movement direction.

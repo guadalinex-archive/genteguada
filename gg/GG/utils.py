@@ -43,7 +43,7 @@ PLAYER_SPRITE2 = "black_mage_red.gif"
 OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE = "andatuz_01.png"
 NINO_SZ = [64, 100]
-NINO_SPRITE = "nino.png"
+NINO_SPRITE = "nino_right.png"
 NINA_SPRITE = "nina.png"
 BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
@@ -65,12 +65,13 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 
 STATE = {1: "standing", 2: "walking"}
 
-NINO_SPRITES = {1: "nino_up.png", 2: "nino_down.png", 3: "nino_left.png",
-                4: "nino_right.png", 5: "nino_topleft.png", 6: "nino_bottomright.png",
-                7: "nino_bottomleft.png", 8: "nino_topright.png"}
+NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
+                "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",
+                "bottomleft": "nino_bottomleft.png", "topright": "nino_topright.png"}
 
-NINA_SPRITES = {1: "nina.png", 2: "nina.png", 3: "nina.png", 4: "nina.png",
-                5: "nina.png", 6: "nina.png", 7: "nina.png", 8: "nina.png"}
+NINA_SPRITES = {"up": "nina.png", "down": "nina.png", "left": "nina.png",
+                "right": "nina.png", "topleft": "nina.png", "bottomright": "nina.png",
+                "bottomleft": "nina.png", "topright": "nina.png"}
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.

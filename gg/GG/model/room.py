@@ -19,7 +19,7 @@ class GGRoom(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
-    self.label = label
+    self.label = label # Variable para realizar pruebas, sera eliminada
     
   def variablesToSerialize(self):
     return ['spriteFull']

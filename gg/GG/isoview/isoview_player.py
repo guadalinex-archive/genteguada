@@ -2,6 +2,7 @@ import os
 import math
 import pygame
 import isoview_item
+import GG.utils
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
   """ IsoViewPlayer class.
@@ -23,9 +24,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
 
   def headingChanged(self, event):
-    print "direccion cambiada"
+    self.setImg(GG.utils.NINO_SPRITES[event.getParams()["heading"]])
     
-
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.
     event: event info.
