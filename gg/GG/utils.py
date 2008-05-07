@@ -5,7 +5,7 @@ import pygame
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
 else:
-  DATA_PATH = "/usr/share/pixmaps/genteguada-client"
+  DATA_PATH = "/usr/share/pixmaps/genteguada"
 
 VERSION = "GenteGuada 0.0.3.1"
 TICK_DELAY = 0.1
