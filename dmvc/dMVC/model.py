@@ -26,6 +26,8 @@ class Model(synchronized.Synchronized):
     return []
 
   def setID(self, newId): #{{{
+    if self.__id:
+      raise Exception("The receiver already has an ID")
     self.__id = newId
   #}}}
 

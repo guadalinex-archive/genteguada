@@ -22,7 +22,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__parent = hud
     bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
-    self.__bg.image = pygame.image.load(bgPath)
+    self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
@@ -41,7 +41,7 @@ class IsoViewRoom(isoview.IsoView):
 
     bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
     bg = pygame.sprite.Sprite()
-    bg.image = pygame.image.load(bgPath2)
+    bg.image = pygame.image.load(bgPath2).convert_alpha()
     bg.rect = bg.image.get_rect()
     bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__allPlayers.add(bg)
