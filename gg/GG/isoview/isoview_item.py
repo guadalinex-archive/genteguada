@@ -65,6 +65,10 @@ class IsoViewItem(isoview.IsoView):
     """ Creates a new animation and draws a player moving through the screen.
     """
     self.__animation = animation.Animation(20, self.__position, self.getModel().getPosition())  
+
+  def frameUpdate(self):
+    
+    pass
   
   def draw(self, screen):
     """ Runs some methods to paint on screen all players.
