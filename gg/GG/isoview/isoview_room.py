@@ -121,7 +121,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     print "anadido", event.getParams()['item']
     for ivitem in self.__isoViewPlayers:
-      if isinstance(ivitem.getModel(), GG.model.player.Player) and isinstance(event.getParams()['item'], GG.model.player.Player):
+      if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           print "encontrado duplicado"
           return
