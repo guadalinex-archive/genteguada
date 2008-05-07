@@ -119,17 +119,14 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    print "anadido", event.getParams()['item']
+    # print "anadido", event.getParams()['item']
     for ivitem in self.__isoViewPlayers:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
-          print "encontrado duplicado"
+          # encontrado duplicado
           return
-    print "no encontrado duplicado"
-    self.addIsoViewItem(ivitem)
-    #if isinstance(event.getParams()['item'],player.GGPlayer):
-    #  if event.getParams()['item'].getSession != None:
-    #    event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
+    # no encontrado duplicado
+    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
         
   def changeActiveRoom(self, event):
     #print "evento en ejecucion"
@@ -139,7 +136,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
-    print "player removed"
+    # print "player removed"
     removed = False
     for ivplayer in self.__isoViewPlayers:
       if ivplayer.getModel() == event.getParams()['item']:
