@@ -40,7 +40,7 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/lib/python${VERSION}/site-package/
+	$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/lib/python${VERSION}/site-packages/
 	dh_installdocs doc/*
 	rm -f build-stamp configure-stamp
 
