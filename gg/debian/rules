@@ -44,7 +44,7 @@ install: build
 	$(PYTHON) setup.py build_scripts --build-dir=$(PACKAGEDIR)/usr/bin/
 	dh_installdocs doc/*
 	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE) 
-	dh_install gg.pth /usr/lib/python$(VERSION)/site-package 
+	dh_install gg.pth /usr/lib/python$(VERSION)/site-packages 
 	rm -f build-stamp configure-stamp
 
 binary-indep: build install
