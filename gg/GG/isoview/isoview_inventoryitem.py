@@ -7,7 +7,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__spriteName = model.getSpriteInventory()
-    self.__label = model.getLabel()
+    self.__label = model.label
     self.__count = 0
 
   def getSpriteName(self):

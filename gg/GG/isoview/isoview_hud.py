@@ -48,10 +48,12 @@ class IsoViewHud(isoview.IsoView):
     """ Removes an item from the inventory item list.
     item: item to be removed.
     """
+    toBeRemoved = None
     for ivInventoryItem in self.__isoviewInventory:
-      if ivInventoryItem.getModel().getLabel() == item.getLabel():
+      if ivInventoryItem.getModel().label == item.label:
         toBeRemoved = ivInventoryItem
-    self.__isoviewInventory.remove(toBeRemoved)
+    if toBeRemoved:    
+      self.__isoviewInventory.remove(toBeRemoved)
     self.paintInventory()
     
   def drawFirst(self):
@@ -75,13 +77,9 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
-
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.drawFirst()
-    #else:
-    #  self.__isoviewRoom.unsubscribeAllEvents()
-    #  self.__isoviewRoom = None
     self.draw()
       
   def getIsoviewRoom(self):

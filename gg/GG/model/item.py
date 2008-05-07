@@ -21,6 +21,8 @@ class GGItem(ggmodel.GGModel):
     self.__room = None
 
   def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
     return ['spriteName', 'offset']
   
   @dMVC.model.localMethod 
@@ -57,6 +59,8 @@ class GGItem(ggmodel.GGModel):
     return self.__room
   
   def clearRoom(self):
+    """ Sets the item's room as none.    
+    """
     if self.__room == None:
       raise "Error en limpieza de room"
     self.__setRoom(None)
@@ -72,6 +76,9 @@ class GGItem(ggmodel.GGModel):
     self.__setRoom(room)
       
   def __setRoom(self, room):
+    """ Private method. Sets the item's room with a new value and triggers an event.
+    room: new room.
+    """
     self.__room = room
     self.triggerEvent('room', room=room)
   
@@ -97,4 +104,6 @@ class GGItem(ggmodel.GGModel):
     pass
   
   def abandonRoom(self):
+    """ Tells a room to remove this item from it.
+    """
     self.__room.removeItem(self)

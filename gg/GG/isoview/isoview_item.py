@@ -3,6 +3,7 @@ import math
 import pygame
 import GG.utils
 import isoview
+import animation
 
 class IsoViewItem(isoview.IsoView):
   """ IsoViewItem class.
@@ -16,18 +17,16 @@ class IsoViewItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__ivroom = room
-    #self.__sprite = model.getSpriteName()
-    #print self.__sprite
-    #print "========================"
-    #print dir(model)
-    #print model.getSpriteName()
     imgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteName())
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath)
     self.__img.rect = self.__img.image.get_rect()
-    position = model.getPosition()
-    self.__img.rect.topleft = self.p3dToP2d(position, model.getOffset())
+    self.__img.rect.topleft = self.p3dToP2d(model.getPosition(), model.getOffset())
     self.__parent = parent
+    
+    self.__animation = None
+    self.__position = model.getPosition()
+    
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
@@ -61,6 +60,11 @@ class IsoViewItem(isoview.IsoView):
     ivroom: new isoview room.
     """
     self.__ivroom = ivroom
+  
+  def animatedSetPosition(self):
+    """ Creates a new animation and draws a player moving through the screen.
+    """
+    self.__animation = animation.Animation(20, self.__position, self.getModel().getPosition())  
   
   def draw(self, screen):
     """ Runs some methods to paint on screen all players.
