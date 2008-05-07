@@ -37,6 +37,7 @@ SPEED = 55.901699437
 
 BG_FULL = "fondo.png"
 BG_FULL2 = "fondo2.png"
+BG_BLACK = "black.png"
 TILE_STONE = "tile_stone.png"
 PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"

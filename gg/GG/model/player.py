@@ -29,6 +29,8 @@ class GGPlayer(item.GGItem):
     #self.__session = None
 
   def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['username', 'spriteList']
   
@@ -135,7 +137,7 @@ class GGPlayer(item.GGItem):
     item.setPosition(dropLocation)
     self.getRoom().addItem(item)
     self.removeInventory(item)
-    self.triggerEvent('chat', actor=item, receiver=self, msg=item.getLabel()+" depositado en el suelo")
+    self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
@@ -201,6 +203,9 @@ class GGPlayer(item.GGItem):
   """
   
   def changeRoom(self, room):
+    """ Changes the player's room.
+    room: new room.
+    """
     if self.getRoom():
       self.getRoom().removeItem(self)
     room.addItem(self)

@@ -14,7 +14,6 @@ class GGSession(ggmodel.GGModel):
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
-    #self.__room = 
     self.__messagesChat = []
     self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
@@ -24,15 +23,6 @@ class GGSession(ggmodel.GGModel):
     """ Returns the active player.
     """
     return self.__player
-
-  """
-  def setPlayer(self, player):
-    if self.__player <> player:
-      self.__player = player
-      self.triggerEvent('player', player=player)
-      return True
-    return False
-  """
 
   # self.__chat
   

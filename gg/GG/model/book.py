@@ -35,13 +35,6 @@ class GGBook(item.GGItem):
     """ Returns name of the sprite used to pain the penguin on the inventory.
     """
     return self.spriteInventory    
-  
-  @dMVC.model.localMethod 
-  def getLabel(self):
-    #TODO al ser una variable publica habria que eliminar este metodo
-    """ Returns penguin label.
-    """
-    return self.label    
     
   # self.__pickable
   
@@ -59,9 +52,5 @@ class GGBook(item.GGItem):
       #self.getRoom().addMessageChat(str(self)+" Obtienes")
       self.getRoom().removeItem(self)
       #TODO creo que en el removeItem debe de estar el setRoom(None)
-      
-      #print self.getRoom()
-      #self.clearRoom()
-      
       #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
   

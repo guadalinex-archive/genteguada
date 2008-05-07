@@ -21,40 +21,15 @@ class GGSystem(dMVC.model.Model):
     dMVC.model.Model.__init__(self)
     self.__rooms = []
     self.__players = []
+    self.__sessions = [] # Variable privada solo para uso interno.
     self.loadData()
     thread.start_new(self.start,())
      
   def getEntryRoom(self):
+    """ Returns the room used as lobby for all new players.
+    """
     return self.__rooms[0]
       
-  """
-  # self.__rooms
-  
-  def getRooms(self):
-    return self.__rooms
-  
-  def setRooms(self, rooms):
-    if self.__rooms <> rooms:
-      self.__rooms = rooms
-      self.triggerEvent('rooms', rooms=rooms)
-      return True
-    return False
-  
-  def addRoom(self, room):
-    if not room in self.__rooms:
-      self.__rooms.add(room)
-      self.triggerEvent('addRoom', room=room)
-      return True
-    return False
-    
-  def removeRoom(self, room):
-    if room in self.__rooms:
-      self.__rooms.remove(room)
-      self.triggerEvent('removeRoom', room=room)
-      return True
-    return False
-  """
-    
   # self.__players
   
   def getPlayers(self):
@@ -97,13 +72,14 @@ class GGSystem(dMVC.model.Model):
     username: user name.
     password: user password.
     """
-    # comprobar que el jugador no tiene iniciada sesion y que no tenga habitacion
+    for sess in self.__sessions:
+      if sess.getPlayer().checkUser():
+        return None    
     for player in self.__players:
       if player.checkUser(username, password) and player.getRoom() == None:
-        #self.getEntryRoom().addItem(player)
         player.changeRoom(self.getEntryRoom())
-        #self.insertItemIntoRoom(player, self.getEntryRoom(), 1)
         session = ggsession.GGSession(player)
+        self.__sessions.append(session)
         return session 
     return None
 
