@@ -5,6 +5,8 @@ import GG.utils
 import isoview
 import isoview_tile
 
+import GG.model.player
+
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
   Defines the room view.
@@ -18,15 +20,12 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    #print "========================"
-    #print model
     bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath)
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
-    #self.__isoViewItems = []
     #self.__allPlayers = pygame.sprite.RenderUpdates()
     self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
@@ -41,13 +40,11 @@ class IsoViewRoom(isoview.IsoView):
             GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
 
     bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
-    #bgPath2 = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_FULL)
     bg = pygame.sprite.Sprite()
     bg.image = pygame.image.load(bgPath2)
     bg.rect = bg.image.get_rect()
     bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__allPlayers.add(bg)
-  
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
@@ -123,9 +120,13 @@ class IsoViewRoom(isoview.IsoView):
     event: even info.
     """
     print "anadido", event.getParams()['item']
-    #print event.getParams()['item']
-    #print "elemento anadido", len(self.__allPlayers)
-    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
+    for ivitem in self.__isoViewPlayers:
+      if isinstance(ivitem.getModel(), GG.model.player.Player) and isinstance(event.getParams()['item'], GG.model.player.Player):
+        if ivitem.getModel().username == event.getParams()['item'].username:
+          print "encontrado duplicado"
+          return
+    print "no encontrado duplicado"
+    self.addIsoViewItem(ivitem)
     #if isinstance(event.getParams()['item'],player.GGPlayer):
     #  if event.getParams()['item'].getSession != None:
     #    event.getParams()['item'].subscribeEvent('changeActiveRoom', self.changeActiveRoom)
@@ -146,7 +147,6 @@ class IsoViewRoom(isoview.IsoView):
         removed = True
     if not removed:
       raise "Error: vista de item no eliminada"
-        
         
   def addIsoViewItem(self, item):
     """ Inserts a new item view.
