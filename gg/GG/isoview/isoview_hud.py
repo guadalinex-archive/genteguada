@@ -172,7 +172,7 @@ class IsoViewHud(isoview.IsoView):
       return 
     imgPath = os.path.join(GG.utils.DATA_PATH, spriteName)
     img = pygame.sprite.Sprite()
-    img.image = pygame.image.load(imgPath)
+    img.image = pygame.image.load(imgPath).convert()
     img.rect = img.image.get_rect()
     img.rect.topleft = [GG.utils.INV_OR[0] + (GG.utils.INV_ITEM_SZ[0]*(position%GG.utils.INV_ITEM_COUNT[0])),
                         GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))]

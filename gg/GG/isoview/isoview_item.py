@@ -19,7 +19,7 @@ class IsoViewItem(isoview.IsoView):
     self.__ivroom = room
     imgPath = os.path.join(GG.utils.DATA_PATH, model.getSpriteName())
     self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(imgPath)
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = self.p3dToP2d(model.getPosition(), model.getOffset())
     self.__parent = parent
@@ -48,7 +48,7 @@ class IsoViewItem(isoview.IsoView):
   
   def setImg(self, img):
     imgPath = os.path.join(GG.utils.DATA_PATH, img)
-    self.__img.image = pygame.image.load(imgPath)
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
   def getIVRoom(self):
     """ Returns the isometric view room object.
