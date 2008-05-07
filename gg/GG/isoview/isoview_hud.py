@@ -155,7 +155,7 @@ class IsoViewHud(isoview.IsoView):
   def paintInventory(self):
     """ 
     """
-    print "Objetos en inventario: ", len(self.getModel().getPlayer().getInventory())
+    # print "Objetos en inventario: ", len(self.getModel().getPlayer().getInventory())
     pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
               (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
     n = 0
