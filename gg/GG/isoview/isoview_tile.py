@@ -28,7 +28,8 @@ class IsoViewTile(isoview.IsoView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = self.p3dToP2d(position, [90,0,0])
+    #self.__img.rect.topleft = self.p3dToP2d(position, [90,0,0])
+    self.__img.rect.topleft = self.p3dToP2d(position, [100, 0])
     print self.__img.rect.topleft
 
   def getImg(self):

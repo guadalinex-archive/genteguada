@@ -32,11 +32,11 @@ class IsoView:
     y2d = ((cord3d[0] + cord3d[2]) * GG.utils.SIN30R) - cord3d[1]
     y2d = (y2d * GG.utils.TILE_SZ[1])
 
-    x2d = x2d - (offset[0])
-    y2d = y2d - (offset[1])
-    
     x2d = math.floor((x2d / math.sqrt(3)) + GG.utils.SCREEN_OR[0])
     y2d = math.floor(y2d + GG.utils.SCREEN_OR[1])
+    
+    x2d = x2d - (offset[0])
+    y2d = y2d - (offset[1])
     
     cord2d = [x2d, y2d]
     return cord2d
