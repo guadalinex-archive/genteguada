@@ -30,13 +30,16 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
     for x in range(GG.utils.SCENE_SZ[0]):
+      listTile = []
       for z in range(GG.utils.SCENE_SZ[1]):
         varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
         pos = [int(varPos[0]),int(varPos[1])]
-        self.__tileList.append([])
-        isotile = isoview_tile.IsoViewTile( [pos[0], 0, pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0, [x,0,z])
+        #self.__tileList.append([])
+        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0, [x,0,z])
         self.__allPlayers.add(isotile.getImg())
-        self.__tileList[x].append(isotile)
+        #self.__tileList[x].append(isotile)
+        listTile.append(isotile)
+      self.__tileList.append(listTile)
 
     #bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
     #bg = pygame.sprite.Sprite()
