@@ -58,20 +58,25 @@ class IsoViewRoom(isoview.IsoView):
     return self.__isoViewPlayers
   
   
-  def drawFirst(self):
+  def draw(self):
     """ Draws the room and all its components on screen for the first time.
     """
     self.paintFloorFull()
     self.__allPlayers.draw(self.getScreen())
-    pygame.display.update()
+    #pygame.display.update()
   
-  def draw(self):
+  def updateFrame(self):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
     #print self.getModel().label
-    self.paintPlayers()
-    pygame.display.update()
+    #self.paintPlayers()
+    #pygame.display.update()
+    for isoitem in self.__isoViewPlayers:
+      isoitem.updateFrame()
+    self.__allPlayers.update()                     
+    self.__allPlayers.clear(self.getScreen(), self.__bg.image)
+    pygame.display.update(self.__allPlayers.draw(self.getScreen()))
     
   def getIsoviewPlayers(self):
     return self.__isoViewPlayers
