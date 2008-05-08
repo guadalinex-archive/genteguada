@@ -69,8 +69,10 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
     # modificar para hacer update de la zona inferior
+    #self.getScreen().set_clip(GG.utils.HUD_OR[0],GG.utils.HUD_OR[1],GG.utils.HUD_OR[0]+GG.utils.HUD_SZ[0],GG.utils.HUD_OR[1]+GG.utils.HUD_SZ[1])
     pygame.display.update()
     #self.draw()  
+    #self.getScreen().set_clip(0,0,GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
 
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
