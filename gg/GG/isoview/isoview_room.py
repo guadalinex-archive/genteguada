@@ -34,17 +34,16 @@ class IsoViewRoom(isoview.IsoView):
         varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
         pos = [int(varPos[0]),int(varPos[1])]
         self.__tileList.append([])
-        self.__tileList[x].append(isoview_tile.IsoViewTile(\
-            [pos[0], pos[1]], \
-            [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
-            GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0))
+        isotile = isoview_tile.IsoViewTile( [pos[0], 0, pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0, [x,0,z])
+        self.__allPlayers.add(isotile.getImg())
+        self.__tileList[x].append(isotile)
 
-    bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
-    bg = pygame.sprite.Sprite()
-    bg.image = pygame.image.load(bgPath2).convert_alpha()
-    bg.rect = bg.image.get_rect()
-    bg.rect.topleft = GG.utils.BG_FULL_OR
-    self.__allPlayers.add(bg)
+    #bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
+    #bg = pygame.sprite.Sprite()
+    #bg.image = pygame.image.load(bgPath2).convert_alpha()
+    #bg.rect = bg.image.get_rect()
+    #bg.rect.topleft = GG.utils.BG_FULL_OR
+    #self.__allPlayers.add(bg)
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
