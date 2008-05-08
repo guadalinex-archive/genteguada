@@ -59,9 +59,12 @@ class IsoViewHud(isoview.IsoView):
   def drawFirst(self):
     """ Draws the room and hud view on screen for the first time.
     """
+    self.draw()
+    """
     if self.__isoviewRoom:
       self.__isoviewRoom.drawFirst()
     self.paint()
+    """
     
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.

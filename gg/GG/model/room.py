@@ -129,7 +129,7 @@ class GGRoom(ggmodel.GGModel):
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (0 <= first[2][0] <= GG.utils.SCENE_SZ[0]) and (0 <= first[2][2] <= GG.utils.SCENE_SZ[1]):
+      if (0 <= first[2][0] < GG.utils.SCENE_SZ[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
         if self.getBlocked(first[2]) == 0:
           if not player.hasBeenVisited(first[2]):
             return first[0]
