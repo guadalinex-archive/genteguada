@@ -7,6 +7,22 @@ import isoview_tile
 
 import GG.model.player
 
+class GroupSprite(pygame.sprite.OrderedUpdates):
+
+  def __init__(self, *sprites):
+    pygame.sprite.OrderedUpdates.__init__(self, *sprites)
+  
+  """
+  def sprites(self):
+    keys = self.spritedict.keys()
+    keys.sort(lambda x,y : y.rect.bottom -  x.rect.bottom )
+    return keys
+    if not keys:
+      return []
+    else: 
+      return keys
+  """
+
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
   Defines the room view.
@@ -26,8 +42,10 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
+    self.__allPlayers = GroupSprite()
+    #self.__allPlayers = pygame.sprite.Group()
     #self.__allPlayers = pygame.sprite.RenderUpdates()
-    self.__allPlayers = pygame.sprite.OrderedUpdates()
+    #self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
     for x in range(GG.utils.SCENE_SZ[0]):
       listTile = []
@@ -72,9 +90,11 @@ class IsoViewRoom(isoview.IsoView):
     """
     for isoitem in self.__isoViewPlayers:
       isoitem.updateFrame()
-    self.__allPlayers.update()                     
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
-    pygame.display.update(self.__allPlayers.draw(self.getScreen()))
+    self.__allPlayers.update()                     
+    dirtyRects = self.__allPlayers.draw(self.getScreen())
+    #print dirtyRects
+    pygame.display.update(dirtyRects)
     
   def getIsoviewPlayers(self):
     return self.__isoViewPlayers

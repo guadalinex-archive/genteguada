@@ -23,7 +23,6 @@ class IsoViewItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = self.p3dToP2d(model.getPosition(), model.getOffset())
-    print "=======================>", self.__img.rect.topleft
     self.__parent = parent
     
     self.__animation = None
