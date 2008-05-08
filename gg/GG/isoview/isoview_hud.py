@@ -56,26 +56,21 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewInventory.remove(toBeRemoved)
     self.paintInventory()
     
-  def drawFirst(self):
-    """ Draws the room and hud view on screen for the first time.
-    """
-    self.draw()
-    """
-    if self.__isoviewRoom:
-      self.__isoviewRoom.drawFirst()
-    self.paint()
-    """
-    
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
-    #if self.__isoviewRoom:
-    #  self.__isoviewRoom.draw()
-    self.paint()
+    self.paintBackground()
+    self.paintChat()
+    self.paintTextBox()
+    self.paintInventory()
+    pygame.display.update()
 
   def updateFrame(self):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
+    # modificar para hacer update de la zona inferior
+    pygame.display.update()
+    #self.draw()  
 
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
@@ -86,8 +81,6 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom = None
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
-      self.__isoviewRoom.drawFirst()
-    self.draw()
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
@@ -128,15 +121,6 @@ class IsoViewHud(isoview.IsoView):
           
   # Paint methods
     
-  def paint(self):
-    """ Paints all HUD parts on screen.
-    """
-    self.paintBackground()
-    self.paintChat()
-    self.paintTextBox()
-    self.paintInventory()
-    pygame.display.update()
-
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """

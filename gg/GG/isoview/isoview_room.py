@@ -57,21 +57,17 @@ class IsoViewRoom(isoview.IsoView):
   def getIsoViewPlayers(self):
     return self.__isoViewPlayers
   
-  
+  """
   def draw(self):
-    """ Draws the room and all its components on screen for the first time.
-    """
     self.paintFloorFull()
     self.__allPlayers.draw(self.getScreen())
     #pygame.display.update()
+  """  
   
   def updateFrame(self):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
-    #print self.getModel().label
-    #self.paintPlayers()
-    #pygame.display.update()
     for isoitem in self.__isoViewPlayers:
       isoitem.updateFrame()
     self.__allPlayers.update()                     
@@ -156,7 +152,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.append(item)
     self.__allPlayers.add(item.getImg())
-    self.draw()
+    #self.draw()
     
   def removeIsoViewItem(self, player):
     """ Removes an isometric player viewer from the viewers list.
@@ -165,7 +161,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
     player.unsubscribeAllEvents()
-    self.draw()
+    #self.draw()
   
   def unsubscribeAllEvents(self):
     isoview.IsoView.unsubscribeAllEvents(self)
