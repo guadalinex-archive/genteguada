@@ -1,26 +1,39 @@
 import GG.utils
 import isoview
+import os
+import pygame
 
 class IsoViewTile(isoview.IsoView):
   """ IsoViewTile class.
   Defines a room tile view
   """
 
-  def __init__(self, topLeft, bottomRight, sprite, size, blocked):
+  def __init__(self, topLeft, bottomRight, spriteName, size, blocked, position):
     """ Class constructor.
     topLeft: top left tile coord.
     bottomRight: lower right tile coord.
     size: tile size.
     blocked: Indicates if the tile is passable or blocked.
     """
-    self.__type = -1
+    #self.__type = -1
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
-    self.__id = id
-    self.__sprite = sprite
+    #self.__id = id
+    #self.__sprite = sprite
     self.__size = size
-    self.__views = []
-    self.__blocked = blocked
+    #self.__views = []
+    #self.__blocked = blocked
+
+    imgPath =  os.path.join(GG.utils.DATA_PATH, spriteName)
+    self.__img = pygame.sprite.Sprite()
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__img.rect = self.__img.image.get_rect()
+    self.__img.rect.topleft = self.p3dToP2d(position, [90,0,0])
+    print self.__img.rect.topleft
+
+  def getImg(self):
+    return self.__img
+
     
   def getTopLeft(self):
     """ Returns the top left coord.
