@@ -66,7 +66,8 @@ class IsoViewItem(isoview.IsoView):
     """ Creates a new animation and draws a player moving through the screen.
     """
     #print self.__img.rect.topleft, self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset())
-    self.__animation = animation.Animation(GG.utils.MAX_FRAMES, self.__img.rect.topleft,
+    if not self.__animation:
+      self.__animation = animation.Animation(GG.utils.MAX_FRAMES, self.__img.rect.topleft,
                   self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset()),
                   self.__img)
 
@@ -87,13 +88,13 @@ class IsoViewItem(isoview.IsoView):
     """
     self.animatedSetPosition()
     #print "================================ Nuevo movimiento: ", self.__img.rect.topleft
-    for i in range(0, 10):
+    #for i in range(0, 10):
       #time.sleep(GG.utils.TICK_DELAY/GG.utils.MAX_FRAMES)
       #time.sleep(0.5/GG.utils.MAX_FRAMES)
-      time.sleep(GG.utils.ANIM_DELAY)
+    #  time.sleep(GG.utils.ANIM_DELAY)
       #self.frameUpdate()
       #self.__ivroom.draw()
-    self.stopAnimation()  
+    #self.stopAnimation()  
       
     self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
     #self.__ivroom.draw()

@@ -58,13 +58,10 @@ class GenteGuada:
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
-    #self.isoHud.drawFirst()
     self.isoHud.draw()
-    #pygame.display.update()
     while True:
-      time.sleep(GG.utils.TICK_DELAY)
+      time.sleep(GG.utils.ANIM_DELAY)
       self.input(pygame.event.get())
-      #self.isoHud.draw()
       self.isoHud.updateFrame()
 
 # Lectura de parametros de la linea de comandos 
