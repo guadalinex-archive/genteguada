@@ -41,6 +41,7 @@ class GenteGuada:
 
   def start(self,params):
     pygame.init()
+    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)
     
@@ -57,11 +58,14 @@ class GenteGuada:
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
-    self.isoHud.drawFirst()
-    pygame.display.update()
+    #self.isoHud.drawFirst()
+    self.isoHud.draw()
+    #pygame.display.update()
     while True:
       time.sleep(GG.utils.TICK_DELAY)
       self.input(pygame.event.get())
+      #self.isoHud.draw()
+      self.isoHud.updateFrame()
 
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]

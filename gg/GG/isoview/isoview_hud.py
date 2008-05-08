@@ -69,10 +69,14 @@ class IsoViewHud(isoview.IsoView):
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
-    if self.__isoviewRoom:
-      self.__isoviewRoom.draw()
+    #if self.__isoviewRoom:
+    #  self.__isoviewRoom.draw()
     self.paint()
-    
+
+  def updateFrame(self):
+    if self.__isoviewRoom:
+      self.__isoviewRoom.updateFrame()
+
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
     event: event info.

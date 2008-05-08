@@ -70,7 +70,7 @@ class IsoViewItem(isoview.IsoView):
                   self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset()),
                   self.__img)
 
-  def frameUpdate(self):
+  def updateFrame(self):
     if self.__animation:
       if not self.__animation.move():
         del self.__animation
@@ -91,9 +91,9 @@ class IsoViewItem(isoview.IsoView):
       #time.sleep(GG.utils.TICK_DELAY/GG.utils.MAX_FRAMES)
       #time.sleep(0.5/GG.utils.MAX_FRAMES)
       time.sleep(GG.utils.ANIM_DELAY)
-      self.frameUpdate()
-      self.__ivroom.draw()
+      #self.frameUpdate()
+      #self.__ivroom.draw()
     self.stopAnimation()  
       
     self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
-    self.__ivroom.draw()
+    #self.__ivroom.draw()
