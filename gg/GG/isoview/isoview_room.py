@@ -43,33 +43,21 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
     self.__allPlayers = GroupSprite()
-    #self.__allPlayers = pygame.sprite.Group()
-    #self.__allPlayers = pygame.sprite.RenderUpdates()
-    #self.__allPlayers = pygame.sprite.OrderedUpdates()
     self.__tileList = []
     for x in range(GG.utils.SCENE_SZ[0]):
       listTile = []
       for z in range(GG.utils.SCENE_SZ[1]):
-        varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
+        #varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
+        varPos = self.p3dToP2d([x, 0, z], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]),int(varPos[1])]
-        #self.__tileList.append([])
         isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0, [x,0,z])
         self.__allPlayers.add(isotile.getImg())
-        #self.__tileList[x].append(isotile)
         listTile.append(isotile)
       self.__tileList.append(listTile)
-
-    #bgPath2 = os.path.join(GG.utils.DATA_PATH, model.getSpriteFull())
-    #bg = pygame.sprite.Sprite()
-    #bg.image = pygame.image.load(bgPath2).convert_alpha()
-    #bg.rect = bg.image.get_rect()
-    #bg.rect.topleft = GG.utils.BG_FULL_OR
-    #self.__allPlayers.add(bg)
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
-
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
@@ -135,6 +123,7 @@ class IsoViewRoom(isoview.IsoView):
       for z in range(GG.utils.SCENE_SZ[1]):
         if self.__tileList[x][z].contained(pos):
           if not self.__tileList[x][z].onBlank(pos):
+            #return [x-1, z+1]
             return [x, z]
     return [-1, -1]
   

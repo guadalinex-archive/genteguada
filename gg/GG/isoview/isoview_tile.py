@@ -15,21 +15,21 @@ class IsoViewTile(isoview.IsoView):
     size: tile size.
     blocked: Indicates if the tile is passable or blocked.
     """
-    #self.__type = -1
+    
+    #self.__topLeft = [topLeft[0] + GG.utils.FLOOR_SHIFT[0], topLeft[1] + GG.utils.FLOOR_SHIFT[1]]
+    #self.__bottomRight = [bottomRight[0] + GG.utils.FLOOR_SHIFT[0], bottomRight[1] + GG.utils.FLOOR_SHIFT[1]]
+    
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
-    #self.__id = id
-    #self.__sprite = sprite
+    
     self.__size = size
-    #self.__views = []
-    #self.__blocked = blocked
-
+    
     imgPath =  os.path.join(GG.utils.DATA_PATH, spriteName)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     #self.__img.rect.topleft = self.p3dToP2d(position, [90,0,0])
-    self.__img.rect.topleft = self.p3dToP2d(position, [100, 0])
+    self.__img.rect.topleft = self.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
 
   def getImg(self):
     return self.__img
