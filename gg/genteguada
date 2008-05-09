@@ -53,8 +53,8 @@ class GenteGuada:
       self.sy = GG.model.ggsystem.GGSystem()
 
     # Declaraciones solo para pruebas
-    self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [190, 170])
-    self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe2", "12345")
+    self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [95, 195])
+    self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
                     
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()

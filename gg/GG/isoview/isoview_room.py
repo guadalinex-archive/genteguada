@@ -36,6 +36,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
+    #bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
@@ -50,7 +51,7 @@ class IsoViewRoom(isoview.IsoView):
         #varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
         varPos = self.p3dToP2d([x, 0, z], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]),int(varPos[1])]
-        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], GG.utils.TILE_STONE, GG.utils.TILE_SZ, 0, [x,0,z])
+        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], self.getModel().spriteFull, GG.utils.TILE_SZ, 0, [x,0,z])
         self.__allPlayers.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
