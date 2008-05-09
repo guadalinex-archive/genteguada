@@ -86,8 +86,8 @@ class GGSystem(dMVC.model.Model):
   def loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    room1 = self.createRoom(GG.utils.BG_FULL, "habitacion 1")
-    room2 = self.createRoom(GG.utils.BG_FULL2, "habitacion 2")
+    room1 = self.createRoom(GG.utils.TILE_STONE, "habitacion 1")
+    room2 = self.createRoom(GG.utils.TILE_WATER, "habitacion 2")
     myPinguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
     myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
     room1.addItem(myPinguin)    
@@ -137,7 +137,8 @@ class GGSystem(dMVC.model.Model):
     item: existing item.
     player: flag used to check it the item is a player or not.
     """
-    item.getRoom().removeItem(item)    
+    if item.getRoom():
+      item.getRoom().removeItem(item)    
     if isPlayer and item in self.__players:
       self.__players.remove(item)
     
