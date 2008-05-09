@@ -2,15 +2,15 @@ import GG.utils
 
 class Animation:
     
-  def __init__(self, time, origin, destination, img):
+  def __init__(self, time, img, destination):
     self.__time = time
     self.__step = 0
-    # Tanto "origin" como "destination" son coordenadas 2d
-    self.__origin = origin
-    self.__destination = destination
     self.__img = img
-    self.__shift = [((origin[0] - destination[0]) /self.__time), 
-      ((origin[1] - destination[1]) /self.__time)]
+    # Tanto "origin" como "destination" son coordenadas 2d
+    self.__origin = img.rect.topleft
+    self.__destination = destination
+    self.__shift = [((self.__origin[0] - self.__destination[0]) /self.__time), 
+      ((self.__origin[1] - self.__destination[1]) /self.__time)]
     
   def move(self):
     #print "nos vamos con el ", (self.__step * self.__shift[0])
@@ -20,3 +20,6 @@ class Animation:
     if self.__step >= self.__time:
       return False
     return True
+  
+  def getStep(self):
+    return self.__step

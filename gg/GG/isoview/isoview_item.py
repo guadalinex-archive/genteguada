@@ -62,40 +62,34 @@ class IsoViewItem(isoview.IsoView):
     """
     self.__ivroom = ivroom
   
-  def animatedSetPosition(self):
+  def animatedSetPosition(self, newPosition):
     """ Creates a new animation and draws a player moving through the screen.
     """
     #print self.__img.rect.topleft, self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset())
-    if not self.__animation:
-      self.__animation = animation.Animation(GG.utils.MAX_FRAMES, self.__img.rect.topleft,
-                  self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset()),
-                  self.__img)
+    self.stopAnimation(newPosition)  
+    self.__animation = animation.Animation(GG.utils.MAX_FRAMES, self.__img,
+           self.p3dToP2d(self.getModel().getPosition(), self.getModel().getOffset()))
 
   def updateFrame(self):
     if self.__animation:
+      print "update frame", self.__animation.getStep()
       if not self.__animation.move():
         del self.__animation
         self.__animation = None
         
-  def stopAnimation(self):
+  def stopAnimation(self, newPosition):
     if self.__animation:
       del self.__animation
       self.__animation = None
+      self.__img.rect.topleft = self.p3dToP2d(newPosition, self.getModel().getOffset())
 
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
-    #self.animatedSetPosition()
+    print "=================================================="
+    self.animatedSetPosition(event.getParams()["position"])
     
     #print "================================ Nuevo movimiento: ", self.__img.rect.topleft
-    #for i in range(0, 10):
-      #time.sleep(GG.utils.TICK_DELAY/GG.utils.MAX_FRAMES)
-      #time.sleep(0.5/GG.utils.MAX_FRAMES)
-    #  time.sleep(GG.utils.ANIM_DELAY)
-      #self.frameUpdate()
-      #self.__ivroom.draw()
-    #self.stopAnimation()  
-      
-    self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
-    #self.__ivroom.draw()
+    #self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().getOffset())
+    
