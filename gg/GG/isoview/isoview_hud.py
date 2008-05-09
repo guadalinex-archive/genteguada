@@ -18,7 +18,7 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
-    self.__textFont = pygame.font.Font(None, 16)
+    self.__textFont = pygame.font.Font(None, 24)
     self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
     #self.getModel().subscribeEvent('messagesChat', self.messaggesChatChanged)
     self.getModel().subscribeEvent('addMessageChat', self.messagesChatAdded)
@@ -171,7 +171,14 @@ class IsoViewHud(isoview.IsoView):
                         GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))]
     self.getScreen().blit(img.image, img.rect)
   
-    
+  def printLineOnChat(self, string):
+    """ Prints a string on the HUD chat window.
+    string: the info that will be printed on screen.
+    """
+    renderedText = GG.utils.renderTextRect(string, self.getTextFont(), self.getTextRect(), GG.utils.CHAT_COLOR_FONT, GG.utils.CHAT_COLOR_BG, 0)
+    self.getScreen().blit(renderedText, self.getTextRect().topleft)
+    pygame.display.update()
+        
   def messagesChatAdded(self, event):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.

@@ -34,6 +34,7 @@ class GenteGuada:
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
+        print dest
         if dest <> [-1, -1]:
           self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
         else:

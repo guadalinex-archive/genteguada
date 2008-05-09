@@ -86,7 +86,8 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
-    self.animatedSetPosition()
+    #self.animatedSetPosition()
+    
     #print "================================ Nuevo movimiento: ", self.__img.rect.topleft
     #for i in range(0, 10):
       #time.sleep(GG.utils.TICK_DELAY/GG.utils.MAX_FRAMES)

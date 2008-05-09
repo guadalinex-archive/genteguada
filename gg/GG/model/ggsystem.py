@@ -88,13 +88,13 @@ class GGSystem(dMVC.model.Model):
     """
     room1 = self.createRoom(GG.utils.BG_FULL, "habitacion 1")
     room2 = self.createRoom(GG.utils.BG_FULL2, "habitacion 2")
-    myPinguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [55, 8], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
-    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [60, -13], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
+    myPinguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [0, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
+    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
     room1.addItem(myPinguin)    
     room1.addItem(myBook)    
-    room1.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [58, 95], "down", room2))    
-    room2.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [58, 95], "down", room1))    
-    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-35, GG.utils.CHAR_SZ[1]], "pepe", "1234")
+    room1.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [20, 66], "down", room2))    
+    room2.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [20, 66], "down", room1))    
+    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
         
   def createRoom(self, spriteFull, label):
     """ Creates a new room.
