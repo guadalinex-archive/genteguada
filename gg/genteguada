@@ -10,21 +10,15 @@ from optparse import OptionParser
 
 class GenteGuada:
 
-  def input(self,events,re):
+  def input(self,events):
     for event in events:
-      if event.type == QUIT: 
-        print dMVC.utils.statClient.strClient()
-        print dMVC.utils.statEventTriggered.strEvent()
-        sys.exit(0)
+      if event.type == QUIT:
+        self.finish()
       if event.type == KEYDOWN:
-        if event.key == 13:
-          # aqui <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-          print self.isoHud.textField.text
+        if event.key == K_ESCAPE:
+          self.finish()
+        elif event.key == 13:
           self.isoHud.chatMessageEntered()
-        elif event.key == K_ESCAPE:
-          print dMVC.utils.statClient.strClient()
-          print dMVC.utils.statEventTriggered.strEvent()
-          sys.exit(0)
         elif event.key == K_q:
           self.sy.insertItemIntoRoom(self.tree, self.player.getRoom(), 0)
         elif event.key == K_a:
@@ -43,9 +37,12 @@ class GenteGuada:
         else:
           self.isoHud.clickedByPlayer(self.player, [x, y])
 
-      re.distribute_events(event)
-      re.refresh()
+    self.isoHud.widgetContainer.distribute_events(*events)
 
+  def finish(self):
+    print dMVC.utils.statClient.strClient()
+    print dMVC.utils.statEventTriggered.strEvent()
+    sys.exit(0)
 
   def start(self,params):
     pygame.init()
@@ -66,10 +63,10 @@ class GenteGuada:
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
-    re = self.isoHud.draw()
+    self.isoHud.draw()
     while True:
       time.sleep(GG.utils.ANIM_DELAY)
-      self.input(pygame.event.get(),re)
+      self.input(pygame.event.get())
       self.isoHud.updateFrame()
      
 # Lectura de parametros de la linea de comandos 
