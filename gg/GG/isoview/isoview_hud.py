@@ -150,18 +150,25 @@ class IsoViewHud(isoview.IsoView):
   def paintChat(self):
     """ Paints the chat window on screen.
     """
-    pygame.draw.rect(self.getScreen(), GG.utils.CHAT_COLOR_BG,
-              (GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0] - 1, GG.utils.CHAT_SZ[1] - 1))
+    #pygame.draw.rect(self.getScreen(), GG.utils.CHAT_COLOR_BG,
+    #          (GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0] - 1, GG.utils.CHAT_SZ[1] - 1))
+    self.textArea = ocempgui.widgets.ScrolledList(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
+    self.textArea.set_scrolling(1)
+    self.textArea.border = 1
+    self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
+    self.widgetContainer.add_widget(self.textArea)
+ 
   
   def paintTextBox(self):
     #pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
     #          (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
     self.textField = ocempgui.widgets.Entry()
     self.textField.border = 1
-    self.textField.topleft = GG.utils.TEXT_BOX_OR[0]  , GG.utils.TEXT_BOX_OR[1]
-    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0] , GG.utils.TEXT_BOX_SZ[1])
+    self.textField.topleft = GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1]
+    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
     self.widgetContainer.add_widget(self.textField)
-    
+
+       
   def paintInventory(self):
     """ 
     """
@@ -192,9 +199,15 @@ class IsoViewHud(isoview.IsoView):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.
     """
-    renderedText = GG.utils.renderTextRect(string, self.getTextFont(), self.getTextRect(), GG.utils.CHAT_COLOR_FONT, GG.utils.CHAT_COLOR_BG, 0)
-    self.getScreen().blit(renderedText, self.getTextRect().topleft)
-    pygame.display.update()
+    #self.textArea.items.insert(0,ocempgui.widgets.components.TextListItem(str))
+
+    self.textArea.items.append(ocempgui.widgets.components.TextListItem(string))
+
+    self.textArea.vscrollbar.increase()
+    #self.textArea.items.reverse()
+    #renderedText = GG.utils.renderTextRect(string, self.getTextFont(), self.getTextRect(), GG.utils.CHAT_COLOR_FONT, GG.utils.CHAT_COLOR_BG, 0)
+    #self.getScreen().blit(renderedText, self.getTextRect().topleft)
+    #pygame.display.update()
         
   def messagesChatAdded(self, event):
     """ Prints a string on the HUD chat window.
@@ -215,7 +228,9 @@ class IsoViewHud(isoview.IsoView):
 
   def chatMessageEntered(self):
     self.getModel().getPlayer().newChatMessage(self.textField.text)
+    self.textField.text = ""
 
   def chatAdded(self, event):
-    str = "[" + event.getParams()['message'].getSender() + "]: " + event.getParams()['message'].getMessage()
-    self.printLineOnChat(str)
+    messageChat = event.getParams()['message']
+    cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
+    self.printLineOnChat(cad)
