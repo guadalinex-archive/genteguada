@@ -10,14 +10,16 @@ from optparse import OptionParser
 
 class GenteGuada:
 
-  def input(self,events):
+  def input(self,events,re):
     for event in events:
       if event.type == QUIT: 
         print dMVC.utils.statClient.strClient()
         print dMVC.utils.statEventTriggered.strEvent()
         sys.exit(0)
       if event.type == KEYDOWN:
-        if event.key == K_ESCAPE:
+        if event.key == 13:
+          print self.isoHud.textField.text
+        elif event.key == K_ESCAPE:
           print dMVC.utils.statClient.strClient()
           print dMVC.utils.statEventTriggered.strEvent()
           sys.exit(0)
@@ -39,6 +41,10 @@ class GenteGuada:
         else:
           self.isoHud.clickedByPlayer(self.player, [x, y])
 
+      re.distribute_events(event)
+      re.refresh()
+
+
   def start(self,params):
     pygame.init()
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
@@ -58,12 +64,12 @@ class GenteGuada:
     self.session = self.sy.login(params.user, params.password)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
-    self.isoHud.draw()
+    re = self.isoHud.draw()
     while True:
       time.sleep(GG.utils.ANIM_DELAY)
-      self.input(pygame.event.get())
+      self.input(pygame.event.get(),re)
       self.isoHud.updateFrame()
-
+     
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
