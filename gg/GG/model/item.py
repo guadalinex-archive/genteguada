@@ -25,18 +25,6 @@ class GGItem(ggmodel.GGModel):
     """
     return ['spriteName', 'offset']
   
-  @dMVC.model.localMethod 
-  def getSpriteName(self):
-    """ Returns the spriteName.
-    """
-    return self.spriteName
-
-  @dMVC.model.localMethod 
-  def getOffset(self):
-    """ Returns the item screen offset.
-    """
-    return self.offset
-  
   # self.__position
   
   def getPosition(self):

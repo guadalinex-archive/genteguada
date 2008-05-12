@@ -29,13 +29,6 @@ class GGBook(item.GGItem):
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
   
-  @dMVC.model.localMethod 
-  def getSpriteInventory(self):
-    #TODO al ser una variable publica habria que eliminar este metodo
-    """ Returns name of the sprite used to pain the penguin on the inventory.
-    """
-    return self.spriteInventory    
-    
   # self.__pickable
   
   def getPickable(self):
