@@ -14,6 +14,8 @@ class GGSession(ggmodel.GGModel):
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
+    player.subscribeEvent('chatAdded', self.chatAdded)
+    player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     self.__messagesChat = []
     self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
@@ -73,3 +75,5 @@ class GGSession(ggmodel.GGModel):
     """
     self.__player.abandonRoom()
     
+  def chatAdded(self, event):
+    self.triggerEvent('chatAdded', message=event.getParams()['message'])

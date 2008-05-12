@@ -6,6 +6,7 @@ import isoview_inventoryitem
 
 
 #import pgu.gui
+
 import ocempgui.widgets
 
 class IsoViewHud(isoview.IsoView):
@@ -28,7 +29,8 @@ class IsoViewHud(isoview.IsoView):
     self.getModel().subscribeEvent('addMessageChat', self.messagesChatAdded)
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
-    self.__player.subscribeEvent('room', self.roomChanged)    
+    self.__player.subscribeEvent('room', self.roomChanged)
+    model.subscribeEvent('chatAdded', self.chatAdded)
     #self.pgui = pgu.gui.App()
 
   def getTextFont(self):
@@ -73,9 +75,12 @@ class IsoViewHud(isoview.IsoView):
   def updateFrame(self):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
+    
     # modificar para hacer update de la zona inferior
     #self.getScreen().set_clip(GG.utils.HUD_OR[0],GG.utils.HUD_OR[1],GG.utils.HUD_OR[0]+GG.utils.HUD_SZ[0],GG.utils.HUD_OR[1]+GG.utils.HUD_SZ[1])
+    
     pygame.display.update()
+    
     #self.draw()  
     #self.getScreen().set_clip(0,0,GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
 
@@ -152,31 +157,13 @@ class IsoViewHud(isoview.IsoView):
     #pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
     #          (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
     re = ocempgui.widgets.Renderer()
-    #print dir(re) 
-    #re.create_screen(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
     re.set_screen(self.getScreen())
     self.textField = ocempgui.widgets.Entry()
-    #textField.set_position(GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1])
     self.textField.topleft = (GG.utils.TEXT_BOX_OR[0] + 5 , GG.utils.TEXT_BOX_OR[1])
-    #textField.set_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
     self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 10)
     re.add_widget(self.textField)
-    print dir(re)
     return re
-    #re.start()
-    #print dir(textField)
-    #textField.draw()
-    #self.contain = pgu.gui.Container(x = GG.utils.TEXT_BOX_OR[0], y = GG.utils.TEXT_BOX_OR[1], width = GG.utils.TEXT_BOX_SZ[0] - 1, height = GG.utils.TEXT_BOX_SZ[1] - 1)
-    #text = pgu.gui.Input(value='Joseba', size=100, x = GG.utils.TEXT_BOX_OR[0], y = GG.utils.TEXT_BOX_OR[1], width = GG.utils.TEXT_BOX_SZ[0] - 1, height = GG.utils.TEXT_BOX_SZ[1] - 1)
-    #self.pgui.add(text,0,0)
-    #self.pgui.paint(self.getScreen())
-    #self.pgui.run(text)
-    #text.paint(self.getScreen())
-    #self.contain.paint(self.getScreen())
-    #self.contain.add(text,200,200)
-    #self.pgui.init(self.contain)
-    #self.pgui.paint(self.getScreen())
-  
+    
   def paintInventory(self):
     """ 
     """
@@ -227,3 +214,10 @@ class IsoViewHud(isoview.IsoView):
         
     """
     pass
+
+  def chatMessageEntered(self):
+    self.getModel().getPlayer().newChatMessage(self.textField.text)
+
+  def chatAdded(self, event):
+    str = "[" + event.getParams()['message'].getSender() + "]: " + event.getParams()['message'].getMessage()
+    self.printLineOnChat(str)
