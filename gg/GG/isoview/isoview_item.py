@@ -94,5 +94,5 @@ class IsoViewItem(isoview.IsoView):
     #print "============================"
     self.__animationDestination = event.getParams()["position"]
     self.animatedSetPosition(event.getParams()["position"])
+    #print "================================ Nuevo movimiento: ", self.__img.rect.topleft
     #self.__img.rect.topleft = self.p3dToP2d(event.getParams()["position"], self.getModel().offset)
-    

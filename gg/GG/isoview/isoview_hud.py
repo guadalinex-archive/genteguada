@@ -31,7 +31,8 @@ class IsoViewHud(isoview.IsoView):
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
     self.__player.subscribeEvent('room', self.roomChanged)
     model.subscribeEvent('chatAdded', self.chatAdded)
-    #self.pgui = pgu.gui.App()
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(screen)
 
   def getTextFont(self):
     """ Returns the font used to print text on chat.
@@ -68,9 +69,8 @@ class IsoViewHud(isoview.IsoView):
     """
     self.paintBackground()
     self.paintChat()
-    re = self.paintTextBox()
+    self.paintTextBox()
     self.paintInventory()
-    return re
 
   def updateFrame(self):
     if self.__isoviewRoom:
@@ -156,13 +156,11 @@ class IsoViewHud(isoview.IsoView):
   def paintTextBox(self):
     #pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
     #          (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
-    re = ocempgui.widgets.Renderer()
-    re.set_screen(self.getScreen())
     self.textField = ocempgui.widgets.Entry()
-    self.textField.topleft = (GG.utils.TEXT_BOX_OR[0] + 5 , GG.utils.TEXT_BOX_OR[1])
-    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 10)
-    re.add_widget(self.textField)
-    return re
+    self.textField.border = 1
+    self.textField.topleft = GG.utils.TEXT_BOX_OR[0]  , GG.utils.TEXT_BOX_OR[1]
+    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0] , GG.utils.TEXT_BOX_SZ[1])
+    self.widgetContainer.add_widget(self.textField)
     
   def paintInventory(self):
     """ 
