@@ -25,12 +25,6 @@ class GGRoom(ggmodel.GGModel):
     """ Sets some vars to be used as locals.
     """
     return ['spriteFull']
-  
-  @dMVC.model.localMethod 
-  def getSpriteFull(self):
-    """ Returns the sprite used to paint the floor.
-    """
-    return self.spriteFull
 
   # self.__items
 
@@ -93,7 +87,7 @@ class GGRoom(ggmodel.GGModel):
     player: active player.
     target: click target player.
     """
-    clickerLabel = player.getUsername()
+    clickerLabel = player.username
     if not self.getBlocked(target):
       direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(target)

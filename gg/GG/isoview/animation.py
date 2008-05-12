@@ -23,3 +23,14 @@ class Animation:
   
   def getStep(self):
     return self.__step
+  
+  def restart(self, time, newDestination):
+    self.__time = time
+    self.__step = 0
+    # Tanto "origin" como "destination" son coordenadas 2d
+    self.__origin = self.__destination
+    self.__destination = newDestination
+    self.__shift = [((self.__origin[0] - self.__destination[0]) /self.__time), 
+      ((self.__origin[1] - self.__destination[1]) /self.__time)]
+    self.__img.rect.topleft = self.__origin
+    

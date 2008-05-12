@@ -34,12 +34,6 @@ class GGPlayer(item.GGItem):
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['username', 'spriteList']
   
-  @dMVC.model.localMethod 
-  def getUsername(self):
-    """ Returns the user name.
-    """
-    return self.username
-
   # self.__heading
 
   def getHeading(self):
