@@ -4,6 +4,10 @@ import GG.utils
 import isoview
 import isoview_inventoryitem
 
+
+#import pgu.gui
+import ocempgui.widgets
+
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
   Defines the HUD.
@@ -25,6 +29,7 @@ class IsoViewHud(isoview.IsoView):
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
     self.__player.subscribeEvent('room', self.roomChanged)    
+    #self.pgui = pgu.gui.App()
 
   def getTextFont(self):
     """ Returns the font used to print text on chat.
@@ -61,9 +66,9 @@ class IsoViewHud(isoview.IsoView):
     """
     self.paintBackground()
     self.paintChat()
-    self.paintTextBox()
+    re = self.paintTextBox()
     self.paintInventory()
-    pygame.display.update()
+    return re
 
   def updateFrame(self):
     if self.__isoviewRoom:
@@ -144,8 +149,33 @@ class IsoViewHud(isoview.IsoView):
               (GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0] - 1, GG.utils.CHAT_SZ[1] - 1))
   
   def paintTextBox(self):
-    pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
-              (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
+    #pygame.draw.rect(self.getScreen(), GG.utils.TEXT_BOX_COLOR_BG,
+    #          (GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1], GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 1))
+    re = ocempgui.widgets.Renderer()
+    #print dir(re) 
+    #re.create_screen(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
+    re.set_screen(self.getScreen())
+    self.textField = ocempgui.widgets.Entry()
+    #textField.set_position(GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1])
+    self.textField.topleft = (GG.utils.TEXT_BOX_OR[0] + 5 , GG.utils.TEXT_BOX_OR[1])
+    #textField.set_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
+    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0] - 1, GG.utils.TEXT_BOX_SZ[1] - 10)
+    re.add_widget(self.textField)
+    print dir(re)
+    return re
+    #re.start()
+    #print dir(textField)
+    #textField.draw()
+    #self.contain = pgu.gui.Container(x = GG.utils.TEXT_BOX_OR[0], y = GG.utils.TEXT_BOX_OR[1], width = GG.utils.TEXT_BOX_SZ[0] - 1, height = GG.utils.TEXT_BOX_SZ[1] - 1)
+    #text = pgu.gui.Input(value='Joseba', size=100, x = GG.utils.TEXT_BOX_OR[0], y = GG.utils.TEXT_BOX_OR[1], width = GG.utils.TEXT_BOX_SZ[0] - 1, height = GG.utils.TEXT_BOX_SZ[1] - 1)
+    #self.pgui.add(text,0,0)
+    #self.pgui.paint(self.getScreen())
+    #self.pgui.run(text)
+    #text.paint(self.getScreen())
+    #self.contain.paint(self.getScreen())
+    #self.contain.add(text,200,200)
+    #self.pgui.init(self.contain)
+    #self.pgui.paint(self.getScreen())
   
   def paintInventory(self):
     """ 
