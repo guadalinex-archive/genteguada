@@ -18,7 +18,9 @@ class GenteGuada:
         sys.exit(0)
       if event.type == KEYDOWN:
         if event.key == 13:
+          # aqui <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
           print self.isoHud.textField.text
+          self.isoHud.chatMessageEntered()
         elif event.key == K_ESCAPE:
           print dMVC.utils.statClient.strClient()
           print dMVC.utils.statEventTriggered.strEvent()

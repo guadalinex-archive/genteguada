@@ -3,6 +3,7 @@ import operator
 import GG.utils
 import ggmodel
 import GG.model.item
+import GG.model.chat_message
 import GG.isoview.isoview_room
 import dMVC.model
 import player
@@ -165,6 +166,9 @@ class GGRoom(ggmodel.GGModel):
       if isinstance(item,player.GGPlayer):
         result.append(item)
     return result
+
+  def newChatMessage(self, message):
+    self.triggerEvent('chatAdded', message=GG.model.chatMessage(message, self.label))    
 
   """
   def addMessageChat(self,message):

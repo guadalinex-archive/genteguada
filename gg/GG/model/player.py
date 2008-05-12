@@ -1,4 +1,5 @@
 import item
+import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
 import dMVC.model
@@ -155,6 +156,7 @@ class GGPlayer(item.GGItem):
     """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
+    self.newChatMessage('pincha pincha')
     #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
     pass
     #self.getRoom().addMessageChat(str(self)+" recibe click")
@@ -204,3 +206,6 @@ class GGPlayer(item.GGItem):
       self.getRoom().removeItem(self)
     room.addItem(self)
     #self.triggerEvent('changeActiveRoom', room=room)
+  
+  def newChatMessage(self, message):
+    self.triggerEvent('chatAdded', message=GG.model.chat_message.chatMessage(message, self.username))
