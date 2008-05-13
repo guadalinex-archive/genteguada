@@ -19,6 +19,7 @@ class GenteGuada:
           self.finish()
         elif event.key == 13:
           self.isoHud.chatMessageEntered()
+        """
         elif event.key == K_q:
           self.sy.insertItemIntoRoom(self.tree, self.player.getRoom(), 0)
         elif event.key == K_a:
@@ -29,6 +30,7 @@ class GenteGuada:
           self.sy.removeItem(self.girl, 1)
         elif event.key == K_v:
           pass
+        """
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
@@ -74,8 +76,8 @@ __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
 parser.add_option("-e",dest="execution",help="local/remoto",default="local") 
 parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
-parser.add_option("-u",dest="user",help="usuario",default="pepe") 
-parser.add_option("-p",dest="password",help="clave",default="1234") 
+parser.add_option("-u",dest="user",help="usuario",default="pepe2") 
+parser.add_option("-p",dest="password",help="clave",default="12345") 
 (params, args) = parser.parse_args()
 
 if __name__ == "__main__":
