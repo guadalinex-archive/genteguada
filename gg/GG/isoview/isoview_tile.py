@@ -12,28 +12,24 @@ class IsoViewTile(isoview.IsoView):
     """ Class constructor.
     topLeft: top left tile coord.
     bottomRight: lower right tile coord.
+    spriteName: name of the sprite used to paint the tile on screen.
     size: tile size.
     blocked: Indicates if the tile is passable or blocked.
+    position: tile position.
     """
-    
-    #self.__topLeft = [topLeft[0] + GG.utils.FLOOR_SHIFT[0], topLeft[1] + GG.utils.FLOOR_SHIFT[1]]
-    #self.__bottomRight = [bottomRight[0] + GG.utils.FLOOR_SHIFT[0], bottomRight[1] + GG.utils.FLOOR_SHIFT[1]]
-    
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
-    
     self.__size = size
-    
     imgPath =  os.path.join(GG.utils.DATA_PATH, spriteName)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    #self.__img.rect.topleft = self.p3dToP2d(position, [90,0,0])
     self.__img.rect.topleft = self.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
 
   def getImg(self):
+    """ Returns the tile image.
+    """
     return self.__img
-
     
   def getTopLeft(self):
     """ Returns the top left coord.

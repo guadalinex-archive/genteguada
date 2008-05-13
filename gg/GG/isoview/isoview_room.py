@@ -12,17 +12,6 @@ class GroupSprite(pygame.sprite.OrderedUpdates):
   def __init__(self, *sprites):
     pygame.sprite.OrderedUpdates.__init__(self, *sprites)
   
-  """
-  def sprites(self):
-    keys = self.spritedict.keys()
-    keys.sort(lambda x,y : y.rect.bottom -  x.rect.bottom )
-    return keys
-    if not keys:
-      return []
-    else: 
-      return keys
-  """
-
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
   Defines the room view.
@@ -32,11 +21,10 @@ class IsoViewRoom(isoview.IsoView):
     """ Class constructor.
     model: room model.
     screen: screen handler.
-    isoview hud object.
+    hud: hud object.
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    #bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
@@ -48,7 +36,6 @@ class IsoViewRoom(isoview.IsoView):
     for x in range(GG.utils.SCENE_SZ[0]):
       listTile = []
       for z in range(GG.utils.SCENE_SZ[1]):
-        #varPos = self.p3dToP2d([x, 0, z], [GG.utils.TILE_SZ[0], -5])
         varPos = self.p3dToP2d([x, 0, z], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]),int(varPos[1])]
         isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], self.getModel().spriteFull, GG.utils.TILE_SZ, 0, [x,0,z])
@@ -64,14 +51,9 @@ class IsoViewRoom(isoview.IsoView):
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
     
   def getIsoViewPlayers(self):
+    """ Returns the isometric view handler.
+    """
     return self.__isoViewPlayers
-  
-  """
-  def draw(self):
-    self.paintFloorFull()
-    self.__allPlayers.draw(self.getScreen())
-    #pygame.display.update()
-  """  
   
   def updateFrame(self):
     """ Paints floor, players and items on the room.
