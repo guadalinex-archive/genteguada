@@ -28,12 +28,15 @@ class IsoView:
     cord3d: 3d virtual point.
     offset: point's offset on screen.
     """
+    x2d = 0.0
+    y2s = 0.0
+    
     x2d = (cord3d[0] - cord3d[2]) * GG.utils.COS30R * GG.utils.TILE_SZ[0]
     y2d = ((cord3d[0] + cord3d[2]) * GG.utils.SIN30R) - cord3d[1]
     y2d = (y2d * GG.utils.TILE_SZ[1])
 
-    x2d = math.floor((x2d / math.sqrt(3)) + GG.utils.SCREEN_OR[0])
-    y2d = math.floor(y2d + GG.utils.SCREEN_OR[1])
+    x2d = (x2d / math.sqrt(3)) + GG.utils.SCREEN_OR[0]
+    y2d = y2d + GG.utils.SCREEN_OR[1]
     
     x2d = x2d - (offset[0])
     y2d = y2d - (offset[1])
@@ -42,4 +45,6 @@ class IsoView:
     return cord2d
 
   def unsubscribeAllEvents(self):
+    """ Unsubscribe this view's model from all events.
+    """
     self.getModel().unsubscribeEventObserver(self)
