@@ -195,6 +195,7 @@ class GGPlayer(item.GGItem):
     if self.getRoom():
       self.getRoom().removeItem(self)
     room.addItem(self)
+    self.triggerEvent('roomChanged', room=room)
   
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.
