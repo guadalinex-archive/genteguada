@@ -1,15 +1,19 @@
 import os
 import pygame
-
 import GG.utils
 import isoview
 import isoview_tile
-
 import GG.model.player
 
 class GroupSprite(pygame.sprite.OrderedUpdates):
-
+  """ GroupSprite class.
+  Redefines an OrderedUpdates sprite group class.
+  """
+  
   def __init__(self, *sprites):
+    """ Constructor methd.
+    *sprites: sprites list.
+    """
     pygame.sprite.OrderedUpdates.__init__(self, *sprites)
   
 class IsoViewRoom(isoview.IsoView):
@@ -64,25 +68,23 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
     self.__allPlayers.update()                     
     dirtyRects = self.__allPlayers.draw(self.getScreen())
-    #print dirtyRects
     pygame.display.update(dirtyRects)
     
   def getIsoviewPlayers(self):
+    """ Returns the isometric view players list.
+    """
     return self.__isoViewPlayers
     
   def orderSprites(self):
     """ Order the sprites according to their position.
     """
-    #allPlayersTemp = pygame.sprite.OrderedUpdates()
     allPlayersTemp = []
     for image in self.__allPlayers:
-    #  print image.rect.topleft[1]
       allPlayersTemp.append([image, image.rect.topleft[1]])
       self.__allPlayers.remove(image)
     allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
     self.__allPlayers = allPlayersTemp
     while len(allPlayersTemp):
-      #print allPlayersTemp[0]
       self.__allPlayers.append(allPlayersTemp.pop()[0])
     
   def paintPlayers(self):
@@ -106,7 +108,6 @@ class IsoViewRoom(isoview.IsoView):
       for z in range(GG.utils.SCENE_SZ[1]):
         if self.__tileList[x][z].contained(pos):
           if not self.__tileList[x][z].onBlank(pos):
-            #return [x-1, z+1]
             return [x, z]
     return [-1, -1]
   
@@ -114,24 +115,16 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    # print "anadido", event.getParams()['item']
     for ivitem in self.__isoViewPlayers:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
-          # encontrado duplicado
           return
-    # no encontrado duplicado
     self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
         
-  def changeActiveRoom(self, event):
-    #print "evento en ejecucion"
-    pass
-  
   def itemRemoved(self, event):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
-    # print "player removed"
     removed = False
     for ivplayer in self.__isoViewPlayers:
       if ivplayer.getModel() == event.getParams()['item']:
@@ -146,7 +139,6 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.append(item)
     self.__allPlayers.add(item.getImg())
-    #self.draw()
     
   def removeIsoViewItem(self, player):
     """ Removes an isometric player viewer from the viewers list.
@@ -155,9 +147,10 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
     player.unsubscribeAllEvents()
-    #self.draw()
   
   def unsubscribeAllEvents(self):
+    """ Unsubscribe this view ands its children from all events.
+    """
     isoview.IsoView.unsubscribeAllEvents(self)
     for item in self.__isoViewPlayers:
       item.unsubscribeAllEvents()

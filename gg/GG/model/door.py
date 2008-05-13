@@ -18,7 +18,7 @@ class GGDoor(item.GGItem):
     """
     item.GGItem.__init__(self, sprite, size, position, offset)
     self.__heading = heading
-    #TODO creo que esto es otro atributo "mega"-privado, no creo que se pueda cambiar desde el cliente
+    #TODO atributo "mega"-privado, no creo que se puede cambiar desde el cliente
     self.__destinationRoom = destinationRoom  
 
   # self.__heading

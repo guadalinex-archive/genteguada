@@ -27,7 +27,6 @@ class GGPlayer(item.GGItem):
     self.__state = "standing"
     self.__destination = position
     self.__inventory = []
-    #self.__session = None
 
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -157,9 +156,6 @@ class GGPlayer(item.GGItem):
     clicker: player who clicks.
     """
     self.newChatMessage('pincha pincha')
-    #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Has pinchado en jugador "+self.username)
-    pass
-    #self.getRoom().addMessageChat(str(self)+" recibe click")
       
   def tick(self):
     """ Calls for an update on player's position an movement direction.
@@ -192,12 +188,6 @@ class GGPlayer(item.GGItem):
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.setPosition(next)
 
-  """
-  def addMessageChat(self,message):
-    if self.__session:
-      self.__session.addMessageChat(message)
-  """
-  
   def changeRoom(self, room):
     """ Changes the player's room.
     room: new room.
@@ -205,7 +195,9 @@ class GGPlayer(item.GGItem):
     if self.getRoom():
       self.getRoom().removeItem(self)
     room.addItem(self)
-    #self.triggerEvent('changeActiveRoom', room=room)
   
   def newChatMessage(self, message):
+    """ Triggers a new event after receiving a new chat message.
+    message: new chat message.
+    """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.chatMessage(message, self.username))

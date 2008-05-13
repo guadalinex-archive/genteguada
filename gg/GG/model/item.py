@@ -83,7 +83,6 @@ class GGItem(ggmodel.GGModel):
     clicker: player who clicks.
     """
     self.__room.addMessageChat(str(self)+" recibe click")
-    #self.triggerEvent('chat', actor=clicker, receiver=self, msg="probando click")
     
   def tick(self):
     """ Call for an update on item position.

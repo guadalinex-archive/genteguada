@@ -71,9 +71,12 @@ class GGSession(ggmodel.GGModel):
     return GG.isoview.isoview_hud.IsoViewHud(self, screen)
 
   def logout(self):
-    """
+    """ Ends an user session.
     """
     self.__player.abandonRoom()
     
   def chatAdded(self, event):
+    """ Triggers after receiving a chat added event.
+    event: event info.
+    """
     self.triggerEvent('chatAdded', message=event.getParams()['message'])
