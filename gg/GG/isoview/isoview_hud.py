@@ -83,6 +83,13 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
       self.getScreen().fill([0,0,0])
+      
+      #auxScreen = pygame.display.set_mode(GG.utils.GAMEZONE_SZ)
+      #auxScreen.fill([0,0,0])
+      #auxScreen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
+      #rect = Pygame.Rect((0,0),(1024,568))
+      #self.getScreen().fill([0,0,0], rect)
+      #pygame.draw.rect(self.getScreen(),[0,0,0],rect)
       self.draw()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)

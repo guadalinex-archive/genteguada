@@ -21,7 +21,7 @@ class GGBook(item.GGItem):
     item.GGItem.__init__(self, spriteName, size, position, offset)
     self.spriteInventory = spriteInventory
     self.label = label
-    #TODO tengo dudas de que pickable se pueda modificar desde fuera, por lo tanto seria una variable "Mega"-privada de la que habiamos hablado
+    #TODO variable "Mega"-privada
     self.__pickable = pickable
     
   def variablesToSerialize(self):
@@ -42,8 +42,5 @@ class GGBook(item.GGItem):
     """
     if self.__pickable and GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.addInventory(self)
-      #self.getRoom().addMessageChat(str(self)+" Obtienes")
       self.getRoom().removeItem(self)
-      #TODO creo que en el removeItem debe de estar el setRoom(None)
-      #self.triggerEvent('chat', actor=clicker, receiver=self, msg="Obtienes "+self.label)
-  
+      

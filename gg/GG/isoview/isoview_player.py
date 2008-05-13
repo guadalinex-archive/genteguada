@@ -24,6 +24,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
 
   def headingChanged(self, event):
+    """ Changes the player's sprite heading.
+    """
     self.setImg(GG.utils.NINO_SPRITES[event.getParams()["heading"]])
     
   def inventoryAdded(self, event):
@@ -37,10 +39,4 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """
     self.getParent().removeInventoryItem(event.getParams()["item"])
-    
-  def roomChanged(self, event):
-    """
-    """
-    room = event.getParams()["room"]
-    if room == None:
-      pass
+  

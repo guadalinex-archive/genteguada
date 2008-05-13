@@ -128,7 +128,6 @@ class GGSystem(dMVC.model.Model):
     if room.addItem(item):
       if isPlayer:
         if item in self.__players:
-          #if player.checkUser(item.getUsername(), item.getPassword()):
           return
         self.__players.append(item)
     
