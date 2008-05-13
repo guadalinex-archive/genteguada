@@ -82,17 +82,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
-      self.getScreen().fill([0,0,0])
-      self.widgetContainer.remove_widget(self.textArea)
-      self.widgetContainer.remove_widget(self.textField)
-      
-      #auxScreen = pygame.display.set_mode(GG.utils.GAMEZONE_SZ)
-      #auxScreen.fill([0,0,0])
-      #auxScreen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
-      #rect = Pygame.Rect((0,0),(1024,568))
-      #self.getScreen().fill([0,0,0], rect)
-      #pygame.draw.rect(self.getScreen(),[0,0,0],rect)
-      self.draw()
+      rect = pygame.Rect(0,0,GG.utils.GAMEZONE_SZ[0],GG.utils.GAMEZONE_SZ[1])
+      self.getScreen().fill((0,0,0), rect)
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       

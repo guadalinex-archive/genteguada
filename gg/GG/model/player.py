@@ -200,4 +200,4 @@ class GGPlayer(item.GGItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.chat_message.chatMessage(message, self.username))
+    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username))
