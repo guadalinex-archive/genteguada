@@ -16,6 +16,7 @@ class GGSession(ggmodel.GGModel):
     self.__player = player
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
+    player.subscribeEvent('roomChanged', self.roomChanged)
     self.__messagesChat = []
     self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
@@ -62,6 +63,10 @@ class GGSession(ggmodel.GGModel):
       self.triggerEvent('removeMessageChat', messageChat=messageChat)
       return True
     return False
+    
+  def roomChanged(self, event):
+    event.getParams()['room'].unsubscribeEventMethod(self.chatAdded)
+    self.__player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     
   @dMVC.model.localMethod
   def defaultView(self, screen):
