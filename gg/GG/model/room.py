@@ -167,7 +167,7 @@ class GGRoom(ggmodel.GGModel):
         result.append(item)
     return result
 
-  def newChatMessage(self, message):
+  def newChatMessage(self, message, player):
     """ Triggers a new avent after receiving a new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.ChatMessage(message, self.label))    
+    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username))    

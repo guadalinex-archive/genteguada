@@ -201,7 +201,7 @@ class IsoViewHud(isoview.IsoView):
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
     """
-    self.getModel().getPlayer().newChatMessage(self.textField.text)
+    self.__player.getRoom().newChatMessage(self.textField.text,self.__player)
     self.textField.text = ""
 
   def chatAdded(self, event):
