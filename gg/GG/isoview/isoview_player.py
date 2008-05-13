@@ -26,7 +26,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def headingChanged(self, event):
     """ Changes the player's sprite heading.
     """
-    self.setImg(GG.utils.NINO_SPRITES[event.getParams()["heading"]])
+    #self.setImg(GG.utils.NINO_SPRITES[event.getParams()["heading"]])
+    self.setImg(self.getModel().spriteList[event.getParams()["heading"]])
     
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.

@@ -94,7 +94,7 @@ class GGSystem(dMVC.model.Model):
     room1.addItem(myBook)    
     room1.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [3, 0, 0], [20, 66], "down", room2))    
     room2.addItem(GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [60, 141], [5, 0, 0], [20, 66], "down", room1))    
-    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINO_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
+    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINA_SZ, [0, 0, 0], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
         
   def createRoom(self, spriteFull, label):
     """ Creates a new room.
