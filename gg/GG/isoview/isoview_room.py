@@ -46,10 +46,17 @@ class IsoViewRoom(isoview.IsoView):
         self.__allPlayers.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
+    
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
+    
+    for gitem in self.getModel().getGhostItems():
+      isoviewghostitem = gitem.defaultView(self.getScreen(), self, self.__parent)
+      self.__isoViewPlayers.append(isoviewghostitem)
+      self.__allPlayers.add(isoviewghostitem.getImg())
+    
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
