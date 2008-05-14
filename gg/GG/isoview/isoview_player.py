@@ -20,8 +20,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('heading', self.headingChanged)
     #self.getModel().subscribeEvent('state', self.stateChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
-    self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
-    self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
+    #self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
+    #self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
 
   def headingChanged(self, event):
     """ Changes the player's sprite heading.

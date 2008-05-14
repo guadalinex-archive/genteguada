@@ -74,14 +74,14 @@ class GGSystem(dMVC.model.Model):
     """
     for sess in self.__sessions:
       if sess.getPlayer().checkUser(username, password):
-        return None    
+        return False, "El usuario tiene una sesion abierta"    
     for player in self.__players:
       if player.checkUser(username, password) and player.getRoom() == None:
         player.changeRoom(self.getEntryRoom())
         session = ggsession.GGSession(player)
         self.__sessions.append(session)
-        return session 
-    return None
+        return True, session 
+    return False, "No se pudo autenticar el usuario"
 
   def loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.

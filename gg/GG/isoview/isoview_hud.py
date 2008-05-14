@@ -25,6 +25,9 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.set_screen(screen)
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
+    self.__player.subscribeEvent('addInventory', self.inventoryAdded)
+    self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
+
     #self.getModel().subscribeEvent('messagesChat', self.messaggesChatChanged)
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
@@ -39,18 +42,20 @@ class IsoViewHud(isoview.IsoView):
     """
     return self.__textRect
   
-  def addInventoryItem(self, item):
+  def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
     item: new isoview inventory item.
     """
+    item = event.getParams()["item"]
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
     self.__isoviewInventory.append(invItem)
     self.paintInventory()
     
-  def removeInventoryItem(self, item):
+  def inventoryRemoved(self, event):
     """ Removes an item from the inventory item list.
     item: item to be removed.
     """
+    item = event.getParams()["item"]
     toBeRemoved = None
     for ivInventoryItem in self.__isoviewInventory:
       if ivInventoryItem.getModel().label == item.label:
@@ -78,19 +83,14 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a change room event.
     event: event info.
     """
-    print "llamando a ", event.getParams()["room"]
     if self.__isoviewRoom:
-      print "============================"
       #self.getModel().subscribeEvent('chatAdded', self.chatAdded)
-      
-      #self.__player.subscribeEvent('room', self.roomChanged)
-      
       #self.unsubscribeAllEvents()
-      self.__isoviewRoom.unsubscribeAllEvents()
+      #self.__player.subscribeEvent('room', self.roomChanged)
+      #self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
       rect = pygame.Rect(0,0,GG.utils.GAMEZONE_SZ[0],GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0,0,0), rect)
-      
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       #self.getModel().subscribeEvent('chatAdded', self.chatAdded)

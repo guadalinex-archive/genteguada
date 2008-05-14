@@ -15,6 +15,7 @@ class GroupSprite(pygame.sprite.OrderedUpdates):
     *sprites: sprites list.
     """
     pygame.sprite.OrderedUpdates.__init__(self, *sprites)
+
   
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
@@ -126,6 +127,7 @@ class IsoViewRoom(isoview.IsoView):
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
+          #raise "Ya existe el usuario dentro de la habitacion" 
     self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
         
   def itemRemoved(self, event):
@@ -153,12 +155,13 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
-    player.unsubscribeAllEvents()
+    #player.unsubscribeAllEvents()
   
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
     """
-    isoview.IsoView.unsubscribeAllEvents(self)
-    for item in self.__isoViewPlayers:
-      item.unsubscribeAllEvents()
+    pass
+    #for item in self.__isoViewPlayers:
+    #  item.unsubscribeAllEvents()
+    #isoview.IsoView.unsubscribeAllEvents(self)
       
