@@ -1,0 +1,20 @@
+#!/usr/bin/python
+
+import os
+
+os.system("clear")
+print ""
+print "pylint "
+print  "-------"
+print ""
+
+dirs = ["gg/GG","gg/GG/model","gg/GG/isoview","dmvc/dMVC"]
+currentDir = os.getcwd()
+
+if os.path.isfile("pylint.txt"):
+  os.remove("pylint.txt")
+
+for dir in dirs:
+  os.chdir(currentDir+"/"+dir)
+  os.system("pylint --rcfile="+currentDir+"/pylint.rc *.py >> "+currentDir+"/pylint.txt")
+
