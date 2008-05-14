@@ -129,7 +129,7 @@ class GGPlayer(item.GGItem):
     if dropLocation == [-1, -1, -1] or self.getRoom().getBlocked(dropLocation):
       return False
     item.setPosition(dropLocation)
-    self.getRoom().addItem(item)
+    self.getRoom().addItem(item, item.getPosition())
     self.removeInventory(item)
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
