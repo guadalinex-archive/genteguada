@@ -1,4 +1,3 @@
-import math
 import GG.utils
 
 class IsoView:

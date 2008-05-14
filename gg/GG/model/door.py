@@ -68,7 +68,7 @@ class GGDoor(item.GGItem):
   def setHeading(self, heading):
     """ Sets a new heading direction for the item.
     """
-    if self.__heading <> heading:
+    if not self.__heading == heading:
       self.__heading = heading
       self.triggerEvent('heading', heading=heading)
 
@@ -82,7 +82,7 @@ class GGDoor(item.GGItem):
   def setDestinationRoom(self, destinationRoom):
     """ Sets a new room connected to the door.
     """
-    if self.__destinationRoom <> destinationRoom:
+    if not self.__destinationRoom == destinationRoom:
       self.__destinationRoom = destinationRoom
       self.triggerEvent('destinationRoom', destinationRoom=destinationRoom)
 

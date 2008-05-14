@@ -4,7 +4,7 @@
 __RSERVER_SINGLETON = None
 
 def getRServer(): 
-  global __RSERVER_SINGLETON
+  #global __RSERVER_SINGLETON
   if __RSERVER_SINGLETON == None:
     raise Exception("RServer has to be instanciated before calling getRServer()")
   return __RSERVER_SINGLETON
@@ -21,7 +21,7 @@ def setRServer(rserver):
 __RCLIENT_SINGLETON = None
 
 def getRClient():
-  global __RCLIENT_SINGLETON
+  #global __RCLIENT_SINGLETON
   if __RCLIENT_SINGLETON == None:
     raise Exception("RClient has to be instanciated before calling getRClient()")
   return __RCLIENT_SINGLETON
