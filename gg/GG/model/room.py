@@ -20,6 +20,7 @@ class GGRoom(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
+    self.__ghostItems = []
     self.label = label # Variable para realizar pruebas, sera eliminada
     
   def variablesToSerialize(self):
@@ -66,6 +67,37 @@ class GGRoom(ggmodel.GGModel):
       return
     raise "Error: item no eliminado"
 
+  # self.__ghostItems
+  
+  def getGhostItems(self):
+    return self.__ghostItems
+
+  def setGhostItems(self, items):
+    if self.__ghostItems <> items:
+      self.__ghostItems = items
+      self.triggerEvent('ghostItems', items=items)
+      return True
+    return False
+    
+  def addGhostItem(self, item):
+    """ Adds a new ghost item into the room and calls for an update on the room view.
+    item: new item.
+    """
+    if not item in self.__ghostItems:
+      self.__ghostItems.append(item)
+      item.setRoom(self)
+      self.triggerEvent('addGhostItem', item=item)
+      return True
+    return False
+    
+  def removeGhostItem(self, item):
+    if item in self.__ghostItems:
+      item.clearRoom()
+      self.__ghostItems.remove(item)
+      self.triggerEvent('removeGhostItem', item=item)
+      return
+    raise "Error: item no eliminado"
+  
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
     """ Creates a view object associated with this room.
@@ -86,7 +118,7 @@ class GGRoom(ggmodel.GGModel):
   def clickedByPlayer(self, player, target):
     """ Indicates players inside that a player has made click on another one.
     player: active player.
-    target: click target player.
+    target: position the active player clicked on.
     """
     clickerLabel = player.username
     if not self.getBlocked(target):
@@ -96,6 +128,15 @@ class GGRoom(ggmodel.GGModel):
       for item in self.__items:
         if item.getPosition() == target:
           item.clickedBy(player)
+          
+  def checkClickOnGhost(self, player, target):
+    """ Checks if a player clicked on a ghost item.
+    player: active player.
+    target: position the active player clicked on. 2d screen cords.
+    """
+    for gitem in self.__ghostItems:
+      if gitem.isContained(target):
+        gitem.clickedBy(player)    
     
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
@@ -151,7 +192,6 @@ class GGRoom(ggmodel.GGModel):
     if point1 == point2: return 0
     return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
   
-    
   def tick(self):
     """ Calls for an update on all player movements.
     """

@@ -16,6 +16,7 @@ class GGItem(ggmodel.GGModel):
     """
     ggmodel.GGModel.__init__(self)
     self.spriteName = spriteName
+    self.size = size
     self.offset   = offset
     self.__position = position
     self.__room = None
@@ -23,7 +24,7 @@ class GGItem(ggmodel.GGModel):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'offset']
+    return ['spriteName', 'size', 'offset']
   
   # self.__position
   

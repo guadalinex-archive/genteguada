@@ -33,11 +33,13 @@ class GenteGuada:
         """
       if event.type == MOUSEBUTTONDOWN:
         x, y = pygame.mouse.get_pos()
+        if y > GG.utils.GAMEZONE_SZ:
+          self.isoHud.clickedByPlayer(self.player, [x, y])
         dest = self.isoHud.getIsoviewRoom().findTile([x,y])
         if dest <> [-1, -1]:
           self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
         else:
-          self.isoHud.clickedByPlayer(self.player, [x, y])
+          self.isoHud.getIsoviewRoom().getModel().checkClickOnGhost(self.player, [x,y])
 
     self.isoHud.widgetContainer.distribute_events(*events)
 
@@ -76,8 +78,8 @@ __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
 parser.add_option("-e",dest="execution",help="local/remoto",default="local") 
 parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
-parser.add_option("-u",dest="user",help="usuario",default="pepe2") 
-parser.add_option("-p",dest="password",help="clave",default="12345") 
+parser.add_option("-u",dest="user",help="usuario",default="pepe") 
+parser.add_option("-p",dest="password",help="clave",default="1234") 
 (params, args) = parser.parse_args()
 
 if __name__ == "__main__":
