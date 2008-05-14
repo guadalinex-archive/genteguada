@@ -35,12 +35,11 @@ class GenteGuada:
         x, y = pygame.mouse.get_pos()
         if y > GG.utils.GAMEZONE_SZ[1]:
           self.isoHud.clickedByPlayer(self.player, [x, y])
-        dest = self.isoHud.getIsoviewRoom().findTile([x,y])
-        if dest <> [-1, -1]:
-          self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
-        else:
-          self.isoHud.getIsoviewRoom().getModel().checkClickOnGhost(self.player, [x,y])
-
+        else:  
+          dest = self.isoHud.getIsoviewRoom().findTile([x,y])
+          if dest <> [-1, -1]:
+            self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+  
     self.isoHud.widgetContainer.distribute_events(*events)
 
   def finish(self):

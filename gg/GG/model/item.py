@@ -35,10 +35,20 @@ class GGItem(ggmodel.GGModel):
 
   def setPosition(self, pos):
     """ Sets a new position for the item.
+    pos: new position.
     """
     if self.__position <> pos:
       self.__position = pos
       self.triggerEvent('position', position=pos)
+
+  def setStartPosition(self, pos):
+    """ Sets a new start position for the item.
+    pos: new position.
+    """
+    if self.__position <> pos:
+      self.__position = pos
+      if pos != None:
+        self.triggerEvent('startPosition', position=pos)
 
   # self.__room
     
@@ -83,7 +93,8 @@ class GGItem(ggmodel.GGModel):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    self.__room.addMessageChat(str(self)+" recibe click")
+    #self.__room.addMessageChat(str(self)+" recibe click")
+    pass
     
   def tick(self):
     """ Call for an update on item position.
