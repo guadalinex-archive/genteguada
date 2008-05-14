@@ -20,7 +20,6 @@ class GGRoom(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
-    self.__ghostItems = []
     self.label = label # Variable para realizar pruebas, sera eliminada
     
   def variablesToSerialize(self):
@@ -45,12 +44,16 @@ class GGRoom(ggmodel.GGModel):
       return True
     return False
 
-  def addItem(self, item):
+  def addItem(self, item, pos):
     """ Adds a new item into the room and calls for an update on the room view.
     item: new item.
+    pos: position of the item in the new room.
     """
-    if not self.getBlocked(item.getPosition()) and not item in self.__items:
+    if not item in self.__items:
       self.__items.append(item)
+      item.setStartPosition(None)
+      print pos
+      item.setStartPosition(self.getNearestEmptyCell(pos))
       item.setRoom(self)
       self.triggerEvent('addItem', item=item)
       return True
@@ -67,37 +70,6 @@ class GGRoom(ggmodel.GGModel):
       return
     raise "Error: item no eliminado"
 
-  # self.__ghostItems
-  
-  def getGhostItems(self):
-    return self.__ghostItems
-
-  def setGhostItems(self, items):
-    if self.__ghostItems <> items:
-      self.__ghostItems = items
-      self.triggerEvent('ghostItems', items=items)
-      return True
-    return False
-    
-  def addGhostItem(self, item):
-    """ Adds a new ghost item into the room and calls for an update on the room view.
-    item: new item.
-    """
-    if not item in self.__ghostItems:
-      self.__ghostItems.append(item)
-      item.setRoom(self)
-      self.triggerEvent('addGhostItem', item=item)
-      return True
-    return False
-    
-  def removeGhostItem(self, item):
-    if item in self.__ghostItems:
-      item.clearRoom()
-      self.__ghostItems.remove(item)
-      self.triggerEvent('removeGhostItem', item=item)
-      return
-    raise "Error: item no eliminado"
-  
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
     """ Creates a view object associated with this room.
@@ -129,15 +101,6 @@ class GGRoom(ggmodel.GGModel):
         if item.getPosition() == target:
           item.clickedBy(player)
           
-  def checkClickOnGhost(self, player, target):
-    """ Checks if a player clicked on a ghost item.
-    player: active player.
-    target: position the active player clicked on. 2d screen cords.
-    """
-    for gitem in self.__ghostItems:
-      if gitem.isContained(target):
-        gitem.clickedBy(player)    
-    
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
     player:
@@ -211,3 +174,52 @@ class GGRoom(ggmodel.GGModel):
     """ Triggers a new avent after receiving a new chat message.
     """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username))    
+
+  def getNearestEmptyCell(self, pos):
+    """ Returns the nearest empty cell to a position.
+    pos: start position.
+    """
+    if not self.getBlocked(pos):
+      return pos
+    
+    if pos[2] > 0:
+      auxPos = [pos[0], pos[1], pos[2] - 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if pos[2] < (GG.utils.SCENE_SZ[1] - 1):
+      auxPos = [pos[0], pos[1], pos[2] + 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if pos[0] > 0:
+      auxPos = [pos[0] - 1, pos[1], pos[2]]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if pos[0] < (GG.utils.SCENE_SZ[0] - 1):
+      auxPos = [pos[0] + 1, pos[1], pos[2]]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if (pos[0] > 0) and (pos[2] > 0):
+      auxPos = [pos[0] - 1, pos[1], pos[2] - 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if (pos[2] < (GG.utils.SCENE_SZ[1] - 1)) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
+      auxPos = [pos[0] + 1, pos[1], pos[2] + 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if (pos[0] > 0) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
+      auxPos = [pos[0] - 1, pos[1], pos[2] + 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    if (pos[0] < (GG.utils.SCENE_SZ[0] - 1)) and (pos[2] > 0):
+      auxPos = [pos[0] + 1, pos[1], pos[2] - 1]
+      res = self.getNearestEmptyCell(auxPos)
+      if res != None: return res
+    
+    return None

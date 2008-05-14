@@ -1,5 +1,5 @@
 import item
-import GG.isoview.isoview_ghostitem
+import GG.isoview.isoview_item
 import dMVC.model
 
 class GGDoor(item.GGItem):
@@ -7,24 +7,23 @@ class GGDoor(item.GGItem):
   Defines a door object behaviour.
   """
  
-  def __init__(self, sprite, size, entryPosition, screenPosition, offset, heading, destinationRoom, background):
+  def __init__(self, sprite, size, entryPosition, exitPosition, position, offset, heading, destinationRoom):
     """ Class builder.
     sprite: sprite used to paint the door.
     size: door sprite size.
-    entrancePosition: door entrance position.
-    screenPosition: door position on screen
+    entryPosition: door entrance position.
+    exitPosition: door exit position on the new room.
+    position: door position.
     offset: image offset on screen.
     heading: direction the door opens to.
     destinationRoom: room the door will teleport players to.
-    background: indicates if this item is on the background or in the front.
     """
-    item.GGItem.__init__(self, sprite, size, [-3,-3,-3], offset)
-    self.__entryPosition = entryPosition    
-    self.__screenPosition = screenPosition
+    item.GGItem.__init__(self, sprite, size, position, offset)
+    self.__entryPosition = entryPosition
+    self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
     #TODO atributo "mega"-privado
     self.__heading = heading
-    self.__background = background
     
   def getBackground(self):
     return self.__background
@@ -44,10 +43,20 @@ class GGDoor(item.GGItem):
       self.__entryPosition = entryPosition
       #self.triggerEvent('entryPositon', entryPosition=entryPosition)
     
-  # self.__screenPosition
-
-  def getScreenPosition(self):
-    return self.__screenPosition
+  # self.__exitPosition
+  
+  def getExitPosition(self):
+    """ Returns the door exit position.
+    """
+    return self.__exitPosition
+  
+  def setExitPosition(self, exitPosition):
+    """ Sets a new door exit position:
+    entryPosition: new door exit position.
+    """
+    if self.__exitPosition != exitPosition:
+      self.__exitPosition = exitPosition
+      #self.triggerEvent('exitPosition', exitPosition=exitPosition)
   
   # self.__heading
 
@@ -83,25 +92,12 @@ class GGDoor(item.GGItem):
     screen: screen handler.
     parent: isoview hud handler.
     """
-    return GG.isoview.isoview_ghostitem.IsoViewGhostItem(self, screen, room, parent)
-  
-  def isContained(self, point):
-    """ Checks if a point is inside the door.
-    point: point to check.
-    """
-    x0 = self.__screenPosition[0] - self.offset[0]
-    y0 = self.__screenPosition[1] - self.offset[1]
-    x1 = x0 + self.size[0]
-    y1 = y0 + self.size[1]
-    if x0 <= point[0] <= x1:
-      if y0 <= point[1] <= y1:
-        return True
-    return False
+    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
   def clickedBy(self, clicker):
     """ Triggers an event when the door receives a click by a player.
     clicker: player who clicks.
     """
     if clicker.getPosition() == self.__entryPosition:
-      clicker.changeRoom(self.__destinationRoom)
+      clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     

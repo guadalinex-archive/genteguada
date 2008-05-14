@@ -29,6 +29,7 @@ class IsoViewItem(isoview.IsoView):
     self.__animationDestination = None
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
+    self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
   def getParent(self):
@@ -90,6 +91,20 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
+    print "positionChanged"
     self.__animationDestination = event.getParams()["position"]
     self.animatedSetPosition(event.getParams()["position"])
+  
+  def startPositionChanged(self, event):
+    """ Updates the item position without animation and draws the room after receiving a position change event.
+    event: even info.
+    """
+    print "startPositionChanged"
+    del self.__animation
+    self.__animation = None
+    self.__img.rect.topleft = self.p3dToP2d(event.getParams()['position'], self.getModel().offset)
+  
+    #self.__animationDestination = event.getParams()["position"]
+    #self.animatedSetPosition(event.getParams()["position"])
+    pass
   

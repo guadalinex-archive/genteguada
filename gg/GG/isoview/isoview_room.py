@@ -19,7 +19,7 @@ class GroupSprite(pygame.sprite.Group):
   
   def sprites(self):
     keys = self.spritedict.keys()
-    keys.sort(lambda x,y : x.rect[3] - y.rect[3])
+    keys.sort(lambda x,y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
     return keys
   
 class IsoViewRoom(isoview.IsoView):
@@ -43,7 +43,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewPlayers = []
     self.__allPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
-    self.__allFront = GroupSprite()
     self.__tileList = []
     for x in range(GG.utils.SCENE_SZ[0]):
       listTile = []
@@ -60,14 +59,6 @@ class IsoViewRoom(isoview.IsoView):
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
-    
-    for gitem in self.getModel().getGhostItems():
-      isoviewghostitem = gitem.defaultView(self.getScreen(), self, self.__parent)
-      self.__isoViewPlayers.append(isoviewghostitem)
-      if isoviewghostitem.getModel().getBackground():
-        self.__allBackground.add(isoviewghostitem.getImg())
-      else:
-        self.__allFront.add(isoviewghostitem.getImg())
     
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -96,12 +87,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers.update()                     
     dirtyRects = self.__allPlayers.draw(self.getScreen())
     pygame.display.update(dirtyRects)
-    
-    #self.__allFront.clear(self.getScreen(), self.__bg.image)
-    self.__allFront.update()                     
-    dirtyRects = self.__allFront.draw(self.getScreen())
-    pygame.display.update(dirtyRects)
-       
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.

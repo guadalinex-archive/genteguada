@@ -188,14 +188,15 @@ class GGPlayer(item.GGItem):
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.setPosition(next)
 
-  def changeRoom(self, room):
+  def changeRoom(self, room, pos):
     """ Changes the player's room.
     room: new room.
+    pos: starting position on the new room.
     """
     oldRoom = self.getRoom()
     if oldRoom:
       oldRoom.removeItem(self)
-    room.addItem(self)
+    room.addItem(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
   
   def newChatMessage(self, message):
