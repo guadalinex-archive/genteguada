@@ -192,10 +192,11 @@ class GGPlayer(item.GGItem):
     """ Changes the player's room.
     room: new room.
     """
-    if self.getRoom():
-      self.getRoom().removeItem(self)
+    oldRoom = self.getRoom()
+    if oldRoom:
+      oldRoom.removeItem(self)
     room.addItem(self)
-    self.triggerEvent('roomChanged', room=room)
+    self.triggerEvent('roomChanged', oldRoom=oldRoom)
   
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.

@@ -180,6 +180,7 @@ class REventSuscriber(RCommand):
     model = dMVC.getRServer().getModelByID(self._modelID)
     model.subscribeEvent(self._eventType, self.eventFired, self._suscriptionID)
 
+
   def eventFired(self, event):
     command = REventTriggerer(self._suscriptionID, event)
     if not self._serverHandler.sendCommand(command):

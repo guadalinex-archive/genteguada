@@ -65,8 +65,12 @@ class GGSession(ggmodel.GGModel):
     return False
     
   def roomChanged(self, event):
-    event.getParams()['room'].unsubscribeEventMethod(self.chatAdded)
-    self.__player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
+    oldRoom = event.getParams()['oldRoom']
+    if oldRoom:
+      oldRoom.unsubscribeEventMethod(self.chatAdded)
+    newRoom = self.__player.getRoom()
+    if newRoom: 
+      newRoom.subscribeEvent('chatAdded', self.chatAdded)
     
   @dMVC.model.localMethod
   def defaultView(self, screen):

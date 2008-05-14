@@ -59,4 +59,6 @@ class IsoView:
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view's model from all events.
     """
-    self.getModel().unsubscribeEventObserver(self)
+    pass
+    #print self.getModel()
+    #self.getModel().unsubscribeEventObserver(self)

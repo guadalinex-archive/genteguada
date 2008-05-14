@@ -44,8 +44,8 @@ class GenteGuada:
     self.isoHud.widgetContainer.distribute_events(*events)
 
   def finish(self):
-    print dMVC.utils.statClient.strClient()
-    print dMVC.utils.statEventTriggered.strEvent()
+    #print dMVC.utils.statClient.strClient()
+    #print dMVC.utils.statEventTriggered.strEvent()
     sys.exit(0)
 
   def start(self,params):
@@ -53,9 +53,13 @@ class GenteGuada:
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)
-    
-    if params.execution == "remoto":
-      client = dMVC.remoteclient.RClient(params.ip)
+
+    if params.ip:
+      try:
+        client = dMVC.remoteclient.RClient(params.ip)
+      except:
+        print "No hay conexion con el servidor"
+        self.finish()
       self.sy = client.getRootModel()
     else:
       self.sy = GG.model.ggsystem.GGSystem()
@@ -64,7 +68,11 @@ class GenteGuada:
     #self.tree = GG.model.item.GGItem(GG.utils.OAK_SPRITE, [267, 200], [6, 0, 6], [95, 195])
     #self.girl = GG.model.player.GGPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
                     
-    self.session = self.sy.login(params.user, params.password)
+    login = self.sy.login(params.user, params.password)
+    if not login[0]:
+      print login[1]
+      self.finish()
+    self.session = login[1] 
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
@@ -76,8 +84,7 @@ class GenteGuada:
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
-parser.add_option("-e",dest="execution",help="local/remoto",default="local") 
-parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
+parser.add_option("-i",dest="ip",help="ip",default=None) 
 parser.add_option("-u",dest="user",help="usuario",default="pepe") 
 parser.add_option("-p",dest="password",help="clave",default="1234") 
 (params, args) = parser.parse_args()

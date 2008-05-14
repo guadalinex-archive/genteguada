@@ -106,6 +106,7 @@ class Model(synchronized.Synchronized):
   #}}}
 
 
+
   def __eq__(self, comparand): #{{{
     return id(self) == id(comparand)
   #}}}
