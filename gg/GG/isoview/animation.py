@@ -1,4 +1,3 @@
-import GG.utils
 
 class Animation:
   """ Animation class.

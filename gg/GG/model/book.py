@@ -1,7 +1,6 @@
 import item
 import GG.utils
 import GG.isoview.isoview_item
-import dMVC.model
 
 class GGBook(item.GGItem):
   """ Book class.

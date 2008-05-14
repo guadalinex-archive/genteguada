@@ -19,7 +19,7 @@ class GroupSprite(pygame.sprite.Group):
   
   def sprites(self):
     keys = self.spritedict.keys()
-    keys.sort(lambda x,y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
+    keys.sort(lambda x, y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
     return keys
   
 class IsoViewRoom(isoview.IsoView):
@@ -44,12 +44,12 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
     self.__tileList = []
-    for x in range(GG.utils.SCENE_SZ[0]):
+    for corx in range(GG.utils.SCENE_SZ[0]):
       listTile = []
-      for z in range(GG.utils.SCENE_SZ[1]):
-        varPos = self.p3dToP2d([x, 0, z], GG.utils.FLOOR_SHIFT)
-        pos = [int(varPos[0]),int(varPos[1])]
-        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], self.getModel().spriteFull, GG.utils.TILE_SZ, 0, [x,0,z])
+      for corz in range(GG.utils.SCENE_SZ[1]):
+        varPos = self.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
+        pos = [int(varPos[0]), int(varPos[1])]
+        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], self.getModel().spriteFull, GG.utils.TILE_SZ, 0, [corx, 0, corz])
         #self.__allPlayers.add(isotile.getImg())
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
@@ -118,15 +118,15 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.getScreen().blit(self.__bg.image, self.__bg.rect)
 
-  def findTile(self,pos):
+  def findTile(self, pos):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    for x in range(GG.utils.SCENE_SZ[0]):
-      for z in range(GG.utils.SCENE_SZ[1]):
-        if self.__tileList[x][z].contained(pos):
-          if not self.__tileList[x][z].onBlank(pos):
-            return [x, z]
+    for corx in range(GG.utils.SCENE_SZ[0]):
+      for corz in range(GG.utils.SCENE_SZ[1]):
+        if self.__tileList[corx][corz].contained(pos):
+          if not self.__tileList[corx][corz].onBlank(pos):
+            return [corx, corz]
     return [-1, -1]
   
   def itemAdded(self, event):

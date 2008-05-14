@@ -137,21 +137,21 @@ def getFrontPosition(pos, heading):
   pos: player's position.
   heading: direction that the player is heading to.
   """
-  if heading == "up" and pos[2] <> 0:
+  if heading == "up" and not pos[2] == 0:
     return [pos[0], pos[1], pos[2] - 1]
-  elif heading == "down" and pos[2] <> (SCENE_SZ[1] - 1):
+  elif heading == "down" and not pos[2] == (SCENE_SZ[1] - 1):
     return [pos[0], pos[1], pos[2] + 1]
-  elif heading == "left" and pos[0] <> 0:
+  elif heading == "left" and not pos[0] == 0:
     return [pos[0] - 1, pos[1], pos[2]]
-  elif heading == "right" and pos[0] <> (SCENE_SZ[0] - 1):
+  elif heading == "right" and not pos[0] == (SCENE_SZ[0] - 1):
     return [pos[0] + 1, pos[1], pos[2]]
-  elif heading == "topleft" and pos[0] <> 0 and pos[2] <> 0:
+  elif heading == "topleft" and not pos[0] == 0 and not pos[2] == 0:
     return [pos[0] - 1, pos[1], pos[2] - 1]
-  elif heading == "bottomright" and pos[0] <> (SCENE_SZ[0] - 1) and pos[2] <> (SCENE_SZ[1] - 1):
+  elif heading == "bottomright" and not pos[0] == (SCENE_SZ[0] - 1) and not pos[2] == (SCENE_SZ[1] - 1):
     return [pos[0] + 1, pos[1], pos[2] + 1]
-  elif heading == "bottomleft" and pos[0] <> 0 and pos[2] <> (SCENE_SZ[1] - 1):
+  elif heading == "bottomleft" and not pos[0] == 0 and not pos[2] == (SCENE_SZ[1] - 1):
     return [pos[0] - 1, pos[1], pos[2] + 1]
-  elif heading == "topright" and pos[2] <> 0 and pos[0] <> (SCENE_SZ[0] - 1):
+  elif heading == "topright" and not pos[2] == 0 and not pos[0] == (SCENE_SZ[0] - 1):
     return [pos[0] + 1, pos[1], pos[2] - 1]
   return [-1, -1, -1]
     

@@ -27,6 +27,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
+    self.textArea = None
+    self.textField = None
 
     #self.getModel().subscribeEvent('messagesChat', self.messaggesChatChanged)
     #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
@@ -89,8 +91,8 @@ class IsoViewHud(isoview.IsoView):
       #self.__player.subscribeEvent('room', self.roomChanged)
       #self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
-      rect = pygame.Rect(0,0,GG.utils.GAMEZONE_SZ[0],GG.utils.GAMEZONE_SZ[1])
-      self.getScreen().fill((0,0,0), rect)
+      rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
+      self.getScreen().fill((0, 0, 0), rect)
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       #self.getModel().subscribeEvent('chatAdded', self.chatAdded)
@@ -170,10 +172,10 @@ class IsoViewHud(isoview.IsoView):
     """
     pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
               (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
-    n = 0
+    position = 0
     for inventoryitem in self.__isoviewInventory:
-      self.paintItemOnInventory(inventoryitem.getSpriteName(), n)
-      n += 1
+      self.paintItemOnInventory(inventoryitem.getSpriteName(), position)
+      position += 1
     
   def paintItemOnInventory(self, spriteName, position):
     """ Paints an item on the hud inventory.
@@ -209,7 +211,7 @@ class IsoViewHud(isoview.IsoView):
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
     """
-    self.__player.getRoom().newChatMessage(self.textField.text,self.__player)
+    self.__player.getRoom().newChatMessage(self.textField.text, self.__player)
     self.textField.text = ""
 
   def chatAdded(self, event):

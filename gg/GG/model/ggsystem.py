@@ -1,12 +1,12 @@
 import dMVC.model
 import GG.utils
-import room
-import player
-import ggsession
-import item
-import book
-import penguin
-import door
+import GG.model.room
+import GG.model.player
+import GG.model.ggsession
+import GG.model.item
+import GG.model.book
+import GG.model.penguin
+import GG.model.door
 import thread
 import time
 
@@ -23,7 +23,7 @@ class GGSystem(dMVC.model.Model):
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
     self.loadData()
-    thread.start_new(self.start,())
+    thread.start_new(self.start, ())
      
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
@@ -41,7 +41,7 @@ class GGSystem(dMVC.model.Model):
     """ Sets a new players list.
     players: new players list.
     """
-    if self.__players <> players:
+    if not self.__players == players:
       self.__players = players
       self.triggerEvent('players', players=players)
       return True
@@ -52,7 +52,7 @@ class GGSystem(dMVC.model.Model):
     player: new player.
     """
     if not player in self.__players:
-      self.__players.add(player)
+      self.__players.append(player)
       self.triggerEvent('addPlayer', player=player)
       return True
     return False
@@ -78,7 +78,7 @@ class GGSystem(dMVC.model.Model):
     for player in self.__players:
       if player.checkUser(username, password) and player.getRoom() == None:
         player.changeRoom(self.getEntryRoom(), player.getPosition())
-        session = ggsession.GGSession(player)
+        session = GG.model.ggsession.GGSession(player)
         self.__sessions.append(session)
         return True, session 
     return False, "No se pudo autenticar el usuario"
@@ -114,7 +114,7 @@ class GGSystem(dMVC.model.Model):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    newRoom = room.GGRoom(spriteFull, label)
+    newRoom = GG.model.room.GGRoom(spriteFull, label)
     self.__rooms.append(newRoom)
     return newRoom
       
@@ -127,10 +127,10 @@ class GGSystem(dMVC.model.Model):
     username: player user name.
     password: player password.
     """
-    for pl in self.__players:
-      if pl.checkUser(username, password):
+    for player in self.__players:
+      if player.checkUser(username, password):
         return False
-    self.__players.append(player.GGPlayer(sprite, spriteList, size, position, offset, username, password))
+    self.__players.append(GG.model.player.GGPlayer(sprite, spriteList, size, position, offset, username, password))
     return True
     
   def insertItemIntoRoom(self, item, room, isPlayer):

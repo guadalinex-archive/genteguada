@@ -27,4 +27,4 @@ class ChatMessage:
   def getHour(self):
     """ Returns the hour that the message was sended at.
     """
-    return time.strftime("%H:%M",time.localtime(self.__hour))
+    return time.strftime("%H:%M", time.localtime(self.__hour))

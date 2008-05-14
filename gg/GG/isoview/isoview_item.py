@@ -1,6 +1,4 @@
-import time
 import os
-import math
 import pygame
 import GG.utils
 import isoview

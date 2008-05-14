@@ -1,8 +1,4 @@
-import os
-import math
-import pygame
 import isoview_item
-import GG.utils
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
   """ IsoViewPlayer class.

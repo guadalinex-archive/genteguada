@@ -37,7 +37,7 @@ class GGItem(ggmodel.GGModel):
     """ Sets a new position for the item.
     pos: new position.
     """
-    if self.__position <> pos:
+    if not self.__position == pos:
       self.__position = pos
       self.triggerEvent('position', position=pos)
 

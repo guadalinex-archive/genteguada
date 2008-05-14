@@ -38,8 +38,8 @@ class GGSession(ggmodel.GGModel):
     """ Sets the session's chat with a new log.
     chat: new log.
     """
-    if self.__messagesChat <> messagesChat:
-      self.__messagesChat = chat
+    if not self.__messagesChat == messagesChat:
+      self.__messagesChat = messageChat
       self.triggerEvent('messagesChat', messagesChat=messagesChat)
       return True
     return False
@@ -58,7 +58,7 @@ class GGSession(ggmodel.GGModel):
     """ Removes a string from the chat log.
     chat: string to be removed.
     """
-    if messageChat in self.__messageChat:
+    if messageChat in self.__messagesChat:
       self.__messagesChat.remove(messageChat)
       self.triggerEvent('removeMessageChat', messageChat=messageChat)
       return True

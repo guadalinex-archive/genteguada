@@ -1,14 +1,14 @@
 import math
 import operator
 import GG.utils
-import ggmodel
+import GG.model.ggmodel
 import GG.model.item
 import GG.model.chat_message
 import GG.isoview.isoview_room
 import dMVC.model
-import player
+import GG.model.player
 
-class GGRoom(ggmodel.GGModel):
+class GGRoom(GG.model.ggmodel.GGModel):
   """ Room class.
   Defines atributes and methods for a single room.
   """
@@ -17,7 +17,7 @@ class GGRoom(ggmodel.GGModel):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     """
-    ggmodel.GGModel.__init__(self)
+    GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.__items = []
     self.label = label # Variable para realizar pruebas, sera eliminada
@@ -38,7 +38,7 @@ class GGRoom(ggmodel.GGModel):
     """ Sets a new items list on the room.
     items: item list.
     """
-    if self.__items <> items:
+    if not self.__items == items:
       self.__items = items
       self.triggerEvent('items', items=items)
       return True
@@ -92,9 +92,9 @@ class GGRoom(ggmodel.GGModel):
     player: active player.
     target: position the active player clicked on.
     """
-    clickerLabel = player.username
+    #clickerLabel = player.username
     if not self.getBlocked(target):
-      direction = self.getNextDirection(player, player.getPosition(), target)
+      #direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(target)
     else:
       for item in self.__items:
@@ -107,24 +107,24 @@ class GGRoom(ggmodel.GGModel):
     pos1: starting point.
     pos2: ending point.
     """
-    dir = []
-    dir.append([pos1[0], pos1[1], pos1[2] - 1]) #up
-    dir.append([pos1[0], pos1[1], pos1[2] + 1]) #down
-    dir.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
-    dir.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
-    dir.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
-    dir.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
-    dir.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
-    dir.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
+    direction = []
+    direction.append([pos1[0], pos1[1], pos1[2] - 1]) #up
+    direction.append([pos1[0], pos1[1], pos1[2] + 1]) #down
+    direction.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
+    direction.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
+    direction.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
+    direction.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
+    direction.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
+    direction.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
     
-    for i in range(0, len(dir)):
-      if (pos2 == dir[i]) and (0 <= dir[i][0] <= GG.utils.SCENE_SZ[0]) and (0 <= dir[i][2] <= GG.utils.SCENE_SZ[1]):
-        if self.getBlocked(dir[i]) == 0:
+    for i in range(0, len(direction)):
+      if (pos2 == direction[i]) and (0 <= direction[i][0] <= GG.utils.SCENE_SZ[0]) and (0 <= direction[i][2] <= GG.utils.SCENE_SZ[1]):
+        if self.getBlocked(direction[i]) == 0:
           return GG.utils.HEADING[i+1]
     
     dist = []
-    for i in range(0, len(dir)):
-      dist.append([GG.utils.HEADING[i+1], self.p2pDistance(dir[i], pos2), dir[i]])
+    for i in range(0, len(direction)):
+      dist.append([GG.utils.HEADING[i+1], self.p2pDistance(direction[i], pos2), direction[i]])
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
@@ -152,7 +152,8 @@ class GGRoom(ggmodel.GGModel):
     point1: starting point.
     point2: ending point.
     """
-    if point1 == point2: return 0
+    if point1 == point2: 
+      return 0
     return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
   
   def tick(self):
@@ -166,7 +167,7 @@ class GGRoom(ggmodel.GGModel):
     """
     result = []
     for item in self.__items:
-      if isinstance(item,player.GGPlayer):
+      if isinstance(item, GG.model.player.GGPlayer):
         result.append(item)
     return result
 

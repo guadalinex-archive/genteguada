@@ -1,10 +1,10 @@
-import item
+import GG.model.item
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
 import dMVC.model
 
-class GGPlayer(item.GGItem):
+class GGPlayer(GG.model.item.GGItem):
   """ Player class.
   Defines a player object behaviour.
   """
@@ -18,7 +18,7 @@ class GGPlayer(item.GGItem):
     username: user name.
     password: user password.
     """
-    item.GGItem.__init__(self, sprite, size, position, offset)
+    GG.model.item.GGItem.__init__(self, sprite, size, position, offset)
     self.username = username
     self.spriteList = spriteList
     self.__password = password # Not used outside this class
@@ -31,7 +31,7 @@ class GGPlayer(item.GGItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = item.GGItem.variablesToSerialize(self)
+    parentVars = GG.model.item.GGItem.variablesToSerialize(self)
     return parentVars + ['username', 'spriteList']
   
   # self.__heading
@@ -44,7 +44,7 @@ class GGPlayer(item.GGItem):
   def setHeading(self, heading):
     """ Sets a new heading direction for the item.
     """
-    if self.__heading <> heading:
+    if not self.__heading == heading:
       self.__heading = heading
       self.triggerEvent('heading', heading=heading)
 
@@ -58,7 +58,7 @@ class GGPlayer(item.GGItem):
   def setState(self, state):
     """ Sets a new state for the item.
     """
-    if self.__state <> state:
+    if not self.__state == state:
       self.__state = state
       self.triggerEvent('state', state=state)
 
@@ -74,7 +74,7 @@ class GGPlayer(item.GGItem):
     heading: movement direction.
     destination: movement destination.
     """
-    if self.__destination <> destination:
+    if not self.__destination == destination:
       self.__destination = destination
       self.triggerEvent('destination', destination=destination)
 
@@ -89,7 +89,7 @@ class GGPlayer(item.GGItem):
     """ Sets a new player's inventory.
     inventory: new player's inventory.
     """
-    if self.__inventory <> inventory:
+    if not self.__inventory == inventory:
       self.__inventory = inventory
       self.triggerEvent('inventory', inventory=inventory)
       return True
