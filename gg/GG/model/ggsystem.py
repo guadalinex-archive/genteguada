@@ -6,7 +6,7 @@ import GG.model.ggsession
 import GG.model.item
 import GG.model.book
 import GG.model.penguin
-import GG.model.door
+import GG.model.teleporter
 import thread
 import time
 
@@ -90,8 +90,8 @@ class GGSystem(dMVC.model.Model):
     room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     myPenguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, "Pinguino Misterioso")
     myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2)
-    myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1)
+    myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
+    myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.PENGUIN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
     nino = GG.model.player.GGPlayer(GG.utils.NINO_SPRITES, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_SPRITES, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 0], [55, 43]), [0, 0, 0])
