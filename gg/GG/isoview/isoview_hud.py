@@ -185,3 +185,6 @@ class IsoViewHud(isoview.IsoView):
     messageChat = event.getParams()['message']
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     self.printLineOnChat(cad)
+    GG.utils.playSound(GG.utils.OCEAN_SOUND)
+    
+    

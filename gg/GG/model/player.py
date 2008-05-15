@@ -162,6 +162,7 @@ class GGPlayer(GG.model.item.GGItem):
     """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
+    GG.model.item.GGItem.clickedBy(self, clicker)
     self.newChatMessage(clicker.username + ' ha pinchado en mi')
       
   def tick(self):
