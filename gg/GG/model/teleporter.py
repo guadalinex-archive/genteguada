@@ -92,6 +92,7 @@ class GGTeleporter(GG.model.item.GGItem):
     """ Triggers an event when the teleporter receives a click by a player.
     clicker: player who clicks.
     """
+    GG.model.item.GGItem.clickedBy(self, clicker)
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:
         if not self.checkCondition(condition, clicker):

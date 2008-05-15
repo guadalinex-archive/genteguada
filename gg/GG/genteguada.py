@@ -38,6 +38,7 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
+    pygame.mixer.music.stop()
     sys.exit(0)
 
   def start(self, params):

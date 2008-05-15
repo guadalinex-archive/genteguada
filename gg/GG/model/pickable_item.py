@@ -26,6 +26,7 @@ class GGPickableItem(item.GGItem):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
+    GG.model.item.GGItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.addInventory(self)
       self.getRoom().removeItem(self)

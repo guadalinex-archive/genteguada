@@ -30,6 +30,7 @@ class GGGiverNPC(GG.model.item.GGItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
+    GG.model.item.GGItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       for condition in self.__condition:
         if not self.checkCondition(condition, clicker):

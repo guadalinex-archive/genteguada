@@ -15,7 +15,7 @@ class Animation:
     self.__img = img
     self.__origin = img.rect.topleft
     self.__destination = destination
-    self.__shift = [((self.__origin[0] - self.__destination[0]) /self.__time), 
+    self.__shift = [((self.__origin[0] - self.__destination[0]) / self.__time), 
       ((self.__origin[1] - self.__destination[1]) /self.__time)]
     
   def move(self):

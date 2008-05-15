@@ -1,10 +1,13 @@
 import math
 import os
+import pygame
 
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
+  SOUND_PATH = "gg/GG/data/sound"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"
+  SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
 
 VERSION = "GenteGuada 0.0.3.1"
 #TILE_SZ = [100, 50]
@@ -50,6 +53,9 @@ BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
+
+OCEAN_SOUND = "ocean.ogg"
+
 SIN30R = math.sin(math.radians(30))
 COS30R = math.cos(math.radians(30))
 
@@ -171,4 +177,27 @@ def p3dToP2d(cord3d, offset):
     
   cord2d = [x2d, y2d]
   return cord2d
-
+    
+def playSound(sound):
+  sndPath = os.path.join(SOUND_PATH, sound)
+  pygame.mixer.music.load(sndPath)
+  pygame.mixer.music.play()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
