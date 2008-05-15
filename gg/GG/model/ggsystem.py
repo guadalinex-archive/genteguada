@@ -89,7 +89,7 @@ class GGSystem(dMVC.model.Model):
     room1 = self.createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.createRoom(GG.utils.TILE_WATER, "habitacion 2")
     myPenguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, "Pinguino Misterioso")
-    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
+    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room2)
     myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room1)
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 0], [55, 43]), [0, 0, 0])
