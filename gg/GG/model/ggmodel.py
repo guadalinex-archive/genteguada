@@ -12,5 +12,5 @@ class GGModel(dMVC.model.Model):
   
   @dMVC.model.localMethod
   def defaultView(self):
-    raise "Metodo no definido en los hijos"
+    raise Exception("Metodo no definido en los hijos")
   

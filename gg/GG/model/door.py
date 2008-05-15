@@ -1,32 +1,26 @@
-import item
+import GG.model.item
 import GG.isoview.isoview_item
 import dMVC.model
 
-class GGDoor(item.GGItem):
+class GGDoor(GG.model.item.GGItem):
   """ Door class.
   Defines a door object behaviour.
   """
  
-  def __init__(self, sprite, entryPosition, exitPosition, position, offset, heading, destinationRoom):
+  def __init__(self, sprite, entryPosition, exitPosition, position, offset, destinationRoom):
     """ Class builder.
     sprite: sprite used to paint the door.
     entryPosition: door entrance position.
     exitPosition: door exit position on the new room.
     position: door position.
     offset: image offset on screen.
-    heading: direction the door opens to.
     destinationRoom: room the door will teleport players to.
     """
-    item.GGItem.__init__(self, sprite, position, offset)
+    GG.model.item.GGItem.__init__(self, sprite, position, offset)
     self.__entryPosition = entryPosition
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
-    #TODO atributo "mega"-privado
-    self.__heading = heading
     
-  def getBackground(self):
-    return self.__background
-
   # self.__entryPosition
   
   def getEntryPosition(self):
@@ -57,20 +51,6 @@ class GGDoor(item.GGItem):
       self.__exitPosition = exitPosition
       #self.triggerEvent('exitPosition', exitPosition=exitPosition)
   
-  # self.__heading
-
-  def getHeading(self):
-    """ Returns the direction the door is heading to.
-    """
-    return self.__heading
-  
-  def setHeading(self, heading):
-    """ Sets a new heading direction for the item.
-    """
-    if not self.__heading == heading:
-      self.__heading = heading
-      self.triggerEvent('heading', heading=heading)
-
   # self.__destinationRoom
   
   def getDestinationRoom(self):

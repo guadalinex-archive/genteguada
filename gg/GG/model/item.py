@@ -1,4 +1,3 @@
-import os
 import ggmodel
 import GG.utils
 import GG.isoview.isoview_item
@@ -45,7 +44,7 @@ class GGItem(ggmodel.GGModel):
     """ Sets a new start position for the item.
     pos: new position.
     """
-    if self.__position <> pos:
+    if self.__position != pos:
       self.__position = pos
       if pos != None:
         self.triggerEvent('startPosition', position=pos)
@@ -61,7 +60,7 @@ class GGItem(ggmodel.GGModel):
     """ Sets the item's room as none.    
     """
     if self.__room == None:
-      raise "Error en limpieza de room"
+      raise Exception("Error en limpieza de room")
     self.__setRoom(None)
     
   def setRoom(self, room):
@@ -69,9 +68,9 @@ class GGItem(ggmodel.GGModel):
     room: new room.
     """
     if self.__room != None:
-      raise "Error: el item ya tiene un room"
+      raise Exception("Error: el item ya tiene un room")
     if room == None:
-      raise "Error: habitacion = None"
+      raise Exception("Error: habitacion = None")
     self.__setRoom(room)
       
   def __setRoom(self, room):

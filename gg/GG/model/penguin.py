@@ -1,9 +1,8 @@
-import item
+import GG.model.item
 import GG.model.key
 import GG.isoview.isoview_item
-import dMVC.model
 
-class GGPenguin(item.GGItem):
+class GGPenguin(GG.model.item.GGItem):
   """ Penguin class.
   Defines a penguin object behaviour.
   """
@@ -16,21 +15,13 @@ class GGPenguin(item.GGItem):
     spriteName: sprite used to paint the penguin on the screen game zone.
     label: penguin's label
     """
-    item.GGItem.__init__(self, sprite, position, offset)
+    GG.model.item.GGItem.__init__(self, sprite, position, offset)
     self.spriteInventory = spriteInventory
     self.label = label
     
   def variablesToSerialize(self):
-    #TODO esto es una solucin de emergencia mientras que no se arregle en el dMVC
-    parentVars = item.GGItem.variablesToSerialize(self)
+    parentVars = GG.model.item.GGItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
-  
-  @dMVC.model.localMethod 
-  def getLabel(self):
-    #TODO al ser una variable publica habria que eliminar este metodo
-    """ Returns penguin label.
-    """
-    return self.label    
   
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.

@@ -8,7 +8,7 @@ class IsoViewTile(isoview.IsoView):
   Defines a room tile view
   """
 
-  def __init__(self, topLeft, bottomRight, spriteName, size, blocked, position):
+  def __init__(self, topLeft, bottomRight, spriteName, position):
     """ Class constructor.
     topLeft: top left tile coord.
     bottomRight: lower right tile coord.
@@ -17,17 +17,15 @@ class IsoViewTile(isoview.IsoView):
     blocked: Indicates if the tile is passable or blocked.
     position: tile position.
     """
-    isoview.IsoView.__init__(self,None,None)
+    isoview.IsoView.__init__(self, None, None)
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
-    self.__size = size
     imgPath =  os.path.join(GG.utils.DATA_PATH, spriteName)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = self.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
-    self.__blocked = blocked
-
+    self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
+    
   def getImg(self):
     """ Returns the tile image.
     """
@@ -42,21 +40,6 @@ class IsoViewTile(isoview.IsoView):
     """ Returns the lower right coord.
     """
     return self.__bottomRight
-  
-  def getId(self):
-    """ Returns the tile Id.
-    """
-    return self.__id
-
-  def getBlocked(self):
-    """ Returns the tile blocked state.
-    """
-    return self.__blocked
-  
-  def setBlocked(self, blocked):
-    """ Set the tile as blocked.
-    """
-    self.__blocked = blocked
   
   def contained(self, pos):
     """ Returns if a point is contained on a tile.

@@ -47,10 +47,10 @@ class IsoViewRoom(isoview.IsoView):
     for corx in range(GG.utils.SCENE_SZ[0]):
       listTile = []
       for corz in range(GG.utils.SCENE_SZ[1]):
-        varPos = self.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
+        varPos = GG.utils.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
-        isotile = isoview_tile.IsoViewTile( [pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], self.getModel().spriteFull, GG.utils.TILE_SZ, 0, [corx, 0, corz])
-        #self.__allPlayers.add(isotile.getImg())
+        isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
+          self.getModel().spriteFull, [corx, 0, corz])
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
@@ -83,7 +83,6 @@ class IsoViewRoom(isoview.IsoView):
     dirtyRects = self.__allBackground.draw(self.getScreen())
     pygame.display.update(dirtyRects)
     
-    #self.__allPlayers.clear(self.getScreen(), self.__bg.image)
     self.__allPlayers.update()                     
     dirtyRects = self.__allPlayers.draw(self.getScreen())
     pygame.display.update(dirtyRects)
@@ -92,18 +91,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Returns the isometric view players list.
     """
     return self.__isoViewPlayers
-    
-  """
-  def orderSprites(self):
-    allPlayersTemp = []
-    for image in self.__allPlayers:
-      allPlayersTemp.append([image, image.rect.topleft[1]])
-      self.__allPlayers.remove(image)
-    allPlayersTemp = sorted(allPlayersTemp, key=operator.itemgetter(1), reverse=True)
-    self.__allPlayers = allPlayersTemp
-    while len(allPlayersTemp):
-      self.__allPlayers.append(allPlayersTemp.pop()[0])
-  """
     
   def paintPlayers(self):
     """ Paints all players on screen.
@@ -150,7 +137,7 @@ class IsoViewRoom(isoview.IsoView):
         self.removeIsoViewItem(ivplayer)
         removed = True
     if not removed:
-      raise "Error: vista de item no eliminada"
+      raise Exception("Error: vista de item no eliminada")
         
   def addIsoViewItem(self, item):
     """ Inserts a new item view.
