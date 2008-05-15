@@ -1,5 +1,5 @@
 import GG.model.item
-import GG.model.key
+import GG.model.pickable_item
 import GG.isoview.isoview_item
 
 class GGPenguin(GG.model.item.GGItem):
@@ -36,5 +36,5 @@ class GGPenguin(GG.model.item.GGItem):
         if item.label == "llave dorada":
           k = 1
       if not k:
-        clicker.addInventory(GG.model.key.GGKey(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"))
+        clicker.addInventory(GG.model.pickable_item.GGPickableItem(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"))
       
