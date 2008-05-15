@@ -1,18 +1,18 @@
 import item
 import GG.isoview.isoview_item
 
-class GGBook(item.GGItem):
-  """ Book class.
-  Defines a book object behaviour.
+class GGPickableItem(item.GGItem):
+  """ PickableItem class.
+  Defines a pickable item behaviour.
   """
  
   def __init__(self, spriteName, position, offset, spriteInventory, label):
     """ Class builder.
-    spriteName: sprite used to paint the book on the screen game zone.
-    position: book position.
+    spriteName: sprite used to paint the item on the screen game zone.
+    position: item position.
     offset: image offset on screen.
-    spriteInventory: sprite used to paint the book on the screen inventory zone.
-    label: book's label
+    spriteInventory: sprite used to paint the item on the screen inventory zone.
+    label: item's label
     """
     item.GGItem.__init__(self, spriteName, position, offset)
     self.spriteInventory = spriteInventory
