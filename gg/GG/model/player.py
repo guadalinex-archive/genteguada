@@ -9,15 +9,15 @@ class GGPlayer(GG.model.item.GGItem):
   Defines a player object behaviour.
   """
  
-  def __init__(self, sprite, spriteList, position, offset, username, password):
+  def __init__(self, spriteList, position, offset, username, password):
     """ Class builder.
-    sprite: sprite used to paint the player.
+    spriteList: sprite list used to paint the player.
     position: player position.
     offset: image offset on screen.
     username: user name.
     password: user password.
     """
-    GG.model.item.GGItem.__init__(self, sprite, position, offset)
+    GG.model.item.GGItem.__init__(self, spriteList["right"], position, offset)
     self.username = username
     self.spriteList = spriteList
     self.__password = password # Not used outside this class
@@ -82,7 +82,7 @@ class GGPlayer(GG.model.item.GGItem):
     heading: movement direction.
     destination: movement destination.
     """
-    if self.__destination <> destination:
+    if self.__destination != destination:
       self.__destination = destination
       
   # self.__inventory
@@ -162,7 +162,7 @@ class GGPlayer(GG.model.item.GGItem):
     """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
-    self.newChatMessage('pincha pincha')
+    self.newChatMessage(clicker.username + ' ha pinchado en mi')
       
   def tick(self):
     """ Calls for an update on player's position an movement direction.

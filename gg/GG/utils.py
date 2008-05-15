@@ -1,6 +1,5 @@
 import math
 import os
-import pygame
 
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
@@ -47,8 +46,6 @@ PLAYER_SPRITE1 = "black_mage.gif"
 PLAYER_SPRITE2 = "black_mage_red.gif"
 OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE = "andatuz_01.png"
-NINO_SPRITE = "nino_right.png"
-NINA_SPRITE = "nina_right.png"
 BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
@@ -82,26 +79,27 @@ def getNextDirection(pos1, pos2):
   pos1: posicion de inicio.
   pos2: posicion de destino.
   """
+  retVar = "down"
   if pos1[0] < pos2[0]:
     if pos1[2] < pos2[2]:
-      return "bottomright"
+      retVar = "bottomright"
     elif pos1[2] > pos2[2]:
-      return "topright"
+      retVar = "topright"
     else:
-      return "right"
+      retVar = "right"
   elif pos1[0] > pos2[0]:
     if pos1[2] < pos2[2]:
-      return "bottomleft"
+      retVar = "bottomleft"
     elif pos1[2] > pos2[2]:
-      return "topleft"
+      retVar = "topleft"
     else:
-      return "left"
+      retVar = "left"
   elif pos1[0] == pos2[0]:
     if pos1[2] < pos2[2]:
-      return "down" 
+      retVar = "down" 
     elif pos1[2] > pos2[2]:
-      return "up"
-  return "down"
+      retVar = "up"
+  return retVar
 
 def checkNeighbour(pos1, pos2):
   """ Checks if 2 points are neighbours or not.
@@ -131,99 +129,46 @@ def getFrontPosition(pos, heading):
   pos: player's position.
   heading: direction that the player is heading to.
   """
+  retVar = [-1, -1, -1]
   if heading == "up" and not pos[2] == 0:
-    return [pos[0], pos[1], pos[2] - 1]
+    retVar = [pos[0], pos[1], pos[2] - 1]
   elif heading == "down" and not pos[2] == (SCENE_SZ[1] - 1):
-    return [pos[0], pos[1], pos[2] + 1]
+    retVar = [pos[0], pos[1], pos[2] + 1]
   elif heading == "left" and not pos[0] == 0:
-    return [pos[0] - 1, pos[1], pos[2]]
+    retVar = [pos[0] - 1, pos[1], pos[2]]
   elif heading == "right" and not pos[0] == (SCENE_SZ[0] - 1):
-    return [pos[0] + 1, pos[1], pos[2]]
+    retVar = [pos[0] + 1, pos[1], pos[2]]
   elif heading == "topleft" and not pos[0] == 0 and not pos[2] == 0:
-    return [pos[0] - 1, pos[1], pos[2] - 1]
+    retVar = [pos[0] - 1, pos[1], pos[2] - 1]
   elif heading == "bottomright" and not pos[0] == (SCENE_SZ[0] - 1) and not pos[2] == (SCENE_SZ[1] - 1):
-    return [pos[0] + 1, pos[1], pos[2] + 1]
+    retVar = [pos[0] + 1, pos[1], pos[2] + 1]
   elif heading == "bottomleft" and not pos[0] == 0 and not pos[2] == (SCENE_SZ[1] - 1):
-    return [pos[0] - 1, pos[1], pos[2] + 1]
+    retVar = [pos[0] - 1, pos[1], pos[2] + 1]
   elif heading == "topright" and not pos[2] == 0 and not pos[0] == (SCENE_SZ[0] - 1):
-    return [pos[0] + 1, pos[1], pos[2] - 1]
-  return [-1, -1, -1]
+    retVar = [pos[0] + 1, pos[1], pos[2] - 1]
+  return retVar
     
-class TextRectException:
-  
-  def __init__(self, message = None):
-    self.message = message
-  def __str__(self):
-    return self.message
-      
-def renderTextRect(string, font, rect, text_color, bgColor, justification=0):
-  """Returns a surface containing the passed text string, reformatted
-  to fit within the given rect, word-wrapping as necessary. The text
-  will be anti-aliased.
-  
-  Takes the following arguments:
-  string - the text you wish to render. \n begins a new line.
-  font - a Font object
-  rect - a rectstyle giving the size of the surface requested.
-  text_color - a three-byte tuple of the rgb value of the
-               text color. ex (0, 0, 0) = BLACK
-  bgColor - a three-byte tuple of the rgb value of the surface.
-  justification - 0 (default) left-justified
-                  1 horizontally centered
-                  2 right-justified
-
-  Returns the following values:
-
-  Success - a surface object with the text rendered onto it.
-  Failure - raises a TextRectException if the text won't fit onto the surface.
+def p2pDistance(point1, point2):
+  """ Calculates the distance between 2 points.
+  point1: starting point.
+  point2: ending point.
   """
-   
-  finalLines = []
-  requestedLines = string.splitlines()
+  if point1 == point2: 
+    return 0
+  return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
+    
+def p3dToP2d(cord3d, offset):
+  """ Returns the physical 2d coordinates of a 3d virtual point.
+  cord3d: 3d virtual point.
+  offset: point's offset on screen.
+  """
+  x2d = SCREEN_OR[0]
+  y2d = SCREEN_OR[1]
+  x2d = x2d + (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[2]*(TILE_SZ[1])) 
+  y2d = y2d + (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[2]*(TILE_SZ[1]/2)) 
+  x2d = x2d - (offset[0])
+  y2d = y2d - (offset[1])
+    
+  cord2d = [x2d, y2d]
+  return cord2d
 
-  # Create a series of lines that will fit on the provided
-  # rectangle.
-
-  for requestedLine in requestedLines:
-    if font.size(requestedLine)[0] > rect.width:
-      words = requestedLine.split(' ')
-      # if any of our words are too long to fit, return.
-      for word in words:
-        if font.size(word)[0] >= rect.width:
-          raise TextRectException, "The word " + word + " is too long to fit in the rect passed."
-      # Start a new line
-      accumulatedLine = ""
-      for word in words:
-        testLine = accumulatedLine + word + " "
-        # Build the line while the words fit.    
-        if font.size(testLine)[0] < rect.width:
-          accumulatedLine = testLine
-        else:
-          finalLines.append(accumulatedLine)
-          accumulatedLine = word + " "
-      finalLines.append(accumulatedLine)
-    else:
-      finalLines.append(requestedLine)
-
-  # Let's try to write the text out on the surface.
-
-  surface = pygame.Surface(rect.size)
-  surface.fill(bgColor)
-
-  accumulatedHeight = 0
-  for line in finalLines:
-    if accumulatedHeight + font.size(line)[1] >= rect.height:
-      raise TextRectException, "Once word-wrapped, the text string was too tall to fit in the rect."
-    if line != "":
-      tempsurface = font.render(line, 1, text_color)
-      if justification == 0:
-        surface.blit(tempsurface, (0, accumulatedHeight))
-      elif justification == 1:
-        surface.blit(tempsurface, ((rect.width - tempsurface.get_width()) / 2, accumulatedHeight))
-      elif justification == 2:
-        surface.blit(tempsurface, (rect.width - tempsurface.get_width(), accumulatedHeight))
-      else:
-        raise TextRectException, "Invalid justification argument: " + str(justification)
-    accumulatedHeight += font.size(line)[1]
-
-  return surface

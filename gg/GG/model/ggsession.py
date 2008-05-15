@@ -17,8 +17,6 @@ class GGSession(ggmodel.GGModel):
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
-    self.__messagesChat = []
-    self.__messagesChat.append("_.-= Wellcome to " + GG.utils.VERSION + " =-._")
       
   # self.__player
   
@@ -26,44 +24,7 @@ class GGSession(ggmodel.GGModel):
     """ Returns the active player.
     """
     return self.__player
-
-  # self.__chat
-  
-  def getMessagesChat(self):
-    """ Returns the chat log.
-    """
-    return self.__messagesChat
-  
-  def setMessagesChat(self, messagesChat):
-    """ Sets the session's chat with a new log.
-    chat: new log.
-    """
-    if not self.__messagesChat == messagesChat:
-      self.__messagesChat = messageChat
-      self.triggerEvent('messagesChat', messagesChat=messagesChat)
-      return True
-    return False
-      
-  def addMessageChat(self, messageChat):
-    """ Adds a new string to the chat log.
-    chat: new string.
-    """
-    if not messageChat in self.__messagesChat:
-      self.__messagesChat.append(messageChat)
-      self.triggerEvent('addMessageChat', messageChat=messageChat)
-      return True
-    return False
-    
-  def removeMessageChat(self, messageChat):
-    """ Removes a string from the chat log.
-    chat: string to be removed.
-    """
-    if messageChat in self.__messagesChat:
-      self.__messagesChat.remove(messageChat)
-      self.triggerEvent('removeMessageChat', messageChat=messageChat)
-      return True
-    return False
-    
+   
   def roomChanged(self, event):
     oldRoom = event.getParams()['oldRoom']
     if oldRoom:

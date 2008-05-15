@@ -20,7 +20,6 @@ class GGBook(item.GGItem):
     self.label = label
     
   def variablesToSerialize(self):
-    #TODO esto es una solucin de emergencia mientras que no se arregle en el dMVC
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
   

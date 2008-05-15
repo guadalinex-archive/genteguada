@@ -19,31 +19,15 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
-    self.__textFont = pygame.font.Font(None, 24)
-    self.__textRect = pygame.Rect((GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1], GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1]))
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(screen)
+    self.textArea = None
+    self.__textField = None
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
-    self.textArea = None
-    self.textField = None
 
-    #self.getModel().subscribeEvent('messagesChat', self.messaggesChatChanged)
-    #self.getModel().subscribeEvent('removeMessageChat', self.messaggesChatRemoved)
-    #self.getModel().subscribeEvent('changeActiveRoom', self.activeRoomChanged)
-
-  def getTextFont(self):
-    """ Returns the font used to print text on chat.
-    """
-    return self.__textFont
-  
-  def getTextRect(self):
-    """ Returns the rectangle used to print text on chat.
-    """
-    return self.__textRect
-  
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
     item: new isoview inventory item.
@@ -86,28 +70,19 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__isoviewRoom:
-      #self.getModel().subscribeEvent('chatAdded', self.chatAdded)
-      #self.unsubscribeAllEvents()
-      #self.__player.subscribeEvent('room', self.roomChanged)
       #self.__isoviewRoom.unsubscribeAllEvents()
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
-      #self.getModel().subscribeEvent('chatAdded', self.chatAdded)
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
     """
     return self.__isoviewRoom
     
-  def pruebaChat(self, events):
-    """ Procedimiento de prueba para el chat del Hud.
-    """
-    self.printOnChat(events.getParams()["msg"])
-    
-  def clickedByPlayer(self, player, target):
+  def clickedByPlayer(self, target):
     """ Indicates that a player has made click the isoview hud object.
     player: player who clicks.
     target: clicked point.
@@ -155,18 +130,16 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.border = 1
     self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
     self.widgetContainer.add_widget(self.textArea)
- 
   
   def paintTextBox(self):
     """ Paints the editable text box on screen.
     """
-    self.textField = ocempgui.widgets.Entry()
-    self.textField.border = 1
-    self.textField.topleft = GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1]
-    self.textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
-    self.widgetContainer.add_widget(self.textField)
+    self.__textField = ocempgui.widgets.Entry()
+    self.__textField.border = 1
+    self.__textField.topleft = GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1]
+    self.__textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
+    self.widgetContainer.add_widget(self.__textField)
 
-       
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
@@ -198,21 +171,12 @@ class IsoViewHud(isoview.IsoView):
     """
     self.textArea.items.append(ocempgui.widgets.components.TextListItem(string))
     self.textArea.vscrollbar.increase()
-        
-  def messagesChatAdded(self, event):
-    """ Prints a string on the HUD chat window.
-    string: the info that will be printed on screen.
-    """
-    string = event.getParams()["messageChat"]
-    renderedText = GG.utils.renderTextRect(string, self.getTextFont(), self.getTextRect(), GG.utils.CHAT_COLOR_FONT, GG.utils.CHAT_COLOR_BG, 0)
-    self.getScreen().blit(renderedText, self.getTextRect().topleft)
-    pygame.display.update()
     
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
     """
-    self.__player.getRoom().newChatMessage(self.textField.text, self.__player)
-    self.textField.text = ""
+    self.__player.getRoom().newChatMessage(self.__textField.text, self.__player)
+    self.__textField.text = ""
 
   def chatAdded(self, event):
     """ Triggers after receiving a new chat message event.

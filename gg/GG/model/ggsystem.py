@@ -22,8 +22,8 @@ class GGSystem(dMVC.model.Model):
     self.__rooms = []
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
-    self.loadData()
-    thread.start_new(self.start, ())
+    self.__loadData()
+    thread.start_new(self.__start, ())
      
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
@@ -83,15 +83,17 @@ class GGSystem(dMVC.model.Model):
         return True, session 
     return False, "No se pudo autenticar el usuario"
 
-  def loadData(self):
+  def __loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    room1 = self.createRoom(GG.utils.TILE_STONE, "habitacion 1")
-    room2 = self.createRoom(GG.utils.TILE_WATER, "habitacion 2")
+    room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
+    room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     myPenguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, "Pinguino Misterioso")
     myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room2)
-    myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room1)
+    myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2)
+    myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1)
+    nino = GG.model.player.GGPlayer(GG.utils.NINO_SPRITES, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
+    nina = GG.model.player.GGPlayer(GG.utils.NINA_SPRITES, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 0], [55, 43]), [0, 0, 0])
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [1, 0, 0], [55, 43]), [1, 0, 0])
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [2, 0, 0], [55, 43]), [2, 0, 0])
@@ -107,10 +109,10 @@ class GGSystem(dMVC.model.Model):
     room1.addItem(myBook, myBook.getPosition())    
     room1.addItem(myDoor1, myDoor1.getPosition())    
     room2.addItem(myDoor2, myDoor2.getPosition())
-    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
-    self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
+    self.__createPlayer(nino)
+    self.__createPlayer(nina)
         
-  def createRoom(self, spriteFull, label):
+  def __createRoom(self, spriteFull, label):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
@@ -118,18 +120,13 @@ class GGSystem(dMVC.model.Model):
     self.__rooms.append(newRoom)
     return newRoom
       
-  def createPlayer(self, sprite, spriteList, position, offset, username, password):
+  def __createPlayer(self, player):
     """ Creates a new player.
-    sprite: sprite used to paint the player.
-    position: sprite position.
-    offset: user sprite offset on screen.
-    username: player user name.
-    password: player password.
+    player: new player.
     """
-    for player in self.__players:
-      if player.checkUser(username, password):
-        return False
-    self.__players.append(GG.model.player.GGPlayer(sprite, spriteList, position, offset, username, password))
+    if player in self.__players:
+      return False
+    self.__players.append(player)
     return True
     
   def insertItemIntoRoom(self, item, room, isPlayer):
@@ -154,14 +151,14 @@ class GGSystem(dMVC.model.Model):
     if isPlayer and item in self.__players:
       self.__players.remove(item)
     
-  def start(self):
+  def __start(self):
     """ Starts the program.
     """
     while True:
       time.sleep(GG.utils.TICK_DELAY)
-      self.tick()
+      self.__tick()
     
-  def tick(self):
+  def __tick(self):
     """ Calls for a time tick on all rooms.
     """
     for room in self.__rooms:

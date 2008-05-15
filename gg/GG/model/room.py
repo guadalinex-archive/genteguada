@@ -1,4 +1,3 @@
-import math
 import operator
 import GG.utils
 import GG.model.ggmodel
@@ -55,6 +54,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       item.setStartPosition(self.getNearestEmptyCell(pos))
       if isinstance(item, GG.model.player.GGPlayer):
         item.setStartDestination(item.getPosition())
+        item.setHeading("up")
       item.setRoom(self)
       self.triggerEvent('addItem', item=item)
       return True
@@ -69,7 +69,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       self.__items.remove(item)
       self.triggerEvent('removeItem', item=item)
       return
-    raise "Error: item no eliminado"
+    raise Exception("Error: item no eliminado")
 
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
@@ -125,7 +125,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     
     dist = []
     for i in range(0, len(direction)):
-      dist.append([GG.utils.HEADING[i+1], self.p2pDistance(direction[i], pos2), direction[i]])
+      dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
@@ -135,28 +135,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
             return first[0]
     return "none"  
     
-  def isCloser(self, ori, pos, dest):
-    """ Checks if a point is closer to a destination than another point.
-    ori: origin point.
-    pos: point to check.
-    dest: destination point.
-    """
-    dist1 = math.sqrt(pow((dest[0] - ori[0]), 2) + pow((dest[2] - ori[2]), 2))
-    dist2 = math.sqrt(pow((dest[0] - pos[0]), 2) + pow((dest[2] - pos[2]), 2))
-    if dist1 > dist2:
-      return 1
-    else:
-      return 0
-    
-  def p2pDistance(self, point1, point2):
-    """ Calculates the distance between 2 points.
-    point1: starting point.
-    point2: ending point.
-    """
-    if point1 == point2: 
-      return 0
-    return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
-  
   def tick(self):
     """ Calls for an update on all player movements.
     """
@@ -184,44 +162,46 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not self.getBlocked(pos):
       return pos
     
+    retVar = None
     if pos[2] > 0:
       auxPos = [pos[0], pos[1], pos[2] - 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if pos[2] < (GG.utils.SCENE_SZ[1] - 1):
+      if res != None:
+        retVar = res
+    elif pos[2] < (GG.utils.SCENE_SZ[1] - 1):
       auxPos = [pos[0], pos[1], pos[2] + 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if pos[0] > 0:
+      if res != None:
+        retVar = res
+    elif pos[0] > 0:
       auxPos = [pos[0] - 1, pos[1], pos[2]]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if pos[0] < (GG.utils.SCENE_SZ[0] - 1):
+      if res != None:
+        retVar = res
+    elif pos[0] < (GG.utils.SCENE_SZ[0] - 1):
       auxPos = [pos[0] + 1, pos[1], pos[2]]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if (pos[0] > 0) and (pos[2] > 0):
+      if res != None:
+        retVar = res
+    elif (pos[0] > 0) and (pos[2] > 0):
       auxPos = [pos[0] - 1, pos[1], pos[2] - 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if (pos[2] < (GG.utils.SCENE_SZ[1] - 1)) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
+      if res != None:
+        retVar = res
+    elif (pos[2] < (GG.utils.SCENE_SZ[1] - 1)) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
       auxPos = [pos[0] + 1, pos[1], pos[2] + 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if (pos[0] > 0) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
+      if res != None:
+        retVar = res
+    elif (pos[0] > 0) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
       auxPos = [pos[0] - 1, pos[1], pos[2] + 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
-    
-    if (pos[0] < (GG.utils.SCENE_SZ[0] - 1)) and (pos[2] > 0):
+      if res != None:
+        retVar = res
+    elif (pos[0] < (GG.utils.SCENE_SZ[0] - 1)) and (pos[2] > 0):
       auxPos = [pos[0] + 1, pos[1], pos[2] - 1]
       res = self.getNearestEmptyCell(auxPos)
-      if res != None: return res
+      if res != None:
+        retVar = res
     
-    return None
+    return retVar
