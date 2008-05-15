@@ -36,5 +36,14 @@ class GGPenguin(item.GGItem):
     """ Triggers an event when the penguin receives a click by a player.
     clicker: player who clicks.
     """
+    #if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+    #  clicker.addInventory(GG.model.key.GGKey(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"))
+
+    k = 0
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      clicker.addInventory(GG.model.key.GGKey(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"))
+      for item in clicker.getInventory():
+        if item.label == "llave dorada":
+          k = 1
+      if not k:
+        clicker.addInventory(GG.model.key.GGKey(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"))
+      
