@@ -97,6 +97,11 @@ class GGDoor(item.GGItem):
     """ Triggers an event when the door receives a click by a player.
     clicker: player who clicks.
     """
+    k = 0
     if clicker.getPosition() == self.__entryPosition:
-      clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
-    
+      for item in clicker.getInventory():
+        if item.label == "llave dorada":
+          k = 1
+      if k:
+        clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
+          
