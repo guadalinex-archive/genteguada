@@ -9,16 +9,15 @@ class GGPlayer(GG.model.item.GGItem):
   Defines a player object behaviour.
   """
  
-  def __init__(self, sprite, spriteList, size, position, offset, username, password):
+  def __init__(self, sprite, spriteList, position, offset, username, password):
     """ Class builder.
     sprite: sprite used to paint the player.
-    size: player sprite size.
     position: player position.
     offset: image offset on screen.
     username: user name.
     password: user password.
     """
-    GG.model.item.GGItem.__init__(self, sprite, size, position, offset)
+    GG.model.item.GGItem.__init__(self, sprite, position, offset)
     self.username = username
     self.spriteList = spriteList
     self.__password = password # Not used outside this class
@@ -78,6 +77,14 @@ class GGPlayer(GG.model.item.GGItem):
       self.__destination = destination
       self.triggerEvent('destination', destination=destination)
 
+  def setStartDestination(self, destination):
+    """ Sets a new destination for the player movement without calling for a 'destination' event.
+    heading: movement direction.
+    destination: movement destination.
+    """
+    if self.__destination <> destination:
+      self.__destination = destination
+      
   # self.__inventory
   
   def getInventory(self):
@@ -198,7 +205,7 @@ class GGPlayer(GG.model.item.GGItem):
       oldRoom.removeItem(self)
     room.addItem(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
-  
+    
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.

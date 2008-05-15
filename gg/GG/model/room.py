@@ -52,8 +52,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not item in self.__items:
       self.__items.append(item)
       item.setStartPosition(None)
-      print pos
       item.setStartPosition(self.getNearestEmptyCell(pos))
+      if isinstance(item, GG.model.player.GGPlayer):
+        item.setStartDestination(item.getPosition())
       item.setRoom(self)
       self.triggerEvent('addItem', item=item)
       return True
