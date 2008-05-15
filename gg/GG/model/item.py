@@ -1,4 +1,6 @@
+import os
 import ggmodel
+import GG.utils
 import GG.isoview.isoview_item
 import dMVC.model
 
@@ -7,16 +9,14 @@ class GGItem(ggmodel.GGModel):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, size, position, offset):
+  def __init__(self, spriteName, position, offset):
     """ Class constructor.
     sprite: image name.
-    size: image size.
     position: position on screen for the item.
     offset: offset for that position.
     """
     ggmodel.GGModel.__init__(self)
     self.spriteName = spriteName
-    self.size = size
     self.offset   = offset
     self.__position = position
     self.__room = None
@@ -80,7 +80,7 @@ class GGItem(ggmodel.GGModel):
     """
     self.__room = room
     self.triggerEvent('room', room=room)
-  
+    
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.

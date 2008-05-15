@@ -89,7 +89,6 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
-    print "positionChanged"
     self.__animationDestination = event.getParams()["position"]
     self.animatedSetPosition(event.getParams()["position"])
   
@@ -97,12 +96,7 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position without animation and draws the room after receiving a position change event.
     event: even info.
     """
-    print "startPositionChanged"
     del self.__animation
     self.__animation = None
     self.__img.rect.topleft = self.p3dToP2d(event.getParams()['position'], self.getModel().offset)
-  
-    #self.__animationDestination = event.getParams()["position"]
-    #self.animatedSetPosition(event.getParams()["position"])
-    pass
   

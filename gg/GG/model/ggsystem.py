@@ -88,27 +88,27 @@ class GGSystem(dMVC.model.Model):
     """
     room1 = self.createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.createRoom(GG.utils.TILE_WATER, "habitacion 2")
-    myPenguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [50, 55], [1, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, 1, "Pinguino Misterioso")
-    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [50, 35], [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
-    myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [53, 135], [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room2)
-    myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [53, 135], [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room1)
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [0, 0, 0], [55, 43]), [0, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [1, 0, 0], [55, 43]), [1, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [2, 0, 0], [55, 43]), [2, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [4, 0, 0], [55, 43]), [4, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [5, 0, 0], [55, 43]), [5, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [6, 0, 0], [55, 43]), [6, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [7, 0, 0], [55, 43]), [7, 0, 0])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [0, 0, 1], [55, 43]), [0, 0, 1])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [0, 0, 2], [55, 43]), [0, 0, 2])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [0, 0, 4], [55, 43]), [0, 0, 4])
-    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [120, 133], [0, 0, 6], [55, 43]), [0, 0, 6])
+    myPenguin = GG.model.penguin.GGPenguin(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], GG.utils.PENGUIN_SPRITE, "Pinguino Misterioso")
+    myBook = GG.model.book.GGBook(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, 1, "Guia de Telefonos")
+    myDoor1 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room2)
+    myDoor2 = GG.model.door.GGDoor(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], "down", room1)
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [1, 0, 0], [55, 43]), [1, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [2, 0, 0], [55, 43]), [2, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [4, 0, 0], [55, 43]), [4, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [5, 0, 0], [55, 43]), [5, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [6, 0, 0], [55, 43]), [6, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [7, 0, 0], [55, 43]), [7, 0, 0])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 1], [55, 43]), [0, 0, 1])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 2], [55, 43]), [0, 0, 2])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 4], [55, 43]), [0, 0, 4])
+    room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 6], [55, 43]), [0, 0, 6])
     room1.addItem(myPenguin, myPenguin.getPosition())    
     room1.addItem(myBook, myBook.getPosition())    
     room1.addItem(myDoor1, myDoor1.getPosition())    
     room2.addItem(myDoor2, myDoor2.getPosition())
-    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, GG.utils.NINA_SZ, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
-    self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, GG.utils.NINO_SZ, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
+    self.createPlayer(GG.utils.NINO_SPRITE, GG.utils.NINO_SPRITES, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe", "1234")
+    self.createPlayer(GG.utils.NINA_SPRITE, GG.utils.NINA_SPRITES, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-75, GG.utils.CHAR_SZ[1]-20], "pepe2", "12345")
         
   def createRoom(self, spriteFull, label):
     """ Creates a new room.
@@ -118,10 +118,9 @@ class GGSystem(dMVC.model.Model):
     self.__rooms.append(newRoom)
     return newRoom
       
-  def createPlayer(self, sprite, spriteList, size, position, offset, username, password):
+  def createPlayer(self, sprite, spriteList, position, offset, username, password):
     """ Creates a new player.
     sprite: sprite used to paint the player.
-    size: sprite size.
     position: sprite position.
     offset: user sprite offset on screen.
     username: player user name.
@@ -130,7 +129,7 @@ class GGSystem(dMVC.model.Model):
     for player in self.__players:
       if player.checkUser(username, password):
         return False
-    self.__players.append(GG.model.player.GGPlayer(sprite, spriteList, size, position, offset, username, password))
+    self.__players.append(GG.model.player.GGPlayer(sprite, spriteList, position, offset, username, password))
     return True
     
   def insertItemIntoRoom(self, item, room, isPlayer):

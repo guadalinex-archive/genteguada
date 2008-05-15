@@ -7,10 +7,9 @@ class GGDoor(item.GGItem):
   Defines a door object behaviour.
   """
  
-  def __init__(self, sprite, size, entryPosition, exitPosition, position, offset, heading, destinationRoom):
+  def __init__(self, sprite, entryPosition, exitPosition, position, offset, heading, destinationRoom):
     """ Class builder.
     sprite: sprite used to paint the door.
-    size: door sprite size.
     entryPosition: door entrance position.
     exitPosition: door exit position on the new room.
     position: door position.
@@ -18,7 +17,7 @@ class GGDoor(item.GGItem):
     heading: direction the door opens to.
     destinationRoom: room the door will teleport players to.
     """
-    item.GGItem.__init__(self, sprite, size, position, offset)
+    item.GGItem.__init__(self, sprite, position, offset)
     self.__entryPosition = entryPosition
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
