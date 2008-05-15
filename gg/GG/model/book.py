@@ -1,5 +1,4 @@
 import item
-import GG.utils
 import GG.isoview.isoview_item
 
 class GGBook(item.GGItem):
