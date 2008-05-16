@@ -35,7 +35,8 @@ class IsoViewHud(isoview.IsoView):
     item = event.getParams()["item"]
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
     self.__isoviewInventory.append(invItem)
-    self.paintInventory()
+    #self.paintInventory()
+    self.paintItemOnInventory(invItem.getSpriteName(), len(self.__isoviewInventory) - 1)
     
   def inventoryRemoved(self, event):
     """ Removes an item from the inventory item list.
@@ -145,20 +146,61 @@ class IsoViewHud(isoview.IsoView):
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
-    pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
-              (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
+    windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
+    windowInventory.border = 1
+    windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1]
+    self.__frameInventory = ocempgui.widgets.VFrame()
+    self.__frameInventory.border = 0
+    self.__frameInventory.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+    #self.__frameInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1]
+    windowInventory.child = self.__frameInventory
+    self.widgetContainer.add_widget(windowInventory)
+    #pygame.draw.rect(self.getScreen(), GG.utils.INV_COLOR_BG,
+    #          (GG.utils.INV_OR[0], GG.utils.INV_OR[1], GG.utils.INV_SZ[0] - 1, GG.utils.INV_SZ[1] - 1))
     position = 0
     for inventoryitem in self.__isoviewInventory:
       self.paintItemOnInventory(inventoryitem.getSpriteName(), position)
       position += 1
+
+  def prueba(self,event,img):
+    print "aunque sea"
+    print img
     
   def paintItemOnInventory(self, spriteName, position):
     """ Paints an item on the hud inventory.
     spriteName: sprite name.
     position: position in the inventory that the item will be painted into.
     """
-    if position >= GG.utils.INV_ITEM_COUNT[0]*GG.utils.INV_ITEM_COUNT[1]:
-      return 
+    #if position >= GG.utils.INV_ITEM_COUNT[0]*GG.utils.INV_ITEM_COUNT[1]:
+    #  return 
+
+    imgInventory = ocempgui.widgets.ImageMap(os.path.join(GG.utils.DATA_PATH, spriteName))
+    #imgInventory = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, spriteName))
+    imgInventory.connect_signal (ocempgui.widgets.Constants.SIG_MOUSEDOWN, self.prueba, imgInventory)
+
+    #imgInventory.border = 0
+    #imgInventory.topleft = GG.utils.INV_OR[0] + (GG.utils.INV_ITEM_SZ[0]*(position%GG.utils.INV_ITEM_COUNT[0])), GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))
+    """
+    self.hframe =  ocempgui.widgets.HFrame()
+    self.hframe.border = 1
+    self.hframe.add_child(imgInventory)
+    self.__frameInventory.add_child(self.hframe)
+    """
+    if position % 4 == 0:
+      self.hframe =  ocempgui.widgets.HFrame()
+      self.hframe.border = 0
+      self.hframe.add_child(imgInventory)
+      self.__frameInventory.add_child(self.hframe)
+    else:
+      self.hframe.add_child(imgInventory)
+    
+    """
+    #metiendo la imagen en el inventory
+    self.__frameInventory.add_child(imgInventory)
+    """
+
+    """
+    #Pintando Sprites
     imgPath = os.path.join(GG.utils.DATA_PATH, spriteName)
     img = pygame.sprite.Sprite()
     img.image = pygame.image.load(imgPath).convert()
@@ -166,6 +208,7 @@ class IsoViewHud(isoview.IsoView):
     img.rect.topleft = [GG.utils.INV_OR[0] + (GG.utils.INV_ITEM_SZ[0]*(position%GG.utils.INV_ITEM_COUNT[0])),
                         GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))]
     self.getScreen().blit(img.image, img.rect)
+    """
   
   def printLineOnChat(self, string):
     """ Prints a string on the HUD chat window.

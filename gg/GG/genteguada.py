@@ -29,7 +29,8 @@ class GenteGuada:
       if event.type == pygame.locals.MOUSEBUTTONDOWN:
         cordX, cordY = pygame.mouse.get_pos()
         if cordY > GG.utils.GAMEZONE_SZ[1]:
-          self.isoHud.clickedByPlayer([cordX, cordY])
+          #self.isoHud.clickedByPlayer([cordX, cordY])
+          pass
         else:  
           dest = self.isoHud.getIsoviewRoom().findTile([cordX, cordY])
           if not dest == [-1, -1]:
