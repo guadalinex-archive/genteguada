@@ -71,6 +71,7 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       #self.__isoviewRoom.unsubscribeAllEvents()
+      GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
@@ -104,6 +105,7 @@ class IsoViewHud(isoview.IsoView):
           j += 1
         # click on an inventory item, itemPos
         if k:
+          GG.utils.playSound(GG.utils.SOUND_DROPITEM)
           self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewInventory[itemPos].getModel())
     self.paintInventory()
     pygame.display.update()
@@ -185,6 +187,5 @@ class IsoViewHud(isoview.IsoView):
     messageChat = event.getParams()['message']
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     self.printLineOnChat(cad)
-    GG.utils.playSound(GG.utils.OCEAN_SOUND)
     
     

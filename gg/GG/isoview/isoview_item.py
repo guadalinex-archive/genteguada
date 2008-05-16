@@ -84,6 +84,7 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
+    GG.utils.playSound(GG.utils.SOUND_STEPS01)
     self.__animationDestination = event.getParams()["position"]
     self.animatedSetPosition(event.getParams()["position"])
   
