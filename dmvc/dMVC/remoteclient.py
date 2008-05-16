@@ -32,6 +32,8 @@ class RClient(synchronized.Synchronized):
     self.__socket = None
     self.__connect()
 
+    self.__sessionID = None
+
     self.__commandQueue = Queue.Queue()
     
     threadProcessCommand = threading.Thread(target=self.process_command)
@@ -40,6 +42,12 @@ class RClient(synchronized.Synchronized):
 
     thread.start_new(self.__start, ())
   #}}}
+
+  def registerSession(self, session):
+    self.__sessionID = session.getModelID()
+
+  def getSessionId(self):
+    return self.__sessionID
 
   def process_command(self):
     while True:

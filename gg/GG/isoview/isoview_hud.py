@@ -70,7 +70,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__isoviewRoom:
-      #self.__isoviewRoom.unsubscribeAllEvents()
+      self.__isoviewRoom.unsubscribeAllEvents()
       GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
