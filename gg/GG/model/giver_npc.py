@@ -21,7 +21,7 @@ class GGGiverNPC(GG.model.item.GGItem):
     
   def variablesToSerialize(self):
     parentVars = GG.model.item.GGItem.variablesToSerialize(self)
-    return parentVars + ['spriteInventory', 'label']
+    return parentVars + ['label']
   
   def checkCondition(self, condition, player):
     return True

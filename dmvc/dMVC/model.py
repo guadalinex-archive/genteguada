@@ -51,9 +51,9 @@ class Model(synchronized.Synchronized):
 
 
   @synchronized.synchronized(lockName='subscriptions')
-  def subscribeEvent(self, eventType, method, suscriptionID = None): #{{{
+  def subscribeEvent(self, eventType, method, suscriptionID = None, sessionID = None): #{{{
     utils.logger.debug("Subscribed event="+str(eventType)+", method: "+str(method) + ', model=' + str(self))
-    self.__subscriptions.append([eventType, method, suscriptionID])
+    self.__subscriptions.append([eventType, method, suscriptionID, sessionID])
   #}}}
     
 
@@ -61,7 +61,7 @@ class Model(synchronized.Synchronized):
   def triggerEvent(self, eventType, **params): #{{{
     utils.logger.debug("Model " + str(self) + " triggered eventType: "+str(eventType)+ " params: "+str(params))
     subscriptionsCopy = copy.copy(self.__subscriptions)
-    for typ, method, subscriptionID in subscriptionsCopy:
+    for typ, method, subscriptionID, sessionID in subscriptionsCopy:
       if typ == eventType:
         event = events.Event(self, eventType, params)
         try:
@@ -95,11 +95,11 @@ class Model(synchronized.Synchronized):
   #}}}
 
   @synchronized.synchronized(lockName='subscriptions')
-  def unsubscribeEventById(self, subscriptionIDs): #{{{
+  def unsubscribeEventById(self, subscriptionIDs, sessionID): #{{{
     utils.logger.debug("Model.unsubscribeEventByIDs subscriptionIDs: "+str(subscriptionIDs))
     toRemove = []
     for subscription in self.__subscriptions:
-      if subscription[2] in  subscriptionIDs:
+      if subscription[2] in  subscriptionIDs and subscription[3] == sessionID:
         toRemove.append(subscription)
     for subscription in toRemove:
       self.__subscriptions.remove(subscription)

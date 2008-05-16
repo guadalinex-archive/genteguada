@@ -142,10 +142,11 @@ class RExceptionRaiser(RExecutionAnswerer): #{{{
 #}}}
 
 class REventUnsuscriber(RCommand):
-  def __init__(self, modelID, suscriptionIDs):
+  def __init__(self, modelID, suscriptionIDs, sessionID):
     RCommand.__init__(self)
     self._modelID       = modelID
     self._suscriptionIDs = suscriptionIDs
+    self._sessionID = sessionID
 
   def getCommandType(self):
     return "EventUnSubscribe"
@@ -155,7 +156,7 @@ class REventUnsuscriber(RCommand):
 
   def do(self):
     model = dMVC.getRServer().getModelByID(self._modelID)
-    model.unsubscribeEventById(self._suscriptionIDs)
+    model.unsubscribeEventById(self._suscriptionIDs, self._sessionID)
 
   def __str__(self):
     return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + \
@@ -164,11 +165,12 @@ class REventUnsuscriber(RCommand):
 
 
 class REventSuscriber(RCommand):
-  def __init__(self, modelID, eventType, suscriptionID):
+  def __init__(self, modelID, eventType, suscriptionID, sessionID):
     RCommand.__init__(self)
     self._modelID       = modelID
     self._eventType     = eventType
     self._suscriptionID = suscriptionID
+    self._sessionID     = sessionID
 
   def getCommandType(self):
     return "EventSubscribe"
@@ -178,7 +180,7 @@ class REventSuscriber(RCommand):
 
   def do(self):
     model = dMVC.getRServer().getModelByID(self._modelID)
-    model.subscribeEvent(self._eventType, self.eventFired, self._suscriptionID)
+    model.subscribeEvent(self._eventType, self.eventFired, self._suscriptionID, self._sessionID)
 
 
   def eventFired(self, event):

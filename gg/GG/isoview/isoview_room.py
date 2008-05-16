@@ -152,13 +152,13 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
-    #player.unsubscribeAllEvents()
+    player.unsubscribeAllEvents()
   
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
     """
     pass
-    #for item in self.__isoViewPlayers:
-    #  item.unsubscribeAllEvents()
-    #isoview.IsoView.unsubscribeAllEvents(self)
+    for item in self.__isoViewPlayers:
+      item.unsubscribeAllEvents()
+    isoview.IsoView.unsubscribeAllEvents(self)
       

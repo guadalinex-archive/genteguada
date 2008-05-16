@@ -61,7 +61,7 @@ class RemoteModel: #{{{
     rClient = dMVC.getRClient()
     suscription = [eventType, method]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
-    rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID))
+    rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID, rClient.getSessionId()))
 
     
   def triggerEvent(self, eventType, **params):
@@ -75,7 +75,7 @@ class RemoteModel: #{{{
   def unsubscribeEventObserver(self, observer, eventType=None):
     rClient = dMVC.getRClient()
     subscriptionIDs =  rClient.unsubscribeEventObserver(observer, eventType)
-    rClient.sendCommand(remotecommand.REventUnsuscriber(self.__modelID, subscriptionIDs))
+    rClient.sendCommand(remotecommand.REventUnsuscriber(self.__modelID, subscriptionIDs, rClient.getSessionId()))
 
   def unsubscribeEventMethod(self, method, eventType=None):
     rClient = dMVC.getRClient()

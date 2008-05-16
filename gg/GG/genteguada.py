@@ -15,6 +15,7 @@ class GenteGuada:
     self.player = None
     self.isoHud = None
     self.session = None
+    self.client = None
   
   def input(self, events):
     for event in events:
@@ -49,11 +50,11 @@ class GenteGuada:
 
     if params.ip:
       try:
-        client = dMVC.remoteclient.RClient(params.ip)
+        self.client = dMVC.remoteclient.RClient(params.ip)
       except Exception, excep:
         print excep, "No hay conexion con el servidor"
         self.finish()
-      self.system = client.getRootModel()
+      self.system = self.client.getRootModel()
     else:
       self.system = GG.model.ggsystem.GGSystem()
 
@@ -62,6 +63,8 @@ class GenteGuada:
       print login[1]
       self.finish()
     self.session = login[1] 
+    if self.client:
+      self.client.registerSession(self.session)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
