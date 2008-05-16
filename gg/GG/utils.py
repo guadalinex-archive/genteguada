@@ -10,10 +10,7 @@ else:
   SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
 
 VERSION = "GenteGuada 0.0.3.1"
-#TILE_SZ = [100, 50]
 TILE_SZ = [120, 60]
-#TILE2TILE = 55.901699437
-#tile2tile = math.sqrt(pow(TILE_SZ[0],2)+pow(TILE_SZ[1],2))
 CHAR_SZ = [50, 50]
 CHAR_POS = [0, 0, 0]
 SCREEN_SZ = [1024, 768]
@@ -39,6 +36,15 @@ ANIM_DELAY = 0.02
 TICK_DELAY = 0.2
 SPEED = 55.901699437
 
+SIN30R = math.sin(math.radians(30))
+COS30R = math.cos(math.radians(30))
+
+HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
+           5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
+
+STATE = {1: "standing", 2: "walking"}
+
+# Sprites
 BG_FULL = "fondo.png"
 BG_FULL2 = "fondo2.png"
 BG_BLACK = "black.png"
@@ -54,11 +60,15 @@ BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
 
-OCEAN_SOUND = "ocean.ogg"
+# Sounds
+SOUND_OCEAN = "ocean.ogg"
+SOUND_DROPITEM = "drop_item.ogg"
+SOUND_KEYS = "keys.ogg"
+SOUND_OPENDOOR = "open_door.ogg"
+SOUND_STEPS01 = "steps01.ogg"
+SOUND_STEPS02 = "steps02.ogg"
 
-SIN30R = math.sin(math.radians(30))
-COS30R = math.cos(math.radians(30))
-
+# Colors
 HUD_COLOR_BASE = [177, 174, 200]
 HUD_COLOR_BORDER1 = [104, 102, 119]
 HUD_COLOR_BORDER2 = [138, 136, 160]
@@ -67,11 +77,6 @@ CHAT_COLOR_BG = [61, 61, 91]
 CHAT_COLOR_FONT = [216, 216, 216]
 INV_COLOR_BG = [0, 0, 0]
 TEXT_BOX_COLOR_BG = [255, 255, 255]
-
-HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
-           5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
-
-STATE = {1: "standing", 2: "walking"}
 
 NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
                 "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",

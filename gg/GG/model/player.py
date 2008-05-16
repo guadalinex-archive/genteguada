@@ -43,9 +43,8 @@ class GGPlayer(GG.model.item.GGItem):
   def setHeading(self, heading):
     """ Sets a new heading direction for the item.
     """
-    if not self.__heading == heading:
-      self.__heading = heading
-      self.triggerEvent('heading', heading=heading)
+    self.__heading = heading
+    self.triggerEvent('heading', heading=heading)
 
   # self.__state
   
