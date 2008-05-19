@@ -25,6 +25,8 @@ class IsoViewItem(isoview.IsoView):
     self.__animation = None
     self.__position = model.getPosition()
     self.__animationDestination = None
+    self.__clock = pygame.time.Clock()
+    self.__timePassed = 0
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
     self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
@@ -66,16 +68,26 @@ class IsoViewItem(isoview.IsoView):
     newPosition: new item position.
     """
     if self.__animation:
-      self.__animation.restart(GG.utils.MAX_FRAMES, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+      print "********************************"
+      aux = self.__clock.tick()
+      self.__time_passed = 0
+      self.__animation.restart(GG.utils.ANIM_TIME, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
     else:
-      self.__animation = animation.Animation(GG.utils.MAX_FRAMES, self.__img,
+      print "*****************************************************"
+      aux = self.__clock.tick()
+      self.__timePassed = 0
+      self.__animation = animation.Animation(GG.utils.ANIM_TIME, self.__img,
            GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
   
   def updateFrame(self):
     """ Paints a new item frame on screen.
     """
     if self.__animation:
-      if not self.__animation.move():
+      self.__timePassed = self.__timePassed + self.__clock.tick()
+      print self.__timePassed
+      if not self.__animation.step(self.__timePassed):
+        aux = self.__clock.tick()
+        self.__time_passed = 0
         del self.__animation
         self.__animation = None
         self.__img.rect.topleft = GG.utils.p3dToP2d(self.__animationDestination, self.getModel().offset)
