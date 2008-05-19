@@ -58,6 +58,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintChat()
     self.paintTextBox()
     self.paintInventory()
+    self.paintUpperPannel()
 
   def updateFrame(self):
     """ Updates all sprites for a new frame.
@@ -118,12 +119,14 @@ class IsoViewHud(isoview.IsoView):
     """
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
               (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
+    """
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER2,
               (GG.utils.HUD_OR[0] + 2, GG.utils.HUD_OR[1] + 2, GG.utils.HUD_SZ[0] - 5, GG.utils.HUD_SZ[1] - 5))
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER3,
               (GG.utils.HUD_OR[0] + 10, GG.utils.HUD_OR[1] + 10, GG.utils.HUD_SZ[0] - 21, GG.utils.HUD_SZ[1] - 21))
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BASE,
               (GG.utils.HUD_OR[0] + 12, GG.utils.HUD_OR[1] + 12, GG.utils.HUD_SZ[0] - 25, GG.utils.HUD_SZ[1] - 25))
+    """
 
   def paintChat(self):
     """ Paints the chat window on screen.
@@ -161,7 +164,11 @@ class IsoViewHud(isoview.IsoView):
     for inventoryitem in self.__isoviewInventory:
       self.paintItemOnInventory(inventoryitem.getSpriteName(), position)
       position += 1
-
+      
+  def paintUpperPannel(self):
+    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
+              (GG.utils.UPPERPANNEL_OR[0], GG.utils.UPPERPANNEL_OR[1], GG.utils.UPPERPANNEL_SZ[0] - 1, GG.utils.UPPERPANNEL_SZ[1] - 1))
+    
   def prueba(self,img):
     print "aunque sea"
     print img
@@ -186,7 +193,7 @@ class IsoViewHud(isoview.IsoView):
     self.hframe.add_child(imgInventory)
     self.__frameInventory.add_child(self.hframe)
     """
-    if position % 4 == 0:
+    if position % GG.utils.INV_ITEM_COUNT[0] == 0:
       self.hframe =  ocempgui.widgets.HFrame()
       self.hframe.border = 0
       self.hframe.add_child(imgInventory)
