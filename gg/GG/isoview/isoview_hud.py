@@ -162,7 +162,7 @@ class IsoViewHud(isoview.IsoView):
       self.paintItemOnInventory(inventoryitem.getSpriteName(), position)
       position += 1
 
-  def prueba(self,event,img):
+  def prueba(self,img):
     print "aunque sea"
     print img
     
@@ -176,7 +176,7 @@ class IsoViewHud(isoview.IsoView):
 
     imgInventory = ocempgui.widgets.ImageMap(os.path.join(GG.utils.DATA_PATH, spriteName))
     #imgInventory = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, spriteName))
-    imgInventory.connect_signal (ocempgui.widgets.Constants.SIG_MOUSEDOWN, self.prueba, imgInventory)
+    imgInventory.connect_signal (ocempgui.widgets.Constants.SIG_MOUSEDOWN, self.prueba)
 
     #imgInventory.border = 0
     #imgInventory.topleft = GG.utils.INV_OR[0] + (GG.utils.INV_ITEM_SZ[0]*(position%GG.utils.INV_ITEM_COUNT[0])), GG.utils.INV_OR[1] + (GG.utils.INV_ITEM_SZ[1]*(position/GG.utils.INV_ITEM_COUNT[0]))
