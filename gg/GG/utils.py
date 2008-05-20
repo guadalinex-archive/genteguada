@@ -70,6 +70,7 @@ BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
+DUMMY = "dummy.png"
 
 # Sounds
 SOUND_OCEAN = "ocean.ogg"
