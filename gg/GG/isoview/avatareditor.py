@@ -1,10 +1,12 @@
 import os
-import pygame
+import sys
 import time
 import ocempgui.widgets
-import sys
 import GG.utils
+import pygame
 import pygame.locals
+
+
 
 class AvatarEditor:
 
@@ -13,7 +15,7 @@ class AvatarEditor:
     #Iniciar las ventanas pygame
     pygame.init()
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
-    self.screen = pygame.display.set_mode([1024,768])
+    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption("DEMO AVATAR GENERATOR")
     self.renderer = ocempgui.widgets.Renderer()
     self.renderer.set_screen(self.screen)
@@ -28,15 +30,21 @@ class AvatarEditor:
     print self.screen.get_width()
     print self.screen.get_height()
     rect = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
-    self.screen.fill((34, 133, 234), rect)
+    self.screen.fill(GG.utils.GUADALINEX_BLUE, rect)
     
     imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.DUMMY)
-    dummyImage = pygame.sprite.Sprite()
-    dummyImage = pygame.image.load(imgPath).convert_alpha()
-    dummyImage.rect = dummyImage.get_rect()
-    dummyImage.rect.topleft = [0,0]
+    #dummyImage = pygame.sprite.Sprite()
+    #dummyImage.image = pygame.image.load(imgPath).convert_alpha()
+    #dummyImage.rect = dummyImage.image.get_rect()
+    #dummyImage.rect.topleft = [50,50]
     
+   
+    dummyImage = pygame.image.load(imgPath)
+    self.screen.blit(dummyImage, (0,0))
+    pygame.display.flip()
     
+    #self.screen.blit(dummyImage,(0,0))
+        
     pygame.display.update()
 
   def input(self,events):
