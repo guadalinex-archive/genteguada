@@ -71,6 +71,7 @@ BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
 DUMMY = "dummy.png"
+GENDER_TAG = "genderTag.png"
 
 # Sounds
 SOUND_OCEAN = "ocean.ogg"
