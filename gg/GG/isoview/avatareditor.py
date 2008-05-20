@@ -1,7 +1,9 @@
+import os
 import pygame
 import time
 import ocempgui.widgets
 import sys
+import GG.utils
 import pygame.locals
 
 class AvatarEditor:
@@ -28,7 +30,11 @@ class AvatarEditor:
     rect = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
     self.screen.fill((34, 133, 234), rect)
     
-    image = pygame.Image
+    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.DUMMY)
+    dummyImage = pygame.sprite.Sprite()
+    dummyImage = pygame.image.load(imgPath).convert_alpha()
+    dummyImage.rect = dummyImage.get_rect()
+    dummyImage.rect.topleft = [0,0]
     
     
     pygame.display.update()

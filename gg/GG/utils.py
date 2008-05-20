@@ -89,6 +89,7 @@ CHAT_COLOR_BG = [61, 61, 91]
 CHAT_COLOR_FONT = [216, 216, 216]
 INV_COLOR_BG = [0, 0, 0]
 TEXT_BOX_COLOR_BG = [255, 255, 255]
+GUADALINEX_BLUE = [34, 133, 234]
 
 NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
                 "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",
