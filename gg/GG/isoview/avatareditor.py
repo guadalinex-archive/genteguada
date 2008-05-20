@@ -29,21 +29,24 @@ class AvatarEditor:
     print "Pinta la pantalla"
     print self.screen.get_width()
     print self.screen.get_height()
-    rect = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
-    self.screen.fill(GG.utils.GUADALINEX_BLUE, rect)
+    background = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
+    self.screen.fill(GG.utils.GUADALINEX_BLUE, background)
     
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.DUMMY)
+    #imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.DUMMY)
     #dummyImage = pygame.sprite.Sprite()
     #dummyImage.image = pygame.image.load(imgPath).convert_alpha()
     #dummyImage.rect = dummyImage.image.get_rect()
     #dummyImage.rect.topleft = [50,50]
     
-   
+    customizeZone = pygame.Rect(0, 0, 386, 765)
+    self.screen.fill((110,171,234), customizeZone)
+    
+    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.DUMMY)
     dummyImage = pygame.image.load(imgPath)
-    self.screen.blit(dummyImage, (0,0))
+    self.screen.blit(dummyImage, (528,114))
     pygame.display.flip()
     
-    #self.screen.blit(dummyImage,(0,0))
+
         
     pygame.display.update()
 
