@@ -68,36 +68,33 @@ class IsoViewItem(isoview.IsoView):
     newPosition: new item position.
     """
     if self.__animation:
-      print "********************************"
-      aux = self.__clock.tick()
-      self.__time_passed = 0
-      self.__animation.restart(GG.utils.ANIM_TIME, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
-    else:
-      print "*****************************************************"
-      aux = self.__clock.tick()
-      self.__timePassed = 0
-      self.__animation = animation.Animation(GG.utils.ANIM_TIME, self.__img,
-           GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
+      self.__animation.stop()
+      del self.__animation
+      self.__animation = None
+    aux = self.__clock.tick()
+    self.__timePassed = 0
+    self.__animation = animation.PositionAnimation(GG.utils.ANIM_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    self.__animation.start()
   
   def updateFrame(self):
     """ Paints a new item frame on screen.
     """
     if self.__animation:
-      self.__timePassed = self.__timePassed + self.__clock.tick()
-      print self.__timePassed
-      if not self.__animation.step(self.__timePassed):
+      self.__timePassed += self.__clock.tick(50)
+      if not self.__animation.isFinished(self.__timePassed):
+        self.__animation.step(self.__timePassed)
+      else:  
+        self.__animation.stop()
         aux = self.__clock.tick()
-        self.__time_passed = 0
+        self.__timePassed = 0
         del self.__animation
         self.__animation = None
-        self.__img.rect.topleft = GG.utils.p3dToP2d(self.__animationDestination, self.getModel().offset)
-  
+        
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
     GG.utils.playSound(GG.utils.SOUND_STEPS01)
-    self.__animationDestination = event.getParams()["position"]
     self.animatedSetPosition(event.getParams()["position"])
   
   def startPositionChanged(self, event):

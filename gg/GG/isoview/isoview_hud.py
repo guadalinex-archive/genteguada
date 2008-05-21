@@ -57,13 +57,13 @@ class IsoViewHud(isoview.IsoView):
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
-    self.paintUpperPannel()
-
+    
   def updateFrame(self):
     """ Updates all sprites for a new frame.
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
+    self.paintUpperPannel()
     pygame.display.update()
 
   def roomChanged(self, event):
