@@ -9,7 +9,7 @@ class GGPlayer(GG.model.item.GGItem):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spriteList, position, offset, username, password):
+  def __init__(self, spritePath, position, offset, username, password):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
@@ -17,9 +17,9 @@ class GGPlayer(GG.model.item.GGItem):
     username: user name.
     password: user password.
     """
-    GG.model.item.GGItem.__init__(self, spriteList["right"], position, offset)
+    GG.model.item.GGItem.__init__(self, "standing_down.png", position, offset)
     self.username = username
-    self.spriteList = spriteList
+    self.__spritePath = spritePath
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = "down"
@@ -31,8 +31,11 @@ class GGPlayer(GG.model.item.GGItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.item.GGItem.variablesToSerialize(self)
-    return parentVars + ['username', 'spriteList']
+    return parentVars + ['username']
   
+  def getImagePath(self):
+    return self.__spritePath
+
   # self.__heading
 
   def getHeading(self):

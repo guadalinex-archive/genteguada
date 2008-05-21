@@ -5,9 +5,11 @@ import pygame
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
   SOUND_PATH = "gg/GG/data/sound"
+  NINO_PATH = "gg/GG/data/nino"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
+  NINO_PATH = "/usr/share/pixmaps/genteguada/nino"
 
 VERSION = "GenteGuada 0.0.3.1"
 BG_FULL_OR = [0, 0]
@@ -41,6 +43,7 @@ UPPERPANNEL_SZ = [(UPPERPANNEL_ITEM_SZ[0] + UPPERPANNEL_ITEM_SPACING)*UPPERPANNE
 UPPERPANNEL_OR = [(SCREEN_SZ[0]/2) - (UPPERPANNEL_SZ[0]/2), 0]
 
 # Animation values
+ANIM_COUNT = 10
 ANIM_TIME = 200
 ANIM_DELAY = 0.02
 TICK_DELAY = 0.2
