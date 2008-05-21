@@ -33,9 +33,9 @@ class IsoViewHud(isoview.IsoView):
     item: new isoview inventory item.
     """
     item = event.getParams()["item"]
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen())
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
     self.__isoviewInventory.append(invItem)
-    self.paintItemOnInventory(invItem.getSpriteName(), len(self.__isoviewInventory) - 1)
+    self.paintItemOnInventory(invItem, len(self.__isoviewInventory) - 1)
     
   def inventoryRemoved(self, event):
     """ Removes an item from the inventory item list.
@@ -44,11 +44,12 @@ class IsoViewHud(isoview.IsoView):
     item = event.getParams()["item"]
     toBeRemoved = None
     for ivInventoryItem in self.__isoviewInventory:
-      if ivInventoryItem.getModel().label == item.label:
+      if ivInventoryItem.getModel() == item:
         toBeRemoved = ivInventoryItem
     if toBeRemoved:    
+      GG.utils.playSound(GG.utils.SOUND_DROPITEM)
       self.__isoviewInventory.remove(toBeRemoved)
-    self.paintInventory()
+    self.paintItemsInventory()
     
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
@@ -83,34 +84,7 @@ class IsoViewHud(isoview.IsoView):
     """ Returns the isometric view room.
     """
     return self.__isoviewRoom
-    
-  def clickedByPlayer(self, target):
-    """ Indicates that a player has made click the isoview hud object.
-    player: player who clicks.
-    target: clicked point.
-    """
-    if not len(self.__isoviewInventory):
-      return
-    if GG.utils.INV_OR[0] < target[0] < (GG.utils.INV_OR[0] + GG.utils.INV_SZ[0]):
-      if GG.utils.INV_OR[1] < target[1] < (GG.utils.INV_OR[1] + GG.utils.INV_SZ[1]):
-        # click on the inventory
-        auxTarget = [target[0] - GG.utils.INV_OR[0], target[1] - GG.utils.INV_OR[1]]
-        i = j = k = itemPos = 0
-        while j < GG.utils.INV_ITEM_COUNT[1] and not k:
-          while i < GG.utils.INV_ITEM_COUNT[0] and not k:
-            if GG.utils.INV_ITEM_SZ[0]*i < auxTarget[0] < (GG.utils.INV_ITEM_SZ[0]*i + GG.utils.INV_ITEM_SZ[0]-1):
-              if GG.utils.INV_ITEM_SZ[1]*j < auxTarget[1] < (GG.utils.INV_ITEM_SZ[1]*j + GG.utils.INV_ITEM_SZ[1]-1):
-                k = 1
-                itemPos = j*GG.utils.INV_ITEM_COUNT[0] + i
-            i += 1
-          j += 1
-        # click on an inventory item, itemPos
-        if k:
-          GG.utils.playSound(GG.utils.SOUND_DROPITEM)
-          self.getModel().getPlayer().clickOnInventoryItem(self.__isoviewInventory[itemPos].getModel())
-    self.paintInventory()
-    pygame.display.update()
-          
+           
   # Paint methods
     
   def paintBackground(self):
@@ -118,14 +92,6 @@ class IsoViewHud(isoview.IsoView):
     """
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
               (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
-    """
-    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER2,
-              (GG.utils.HUD_OR[0] + 2, GG.utils.HUD_OR[1] + 2, GG.utils.HUD_SZ[0] - 5, GG.utils.HUD_SZ[1] - 5))
-    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER3,
-              (GG.utils.HUD_OR[0] + 10, GG.utils.HUD_OR[1] + 10, GG.utils.HUD_SZ[0] - 21, GG.utils.HUD_SZ[1] - 21))
-    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BASE,
-              (GG.utils.HUD_OR[0] + 12, GG.utils.HUD_OR[1] + 12, GG.utils.HUD_SZ[0] - 25, GG.utils.HUD_SZ[1] - 25))
-    """
 
   def paintChat(self):
     """ Paints the chat window on screen.
@@ -151,39 +117,39 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
     self.windowInventory.border = 1
     self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1]
+    self.widgetContainer.add_widget(self.windowInventory)
+    self.paintItemsInventory()
+
+  def paintItemsInventory(self):
+    self.windowInventory.child = None
     self.__frameInventory = ocempgui.widgets.VFrame()
     self.__frameInventory.border = 0
     self.__frameInventory.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.windowInventory.child = self.__frameInventory
-    self.widgetContainer.add_widget(self.windowInventory)
     position = 0
     for inventoryitem in self.__isoviewInventory:
-      self.paintItemOnInventory(inventoryitem.getSpriteName(), position)
+      self.paintItemOnInventory(inventoryitem, position)
       position += 1
 
-  def itemInventorySelected(self,spriteName):
-    print spriteName
+  def itemInventorySelected(self,invIsoItem):
+    self.__player.clickOnInventoryItem(invIsoItem.getModel())
 
   def paintUpperPannel(self):
     pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
               (GG.utils.UPPERPANNEL_OR[0], GG.utils.UPPERPANNEL_OR[1], GG.utils.UPPERPANNEL_SZ[0] - 1, GG.utils.UPPERPANNEL_SZ[1] - 1))
     
-  def paintItemOnInventory(self, spriteName, position):
+  def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.
     spriteName: sprite name.
     position: position in the inventory that the item will be painted into.
     """
-    self.imgInventory = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, spriteName))
-    self.imgInventory.border = 0
-    self.imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.itemInventorySelected, spriteName)
-    self.widgetContainer.get_managers()[0].add_high_priority_object(self.imgInventory,ocempgui.widgets.Constants.SIG_MOUSEDOWN)
     if position % GG.utils.INV_ITEM_COUNT[0] == 0:
       self.hframe =  ocempgui.widgets.HFrame()
       self.hframe.border = 0
-      self.hframe.add_child(self.imgInventory)
+      self.hframe.add_child(invItem.draw(self.widgetContainer))
       self.__frameInventory.add_child(self.hframe)
     else:
-      self.hframe.add_child(self.imgInventory)
+      self.hframe.add_child(invItem.draw(self.widgetContainer))
   
   def printLineOnChat(self, string):
     """ Prints a string on the HUD chat window.
