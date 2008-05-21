@@ -22,7 +22,6 @@ class GenteGuada:
 
   def input(self, events):
     for event in events:
-      #print event
       if event.type == pygame.locals.QUIT:
         self.finish()
       if event.type == pygame.locals.KEYDOWN:
@@ -44,7 +43,6 @@ class GenteGuada:
           if not dest == [-1, -1]:
             self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
     self.isoHud.widgetContainer.distribute_events(*events)
-      #self.isoHud.frameInventory.distribute_events(event)
 
   def finish(self):
     #print dMVC.utils.statClient.strClient()
@@ -52,11 +50,6 @@ class GenteGuada:
     pygame.mixer.music.stop()
     sys.exit(0)
   
-  """
-  def connectEvent(self, widget, event, method):
-    widget.connect_signal(event,method)
-  """
-
   def start(self, params):
     pygame.init()
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
@@ -82,7 +75,6 @@ class GenteGuada:
       self.client.registerSession(self.session)
     self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
-    #self.isoHud.setParent(self)
     self.isoHud.draw()
     while True:
       time.sleep(GG.utils.ANIM_DELAY)

@@ -214,3 +214,10 @@ class GGPlayer(GG.model.item.GGItem):
     message: new chat message.
     """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username))
+
+  def setSelectedItem(self, item):
+    self.triggerEvent('selectedItem', item=item)
+    
+  def setUnselectedItem(self):
+    self.triggerEvent('unselectedItem')
+    

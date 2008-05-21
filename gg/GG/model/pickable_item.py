@@ -28,6 +28,7 @@ class GGPickableItem(item.GGItem):
     """
     GG.model.item.GGItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      clicker.addInventory(self)
-      self.getRoom().removeItem(self)
+      clicker.setSelectedItem(self)
+      #clicker.addInventory(self)
+      #self.getRoom().removeItem(self)
       

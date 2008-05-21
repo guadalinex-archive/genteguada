@@ -115,3 +115,10 @@ class IsoViewItem(isoview.IsoView):
     self.__animation = None
     self.__img.rect.topleft = GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset)
   
+  def selected(self):
+    imgPath = os.path.join(self.getModel().getImagePath(), "bookseleccionado.png")
+    self.__img.image = pygame.image.load(imgPath).convert_alpha() 
+
+  def unselected(self):
+    imgPath = os.path.join(self.getModel().getImagePath(),self.getModel().spriteName)
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()

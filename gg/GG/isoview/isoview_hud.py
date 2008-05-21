@@ -27,6 +27,9 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
+    self.__player.subscribeEvent('selectedItem', self.itemSelected)
+    self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
+    self.itemSelected = None
 
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
@@ -58,13 +61,14 @@ class IsoViewHud(isoview.IsoView):
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
+    self.paintActionsButtons()
     
   def updateFrame(self):
     """ Updates all sprites for a new frame.
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
-    self.paintUpperPannel()
+    #self.paintUpperPannel()
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -135,8 +139,9 @@ class IsoViewHud(isoview.IsoView):
     self.__player.clickOnInventoryItem(invIsoItem.getModel())
 
   def paintUpperPannel(self):
-    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
-              (GG.utils.UPPERPANNEL_OR[0], GG.utils.UPPERPANNEL_OR[1], GG.utils.UPPERPANNEL_SZ[0] - 1, GG.utils.UPPERPANNEL_SZ[1] - 1))
+    #pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
+    #          (GG.utils.UPPERPANNEL_OR[0], GG.utils.UPPERPANNEL_OR[1], GG.utils.UPPERPANNEL_SZ[0] - 1, GG.utils.UPPERPANNEL_SZ[1] - 1))
+    pass
     
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.
@@ -172,4 +177,62 @@ class IsoViewHud(isoview.IsoView):
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     self.printLineOnChat(cad)
     
+
+  def itemSelected(self,event):
+    self.itemSelected = event.getParams()['item'] 
+    self.__isoviewRoom.itemSelected(self.itemSelected)
+    self.botomInventario = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, "guardar.png"))
+    self.botomInventario.border = 0
+    self.botomInventario.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.guardarInventario)
+    self.botonera.add_child(self.botomInventario)
+
+  def guardarInventario(self):
+    self.__player.addInventory(self.itemSelected)
+    self.itemSelected.getRoom().removeItem(self.itemSelected)
+    #print "al inventario"
+
     
+  def itemUnselected(self,event):
+    if self.itemSelected:
+      self.__isoviewRoom.itemUnselected(self.itemSelected)
+      self.itemSelected = None
+      self.botonera.remove_child(self.botomInventario)
+
+  def paintActionsButtons(self):
+    ACTIONS = [
+                {"image":"vestidor.png", "action": self.mostrarVestidor},
+                {"image":"derecha.png", "action": self.rotarDerecha},
+                {"image":"izquierda.png", "action": self.rotarIzquierda},
+                {"image":"herramientas.png", "action": self.mostrarHerramientas},
+                {"image":"sonido.png", "action": self.mostrarBarraSonido},
+                {"image":"ayuda.png", "action": self.mostrarAyuda},
+              ]
+
+    self.botonera = ocempgui.widgets.HFrame()
+    self.botonera.topleft = [380,0]
+    self.widgetContainer.add_widget(self.botonera)
+    for buttonData in ACTIONS:
+      buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
+      buttom.border = 0
+      buttom.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
+      self.botonera.add_child(buttom)
+
+  def mostrarVestidor(self):
+    print "vestidor"
+
+  def rotarDerecha(self):
+    print "rotar derecha"
+
+  def rotarIzquierda(self):
+    print "rotar izquierda"
+
+  def mostrarHerramientas(self):
+    print "mostrar herramienta"
+
+  def mostrarBarraSonido(self):
+    print "mostrar la barra de sonido"
+
+  def mostrarAyuda(self):
+    print "mostrar ayuda"
+
+
