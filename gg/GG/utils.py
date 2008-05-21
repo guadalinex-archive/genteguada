@@ -40,15 +40,10 @@ UPPERPANNEL_ITEM_SZ = [65, 65]
 UPPERPANNEL_SZ = [(UPPERPANNEL_ITEM_SZ[0] + UPPERPANNEL_ITEM_SPACING)*UPPERPANNEL_COUNT, UPPERPANNEL_ITEM_SZ[1] + UPPERPANNEL_ITEM_SPACING]
 UPPERPANNEL_OR = [(SCREEN_SZ[0]/2) - (UPPERPANNEL_SZ[0]/2), 0]
 
-#ANIMATIONS = 5
-ANIM_TIME = 100
-MAX_FRAMES = 5
+# Animation values
+ANIM_TIME = 200
 ANIM_DELAY = 0.02
 TICK_DELAY = 0.2
-SPEED = 55.901699437
-
-SIN30R = math.sin(math.radians(30))
-COS30R = math.cos(math.radians(30))
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}

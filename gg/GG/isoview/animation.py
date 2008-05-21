@@ -15,27 +15,176 @@ class Animation:
     self.__img = img
     self.__origin = img.rect.topleft
     self.__destination = destination
-    #self.__shift = [((self.__origin[0] - self.__destination[0]) / self.__time), ((self.__origin[1] - self.__destination[1]) /self.__time)]
+    
+  def getTime(self):
+    return self.__time
+  
+  def getImg(self):
+    return self.__img
+  
+  def getOrigin(self):
+    return self.__origin
+  
+  def getDestination(self):
+    return self.__destination
+
+  def setImgPosition(self, pos):
+    self.__img.rect.topleft = pos
+
+  # Vanilla methods
+  
+  def start(self):
+    pass
+  
+  def step(self, time):
+    pass
+  
+  def stop(self):
+    pass
+  
+  def onStart(self):
+    pass
+  
+  def onEnd(self):
+    pass
+    
+  def isFinished(self, time):
+    return (self.__time < time)
+    
+#*****************************************************************************
+    
+class PositionAnimation(Animation):
+  
+  def __init__(self, time, img, destination):
+    Animation.__init__(self, time, img, destination)
+    self.__shift = [self.getDestination()[0] - self.getOrigin()[0], self.getDestination()[1] - self.getOrigin()[1]]
+    
+  def start(self):
+    Animation.start(self)
+    self.setImgPosition([self.getOrigin()[0], self.getOrigin()[1]])
+    self.onStart()
     
   def step(self, time):
     """ Moves the sprite to the next frame position.
     time: time passed since the animation start.
     """
-    ori = self.__img.rect.topleft
-    if self.__time < time:
-      return False
-    shift = [(self.__time - time)*(self.__origin[0] - self.__destination[0])/GG.utils.ANIM_TIME, (self.__time - time)*(self.__origin[1] - self.__destination[1])/GG.utils.ANIM_TIME]
-    self.__img.rect.topleft = [ori[0] - shift[0], ori[1] - shift[1]]
-    return True
-  
-  def restart(self, time, newDestination):
-    """ Restarts the animation and sets a new lenght and destination.
-    time: new animation lenght.
-    newDestination: new animation destination.
-    """
-    self.__time = time
-    self.__origin = self.__destination
-    self.__destination = newDestination
-    #self.__shift = [((self.__origin[0] - self.__destination[0]) /self.__time), ((self.__origin[1] - self.__destination[1]) /self.__time)]
-    self.__img.rect.topleft = self.__origin
+    Animation.step(self, time)
+    percent = ((time*100)/GG.utils.ANIM_TIME)/100.0
+    self.setImgPosition([self.getOrigin()[0] + (self.__shift[0]*percent), self.getOrigin()[1] + (self.__shift[1]*percent)])
+      
+  def stop(self):
+    Animation.stop(self)
+    self.setImgPosition([self.getDestination()[0], self.getDestination()[1]])
+    self.onEnd()
     
+  def onStart(self):
+    Animation.onStart(self)
+  
+  def onEnd(self):
+    Animation.onEnd(self)
+    
+  def isFinished(self, time):
+    return Animation.isFinished(self, time)
+    
+#*****************************************************************************
+    
+class MovieAnimation(Animation):
+  
+  def __init__(self, time, img, destination):
+    Animation.__init__(self, time, img, destination)
+    
+  def start(self):
+    Animation.start(self)
+    
+  def step(self, time):
+    Animation.step
+    
+  def stop(self):
+    Animation.stop(self)
+  
+  def onStart(self):
+    Animation.onStart(self)
+  
+  def onEnd(self):
+    Animation.onEnd(self)
+    
+  def isFinished(self, time):
+    return Animation.isFinished(self, time)
+
+#*****************************************************************************
+    
+class CompositionAnimation(Animation):
+  
+  def __init__(self, time, img, destination):
+    Animation.__init__(self, time, img, destination)
+    
+  def start(self):
+    Animation.start(self)
+    
+  def step(self, time):
+    Animation.step
+    
+  def stop(self):
+    Animation.stop(self)
+  
+  def onStart(self):
+    Animation.onStart(self)
+  
+  def onEnd(self):
+    Animation.onEnd(self)
+    
+  def isFinished(self, time):
+    return Animation.isFinished(self, time)
+    
+#*****************************************************************************
+    
+class SequenceAnimation(CompositionAnimation):
+  
+  def __init__(self, time, img, destination):
+    CompositionAnimation.__init__(self, time, img, destination)
+    
+  def start(self):
+    CompositionAnimation.start(self)
+    
+  def step(self, time):
+    CompositionAnimation.step
+    
+  def stop(self):
+    CompositionAnimation.stop(self)
+  
+  def onStart(self):
+    CompositionAnimation.onStart(self)
+  
+  def onEnd(self):
+    CompositionAnimation.onEnd(self)
+    
+  def isFinished(self, time):
+    return CompositionAnimation.isFinished(self, time)
+    
+#*****************************************************************************
+    
+class ParalelAnimation(CompositionAnimation):
+  
+  def __init__(self, time, img, destination):
+    CompositionAnimation.__init__(self, time, img, destination)
+    
+  def start(self):
+    CompositionAnimation.start(self)
+    
+  def step(self, time):
+    CompositionAnimation.step
+    
+  def stop(self):
+    CompositionAnimation.stop(self)
+  
+  def onStart(self):
+    CompositionAnimation.onStart(self)
+  
+  def onEnd(self):
+    CompositionAnimation.onEnd(self)
+    
+  def isFinished(self, time):
+    return CompositionAnimation.isFinished(self, time)
+    
+
+
