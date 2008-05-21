@@ -16,22 +16,25 @@ class IsoViewItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__ivroom = room
-    imgPath = os.path.join(GG.utils.DATA_PATH, model.spriteName)
-    self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), model.offset)
     self.__parent = parent
     self.__animation = None
     self.__position = model.getPosition()
     self.__animationDestination = None
     self.__clock = pygame.time.Clock()
     self.__timePassed = 0
+    self.loadImage()
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
     self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
+  def loadImage(self):
+    imgPath = os.path.join(self.getModel().getImagePath(), self.getModel().spriteName)
+    self.__img = pygame.sprite.Sprite()
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__img.rect = self.__img.image.get_rect()
+    self.__img.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset)
+        
   def getParent(self):
     """ Returns the isoview hud handler.
     """
@@ -46,7 +49,7 @@ class IsoViewItem(isoview.IsoView):
     """ Sets a new image for the item.
     img: image name.
     """
-    imgPath = os.path.join(GG.utils.DATA_PATH, img)
+    imgPath = os.path.join(self.getModel().getImagePath(), img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
   def setSprite(self, sprite):
@@ -71,9 +74,15 @@ class IsoViewItem(isoview.IsoView):
       self.__animation.stop()
       del self.__animation
       self.__animation = None
+    
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    movieAnim = animation.MovieAnimation(GG.utils.ANIM_TIME, self.__img, self.getModel().getHeading(), \
+                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    self.__animation = animation.ParalelAnimation()
+    self.__animation.addAnimation(positionAnim)
+    self.__animation.addAnimation(movieAnim)
     aux = self.__clock.tick()
     self.__timePassed = 0
-    self.__animation = animation.PositionAnimation(GG.utils.ANIM_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
     self.__animation.start()
   
   def updateFrame(self):
@@ -85,6 +94,7 @@ class IsoViewItem(isoview.IsoView):
         self.__animation.step(self.__timePassed)
       else:  
         self.__animation.stop()
+        self.__img.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset)
         aux = self.__clock.tick()
         self.__timePassed = 0
         del self.__animation

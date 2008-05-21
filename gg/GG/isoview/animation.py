@@ -1,3 +1,5 @@
+import os
+import pygame
 import GG.utils
 
 class Animation:
@@ -31,6 +33,13 @@ class Animation:
   def setImgPosition(self, pos):
     self.__img.rect.topleft = pos
 
+  def setImgSprite(self, imgPath):
+    #rect = self.__img.rect
+    #topleft = self.__img.rect.topleft
+    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    #self.__img.rect = rect
+    #self.__img.rect.topleft = topleft    
+    
   # Vanilla methods
   
   def start(self):
@@ -85,22 +94,31 @@ class PositionAnimation(Animation):
     
   def isFinished(self, time):
     return Animation.isFinished(self, time)
-    
+  
 #*****************************************************************************
     
 class MovieAnimation(Animation):
   
-  def __init__(self, time, img, destination):
+  def __init__(self, time, img, heading, path, destination):
     Animation.__init__(self, time, img, destination)
+    self.__heading = heading
+    self.__path = path
     
   def start(self):
     Animation.start(self)
+    self.__imagePrefix = os.path.join(self.__path, self.getWalkingImageFileName(1))
     
   def step(self, time):
-    Animation.step
+    Animation.step(self, time)
+    percent = ((time*100)/GG.utils.ANIM_TIME)
+    imgPath = os.path.join(self.__path, self.getWalkingImageFileName(percent%GG.utils.ANIM_COUNT))
+    self.setImgSprite(imgPath)
     
   def stop(self):
     Animation.stop(self)
+    imgPath = os.path.join(self.__path, self.getStandingImageFileName())
+    self.setImgSprite(imgPath)
+    self.onEnd()
   
   def onStart(self):
     Animation.onStart(self)
@@ -111,6 +129,17 @@ class MovieAnimation(Animation):
   def isFinished(self, time):
     return Animation.isFinished(self, time)
 
+  def getWalkingImageFileName(self, frame):
+    if frame:
+      fileName = "walking_" + self.__heading + "_00" + str(frame) + ".png"
+    else:
+      fileName = "walking_" + self.__heading + "_010.png"
+    return fileName
+  
+  def getStandingImageFileName(self):
+    fileName = "standing_" + self.__heading + ".png"
+    return fileName
+  
 #*****************************************************************************
     
 class CompositionAnimation(Animation):
@@ -165,18 +194,33 @@ class SequenceAnimation(CompositionAnimation):
     
 class ParalelAnimation(CompositionAnimation):
   
-  def __init__(self, time, img, destination):
-    CompositionAnimation.__init__(self, time, img, destination)
+  def __init__(self):
+    self.__animations = []
+    
+  def addAnimation(self, animation):
+    self.__animations.append(animation)
+  
+  def removeAnimation(self, animation):
+    animation.stop()
+    self.__animations.remove(animation)
     
   def start(self):
     CompositionAnimation.start(self)
+    for animation in self.__animations:
+      animation.start()
     
   def step(self, time):
     CompositionAnimation.step
+    for animation in self.__animations:
+      animation.step(time)
     
   def stop(self):
     CompositionAnimation.stop(self)
-  
+    for animation in self.__animations:
+      animation.stop()
+    for animation in self.__animations:
+      self.__animations.remove(animation)
+      
   def onStart(self):
     CompositionAnimation.onStart(self)
   
@@ -184,7 +228,10 @@ class ParalelAnimation(CompositionAnimation):
     CompositionAnimation.onEnd(self)
     
   def isFinished(self, time):
-    return CompositionAnimation.isFinished(self, time)
+    for animation in self.__animations:    
+      if not animation.isFinished(time):
+        return False
+    return True  
     
 
 

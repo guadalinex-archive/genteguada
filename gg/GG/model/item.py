@@ -20,6 +20,9 @@ class GGItem(ggmodel.GGModel):
     self.__position = position
     self.__room = None
 
+  def getImagePath(self):
+    return GG.utils.DATA_PATH
+        
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
