@@ -94,6 +94,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     target: position the active player clicked on.
     """
     #clickerLabel = player.username
+    player.setUnselectedItem()
     if not self.getBlocked(target):
       #direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(target)

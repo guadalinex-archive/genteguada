@@ -161,4 +161,13 @@ class IsoViewRoom(isoview.IsoView):
     for item in self.__isoViewPlayers:
       item.unsubscribeAllEvents()
     isoview.IsoView.unsubscribeAllEvents(self)
-      
+
+  def itemSelected(self,item):
+    for isoItem in self.__isoViewPlayers:
+      if isoItem.getModel() == item:
+        isoItem.selected()
+
+  def itemUnselected(self,item):
+    for isoItem in self.__isoViewPlayers:
+      if isoItem.getModel() == item:
+        isoItem.unselected()   
