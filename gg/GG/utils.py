@@ -6,10 +6,12 @@ if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
   SOUND_PATH = "gg/GG/data/sound"
   NINO_PATH = "gg/GG/data/nino"
+  NINA_PATH = "gg/GG/data/nina"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
   NINO_PATH = "/usr/share/pixmaps/genteguada/nino"
+  NINA_PATH = "/usr/share/pixmaps/genteguada/nina"
 
 VERSION = "GenteGuada 0.0.3.1"
 BG_FULL_OR = [0, 0]
@@ -18,7 +20,8 @@ CHAR_SZ = [50, 50]
 CHAR_POS = [0, 0, 0]
 SCREEN_SZ = [1024, 768]
 #SCREEN_OR = [SCREEN_SZ[0]/2 -8, 20]
-SCREEN_OR = [SCREEN_SZ[0]/2 -8, 65]
+SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
+#FLOOR_SHIFT = [55, -30]
 FLOOR_SHIFT = [55, -30]
 SCENE_SZ = [8, 8]
 GAMEZONE_SZ = [1024, 578]
@@ -54,14 +57,10 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 STATE = {1: "standing", 2: "walking"}
 
 # Sprites
-BG_FULL = "fondo.png"
-BG_FULL2 = "fondo2.png"
 BG_BLACK = "black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
 CUBE_STONE = "stone_cube.png"
-PLAYER_SPRITE1 = "black_mage.gif"
-PLAYER_SPRITE2 = "black_mage_red.gif"
 OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE = "andatuz_01.png"
 BOOK_SPRITE = "book.png"
@@ -197,6 +196,8 @@ def p3dToP2d(cord3d, offset):
     
 def playSound(sound):
   sndPath = os.path.join(SOUND_PATH, sound)
+  if not os.path.isfile(sndPath):
+    return False
   pygame.mixer.music.load(sndPath)
   pygame.mixer.music.play()
     

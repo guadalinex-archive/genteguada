@@ -79,6 +79,7 @@ class IsoViewItem(isoview.IsoView):
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_TIME, self.__img, self.getModel().getHeading(), \
                   self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset))
     self.__animation = animation.ParalelAnimation()
+    #self.__animation = animation.SecuenceAnimation()
     self.__animation.addAnimation(positionAnim)
     self.__animation.addAnimation(movieAnim)
     aux = self.__clock.tick()

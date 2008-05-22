@@ -167,20 +167,42 @@ class CompositionAnimation(Animation):
     
 #*****************************************************************************
     
-class SequenceAnimation(CompositionAnimation):
+class SecuenceAnimation(CompositionAnimation):
   
-  def __init__(self, time, img, destination):
-    CompositionAnimation.__init__(self, time, img, destination)
+  def __init__(self):
+    self.__animations = []
     
+  def addAnimation(self, animation):
+    self.__animations.append(animation)
+  
+  def removeAnimation(self, animation):
+    animation.stop()
+    self.__animations.remove(animation)
+  
   def start(self):
     CompositionAnimation.start(self)
+    if len(self.__animations):
+      self.__animations[0].start()
     
   def step(self, time):
-    CompositionAnimation.step
+    CompositionAnimation.step(self, time)
+    if len(self.__animations):
+      if self.__animations[0].isFinished(time):
+        self.__animations[0].stop()
+        self.__animations.remove(self.__animations[0])
+        if len(self.__animations):
+          self.__animations[0].start()
+          self.__animations[0].step(time)
+      else:
+        self.__animations[0].step(time)
     
   def stop(self):
     CompositionAnimation.stop(self)
-  
+    if len(self.__animations):
+      self.__animations[0].stop()
+    for animation in self.__animations:
+      self.__animations.remove(animation)
+    
   def onStart(self):
     CompositionAnimation.onStart(self)
   
@@ -188,8 +210,13 @@ class SequenceAnimation(CompositionAnimation):
     CompositionAnimation.onEnd(self)
     
   def isFinished(self, time):
-    return CompositionAnimation.isFinished(self, time)
-    
+    if len(self.__animations) > 1:
+      return False
+    elif len(self.__animations) == 0:
+      return True
+    else:
+      return self.__animations[0].isFinished(time)
+        
 #*****************************************************************************
     
 class ParalelAnimation(CompositionAnimation):
@@ -210,7 +237,7 @@ class ParalelAnimation(CompositionAnimation):
       animation.start()
     
   def step(self, time):
-    CompositionAnimation.step
+    CompositionAnimation.step(self, time)
     for animation in self.__animations:
       animation.step(time)
     

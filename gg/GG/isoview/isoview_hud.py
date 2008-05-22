@@ -209,7 +209,7 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.botonera = ocempgui.widgets.HFrame()
-    self.botonera.topleft = [380,0]
+    self.botonera.topleft = [0,GG.utils.HUD_OR[1] - 80]
     self.widgetContainer.add_widget(self.botonera)
     for buttonData in ACTIONS:
       buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
