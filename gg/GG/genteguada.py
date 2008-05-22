@@ -31,14 +31,7 @@ class GenteGuada:
           self.isoHud.chatMessageEntered()
       if event.type == pygame.locals.MOUSEBUTTONDOWN:
         cordX, cordY = pygame.mouse.get_pos()
-        if (GG.utils.UPPERPANNEL_OR[0] <= cordX <= (GG.utils.UPPERPANNEL_OR[0] + GG.utils.UPPERPANNEL_SZ[0])) \
-            and (GG.utils.UPPERPANNEL_OR[1] <= cordY <= (GG.utils.UPPERPANNEL_OR[1] + GG.utils.UPPERPANNEL_SZ[1])):
-          # Upper pannel
-          pass
-        elif cordY > GG.utils.GAMEZONE_SZ[1]:
-          # Chat & inventory
-          pass
-        else:  
+        if 0 <= cordY <= GG.utils.HUD_OR[1]:
           dest = self.isoHud.getIsoviewRoom().findTile([cordX, cordY])
           if not dest == [-1, -1]:
             self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
