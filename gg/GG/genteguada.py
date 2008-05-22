@@ -6,6 +6,7 @@ import GG.model.ggsystem
 import time
 import pygame.locals
 import sys
+import GG.isoview.login
 
 import ocempgui.widgets
 
@@ -58,11 +59,19 @@ class GenteGuada:
       self.system = self.client.getRootModel()
     else:
       self.system = GG.model.ggsystem.GGSystem()
-
-    login = self.system.login(params.user, params.password)
-    if not login[0]:
-      print login[1]
-      self.finish()
+    
+    k = 1
+    dataLogin = GG.isoview.login.Login(self.screen)
+    dataLogin.start()
+    while k:
+      userData = dataLogin.login()
+      login = self.system.login(params.user, params.password)
+      if not login[0]:
+        print login[1]
+      else:
+        k = 0
+    dataLogin.finish()
+    
     self.session = login[1] 
     if self.client:
       self.client.registerSession(self.session)
