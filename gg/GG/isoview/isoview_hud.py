@@ -4,6 +4,7 @@ import GG.utils
 import isoview
 import isoview_inventoryitem
 import ocempgui.widgets
+import copy
 
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
@@ -62,13 +63,13 @@ class IsoViewHud(isoview.IsoView):
     self.paintChat()
     self.paintTextBox()
     self.paintActionsButtons()
+    self.createActionsItemButtoms()
     
   def updateFrame(self):
     """ Updates all sprites for a new frame.
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
-    #self.paintUpperPannel()
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -138,11 +139,6 @@ class IsoViewHud(isoview.IsoView):
   def itemInventorySelected(self,invIsoItem):
     self.__player.clickOnInventoryItem(invIsoItem.getModel())
 
-  def paintUpperPannel(self):
-    #pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
-    #          (GG.utils.UPPERPANNEL_OR[0], GG.utils.UPPERPANNEL_OR[1], GG.utils.UPPERPANNEL_SZ[0] - 1, GG.utils.UPPERPANNEL_SZ[1] - 1))
-    pass
-    
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.
     spriteName: sprite name.
@@ -181,22 +177,19 @@ class IsoViewHud(isoview.IsoView):
   def itemSelected(self,event):
     self.itemSelected = event.getParams()['item'] 
     self.__isoviewRoom.itemSelected(self.itemSelected)
-    self.botomInventario = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, "guardar.png"))
-    self.botomInventario.border = 0
-    self.botomInventario.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.guardarInventario)
-    self.botonera.add_child(self.botomInventario)
+    options = self.itemSelected.getOptions()
+    self.botoneraActions = ocempgui.widgets.HFrame()
+    self.botoneraActions.topleft = [1024 - (80*len(options)),GG.utils.HUD_OR[1] - 80]
+    self.widgetContainer.add_widget(self.botoneraActions)
+    for action in options:
+      self.botoneraActions.add_child(self.buttomActions[action]["buttom"])
 
-  def guardarInventario(self):
-    self.__player.addInventory(self.itemSelected)
-    self.itemSelected.getRoom().removeItem(self.itemSelected)
-    #print "al inventario"
-
-    
-  def itemUnselected(self,event):
+  def itemUnselected(self,event=None):
     if self.itemSelected:
       self.__isoviewRoom.itemUnselected(self.itemSelected)
-      self.itemSelected = None
-      self.botonera.remove_child(self.botomInventario)
+      self.dropActionsItemButtoms()
+
+  #Defincion de la botonera y sus acciones permanentes
 
   def paintActionsButtons(self):
     ACTIONS = [
@@ -235,4 +228,37 @@ class IsoViewHud(isoview.IsoView):
   def mostrarAyuda(self):
     print "mostrar ayuda"
 
+  #definicion de las acciones y botones en funcion del item seleccionado
+  
+  def createActionsItemButtoms(self):
+      self.buttomActions = {
+        "inventory":{"image":"guardar.png", "action": self.itemToInventory,"buttom":None},
+        "push":{"image":"empujar.png", "action": self.itemToPush,"buttom":None},
+        "up":{"image":"levantar.png", "action": self.itemToUp,"buttom":None},
+      }
+      for key in self.buttomActions.keys():
+        buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttomActions[key]['image']))
+        buttom.border = 0
+        buttom.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttomActions[key]['action'])
+        self.buttomActions[key]['buttom'] = buttom
+
+  def dropActionsItemButtoms(self):
+    self.itemSelected = None
+    children = copy.copy(self.botoneraActions.children)
+    for child in children:
+      self.botoneraActions.remove_child(child)
+    self.widgetContainer.remove_widget(self.botoneraActions)
+
+  def itemToInventory(self):
+    self.__player.addInventory(self.itemSelected)
+    self.itemSelected.getRoom().removeItem(self.itemSelected)
+    self.dropActionsItemButtoms()
+
+  def itemToPush(self):
+    print "empujamos"
+    self.itemUnselected()
+
+  def itemToUp(self):
+    print "levantamos"
+    self.itemUnselected()
 

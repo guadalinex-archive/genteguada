@@ -21,6 +21,9 @@ class GGPickableItem(item.GGItem):
   def variablesToSerialize(self):
     parentVars = item.GGItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
+
+  def getOptions(self):
+    return ["inventory"]
   
   def clickedBy(self, clicker):
     """ Triggers an avent when the item receives a click by a player.
