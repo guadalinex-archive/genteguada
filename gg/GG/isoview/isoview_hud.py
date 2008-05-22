@@ -179,11 +179,13 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.itemSelected(self.itemSelected)
     options = self.itemSelected.getOptions()
     self.botoneraActions = ocempgui.widgets.HFrame()
-    self.botoneraActions.topleft = [1024 - (80*len(options)),GG.utils.HUD_OR[1] - 80]
-    self.widgetContainer.add_widget(self.botoneraActions)
+    self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options)), \
+    #self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - self.botoneraActions.size[0], \
+                                    GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     for action in options:
       self.botoneraActions.add_child(self.buttomActions[action]["buttom"])
-
+    self.widgetContainer.add_widget(self.botoneraActions)
+  
   def itemUnselected(self,event=None):
     if self.itemSelected:
       self.__isoviewRoom.itemUnselected(self.itemSelected)
@@ -243,12 +245,17 @@ class IsoViewHud(isoview.IsoView):
         self.buttomActions[key]['buttom'] = buttom
 
   def dropActionsItemButtoms(self):
+    """
+    rect = (self.botoneraActions.topleft[0], self.botoneraActions.topleft[1], \
+            self.botoneraActions.topleft[0] + self.botoneraActions.size[0], self.botoneraActions.topleft[1] + self.botoneraActions.size[1])
+    pygame.display.update(rect)
+    """
     self.itemSelected = None
     children = copy.copy(self.botoneraActions.children)
     for child in children:
       self.botoneraActions.remove_child(child)
     self.widgetContainer.remove_widget(self.botoneraActions)
-
+    
   def itemToInventory(self):
     self.__player.addInventory(self.itemSelected)
     self.itemSelected.getRoom().removeItem(self.itemSelected)
