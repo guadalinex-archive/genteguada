@@ -179,8 +179,11 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.itemSelected(self.itemSelected)
     options = self.itemSelected.getOptions()
     self.botoneraActions = ocempgui.widgets.HFrame()
-    self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options)), \
-    #self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - self.botoneraActions.size[0], \
+    if len(options) == 1:
+      offset = 0
+    else:
+      offset = 3 + len(options) 
+    self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - ((GG.utils.ACTION_BUTTON_SZ[0] - offset ) *len(options)), \
                                     GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     for action in options:
       self.botoneraActions.add_child(self.buttomActions[action]["buttom"])
@@ -237,6 +240,7 @@ class IsoViewHud(isoview.IsoView):
         "inventory":{"image":"guardar.png", "action": self.itemToInventory,"buttom":None},
         "push":{"image":"empujar.png", "action": self.itemToPush,"buttom":None},
         "up":{"image":"levantar.png", "action": self.itemToUp,"buttom":None},
+        "prueba":{"image":"levantar.png", "action": self.itemToUp,"buttom":None},
       }
       for key in self.buttomActions.keys():
         buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttomActions[key]['image']))
