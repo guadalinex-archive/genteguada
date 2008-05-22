@@ -49,30 +49,23 @@ class GenteGuada:
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)
+    self.__getSystem(params.ip) 
+    winLogin = GG.isoview.login.Login(self.screen, self)
+    winLogin.draw()
+    self.initGame()
 
-    if params.ip:
+  def __getSystem(self,ip):
+    if ip:
       try:
-        self.client = dMVC.remoteclient.RClient(params.ip)
+        self.client = dMVC.remoteclient.RClient(ip)
       except Exception, excep:
         print excep, "No hay conexion con el servidor"
         self.finish()
       self.system = self.client.getRootModel()
     else:
       self.system = GG.model.ggsystem.GGSystem()
-    
-    k = 1
-    dataLogin = GG.isoview.login.Login(self.screen)
-    dataLogin.start()
-    while k:
-      userData = dataLogin.login()
-      login = self.system.login(params.user, params.password)
-      if not login[0]:
-        print login[1]
-      else:
-        k = 0
-    dataLogin.finish()
-    
-    self.session = login[1] 
+
+  def initGame(self):
     if self.client:
       self.client.registerSession(self.session)
     self.player = self.session.getPlayer()
@@ -82,4 +75,4 @@ class GenteGuada:
       time.sleep(GG.utils.ANIM_DELAY)
       self.input(pygame.event.get())
       self.isoHud.updateFrame()
-  
+
