@@ -15,7 +15,10 @@ class Login:
     self.__finish = False
     self.__parent = parent
     
-  def draw(self):
+  def draw(self, user=None, passw=None):
+    if user and passw:
+      self.autoLogin(user, passw)
+      return
     imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.LOGIN_SCREEN)
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
@@ -91,3 +94,12 @@ class Login:
   def finishLogin(self):
     self.__screen.fill((0, 0, 0))
     self.__finish = True
+  
+  def autoLogin(self,user,passw):
+    loginData = self.__parent.system.login(user,passw)
+    if loginData[0] == True:
+      self.__parent.session = loginData[1]
+    else:
+      print loginData[1]
+      sys.exit(0)
+
