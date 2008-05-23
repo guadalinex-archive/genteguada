@@ -184,7 +184,8 @@ class GGPlayer(GG.model.item.GGItem):
       item.tick()
       if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
         if not item.timeLeft():
-          self.removeInventory(item)      
+          self.removeInventory(item)
+          item.getStartRoom().addItem(item, item.getPosition())
     if self.getPosition() == self.__destination:
       self.setState("standing")
       return

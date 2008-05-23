@@ -33,6 +33,7 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedItem = None
     self.buttonActions = {
         "inventory":{"image":"guardar.png", "action": self.itemToInventory,"button":None},
+        "clone":{"image":"guardar.png", "action": self.itemToClone,"button":None},
         "push":{"image":"empujar.png", "action": self.itemToPush,"button":None},
         "up":{"image":"levantar.png", "action": self.itemToUp,"button":None},
         "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
@@ -265,6 +266,11 @@ class IsoViewHud(isoview.IsoView):
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
+ 
+  def itemToClone(self):
+    clone = self.__selectedItem.getClone()
+    self.__player.addInventory(clone)
+    self.itemUnselected()
 
   def itemToPush(self):
     print "push"

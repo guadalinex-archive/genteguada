@@ -94,7 +94,6 @@ TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
 
 # Sprites: items
-CUBE_STONE = "stone_cube.png"
 OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE = "andatuz_01.png"
 BOOK_SPRITE = "book.png"
@@ -102,6 +101,9 @@ BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
 MP3_SPRITE = "mp3.png"
+TRASH_SPRITE = "trash.png"
+PUZZLECUBE_SPRITE = "puzzle_cube.png"
+BRICKCUBE_SPRITE = "brick_cube.png"
 
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"

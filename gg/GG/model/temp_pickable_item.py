@@ -6,15 +6,21 @@ import GG.isoview.isoview_item
 
 class GGTempPickableItem(pickable_item.GGPickableItem):
     
-  def __init__(self, spriteName, position, offset, spriteInventory, label, time):
+  def __init__(self, spriteName, position, offset, spriteInventory, label, time, startRoom):
     pickable_item.GGPickableItem.__init__(self, spriteName, position, offset, spriteInventory, label)
     self.__time = time*1000
     self.__elapsedTime = 0
     self.__clock = pygame.time.Clock()
+    self.__startRoom = startRoom
+  
+  def getStartRoom(self):
+    return self.__startRoom
+
+  def setStartRoom(self, room):
+    self.__startRoom = room
   
   def tick(self):
     if self.__elapsedTime:
-      print self.__elapsedTime
       self.__elapsedTime += self.__clock.tick()
       #if self.timeLeft():
   
