@@ -26,6 +26,8 @@ class GGPlayer(GG.model.item.GGItem):
     self.__state = "standing"
     self.__destination = position
     self.__inventory = []
+    self.__visited = []
+    self.__selected = None
 
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -76,6 +78,9 @@ class GGPlayer(GG.model.item.GGItem):
     destination: movement destination.
     """
     if not self.__destination == destination:
+      for vis in self.__visited:
+        self.__visited.remove(vis)
+      self.__visited = []
       self.__destination = destination
       self.triggerEvent('destination', destination=destination)
 
@@ -85,6 +90,9 @@ class GGPlayer(GG.model.item.GGItem):
     destination: movement destination.
     """
     if self.__destination != destination:
+      for vis in self.__visited:
+        self.__visited.remove(vis)
+      self.__visited = []
       self.__destination = destination
       
   # self.__inventory
@@ -155,10 +163,9 @@ class GGPlayer(GG.model.item.GGItem):
     """ Checks if a tile has been visited by the player on the last movement.
     pos: tile position.
     """
-    for i in range(0, len(self.__visited)):
-      if self.__visited[i] == pos:
-        return 1
-    return 0
+    if pos in self.__visited:
+      return True
+    return False
   
   def clickedBy(self, clicker):
     """ Triggers an event when the player receives a click by another player.
@@ -196,6 +203,7 @@ class GGPlayer(GG.model.item.GGItem):
       next = [pos[0] - 1, pos[1], pos[2] + 1]
     if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
+    self.__visited.append(pos)
     self.setPosition(next)
 
   def changeRoom(self, room, pos):
@@ -216,8 +224,13 @@ class GGPlayer(GG.model.item.GGItem):
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username))
 
   def setSelectedItem(self, item):
+    self.__selected = item
     self.triggerEvent('selectedItem', item=item)
     
   def setUnselectedItem(self):
+    self.__selected = None
     self.triggerEvent('unselectedItem')
+    
+  def talkTo(self, item):
+    item.talkedBy(self)
     
