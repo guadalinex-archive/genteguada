@@ -3,6 +3,7 @@ import GG.utils
 import GG.model.ggmodel
 import GG.model.item
 import GG.model.chat_message
+import GG.model.inventory_only_item
 import GG.isoview.isoview_room
 import dMVC.model
 import GG.model.player
@@ -48,6 +49,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: new item.
     pos: position of the item in the new room.
     """
+    if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
+      del item
+      return True
     if not item in self.__items:
       self.__items.append(item)
       item.setStartPosition(None)
