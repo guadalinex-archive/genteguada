@@ -7,11 +7,13 @@ if os.path.isdir("gg/GG/data"):
   SOUND_PATH = "gg/GG/data/sound"
   NINO_PATH = "gg/GG/data/nino"
   NINA_PATH = "gg/GG/data/nina"
+  STYLES_PATH = "gg/GG/styles"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
   NINO_PATH = "/usr/share/pixmaps/genteguada/nino"
   NINA_PATH = "/usr/share/pixmaps/genteguada/nina"
+  STYLES_PATH = "/usr/share/pixmaps/genteguada/styles"
 
 VERSION = "GenteGuada 0.0.3.1"
 BG_FULL_OR = [0, 0]
@@ -43,6 +45,28 @@ INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
 INV_ITEM_SZ = [60, 60]
 INV_ITEM_COUNT = [3, 2]
 INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
+
+#Avatar editor
+TAG_POSITION = [288, 0]
+TAG_OFFSET = 76
+BACKGROUNDLEFT = "backgroundleft.png"
+BACKGROUNDRIGHT = "backgroundright.png"
+BACKGROUNDMIDDLE = "backgroundmiddle.png"
+MALE_DUMMY = "maleDummy.png"
+FEMALE_DUMMY = "femaleDummy.png"
+GENDER_TAG = "genderTag.png"
+SKIN_TAG = "skinTag.png"
+HEAD_TAG = "headSizeTag.png"
+BODY_TAG = "bodySizeTag.png"
+MASK_TAG = "maskTag.png"
+HAIR_TAG = "hairTag.png"
+SHIRT_TAG = "shirtTag.png"
+SHORT_TAG = "shortsTag.png"
+SKIRT_TAG = "skirtTag.png"
+SHOES_TAG = "shoesTag.png"
+MALE_BTN = "maleButon.png"
+FEMALE_BTN = "femaleButon.png"
+TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
 # Upper pannel
 UPPERPANNEL_COUNT = 8
@@ -82,6 +106,7 @@ MP3_SPRITE = "mp3.png"
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
 GENDER_TAG = "genderTag.png"
+
 
 # Sounds
 SOUND_OCEAN = "ocean.ogg"
