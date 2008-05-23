@@ -86,10 +86,13 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    key = GG.model.pickable_item.GGPickableItem(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada")
+    #key = GG.model.pickable_item.GGPickableItem(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada")
     room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
-    myPenguin = GG.model.giver_npc.GGGiverNPC(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso", [], key)
+    
+    dict = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
+    
+    myPenguin = GG.model.giver_npc.GGGiverNPC(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso", [], dict)
     myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
     myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])

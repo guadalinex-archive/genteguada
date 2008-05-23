@@ -23,6 +23,9 @@ class GGGiverNPC(GG.model.item.GGItem):
     parentVars = GG.model.item.GGItem.variablesToSerialize(self)
     return parentVars + ['label']
   
+  def getOptions(self):
+    return ["talk"]
+  
   def checkCondition(self, condition, player):
     return True
   
@@ -32,9 +35,16 @@ class GGGiverNPC(GG.model.item.GGItem):
     """
     GG.model.item.GGItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      for condition in self.__condition:
-        if not self.checkCondition(condition, clicker):
-          return False
-      clicker.addInventory(self.__item)
+      clicker.setSelectedItem(self)
     else:
       return False    
+
+  def talkedBy(self, talker):
+    for condition in self.__condition:
+      if not self.checkCondition(condition, talker):
+        return False
+    newItem = self.__item["object"](*self.__item["params"])
+    for item in talker.getInventory():
+      if isinstance(item, self.__item["object"]) and item.label == newItem.label:
+        return False
+    talker.addInventory(newItem)

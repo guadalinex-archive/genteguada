@@ -30,8 +30,17 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
-    self.itemSelected = None
-
+    self.__selectedItem = None
+    self.buttonActions = {
+        "inventory":{"image":"guardar.png", "action": self.itemToInventory,"button":None},
+        "push":{"image":"empujar.png", "action": self.itemToPush,"button":None},
+        "up":{"image":"levantar.png", "action": self.itemToUp,"button":None},
+        "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
+    }
+  
+    #fontPath = os.path.join(GG.utils.DATA_PATH, "FreeSerifItalic.ttf")
+    #self.__font = pygame.font.Font(fontPath, 48)
+    
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
     item: new isoview inventory item.
@@ -62,8 +71,8 @@ class IsoViewHud(isoview.IsoView):
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
-    self.paintActionsButtons()
-    self.createActionsItemButtoms()
+    self.paintActionButtons()
+    self.createItemActionButtons()
     
   def updateFrame(self):
     """ Updates all sprites for a new frame.
@@ -172,104 +181,98 @@ class IsoViewHud(isoview.IsoView):
     messageChat = event.getParams()['message']
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     self.printLineOnChat(cad)
-    
 
   def itemSelected(self,event):
-    self.itemSelected = event.getParams()['item'] 
-    self.__isoviewRoom.itemSelected(self.itemSelected)
-    options = self.itemSelected.getOptions()
-    self.botoneraActions = ocempgui.widgets.HFrame()
+    self.__selectedItem = event.getParams()['item'] 
+    self.__isoviewRoom.itemSelected(self.__selectedItem)
+    options = self.__selectedItem.getOptions()
+    self.buttonBarActions = ocempgui.widgets.HFrame()
     if len(options) == 1:
       offset = 0
     else:
       offset = 3 + len(options) 
-    self.botoneraActions.topleft = [GG.utils.SCREEN_SZ[0] - ((GG.utils.ACTION_BUTTON_SZ[0] - offset ) *len(options)), \
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options)), \
+    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - self.buttonBarActions.size[0], \
                                     GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     for action in options:
-      self.botoneraActions.add_child(self.buttomActions[action]["buttom"])
-    self.widgetContainer.add_widget(self.botoneraActions)
+      self.buttonBarActions.add_child(self.buttonActions[action]["button"])
+    self.widgetContainer.add_widget(self.buttonBarActions)
   
   def itemUnselected(self,event=None):
-    if self.itemSelected:
-      self.__isoviewRoom.itemUnselected(self.itemSelected)
-      self.dropActionsItemButtoms()
+    if self.__selectedItem:
+      self.__isoviewRoom.itemUnselected(self.__selectedItem)
+      self.dropActionsItembuttons()
 
-  #Defincion de la botonera y sus acciones permanentes
+  #Defincion de la buttonBar y sus acciones permanentes
 
-  def paintActionsButtons(self):
+  def paintActionButtons(self):
     ACTIONS = [
-                {"image":"vestidor.png", "action": self.mostrarVestidor},
-                {"image":"derecha.png", "action": self.rotarDerecha},
-                {"image":"izquierda.png", "action": self.rotarIzquierda},
-                {"image":"herramientas.png", "action": self.mostrarHerramientas},
-                {"image":"sonido.png", "action": self.mostrarBarraSonido},
-                {"image":"ayuda.png", "action": self.mostrarAyuda},
+                {"image":"vestidor.png", "action": self.showDresser},
+                {"image":"derecha.png", "action": self.turnRight},
+                {"image":"izquierda.png", "action": self.turnLeft},
+                {"image":"herramientas.png", "action": self.showTools},
+                {"image":"sonido.png", "action": self.showSoundControl},
+                {"image":"ayuda.png", "action": self.showHelp},
               ]
 
-    self.botonera = ocempgui.widgets.HFrame()
-    self.botonera.topleft = [0,GG.utils.HUD_OR[1] - 80]
-    self.widgetContainer.add_widget(self.botonera)
+    self.buttonBar = ocempgui.widgets.HFrame()
+    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
+    self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
-      buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
-      buttom.border = 0
-      buttom.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
-      self.botonera.add_child(buttom)
+      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
+      button.border = 0
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
+      self.buttonBar.add_child(button)
 
-  def mostrarVestidor(self):
-    print "vestidor"
+  def showDresser(self):
+    print "show dresser room"
 
-  def rotarDerecha(self):
-    print "rotar derecha"
+  def turnRight(self):
+    print "turn right"
 
-  def rotarIzquierda(self):
-    print "rotar izquierda"
+  def turnLeft(self):
+    print "turn left"
 
-  def mostrarHerramientas(self):
-    print "mostrar herramienta"
+  def showTools(self):
+    print "show tools"
 
-  def mostrarBarraSonido(self):
-    print "mostrar la barra de sonido"
+  def showSoundControl(self):
+    print "show sound control"
 
-  def mostrarAyuda(self):
-    print "mostrar ayuda"
+  def showHelp(self):
+    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
+    print "show help"
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
-  def createActionsItemButtoms(self):
-      self.buttomActions = {
-        "inventory":{"image":"guardar.png", "action": self.itemToInventory,"buttom":None},
-        "push":{"image":"empujar.png", "action": self.itemToPush,"buttom":None},
-        "up":{"image":"levantar.png", "action": self.itemToUp,"buttom":None},
-        "prueba":{"image":"levantar.png", "action": self.itemToUp,"buttom":None},
-      }
-      for key in self.buttomActions.keys():
-        buttom = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttomActions[key]['image']))
-        buttom.border = 0
-        buttom.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttomActions[key]['action'])
-        self.buttomActions[key]['buttom'] = buttom
+  def createItemActionButtons(self):
+    for key in self.buttonActions.keys():
+      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttonActions[key]['image']))
+      button.border = 0
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[key]['action'])
+      self.buttonActions[key]['button'] = button
 
-  def dropActionsItemButtoms(self):
-    """
-    rect = (self.botoneraActions.topleft[0], self.botoneraActions.topleft[1], \
-            self.botoneraActions.topleft[0] + self.botoneraActions.size[0], self.botoneraActions.topleft[1] + self.botoneraActions.size[1])
-    pygame.display.update(rect)
-    """
-    self.itemSelected = None
-    children = copy.copy(self.botoneraActions.children)
+  def dropActionsItembuttons(self):
+    self.__selectedItem = None
+    children = copy.copy(self.buttonBarActions.children)
     for child in children:
-      self.botoneraActions.remove_child(child)
-    self.widgetContainer.remove_widget(self.botoneraActions)
+      self.buttonBarActions.remove_child(child)
+    self.widgetContainer.remove_widget(self.buttonBarActions)
     
   def itemToInventory(self):
-    self.__player.addInventory(self.itemSelected)
-    self.itemSelected.getRoom().removeItem(self.itemSelected)
-    self.dropActionsItemButtoms()
+    self.__player.addInventory(self.__selectedItem)
+    self.__selectedItem.getRoom().removeItem(self.__selectedItem)
+    self.dropActionsItembuttons()
 
   def itemToPush(self):
-    print "empujamos"
+    print "push"
     self.itemUnselected()
 
   def itemToUp(self):
-    print "levantamos"
+    print "lift"
     self.itemUnselected()
 
+  def itemToTalk(self):
+    #print "talk"
+    self.__player.talkTo(self.__selectedItem)
+    self.itemUnselected()
