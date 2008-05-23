@@ -1,4 +1,5 @@
 import GG.model.item
+import GG.model.temp_pickable_item
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
@@ -117,6 +118,8 @@ class GGPlayer(GG.model.item.GGItem):
     item: new item.
     """
     self.__inventory.append(item)
+    if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
+      item.startCount()
     self.triggerEvent('addInventory', item=item)
     
   def removeInventory(self, item):
@@ -177,6 +180,11 @@ class GGPlayer(GG.model.item.GGItem):
   def tick(self):
     """ Calls for an update on player's position an movement direction.
     """
+    for item in self.__inventory:
+      item.tick()
+      if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
+        if not item.timeLeft():
+          self.removeInventory(item)      
     if self.getPosition() == self.__destination:
       self.setState("standing")
       return
