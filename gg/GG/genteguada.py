@@ -51,7 +51,8 @@ class GenteGuada:
     pygame.display.set_caption(GG.utils.VERSION)
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    winLogin.draw()
+    #winLogin.draw()
+    winLogin.draw(params.user,params.password)
     self.initGame()
 
   def __getSystem(self,ip):
