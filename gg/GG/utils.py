@@ -64,8 +64,8 @@ SHIRT_TAG = "shirtTag.png"
 SHORT_TAG = "shortsTag.png"
 SKIRT_TAG = "skirtTag.png"
 SHOES_TAG = "shoesTag.png"
-MALE_BTN = "maleButon.png"
-FEMALE_BTN = "femaleButon.png"
+MALE_BTN = "maleButton.png"
+FEMALE_BTN = "femaleButton.png"
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
 # Upper pannel
