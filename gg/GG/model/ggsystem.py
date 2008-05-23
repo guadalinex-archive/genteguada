@@ -5,6 +5,7 @@ import GG.model.player
 import GG.model.ggsession
 import GG.model.item
 import GG.model.pickable_item
+import GG.model.temp_pickable_item
 import GG.model.giver_npc
 import GG.model.teleporter
 import thread
@@ -93,6 +94,7 @@ class GGSystem(dMVC.model.Model):
     dict = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
     
     myPenguin = GG.model.giver_npc.GGGiverNPC(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso", [], dict)
+    myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [6, 0, 6], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 30)
     myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
     myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
@@ -110,7 +112,8 @@ class GGSystem(dMVC.model.Model):
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 4], [55, 43]), [0, 0, 4])
     room1.addItem(GG.model.item.GGItem(GG.utils.CUBE_STONE, [0, 0, 6], [55, 43]), [0, 0, 6])
     room1.addItem(myPenguin, myPenguin.getPosition())    
-    room1.addItem(myBook, myBook.getPosition())    
+    room1.addItem(myBook, myBook.getPosition())
+    room1.addItem(myMp3, myMp3.getPosition())
     room1.addItem(myDoor1, myDoor1.getPosition())    
     room2.addItem(myDoor2, myDoor2.getPosition())
     self.__createPlayer(nino)
