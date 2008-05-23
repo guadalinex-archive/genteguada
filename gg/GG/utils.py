@@ -1,6 +1,7 @@
 import math
 import os
 import pygame
+import ocempgui.widgets
 
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
@@ -135,6 +136,19 @@ NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left
 NINA_SPRITES = {"up": "nina_up.png", "down": "nina_down.png", "left": "nina_left.png",
                 "right": "nina_right.png", "topleft": "nina_topleft.png", "bottomright": "nina_bottomright.png",
                 "bottomleft": "nina_bottomleft.png", "topright": "nina_topright.png"}
+
+#styles
+#TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
+STYLES = {
+             "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 30, "alias" : True },
+                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                               ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                               ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                               ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                            }
+                            },   
+
+         }
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.

@@ -6,9 +6,6 @@ import isoview_inventoryitem
 import ocempgui.widgets
 import copy
 
-
-import ocempgui.draw
-
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
   Defines the HUD.
@@ -123,13 +120,11 @@ class IsoViewHud(isoview.IsoView):
   def paintTextBox(self):
     """ Paints the editable text box on screen.
     """
-    dataStyle = { "font" : { "name" : "Times", "size" : 40, "alias" : True} , "fgcolor": { ocempgui.widgets.Constants.STATE_NORMAL : (255,0,0)} }
-    myStyle = ocempgui.widgets.WidgetStyle(dataStyle)
     self.__textField = ocempgui.widgets.Entry()
+    self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
     self.__textField.topleft = GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1]
     self.__textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
-    self.__textField.set_style(myStyle)
     self.widgetContainer.add_widget(self.__textField)
 
   def paintInventory(self):
