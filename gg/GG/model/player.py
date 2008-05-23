@@ -145,7 +145,8 @@ class GGPlayer(GG.model.item.GGItem):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
-    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    #dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    dropLocation = self.getRoom().getNearestEmptyCell(GG.utils.getFrontPosition(self.getPosition(), self.__heading))
     if dropLocation == [-1, -1, -1] or self.getRoom().getBlocked(dropLocation):
       return False
     item.setPosition(dropLocation)
