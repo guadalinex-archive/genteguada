@@ -191,7 +191,7 @@ class IsoViewHud(isoview.IsoView):
       offset = 0
     else:
       offset = 3 + len(options) 
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options)), \
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
     #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - self.buttonBarActions.size[0], \
                                     GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     for action in options:
@@ -240,8 +240,10 @@ class IsoViewHud(isoview.IsoView):
     print "show sound control"
 
   def showHelp(self):
-    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     print "show help"
+    #TODO solo funciona en linux con las X, para e
+    pygame.display.toggle_fullscreen()
+
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
