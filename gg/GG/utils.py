@@ -29,6 +29,8 @@ GAMEZONE_SZ = [1024, 578]
 HUD_SZ = [1024, SCREEN_SZ[1] - GAMEZONE_SZ[1]]
 HUD_OR = [0, GAMEZONE_SZ[1]]
 
+COLOR_SHIFT = 80
+
 # Login
 LOGIN_USERNAME_OR = [SCREEN_SZ[0]/2 + 10, SCREEN_SZ[1]/2 - 20]
 LOGIN_USERNAME_SZ = [100, 20]
@@ -50,24 +52,6 @@ INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1
 #Avatar editor
 TAG_POSITION = [288, 0]
 TAG_OFFSET = 76
-BACKGROUNDLEFT = "backgroundleft.png"
-BACKGROUNDRIGHT = "backgroundright.png"
-BACKGROUNDMIDDLE = "backgroundmiddle.png"
-MALE_DUMMY = "maleDummy.png"
-FEMALE_DUMMY = "femaleDummy.png"
-GENDER_TAG = "genderTag.png"
-SKIN_TAG = "skinTag.png"
-HEAD_TAG = "headSizeTag.png"
-BODY_TAG = "bodySizeTag.png"
-MASK_TAG = "maskTag.png"
-HAIR_TAG = "hairTag.png"
-SHIRT_TAG = "shirtTag.png"
-SHORT_TAG = "shortsTag.png"
-SKIRT_TAG = "skirtTag.png"
-SHOES_TAG = "shoesTag.png"
-MALE_BTN = "maleButton.png"
-FEMALE_BTN = "femaleButton.png"
-TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
 # Upper pannel
 UPPERPANNEL_COUNT = 8
@@ -88,11 +72,13 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 
 STATE = {1: "standing", 2: "walking"}
 
-# Sprites
+# ======================= SPRITES ===========================
+
 LOGIN_SCREEN = "login.png"
 BG_BLACK = "black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
+INTERFACE_LOWER = "interface_lower.png"
 
 # Sprites: items
 OAK_SPRITE = "oak.png"
@@ -110,8 +96,35 @@ BRICKCUBE_SPRITE = "brick_cube.png"
 DUMMY = "dummy.png"
 GENDER_TAG = "genderTag.png"
 
+# Avatar editor
+BACKGROUNDLEFT = "backgroundleft.png"
+BACKGROUNDRIGHT = "backgroundright.png"
+BACKGROUNDMIDDLE = "backgroundmiddle.png"
+MALE_DUMMY = "maleDummy.png"
+FEMALE_DUMMY = "femaleDummy.png"
+GENDER_TAG = "genderTag.png"
+SKIN_TAG = "skinTag.png"
+HEAD_TAG = "headSizeTag.png"
+BODY_TAG = "bodySizeTag.png"
+MASK_TAG = "maskTag.png"
+HAIR_TAG = "hairTag.png"
+SHIRT_TAG = "shirtTag.png"
+SHORT_TAG = "shortsTag.png"
+SKIRT_TAG = "skirtTag.png"
+SHOES_TAG = "shoesTag.png"
+MALE_BTN = "maleButton.png"
+FEMALE_BTN = "femaleButton.png"
+TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
-# Sounds
+NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
+                "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",
+                "bottomleft": "nino_bottomleft.png", "topright": "nino_topright.png"}
+NINA_SPRITES = {"up": "nina_up.png", "down": "nina_down.png", "left": "nina_left.png",
+                "right": "nina_right.png", "topleft": "nina_topleft.png", "bottomright": "nina_bottomright.png",
+                "bottomleft": "nina_bottomleft.png", "topright": "nina_topright.png"}
+
+# ======================= SOUNDS ===========================
+
 SOUND_OCEAN = "ocean.ogg"
 SOUND_DROPITEM = "drop_item.ogg"
 SOUND_KEYS = "keys.ogg"
@@ -119,7 +132,8 @@ SOUND_OPENDOOR = "open_door.ogg"
 SOUND_STEPS01 = "steps01.ogg"
 SOUND_STEPS02 = "steps02.ogg"
 
-# Colors
+# ======================= COLORS ===========================
+
 HUD_COLOR_BASE = [177, 174, 200]
 HUD_COLOR_BORDER1 = [104, 102, 119]
 HUD_COLOR_BORDER2 = [138, 136, 160]
@@ -129,13 +143,6 @@ CHAT_COLOR_FONT = [216, 216, 216]
 INV_COLOR_BG = [0, 0, 0]
 TEXT_BOX_COLOR_BG = [255, 255, 255]
 GUADALINEX_BLUE = [34, 133, 234]
-
-NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
-                "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",
-                "bottomleft": "nino_bottomleft.png", "topright": "nino_topright.png"}
-NINA_SPRITES = {"up": "nina_up.png", "down": "nina_down.png", "left": "nina_left.png",
-                "right": "nina_right.png", "topleft": "nina_topleft.png", "bottomright": "nina_bottomright.png",
-                "bottomleft": "nina_bottomleft.png", "topright": "nina_topright.png"}
 
 #styles
 #TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro

@@ -118,10 +118,18 @@ class IsoViewItem(isoview.IsoView):
   
   def selected(self):
     size = self.__img.rect
+    color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
         color = self.__img.image.get_at((x,y))
-        self.__img.image.set_at((x,y), (255 - color[0], 255 - color[1], 255 - color[2]))
+        if color[3] != 0:
+          color2[0] = color[0] + GG.utils.COLOR_SHIFT
+          if color2[0] > 255: color2[0] = 255
+          color2[1] = color[1] + GG.utils.COLOR_SHIFT
+          if color2[1] > 255: color2[1] = 255
+          color2[2] = color[2] + GG.utils.COLOR_SHIFT
+          if color2[2] > 255: color2[2] = 255
+          self.__img.image.set_at((x,y), color2)
     pygame.display.update()
     #self.__img.image.set_colorkey(color_transparente)
     #colorKey = self.__img.image.get_colorkey()
