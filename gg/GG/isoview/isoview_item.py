@@ -75,9 +75,14 @@ class IsoViewItem(isoview.IsoView):
       del self.__animation
       self.__animation = None
     
-    positionAnim = animation.PositionAnimation(GG.utils.ANIM_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
-    movieAnim = animation.MovieAnimation(GG.utils.ANIM_TIME, self.__img, self.getModel().getHeading(), \
-                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    
+    """
+    movieAnim = animation.MovieAnimation(GG.utils.ANIM_RELAX_TIME, self.__img, self.getModel().getHeading(), \
+                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_WALKING_COUNT, "relax")
+    """
+    movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, self.getModel().getHeading(), \
+                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_WALKING_COUNT, "walking")
     self.__animation = animation.ParalelAnimation()
     #self.__animation = animation.SecuenceAnimation()
     self.__animation.addAnimation(positionAnim)

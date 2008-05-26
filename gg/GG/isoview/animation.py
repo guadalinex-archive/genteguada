@@ -78,7 +78,7 @@ class PositionAnimation(Animation):
     time: time passed since the animation start.
     """
     Animation.step(self, time)
-    percent = ((time*100)/GG.utils.ANIM_TIME)/100.0
+    percent = ((time*100)/self.getTime())/100.0
     self.setImgPosition([self.getOrigin()[0] + (self.__shift[0]*percent), self.getOrigin()[1] + (self.__shift[1]*percent)])
       
   def stop(self):
@@ -99,10 +99,12 @@ class PositionAnimation(Animation):
     
 class MovieAnimation(Animation):
   
-  def __init__(self, time, img, heading, path, destination):
+  def __init__(self, time, img, heading, path, destination, frames, type):
     Animation.__init__(self, time, img, destination)
     self.__heading = heading
     self.__path = path
+    self.__frames = frames
+    self.__type = type
     
   def start(self):
     Animation.start(self)
@@ -110,8 +112,11 @@ class MovieAnimation(Animation):
     
   def step(self, time):
     Animation.step(self, time)
-    percent = ((time*100)/GG.utils.ANIM_TIME)
-    imgPath = os.path.join(self.__path, self.getWalkingImageFileName(percent%GG.utils.ANIM_COUNT))
+    percent = ((time*100)/self.getTime())
+    if GG.utils.STATE[2] == self.__type:
+      imgPath = os.path.join(self.__path, self.getWalkingImageFileName(percent%self.__frames))
+    elif GG.utils.STATE[3] == self.__type:
+      imgPath = os.path.join(self.__path, self.getRelaxImageFileName(percent%self.__frames))
     self.setImgSprite(imgPath)
     
   def stop(self):
@@ -138,6 +143,15 @@ class MovieAnimation(Animation):
   
   def getStandingImageFileName(self):
     fileName = "standing_" + self.__heading + ".png"
+    return fileName
+  
+  def getRelaxImageFileName(self, frame):
+    if frame == 0:
+      fileName = "relax_" + self.__heading + "_040.png"
+    elif frame < 10:
+      fileName = "relax_" + self.__heading + "_00" + str(frame) + ".png"
+    else:
+      fileName = "relax_" + self.__heading + "_0" + str(frame) + ".png"
     return fileName
   
 #*****************************************************************************

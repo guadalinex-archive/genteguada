@@ -63,15 +63,17 @@ UPPERPANNEL_OR = [(SCREEN_SZ[0]/2) - (UPPERPANNEL_SZ[0]/2), 0]
 ACTION_BUTTON_SZ = [80, 80]
 
 # Animation values
-ANIM_COUNT = 10
-ANIM_TIME = 200
+ANIM_WALKING_COUNT = 10
+ANIM_RELAX_COUNT = 40
+ANIM_WALKING_TIME = 200
+ANIM_RELAX_TIME = 800
 ANIM_DELAY = 0.02
 TICK_DELAY = 0.2
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
 
-STATE = {1: "standing", 2: "walking"}
+STATE = {1: "standing", 2: "walking", 3: "relax"}
 
 # ======================= SPRITES ===========================
 
@@ -116,13 +118,6 @@ SHOES_TAG = "shoesTag.png"
 MALE_BTN = "maleButton.png"
 FEMALE_BTN = "femaleButton.png"
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
-
-NINO_SPRITES = {"up": "nino_up.png", "down": "nino_down.png", "left": "nino_left.png",
-                "right": "nino_right.png", "topleft": "nino_topleft.png", "bottomright": "nino_bottomright.png",
-                "bottomleft": "nino_bottomleft.png", "topright": "nino_topright.png"}
-NINA_SPRITES = {"up": "nina_up.png", "down": "nina_down.png", "left": "nina_left.png",
-                "right": "nina_right.png", "topleft": "nina_topleft.png", "bottomright": "nina_bottomright.png",
-                "bottomleft": "nina_bottomleft.png", "topright": "nina_topright.png"}
 
 # ======================= SOUNDS ===========================
 
@@ -183,7 +178,6 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                           }
                             },
-
          }
 
 def getNextDirection(pos1, pos2):
