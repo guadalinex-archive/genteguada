@@ -48,6 +48,7 @@ INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
 INV_ITEM_SZ = [60, 60]
 INV_ITEM_COUNT = [3, 2]
 INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
+IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
 #Avatar editor
 TAG_POSITION = [288, 0]
@@ -147,13 +148,41 @@ GUADALINEX_BLUE = [34, 133, 234]
 #styles
 #TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
 STYLES = {
-             "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 30, "alias" : True },
-                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
-                                               ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
-                                               ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
-                                               ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
-                                            }
+          "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 30, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                          }
                             },   
+          "chatEntryBlack" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                           }
+                            },
+          "chatEntryRed" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 0, 0) 
+                                         }
+                            },
+          "chatEntryGreen" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 255, 0) 
+                                          }
+                            },
+          "chatEntryBlue" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                          }
+                            },
 
          }
 

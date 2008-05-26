@@ -4,7 +4,9 @@ import GG.utils
 import isoview
 import isoview_inventoryitem
 import ocempgui.widgets
+import ocempgui.draw
 import copy
+import random
 
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
@@ -39,9 +41,6 @@ class IsoViewHud(isoview.IsoView):
         "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
     }
   
-    #fontPath = os.path.join(GG.utils.DATA_PATH, "FreeSerifItalic.ttf")
-    #self.__font = pygame.font.Font(fontPath, 48)
-    
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
     item: new isoview inventory item.
@@ -118,10 +117,14 @@ class IsoViewHud(isoview.IsoView):
   def paintChat(self):
     """ Paints the chat window on screen.
     """
-    self.textArea = ocempgui.widgets.ScrolledList(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
+    self.textArea = ocempgui.widgets.ScrolledWindow(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
     self.textArea.set_scrolling(1)
     self.textArea.border = 1
     self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
+    self.__layoutTextArea= ocempgui.widgets.VFrame()
+    self.__layoutTextArea.border = 0
+    self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+    self.textArea.child = self.__layoutTextArea
     self.widgetContainer.add_widget(self.textArea)
   
   def paintTextBox(self):
@@ -174,8 +177,26 @@ class IsoViewHud(isoview.IsoView):
     """ Prints a string on the HUD chat window.
     string: the info that will be printed on screen.
     """
-    self.textArea.items.append(ocempgui.widgets.components.TextListItem(string))
-    self.textArea.vscrollbar.increase()
+    hframe = ocempgui.widgets.HFrame()
+    hframe.border = 0
+    
+    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.IMAGE_CHAT_MESSAGE)
+    image = ocempgui.widgets.ImageLabel(imgPath)
+    image.buttom = 0
+    hframe.add_child(image)
+    
+    label = ocempgui.widgets.Label(string)
+    label.set_style(ocempgui.widgets.WidgetStyle(self.getStyleMessageChat()))
+    hframe.add_child(label)
+    
+    self.__layoutTextArea.add_child(hframe)
+    self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+
+  def getStyleMessageChat(self):
+    #TODO entiendo que el color del chat depende de cada usuario 
+    listStyle = ["chatEntryBlack","chatEntryRed","chatEntryGreen","chatEntryBlue"]
+    return GG.utils.STYLES[listStyle[random.randint(0,len(listStyle)-1)]]
+
     
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
