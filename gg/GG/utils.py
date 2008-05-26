@@ -116,6 +116,13 @@ SHORT_TAG = "shortsTag.png"
 SKIRT_TAG = "skirtTag.png"
 SHOES_TAG = "shoesTag.png"
 MALE_BTN = "maleButton.png"
+MALE_MASK = "mask.png"
+MALE_SKIN = "skin.png"
+MALE_SHIRT = "shirt.png"
+MALE_SLEEVE = "sleeve.png"
+MALE_TYPETROUSERS = "typetrousers.png"
+MALE_TROUSERS = "trousers.png"
+MALE_SHOES = "shoes.png"
 FEMALE_BTN = "femaleButton.png"
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
