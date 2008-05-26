@@ -63,12 +63,12 @@ UPPERPANNEL_OR = [(SCREEN_SZ[0]/2) - (UPPERPANNEL_SZ[0]/2), 0]
 ACTION_BUTTON_SZ = [80, 80]
 
 # Animation values
+TICK_DELAY = 0.5
+ANIM_DELAY = TICK_DELAY/10.0
 ANIM_WALKING_COUNT = 10
 ANIM_RELAX_COUNT = 40
-ANIM_WALKING_TIME = 200
-ANIM_RELAX_TIME = 800
-ANIM_DELAY = 0.02
-TICK_DELAY = 0.2
+ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
+ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
