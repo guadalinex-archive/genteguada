@@ -105,8 +105,15 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1,
-              (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
+    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_LOWER)
+    img = pygame.sprite.Sprite()
+    #img.image = pygame.image.load(imgPath).convert_alpha()
+    img.image = pygame.image.load(imgPath)
+    img.rect = img.image.get_rect()
+    img.rect.topleft = GG.utils.HUD_OR
+    self.getScreen().blit(img.image, GG.utils.HUD_OR)
+    pygame.display.update()
+    # pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1, (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
 
   def paintChat(self):
     """ Paints the chat window on screen.
