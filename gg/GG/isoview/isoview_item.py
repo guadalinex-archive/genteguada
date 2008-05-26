@@ -21,6 +21,8 @@ class IsoViewItem(isoview.IsoView):
     self.__position = model.getPosition()
     self.__animationDestination = None
     self.__clock = pygame.time.Clock()
+    self.__relaxClock = pygame.time.Clock()
+    self.__relaxTimePassed = 0
     self.__timePassed = 0
     self.loadImage()
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
@@ -74,17 +76,18 @@ class IsoViewItem(isoview.IsoView):
       self.__animation.stop()
       del self.__animation
       self.__animation = None
-    
-    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
-    
+      
     """
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_RELAX_TIME, self.__img, self.getModel().getHeading(), \
-                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_WALKING_COUNT, "relax")
+                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_RELAX_COUNT, "relax")
+    self.__animation = animation.ParalelAnimation()
+    self.__animation.addAnimation(movieAnim)
     """
+    
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, self.getModel().getHeading(), \
                   self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_WALKING_COUNT, "walking")
     self.__animation = animation.ParalelAnimation()
-    #self.__animation = animation.SecuenceAnimation()
     self.__animation.addAnimation(positionAnim)
     self.__animation.addAnimation(movieAnim)
     aux = self.__clock.tick()
@@ -105,6 +108,19 @@ class IsoViewItem(isoview.IsoView):
         self.__timePassed = 0
         del self.__animation
         self.__animation = None
+        aux = self.__relaxClock.tick()
+        self.__relaxTimePassed = 0
+    else:
+      if isinstance(self.getModel(), GG.model.player.GGPlayer):
+        self.__relaxTimePassed += self.__relaxClock.tick(50)
+        if self.__relaxTimePassed/1000.0 > GG.utils.TIME_BEFORE_RELAX:
+          movieAnim = animation.MovieAnimation(GG.utils.ANIM_RELAX_TIME, self.__img, self.getModel().getHeading(), \
+                  self.getModel().getImagePath(), GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset), GG.utils.ANIM_RELAX_COUNT, "relax")
+          self.__animation = animation.ParalelAnimation()
+          self.__animation.addAnimation(movieAnim)
+          aux = self.__clock.tick()
+          self.__timePassed = 0
+          self.__animation.start()
         
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
