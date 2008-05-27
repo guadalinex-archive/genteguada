@@ -166,7 +166,7 @@ class GGSystem(dMVC.model.Model):
       item.getRoom().removeItem(item)    
     if isPlayer and item in self.__players:
       self.__players.remove(item)
-    
+
   def __start(self):
     """ Starts the program.
     """
@@ -179,3 +179,5 @@ class GGSystem(dMVC.model.Model):
     """
     for room in self.__rooms:
       room.tick()    
+
+  
