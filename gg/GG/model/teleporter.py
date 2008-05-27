@@ -22,6 +22,9 @@ class GGTeleporter(GG.model.item.GGItem):
     self.__destinationRoom = destinationRoom
     self.__condition = condition
     
+  def getOptions(self):
+    return ["open"]    
+    
   # self.__entryPosition
   
   def getEntryPosition(self):
@@ -93,6 +96,14 @@ class GGTeleporter(GG.model.item.GGItem):
     clicker: player who clicks.
     """
     GG.model.item.GGItem.clickedBy(self, clicker)
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+      clicker.setSelectedItem(self)
+    else:
+      return False    
+
+  def openedBy(self, clicker):
+    """
+    """
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:
         if not self.checkCondition(condition, clicker):
@@ -100,3 +111,4 @@ class GGTeleporter(GG.model.item.GGItem):
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    
+    

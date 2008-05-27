@@ -33,12 +33,14 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
+    print GG.genteguada.GenteGuada.getInstance().getDataPath("casa")
     self.buttonActions = {
         "inventory":{"image":"guardar.png", "action": self.itemToInventory,"button":None},
         "clone":{"image":"guardar.png", "action": self.itemToClone,"button":None},
         "push":{"image":"empujar.png", "action": self.itemToPush,"button":None},
         "up":{"image":"levantar.png", "action": self.itemToUp,"button":None},
         "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
+        "open":{"image":"sonido.png", "action": self.itemToOpen,"button":None}
     }
   
   def inventoryAdded(self, event):
@@ -311,4 +313,9 @@ class IsoViewHud(isoview.IsoView):
   def itemToTalk(self):
     #print "talk"
     self.__player.talkTo(self.__selectedItem)
+    self.itemUnselected()
+
+  def itemToOpen(self):
+    #print "open"
+    self.__player.open(self.__selectedItem)
     self.itemUnselected()

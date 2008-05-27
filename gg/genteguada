@@ -13,5 +13,6 @@ parser.add_option("-p",dest="password",help="clave",default="1234")
 (params, args) = parser.parse_args()
 
 if __name__ == "__main__":
-  GG.genteguada.GenteGuada().start(params)
+  genteguada = GG.genteguada.GenteGuada()
+  genteguada.start(params)
   

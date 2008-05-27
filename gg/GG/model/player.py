@@ -244,3 +244,6 @@ class GGPlayer(GG.model.item.GGItem):
   def talkTo(self, item):
     item.talkedBy(self)
     
+  def open(self, item):
+    item.openedBy(self)
+    

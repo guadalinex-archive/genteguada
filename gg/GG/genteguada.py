@@ -7,6 +7,7 @@ import time
 import pygame.locals
 import sys
 import GG.isoview.login
+import os
 
 import ocempgui.widgets
 
@@ -20,6 +21,11 @@ class GenteGuada:
     self.isoHud = None
     self.session = None
     self.client = None
+    GenteGuada.instance = self
+
+  @staticmethod
+  def getInstance():
+    return GenteGuada.instance
 
   def input(self, events):
     for event in events:
@@ -45,6 +51,7 @@ class GenteGuada:
     sys.exit(0)
   
   def start(self, params):
+    print GenteGuada.getInstance()
     pygame.init()
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
@@ -77,3 +84,5 @@ class GenteGuada:
       self.input(pygame.event.get())
       self.isoHud.updateFrame()
 
+  def getDataPath(self, img):
+    return os.path.join(GG.utils.DATA_PATH, img)
