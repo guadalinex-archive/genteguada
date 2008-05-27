@@ -114,14 +114,14 @@ class MovieAnimation(Animation):
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
     if GG.utils.STATE[2] == self.__type:
-      imgPath = os.path.join(self.__path, self.getWalkingImageFileName(percent%self.__frames))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getWalkingImageFileName(percent%self.__frames))
     elif GG.utils.STATE[3] == self.__type:
-      imgPath = os.path.join(self.__path, self.getRelaxImageFileName(percent%self.__frames))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getRelaxImageFileName(percent%self.__frames))
     self.setImgSprite(imgPath)
     
   def stop(self):
     Animation.stop(self)
-    imgPath = os.path.join(self.__path, self.getStandingImageFileName())
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getStandingImageFileName())
     self.setImgSprite(imgPath)
     self.onEnd()
   

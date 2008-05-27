@@ -6,8 +6,8 @@ import ocempgui.widgets
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
   SOUND_PATH = "gg/GG/data/sound"
-  NINO_PATH = "gg/GG/data/nino"
-  NINA_PATH = "gg/GG/data/nina"
+  NINO_PATH = "nino/"
+  NINA_PATH = "nina/"
   STYLES_PATH = "gg/GG/styles"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"

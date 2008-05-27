@@ -33,7 +33,6 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
-    print GG.genteguada.GenteGuada.getInstance().getDataPath("casa")
     self.buttonActions = {
         "inventory":{"image":"guardar.png", "action": self.itemToInventory,"button":None},
         "clone":{"image":"guardar.png", "action": self.itemToClone,"button":None},
@@ -106,10 +105,8 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_LOWER)
     img = pygame.sprite.Sprite()
-    #img.image = pygame.image.load(imgPath).convert_alpha()
-    img.image = pygame.image.load(imgPath)
+    img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     img.rect = img.image.get_rect()
     img.rect.topleft = GG.utils.HUD_OR
     self.getScreen().blit(img.image, GG.utils.HUD_OR)
@@ -182,7 +179,7 @@ class IsoViewHud(isoview.IsoView):
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
     
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.IMAGE_CHAT_MESSAGE)
+    imgPath = os.path.join(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE))
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)

@@ -1,6 +1,5 @@
 import isoview
 import ocempgui.widgets
-import os
 import GG.utils
 
 class IsoViewInventoryItem(isoview.IsoView):

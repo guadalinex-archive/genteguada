@@ -20,9 +20,8 @@ class IsoViewTile(isoview.IsoView):
     isoview.IsoView.__init__(self, None, None)
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
-    imgPath =  os.path.join(GG.utils.DATA_PATH, spriteName)
     self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(spriteName)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     

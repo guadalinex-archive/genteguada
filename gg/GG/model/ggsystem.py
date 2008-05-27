@@ -99,7 +99,6 @@ class GGSystem(dMVC.model.Model):
     dictTrash = {"object": GG.model.inventory_only_item.GGInventoryOnlyItem, "params": [GG.utils.TRASH_SPRITE, "llave dorada"]}
     myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [6, 0, 3], [20, 0], "Papelera", [], dictTrash)
     
-    
     myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [6, 0, 6], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 3, room1)
     myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])

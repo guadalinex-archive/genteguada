@@ -31,7 +31,7 @@ class IsoViewItem(isoview.IsoView):
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
   def loadImage(self):
-    imgPath = os.path.join(self.getModel().getImagePath(), self.getModel().spriteName)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -51,7 +51,7 @@ class IsoViewItem(isoview.IsoView):
     """ Sets a new image for the item.
     img: image name.
     """
-    imgPath = os.path.join(self.getModel().getImagePath(), img)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
   def setSprite(self, sprite):
@@ -156,5 +156,5 @@ class IsoViewItem(isoview.IsoView):
     #colorKey = self.__img.image.get_colorkey()
     
   def unselected(self):
-    imgPath = os.path.join(self.getModel().getImagePath(),self.getModel().spriteName)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
