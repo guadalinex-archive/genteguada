@@ -90,3 +90,4 @@ class GenteGuada:
     # ver la fecha del fichero
     # si la fecha en local es mayor que la del servidor nada
     # si la fecha en local es menor que la del servisor descargar
+    # os.stat(file)[ST_MTIME]
