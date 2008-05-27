@@ -1,3 +1,9 @@
+genteguada (0.1.1-2) unstable; urgency=low
+
+  * Desarrollo de la funcionalidad del cliente
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 27 May 2008 17:17:46 +0200
+
 genteguada (0.1.1-1) unstable; urgency=low
 
   * Chat entre los jugadores

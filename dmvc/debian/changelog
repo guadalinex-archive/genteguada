@@ -1,3 +1,9 @@
+dmvc (0.1.1-2) unstable; urgency=low
+
+  * solucionado error detectado en la desuscripcion de eventos
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 27 May 2008 17:21:18 +0200
+
 dmvc (0.1.1-1) unstable; urgency=low
 
   * Chat entre los jugadores
