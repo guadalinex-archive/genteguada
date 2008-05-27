@@ -83,3 +83,10 @@ class GenteGuada:
 
   def getDataPath(self, img):
     return os.path.join(GG.utils.DATA_PATH, img)
+    #reemplazar los directorios por barras, nino/up.png => nino-up.png
+    #comprobar que existe el fichero
+    #si no existe descarga el fichero
+    #si existe
+    # ver la fecha del fichero
+    # si la fecha en local es mayor que la del servidor nada
+    # si la fecha en local es menor que la del servisor descargar
