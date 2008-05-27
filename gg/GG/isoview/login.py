@@ -14,11 +14,11 @@ class Login:
     self.__textFieldPassword = None
     self.__finish = False
     self.__parent = parent
+    self.__session = None
     
   def draw(self, user=None, passw=None):
     if user and passw:
-      self.autoLogin(user, passw)
-      return
+      return self.autoLogin(user, passw)
     imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.LOGIN_SCREEN)
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
@@ -56,19 +56,22 @@ class Login:
     self.widgetContainer.add_widget(framelogin)
 
     while not self.__finish:
-      time.sleep(0.5)
+      time.sleep(GG.utils.TICK_DELAY)
       events = pygame.event.get()
       for event in events:
         if event.type == pygame.locals.QUIT:
           sys.exit(0)
       self.widgetContainer.distribute_events(*events)
+    if self.__session:
+      return self.__session
+    self.cancelLogin()
 
   def acceptLogin(self):
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
     loginData = self.__parent.system.login(user,passw)
     if loginData[0] == True:
-      self.__parent.session = loginData[1]
+      self.__session = loginData[1]
       self.finishLogin()
     else:
       self.__showError(loginData[1])
@@ -98,7 +101,7 @@ class Login:
   def autoLogin(self,user,passw):
     loginData = self.__parent.system.login(user,passw)
     if loginData[0] == True:
-      self.__parent.session = loginData[1]
+      return loginData[1]
     else:
       print loginData[1]
       sys.exit(0)

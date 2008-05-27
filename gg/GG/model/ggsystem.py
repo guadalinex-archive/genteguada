@@ -126,7 +126,10 @@ class GGSystem(dMVC.model.Model):
     room2.addItem(myDoor2, myDoor2.getPosition())
     self.__createPlayer(nino)
     self.__createPlayer(nina)
-        
+    
+    #prueba para seleccionar un jugador y poder hablar con el en privado y hacer intercambio de objetos
+    #room1.addItem(nina,[4,0,5])
+
   def __createRoom(self, spriteFull, label):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.

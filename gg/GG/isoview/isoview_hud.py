@@ -39,6 +39,7 @@ class IsoViewHud(isoview.IsoView):
         "push":{"image":"empujar.png", "action": self.itemToPush,"button":None},
         "up":{"image":"levantar.png", "action": self.itemToUp,"button":None},
         "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
+        "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer,"button":None},
         "open":{"image":"sonido.png", "action": self.itemToOpen,"button":None}
     }
   
@@ -220,8 +221,9 @@ class IsoViewHud(isoview.IsoView):
       offset = 0
     else:
       offset = 3 + len(options) 
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
-                                    GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
+    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
+    #                                 GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
+    self.buttonBarActions.topleft = 0,0
     for action in options:
       self.buttonBarActions.add_child(self.buttonActions[action]["button"])
     self.widgetContainer.add_widget(self.buttonBarActions)
@@ -311,6 +313,19 @@ class IsoViewHud(isoview.IsoView):
     #print "talk"
     self.__player.talkTo(self.__selectedItem)
     self.itemUnselected()
+
+  def exchangeItemPlayer(self):
+    #print "intercambio"
+    self.showExchangeWindow()
+
+  def showExchangeWindow(self):
+    window = ocempgui.widgets.VFrame()
+    window.set_minimum_size(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
+    window.topleft = GG.utils.SCREEN_SZ[0] - 200, GG.utils.HUD_OR[1] - 200
+    window.border = 1
+    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
+    #                                 GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
+    self.widgetContainer.add_widget(window)
 
   def itemToOpen(self):
     #print "open"

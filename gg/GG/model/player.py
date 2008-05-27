@@ -176,7 +176,12 @@ class GGPlayer(GG.model.item.GGItem):
     clicker: player who clicks.
     """
     GG.model.item.GGItem.clickedBy(self, clicker)
+    #if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+    #  clicker.setSelectedItem(self)
     self.newChatMessage(clicker.username + ' ha pinchado en mi')
+
+  def getOptions(self):
+    return ["talk","exchange"]
       
   def tick(self):
     """ Calls for an update on player's position an movement direction.

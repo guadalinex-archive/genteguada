@@ -9,8 +9,6 @@ import sys
 import GG.isoview.login
 import os
 
-import ocempgui.widgets
-
 
 class GenteGuada:
 
@@ -52,19 +50,19 @@ class GenteGuada:
   
   def start(self, params):
     pygame.init()
-    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
+    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    #winLogin.draw()
-    winLogin.draw(params.user,params.password)
+    self.session = winLogin.draw()
+    #self.session = winLogin.draw(params.user, params.password)
     self.initGame()
 
-  def __getSystem(self,ip):
-    if ip:
+  def __getSystem(self, ipAddress):
+    if ipAddress:
       try:
-        self.client = dMVC.remoteclient.RClient(ip)
+        self.client = dMVC.remoteclient.RClient(ipAddress)
       except Exception, excep:
         print excep, "No hay conexion con el servidor"
         self.finish()
