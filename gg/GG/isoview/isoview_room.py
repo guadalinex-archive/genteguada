@@ -35,7 +35,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    bgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BG_BLACK)
+    bgPath = os.path.join(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK))
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
@@ -157,7 +157,6 @@ class IsoViewRoom(isoview.IsoView):
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
     """
-    pass
     for item in self.__isoViewPlayers:
       item.unsubscribeAllEvents()
     isoview.IsoView.unsubscribeAllEvents(self)
