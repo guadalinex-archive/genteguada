@@ -12,6 +12,8 @@ import GG.model.giver_npc
 import GG.model.teleporter
 import thread
 import time
+import os
+import stat
 
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
@@ -182,4 +184,19 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       room.tick()    
 
-  
+  def getResource(self, img, date):
+    if not date:
+      imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
+      imgData = imgFile.read()
+      imgFile.close()
+      return imgData
+    else:
+      pathFile = os.path.join(GG.utils.DATA_PATH, img)
+      dateFile = os.stat(pathFile)[stat.ST_MTIME]
+      if dateFile > date:
+        imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
+        imgData = imgFile.read()
+        imgFile.close()
+        return imgData
+      else:
+        return None

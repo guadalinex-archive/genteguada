@@ -3,6 +3,12 @@ import os
 import pygame
 import ocempgui.widgets
 
+if os.path.isdir("gg/GG/cache"):
+  LOCAL_DATA_PATH = "gg/GG/cache"
+else:
+  LOCAL_DATA_PATH = "/usr/share/pixmaps/genteguada"
+  
+
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
   SOUND_PATH = "gg/GG/data/sound"
