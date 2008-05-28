@@ -108,30 +108,65 @@ DUMMY = "dummy.png"
 GENDER_TAG = "genderTag.png"
 
 # Avatar editor
-BACKGROUNDLEFT = "backgroundleft.png"
-BACKGROUNDRIGHT = "backgroundright.png"
-BACKGROUNDMIDDLE = "backgroundmiddle.png"
-MALE_DUMMY = "maleDummy.png"
-FEMALE_DUMMY = "femaleDummy.png"
-GENDER_TAG = "genderTag.png"
-SKIN_TAG = "skinTag.png"
-HEAD_TAG = "headSizeTag.png"
-BODY_TAG = "bodySizeTag.png"
-MASK_TAG = "maskTag.png"
-HAIR_TAG = "hairTag.png"
-SHIRT_TAG = "shirtTag.png"
-SHORT_TAG = "shortsTag.png"
-SKIRT_TAG = "skirtTag.png"
-SHOES_TAG = "shoesTag.png"
-MALE_BTN = "maleButton.png"
-MALE_MASK = "mask.png"
-MALE_SKIN = "skin.png"
-MALE_SHIRT = "shirt.png"
-MALE_SLEEVE = "sleeve.png"
-MALE_TYPETROUSERS = "typetrousers.png"
-MALE_TROUSERS = "trousers.png"
-MALE_SHOES = "shoes.png"
-FEMALE_BTN = "femaleButton.png"
+BACKGROUND_LEFT = "background_left.png"
+BACKGROUND_RIGHT = "background_right.png"
+BACKGROUND_MIDDLE = "background_middle.png"
+MALE_DUMMY = "male_dummy.png"
+FEMALE_DUMMY = "female_dummy.png"
+GENDER_TAG = "gender_tag.png"
+SKIN_TAG = "skin_tag.png"
+HEAD_TAG = "head_size_tag.png"
+BODY_TAG = "body_size_tag.png"
+MASK_TAG = "mask_tag.png"
+HAIR_TAG = "hair_tag.png"
+SHIRT_TAG = "shirt_tag.png"
+SHORT_TAG = "shorts_tag.png"
+SKIRT_TAG = "skirt_tag.png"
+SHOES_TAG = "shoes_tag.png"
+MALE_BTN = "male_button.png"
+MALE_MASK = "male_mask.png"
+MALE_SKIN = "male_skin.png"
+MALE_SHIRT = "male_shirt.png"
+MALE_SLEEVE = "male_sleeve.png"
+MALE_TYPE_TROUSERS = "male_type_trousers.png"
+MALE_TROUSERS = "male_trousers.png"
+MALE_SHOES = "male_shoes.png"
+MALE_HAIR_1 = "male_hair_1.png"
+MALE_HAIR_2 = "male_hair_2.png"
+MALE_HAIR_3 = "male_hair_3.png"
+FEMALE_BTN = "female_button.png"
+FEMALE_MASK = "female_mask.png"
+FEMALE_SKIN = "female_skin.png"
+FEMALE_SKIRT = "female_skirt.png"
+FEMALE_SLEEVE = "female_sleeve.png"
+FEMALE_SHOES = "female_shoes.png"
+FEMALE_HAIR_1 = "female_hair_1.png"
+FEMALE_HAIR_2 = "female_hair_2.png"
+FEMALE_HAIR_3 = "female_hair_3.png"
+COLOR_YELLOW = "yellow.png"
+COLOR_ORANGE = "orange.png"
+COLOR_RED = "red.png"
+COLOR_PINK = "pink.png"
+COLOR_BLUE = "blue.png"
+COLOR_PURPLE = "purple.png"
+COLOR_GREEN = "green.png"
+COLOR_WHITE = "white.png"
+COLOR_BLACK = "black.png"
+COLOR_BLONDE = "blonde.png"
+COLOR_BROWN = "brown.png"
+SKIN_1 = "skin_1.png"
+SKIN_2 = "skin_2.png"
+SKIN_3 = "skin_3.png"
+SKIN_4 = "skin_4.png"
+SKIN_5 = "skin_5.png"
+SKIN_6 = "skin_6.png"
+SKIN_7 = "skin_7.png"
+SKIN_8 = "skin_8.png"
+SKIN_9 = "skin_9.png"
+COLORS = {1:"COLOR_YELLOW", 2:"COLOR_ORANGE", 3:"COLOR_RED", 4:"COLOR_PINK", 5:"COLOR_BLUE", 6:"COLOR_PURPLE", 7:"COLOR_GREEN", 8:"COLOR_WHITE", 9:"COLOR_BLACK"}
+HAIR_COLORS = {COLOR_BLONDE:1, COLOR_BROWN:2, COLOR_BLACK:3}
+SKIN_COLORS = {SKIN_1:1, SKIN_2:2, SKIN_3:3, SKIN_4:4, SKIN_5:5, SKIN_6:6, SKIN_7:7, SKIN_8:8, SKIN_9:9}
+
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
 # ======================= SOUNDS ===========================
@@ -317,8 +352,30 @@ def playSound(sound):
     return False
   pygame.mixer.music.load(sndPath)
   pygame.mixer.music.play()
+
+def getRGBColor(color):
+  rgb = [0,0,0]
+  if color == "COLOR_YELLOW":
+    rgb = [255, 255, 0]
+  elif color == "COLOR_ORANGE":
+    rgb = [255, 153, 0]
+  elif color == "COLOR_RED":
+    rgb = [255, 51, 0]
+  elif color == "COLOR_PINK":
+    rgb = [255, 0, 241]
+  elif color == "COLOR_BLUE":
+    rgb = [0, 0, 255]
+  elif color == "COLOR_PURPLE":
+    rgb = [153, 0, 204]
+  elif color == "COLOR_GREEN":
+    rgb = [0, 255, 102]
+  elif color == "COLOR_WHITE":
+    rgb = [255, 255, 255]
+  elif color == "COLOR_BLACK":
+    rgb= [0, 0, 0]
+  return rgb
     
-    
+
     
     
     
