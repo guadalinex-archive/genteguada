@@ -34,11 +34,7 @@ class Animation:
     self.__img.rect.topleft = pos
 
   def setImgSprite(self, imgPath):
-    #rect = self.__img.rect
-    #topleft = self.__img.rect.topleft
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    #self.__img.rect = rect
-    #self.__img.rect.topleft = topleft    
     
   # Vanilla methods
   
@@ -59,6 +55,32 @@ class Animation:
     
   def isFinished(self, time):
     return (self.__time < time)
+    
+#*****************************************************************************
+    
+class IdleAnimation(Animation):
+  
+  def __init__(self, time, img, destination):
+    Animation.__init__(self, time, img, destination)
+    
+  def start(self):
+    Animation.start(self)
+    
+  def step(self, time):
+    Animation.step(self, time)
+    
+  def stop(self):
+    Animation.stop(self)
+    self.onEnd()
+  
+  def onStart(self):
+    Animation.onStart(self)
+  
+  def onEnd(self):
+    Animation.onEnd(self)
+    
+  def isFinished(self, time):
+    return Animation.isFinished(self, time) 
     
 #*****************************************************************************
     
@@ -99,29 +121,27 @@ class PositionAnimation(Animation):
     
 class MovieAnimation(Animation):
   
-  def __init__(self, time, img, heading, path, destination, frames, type):
+  def __init__(self, time, img, heading, path, destination, frames, state):
     Animation.__init__(self, time, img, destination)
     self.__heading = heading
     self.__path = path
     self.__frames = frames
-    self.__type = type
+    self.__state = state
     
   def start(self):
     Animation.start(self)
-    self.__imagePrefix = os.path.join(self.__path, self.getWalkingImageFileName(1))
     
   def step(self, time):
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
-    if GG.utils.STATE[2] == self.__type:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getWalkingImageFileName(percent%self.__frames))
-    elif GG.utils.STATE[3] == self.__type:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getRelaxImageFileName(percent%self.__frames))
+    filename = GG.utils.getSpriteName(self.__state, self.__heading, percent%self.__frames)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + filename)    
     self.setImgSprite(imgPath)
     
   def stop(self):
     Animation.stop(self)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + self.getStandingImageFileName())
+    filename = GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + filename)
     self.setImgSprite(imgPath)
     self.onEnd()
   
@@ -133,26 +153,6 @@ class MovieAnimation(Animation):
     
   def isFinished(self, time):
     return Animation.isFinished(self, time)
-
-  def getWalkingImageFileName(self, frame):
-    if frame:
-      fileName = "walking_" + self.__heading + "_00" + str(frame) + ".png"
-    else:
-      fileName = "walking_" + self.__heading + "_010.png"
-    return fileName
-  
-  def getStandingImageFileName(self):
-    fileName = "standing_" + self.__heading + ".png"
-    return fileName
-  
-  def getRelaxImageFileName(self, frame):
-    if frame == 0:
-      fileName = "relax_" + self.__heading + "_040.png"
-    elif frame < 10:
-      fileName = "relax_" + self.__heading + "_00" + str(frame) + ".png"
-    else:
-      fileName = "relax_" + self.__heading + "_0" + str(frame) + ".png"
-    return fileName
   
 #*****************************************************************************
     

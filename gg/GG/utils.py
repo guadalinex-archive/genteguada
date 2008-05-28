@@ -75,7 +75,7 @@ ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
 
-STATE = {1: "standing", 2: "walking", 3: "relax"}
+STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
 # ======================= SPRITES ===========================
 
@@ -188,6 +188,24 @@ STYLES = {
                                           }
                             },
          }
+
+def getSpriteName(state, heading, frame):
+  #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
+  maxFrames = 10
+  if state == STATE[1] or state == STATE[3]:
+    return str(state + "_" + heading + ".png")
+  elif state == STATE[2] or state == STATE[4]:
+    maxFrames = ANIM_WALKING_COUNT
+  elif state == STATE[5]:
+    maxFrames = ANIM_RELAX_COUNT  
+    
+  if frame == 0:
+    fileName = state + "_" + heading + "_0" + str(maxFrames) + ".png"
+  elif frame < 10:  
+    fileName = state + "_" + heading + "_00" + str(frame) + ".png"
+  else:  
+    fileName = state + "_" + heading + "_0" + str(frame) + ".png"
+  return fileName
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.

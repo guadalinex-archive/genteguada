@@ -18,13 +18,14 @@ class GGPlayer(GG.model.item.GGItem):
     username: user name.
     password: user password.
     """
-    GG.model.item.GGItem.__init__(self, "standing_down.png", position, offset)
+    filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
+    GG.model.item.GGItem.__init__(self, filename, position, offset)
     self.username = username
     self.__spritePath = spritePath
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
-    self.__heading = "down"
-    self.__state = "standing"
+    self.__heading = GG.utils.HEADING[2]
+    self.__state = GG.utils.STATE[1]
     self.__destination = position
     self.__inventory = []
     self.__visited = []
@@ -61,6 +62,7 @@ class GGPlayer(GG.model.item.GGItem):
   
   def setState(self, state):
     """ Sets a new state for the item.
+    state: new state
     """
     if not self.__state == state:
       self.__state = state
@@ -193,14 +195,14 @@ class GGPlayer(GG.model.item.GGItem):
           self.removeInventory(item)
           item.getStartRoom().addItem(item, item.getPosition())
     if self.getPosition() == self.__destination:
-      self.setState("standing")
+      self.setState(GG.utils.STATE[1])
       return
     direction = self.getRoom().getNextDirection(self, self.getPosition(), self.getDestination())
-    if direction == "none":
+    if direction == GG.utils.HEADING[0]:
       self.setDestination(self.getPosition())
       return
     pos = self.getPosition()
-    self.setState("walking")
+    self.setState(GG.utils.STATE[2])
     self.setHeading(direction)
     if self.getHeading() == "up":
       next = [pos[0], pos[1], pos[2] - 1]
