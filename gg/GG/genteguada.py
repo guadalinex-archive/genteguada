@@ -97,3 +97,10 @@ class GenteGuada:
         imgFile.write(imgData)
         imgFile.close()
       return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+
+  def getListDataPath(self, imgList):
+    result = []
+    for imgName in imgList:
+      result.append(self.getDataPath(imgName))
+    return result
+        
