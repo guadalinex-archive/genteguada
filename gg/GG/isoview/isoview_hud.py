@@ -225,9 +225,9 @@ class IsoViewHud(isoview.IsoView):
       offset = 0
     else:
       offset = 3 + len(options) 
-    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
-    #                                 GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
-    self.buttonBarActions.topleft = 0,0
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
+                                     GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
+    #self.buttonBarActions.topleft = 0,0
     for action in options:
       self.buttonBarActions.add_child(self.buttonActions[action]["button"])
     self.widgetContainer.add_widget(self.buttonBarActions)
@@ -336,6 +336,6 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(window)
 
   def itemToOpen(self):
-    #print "open"
+    print "open"
     self.__player.open(self.__selectedItem)
     self.itemUnselected()
