@@ -8,7 +8,7 @@ import pygame.locals
 import sys
 import GG.isoview.login
 import os
-
+import stat
 
 class GenteGuada:
 
@@ -82,12 +82,19 @@ class GenteGuada:
       self.isoHud.updateFrame()
 
   def getDataPath(self, img):
-    return os.path.join(GG.utils.DATA_PATH, img)
     #reemplazar los directorios por barras, nino/up.png => nino-up.png
-    #comprobar que existe el fichero
-    #si no existe descarga el fichero
-    #si existe
-    # ver la fecha del fichero
-    # si la fecha en local es mayor que la del servidor nada
-    # si la fecha en local es menor que la del servisor descargar
-    # os.stat(file)[ST_MTIME]
+    #if isinstance(self.system,GG.model.ggsystem.GGSystem):
+    #  return os.path.join(GG.utils.DATA_PATH, img)
+    #else:
+    newImgName = img.replace("/","-")
+    pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+    if os.path.isfile(pathFile):
+      dateFile = os.stat(pathFile)[stat.ST_MTIME]
+    else:
+      dateFile = None
+    imgData = self.system.getResource(img, dateFile) 
+    if imgData:
+      imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
+      imgFile.write(imgData)
+      imgFile.close()
+    return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
