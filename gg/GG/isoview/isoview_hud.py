@@ -81,10 +81,10 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
-    pygame.display.update()
 
     #self.widgetContainer.update()
     #self.widgetContainer.set_screen(self.getScreen())
+    pygame.display.update()
     #self.widgetContainer.set_screen(self.getScreen())
 
   def roomChanged(self, event):
@@ -144,9 +144,9 @@ class IsoViewHud(isoview.IsoView):
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
-    self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1] - 10)
+    self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
     self.windowInventory.border = 1
-    self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1] - 20
+    self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1] - 15
     self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
