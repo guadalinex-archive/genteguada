@@ -17,13 +17,11 @@ class IsoViewItem(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
-    self.__animation = None
     self.__position = model.getPosition()
     self.__animationDestination = None
-    self.__clock = pygame.time.Clock()
-    #self.__relaxClock = pygame.time.Clock()
-    #self.__relaxTimePassed = 0
-    self.__timePassed = 0
+    self.__positionAnimation = None
+    self.__positionClock = pygame.time.Clock()
+    self.__positionTimePassed = 0
     self.loadImage()
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     self.getModel().subscribeEvent('position', self.positionChanged)
@@ -54,6 +52,9 @@ class IsoViewItem(isoview.IsoView):
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
+  def setImgPosition(self, pos):
+    self.__img.rect.topleft = pos  
+    
   def setSprite(self, sprite):
     self.__img = sprite
     
@@ -68,54 +69,38 @@ class IsoViewItem(isoview.IsoView):
     """
     self.__ivroom = ivroom
   
+  def activeAnimation(self):
+    if self.__positionAnimation != None:
+      return True
+    return False
+  
+  def setPositionAnimation(self, animation):
+    if self.__positionAnimation:
+      self.__positionAnimation.stop()
+    self.__positionAnimation = animation
+    if animation != None:
+      aux = self.__positionClock.tick()
+      self.__positionTimePassed = 0
+      animation.start()
+    
   def animatedSetPosition(self, newPosition):
     """ Starts a new animation for the item.
     newPosition: new item position.
     """
-    if self.__animation:
-      self.__animation.stop()
-      del self.__animation
-      self.__animation = None
     positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
-    movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self.__img, self.getModel().getHeading(), \
-                  self.getModel().getImagePath(), GG.utils.p3dToP2d(newPosition, self.getModel().offset), GG.utils.ANIM_WALKING_COUNT, "walking")
-    self.__animation = animation.ParalelAnimation()
-    self.__animation.addAnimation(positionAnim)
-    self.__animation.addAnimation(movieAnim)
-    aux = self.__clock.tick()
-    self.__timePassed = 0
-    self.__animation.start()
-  
+    self.setPositionAnimation(positionAnim)
+    
   def updateFrame(self):
     """ Paints a new item frame on screen.
     """
-    if self.__animation:
-      self.__timePassed += self.__clock.tick(50)
-      if not self.__animation.isFinished(self.__timePassed):
-        self.__animation.step(self.__timePassed)
+    if self.__positionAnimation:
+      self.__positionTimePassed += self.__positionClock.tick(50)
+      if not self.__positionAnimation.isFinished(self.__positionTimePassed):
+        self.__positionAnimation.step(self.__positionTimePassed)
       else:  
-        self.__animation.stop()
         self.__img.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset)
-        aux = self.__clock.tick()
-        self.__timePassed = 0
-        del self.__animation
-        self.__animation = None
-        #aux = self.__relaxClock.tick()
-        #self.__relaxTimePassed = 0
-    """
-    else:
-      if isinstance(self.getModel(), GG.model.player.GGPlayer):
-        self.__relaxTimePassed += self.__relaxClock.tick(50)
-        if self.__relaxTimePassed/1000.0 > GG.utils.TIME_BEFORE_RELAX:
-          movieAnim = animation.MovieAnimation(GG.utils.ANIM_RELAX_TIME, self.__img, self.getModel().getHeading(), \
-                  self.getModel().getImagePath(), GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset), GG.utils.ANIM_RELAX_COUNT, "relax")
-          self.__animation = animation.ParalelAnimation()
-          self.__animation.addAnimation(movieAnim)
-          aux = self.__clock.tick()
-          self.__timePassed = 0
-          self.__animation.start()
-     """     
-        
+        self.setPositionAnimation(None)
+         
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
@@ -127,8 +112,8 @@ class IsoViewItem(isoview.IsoView):
     """ Updates the item position without animation and draws the room after receiving a position change event.
     event: even info.
     """
-    del self.__animation
-    self.__animation = None
+    self.setPositionAnimation(None)
+    self.setMovieAnimation(None)
     self.__img.rect.topleft = GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset)
   
   def selected(self):
