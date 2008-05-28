@@ -185,18 +185,18 @@ class GGSystem(dMVC.model.Model):
       room.tick()    
 
   def getResource(self, img, date):
+    sendFile = False
     if not date:
+      sendFile = True
+    else:
+      pathFile = os.path.join(GG.utils.DATA_PATH, img)
+      dateFile = os.stat(pathFile)[stat.ST_MTIME]
+      if dateFile > date:
+        sendFile = True
+    if sendFile:
       imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
       imgData = imgFile.read()
       imgFile.close()
       return imgData
     else:
-      pathFile = os.path.join(GG.utils.DATA_PATH, img)
-      dateFile = os.stat(pathFile)[stat.ST_MTIME]
-      if dateFile > date:
-        imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
-        imgData = imgFile.read()
-        imgFile.close()
-        return imgData
-      else:
-        return None
+      return None

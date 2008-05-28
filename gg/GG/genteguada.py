@@ -82,19 +82,18 @@ class GenteGuada:
       self.isoHud.updateFrame()
 
   def getDataPath(self, img):
-    #reemplazar los directorios por barras, nino/up.png => nino-up.png
-    #if isinstance(self.system,GG.model.ggsystem.GGSystem):
-    #  return os.path.join(GG.utils.DATA_PATH, img)
-    #else:
-    newImgName = img.replace("/","-")
-    pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
-    if os.path.isfile(pathFile):
-      dateFile = os.stat(pathFile)[stat.ST_MTIME]
+    if isinstance(self.system,GG.model.ggsystem.GGSystem):
+      return os.path.join(GG.utils.DATA_PATH, img)
     else:
-      dateFile = None
-    imgData = self.system.getResource(img, dateFile) 
-    if imgData:
-      imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
-      imgFile.write(imgData)
-      imgFile.close()
-    return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      newImgName = img.replace("/","-")
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      if os.path.isfile(pathFile):
+        dateFile = os.stat(pathFile)[stat.ST_MTIME]
+      else:
+        dateFile = None
+      imgData = self.system.getResource(img, dateFile) 
+      if imgData:
+        imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
+        imgFile.write(imgData)
+        imgFile.close()
+      return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
