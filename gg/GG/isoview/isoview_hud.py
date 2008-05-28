@@ -75,13 +75,15 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.createItemActionButtons()
-    
+
   def updateFrame(self):
     """ Updates all sprites for a new frame.
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
     pygame.display.update()
+    #self.widgetContainer.set_screen(self.getScreen())
+    self.widgetContainer.update()
 
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
@@ -111,7 +113,7 @@ class IsoViewHud(isoview.IsoView):
     img.rect = img.image.get_rect()
     img.rect.topleft = GG.utils.HUD_OR
     self.getScreen().blit(img.image, GG.utils.HUD_OR)
-    pygame.display.update()
+    #pygame.display.update()
     # pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1, (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
 
   def paintChat(self):
@@ -246,7 +248,7 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
-    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
+    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 180]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
