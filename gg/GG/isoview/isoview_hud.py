@@ -294,10 +294,8 @@ class IsoViewHud(isoview.IsoView):
 
   def dropActionsItembuttons(self):
     self.__selectedItem = None
-    children = copy.copy(self.buttonBarActions.children)
-    for child in children:
-      self.buttonBarActions.remove_child(child)
     self.widgetContainer.remove_widget(self.buttonBarActions)
+    self.buttonBarActions.destroy()
 
   def itemToInventory(self):
     self.__player.addInventory(self.__selectedItem)
