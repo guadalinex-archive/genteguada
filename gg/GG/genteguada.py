@@ -9,6 +9,7 @@ import sys
 import GG.isoview.login
 import os
 import stat
+import datetime
 
 class GenteGuada:
 
@@ -20,6 +21,7 @@ class GenteGuada:
     self.session = None
     self.client = None
     GenteGuada.instance = self
+    self.clearCache()
 
   @staticmethod
   def getInstance():
@@ -82,9 +84,9 @@ class GenteGuada:
       self.isoHud.updateFrame()
 
   def getDataPath(self, img):
-    if isinstance(self.system,GG.model.ggsystem.GGSystem):
-      return os.path.join(GG.utils.DATA_PATH, img)
-    else:
+    #if isinstance(self.system,GG.model.ggsystem.GGSystem):
+    #  return os.path.join(GG.utils.DATA_PATH, img)
+    #else:
       newImgName = img.replace("/","-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
       if os.path.isfile(pathFile):
@@ -103,4 +105,21 @@ class GenteGuada:
     for imgName in imgList:
       result.append(self.getDataPath(imgName))
     return result
-        
+  
+  def clearCache(self):
+    now = datetime.datetime.today()
+    limitDate = now - datetime.timedelta(weeks=GG.utils.CLEAR_CACHE_WEEKS)
+    limitTime = time.mktime(limitDate.timetuple())
+    toRemove = []
+    for file in os.listdir(GG.utils.LOCAL_DATA_PATH):
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
+      if os.path.isfile(pathFile):
+        accessTime = os.stat(pathFile)[stat.ST_ATIME]
+        if accessTime < limitTime:
+          toRemove.append(file)
+    for file in toRemove:
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
+      os.remove(pathFile)
+
+
+    
