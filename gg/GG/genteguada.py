@@ -52,6 +52,7 @@ class GenteGuada:
   
   def start(self, params):
     pygame.init()
+    pygame.display.list_modes(32)
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
     pygame.display.set_caption(GG.utils.VERSION)

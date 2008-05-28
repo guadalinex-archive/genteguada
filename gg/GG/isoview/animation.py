@@ -7,7 +7,7 @@ class Animation:
   Defines animation methods and atributes.
   """
     
-  def __init__(self, time, img, destination):
+  def __init__(self, time, img):
     """ Class constructor.
     time: animation length in time.
     img: sprite used for the animation.
@@ -15,20 +15,12 @@ class Animation:
     """
     self.__time = time
     self.__img = img
-    self.__origin = img.rect.topleft
-    self.__destination = destination
-    
+
   def getTime(self):
     return self.__time
   
   def getImg(self):
     return self.__img
-  
-  def getOrigin(self):
-    return self.__origin
-  
-  def getDestination(self):
-    return self.__destination
 
   def setImgPosition(self, pos):
     self.__img.rect.topleft = pos
@@ -87,25 +79,24 @@ class IdleAnimation(Animation):
 class PositionAnimation(Animation):
   
   def __init__(self, time, img, destination):
-    Animation.__init__(self, time, img, destination)
-    self.__shift = [self.getDestination()[0] - self.getOrigin()[0], self.getDestination()[1] - self.getOrigin()[1]]
+    Animation.__init__(self, time, img)
+    self.__origin = self.getImg().rect.topleft
+    self.__destination = destination
+    self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
     
   def start(self):
     Animation.start(self)
-    self.setImgPosition([self.getOrigin()[0], self.getOrigin()[1]])
+    self.setImgPosition([self.__origin[0], self.__origin[1]])
     self.onStart()
     
   def step(self, time):
-    """ Moves the sprite to the next frame position.
-    time: time passed since the animation start.
-    """
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())/100.0
-    self.setImgPosition([self.getOrigin()[0] + (self.__shift[0]*percent), self.getOrigin()[1] + (self.__shift[1]*percent)])
+    self.setImgPosition([self.__origin[0] + (self.__shift[0]*percent), self.__origin[1] + (self.__shift[1]*percent)])
       
   def stop(self):
     Animation.stop(self)
-    self.setImgPosition([self.getDestination()[0], self.getDestination()[1]])
+    self.setImgPosition([self.__destination[0], self.__destination[1]])
     self.onEnd()
     
   def onStart(self):
@@ -121,12 +112,12 @@ class PositionAnimation(Animation):
     
 class MovieAnimation(Animation):
   
-  def __init__(self, time, img, heading, path, destination, frames, state):
-    Animation.__init__(self, time, img, destination)
-    self.__heading = heading
-    self.__path = path
+  def __init__(self, time, img, frames):
+    Animation.__init__(self, time, img)
     self.__frames = frames
-    self.__state = state
+    
+  def setFrames(self, frames):
+    self.__frames = frames  
     
   def start(self):
     Animation.start(self)
@@ -134,15 +125,12 @@ class MovieAnimation(Animation):
   def step(self, time):
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
-    filename = GG.utils.getSpriteName(self.__state, self.__heading, percent%self.__frames)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + filename)    
+    filename = self.__frames[percent % len(self.__frames)]
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(filename)    
     self.setImgSprite(imgPath)
     
   def stop(self):
     Animation.stop(self)
-    filename = GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__path + filename)
-    self.setImgSprite(imgPath)
     self.onEnd()
   
   def onStart(self):
@@ -158,8 +146,8 @@ class MovieAnimation(Animation):
     
 class CompositionAnimation(Animation):
   
-  def __init__(self, time, img, destination):
-    Animation.__init__(self, time, img, destination)
+  def __init__(self, time, img):
+    Animation.__init__(self, time, img)
     
   def start(self):
     Animation.start(self)
