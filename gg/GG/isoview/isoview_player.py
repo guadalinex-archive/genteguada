@@ -1,4 +1,5 @@
 import isoview_item
+import GG.utils
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
   """ IsoViewPlayer class.
@@ -23,7 +24,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Changes the player's sprite heading.
     """
     #self.setImg(GG.utils.NINO_SPRITES[event.getParams()["heading"]])
-    str = "standing_" + event.getParams()["heading"] + ".png"
+    str = GG.utils.getSpriteName(GG.utils.STATE[1], event.getParams()["heading"], 0)
     self.setImg(str)
     
   def inventoryAdded(self, event):
@@ -33,7 +34,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getParent().addInventoryItem(event.getParams()["item"])
     
   def inventoryRemoved(self, event):
-    """ Triggers after receivint an inventory removed event.
+    """ Triggers after receiving an inventory removed event.
     event: event info.
     """
     self.getParent().removeInventoryItem(event.getParams()["item"])
