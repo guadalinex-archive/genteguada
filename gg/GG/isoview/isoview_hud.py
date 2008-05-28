@@ -82,8 +82,10 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
     pygame.display.update()
+
+    #self.widgetContainer.update()
     #self.widgetContainer.set_screen(self.getScreen())
-    self.widgetContainer.update()
+    #self.widgetContainer.set_screen(self.getScreen())
 
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
@@ -113,7 +115,7 @@ class IsoViewHud(isoview.IsoView):
     img.rect = img.image.get_rect()
     img.rect.topleft = GG.utils.HUD_OR
     self.getScreen().blit(img.image, GG.utils.HUD_OR)
-    #pygame.display.update()
+    pygame.display.update()
     # pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1, (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
 
   def paintChat(self):
@@ -142,9 +144,9 @@ class IsoViewHud(isoview.IsoView):
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
-    self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
+    self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1] - 10)
     self.windowInventory.border = 1
-    self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1]
+    self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1] - 20
     self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
@@ -229,6 +231,10 @@ class IsoViewHud(isoview.IsoView):
     for action in options:
       self.buttonBarActions.add_child(self.buttonActions[action]["button"])
     self.widgetContainer.add_widget(self.buttonBarActions)
+    #import time
+    #time.sleep(2)
+    #self.dropActionsItembuttons()
+
   
   def itemUnselected(self,event=None):
     if self.__selectedItem:
@@ -248,7 +254,7 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
-    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 180]
+    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
@@ -292,7 +298,7 @@ class IsoViewHud(isoview.IsoView):
     for child in children:
       self.buttonBarActions.remove_child(child)
     self.widgetContainer.remove_widget(self.buttonBarActions)
-    
+
   def itemToInventory(self):
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
