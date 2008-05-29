@@ -13,7 +13,7 @@ def rotateObject(nameObject,rotation):
 	obj.RotZ = float(rotation) * (3.1416/180)		#Convert degrees to radians
 
 #Renderize the scene
-def renderScene(renderPath, startFrame, endFrame):
+def renderScene(renderPath, fileName, startFrame, endFrame):
   scn = Blender.Scene.GetCurrent()
   context = scn.getRenderingContext()
   if os.path.exists(renderPath) == False:
@@ -26,7 +26,8 @@ def renderScene(renderPath, startFrame, endFrame):
   context.imageType = Blender.Scene.Render.PNG  
   context.sFrame = startFrame
   context.eFrame = endFrame
-  context.renderAnim()	
+  context.renderAnim()
+  renameFiles(context.getRenderPath(), fileName)	
 
   #Rename the rendered image
 #  defaultFileName = "0001.png"
@@ -73,6 +74,11 @@ def scaleProportionalObject(nameObject, face):
 	print width,height,proportion,newWidth,newHeight
 	scaleObject(nameObject, newWidth, newWidth, newHeight)
 	
+def renameFiles(filePath, fileName):
+  files = os.listdir(filePath)
+  for i in files:
+	#shutil.move(filePath + i, filePath + fileName + i)
+	os.rename(filePath + i, filePath + fileName + i)
 	
 	
 #Asign the arguments to local variables
@@ -109,11 +115,11 @@ for part in avatarParts:
 if headSize <> "":
 	valueSizeDefault = 0
 	valueSize = 0
-	if headSize == "L":
-		print "Head size selected L"
- 		valueSize = 0.1
-	elif headSize == "M":
+	if headSize == "M":
 		print "Head size selected M"
+ 		valueSize = 0.1
+	elif headSize == "L":
+		print "Head size selected L"
  		valueSize = 0.2
 	elif headSize == "XL":
 		print "Head size selected XL"
@@ -146,11 +152,11 @@ if skin <> "":
 if bodySize <> "":
 	valueSizeDefault = 0
 	valueSize = 0
-	if bodySize == "L":
-		print "Body size selected L"
- 		valueSize = 0.1
-	elif bodySize == "M":
+	if bodySize == "M":
 		print "Body size selected M"
+ 		valueSize = 0.1
+	elif bodySize == "L":
+		print "Body size selected L"
  		valueSize = 0.2
 	elif bodySize == "XL":
 		print "Body size selected XL"
@@ -259,22 +265,22 @@ for act in actList:
   for rot in rotations:
     rotateObject("cameraAnchor", rot)
     if rot == 0:
-      renderScene("imagesGenerated/" + action.getName() + "/S/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 45:
-      renderScene("imagesGenerated/" + action.getName() + "/SO/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 90:
-      renderScene("imagesGenerated/" + action.getName() + "/O/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 135:
-      renderScene("imagesGenerated/" + action.getName() + "/NO/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 180:
-      renderScene("imagesGenerated/" + action.getName() + "/N/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 225:
-      renderScene("imagesGenerated/" + action.getName() + "/NE/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 270:
-      renderScene("imagesGenerated/" + action.getName() + "/E/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 315:
-      renderScene("imagesGenerated/" + action.getName() + "/SE/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-
+      renderScene("imagesGenerated/" + action.getName() + "/down/", action.getName() + "_down_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 45:
+#      renderScene("imagesGenerated/" + action.getName() + "/bottomleft/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 90:
+#      renderScene("imagesGenerated/" + action.getName() + "/left/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 135:
+#      renderScene("imagesGenerated/" + action.getName() + "/topleft/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 180:
+#      renderScene("imagesGenerated/" + action.getName() + "/up/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 225:
+#      renderScene("imagesGenerated/" + action.getName() + "/topright/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 270:
+#      renderScene("imagesGenerated/" + action.getName() + "/right/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#    elif rot == 315:
+#      renderScene("imagesGenerated/" + action.getName() + "/bottomright/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+#
 
 	
 	
