@@ -51,6 +51,7 @@ class IsoViewItem(isoview.IsoView):
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    pygame.display.update()
     
   def setImgPosition(self, pos):
     self.__img.rect.topleft = pos  

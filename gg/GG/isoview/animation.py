@@ -52,11 +52,14 @@ class Animation:
     
 class IdleAnimation(Animation):
   
-  def __init__(self, time, img, destination):
-    Animation.__init__(self, time, img, destination)
+  def __init__(self, time, img, frame):
+    Animation.__init__(self, time, img)
+    self.__frame = frame
     
   def start(self):
     Animation.start(self)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__frame)    
+    self.setImgSprite(imgPath)
     
   def step(self, time):
     Animation.step(self, time)
@@ -140,7 +143,7 @@ class MovieAnimation(Animation):
     Animation.onEnd(self)
     
   def isFinished(self, time):
-    return Animation.isFinished(self, time)
+    return False
   
 #*****************************************************************************
     
