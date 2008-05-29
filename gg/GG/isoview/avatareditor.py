@@ -32,6 +32,25 @@ class AvatarEditor:
     tLv2 = 2 , "hairStyle", "hairColor","skirt", "sleeve", "shoes"
     tLv3 = 3 , "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3
+
+  def drawInGame(self):
+    print "vamos a ver que hacemos"
+    self.window = ocempgui.widgets.HFrame()
+    self.window.topleft = 0,0
+    self.window.set_minimum_size(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    return self.window
+
+    """
+    self.paintScreen()
+    self.paintAvatar()
+    self.renderer = ocempgui.widgets.Renderer()
+    self.renderer.set_screen(self.screen)
+    self.paintTags()
+    self.paintCustomizeZone(self.activeOption)
+    while True:
+      time.sleep(0.4)
+      self.input(pygame.event.get())
+    """
     
   def paintScreen(self):
     """Paint the Avatar Editor background on screen.

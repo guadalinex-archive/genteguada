@@ -7,6 +7,7 @@ import ocempgui.widgets
 import ocempgui.draw
 import copy
 import random
+import avatareditor
 
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
@@ -42,6 +43,7 @@ class IsoViewHud(isoview.IsoView):
         "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer},
         "open":{"image":"sonido.png", "action": self.itemToOpen}
     }
+    self.winWardrobe = None
   
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
@@ -80,12 +82,11 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
-    self.buttonBar.update()
+    if self.winWardrobe:
+      self.winWardrobe.update()
+    else:
+      self.buttonBar.update()
     pygame.display.update()
-
-    #self.widgetContainer.update()
-    #self.widgetContainer.set_screen(self.getScreen())
-    #self.widgetContainer.set_screen(self.getScreen())
 
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
@@ -264,6 +265,9 @@ class IsoViewHud(isoview.IsoView):
 
   def showDresser(self):
     print "show dresser room"
+    wardrobe = avatareditor.AvatarEditor()
+    self.winWardrobe = wardrobe.drawInGame()
+    self.widgetContainer.add_widget(self.winWardrobe)
 
   def turnRight(self):
     print "turn right"
