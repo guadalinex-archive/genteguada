@@ -34,13 +34,13 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
     self.buttonActions = {
-        "inventory":{"image":"guardar.png", "action": self.itemToInventory,"button":None},
-        "clone":{"image":"guardar.png", "action": self.itemToClone,"button":None},
-        "push":{"image":"empujar.png", "action": self.itemToPush,"button":None},
-        "up":{"image":"levantar.png", "action": self.itemToUp,"button":None},
-        "talk":{"image":"sonido.png", "action": self.itemToTalk,"button":None},
-        "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer,"button":None},
-        "open":{"image":"sonido.png", "action": self.itemToOpen,"button":None}
+        "inventory":{"image":"guardar.png", "action": self.itemToInventory},
+        "clone":{"image":"guardar.png", "action": self.itemToClone},
+        "push":{"image":"empujar.png", "action": self.itemToPush},
+        "up":{"image":"levantar.png", "action": self.itemToUp},
+        "talk":{"image":"sonido.png", "action": self.itemToTalk},
+        "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer},
+        "open":{"image":"sonido.png", "action": self.itemToOpen}
     }
   
   def inventoryAdded(self, event):
@@ -74,7 +74,6 @@ class IsoViewHud(isoview.IsoView):
     self.paintChat()
     self.paintTextBox()
     self.paintActionButtons()
-    self.createItemActionButtons()
 
   def updateFrame(self):
     """ Updates all sprites for a new frame.
@@ -117,7 +116,6 @@ class IsoViewHud(isoview.IsoView):
     img.rect.topleft = GG.utils.HUD_OR
     self.getScreen().blit(img.image, GG.utils.HUD_OR)
     pygame.display.update()
-    # pygame.draw.rect(self.getScreen(), GG.utils.HUD_COLOR_BORDER1, (GG.utils.HUD_OR[0], GG.utils.HUD_OR[1], GG.utils.HUD_SZ[0] - 1, GG.utils.HUD_SZ[1] - 1))
 
   def paintChat(self):
     """ Paints the chat window on screen.
@@ -230,11 +228,11 @@ class IsoViewHud(isoview.IsoView):
                                      GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     #self.buttonBarActions.topleft = 0,0
     for action in options:
-      self.buttonBarActions.add_child(self.buttonActions[action]["button"])
+      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttonActions[action]['image']))
+      button.border = 0
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
+      self.buttonBarActions.add_child(button)
     self.widgetContainer.add_widget(self.buttonBarActions)
-    #import time
-    #time.sleep(2)
-    #self.dropActionsItembuttons()
 
   
   def itemUnselected(self,event=None):
@@ -286,18 +284,12 @@ class IsoViewHud(isoview.IsoView):
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
-  def createItemActionButtons(self):
-    for key in self.buttonActions.keys():
-      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttonActions[key]['image']))
-      button.border = 0
-      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[key]['action'])
-      self.buttonActions[key]['button'] = button
-
   def dropActionsItembuttons(self):
     self.__selectedItem = None
     children = copy.copy(self.buttonBarActions.children)
     for child in children:
       self.buttonBarActions.remove_child(child)
+      child.destroy()
     self.widgetContainer.remove_widget(self.buttonBarActions)
     self.buttonBarActions.destroy()
 
