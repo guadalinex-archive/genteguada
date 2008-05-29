@@ -80,10 +80,11 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
+    self.buttonBar.update()
+    pygame.display.update()
 
     #self.widgetContainer.update()
     #self.widgetContainer.set_screen(self.getScreen())
-    pygame.display.update()
     #self.widgetContainer.set_screen(self.getScreen())
 
   def roomChanged(self, event):
@@ -253,7 +254,7 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
-    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
+    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 180]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
