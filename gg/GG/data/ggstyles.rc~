@@ -1,0 +1,7 @@
+import ocempgui.widgets
+
+#Variables
+_normal = ocempgui.widgets.Constants.STATE_NORMAL
+_insensitive = ocempgui.widgets.Constants.STATE_INSENSITIVE
+
+frame = { "darkcolor" : { _normal : (18, 12, 135), _insensitive : (54, 51, 106) }, "lightcolor": {_insensitive: (32, 25, 104)} }
