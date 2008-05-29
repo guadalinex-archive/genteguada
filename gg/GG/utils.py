@@ -166,8 +166,8 @@ SKIN_7 = "skin_7.png"
 SKIN_8 = "skin_8.png"
 SKIN_9 = "skin_9.png"
 COLORS = {1:"COLOR_YELLOW", 2:"COLOR_ORANGE", 3:"COLOR_RED", 4:"COLOR_PINK", 5:"COLOR_BLUE", 6:"COLOR_PURPLE", 7:"COLOR_GREEN", 8:"COLOR_WHITE", 9:"COLOR_BLACK"}
-HAIR_COLORS = {COLOR_BLONDE:1, COLOR_BROWN:2, COLOR_BLACK:3}
-SKIN_COLORS = {SKIN_1:1, SKIN_2:2, SKIN_3:3, SKIN_4:4, SKIN_5:5, SKIN_6:6, SKIN_7:7, SKIN_8:8, SKIN_9:9}
+HAIR_COLORS = {1:"COLOR_BLONDE", 2:"COLOR_BROWN", 3:"COLOR_BLACK"}
+SKIN_COLORS = {1:"SKIN_1", 2:"SKIN_2", 3:"SKIN_3", 4:"SKIN_4", 5:"SKIN_5", 6:"SKIN_6", 7:"SKIN_7", 8:"SKIN_8", 9:"SKIN_9"}
 
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
@@ -244,7 +244,8 @@ def getSpriteName(state, heading, frame):
     
   if frame == 0:
     fileName = state + "_" + heading + "_0" + str(maxFrames) + ".png"
-  elif frame < 10:  
+  elif frame < 10:
+    rgb= [0, 0, 0]
     fileName = state + "_" + heading + "_00" + str(frame) + ".png"
   else:  
     fileName = state + "_" + heading + "_0" + str(frame) + ".png"
@@ -374,7 +375,29 @@ def getRGBColor(color):
   elif color == "COLOR_WHITE":
     rgb = [255, 255, 255]
   elif color == "COLOR_BLACK":
-    rgb= [0, 0, 0]
+    rgb = [0, 0, 0]
+  elif color == "COLOR_BLONDE":
+    rgb = [217, 224, 98]
+  elif color == "COLOR_BROWN":
+    rgb = [100, 79, 54]
+  elif color == "SKIN_1":
+    rgb = [254, 231, 215]
+  elif color == "SKIN_2":
+    rgb = [240, 205, 183]
+  elif color == "SKIN_3":
+    rgb = [255, 219, 183]
+  elif color == "SKIN_4":
+    rgb = [186, 147, 116]
+  elif color == "SKIN_5":
+    rgb = [192, 142, 107]
+  elif color == "SKIN_6":
+    rgb = [177, 115, 92]
+  elif color == "SKIN_7":
+    rgb = [139, 94, 61]
+  elif color == "SKIN_8":
+    rgb = [106, 66, 40]
+  elif color == "SKIN_9":
+    rgb = [67, 36, 18]
   return rgb
     
 
