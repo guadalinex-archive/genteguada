@@ -39,12 +39,12 @@ class AvatarEditor:
     self.window.topleft = 0,0
     self.window.set_minimum_size(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
-    img1.topleft(528,114)
+    img1.topleft = 528,114
     img2 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK))
-    img2.topleft(528,114)
-    self.window.add_child(img1)
-    self.window.add_child(img2)
-    return self.window
+    img2.topleft = 528,114
+    #self.window.add_child(img1)
+    #self.window.add_child(img2)
+    return self.window,img1,img2
 
     """
     self.paintScreen()

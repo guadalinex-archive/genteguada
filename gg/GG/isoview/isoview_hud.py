@@ -266,8 +266,10 @@ class IsoViewHud(isoview.IsoView):
   def showDresser(self):
     print "show dresser room"
     wardrobe = avatareditor.AvatarEditor()
-    self.winWardrobe = wardrobe.drawInGame()
+    self.winWardrobe,img1,img2 = wardrobe.drawInGame()
     self.widgetContainer.add_widget(self.winWardrobe)
+    self.widgetContainer.add_widget(img1)
+    self.widgetContainer.add_widget(img2)
 
   def turnRight(self):
     print "turn right"
