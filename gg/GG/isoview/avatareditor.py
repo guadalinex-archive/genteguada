@@ -46,6 +46,7 @@ class AvatarEditor:
     #self.window.add_child(img2)
     return self.window,img1,img2
 
+
     """
     self.paintScreen()
     self.paintAvatar()
