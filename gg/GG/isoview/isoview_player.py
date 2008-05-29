@@ -47,7 +47,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getParent().removeInventoryItem(event.getParams()["item"])
 
   def activeAnimation(self):
-    if self.__movieAnimation != None or not isoview_item.IsoViewItem.activeAnimation(self):
+    if self.__movieAnimation != None or isoview_item.IsoViewItem.activeAnimation(self):
       return True
     return False
       

@@ -227,13 +227,13 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
                                      GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     #self.buttonBarActions.topleft = 0,0
+    print "********************", options
     for action in options:
       button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttonActions[action]['image']))
       button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       self.buttonBarActions.add_child(button)
     self.widgetContainer.add_widget(self.buttonBarActions)
-
   
   def itemUnselected(self,event=None):
     if self.__selectedItem:
@@ -294,6 +294,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarActions.destroy()
 
   def itemToInventory(self):
+    print self.__selectedItem
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
