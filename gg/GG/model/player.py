@@ -38,6 +38,8 @@ class GGPlayer(GG.model.item.GGItem):
     return parentVars + ['username']
   
   def getImagePath(self):
+    """ Returns the player's image path.
+    """
     return self.__spritePath
 
   # self.__heading
@@ -184,6 +186,8 @@ class GGPlayer(GG.model.item.GGItem):
     self.newChatMessage(clicker.username + ' ha pinchado en mi')
 
   def getOptions(self):
+    """ Returns the available item options.
+    """
     return ["talk","exchange"]
       
   def tick(self):
@@ -242,16 +246,26 @@ class GGPlayer(GG.model.item.GGItem):
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username))
 
   def setSelectedItem(self, item):
+    """ Sets an item as selected.
+    """
     self.__selected = item
     self.triggerEvent('selectedItem', item=item)
     
   def setUnselectedItem(self):
+    """ Sets an item as unselected.
+    """
     self.__selected = None
     self.triggerEvent('unselectedItem')
     
   def talkTo(self, item):
+    """ Talks to an item.
+    item: item to talk to.
+    """
     item.talkedBy(self)
     
   def open(self, item):
+    """ Opens an item.
+    open: item to open.
+    """
     item.openedBy(self)
     

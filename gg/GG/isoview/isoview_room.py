@@ -1,4 +1,3 @@
-import os
 import pygame
 import GG.utils
 import isoview
@@ -11,13 +10,14 @@ class GroupSprite(pygame.sprite.Group):
   """
   
   def __init__(self, *sprites):
-    """ Constructor methd.
+    """ Constructor method.
     *sprites: sprites list.
     """
     pygame.sprite.Group.__init__(self, *sprites)
-
   
   def sprites(self):
+    """ Order the group sprites according to their position.
+    """
     keys = self.spritedict.keys()
     keys.sort(lambda x, y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
     return keys
@@ -35,7 +35,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    bgPath = os.path.join(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK))
+    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
@@ -162,11 +162,15 @@ class IsoViewRoom(isoview.IsoView):
     isoview.IsoView.unsubscribeAllEvents(self)
 
   def itemSelected(self,item):
+    """ Sets an item on the room as selected.
+    """
     for isoItem in self.__isoViewPlayers:
       if isoItem.getModel() == item:
         isoItem.selected()
 
   def itemUnselected(self,item):
+    """ Sets an item on the room as unselected.
+    """
     for isoItem in self.__isoViewPlayers:
       if isoItem.getModel() == item:
         isoItem.unselected()   

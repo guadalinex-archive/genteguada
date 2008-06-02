@@ -47,11 +47,16 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getParent().removeInventoryItem(event.getParams()["item"])
 
   def activeAnimation(self):
+    """ Checks if there is an active animation.
+    """
     if self.__movieAnimation != None or isoview_item.IsoViewItem.activeAnimation(self):
       return True
     return False
       
   def setMovieAnimation(self, animation):
+    """ Creates a new movie animation.
+    animation: new movie animation.
+    """
     if self.__movieAnimation:
       self.__movieAnimation.stop()
     self.__movieAnimation = animation
@@ -61,9 +66,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       animation.start()
     
   def setMovieFrames(self, frames):
+    """ Sets a new frame set for a movie animation.
+    frames: new frame set.
+    """
     self.__movieAnimation.setFrames(frames)
         
   def createFrameSet(self):
+    """ Creates a new frame set.
+    """
     frames = []
     for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
       if i < 10:
@@ -74,6 +84,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     return frames
     
   def animatedSetPosition(self, newPosition):
+    """ Sets a new position for the player, and creates a new movie animation.
+    newPosition: new player's position.
+    """
     isoview_item.IsoViewItem.animatedSetPosition(self, newPosition)
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self.getImg(), self.createFrameSet())
     self.setMovieAnimation(movieAnim)
@@ -87,6 +100,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation.step(self.__movieTimePassed)  
         
   def stateChanged(self, event):
+    """ Triggers after receiving a new state change event.
+    event: event info.
+    """  
     st = event.getParams()["state"]
     if st == GG.utils.STATE[1]: # standing
       if self.activeAnimation():

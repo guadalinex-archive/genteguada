@@ -2,7 +2,7 @@
 
 class IsoView:
   """ IsoView Superclass.
-  It defines atributes and methods for a generic view.
+  It defines attributes and methods for a generic view.
   """
   
   def __init__(self, model, screen):

@@ -23,6 +23,8 @@ class GGTeleporter(GG.model.item.GGItem):
     self.__condition = condition
     
   def getOptions(self):
+    """ Returns the item's available options.
+    """
     return ["open"]    
     
   # self.__entryPosition
@@ -86,6 +88,10 @@ class GGTeleporter(GG.model.item.GGItem):
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
   def checkCondition(self, condition, player):
+    """ Checks a condition for a given player.
+    condition: condition to check.
+    player: given player.
+    """
     for item in player.getInventory():
       if item.label == condition:
         return True
@@ -102,7 +108,8 @@ class GGTeleporter(GG.model.item.GGItem):
       return False    
 
   def openedBy(self, clicker):
-    """
+    """ Teleports a player to another location.
+    clicker: player to teleport.
     """
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:

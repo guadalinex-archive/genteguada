@@ -45,11 +45,16 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__count -= 1
 
   def draw(self, render):
+    """ Draws an inventory item.
+    render: widget container. 
+    """
     imgInventory = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.__spriteName))
     imgInventory.border = 0
     imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.selected)
     render.get_managers()[0].add_high_priority_object(imgInventory,ocempgui.widgets.Constants.SIG_MOUSEDOWN)
     return imgInventory
 
-  def selected(self):
+  def selected(self): 
+    """ Sets this item as selected.
+    """
     self.__isohud.itemInventorySelected(self)

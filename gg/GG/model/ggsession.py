@@ -26,6 +26,9 @@ class GGSession(ggmodel.GGModel):
     return self.__player
    
   def roomChanged(self, event):
+    """ Triggers after receiving a change room event.
+    event: event info.
+    """
     oldRoom = event.getParams()['oldRoom']
     if oldRoom:
       oldRoom.unsubscribeEventMethod(self.chatAdded)

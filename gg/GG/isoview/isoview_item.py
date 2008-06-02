@@ -1,4 +1,3 @@
-import os
 import pygame
 import GG.utils
 import isoview
@@ -29,6 +28,8 @@ class IsoViewItem(isoview.IsoView):
     #self.getModel().subscribeEvent('room', self.roomChanged)
     
   def loadImage(self):
+    """ Loads the item's image.
+    """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
@@ -54,9 +55,15 @@ class IsoViewItem(isoview.IsoView):
     pygame.display.update()
     
   def setImgPosition(self, pos):
+    """ Sets a new position for the item's image.
+    pos: new position.
+    """
     self.__img.rect.topleft = pos  
     
   def setSprite(self, sprite):
+    """ Sets a new sprite for the item
+    sprite: new sprite.
+    """
     self.__img = sprite
     
   def getIVRoom(self):
@@ -71,11 +78,16 @@ class IsoViewItem(isoview.IsoView):
     self.__ivroom = ivroom
   
   def activeAnimation(self):
+    """ Checks if there is an active animation.
+    """
     if self.__positionAnimation != None:
       return True
     return False
   
   def setPositionAnimation(self, animation):
+    """ Creates a new position animation.
+    animation: new position animation.
+    """
     if self.__positionAnimation:
       self.__positionAnimation.stop()
     self.__positionAnimation = animation
@@ -118,6 +130,8 @@ class IsoViewItem(isoview.IsoView):
     self.__img.rect.topleft = GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset)
   
   def selected(self):
+    """ Changes the item's color and sets it as selected.
+    """
     size = self.__img.rect
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
@@ -132,9 +146,9 @@ class IsoViewItem(isoview.IsoView):
           if color2[2] > 255: color2[2] = 255
           self.__img.image.set_at((x,y), color2)
     pygame.display.update()
-    #self.__img.image.set_colorkey(color_transparente)
-    #colorKey = self.__img.image.get_colorkey()
     
   def unselected(self):
+    """ Restores the item's color and sets it as unselected.
+    """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()

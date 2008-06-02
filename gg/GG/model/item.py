@@ -21,6 +21,8 @@ class GGItem(ggmodel.GGModel):
     self.__room = None
 
   def getImagePath(self):
+    """ Returns the image sprite relative path.
+    """
     return ""
         
   def variablesToSerialize(self):
@@ -98,7 +100,7 @@ class GGItem(ggmodel.GGModel):
     clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.__position))
     
   def tick(self):
-    """ Call for an update on item position.
+    """ Call for an update on item.
     Not used at the moment.
     """
     pass
