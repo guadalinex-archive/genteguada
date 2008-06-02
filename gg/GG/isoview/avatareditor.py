@@ -1,11 +1,13 @@
 import os
 import sys
 import time
-import ocempgui.widgets
 import GG.utils
 import pygame
 import pygame.locals
 import pygame.transform
+
+import ocempgui.widgets
+import ocempgui.draw
 
 
 
@@ -34,30 +36,57 @@ class AvatarEditor:
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3
 
   def drawInGame(self):
+    #image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, "background.png"))
+    img = pygame.image.load(os.path.join(GG.utils.DATA_PATH, "background.png")) 
+    image = img.get_rect()
+    style = {"image":{ ocempgui.widgets.Constants.STATE_NORMAL : image,
+                       ocempgui.widgets.Constants.STATE_ENTERED : image,
+                       ocempgui.widgets.Constants.STATE_ACTIVE : image,
+                       ocempgui.widgets.Constants.STATE_INSENSITIVE : image,
+                     }
+              }
+
     print "vamos a ver que hacemos"
-    self.window = ocempgui.widgets.HFrame()
-    self.window.topleft = 0,0
-    self.window.set_minimum_size(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
-    img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
+    self.screen = pygame.Surface(GG.utils.SCREEN_SZ)
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    imgBackground = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, "background.png"))
+    self.window.add_child(imgBackground)
+    img = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY),True)
+    img1 = ocempgui.widgets.ImageLabel(img)
+    #img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
     img1.topleft = 528,114
-    img2 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK))
-    img2.topleft = 528,114
+    self.window.add_child(img1)
+    #self.paintBodySize(10)
+    #self.window.set_style(ocempgui.widgets.WidgetStyle(style))
+    #print dir(self.window)
+    #style = self.window.create_style()
+    #print style
+    #image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, "background.png"))
+    #print image
+    #style['image'][0] = image 
+    #print style['image'][0]
+    #self.window = ocempgui.widgets.Window(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    #img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
+    #img1.topleft = 528,114
+    #img2 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK))
+    #img2.topleft = 528,114
     #self.window.add_child(img1)
     #self.window.add_child(img2)
-    return self.window,img1,img2
-
-
-    """
-    self.paintScreen()
-    self.paintAvatar()
-    self.renderer = ocempgui.widgets.Renderer()
-    self.renderer.set_screen(self.screen)
-    self.paintTags()
-    self.paintCustomizeZone(self.activeOption)
-    while True:
-      time.sleep(0.4)
-      self.input(pygame.event.get())
-    """
+    return self.window
+    
+    #me creo un screen
+    #self.paintScreen()
+    #self.paintAvatar()
+    #self.renderer = ocempgui.widgets.Renderer()
+    #self.renderer.set_screen(self.screen)
+    #self.renderer = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    #print dir(self.renderer)
+    #self.paintTags()
+    #self.paintCustomizeZone(self.activeOption)
+    #while True:
+    #  time.sleep(0.4)
+    #  self.input(pygame.event.get())
+    #return self.renderer
     
   def paintScreen(self):
     """Paint the Avatar Editor background on screen.
@@ -561,6 +590,7 @@ class AvatarEditor:
     pygame.init()
     #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
+    print self.screen
     pygame.display.set_caption("DEMO AVATAR GENERATOR")
 
 if __name__=="__main__":
