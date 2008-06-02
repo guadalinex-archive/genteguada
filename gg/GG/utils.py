@@ -88,7 +88,7 @@ STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carryi
 # ======================= SPRITES ===========================
 
 LOGIN_SCREEN = "login.png"
-BG_BLACK = "black.png"
+BG_BLACK = "bg_black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
 INTERFACE_LOWER = "interface_lower.png"

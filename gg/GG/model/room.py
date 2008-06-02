@@ -16,6 +16,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def __init__(self, spriteFull, label):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
+    label: room label.
     """
     GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull

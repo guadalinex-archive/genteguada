@@ -23,10 +23,12 @@ class GGPickableItem(item.GGItem):
     return parentVars + ['spriteInventory', 'label']
 
   def getOptions(self):
+    """ Returns the item's available options.
+    """
     return ["inventory"]
   
   def clickedBy(self, clicker):
-    """ Triggers an avent when the item receives a click by a player.
+    """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
     GG.model.item.GGItem.clickedBy(self, clicker)

@@ -20,13 +20,21 @@ class GGGiverNPC(GG.model.item.GGItem):
     self.__item = item
     
   def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
     parentVars = GG.model.item.GGItem.variablesToSerialize(self)
     return parentVars + ['label']
   
   def getOptions(self):
+    """ Returns the item's available options.
+    """
     return ["talk"]
   
   def checkCondition(self, condition, player):
+    """ Checks a condition for a given player.
+    condition: condition to check.
+    player: given player.
+    """
     return True
   
   def clickedBy(self, clicker):
@@ -40,6 +48,9 @@ class GGGiverNPC(GG.model.item.GGItem):
       return False    
 
   def talkedBy(self, talker):
+    """ Method executed after being talked by a player.
+    talker: player.
+    """
     for condition in self.__condition:
       if not self.checkCondition(condition, talker):
         return False

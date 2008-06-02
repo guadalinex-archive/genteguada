@@ -7,8 +7,15 @@ import sys
 import time
 
 class Login:
+  """ Login class.
+  Defines attributes and methods for a Login class.
+  """
     
   def __init__(self, screen, parent):
+    """ Class constructor.
+    screen: screen handler.
+    parent: 
+    """
     self.__screen = screen
     self.__textFieldUsername = None
     self.__textFieldPassword = None

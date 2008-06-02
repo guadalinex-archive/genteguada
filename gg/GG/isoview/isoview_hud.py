@@ -1,4 +1,3 @@
-import os
 import pygame
 import GG.utils
 import isoview
@@ -152,6 +151,8 @@ class IsoViewHud(isoview.IsoView):
     self.paintItemsInventory()
 
   def paintItemsInventory(self):
+    """ Paints the inventory items.
+    """
     self.windowInventory.child = None
     self.__frameInventory = ocempgui.widgets.VFrame()
     self.__frameInventory.border = 0
@@ -163,6 +164,9 @@ class IsoViewHud(isoview.IsoView):
       position += 1
 
   def itemInventorySelected(self,invIsoItem):
+    """ Selects an item from the player's inventory.
+    invIsoItem: selected item.
+    """
     self.__player.clickOnInventoryItem(invIsoItem.getModel())
 
   def paintItemOnInventory(self, invItem, position):
@@ -198,10 +202,11 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def getStyleMessageChat(self):
+    """ Returns the chat current style.
+    """
     #TODO entiendo que el color del chat depende de cada usuario 
     listStyle = ["chatEntryBlack","chatEntryRed","chatEntryGreen","chatEntryBlue"]
     return GG.utils.STYLES[listStyle[random.randint(0,len(listStyle)-1)]]
-
     
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
@@ -218,6 +223,9 @@ class IsoViewHud(isoview.IsoView):
     self.printLineOnChat(cad)
 
   def itemSelected(self,event):
+    """ Triggers after receiving an item selected event.
+    event: event info.
+    """
     self.__selectedItem = event.getParams()['item'] 
     self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
@@ -245,6 +253,8 @@ class IsoViewHud(isoview.IsoView):
   #Defincion de la buttonBar y sus acciones permanentes
 
   def paintActionButtons(self):
+    """ Paints the general action buttons.
+    """
     ACTIONS = [
                 {"image":"vestidor.png", "action": self.showDresser},
                 {"image":"derecha.png", "action": self.turnRight},
@@ -258,7 +268,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 180]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
-      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttonData['image']))
+      button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.buttonBar.add_child(button)
@@ -284,14 +294,17 @@ class IsoViewHud(isoview.IsoView):
     print "show sound control"
 
   def showHelp(self):
+    """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
+    """
     print "show help"
     #TODO solo funciona en linux con las X, para e
     pygame.display.toggle_fullscreen()
 
-
   #definicion de las acciones y botones en funcion del item seleccionado
   
   def dropActionsItembuttons(self):
+    """ Removes the action buttons from the screen.
+    """
     self.__selectedItem = None
     children = copy.copy(self.buttonBarActions.children)
     for child in children:
@@ -301,12 +314,16 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarActions.destroy()
 
   def itemToInventory(self):
+    """ Brings an item from the room to the player's inventory.
+    """
     print self.__selectedItem
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
  
   def itemToClone(self):
+    """ Clones an item from the room and inserts it on the player's inventory
+    """
     clone = self.__selectedItem.getClone()
     self.__player.addInventory(clone)
     self.itemUnselected()
@@ -320,15 +337,21 @@ class IsoViewHud(isoview.IsoView):
     self.itemUnselected()
 
   def itemToTalk(self):
+    """ Talks to an item.
+    """
     #print "talk"
     self.__player.talkTo(self.__selectedItem)
     self.itemUnselected()
 
   def exchangeItemPlayer(self):
+    """ Shows the trade window.
+    """
     #print "intercambio"
     self.showExchangeWindow()
 
   def showExchangeWindow(self):
+    """ Shows the exchange items window.
+    """
     window = ocempgui.widgets.VFrame()
     window.set_minimum_size(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
     window.topleft = GG.utils.SCREEN_SZ[0] - 200, GG.utils.HUD_OR[1] - 200
@@ -338,6 +361,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(window)
 
   def itemToOpen(self):
+    """ Attempts to open a teleporter item.
+    """
     print "open"
     self.__player.open(self.__selectedItem)
     self.itemUnselected()

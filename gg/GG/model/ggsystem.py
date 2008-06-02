@@ -185,6 +185,10 @@ class GGSystem(dMVC.model.Model):
       room.tick()    
 
   def getResource(self, img, date):
+    """ Returns a resource path.
+    img: resource path.
+    date: current date.
+    """
     sendFile = False
     if not date:
       sendFile = True
