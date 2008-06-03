@@ -33,7 +33,7 @@ class IsoViewRoom(isoview.IsoView):
     screen: screen handler.
     hud: hud object.
     """
-    isoview.IsoView.__init__(self, model, screen)
+    isoview.IsoView.__init__(self, model, screen, [0,0])
     self.__parent = hud
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()

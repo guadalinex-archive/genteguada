@@ -132,14 +132,14 @@ class PositionAnimation(Animation):
   Defines animation methods and atributes.
   """
   
-  def __init__(self, time, isoview, destination):
+  def __init__(self, time, isoview, origin, destination):
     """ Class constructor.
     time: animation length in time.
     img: image used on the animation.
     destination: animation movement destination.
     """
     Animation.__init__(self, time, isoview)
-    self.__origin = self.getIsoview().getImg().rect.topleft
+    self.__origin = origin
     self.__destination = destination
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
     

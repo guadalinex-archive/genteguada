@@ -10,6 +10,9 @@ class GGModel(dMVC.model.Model):
     """
     dMVC.model.Model.__init__(self)
   
+  def getPosition(self):
+    return [0, 0]
+  
   @dMVC.model.localMethod
   def defaultView(self):
     raise Exception("Metodo no definido en los hijos")

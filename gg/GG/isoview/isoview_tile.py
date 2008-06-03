@@ -17,7 +17,7 @@ class IsoViewTile(isoview.IsoView):
     blocked: Indicates if the tile is passable or blocked.
     position: tile position.
     """
-    isoview.IsoView.__init__(self, None, None)
+    isoview.IsoView.__init__(self, None, None, topLeft)
     self.__topLeft = topLeft
     self.__bottomRight = bottomRight
     self.__img = pygame.sprite.Sprite()
