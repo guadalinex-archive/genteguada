@@ -211,6 +211,3 @@ class GGRoom(GG.model.ggmodel.GGModel):
         retVar = res
     
     return retVar
-
-  def getImagePath(self):
-    return ""

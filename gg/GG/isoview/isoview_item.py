@@ -70,7 +70,7 @@ class IsoViewItem(isoview.IsoView):
     """ Sets a new sprite for the item
     sprite: new sprite.
     """
-    self.__img = sprite
+    self.__img.image = sprite
     
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
