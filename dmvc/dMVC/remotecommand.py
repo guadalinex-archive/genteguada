@@ -90,6 +90,7 @@ class RExecuterCommand(RCommand): #{{{
   def __str__(self):
     return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + \
         ', modelID=' + str(self._modelID) + ', ' + str(self._methodName) + str(self._args)
+    #return RCommand.__str__(self) + 'executionID=' + str(self._executionID)
 
 #}}}
 
