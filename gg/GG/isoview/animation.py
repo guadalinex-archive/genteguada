@@ -7,35 +7,31 @@ class Animation:
   Defines animation methods and atributes.
   """
     
-  def __init__(self, time, img):
+  def __init__(self, time, isoview):
     """ Class constructor.
     time: animation length in time.
-    img: image used on the animation.
+    isoview: isoview used on the animation.
     """
     self.__time = time
-    self.__img = img
+    self.__isoview = isoview
 
   def getTime(self):
     """ Returns the animation length in time.
     """
     return self.__time
   
-  def getImg(self):
+  def getIsoview(self):
     """ Returns the sprite used on the animation.
     """
-    return self.__img
+    return self.__isoview
+
+  def setImg(self, img):
+    """
+    """
+    self.__isoview.setImg(img)
 
   def setImgPosition(self, pos):
-    """ Sets a new position for the image.
-    pos: image position.
-    """
-    self.__img.rect.topleft = pos
-
-  def setImgSprite(self, imgPath):
-    """ Sets a new sprite for the image.
-    imgPath: image path.
-    """
-    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__isoview.setImgPosition(pos)
     
   # Vanilla methods
   
@@ -78,21 +74,21 @@ class IdleAnimation(Animation):
   Defines animation methods and atributes.
   """
   
-  def __init__(self, time, img, frame):
+  def __init__(self, time, isoview, frame):
     """ Class constructor.
     time: animation length in time.
-    img: image used on the animation.
+    isoview: isoview used on the animation.
     frame: frame used for the animation.
     """
-    Animation.__init__(self, time, img)
+    Animation.__init__(self, time, isoview)
     self.__frame = frame
     
   def start(self):
     """ Starts the animation.
     """
     Animation.start(self)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__frame)    
-    self.setImgSprite(imgPath)
+    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__frame)    
+    self.setImg(self.__frame)
     
   def step(self, time):
     """ Progresses the animation one frame.
@@ -129,14 +125,14 @@ class PositionAnimation(Animation):
   Defines animation methods and atributes.
   """
   
-  def __init__(self, time, img, destination):
+  def __init__(self, time, isoview, destination):
     """ Class constructor.
     time: animation length in time.
     img: image used on the animation.
     destination: animation movement destination.
     """
-    Animation.__init__(self, time, img)
-    self.__origin = self.getImg().rect.topleft
+    Animation.__init__(self, time, isoview)
+    self.__origin = self.getIsoview().getImg().rect.topleft
     self.__destination = destination
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
     
@@ -185,13 +181,13 @@ class MovieAnimation(Animation):
   Defines animation methods and atributes.
   """
   
-  def __init__(self, time, img, frames):
+  def __init__(self, time, isoview, frames):
     """ Class constructor.
     time: animation length in time.
     img: image used on the animation.
     frames: frames used on the animation.
     """
-    Animation.__init__(self, time, img)
+    Animation.__init__(self, time, isoview)
     self.__frames = frames
     
   def setFrames(self, frames):
@@ -212,8 +208,8 @@ class MovieAnimation(Animation):
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
     filename = self.__frames[percent % len(self.__frames)]
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(filename)    
-    self.setImgSprite(imgPath)
+    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(filename)    
+    self.setImg(filename)
     
   def stop(self):
     """ Stops the animation.
@@ -244,12 +240,12 @@ class CompositionAnimation(Animation):
   Defines animation methods and atributes.
   """
   
-  def __init__(self, time, img):
+  def __init__(self, time, isoview):
     """ Class constructor.
     time: animation length in time.
     img: image used on the animation.
     """
-    Animation.__init__(self, time, img)
+    Animation.__init__(self, time, isoview)
     
   def start(self):
     """ Starts the animation.

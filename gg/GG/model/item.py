@@ -19,7 +19,9 @@ class GGItem(ggmodel.GGModel):
     self.offset   = offset
     self.__position = position
     self.__room = None
-
+    self.__upperItem = None
+    self.__lowerItem = None
+    
   def getImagePath(self):
     """ Returns the image sprite relative path.
     """
@@ -84,7 +86,38 @@ class GGItem(ggmodel.GGModel):
     """
     self.__room = room
     self.triggerEvent('room', room=room)
+  
+  # self.__upperItem
     
+  def getUpperItem(self):
+    """ Returns the item on top of this one.
+    """
+    return self.__upperItem
+  
+  def setUpperItem(self, item):
+    """ Sets a new upper item.
+    item: new upper item.
+    """
+    if self.__upperItem != None:
+      self.__upperItem.setUpperItem(item)
+    else:          
+      self.__upperItem = item
+      self.triggerEvent('upperItem', item=item)
+  
+  # self.__lowerItem
+  
+  def getLowerItem(self):
+    """ Returns the item at the bottom of this one.
+    """
+    return self.__lowerItem
+    
+  def setLowerItem(self, item):
+    """ Sets a new lower item.
+    item: new lower item.
+    """
+    self.__lowerItem = item
+    self.triggerEvent('lowerItem', item=item)
+
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.
