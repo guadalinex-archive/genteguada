@@ -53,7 +53,4 @@ class GGSession(ggmodel.GGModel):
     event: event info.
     """
     self.triggerEvent('chatAdded', message=event.getParams()['message'])
-    
-  def getImagePath(self):
-    return ""
   

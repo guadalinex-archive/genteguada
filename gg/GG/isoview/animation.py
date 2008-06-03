@@ -29,6 +29,11 @@ class Animation:
     """
     """
     self.__isoview.setImg(img)
+    
+  def setSprite(self, sprite):
+    """
+    """
+    self.__isoview.setSprite(sprite)
 
   def setImgPosition(self, pos):
     self.__isoview.setImgPosition(pos)
@@ -78,17 +83,19 @@ class IdleAnimation(Animation):
     """ Class constructor.
     time: animation length in time.
     isoview: isoview used on the animation.
-    frame: frame used for the animation.
+    frame: frame used for the animation (file name).
     """
     Animation.__init__(self, time, isoview)
     self.__frame = frame
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().getImagePath() + self.__frame)
+    self.__sprite = pygame.image.load(imgPath).convert_alpha()
     
   def start(self):
     """ Starts the animation.
     """
     Animation.start(self)
-    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__frame)    
-    self.setImg(self.__frame)
+    #self.setImg(self.__frame)
+    self.setSprite(self.__sprite)
     
   def step(self, time):
     """ Progresses the animation one frame.
@@ -189,13 +196,21 @@ class MovieAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     self.__frames = frames
+    self.loadSprites()
     
   def setFrames(self, frames):
     """ Sets a new frame set for the animation.
     frames: new frame set
     """
-    self.__frames = frames  
+    self.__frames = frames
+    self.loadSprites()  
     
+  def loadSprites(self):
+    self.__sprites = []
+    for frame in self.__frames:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().getImagePath() + frame)
+      self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
+      
   def start(self):
     """ Starts the animation.
     """
@@ -207,9 +222,10 @@ class MovieAnimation(Animation):
     """
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
-    filename = self.__frames[percent % len(self.__frames)]
-    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(filename)    
-    self.setImg(filename)
+    #filename = self.__frames[percent % len(self.__frames)]
+    filename = self.__sprites[percent % len(self.__sprites)]
+    #self.setImg(filename)
+    self.setSprite(filename)
     
   def stop(self):
     """ Stops the animation.
