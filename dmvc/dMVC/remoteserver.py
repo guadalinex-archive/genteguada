@@ -91,12 +91,12 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         utils.logger.debug("Run the command " + str(command) + " from the client " + \
                              str(self.client_address)+ " and the result is "+str(answer))
         if answer:
-          self.__sendObject(answer)
+          self.__sendObject(answer,command)
       else:
         break
   #}}}
 
-  def __sendObject(self, obj): #{{{
+  def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
@@ -105,6 +105,8 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
       self.request.send(size)
       self.request.send(serialized)
+      if command:
+        print "Enviado ",sizeSerialized , command
       return True
     except:
       utils.logger.exception("Can''t send an object, probable conexion lost")

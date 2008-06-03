@@ -142,7 +142,6 @@ class RemoteMethod: #{{{
     rClient.sendCommand(executer)
     answerer = rClient.waitForExecutionAnswerer(executer)
     result = answerer.do()
-
     utils.statClient.stopClientCount(initTime, (self._className, self._modelID, self._methodName))
     return result
 

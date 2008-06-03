@@ -67,6 +67,7 @@ class RClient(synchronized.Synchronized):
   @synchronized.synchronized(lockName='commandsList')
   def __addAnswererCommand(self, command): #{{{
     self.__answersCommandsList.append(command)
+    #print "ponemos ",command
   #}}}
 
 
@@ -104,6 +105,7 @@ class RClient(synchronized.Synchronized):
     for each in self.__answersCommandsList:
       if executerCommand.isYourAnswer(each):
         found = each
+        #print "encontramos ",each
         break
     if found:
       self.__answersCommandsList.remove(found)
@@ -112,6 +114,7 @@ class RClient(synchronized.Synchronized):
 
   def waitForExecutionAnswerer(self, executerCommand): #{{{
     utils.logger.debug("RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand))
+    #print "buscamos ",executerCommand
     found = None
     while not found:
       found = self.__getAnswer(executerCommand)
@@ -195,6 +198,7 @@ class RClient(synchronized.Synchronized):
           while len(commandData) < size:
             commandData = self.__socket.recv(size - len(commandData))
           command = pickle.loads(commandData)
+          print "recibimos ",size , command
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RExecutionAnswerer):
             self.__addAnswererCommand(command)
