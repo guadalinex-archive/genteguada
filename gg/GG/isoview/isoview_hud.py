@@ -18,7 +18,7 @@ class IsoViewHud(isoview.IsoView):
     model: ggsession model.
     screen: screen handler.
     """
-    isoview.IsoView.__init__(self, model, screen)
+    isoview.IsoView.__init__(self, model, screen, [0,0])
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)

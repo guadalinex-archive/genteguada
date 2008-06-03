@@ -15,11 +15,8 @@ class IsoViewItem(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
-    self.__position = model.getPosition()
     self.loadImage()
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
-    self.getModel().subscribeEvent('position', self.positionChanged)
-    self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
     #self.getModel().subscribeEvent('room', self.roomChanged)
         
   def loadImage(self):
@@ -71,21 +68,6 @@ class IsoViewItem(isoview.IsoView):
     sprite: new sprite.
     """
     self.__img.image = sprite
-    
-  def positionChanged(self, event):
-    """ Updates the item position and draws the room after receiving a position change event.
-    event: even info.
-    """
-    GG.utils.playSound(GG.utils.SOUND_STEPS01)
-    self.animatedSetPosition(event.getParams()["position"])
-      
-  def startPositionChanged(self, event):
-    """ Updates the item position without animation and draws the room after receiving a position change event.
-    event: even info.
-    """
-    self.setPositionAnimation(None)
-    self.setMovieAnimation(None)
-    self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset))
     
   def selected(self):
     """ Changes the item's color and sets it as selected.

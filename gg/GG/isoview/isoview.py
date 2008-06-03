@@ -7,16 +7,22 @@ class IsoView:
   It defines attributes and methods for a generic view.
   """
   
-  def __init__(self, model, screen):
+  def __init__(self, model, screen, position=None):
     """ Class constructor.
     name: view name.
     """  
     self.__model = model
     self.__screen = screen
+    if position == None:
+      self.__position = model.getPosition()
+      self.getModel().subscribeEvent('position', self.positionChanged)
+      self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
+    else:
+      self.__position = position
     self.__positionAnimation = None
     self.__positionClock = pygame.time.Clock()
     self.__positionTimePassed = 0
-  
+    
   def getModel(self):
     """ Returns the list of observed models.
     """
@@ -71,10 +77,30 @@ class IsoView:
     """ Starts a new animation for the item.
     newPosition: new item position.
     """
-    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self, GG.utils.p3dToP2d(newPosition, self.getModel().offset))
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, \
+                  self, GG.utils.p3dToP2d(self.__position, self.getModel().offset), \
+                  GG.utils.p3dToP2d(newPosition, self.getModel().offset))
     self.setPositionAnimation(positionAnim)
+    self.__position = newPosition
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view's model from all events.
     """
     self.getModel().unsubscribeEventObserver(self)
+    
+  def positionChanged(self, event):
+    """ Updates the item position and draws the room after receiving a position change event.
+    event: even info.
+    """
+    GG.utils.playSound(GG.utils.SOUND_STEPS01)
+    self.animatedSetPosition(event.getParams()["position"])
+      
+  def startPositionChanged(self, event):
+    """ Updates the item position without animation and draws the room after receiving a position change event.
+    event: even info.
+    """
+    self.setPositionAnimation(None)
+    self.setMovieAnimation(None)
+    self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset))
+    self.__position = event.getParams()['position']
+      
