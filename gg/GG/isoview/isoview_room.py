@@ -143,6 +143,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Inserts a new item view.
     item: item view.
     """
+    print item
     self.__isoViewPlayers.append(item)
     self.__allPlayers.add(item.getImg())
     

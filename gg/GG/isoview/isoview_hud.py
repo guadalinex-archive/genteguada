@@ -188,8 +188,7 @@ class IsoViewHud(isoview.IsoView):
     """
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
-    
-    imgPath = os.path.join(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE)
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
@@ -239,7 +238,7 @@ class IsoViewHud(isoview.IsoView):
     #self.buttonBarActions.topleft = 0,0
     print "********************", options
     for action in options:
-      button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, self.buttonActions[action]['image']))
+      button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       self.buttonBarActions.add_child(button)
@@ -316,6 +315,10 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     print self.__selectedItem
+    item = self.__selectedItem
+    for iv_item in self.getIsoviewRoom().getIsoViewPlayers():
+      if iv_item.getModel() == item:
+        iv_item.animationToInventory()  
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()

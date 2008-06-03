@@ -79,6 +79,7 @@ ANIM_WALKING_COUNT = 10
 ANIM_RELAX_COUNT = 40
 ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
 ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
+ANIM_INVENTORY_TIME = 10000
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
@@ -191,6 +192,8 @@ CHAT_COLOR_FONT = [216, 216, 216]
 INV_COLOR_BG = [0, 0, 0]
 TEXT_BOX_COLOR_BG = [255, 255, 255]
 GUADALINEX_BLUE = [34, 133, 234]
+
+BALLOON_FON_SZ = 16
 
 #styles
 #TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
@@ -400,19 +403,14 @@ def getRGBColor(color):
     rgb = [67, 36, 18]
   return rgb
     
-
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+def createBalloon(self, string):
+  """ Creates a balloon for a given string:
+  string: string to be included on the balloon.
+  """
+  
+  pygame.transform.resize(img, [(len(string)+2)*BALOON_FONT_SZ+40, BALOON_FONT_SZ+40])
+  pass    
     
     
     

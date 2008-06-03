@@ -102,11 +102,11 @@ class GGSystem(dMVC.model.Model):
     myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [6, 0, 3], [20, 0], "Papelera", [], dictTrash)
     
     myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [6, 0, 6], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 3, room1)
-    myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [3, 0, 6], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
+    myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
     myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe", "1234")
-    nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2, 0, 2], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe2", "12345")
+    nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [3, 0, 3], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe2", "12345")
     
     room1.addItem(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
     room1.addItem(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
