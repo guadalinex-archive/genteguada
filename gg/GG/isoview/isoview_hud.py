@@ -43,6 +43,9 @@ class IsoViewHud(isoview.IsoView):
         "open":{"image":"sonido.png", "action": self.itemToOpen}
     }
     self.winWardrobe = None
+
+  def getPlayer(self):
+    return self.__player
   
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.

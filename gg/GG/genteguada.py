@@ -16,7 +16,7 @@ class GenteGuada:
   def __init__(self):
     self.screen = None
     self.system = None
-    self.player = None
+    #self.player = None
     self.isoHud = None
     self.session = None
     self.client = None
@@ -41,7 +41,7 @@ class GenteGuada:
         if 0 <= cordY <= GG.utils.HUD_OR[1]:
           dest = self.isoHud.getIsoviewRoom().findTile([cordX, cordY])
           if not dest == [-1, -1]:
-            self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.player, [dest[0], 0, dest[1]])
+            self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.isoHud.getPlayer(), [dest[0], 0, dest[1]])
     self.isoHud.widgetContainer.distribute_events(*events)
 
   def finish(self):
@@ -76,7 +76,7 @@ class GenteGuada:
   def initGame(self):
     if self.client:
       self.client.registerSession(self.session)
-    self.player = self.session.getPlayer()
+    #self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
     while True:
@@ -85,6 +85,7 @@ class GenteGuada:
       self.isoHud.updateFrame()
 
   def getDataPath(self, img):
+    return os.path.join(GG.utils.DATA_PATH, img)
     if isinstance(self.system,GG.model.ggsystem.GGSystem):
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
