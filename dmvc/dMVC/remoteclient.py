@@ -202,7 +202,7 @@ class RClient(synchronized.Synchronized):
             #print "==============================================>  ",len(commandData)
           command = pickle.loads(commandData)
           #print "recibimos ",size , command
-          print "Al siguiente"
+          #print "Al siguiente"
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RExecutionAnswerer):
             self.__addAnswererCommand(command)
