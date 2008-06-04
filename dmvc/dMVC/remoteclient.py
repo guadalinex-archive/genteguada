@@ -114,7 +114,7 @@ class RClient(synchronized.Synchronized):
 
   def waitForExecutionAnswerer(self, executerCommand): #{{{
     utils.logger.debug("RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand))
-    #print "buscamos ",executerCommand
+    #print "RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand)
     found = None
     while not found:
       found = self.__getAnswer(executerCommand)
@@ -195,10 +195,14 @@ class RClient(synchronized.Synchronized):
         if len(size):
           size = struct.unpack("i", size)[0]
           commandData = ""
+          utils.logger.debug("Receive from the server the size: " + str(size)  +"b)")
+          #print "recibimos ",size
           while len(commandData) < size:
-            commandData = self.__socket.recv(size - len(commandData))
+            commandData += self.__socket.recv(size - len(commandData))
+            #print "==============================================>  ",len(commandData)
           command = pickle.loads(commandData)
-          print "recibimos ",size , command
+          #print "recibimos ",size , command
+          print "Al siguiente"
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RExecutionAnswerer):
             self.__addAnswererCommand(command)
