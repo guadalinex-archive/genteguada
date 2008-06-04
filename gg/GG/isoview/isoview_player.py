@@ -85,13 +85,15 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     else:
       state = self.getModel().getState()
     if state == GG.utils.STATE[1] or state == GG.utils.STATE[3] or state == GG.utils.STATE[5]:
-     print "***************************************************"
-    for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
-      if i < 10:
-        string = state + "_" + self.__heading + "_00" + str(i) + ".png"
-      else:  
-        string = state + "_" + self.__heading + "_0" + str(i) + ".png"
+      string = state + "_" + self.__heading + ".png"
       frames.append(string)        
+    else:
+      for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
+        if i < 10:
+          string = state + "_" + self.__heading + "_00" + str(i) + ".png"
+        else:  
+          string = state + "_" + self.__heading + "_0" + str(i) + ".png"
+        frames.append(string)        
     return frames
     
   def animatedSetPosition(self, newPosition):
