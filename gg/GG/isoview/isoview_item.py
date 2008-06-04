@@ -102,7 +102,7 @@ class IsoViewItem(positioned_view.PositionedView):
     event: even info.
     """
     GG.utils.playSound(GG.utils.SOUND_STEPS01)
-    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
+    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
                   GG.utils.p3dToP2d(event.getParams()["position"], self.getModel().offset))
     self.setAnimation(positionAnim)
       
