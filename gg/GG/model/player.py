@@ -21,7 +21,7 @@ class GGPlayer(GG.model.item.GGItem):
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
     GG.model.item.GGItem.__init__(self, filename, position, offset)
     self.username = username
-    self.__spritePath = spritePath
+    self.imagePath = spritePath
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]
@@ -30,19 +30,14 @@ class GGPlayer(GG.model.item.GGItem):
     self.__inventory = []
     self.__visited = []
     self.__selected = None
-
+    
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.item.GGItem.variablesToSerialize(self)
     return parentVars + ['username']
   
-  def getImagePath(self):
-    """ Returns the player's image path.
-    """
-    return self.__spritePath
-
-  # self.__heading
+    # self.__heading
 
   def getHeading(self):
     """ Returns the direction the player is heading to.

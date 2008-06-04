@@ -7,6 +7,7 @@ import ocempgui.draw
 import copy
 import random
 import avatareditor
+import animation
 
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
@@ -31,6 +32,8 @@ class IsoViewHud(isoview.IsoView):
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.HUD_OR
+    
+    self.__temporaryItems = []
     
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
@@ -62,8 +65,21 @@ class IsoViewHud(isoview.IsoView):
     posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
     posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
+    
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
-    self.__isoviewInventory.append(invItem)
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
+                            GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
+    positionAnim.setOnEnd(self.__isoviewInventory.append, invItem)
+    #positionAnim.setOnEnd(self.__temporaryItems.remove, invItem)
+    
+    invItem.setAnimation(positionAnim)
+    self.__temporaryItems.append(invItem)
+    
+    #self.__temporaryItems.append([positionAnim, pygame.time.Clock(), 0])
+    #invItem.setAnimation(positionAnim)
+    
+    
+    #self.__isoviewInventory.append(invItem)
     self.paintItemOnInventory(invItem, len(self.__isoviewInventory) - 1)
     
   def inventoryRemoved(self, event):
@@ -94,8 +110,13 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
-    for iv_invitem in self.__isoviewInventory:
-      iv_invitem.updateFrame()
+    for item in self.__temporaryItems:
+      item.updateFrame()
+      """
+      item[2] += item[1].tick(50)
+      item[0].step(item[2])
+      item[0].step(item[2])
+      """
     if self.winWardrobe:
       self.winWardrobe.update()
     else:

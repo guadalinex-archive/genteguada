@@ -223,7 +223,7 @@ class MovieAnimation(Animation):
   def loadSprites(self):
     self.__sprites = []
     for frame in self.__frames:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().getImagePath() + frame)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().imagePath + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
       
   def start(self):

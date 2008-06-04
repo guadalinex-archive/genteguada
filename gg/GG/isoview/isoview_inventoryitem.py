@@ -25,12 +25,6 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), model.offset)
-    positionAnim = animation.PositionAnimation(GG.utils.ANIM_INVENTORY_TIME, self, \
-                            GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset), destination)
-    positionAnim.setOnEnd(self.__isohud.getIsoviewRoom().removeSprite, self.__img)
-    #positionAnim.setOnEnd(self.__isohud.draw, None)
-    #positionAnim.setOnEnd(self.__isohud.paintBackground, None)
-    self.setAnimation(positionAnim)
     self.__isohud.getIsoviewRoom().addSprite(self.__img)
 
   def setScreenPosition(self, pos):

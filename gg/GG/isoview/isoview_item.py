@@ -26,7 +26,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def loadImage(self):
     """ Loads the item's image.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -57,7 +57,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Sets a new image for the item.
     img: image name.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+img)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     pygame.display.update()
     
