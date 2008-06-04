@@ -33,7 +33,7 @@ class IsoViewRoom(isoview.IsoView):
     screen: screen handler.
     hud: hud object.
     """
-    isoview.IsoView.__init__(self, model, screen, [0,0])
+    isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
@@ -143,7 +143,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Inserts a new item view.
     item: item view.
     """
-    print item
     self.__isoViewPlayers.append(item)
     self.__allPlayers.add(item.getImg())
     
@@ -175,3 +174,9 @@ class IsoViewRoom(isoview.IsoView):
     for isoItem in self.__isoViewPlayers:
       if isoItem.getModel() == item:
         isoItem.unselected()   
+
+  def addSprite(self, sprite):
+    self.__allPlayers.add(sprite)
+    
+  def removeSprite(self, sprite):
+    self.__allPlayers.remove(sprite)

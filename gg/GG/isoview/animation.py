@@ -14,6 +14,9 @@ class Animation:
     """
     self.__time = time
     self.__isoview = isoview
+    self.__endMethods = []
+    self.__endMethod = None
+    self.__endParams = None
 
   def getTime(self):
     """ Returns the animation length in time.
@@ -35,8 +38,8 @@ class Animation:
     """
     self.__isoview.setSprite(sprite)
 
-  def setImgPosition(self, pos):
-    self.__isoview.setImgPosition(pos)
+  def setScreenPosition(self, pos):
+    self.__isoview.setScreenPosition(pos)
     
   # Vanilla methods
   
@@ -61,10 +64,22 @@ class Animation:
     """
     pass
   
+  def setOnEnd(self, method, params):
+    self.__endMethods.append([method, params])
+    self.__endMethod = method
+    self.__endParams = params
+  
   def onEnd(self):
     """ Method triggered on animation end.
     """
-    pass
+    for method in self.__endMethods:
+      if method[1] == None:
+        method[0]()
+      else:    
+        method[0](method[1])
+    
+    #if self.__endMethod != None:
+    #  self.__endMethod(self.__endParams)
     
   def isFinished(self, time):
     """ Checks if the animation is finished.
@@ -147,7 +162,7 @@ class PositionAnimation(Animation):
     """ Starts the animation.
     """
     Animation.start(self)
-    self.setImgPosition([self.__origin[0], self.__origin[1]])
+    self.setScreenPosition([self.__origin[0], self.__origin[1]])
     self.onStart()
     
   def step(self, time):
@@ -156,13 +171,13 @@ class PositionAnimation(Animation):
     """
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())/100.0
-    self.setImgPosition([self.__origin[0] + (self.__shift[0]*percent), self.__origin[1] + (self.__shift[1]*percent)])
+    self.setScreenPosition([self.__origin[0] + (self.__shift[0]*percent), self.__origin[1] + (self.__shift[1]*percent)])
       
   def stop(self):
     """ Stops the animation.
     """  
     Animation.stop(self)
-    self.setImgPosition([self.__destination[0], self.__destination[1]])
+    self.setScreenPosition([self.__destination[0], self.__destination[1]])
     self.onEnd()
     
   def onStart(self):

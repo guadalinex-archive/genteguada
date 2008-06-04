@@ -79,7 +79,7 @@ ANIM_WALKING_COUNT = 10
 ANIM_RELAX_COUNT = 40
 ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
 ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
-ANIM_INVENTORY_TIME = 10000
+ANIM_INVENTORY_TIME = 1000
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
