@@ -142,7 +142,7 @@ class IdleAnimation(Animation):
     
 #*****************************************************************************
     
-class PositionAnimation(Animation):
+class ScreenPositionAnimation(Animation):
   """ PositionAnimation class.
   Defines animation methods and atributes.
   """
