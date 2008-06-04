@@ -80,11 +80,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Creates a new frame set.
     """
     frames = []
+    state = self.getModel().getState()
+    if state == GG.utils.STATE[1] or state == GG.utils.STATE[3] or state == GG.utils.STATE[5]:
+     print "***************************************************"
     for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
       if i < 10:
-        string = self.getModel().getState() + "_" + self.__heading + "_00" + str(i) + ".png"
+        string = state + "_" + self.__heading + "_00" + str(i) + ".png"
       else:  
-        string = self.getModel().getState() + "_" + self.__heading + "_0" + str(i) + ".png"
+        string = state + "_" + self.__heading + "_0" + str(i) + ".png"
       frames.append(string)        
     return frames
     
