@@ -1,8 +1,10 @@
 import pygame
 import GG.utils
-import isoview
+#import isoview
+import animation
+import positioned_view
 
-class IsoViewItem(isoview.IsoView):
+class IsoViewItem(positioned_view.PositionedView):
   """ IsoViewItem class.
   Defines an item view.
   """
@@ -12,10 +14,12 @@ class IsoViewItem(isoview.IsoView):
     screen: screen handler.
     parent: isoview_hud handler.
     """
-    isoview.IsoView.__init__(self, model, screen)
+    positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
     self.loadImage()
+    self.getModel().subscribeEvent('position', self.positionChanged)
+    self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     #self.getModel().subscribeEvent('room', self.roomChanged)
         
@@ -57,12 +61,6 @@ class IsoViewItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     pygame.display.update()
     
-  def setImgPosition(self, pos):
-    """ Sets a new position for the item's image.
-    pos: new position.
-    """
-    self.__img.rect.topleft = pos  
-    
   def setSprite(self, sprite):
     """ Sets a new sprite for the item
     sprite: new sprite.
@@ -93,4 +91,25 @@ class IsoViewItem(isoview.IsoView):
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath()+self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
+  def getScreenPosition(self):
+    return self.__img.rect.topleft
+
+  def setScreenPosition(self, pos):
+    self.__img.rect.topleft = pos
+    
+  def positionChanged(self, event):
+    """ Updates the item position and draws the room after receiving a position change event.
+    event: even info.
+    """
+    GG.utils.playSound(GG.utils.SOUND_STEPS01)
+    positionAnim = animation.PositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
+                  GG.utils.p3dToP2d(event.getParams()["position"], self.getModel().offset))
+    self.setAnimation(positionAnim)
+      
+  def startPositionChanged(self, event):
+    """ Updates the item position without animation and draws the room after receiving a position change event.
+    event: even info.
+    """
+    self.setPositionAnimation(None)
+    self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset))
   

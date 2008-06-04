@@ -18,7 +18,7 @@ class IsoViewHud(isoview.IsoView):
     model: ggsession model.
     screen: screen handler.
     """
-    isoview.IsoView.__init__(self, model, screen, [0,0])
+    isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
@@ -26,6 +26,12 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.set_screen(screen)
     self.textArea = None
     self.__textField = None
+    self.windowInventory = None
+    self.__img = pygame.sprite.Sprite()
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
+    self.__img.rect = self.__img.image.get_rect()
+    self.__img.rect.topleft = GG.utils.HUD_OR
+    
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
@@ -52,7 +58,11 @@ class IsoViewHud(isoview.IsoView):
     item: new isoview inventory item.
     """
     item = event.getParams()["item"]
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
+    
+    posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
+    posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
+    pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     self.__isoviewInventory.append(invItem)
     self.paintItemOnInventory(invItem, len(self.__isoviewInventory) - 1)
     
@@ -84,10 +94,16 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame()
+    for iv_invitem in self.__isoviewInventory:
+      iv_invitem.updateFrame()
     if self.winWardrobe:
       self.winWardrobe.update()
     else:
+      self.paintBackground()
       self.buttonBar.update()
+      self.textArea.update()
+      self.__textField.update()
+      self.windowInventory.update()
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -114,12 +130,8 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    img = pygame.sprite.Sprite()
-    img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
-    img.rect = img.image.get_rect()
-    img.rect.topleft = GG.utils.HUD_OR
-    self.getScreen().blit(img.image, GG.utils.HUD_OR)
-    pygame.display.update()
+    self.getScreen().blit(self.__img.image, GG.utils.HUD_OR)
+    #pygame.display.update()
 
   def paintChat(self):
     """ Paints the chat window on screen.
@@ -317,11 +329,6 @@ class IsoViewHud(isoview.IsoView):
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
-    print self.__selectedItem
-    item = self.__selectedItem
-    for iv_item in self.getIsoviewRoom().getIsoViewPlayers():
-      if iv_item.getModel() == item:
-        iv_item.animationToInventory()  
     self.__player.addInventory(self.__selectedItem)
     self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
