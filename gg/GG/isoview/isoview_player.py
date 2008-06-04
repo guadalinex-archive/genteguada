@@ -76,11 +76,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.__movieAnimation.setFrames(frames)
         
-  def createFrameSet(self):
+  def createFrameSet(self,dataState = None):
     """ Creates a new frame set.
     """
     frames = []
-    state = self.getModel().getState()
+    if dataState:
+      state = dataState
+    else:
+      state = self.getModel().getState()
     if state == GG.utils.STATE[1] or state == GG.utils.STATE[3] or state == GG.utils.STATE[5]:
      print "***************************************************"
     for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
@@ -121,7 +124,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
         self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
 
     elif st == GG.utils.STATE[2]: # walking
-      movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet())
+      movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
     elif st == GG.utils.STATE[3]: # standing_carrying
@@ -133,7 +136,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
         self.setImgPosition(self.getModel().getPosition())
 
     elif st == GG.utils.STATE[4]: # walking_carrying
-      movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet())
+      movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
     elif st == GG.utils.STATE[5]: # standing_sleeping
