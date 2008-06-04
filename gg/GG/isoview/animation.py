@@ -238,11 +238,13 @@ class MovieAnimation(Animation):
     percent = ((time*100)/self.getTime())
     #filename = self.__frames[percent % len(self.__frames)]
     if len(self.__sprites) == 0:
-      filename = self.__sprites[0]
+      #filename = self.__sprites[0]
+      print "me paro"
+      self.stop()
     else:
       filename = self.__sprites[percent % len(self.__sprites)]
     #self.setImg(filename)
-    self.setSprite(filename)
+      self.setSprite(filename)
     
   def stop(self):
     """ Stops the animation.
