@@ -1,18 +1,24 @@
 import time
+import dMVC.model
+import GG.isoview.isoview_chatmessage
 
 class ChatMessage:
   """ ChatMessage class.
   Defines a book object behaviour.
   """
      
-  def __init__(self, message, sender):
+  def __init__(self, message, sender, color, position):
     """ Class constructor.
     message: chat message.
     sender: player who sends the message.
+    color: text color.
+    position: on-screen chat message starting position.
     """
     self.__message = message
     self.__sender = sender
     self.__hour = time.time()
+    self.__color = color
+    self.__position = position
     
   def getMessage(self):
     """ Returns the chat message.
@@ -28,3 +34,22 @@ class ChatMessage:
     """ Returns the hour that the message was sended at.
     """
     return time.strftime("%H:%M", time.localtime(self.__hour))
+
+  def getColor(self):
+    """ Returns the message color.
+    """
+    return self.__color
+
+  def getPosition(self):
+    """ On-screen chat message starting position.
+    """
+    return self.__position
+
+  @dMVC.model.localMethod 
+  def chatView(self, screen):
+    """ Creates an isometric view object for the chat message.
+    screen: screen handler.
+    """
+    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen)
+  
+  

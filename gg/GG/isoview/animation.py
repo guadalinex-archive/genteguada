@@ -243,7 +243,6 @@ class MovieAnimation(Animation):
       self.stop()
     else:
       filename = self.__sprites[percent % len(self.__sprites)]
-    #self.setImg(filename)
       self.setSprite(filename)
     
   def stop(self):

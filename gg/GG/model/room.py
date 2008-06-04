@@ -159,7 +159,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def newChatMessage(self, message, player):
     """ Triggers a new avent after receiving a new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username))    
+    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username, \
+                    GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(player.getPosition(), player.offset)))    
 
   def getNearestEmptyCell(self, pos):
     """ Returns the nearest empty cell to a position.

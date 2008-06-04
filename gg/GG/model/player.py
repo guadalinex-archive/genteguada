@@ -238,7 +238,8 @@ class GGPlayer(GG.model.item.GGItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username))
+    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username, \
+                    GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(self.getPosition(), self.offset)))
 
   def setSelectedItem(self, item):
     """ Sets an item as selected.

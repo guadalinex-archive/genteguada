@@ -243,6 +243,8 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
+    ivMessageChat = messageChat.chatView(self.getScreen())
+    
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     self.printLineOnChat(cad)
 
