@@ -79,7 +79,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
         size = struct.unpack("i", size)[0]
         commandData = ""
         while len(commandData) < size:
-          commandData = self.request.recv(size - len(commandData))
+          commandData += self.request.recv(size - len(commandData))
         command = pickle.loads(commandData)
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
         command.setServerHandler(self)
@@ -105,8 +105,8 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
       self.request.send(size)
       self.request.send(serialized)
-      if command:
-        print "Enviado ",sizeSerialized , command
+      #if command:
+        #print "Enviado ",sizeSerialized , command
       return True
     except:
       utils.logger.exception("Can''t send an object, probable conexion lost")
