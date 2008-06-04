@@ -175,10 +175,9 @@ class PositionAnimation(Animation):
       
   def stop(self):
     """ Stops the animation.
-    """  
+    """
     Animation.stop(self)
     self.setScreenPosition([self.__destination[0], self.__destination[1]])
-    self.onEnd()
     
   def onStart(self):
     """ Method triggered on animation start.
@@ -238,7 +237,10 @@ class MovieAnimation(Animation):
     Animation.step(self, time)
     percent = ((time*100)/self.getTime())
     #filename = self.__frames[percent % len(self.__frames)]
-    filename = self.__sprites[percent % len(self.__sprites)]
+    if len(self.__sprites) == 0:
+      filename = self.__sprites[0]
+    else:
+      filename = self.__sprites[percent % len(self.__sprites)]
     #self.setImg(filename)
     self.setSprite(filename)
     
