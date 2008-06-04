@@ -70,17 +70,11 @@ class IsoViewHud(isoview.IsoView):
     positionAnim = animation.PositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
     positionAnim.setOnEnd(self.__isoviewInventory.append, invItem)
-    #positionAnim.setOnEnd(self.__temporaryItems.remove, invItem)
+    positionAnim.setOnEnd(self.__temporaryItems.remove, invItem)
+    positionAnim.setOnEnd(self.paintItemsInventory, None)
     
     invItem.setAnimation(positionAnim)
     self.__temporaryItems.append(invItem)
-    
-    #self.__temporaryItems.append([positionAnim, pygame.time.Clock(), 0])
-    #invItem.setAnimation(positionAnim)
-    
-    
-    #self.__isoviewInventory.append(invItem)
-    self.paintItemOnInventory(invItem, len(self.__isoviewInventory) - 1)
     
   def inventoryRemoved(self, event):
     """ Removes an item from the inventory item list.
@@ -112,11 +106,6 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateFrame()
     for item in self.__temporaryItems:
       item.updateFrame()
-      """
-      item[2] += item[1].tick(50)
-      item[0].step(item[2])
-      item[0].step(item[2])
-      """
     if self.winWardrobe:
       self.winWardrobe.update()
     else:

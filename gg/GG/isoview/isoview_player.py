@@ -1,5 +1,5 @@
-import isoview
 import isoview_item
+import isoview
 import GG.utils
 import animation
 import pygame
