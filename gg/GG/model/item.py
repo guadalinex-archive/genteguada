@@ -21,16 +21,12 @@ class GGItem(ggmodel.GGModel):
     self.__room = None
     self.__upperItem = None
     self.__lowerItem = None
+    self.imagePath = ""
     
-  def getImagePath(self):
-    """ Returns the image sprite relative path.
-    """
-    return ""
-        
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'offset']
+    return ['spriteName', 'offset', 'imagePath']
   
   # self.__position
   
