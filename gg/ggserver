@@ -14,9 +14,9 @@ if __name__ == "__main__":
     print rhandler
 
   def onLogin(rhandler, result, error):
-    print 'Login: result: ' + result + ' error: ' + error
+    print 'Login: result: ',result, ' error: ', error
 
   dMVC.remoteserver.RServer(rootModel,
                             onConnection=onConnection,
                             onDisconnection=onConnection,
-                            onExecution=[ [GG.model.ggsytem.GGSystem, 'login', onLogin] ])
+                            onExecution=[ [GG.model.ggsystem.GGSystem, 'login', onLogin] ])
