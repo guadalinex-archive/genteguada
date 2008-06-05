@@ -125,7 +125,6 @@ class AvatarEditor:
     img1.topleft = 528,114
     self.window.add_child(img1)
     return self.window
-
     
     #me creo un screen
     #self.paintScreen()
