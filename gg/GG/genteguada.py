@@ -85,7 +85,7 @@ class GenteGuada:
       self.isoHud.updateFrame()
 
   def getDataPath(self, img):
-    return os.path.join(GG.utils.DATA_PATH, img)
+    #return os.path.join(GG.utils.DATA_PATH, img)
     if isinstance(self.system,GG.model.ggsystem.GGSystem):
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
