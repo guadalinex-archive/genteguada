@@ -74,9 +74,6 @@ class GenteGuada:
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
-    if self.client:
-      self.client.registerSession(self.session)
-    #self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
 

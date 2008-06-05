@@ -22,8 +22,9 @@ class RClient(synchronized.Synchronized):
     self.__serverIP   = serverIP
     self.__serverPort = port
 
-    self.__rootModel          = None
-    self.__rootModelSemaphore = threading.Semaphore(0)
+    self.__rootModel = None
+    self.__sessionID = None
+    self.__initialDataSemaphore = threading.Semaphore(0)
 
     self.__answersCommandsList = []
 
@@ -31,8 +32,6 @@ class RClient(synchronized.Synchronized):
 
     self.__socket = None
     self.__connect()
-
-    self.__sessionID = None
 
     self.__commandQueue = Queue.Queue()
 
@@ -44,12 +43,6 @@ class RClient(synchronized.Synchronized):
 
     thread.start_new(self.__start, ())
   #}}}
-
-  def registerSession(self, session):
-    self.__sessionID = session.getModelID()
-
-  def getSessionId(self):
-    return self.__sessionID
 
   def processEvents(self):
     try:
@@ -84,20 +77,31 @@ class RClient(synchronized.Synchronized):
   #}}}
 
 
-  def __setRootModel(self, model): #{{{
-    utils.logger.debug("RClient.setRootModel model: "+str(model))
+  def __setInitialData(self, initialData): #{{{
+    utils.logger.debug("RClient.__setInitialData: "+str(initialData))
+
     if self.__rootModel != None:
       utils.logger.error("The receiver already has a rootModel")
       raise Exception('The receiver already has a rootModel')
-    self.__rootModel = dMVC.clientMaterialize(model, self)
-    self.__rootModelSemaphore.release()
+
+    self.__rootModel = dMVC.clientMaterialize(initialData['rootModel'], self)
+    self.__sessionID = dMVC.clientMaterialize(initialData['sessionID'], self)
+
+    self.__initialDataSemaphore.release()
   #}}}
 
 
   def getRootModel(self): #{{{
-    self.__rootModelSemaphore.acquire()
+    self.__initialDataSemaphore.acquire()
     result = self.__rootModel
-    self.__rootModelSemaphore.release()   
+    self.__initialDataSemaphore.release()   
+    return result
+  #}}}
+
+  def getSessionID(self): #{{{
+    self.__initialDataSemaphore.acquire()
+    result = self.__sessionID
+    self.__initialDataSemaphore.release()   
     return result
   #}}}
 
@@ -152,9 +156,9 @@ class RClient(synchronized.Synchronized):
     utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
-      subscriptionMethod = value[1]
       subscriptionEventType = value[0]
-      if id(subscriptionMethod.im_self) == id(observer):
+      subscriptionMethod = value[1]
+      if subscriptionMethod.im_self is observer:
         if eventType == None or eventType == subscriptionEventType: 
           toRemove.append(key)
     for key in toRemove:
@@ -187,7 +191,7 @@ class RClient(synchronized.Synchronized):
   #}}}
 
 
-  def __receiveRootModel(self): #{{{
+  def __receiveInitialData(self): #{{{
     utils.logger.debug("RClient.receiveRootModel")
     size = self.__socket.recv(struct.calcsize("i"))
     if len(size):
@@ -195,15 +199,15 @@ class RClient(synchronized.Synchronized):
       data = ""
       while len(data) < size:
         data = self.__socket.recv(size - len(data))
-      rootModel = pickle.loads(data)
-      self.__setRootModel(rootModel)
+      initialData = pickle.loads(data)
+      self.__setInitialData(initialData)
   #}}}
 
 
   def __start(self): #{{{
     utils.logger.debug("Starting connection thread")
     try:
-      self.__receiveRootModel()
+      self.__receiveInitialData()
       sizeInt = struct.calcsize("i")
       while True:
         size = self.__socket.recv(sizeInt)
