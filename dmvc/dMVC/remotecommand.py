@@ -71,23 +71,37 @@ class RExecuterCommand(RCommand): #{{{
   def do(self): #{{{
     rServer = dMVC.getRServer()
     model = rServer.getModelByID(self._modelID)
+
+    result = None
+    error = None
     try:
-      method = getattr(model, self._methodName)
-    except AttributeError, ex:
-      utils.logger.exception('Exception in remote method invocation')
-      return RExceptionRaiser(self._executionID, ex)
-    else:
-      if self._args:
-        arguments = []
-        for i in range(len(self._args)):
-          arguments.append(dMVC.serverMaterialize(self._args[i], rServer))
-        self._args = tuple(arguments)
       try:
-        result = method(*self._args)
-      except:
+        method = getattr(model, self._methodName)
+      except AttributeError, ex:
+        error = ex
         utils.logger.exception('Exception in remote method invocation')
-        return RExceptionRaiser(self._executionID, sys.exc_info()[1])
-      return RExecutionResult(self._executionID, result)
+        return RExceptionRaiser(self._executionID, ex)
+
+      else:
+        if self._args:
+          arguments = []
+          for i in range(len(self._args)):
+            arguments.append(dMVC.serverMaterialize(self._args[i], rServer))
+          self._args = tuple(arguments)
+        try:
+          result = method(*self._args)
+        except:
+          utils.logger.exception('Exception in remote method invocation')
+          error = sys.exc_info()[1]
+          return RExceptionRaiser(self._executionID, error)
+        return RExecutionResult(self._executionID, result)
+    finally:
+      for klass, methodName, handler in rServer._onExecution:
+        if (model.__class__ is klass) and (self._methodName == methodName):
+          handler(self._serverHandler,
+                  result,
+                  error)
+          
   #}}}
 
 

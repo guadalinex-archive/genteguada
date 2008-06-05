@@ -8,15 +8,24 @@ import synchronized
 
 class RServer(synchronized.Synchronized):
 
-  def __init__(self, rootModel, port=8000): #{{{
+  def __init__(self,
+               rootModel,
+               port=8000,
+               onConnection=None,
+               onDisconnection=None,
+               onExecution=[]
+               ): #{{{
     utils.logger.debug("RServer.__init__")
     synchronized.Synchronized.__init__(self)
 
     dMVC.setRServer(self)
 
     self.__models = {}
-    self.__port = port
     self.__rootModel = rootModel
+    self.__port = port
+    self._onConnection = onConnection
+    self._onDisconnection = onDisconnection
+    self._onExecution = onExecution
     self.__start()
   #}}}
 
@@ -75,6 +84,10 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
     self.__sessionID = utils.nextID()
     self.__sendInitialData()
+
+    handler = dMVC.getRServer()._onConnection
+    if handler:
+      handler(self)
   #}}}
 
   def getSessionID(self):
@@ -129,4 +142,9 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
   def finish(self): #{{{
     utils.logger.debug("Close the connection with "+str(self.client_address))
+
+    handler = dMVC.getRServer()._onDisconnection
+    if handler:
+      handler(self)
+
   #}}}
