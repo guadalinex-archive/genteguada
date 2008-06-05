@@ -74,7 +74,7 @@ class RemoteModel: #{{{
     rClient = dMVC.getRClient()
     suscription = [eventType, method]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
-    rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID, rClient.getSessionId()))
+    rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID))
 
     
   def triggerEvent(self, eventType, **params):
@@ -88,11 +88,12 @@ class RemoteModel: #{{{
   def unsubscribeEventObserver(self, observer, eventType=None):
     rClient = dMVC.getRClient()
     subscriptionIDs =  rClient.unsubscribeEventObserver(observer, eventType)
-    rClient.sendCommand(remotecommand.REventUnsuscriber(self.__modelID, subscriptionIDs, rClient.getSessionId()))
+    rClient.sendCommand(remotecommand.REventUnsuscriber(self.__modelID, subscriptionIDs))
 
   def unsubscribeEventMethod(self, method, eventType=None):
     rClient = dMVC.getRClient()
     rClient.unsubscribeEventMethod(method, eventType)
+    raise "NOT WORKING"
 
   def __eq__(self, comparand):
     if not isinstance(comparand, RemoteModel):

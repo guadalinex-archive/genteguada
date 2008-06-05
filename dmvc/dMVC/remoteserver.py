@@ -60,15 +60,25 @@ class RServer(synchronized.Synchronized):
 
 class RServerHandler(SocketServer.BaseRequestHandler):
 
-  def __sendRootModel(self): #{{{
+  def __sendInitialData(self): #{{{
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
-    self.__sendObject(dMVC.getRServer().getRootModel())
+
+    initialData = {}
+    initialData['rootModel'] = dMVC.getRServer().getRootModel()
+    initialData['sessionID'] = self.__sessionID
+
+    self.__sendObject(initialData)
   #}}}
 
   def setup(self): #{{{
     utils.logger.debug("Conect client "+str(self.client_address))
-    self.__sendRootModel()
+
+    self.__sessionID = utils.nextID()
+    self.__sendInitialData()
   #}}}
+
+  def getSessionID(self):
+    return self.__sessionID
 
   def handle(self): #{{{
     utils.logger.debug("RServerHandler.handle client:  "+str(self.client_address))
