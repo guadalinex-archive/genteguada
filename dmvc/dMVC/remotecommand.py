@@ -100,7 +100,7 @@ class RExecuterCommand(RCommand): #{{{
         if (model.__class__ is klass) and (self._methodName == methodName):
           handler(self._serverHandler,
                   result,
-                  rror)
+                  error)
           
   #}}}
 
