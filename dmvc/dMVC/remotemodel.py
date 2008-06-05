@@ -24,12 +24,25 @@ class RemoteModel: #{{{
     return self.__str__()
   #}}}
 
+  def __setattr__(self, attrName, attrValue):
+    if attrName in ('_RemoteModel__modelID', '_RemoteModel__modelModuleName', '_RemoteModel__modelClassName', '_RemoteModel__variablesDict'):
+      self.__dict__[attrName] = attrValue
+      return
+
+    if attrName in self.__variablesDict:
+      raise Exception("Can't assign to transplantable variables")
+
+    print "__setattr__ name " + attrName + " to " + str(attrValue)
+    self.__dict__[attrName] = attrValue
+    
+
   def __getattr__(self, attrName): #{{{
     if attrName == "__getinitargs__":       # allows it to be safely pickled
       raise AttributeError()
 
-    #if attrName in self.__variablesDict:
-    #  return self.__variablesDict[attrName]
+    varDict = self.__dict__["_RemoteModel__variablesDict"]
+    if attrName in varDict:
+      return varDict[attrName]
 
     return RemoteMethod(self.__modelID, attrName, self.__modelClassName)
   #}}}
@@ -87,6 +100,9 @@ class RemoteModel: #{{{
 
     return self.__modelID == comparand.getModelID()
 
+  def __nonzero__(self):
+    return True
+
 
   def serverMaterialize(self, rServer):
     return rServer.getModelByID(self.__modelID)
@@ -116,7 +132,7 @@ class RemoteModel: #{{{
 
 
   def clientMaterialize(self, rClient):
-    self.__transplantVariables()
+    #self.__transplantVariables()
     self.__transplantMethods(self.__findModelClass())
     return self
 

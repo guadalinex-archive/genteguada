@@ -244,14 +244,16 @@ class GGPlayer(GG.model.item.GGItem):
   def setSelectedItem(self, item):
     """ Sets an item as selected.
     """
-    self.__selected = item
-    self.triggerEvent('selectedItem', item=item)
+    if self.__selected != item:
+      self.__selected = item
+      self.triggerEvent('selectedItem', item=item)
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.
     """
-    self.__selected = None
-    self.triggerEvent('unselectedItem')
+    if self.__selected:
+      self.__selected = None
+      self.triggerEvent('unselectedItem')
     
   def talkTo(self, item):
     """ Talks to an item.

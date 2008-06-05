@@ -65,7 +65,7 @@ class GenteGuada:
   def __getSystem(self, ipAddress):
     if ipAddress:
       try:
-        self.client = dMVC.remoteclient.RClient(ipAddress)
+        self.client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
       except Exception, excep:
         print excep, "No hay conexion con el servidor"
         self.finish()
@@ -79,10 +79,14 @@ class GenteGuada:
     #self.player = self.session.getPlayer()
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
+
     while True:
       time.sleep(GG.utils.ANIM_DELAY)
+      if self.client:
+        self.client.processEvents()
       self.input(pygame.event.get())
       self.isoHud.updateFrame()
+
 
   def getDataPath(self, img):
     #return os.path.join(GG.utils.DATA_PATH, img)
@@ -91,11 +95,14 @@ class GenteGuada:
     else:
       newImgName = img.replace("/","-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      #if os.path.isfile(pathFile):
+      #  dateFile = os.stat(pathFile)[stat.ST_MTIME]
+      #else:
+      #  dateFile = None
       if os.path.isfile(pathFile):
-        dateFile = os.stat(pathFile)[stat.ST_MTIME]
-      else:
-        dateFile = None
-      imgData = self.system.getResource(img, dateFile) 
+        return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+
+      imgData = self.system.getResource(img, None)#dateFile) 
       if imgData:
         imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
         imgFile.write(imgData)

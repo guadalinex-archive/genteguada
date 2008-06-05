@@ -171,6 +171,7 @@ class TestRemoteObject(unittest.TestCase):
     print prefix + "probamos un metodo local sobre una variable local"
     k = model.getConstant()
     assert k == 'CONSTANT'
+    #model._constant = 'FOO'
 
     print prefix + "Herencia de atributos serializados del padre"
     subplayer = model.getSubPlayer()

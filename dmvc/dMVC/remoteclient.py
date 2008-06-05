@@ -13,7 +13,7 @@ import Queue
 
 class RClient(synchronized.Synchronized): 
 
-  def __init__(self, serverIP, port=8000): #{{{
+  def __init__(self, serverIP, port=8000, autoEvents=True): #{{{
     utils.logger.debug("RClient.__init__")
     synchronized.Synchronized.__init__(self)
 
@@ -35,10 +35,12 @@ class RClient(synchronized.Synchronized):
     self.__sessionID = None
 
     self.__commandQueue = Queue.Queue()
-    
-    threadProcessCommand = threading.Thread(target=self.process_command)
-    threadProcessCommand.setDaemon(True)
-    threadProcessCommand.start()
+
+    self.__autoEvents = autoEvents
+    if self.__autoEvents:
+      threadProcessCommand = threading.Thread(target=self.processCommandQueue)
+      threadProcessCommand.setDaemon(True)
+      threadProcessCommand.start()
 
     thread.start_new(self.__start, ())
   #}}}
@@ -49,7 +51,18 @@ class RClient(synchronized.Synchronized):
   def getSessionId(self):
     return self.__sessionID
 
-  def process_command(self):
+  def processEvents(self):
+    try:
+      while True:
+        command = self.__commandQueue.get_nowait()
+        try:
+          command.do()
+        except:
+          utils.logger.exception('exception in process_command')
+    except Queue.Empty:
+      pass
+
+  def processCommandQueue(self):
     while True:
       command = self.__commandQueue.get()
       try:
@@ -119,7 +132,9 @@ class RClient(synchronized.Synchronized):
     while not found:
       found = self.__getAnswer(executerCommand)
       if not found:
-        time.sleep(0.01)
+        if not self.__autoEvents:
+          self.processEvents()
+        time.sleep(0.001) # tiny sleep to avoid burning the CPU
     return found
   #}}}
 
