@@ -9,7 +9,81 @@ import pygame.transform
 import ocempgui.widgets
 import ocempgui.draw
 
+class Style2(ocempgui.widgets.Style):
+  """Style with draw_transimagemap. """
 
+  def draw_transparentimagemap (self, imagemap):
+    """S.draw_imagemap (...) -> Surface
+
+    Creates the Surface for the passed ImageMap widget.
+    """
+    rect_image = imagemap.picture.get_rect ()
+    width = rect_image.width
+    height = rect_image.height
+
+    #return surface
+    return imagemap.picture
+
+ocempgui.widgets.base.GlobalStyle = Style2()
+
+class ImageMapTransparent(ocempgui.widgets.ImageMap):
+  """Transparent Image Map."""
+
+  def __init__(self, image):
+    ocempgui.widgets.ImageMap.__init__(self, image)
+    self._greyPicture = None
+    self._greyPath = None
+
+  def calculate_size(self):
+    """Returns size. """
+    return self._picture.get_size()
+
+  def set_insensitivepicture (self, image):
+    """I.set_setinsensitivepicture (...) -> None
+
+    Sets the image to be displayed on the ImageMap when 
+    sensitivity is False
+
+    The image can be either a valid pygame.Surface object or the
+    path to an image file. If the argument is a file, the 'path'
+    attribute will be set to the file path, otherwise it will be
+    None.
+
+    Raises a TypeError, if the passed argument is not a string,
+    unicode or pygame.Surface.
+    """
+    if image:
+      if type (image) in (str, unicode):
+        self._greyPath = image
+        self._greyPicture = ocempgui.draw.Image.load_image (image)
+      elif isinstance (image, pygame.Surface):
+        self._greyPath = None
+        self._greyPicture = image
+      else:
+        raise TypeError ("image must be a string, unicode or a pygame.Surface")
+    else:
+      self._greyPath = None
+      self._greyPicture = None
+    self.dirty = True
+
+  def draw (self):
+    """I.draw () -> Surface
+
+    Draws the surface of the ImageMap and returns it.
+
+    Creates the visible surface of the ImageMap and returns it to
+    the caller.
+    """
+    if self.sensitive or not self._greyPicture:
+      #print 'drawing IM2 dark', self.sensitive
+      self._image = ocempgui.widgets.base.GlobalStyle.draw_transparentimagemap(self)
+    else:
+      #print 'drawing IM2 grey'
+      tmp = self._picture
+      self._picture = self._greyPicture
+      self._image = ocempgui.widgets.base.GlobalStyle.draw_transparentimagemap(self)
+      self._picture = tmp
+    #return img
 
 class AvatarEditor:
   """ AvatarEditor class.
@@ -39,40 +113,19 @@ class AvatarEditor:
     #image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, "background.png"))
     img = pygame.image.load(os.path.join(GG.utils.DATA_PATH, "background.png")) 
     image = img.get_rect()
-    style = {"image":{ ocempgui.widgets.Constants.STATE_NORMAL : image,
-                       ocempgui.widgets.Constants.STATE_ENTERED : image,
-                       ocempgui.widgets.Constants.STATE_ACTIVE : image,
-                       ocempgui.widgets.Constants.STATE_INSENSITIVE : image,
-                     }
-              }
 
     print "vamos a ver que hacemos"
     self.screen = pygame.Surface(GG.utils.SCREEN_SZ)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     imgBackground = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, "background.png"))
     self.window.add_child(imgBackground)
-    img = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY),True)
-    img1 = ocempgui.widgets.ImageLabel(img)
-    #img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
+
+    img = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
+    img1 = ImageMapTransparent(img)
     img1.topleft = 528,114
     self.window.add_child(img1)
-    #self.paintBodySize(10)
-    #self.window.set_style(ocempgui.widgets.WidgetStyle(style))
-    #print dir(self.window)
-    #style = self.window.create_style()
-    #print style
-    #image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, "background.png"))
-    #print image
-    #style['image'][0] = image 
-    #print style['image'][0]
-    #self.window = ocempgui.widgets.Window(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
-    #img1 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY))
-    #img1.topleft = 528,114
-    #img2 = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK))
-    #img2.topleft = 528,114
-    #self.window.add_child(img1)
-    #self.window.add_child(img2)
     return self.window
+
     
     #me creo un screen
     #self.paintScreen()
