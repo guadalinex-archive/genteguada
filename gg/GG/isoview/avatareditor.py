@@ -9,81 +9,13 @@ import pygame.transform
 import ocempgui.widgets
 import ocempgui.draw
 
-class Style2(ocempgui.widgets.Style):
-  """Style with draw_transimagemap. """
-
-  def draw_transparentimagemap (self, imagemap):
-    """S.draw_imagemap (...) -> Surface
-
-    Creates the Surface for the passed ImageMap widget.
-    """
-    rect_image = imagemap.picture.get_rect ()
-    width = rect_image.width
-    height = rect_image.height
-
-    #return surface
-    return imagemap.picture
-
-ocempgui.widgets.base.GlobalStyle = Style2()
-
 class ImageMapTransparent(ocempgui.widgets.ImageMap):
-  """Transparent Image Map."""
 
   def __init__(self, image):
     ocempgui.widgets.ImageMap.__init__(self, image)
-    self._greyPicture = None
-    self._greyPath = None
-
-  def calculate_size(self):
-    """Returns size. """
-    return self._picture.get_size()
-
-  def set_insensitivepicture (self, image):
-    """I.set_setinsensitivepicture (...) -> None
-
-    Sets the image to be displayed on the ImageMap when 
-    sensitivity is False
-
-    The image can be either a valid pygame.Surface object or the
-    path to an image file. If the argument is a file, the 'path'
-    attribute will be set to the file path, otherwise it will be
-    None.
-
-    Raises a TypeError, if the passed argument is not a string,
-    unicode or pygame.Surface.
-    """
-    if image:
-      if type (image) in (str, unicode):
-        self._greyPath = image
-        self._greyPicture = ocempgui.draw.Image.load_image (image)
-      elif isinstance (image, pygame.Surface):
-        self._greyPath = None
-        self._greyPicture = image
-      else:
-        raise TypeError ("image must be a string, unicode or a pygame.Surface")
-    else:
-      self._greyPath = None
-      self._greyPicture = None
-    self.dirty = True
-
+  
   def draw (self):
-    """I.draw () -> Surface
-
-    Draws the surface of the ImageMap and returns it.
-
-    Creates the visible surface of the ImageMap and returns it to
-    the caller.
-    """
-    if self.sensitive or not self._greyPicture:
-      #print 'drawing IM2 dark', self.sensitive
-      self._image = ocempgui.widgets.base.GlobalStyle.draw_transparentimagemap(self)
-    else:
-      #print 'drawing IM2 grey'
-      tmp = self._picture
-      self._picture = self._greyPicture
-      self._image = ocempgui.widgets.base.GlobalStyle.draw_transparentimagemap(self)
-      self._picture = tmp
-    #return img
+    self._image = self.picture
 
 class AvatarEditor:
   """ AvatarEditor class.
