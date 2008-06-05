@@ -9,4 +9,14 @@ import dMVC.remoteserver
 
 if __name__ == "__main__":
   rootModel = GG.model.ggsystem.GGSystem()
-  dMVC.remoteserver.RServer(rootModel)
+
+  def onConnection(rhandler):
+    print rhandler
+
+  def onLogin(rhandler, result, error):
+    print 'Login: result: ' + result + ' error: ' + error
+
+  dMVC.remoteserver.RServer(rootModel,
+                            onConnection=onConnection,
+                            onDisconnection=onConnection,
+                            onExecution=[ [GG.model.ggsytem.GGSystem, 'login', onLogin] ])
