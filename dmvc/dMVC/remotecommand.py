@@ -71,6 +71,7 @@ class RExecuterCommand(RCommand): #{{{
     try:
       method = getattr(model, self._methodName)
     except AttributeError, ex:
+      utils.logger.exception('Exception in remote method invocation')
       return RExceptionRaiser(self._executionID, ex)
     else:
       if self._args:
@@ -89,7 +90,7 @@ class RExecuterCommand(RCommand): #{{{
 
   def __str__(self):
     return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + \
-        ', modelID=' + str(self._modelID) + ', ' + str(self._methodName) + str(self._args)
+        ', modelID=' + str(self._modelID) + ', ' + str(self._methodName)# + str(self._args)
     #return RCommand.__str__(self) + 'executionID=' + str(self._executionID)
 
 #}}}
@@ -123,7 +124,7 @@ class RExecutionResult(RExecutionAnswerer): #{{{
     return self
 
   def __str__(self):
-    return RExecutionAnswerer.__str__(self) + ', result=' + str(self._result)
+    return RExecutionAnswerer.__str__(self)# + ', result=' + str(self._result)
 #}}}
 
 class RExceptionRaiser(RExecutionAnswerer): #{{{
