@@ -124,6 +124,12 @@ class AvatarEditor:
     img1 = ImageMapTransparent(img)
     img1.topleft = 528,114
     self.window.add_child(img1)
+
+    img = ocempgui.draw.Image.load_image(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK))
+    img2 = ImageMapTransparent(img)
+    img2.topleft = 528,114
+    self.window.add_child(img2)
+
     return self.window
     
     #me creo un screen
