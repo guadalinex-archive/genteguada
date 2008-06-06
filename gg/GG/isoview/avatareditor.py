@@ -31,15 +31,17 @@ class AvatarEditor:
     self.avatarConfiguration = { "gender": "male", "headSize": "S",
                                 "mask": "none", "hairStyle": 1,
                                 "hairColor":  1, "skin": 1,
-                                "bodySize": "none", "sleeve": 1,
-                                "shirt": 3, "typeTrousers": 1,
+                                "bodySize": "none", "sleeve": 0,
+                                "shirt": 3, "typeTrousers": 0,
                                 "trousers": 5, "skirt": 7,
                                 "shoes": 9}
-    tLv0 = 0 , "headSize", "bodySize", "skin"
-    tLv1 = 1 , "hairStyle", "hairColor", "shirt", "short", "sleeve", "typeTrousers", "trousers", "shoes"
-    tLv2 = 2 , "hairStyle", "hairColor","skirt", "sleeve", "shoes"
-    tLv3 = 3 , "mask"
-    self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3
+    tLv0 = 0, "body"
+    tLv1 = 1, "shirt", "trousers", "shoes"
+    tLv2 = 2, "skirt", "shoes"
+    tLv3 = 3, "head"
+    tLv4 = 4, "hair"
+    tLv5 = 5, "mask"
+    self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
 
   def drawInGame(self):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
@@ -104,259 +106,106 @@ class AvatarEditor:
   def paintAvatarItem(self, item):
     """Paint each Avatar Item.
     """
-    if item == "headSize":
-      self.paintHeadSize(self.avatarConfiguration[item])
-    elif item == "hairStyle":
-      self.paintHairStyle(self.avatarConfiguration[item])
-    elif item == "hairColor":
-      self.paintHairColor(self.avatarConfiguration[item])
-    elif item == "bodySize":
-      self.paintBodySize(self.avatarConfiguration[item])
+    if item == "head":
+      self.paintHead(self.avatarConfiguration["headSize"], self.avatarConfiguration["skin"])
+    elif item == "hair":
+      self.paintHair(self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"])
+    elif item == "body":
+      self.paintBody(self.avatarConfiguration["bodySize"], self.avatarConfiguration["skin"])
     elif item == "mask":
       self.paintMask(self.avatarConfiguration[item])
-    elif item == "skin":
-      self.paintSkin(self.avatarConfiguration[item])
     elif item == "shirt":
-      self.paintShirt(self.avatarConfiguration[item])
-    elif item == "sleeve":
-      self.paintSleeve(self.avatarConfiguration[item])
-    elif item == "typeTrousers":
-      self.paintTypeTrousers(self.avatarConfiguration[item])
+      self.paintShirt(self.avatarConfiguration["sleeve"], self.avatarConfiguration["shirt"])
     elif item == "trousers":
-      self.paintTrousers(self.avatarConfiguration[item])
+      self.paintTrousers(self.avatarConfiguration["typeTrousers"],self.avatarConfiguration["trousers"])
     elif item == "shoes":
-      self.paintShoes(self.avatarConfiguration[item])
+      self.paintShoes(self.avatarConfiguration["shoes"])
     elif item == "skirt":
-      self.paintSkirt(self.avatarConfiguration[item])
+      self.paintSkirt(self.avatarConfiguration["sleeve"],self.avatarConfiguration["skirt"])
 
-  def paintHeadSize(self, headSize):
+  def paintHead(self, size, color):
     #TODO: Modificar ajustando al tamano de cabeza
     if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY)
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_HEAD, str(color) + GG.utils.IMG_EXTENSION)
     else:
       imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_DUMMY)
     img = ocempgui.draw.Image.load_image(imgPath)
     headSizeItem = ImageMapTransparent(img)
     headSizeItem.topleft = 528,114
     self.window.add_child(headSizeItem)
-    """
-    self.paintRightBackgroundScreen()
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_DUMMY)
-    headSizeItem = pygame.image.load(imgPath)
-    self.screen.blit(headSizeItem, (528,114))
-    pygame.display.update()
-    """
 
-  def paintHairStyle(self, hairStyle):
+  def paintHair(self, style, color):
     if self.avatarConfiguration["gender"] == "male":
-      if hairStyle == 1:
-        attributeHair = GG.utils.MALE_HAIR_1
-      elif hairStyle == 2:
-        attributeHair = GG.utils.MALE_HAIR_2
-      elif hairStyle == 3:
-        attributeHair = GG.utils.MALE_HAIR_3
-      imgPath = os.path.join(GG.utils.DATA_PATH, attributeHair)
+      if style == 1:
+        hairPath = GG.utils.MALE_HAIR_1 
+      elif style == 2:
+        hairPath = GG.utils.MALE_HAIR_2
+      elif style == 3:
+        hairPath = GG.utils.MALE_HAIR_3
+      imgPath = os.path.join(GG.utils.DATA_PATH + hairPath, str(color) + GG.utils.IMG_EXTENSION )
     else:
-      if hairStyle == 1:
-        attributeHair = GG.utils.FEMALE_HAIR_1
-      elif hairStyle == 2:
-        attributeHair = GG.utils.FEMALE_HAIR_2
-      elif hairStyle == 3:
-        attributeHair = GG.utils.FEMALE_HAIR_3
-      imgPath = os.path.join(GG.utils.DATA_PATH, attributeHair)
+      if style == 1:
+        hairPath = GG.utils.FEMALE_HAIR_1
+      elif style == 2:
+        hairPath = GG.utils.FEMALE_HAIR_2
+      elif style == 3:
+        hairPath = GG.utils.FEMALE_HAIR_3
+      imgPath = os.path.join(GG.utils.DATA_PATH, hairPath)
     img = ocempgui.draw.Image.load_image(imgPath)
     self.hairStyleItem = ImageMapTransparent(img)
     self.hairStyleItem.topleft = 528,114
     self.window.add_child(self.hairStyleItem)
-    """
-    if self.avatarConfiguration["gender"] == "male":
-      if hairStyle == 1:
-        attributeHair = GG.utils.MALE_HAIR_1
-      elif hairStyle == 2:
-        attributeHair = GG.utils.MALE_HAIR_2
-      elif hairStyle == 3:
-        attributeHair = GG.utils.MALE_HAIR_3
-      imgPath = os.path.join(GG.utils.DATA_PATH, attributeHair)
-    else:
-      if hairStyle == 1:
-        attributeHair = GG.utils.FEMALE_HAIR_1
-      elif hairStyle == 2:
-        attributeHair = GG.utils.FEMALE_HAIR_2
-      elif hairStyle == 3:
-        attributeHair = GG.utils.FEMALE_HAIR_3
-      imgPath = os.path.join(GG.utils.DATA_PATH, attributeHair)
-    self.hairStyleItem = pygame.image.load(imgPath)
-    self.updateColor(self.hairStyleItem, GG.utils.getRGBColor(GG.utils.HAIR_COLORS[self.avatarConfiguration["hairColor"]]))
-    self.screen.blit(self.hairStyleItem, (528,114))
-    pygame.display.update()
-    """
     
-  def paintHairColor(self, hairColor):
-    pass
-    """
-    self.updateColor(self.hairStyleItem, GG.utils.getRGBColor(GG.utils.HAIR_COLORS[self.avatarConfiguration["hairColor"]]))
-    self.screen.blit(self.hairStyleItem, (528,114))
-    pygame.display.update()
-    """
-    
-  def paintBodySize(self, bodySize):
+  def paintBody(self, size, color):
     #TODO: Modificar al tamano del cuerpo y del genero
     if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY)
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_SKIN, str(color) + GG.utils.IMG_EXTENSION)
     else:
       imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_DUMMY)
     img = ocempgui.draw.Image.load_image(imgPath)
     bodySizeItem = ImageMapTransparent(img)
     bodySizeItem.topleft = 528,114
     self.window.add_child(bodySizeItem)
-    """
-    self.paintRightBackgroundScreen()
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_DUMMY)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_DUMMY)
-    bodySizeItem = pygame.image.load(imgPath)
-    self.screen.blit(bodySizeItem, (528,114))
-    pygame.display.update()
-    """
    
   def paintMask(self, skin):
     if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK)
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_MASK, "mask" + GG.utils.IMG_EXTENSION)
     else:
       imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_MASK)
     img = ocempgui.draw.Image.load_image(imgPath)
     maskItem = ImageMapTransparent(img)
     maskItem.topleft = 528,114
     self.window.add_child(maskItem)
-    """
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_MASK)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_MASK)
-    maskItem = pygame.image.load(imgPath)
-    self.screen.blit(maskItem, (528,114))
-    pygame.display.update()
-    """
-    
-  def paintSkin(self, skin):
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SKIN)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SKIN)
-    img = ocempgui.draw.Image.load_image(imgPath)
-    self.skinItem= ImageMapTransparent(img)
-    self.skinItem.topleft = 528,114
-    self.window.add_child(self.skinItem)
-    """
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SKIN)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SKIN)
-    self.skinItem = pygame.image.load(imgPath)
-    self.updateColor(self.skinItem, GG.utils.getRGBColor(GG.utils.SKIN_COLORS[self.avatarConfiguration["skin"]]))
-    self.screen.blit(self.skinItem, (528,114))
-    pygame.display.update()
-    """
   
-  def paintShirt(self, shirt):
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SHIRT)
+  def paintShirt(self, type, color):
+    if type == 1:
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_LONG_SHIRT, str(color) + GG.utils.IMG_EXTENSION)
+    else:
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_SHORT_SHIRT, str(color) + GG.utils.IMG_EXTENSION)
     img = ocempgui.draw.Image.load_image(imgPath)
     self.shirtItem= ImageMapTransparent(img)
     self.shirtItem.topleft = 528,114
     self.window.add_child(self.shirtItem)
-
-    """
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SHIRT)
-    self.shirtItem = pygame.image.load(imgPath)
-    self.updateColor(self.shirtItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration["shirt"]]))
-    self.screen.blit(self.shirtItem, (528,114))
-    pygame.display.update()
-    """
-  
-  def paintSleeve(self, sleeve):
-    if sleeve == 1:
-      if self.avatarConfiguration["gender"] == "male":
-        imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SLEEVE)
-        shirtOrSkirt = "shirt"
-      else:
-        imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SLEEVE)
-        shirtOrSkirt = "skirt"
-      self.sleeveItem = pygame.image.load(imgPath)
-      img = ocempgui.draw.Image.load_image(imgPath)
-      self.sleeveItem= ImageMapTransparent(img)
-      self.sleeveItem.topleft = 528,114
-      self.window.add_child(self.sleeveItem)
-
-    """
-    if sleeve == 1:
-      if self.avatarConfiguration["gender"] == "male":
-        imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SLEEVE)
-        shirtOrSkirt = "shirt"
-      else:
-        imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SLEEVE)
-        shirtOrSkirt = "skirt"
-      self.sleeveItem = pygame.image.load(imgPath)
-      self.updateColor(self.sleeveItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration[shirtOrSkirt]]))
-      self.screen.blit(self.sleeveItem, (528,114))
-      pygame.display.update()
-    """
-  
-  def paintTypeTrousers(self, typeTrousers):
-    if typeTrousers == 1 and self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_TYPE_TROUSERS)
-      img = ocempgui.draw.Image.load_image(imgPath)
-      self.typeTrousersItem = ImageMapTransparent(img)
-      self.typeTrousersItem.topleft = 528,114
-      self.window.add_child(self.typeTrousersItem)
-
-    """
-    if typeTrousers == 1 and self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_TYPE_TROUSERS)
-      self.typeTrousersItem = pygame.image.load(imgPath)
-      self.updateColor(self.typeTrousersItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration["trousers"]]))
-      self.screen.blit(self.typeTrousersItem, (528,114))
-      pygame.display.update()
-    """
     
-  def paintTrousers(self, sleeve):
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_TROUSERS)
+  def paintTrousers(self, type, color):
+    if type == 1:
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_LONG_TROUSERS, str(color) + GG.utils.IMG_EXTENSION)
+    else:
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_SHORT_TROUSERS, str(color) + GG.utils.IMG_EXTENSION)
     img = ocempgui.draw.Image.load_image(imgPath)
     self.trousersItem = ImageMapTransparent(img)
     self.trousersItem.topleft = 528,114
     self.window.add_child(self.trousersItem)
-
-    """
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_TROUSERS)
-    self.trousersItem = pygame.image.load(imgPath)
-    self.updateColor(self.trousersItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration["trousers"]]))
-    self.screen.blit(self.trousersItem, (528,114))
-    pygame.display.update()
-    """
   
-  def paintShoes(self, sleeve):
+  def paintShoes(self, color):
     if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SHOES)
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_SHOES, str(color) + GG.utils.IMG_EXTENSION)
     else:
       imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SHOES)
     img = ocempgui.draw.Image.load_image(imgPath)
     self.shoesItem = ImageMapTransparent(img)
     self.shoesItem.topleft = 528,114
     self.window.add_child(self.shoesItem)
-
-    """
-    if self.avatarConfiguration["gender"] == "male":
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_SHOES)
-    else:
-      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SHOES)
-    self.shoesItem = pygame.image.load(imgPath)
-    self.updateColor(self.shoesItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration["shoes"]]))
-    self.screen.blit(self.shoesItem, (528,114))
-    pygame.display.update()
-    """
     
   def paintSkirt(self, skirt):
     imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SKIRT)
@@ -364,14 +213,6 @@ class AvatarEditor:
     self.skirtItem = ImageMapTransparent(img)
     self.skirtItem.topleft = 528,114
     self.window.add_child(self.skirtItem)
-
-    """
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_SKIRT)
-    self.skirtItem = pygame.image.load(imgPath)
-    self.updateColor(self.skirtItem, GG.utils.getRGBColor(GG.utils.COLORS[self.avatarConfiguration["skirt"]]))
-    self.screen.blit(self.skirtItem, (528,114))
-    pygame.display.update()  
-    """
     
   def paintTags(self):
     """Paint the Tags Zone.
@@ -397,7 +238,8 @@ class AvatarEditor:
     print "Pinta la zona de personalizacion"
     self.removeWidgets()
     if idTag == 0:
-      maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
+      self.paintGenderFrame()
+      """maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
       maleButton.border = 0
       maleButton.padding = 0
       maleButton.topleft = [73, 191]
@@ -411,7 +253,7 @@ class AvatarEditor:
       femaleButton.topleft = [73, 441]
       femaleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "female")
       self.window.add_child(femaleButton)
-      self.activeWidget.append(femaleButton)
+      self.activeWidget.append(femaleButton)"""
       
     elif idTag == 1:
       if self.avatarConfiguration["gender"] == "male":
@@ -453,16 +295,33 @@ class AvatarEditor:
       
   def removeWidgets(self):
     for widget in self.activeWidget:
-      self.window.remove_child(widget)
-      widget.destroy()
+      if widget in self.window.children:
+        self.window.remove_child(widget)
+        widget.destroy()
+
 
   def paintGenderFrame(self):
-    maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
+    """maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
     maleButton.border = 0
     maleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "male")
     femaleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_BTN))
     femaleButton.border = 0
+    femaleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "female")"""
+    maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
+    maleButton.border = 0
+    maleButton.padding = 0
+    maleButton.topleft = [73, 191]
+    maleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "male")
+    self.window.add_child(maleButton)
+    self.activeWidget.append(maleButton)
+     
+    femaleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_BTN))
+    femaleButton.border = 0
+    femaleButton.padding = 0
+    femaleButton.topleft = [73, 441]
     femaleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "female")
+    self.window.add_child(femaleButton)
+    self.activeWidget.append(femaleButton)
     
   def updateGender(self, gender):
     """ Update the Avatar Composite Zone with the appropiate gender.
@@ -488,63 +347,63 @@ class AvatarEditor:
       yellowButton.padding = 0
       yellowButton.topleft = [baseX, baseY]
       yellowButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 1)
-      self.renderer.add_widget(yellowButton)
+      self.window.add_child(yellowButton)
       self.activeWidget.append(yellowButton)
       orangeButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_ORANGE))
       orangeButton.border = 0
       orangeButton.padding = 0
       orangeButton.topleft = [baseX + sizeX + offset, baseY]
       orangeButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 2)
-      self.renderer.add_widget(orangeButton)
+      self.window.add_child(orangeButton)
       self.activeWidget.append(orangeButton)
       redButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_RED))
       redButton.border = 0
       redButton.padding = 0
       redButton.topleft = [baseX + sizeX * 2 + offset * 2, baseY]
       redButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 3)
-      self.renderer.add_widget(redButton)
+      self.window.add_child(redButton)
       self.activeWidget.append(redButton)
       pinkButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_PINK))
       pinkButton.border = 0
       pinkButton.padding = 0
       pinkButton.topleft = [baseX, baseY + sizeY + offset]
       pinkButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 4)
-      self.renderer.add_widget(pinkButton)
+      self.window.add_child(pinkButton)
       self.activeWidget.append(pinkButton)
       blueButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_BLUE))
       blueButton.border = 0
       blueButton.padding = 0
       blueButton.topleft = [baseX + sizeX + offset, baseY + sizeY + offset]
       blueButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 5)
-      self.renderer.add_widget(blueButton)
+      self.window.add_child(blueButton)
       self.activeWidget.append(blueButton)
       purpleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_PURPLE))
       purpleButton.border = 0
       purpleButton.padding = 0
       purpleButton.topleft = [baseX + sizeX * 2 + offset * 2, baseY + sizeY + offset]
       purpleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 6)
-      self.renderer.add_widget(purpleButton)
+      self.window.add_child(purpleButton)
       self.activeWidget.append(purpleButton)
       greenButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_GREEN))
       greenButton.border = 0
       greenButton.padding = 0
       greenButton.topleft = [baseX, baseY + sizeY * 2 + offset * 2]
       greenButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 7)
-      self.renderer.add_widget(greenButton)
+      self.window.add_child(greenButton)
       self.activeWidget.append(greenButton)
       whiteButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_WHITE))
       whiteButton.border = 0
       whiteButton.padding = 0
       whiteButton.topleft = [baseX + sizeX + offset, baseY + sizeY * 2 + offset * 2]
       whiteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 8)
-      self.renderer.add_widget(whiteButton)
+      self.window.add_child(whiteButton)
       self.activeWidget.append(whiteButton)
       blackButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_BLACK))
       blackButton.border = 0
       blackButton.padding = 0
       blackButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, item, 9)
       blackButton.topleft = [baseX + sizeX * 2 + offset * 2, baseY + sizeY * 2 + offset * 2]
-      self.renderer.add_widget(blackButton)
+      self.window.add_child(blackButton)
       self.activeWidget.append(blackButton)
   
   def paintHairColorPalette(self):
@@ -558,21 +417,21 @@ class AvatarEditor:
     blondeButton.padding = 0
     blondeButton.topleft = [baseX, baseY]
     blondeButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "hairColor", 1)
-    self.renderer.add_widget(blondeButton)
+    self.window.add_child(blondeButton)
     self.activeWidget.append(blondeButton)
     brownButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_BROWN))
     brownButton.border = 0
     brownButton.padding = 0
     brownButton.topleft = [baseX + sizeX + offset, baseY]
     brownButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "hairColor", 2)
-    self.renderer.add_widget(brownButton)
+    self.window.add_child(brownButton)
     self.activeWidget.append(brownButton)
     blackButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.COLOR_BLACK))
     blackButton.border = 0
     blackButton.padding = 0
     blackButton.topleft = [baseX + sizeX * 2 + offset * 2, baseY]
     blackButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "hairColor", 3)
-    self.renderer.add_widget(blackButton)
+    self.window.add_child(blackButton)
     self.activeWidget.append(blackButton)
     
   def paintSkinColorPalette(self):
@@ -586,63 +445,63 @@ class AvatarEditor:
     skin1Button.padding = 0
     skin1Button.topleft = [baseX, baseY]
     skin1Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 1)
-    self.renderer.add_widget(skin1Button)
+    self.window.add_child(skin1Button)
     self.activeWidget.append(skin1Button)
     skin2Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_2))
     skin2Button.border = 0
     skin2Button.padding = 0
     skin2Button.topleft = [baseX + sizeX + offset, baseY]
     skin2Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 2)
-    self.renderer.add_widget(skin2Button)
+    self.window.add_child(skin2Button)
     self.activeWidget.append(skin2Button)
     skin3Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_3))
     skin3Button.border = 0
     skin3Button.padding = 0
     skin3Button.topleft = [baseX + sizeX * 2 + offset * 2, baseY]
     skin3Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 3)
-    self.renderer.add_widget(skin3Button)
+    self.window.add_child(skin3Button)
     self.activeWidget.append(skin3Button)
     skin4Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_4))
     skin4Button.border = 0
     skin4Button.padding = 0
     skin4Button.topleft = [baseX, baseY + sizeY + offset]
     skin4Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 4)
-    self.renderer.add_widget(skin4Button)
+    self.window.add_child(skin4Button)
     self.activeWidget.append(skin4Button)
     skin5Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_5))
     skin5Button.border = 0
     skin5Button.padding = 0
     skin5Button.topleft = [baseX + sizeX + offset, baseY + sizeY + offset]
     skin5Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 5)
-    self.renderer.add_widget(skin5Button)
+    self.window.add_child(skin5Button)
     self.activeWidget.append(skin5Button)
     skin6Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_6))
     skin6Button.border = 0
     skin6Button.padding = 0
     skin6Button.topleft = [baseX + sizeX * 2 + offset * 2, baseY + sizeY + offset]
     skin6Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 6)
-    self.renderer.add_widget(skin6Button)
+    self.window.add_child(skin6Button)
     self.activeWidget.append(skin6Button)
     skin7Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_7))
     skin7Button.border = 0
     skin7Button.padding = 0
     skin7Button.topleft = [baseX, baseY + sizeY * 2 + offset * 2]
     skin7Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 7)
-    self.renderer.add_widget(skin7Button)
+    self.window.add_child(skin7Button)
     self.activeWidget.append(skin7Button)
     skin8Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_8))
     skin8Button.border = 0
     skin8Button.padding = 0
     skin8Button.topleft = [baseX + sizeX + offset, baseY + sizeY * 2 + offset * 2]
     skin8Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 8)
-    self.renderer.add_widget(skin8Button)
+    self.window.add_child(skin8Button)
     self.activeWidget.append(skin8Button)
     skin9Button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.SKIN_9))
     skin9Button.border = 0
     skin9Button.padding = 0
     skin9Button.topleft = [baseX + sizeX * 2 + offset * 2, baseY + sizeY * 2 + offset * 2]
     skin9Button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateColorItem, "skin", 9)
-    self.renderer.add_widget(skin9Button)
+    self.window.add_child(skin9Button)
     self.activeWidget.append(skin9Button)
     
   def updateColorItem(self, item, color):
