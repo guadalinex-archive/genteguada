@@ -24,6 +24,9 @@ class IsoViewTile(isoview.IsoView):
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(spriteName)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
+    self.__isoItem = None
+    self.__position = position
+    #print "creada en ", position,
     
   def getImg(self):
     """ Returns the tile image.
@@ -40,13 +43,31 @@ class IsoViewTile(isoview.IsoView):
     """
     return self.__bottomRight
   
+  def getIsoItem(self):
+    return self.__isoItem
+  
+  def setIsoItem(self, item):
+    if item != None:  
+      self.__isoItem = item
+      #print "actualizada ", self.__position, " con ", self.__isoItem
+    
   def contained(self, pos):
     """ Returns if a point is contained on a tile.
     pos: point.
     """
+    #print self.__position, self.__isoItem
     if self.__bottomRight[0] > pos[0] > self.__topLeft[0]:
       if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
-        return 1
+        if not self.onBlank(pos):
+          return 1
+    if self.__isoItem == None:
+      return 0
+    rect = self.__isoItem.getImg().rect
+    #print self.__position, self.__isoItem.getScreenPosition(), rect, pos
+    if rect[0] < pos[0] < (rect[0] + rect[2]):
+      if rect[1] < pos[1] < (rect[1] + rect[3]):
+        if self.__isoItem.getImg().image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
+          return 1
     return 0
 
   def onBlank(self, pos):

@@ -42,6 +42,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewPlayers = []
     self.__allPlayers = GroupSprite()
+    self.__allTopPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
     self.__tileList = []
     for corx in range(GG.utils.SCENE_SZ[0]):
@@ -59,6 +60,9 @@ class IsoViewRoom(isoview.IsoView):
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewPlayers.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
+      pos = item.getPosition()
+      #print "Insercion en ", pos, ": ", isoviewitem.getModel()
+      self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
     
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -76,16 +80,21 @@ class IsoViewRoom(isoview.IsoView):
     for isoitem in self.__isoViewPlayers:
       isoitem.updateFrame()
     
+    # These 3 first sentences clean the unused part of the screen.
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
-    
+    self.__allTopPlayers.clear(self.getScreen(), self.__bg.image)
     self.__allBackground.clear(self.getScreen(), self.__bg.image)
-    self.__allBackground.update()                     
+    #self.__allBackground.update()                     
     dirtyRects = self.__allBackground.draw(self.getScreen())
-    pygame.display.update(dirtyRects)
+    #pygame.display.update(dirtyRects)
     
-    self.__allPlayers.update()                     
+    #self.__allPlayers.update()                     
     dirtyRects = self.__allPlayers.draw(self.getScreen())
-    pygame.display.update(dirtyRects)
+    #pygame.display.update(dirtyRects)
+    
+    #self.__allTopPlayers.update()                     
+    dirtyRects = self.__allTopPlayers.draw(self.getScreen())
+    #pygame.display.update(dirtyRects)
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.
@@ -109,12 +118,42 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
+    round = GG.utils.SCENE_SZ[0]*2 - 1
+    halfRound = round/2
+    line = round
+    while line > 0:   
+      if line > halfRound + 1:
+        # Mitad inferior
+        for x in range(line - (halfRound+1), halfRound + 1):
+          z = line - x - 1 
+          #print "checked [", x, ", ", z, "]", self.__tileList[x][z].getIsoItem() 
+          if self.__tileList[x][z].contained(pos):
+            return [x, z]
+      elif line < halfRound + 1:
+        # Mitad superior
+        for x in range(0, line):
+          z = line - x - 1
+          #print "checked [", x, ", ", z, "]"
+          if self.__tileList[x][z].contained(pos):
+            return [x, z]
+      else:
+        # Diagonal media  
+        for x in range(0, halfRound + 1):
+          z = halfRound - x
+          #print "checked [", x, ", ", z, "]"
+          if self.__tileList[x][z].contained(pos):
+            return [x, z]
+      line -= 1
+    return [-1, -1]
+        
+    """
     for corx in range(GG.utils.SCENE_SZ[0]):
       for corz in range(GG.utils.SCENE_SZ[1]):
         if self.__tileList[corx][corz].contained(pos):
           if not self.__tileList[corx][corz].onBlank(pos):
             return [corx, corz]
     return [-1, -1]
+    """
   
   def itemAdded(self, event):
     """ Updates the room view when an item add event happens.
@@ -145,6 +184,8 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewPlayers.append(item)
     self.__allPlayers.add(item.getImg())
+    pos = item.getPosition()
+    self.__tileList[pos[0]][pos[1]].setIsoItem(item)
     
   def removeIsoViewItem(self, player):
     """ Removes an isometric player viewer from the viewers list.
@@ -153,7 +194,9 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewPlayers.remove(player)
     self.__allPlayers.remove(player.getImg())
     player.unsubscribeAllEvents()
-  
+    pos = player.getPosition()
+    self.__tileList[pos[0]][pos[1]].setIsoItem(None)
+    
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
     """
@@ -178,5 +221,11 @@ class IsoViewRoom(isoview.IsoView):
   def addSprite(self, sprite):
     self.__allPlayers.add(sprite)
     
+  def addTopSprite(self, sprite):
+    self.__allTopPlayers.add(sprite)
+  
   def removeSprite(self, sprite):
     self.__allPlayers.remove(sprite)
+    
+  def removeTopSprite(self, sprite):
+    self.__allTopPlayers.remove(sprite)    

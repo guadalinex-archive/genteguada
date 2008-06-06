@@ -19,6 +19,13 @@ class ChatMessage:
     self.__hour = time.time()
     self.__color = color
     self.__position = position
+    self.imagePath = ""
+    
+  def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
+    return parentVars + ['imagePath']
+      
     
   def getMessage(self):
     """ Returns the chat message.
@@ -46,10 +53,10 @@ class ChatMessage:
     return self.__position
 
   @dMVC.model.localMethod 
-  def chatView(self, screen):
+  def chatView(self, screen, isohud):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
     """
-    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen)
+    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
   
   
