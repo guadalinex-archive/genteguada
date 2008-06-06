@@ -207,24 +207,10 @@ class IsoViewHud(isoview.IsoView):
     else:
       self.hframe.add_child(invItem.draw(self.widgetContainer))
   
-  def printLineOnChat(self, string):
-    """ Prints a string on the HUD chat window.
-    string: the info that will be printed on screen.
-    """
-    hframe = ocempgui.widgets.HFrame()
-    hframe.border = 0
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE)
-    image = ocempgui.widgets.ImageLabel(imgPath)
-    image.buttom = 0
-    hframe.add_child(image)
-    
-    label = ocempgui.widgets.Label(string)
-    label.set_style(ocempgui.widgets.WidgetStyle(self.getStyleMessageChat()))
-    hframe.add_child(label)
-    
-    self.__layoutTextArea.add_child(hframe)
+  def printChatMessage(self, chatMessage):
+    self.__layoutTextArea.add_child(chatMessage.draw())
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
-
+  
   def getStyleMessageChat(self):
     """ Returns the chat current style.
     """
@@ -243,11 +229,23 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
-    ivMessageChat = messageChat.chatView(self.getScreen())
-    
+    ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
-    self.printLineOnChat(cad)
-
+    
+    idleAnim = animation.IdleAnimation(GG.utils.ANIM_CHAT_TIME1, ivMessageChat)
+    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
+                            ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)
+    secAnim = animation.SecuenceAnimation()
+    secAnim.addAnimation(idleAnim)
+    secAnim.addAnimation(positionAnim)
+        
+    secAnim.setOnEnd(self.printChatMessage, ivMessageChat)
+    secAnim.setOnEnd(self.__temporaryItems.remove, ivMessageChat)
+    secAnim.setOnEnd(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
+    
+    ivMessageChat.setAnimation(secAnim)
+    self.__temporaryItems.append(ivMessageChat)
+    
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
     event: event info.
