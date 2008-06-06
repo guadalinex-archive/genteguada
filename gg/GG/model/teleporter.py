@@ -114,8 +114,16 @@ class GGTeleporter(GG.model.item.GGItem):
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:
         if not self.checkCondition(condition, clicker):
+          self.newChatMessage('Necesitas una llave')  
           return False
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    
     
+  def newChatMessage(self, message):
+    """ Triggers a new event after receiving a new chat message.
+    message: new chat message.
+    """
+    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 'Teleporter', \
+                    GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(self.getPosition(), self.offset)))
+
