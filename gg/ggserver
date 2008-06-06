@@ -8,9 +8,23 @@ import GG.model.ggsystem
 import dMVC.remoteserver
 
 if __name__ == "__main__":
-  rootModel = GG.model.ggsystem.GGSystem()
+  def onLogin(rhandler, result, error):
+    if result[0]:
+      rhandler.ggSession = result[1]
+    else:
+      rhandler.ggSession = None
+  
+  def onDisconnection(rhandler):
+    if hasattr(rhandler, 'ggSession'):
+      if rhandler.ggSession:
+        rhandler.ggSession.logout()
+
+
   onExecution = [
-                  [GG.model.ggsystem.GGSystem, 'login', rootModel.onLogin]
+                  [GG.model.ggsystem.GGSystem, 'login', onLogin]
                 ]
-  #dMVC.remoteserver.RServer(rootModel,onConnection = rootModel.onConnection, onDisconnection = rootModel.onDisconnection, onExecution = onExecution)
-  dMVC.remoteserver.RServer(rootModel, onDisconnection = rootModel.onDisconnection, onExecution = onExecution)
+
+
+  dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),
+                            onDisconnection = onDisconnection,
+                            onExecution = onExecution)

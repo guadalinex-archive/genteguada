@@ -54,3 +54,6 @@ class GGSession(ggmodel.GGModel):
     """
     self.triggerEvent('chatAdded', message=event.getParams()['message'])
   
+
+  def logout(self):
+    print str(self) + ": logout!"

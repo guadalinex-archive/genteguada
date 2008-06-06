@@ -27,7 +27,6 @@ class GGSystem(dMVC.model.Model):
     self.__rooms = []
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
-    self.__remoteSessions = {}
     self.__loadData()
     thread.start_new(self.__start, ())
      
@@ -209,16 +208,3 @@ class GGSystem(dMVC.model.Model):
   #def onConnection(self, rhandler):
   #  print "en system"
   #  print rhandler
-  
-  def onDisconnection(self, rhandler):
-    if rhandler in self.__remoteSessions.keys():
-      session = self.__remoteSessions[rhandler]
-      #player = session.getPlayer().clearRoom()
-      #self.__sessions.remove(session)
-
-  def onLogin(self, rhandler, result, error):
-    if result[0]:
-      self.__remoteSessions[rhandler] = result[1]
-      
-
-
