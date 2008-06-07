@@ -15,7 +15,6 @@ class IsoView:
     self.__screen = screen
     self.__animation = None
     self.__clock = pygame.time.Clock()
-    self.__timePassed = 0
     
   def getModel(self):
     """ Returns the list of observed models.
@@ -32,22 +31,19 @@ class IsoView:
     """
     return self.__animation
 
-  def updateFrame(self):
+  def updateFrame(self, ellapsedTime):
     """ Paints a new item frame on screen.
     """
-    if self.__animation != None:
-      self.__timePassed += self.__clock.tick(50)
-      if not self.__animation.isFinished(self.__timePassed):
-        self.__animation.step(self.__timePassed)
-      else:  
+    if self.__animation:
+      if self.__animation.isFinished(ellapsedTime):
         self.setAnimation(None)
+      else:  
+        self.__animation.step(ellapsedTime)
   
-  def activeAnimation(self):
+  def hasAnimation(self):
     """ Checks if there is an active animation.
     """
-    if self.__animation != None:
-      return True
-    return False
+    return self.__animation != None
     
   def setAnimation(self, animation):
     """ Creates a new position animation.
@@ -56,9 +52,7 @@ class IsoView:
     if self.__animation:
       self.__animation.stop()
     self.__animation = animation
-    if animation != None:
-      aux = self.__clock.tick()
-      self.__timePassed = 0
+    if animation:
       animation.start()
     
   def unsubscribeAllEvents(self):

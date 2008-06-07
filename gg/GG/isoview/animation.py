@@ -1,8 +1,9 @@
 import os
 import pygame
 import GG.utils
+import time
 
-class Animation:
+class Animation(object):
   """ Animation class.
   Defines animation methods and atributes.
   """
@@ -12,60 +13,57 @@ class Animation:
     time: animation length in time.
     isoview: isoview used on the animation.
     """
+    self.__startedTime = None
     self.__time = time
     self.__isoview = isoview
     self.__endMethods = []
     self.__startMethods = []
     
+
+  def getProgress(self, now):
+    percent = (now - self.__startedTime) / self.__time
+    if percent >= 1:
+      return 1
+    return percent
+
+
   def getTime(self):
-    """ Returns the animation length in time.
-    """
     return self.__time
-  
+
+
+  def getEllapsedTime(self, now):
+    return now - self.__startedTime
+
+
   def getIsoview(self):
     """ Returns the sprite used on the animation.
     """
     return self.__isoview
 
-  def setImg(self, img):
-    """
-    """
-    self.__isoview.setImg(img)
-    
-  def setSprite(self, sprite):
-    """
-    """
-    self.__isoview.setSprite(sprite)
-
-  def setScreenPosition(self, pos):
-    self.__isoview.setScreenPosition(pos)
-    
-  # Vanilla methods
   
   def start(self):
     """ Starts the animation.
     """
+    self.__startedTime = time.time() * 1000
     self.onStart()
+
   
-  def step(self, time):
+  def step(self, now):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
     pass
+
   
   def stop(self):
     """ Stops the animation.
     """  
-    self.onEnd()
+    self.onStop()
   
-  def getStartMethods(self):
-    return self.__startMethods
-  
-  def getEndMethods(self):
-    return self.__endMethods
-  
+    
   def setOnStart(self, method, params):
     self.__startMethods.append([method, params])
+
     
   def onStart(self):
     """ Method triggered on animation start.
@@ -76,10 +74,12 @@ class Animation:
       else:    
         method[0](method[1])
   
-  def setOnEnd(self, method, params):
+
+  def setOnStop(self, method, params):
     self.__endMethods.append([method, params])
+
     
-  def onEnd(self):
+  def onStop(self):
     """ Method triggered on animation end.
     """
     for method in self.__endMethods:
@@ -91,11 +91,11 @@ class Animation:
     #if self.__endMethod != None:
     #  self.__endMethod(self.__endParams)
     
-  def isFinished(self, time):
+  def isFinished(self, now):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
-    return (self.__time < time)
+    return (now - self.__startedTime) >= self.__time
     
 #*****************************************************************************
     
@@ -111,38 +111,6 @@ class IdleAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     
-  def start(self):
-    """ Starts the animation.
-    """
-    Animation.start(self)
-    
-  def step(self, time):
-    """ Progresses the animation one frame.
-    time: elapsed time since the animation start.
-    """
-    Animation.step(self, time)
-    
-  def stop(self):
-    """ Stops the current animation.
-    """
-    Animation.stop(self)
-    self.onEnd()
-  
-  def onStart(self):
-    """ Method triggered on animation start.
-    """
-    Animation.onStart(self)
-  
-  def onEnd(self):
-    """ Method triggered on animation end.
-    """
-    Animation.onEnd(self)
-    
-  def isFinished(self, time):
-    """ Checks if the animation is finished.
-    time: elapsed time since the animation start.
-    """
-    return Animation.isFinished(self, time) 
     
 #*****************************************************************************
     
@@ -161,32 +129,32 @@ class ScreenPositionAnimation(Animation):
     self.__origin = origin
     self.__destination = destination
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
+
+  def setScreenPosition(self, pos):
+    self.getIsoview().setScreenPosition(pos)
     
   def start(self):
     """ Starts the animation.
     """
-    Animation.start(self)
+    super(self.__class__, self).start()
     self.setScreenPosition([self.__origin[0], self.__origin[1]])
     
-  def step(self, time):
+  def step(self, now):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
-    Animation.step(self, time)
-    percent = ((time*100)/self.getTime())/100.0
-    self.setScreenPosition([self.__origin[0] + (self.__shift[0]*percent), self.__origin[1] + (self.__shift[1]*percent)])
+    #super(self.__class__, self).step(now)
+    percent = self.getProgress(now)
+    self.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
+                            self.__origin[1] + int(self.__shift[1]*percent)])
       
   def stop(self):
     """ Stops the animation.
     """
-    Animation.stop(self)
     self.setScreenPosition([self.__destination[0], self.__destination[1]])
+    #Animation.stop(self)
+    super(self.__class__, self).stop()
     
-  def isFinished(self, time):
-    """ Checks if the animation is finished.
-    time: elapsed time since the animation start.
-    """
-    return Animation.isFinished(self, time)
   
 #*****************************************************************************
     
@@ -202,8 +170,7 @@ class MovieAnimation(Animation):
     frames: frames used on the animation.
     """
     Animation.__init__(self, time, isoview)
-    self.__frames = frames
-    self.loadSprites()
+    self.setFrames(frames)
     
   def setFrames(self, frames):
     """ Sets a new frame set for the animation.
@@ -219,39 +186,21 @@ class MovieAnimation(Animation):
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().imagePath + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
       
-  def start(self):
-    """ Starts the animation.
-    """
-    Animation.start(self)
     
-  def step(self, time):
+  def step(self, now):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
-    percent = ((time*100)/self.getTime())
+    #super(self.__class__, self).step(now)
     if len(self.__sprites) == 0:
       print "me paro"
       self.stop()
     else:
-      self.setSprite(self.__sprites[percent % len(self.__sprites)])
+      time = self.getTime()
+      currentFrame = int((self.getEllapsedTime(now) % time) / time * len(self.__sprites))
+      self.getIsoview().setSprite(self.__sprites[currentFrame])
     
-  def stop(self):
-    """ Stops the animation.
-    """  
-    Animation.stop(self)
-    self.onEnd()
-  
-  def onStart(self):
-    """ Method triggered on animation start.
-    """
-    Animation.onStart(self)
-  
-  def onEnd(self):
-    """ Method triggered on animation end.
-    """
-    Animation.onEnd(self)
-    
-  def isFinished(self, time):
+  def isFinished(self, now):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
@@ -271,27 +220,6 @@ class CompositionAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     
-  def start(self):
-    """ Starts the animation.
-    """
-    Animation.start(self)
-    
-  def step(self, time):
-    """ Progresses the animation one frame.
-    time: elapsed time since the animation start.
-    """
-    Animation.step(self, time)
-    
-  def stop(self):
-    """ Stops the animation.
-    """  
-    Animation.stop(self)
-    
-  def isFinished(self, time):
-    """ Checks if the animation is finished.
-    time: elapsed time since the animation start.
-    """
-    return Animation.isFinished(self, time)
     
 #*****************************************************************************
     
@@ -323,25 +251,24 @@ class SecuenceAnimation(CompositionAnimation):
   def start(self):
     """ Starts the animation.
     """
-    #CompositionAnimation.start(self)
-    Animation.start(self)
+    super(self.__class__, self).start()
     if len(self.__animations):
       self.__animations[0].start()
     
-  def step(self, time):
+  def step(self, now):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
-    #CompositionAnimation.step(self, time)
+    #super(self.__class__, self).step(now)
     if len(self.__animations):
-      if self.__animations[0].isFinished(time - self.__accumulatedTime):
-        self.__accumulatedTime = time  
+      if self.__animations[0].isFinished(now - self.__accumulatedTime):
+        self.__accumulatedTime = now  
         self.__animations[0].stop()
         self.__animations.remove(self.__animations[0])
         if len(self.__animations):
           self.__animations[0].start()
       else:
-        self.__animations[0].step(time - self.__accumulatedTime)
+        self.__animations[0].step(now - self.__accumulatedTime)
     else:
       self.stop()
     
@@ -352,9 +279,9 @@ class SecuenceAnimation(CompositionAnimation):
       self.__animations[0].stop()
     for animation in self.__animations:
       self.__animations.remove(animation)
-    CompositionAnimation.stop(self)
+    super(self.__class__, self).stop()
     
-  def isFinished(self, time):
+  def isFinished(self, now):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
@@ -363,7 +290,7 @@ class SecuenceAnimation(CompositionAnimation):
     elif len(self.__animations) == 0:
       return True
     else:
-      return self.__animations[0].isFinished(time - self.__accumulatedTime)
+      return self.__animations[0].isFinished(now)
         
 #*****************************************************************************
     
@@ -393,17 +320,17 @@ class ParalelAnimation(CompositionAnimation):
   def start(self):
     """ Starts the animation.
     """
-    CompositionAnimation.start(self)
+    super(self.__class__, self).start()
     for animation in self.__animations:
       animation.start()
     
-  def step(self, time):
+  def step(self, now):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
-    CompositionAnimation.step(self, time)
+    #super(self.__class__, self).step(now)
     for animation in self.__animations:
-      animation.step(time)
+      animation.step(now)
     
   def stop(self):
     """ Stops the animation.
@@ -412,16 +339,13 @@ class ParalelAnimation(CompositionAnimation):
       animation.stop()
     for animation in self.__animations:
       self.__animations.remove(animation)
-    CompositionAnimation.stop(self)
+    super(self.__class__, self).stop()
       
-  def isFinished(self, time):
+  def isFinished(self, now):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
     for animation in self.__animations:    
-      if not animation.isFinished(time):
+      if not animation.isFinished(now):
         return False
-    return True  
-    
-
-
+    return True

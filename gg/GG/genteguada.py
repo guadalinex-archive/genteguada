@@ -1,22 +1,24 @@
+import datetime
+import os
+import pygame
+import pygame.locals
+import stat
+import sys
+import time
+import time
 
 import dMVC.remoteclient
-import pygame
-import GG.utils
-import GG.model.ggsystem
-import time
-import pygame.locals
-import sys
+
 import GG.isoview.login
-import os
-import stat
-import datetime
+import GG.model.ggsystem
+import GG.utils
+
 
 class GenteGuada:
 
   def __init__(self):
     self.screen = None
     self.system = None
-    #self.player = None
     self.isoHud = None
     self.session = None
     self.client = None
@@ -77,12 +79,15 @@ class GenteGuada:
     self.isoHud = self.session.defaultView(self.screen)
     self.isoHud.draw()
 
+    theClock = pygame.time.Clock()
     while True:
-      time.sleep(GG.utils.ANIM_DELAY)
+      #time.sleep(GG.utils.ANIM_DELAY)
+      theClock.tick(25)
+      now = time.time() * 1000
       if self.client:
         self.client.processEvents()
       self.input(pygame.event.get())
-      self.isoHud.updateFrame()
+      self.isoHud.updateFrame(now)
 
 
   def getDataPath(self, img):
@@ -126,6 +131,3 @@ class GenteGuada:
     for file in toRemove:
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
       os.remove(pathFile)
-
-
-    

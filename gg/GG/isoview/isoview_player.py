@@ -18,8 +18,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
     self.__movieAnimation = None
-    self.__movieClock = pygame.time.Clock()
-    self.__movieTimePassed = 0
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
@@ -31,13 +29,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Changes the player's sprite heading.
     """
     self.__heading = event.getParams()["heading"]
-    if not self.activeAnimation():
+    if self.hasMovieAnimation():
+      frames = self.createFrameSet()
+      self.__movieAnimation.setFrames(frames)
+    else:
       str = GG.utils.getSpriteName(GG.utils.STATE[1], event.getParams()["heading"], 0)
       self.setImg(str)
-    else:
-      if self.__movieAnimation:
-        frames = self.createFrameSet()
-        self.__movieAnimation.setFrames(frames)
     
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.
@@ -51,12 +48,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.getParent().removeInventoryItem(event.getParams()["item"])
 
-  def activeAnimation(self):
+  def hasMovieAnimation(self):
     """ Checks if there is an active animation.
     """
-    if self.__movieAnimation != None or isoview_item.IsoViewItem.activeAnimation(self):
-      return True
-    return False
+    return self.__movieAnimation != None
       
   def setMovieAnimation(self, animation):
     """ Creates a new movie animation.
@@ -66,8 +61,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation.stop()
     self.__movieAnimation = animation
     if animation != None:
-      aux = self.__movieClock.tick()
-      self.__movieTimePassed = 0
       animation.start()
     
   def setMovieFrames(self, frames):
@@ -104,13 +97,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet())
     self.setMovieAnimation(movieAnim)
     
-  def updateFrame(self):
+  def updateFrame(self, ellapsedTime):
     """ Paints a new item frame on screen.
     """
-    isoview_item.IsoViewItem.updateFrame(self)
+    isoview_item.IsoViewItem.updateFrame(self, ellapsedTime)
     if self.__movieAnimation:
-      self.__movieTimePassed += self.__movieClock.tick(50)
-      self.__movieAnimation.step(self.__movieTimePassed)  
+      self.__movieAnimation.step(ellapsedTime)  
         
   def stateChanged(self, event):
     """ Triggers after receiving a new state change event.
@@ -118,34 +110,27 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     st = event.getParams()["state"]
     if st == GG.utils.STATE[1]: # standing
-      if self.activeAnimation():
-        #isoview_item.IsoViewItem.setPositionAnimation(self, None)   
-        isoview.IsoView.setAnimation(self, None)
-        self.setMovieAnimation(None)  
-        self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
-        self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
+      self.setAnimation(None)
+      self.setMovieAnimation(None)  
+      self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
+      self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
 
     elif st == GG.utils.STATE[2]: # walking
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
     elif st == GG.utils.STATE[3]: # standing_carrying
-      if self.activeAnimation():
-        #isoview_item.IsoViewItem.setPositionAnimation(self, None)
-        isoview.IsoView.setAnimation(self, None)   
-        self.setMovieAnimation(None)  
-        self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
-        self.setImgPosition(self.getModel().getPosition())
+      self.setAnimation(None)   
+      self.setMovieAnimation(None)  
+      self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
+      self.setImgPosition(self.getModel().getPosition())
 
     elif st == GG.utils.STATE[4]: # walking_carrying
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
     elif st == GG.utils.STATE[5]: # standing_sleeping
-      if self.activeAnimation():
-        #isoview_item.IsoViewItem.setPositionAnimation(self, None)
-        isoview.IsoView.setAnimation(self, None)   
-        self.setMovieAnimation(None)  
-        self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
-        self.setImgPosition(self.getModel().getPosition())
-    
+      self.setAnimation(None)   
+      self.setMovieAnimation(None)  
+      self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
+      self.setImgPosition(self.getModel().getPosition())
