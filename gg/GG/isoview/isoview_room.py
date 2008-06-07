@@ -73,12 +73,12 @@ class IsoViewRoom(isoview.IsoView):
     """
     return self.__isoViewPlayers
   
-  def updateFrame(self):
+  def updateFrame(self, ellapsedTime):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
     for isoitem in self.__isoViewPlayers:
-      isoitem.updateFrame()
+      isoitem.updateFrame(ellapsedTime)
     
     # These 3 first sentences clean the unused part of the screen.
     self.__allPlayers.clear(self.getScreen(), self.__bg.image)
@@ -178,23 +178,23 @@ class IsoViewRoom(isoview.IsoView):
     if not removed:
       raise Exception("Error: vista de item no eliminada")
         
-  def addIsoViewItem(self, item):
+  def addIsoViewItem(self, ivItem):
     """ Inserts a new item view.
-    item: item view.
+    ivItem: item view.
     """
-    self.__isoViewPlayers.append(item)
-    self.__allPlayers.add(item.getImg())
-    pos = item.getPosition()
-    self.__tileList[pos[0]][pos[1]].setIsoItem(item)
+    self.__isoViewPlayers.append(ivItem)
+    self.__allPlayers.add(ivItem.getImg())
+    pos = ivItem.getModel().getPosition()
+    self.__tileList[pos[0]][pos[1]].setIsoItem(ivItem)
     
-  def removeIsoViewItem(self, player):
+  def removeIsoViewItem(self, ivPlayer):
     """ Removes an isometric player viewer from the viewers list.
-    player: player view to be removed.
+    ivPlayer: ivPlayer view to be removed.
     """
-    self.__isoViewPlayers.remove(player)
-    self.__allPlayers.remove(player.getImg())
-    player.unsubscribeAllEvents()
-    pos = player.getPosition()
+    self.__isoViewPlayers.remove(ivPlayer)
+    self.__allPlayers.remove(ivPlayer.getImg())
+    ivPlayer.unsubscribeAllEvents()
+    pos = ivPlayer.getModel().getPosition()
     self.__tileList[pos[0]][pos[1]].setIsoItem(None)
     
   def unsubscribeAllEvents(self):

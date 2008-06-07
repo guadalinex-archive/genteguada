@@ -69,9 +69,9 @@ class IsoViewHud(isoview.IsoView):
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
-    positionAnim.setOnEnd(self.__isoviewInventory.append, invItem)
-    positionAnim.setOnEnd(self.__temporaryItems.remove, invItem)
-    positionAnim.setOnEnd(self.paintItemsInventory, None)
+    positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
+    positionAnim.setOnStop(self.__temporaryItems.remove, invItem)
+    positionAnim.setOnStop(self.paintItemsInventory, None)
     
     invItem.setAnimation(positionAnim)
     self.__temporaryItems.append(invItem)
@@ -99,13 +99,15 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
 
-  def updateFrame(self):
+  def updateFrame(self, ellapsedTime):
     """ Updates all sprites for a new frame.
     """
+    #hay que dibujar la habitación DESPUES del hud, para que las animaciones de los items se vean sobre el HUD y no debajo como ahora.
     if self.__isoviewRoom:
-      self.__isoviewRoom.updateFrame()
+      self.__isoviewRoom.updateFrame(ellapsedTime)
     for item in self.__temporaryItems:
-      item.updateFrame()
+      item.updateFrame(ellapsedTime)
+
     if self.winWardrobe:
       self.winWardrobe.update()
     else:
@@ -114,6 +116,7 @@ class IsoViewHud(isoview.IsoView):
       self.textArea.update()
       self.__textField.update()
       self.windowInventory.update()
+
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -239,9 +242,9 @@ class IsoViewHud(isoview.IsoView):
     secAnim.addAnimation(idleAnim)
     secAnim.addAnimation(positionAnim)
         
-    secAnim.setOnEnd(self.printChatMessage, ivMessageChat)
-    secAnim.setOnEnd(self.__temporaryItems.remove, ivMessageChat)
-    secAnim.setOnEnd(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
+    secAnim.setOnStop(self.printChatMessage, ivMessageChat)
+    secAnim.setOnStop(self.__temporaryItems.remove, ivMessageChat)
+    secAnim.setOnStop(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
     
     ivMessageChat.setAnimation(secAnim)
     self.__temporaryItems.append(ivMessageChat)
