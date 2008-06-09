@@ -52,6 +52,7 @@ class IsoViewHud(isoview.IsoView):
         "open":{"image":"sonido.png", "action": self.itemToOpen}
     }
     self.winWardrobe = None
+    self.wardrobe = None
 
   def getPlayer(self):
     return self.__player
@@ -118,7 +119,7 @@ class IsoViewHud(isoview.IsoView):
     #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
     #se vean sobre el HUD y no debajo como ahora.
 
-    if self.winWardrobe:
+    if self.wardrobe:
       self.winWardrobe.update()
     else:
       self.paintBackground()
@@ -323,8 +324,8 @@ class IsoViewHud(isoview.IsoView):
 
   def showDresser(self):
     print "show dresser room"
-    wardrobe = avatareditor.AvatarEditor()
-    self.winWardrobe = wardrobe.drawInGame()
+    self.wardrobe = avatareditor.AvatarEditor()
+    self.winWardrobe = self.wardrobe.drawInGame(self.widgetContainer)
     self.widgetContainer.add_widget(self.winWardrobe)
     #self.winWardrobe.update()
 

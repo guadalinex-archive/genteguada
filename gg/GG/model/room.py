@@ -54,9 +54,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
       del item
       return True
     if not item in self.__items:
+      #item.setStartPosition(None)
+      #item.setStartPosition(self.getNearestEmptyCell(pos))
+      item.setPosition(self.getNearestEmptyCell(pos))
       self.__items.append(item)
-      item.setStartPosition(None)
-      item.setStartPosition(self.getNearestEmptyCell(pos))
       if isinstance(item, GG.model.player.GGPlayer):
         item.setStartDestination(item.getPosition())
         item.setHeading("up")
@@ -162,13 +163,36 @@ class GGRoom(GG.model.ggmodel.GGModel):
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username, \
                     GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(player.getPosition(), player.offset)))    
 
+  def getEmptyCell(self):
+    listCell = []
+    for corx in range(GG.utils.SCENE_SZ[0]):
+      for cory in range(GG.utils.SCENE_SZ[1]):
+        point = [corx,0,cory]
+        if not self.getBlocked(point):
+          listCell.append(point)
+    return listCell
+    
+
   def getNearestEmptyCell(self, pos):
     """ Returns the nearest empty cell to a position.
     pos: start position.
     """
     if not self.getBlocked(pos):
       return pos
-    
+    emptyCell = self.getEmptyCell()
+    if len(emptyCell) == 0:
+      return False
+    dist = None 
+    point = False
+    for emptyPos in emptyCell:
+      newDist = GG.utils.distPoints([emptyPos[0], emptyPos[2]], [pos[0], pos[2]])
+      if dist is None or dist > newDist:
+        dist = newDist
+        point = emptyPos
+    return point
+      
+      
+    """
     retVar = None
     if pos[2] > 0:
       auxPos = [pos[0], pos[1], pos[2] - 1]
@@ -180,6 +204,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       res = self.getNearestEmptyCell(auxPos)
       if res != None:
         retVar = res
+
     elif pos[0] > 0:
       auxPos = [pos[0] - 1, pos[1], pos[2]]
       res = self.getNearestEmptyCell(auxPos)
@@ -190,6 +215,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       res = self.getNearestEmptyCell(auxPos)
       if res != None:
         retVar = res
+
     elif (pos[0] > 0) and (pos[2] > 0):
       auxPos = [pos[0] - 1, pos[1], pos[2] - 1]
       res = self.getNearestEmptyCell(auxPos)
@@ -210,5 +236,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
       res = self.getNearestEmptyCell(auxPos)
       if res != None:
         retVar = res
+    else:
+      retVar = False
     
     return retVar
+    """
