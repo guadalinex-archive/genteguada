@@ -25,7 +25,6 @@ class ChatMessage:
     """ Sets some vars to be used as locals.
     """
     return parentVars + ['imagePath']
-      
     
   def getMessage(self):
     """ Returns the chat message.
