@@ -66,12 +66,25 @@ class IsoViewHud(isoview.IsoView):
     posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
     
+    """
+    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
+                            GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
+    
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
+    positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
+    positionAnim.setOnStop(self.__temporaryItems.remove, invItem)
+    positionAnim.setOnStop(self.paintItemsInventory, None)
+    #positionAnim.setOnStop(self.__isoviewRoom.removeTopSprite, invItem.getImg())
+    
+    """
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.__temporaryItems.remove, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
+    #positionAnim.setOnStop(self.__isoviewRoom.removeTopSprite, invItem.getImg())
+    
     
     invItem.setAnimation(positionAnim)
     self.__temporaryItems.append(invItem)
@@ -102,11 +115,8 @@ class IsoViewHud(isoview.IsoView):
   def updateFrame(self, ellapsedTime):
     """ Updates all sprites for a new frame.
     """
-    #hay que dibujar la habitación DESPUES del hud, para que las animaciones de los items se vean sobre el HUD y no debajo como ahora.
-    if self.__isoviewRoom:
-      self.__isoviewRoom.updateFrame(ellapsedTime)
-    for item in self.__temporaryItems:
-      item.updateFrame(ellapsedTime)
+    #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
+    #se vean sobre el HUD y no debajo como ahora.
 
     if self.winWardrobe:
       self.winWardrobe.update()
@@ -116,6 +126,11 @@ class IsoViewHud(isoview.IsoView):
       self.textArea.update()
       self.__textField.update()
       self.windowInventory.update()
+
+    if self.__isoviewRoom:
+      self.__isoviewRoom.updateFrame(ellapsedTime)
+    for item in self.__temporaryItems:
+      item.updateFrame(ellapsedTime)
 
     pygame.display.update()
 
@@ -235,6 +250,12 @@ class IsoViewHud(isoview.IsoView):
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     
+    """
+    for item in self.__temporaryItems:
+      if item.getModel().getSender() == messageChat.getSender():
+        item.getAnimation().stop()
+    """
+    print ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR
     idleAnim = animation.IdleAnimation(GG.utils.ANIM_CHAT_TIME1, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)

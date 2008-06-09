@@ -13,6 +13,7 @@ class Animation(object):
     time: animation length in time.
     isoview: isoview used on the animation.
     """
+    print "animacion creada: ", self
     self.__startedTime = None
     self.__time = time
     self.__isoview = isoview
@@ -58,6 +59,7 @@ class Animation(object):
   def stop(self):
     """ Stops the animation.
     """  
+    print "animacion parada: ", self
     self.onStop()
   
     
@@ -131,6 +133,7 @@ class ScreenPositionAnimation(Animation):
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
 
   def setScreenPosition(self, pos):
+    print "screen position: ", pos, self
     self.getIsoview().setScreenPosition(pos)
     
   def start(self):
@@ -145,6 +148,8 @@ class ScreenPositionAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     percent = self.getProgress(now)
+    #print now, percent
+    #print "percent: ", percent
     self.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
                             self.__origin[1] + int(self.__shift[1]*percent)])
       
@@ -233,7 +238,6 @@ class SecuenceAnimation(CompositionAnimation):
     """
     CompositionAnimation.__init__(self, 0, None)
     self.__animations = []
-    self.__accumulatedTime = 0
     
   def addAnimation(self, animation):
     """ Adds a new animation to the secuence.
@@ -261,14 +265,13 @@ class SecuenceAnimation(CompositionAnimation):
     """
     #super(self.__class__, self).step(now)
     if len(self.__animations):
-      if self.__animations[0].isFinished(now - self.__accumulatedTime):
-        self.__accumulatedTime = now  
+      if self.__animations[0].isFinished(now):
         self.__animations[0].stop()
         self.__animations.remove(self.__animations[0])
         if len(self.__animations):
           self.__animations[0].start()
       else:
-        self.__animations[0].step(now - self.__accumulatedTime)
+        self.__animations[0].step(now)
     else:
       self.stop()
     
