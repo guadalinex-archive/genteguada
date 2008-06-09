@@ -421,4 +421,9 @@ def createBalloon(self, string):
     
     
     
-    
+def distPoints(aPoint, anotherPoint):
+  delta = (anotherPoint[0] - aPoint[0], anotherPoint[1] - aPoint[1])
+
+  dotProduct = math.pow(delta[0], 2) + math.pow(delta[1], 2)
+
+  return math.sqrt(dotProduct)
