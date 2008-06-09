@@ -132,6 +132,16 @@ class GGSystem(dMVC.model.Model):
     #prueba para seleccionar un jugador y poder hablar con el en privado y hacer intercambio de objetos
     #room1.addItem(nina,[4,0,5])
 
+    demoPlayerPath = GG.utils.NINO_PATH
+    for i in range(100):
+      if demoPlayerPath == GG.utils.NINO_PATH:
+        demoPlayerPath = GG.utils.NINA_PATH
+      else:
+        demoPlayerPath = GG.utils.NINO_PATH
+      demoPlayer = GG.model.player.GGPlayer(demoPlayerPath, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "user"+str(i), "user"+str(i))
+      self.__createPlayer(demoPlayer)
+    
+
   def __createRoom(self, spriteFull, label):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
