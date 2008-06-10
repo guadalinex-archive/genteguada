@@ -133,6 +133,9 @@ class IsoViewHud(isoview.IsoView):
     for item in self.__temporaryItems:
       item.updateFrame(ellapsedTime)
 
+    if self.wardrobe:
+      self.winWardrobe.update()
+
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -314,7 +317,7 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
-    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 180]
+    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))

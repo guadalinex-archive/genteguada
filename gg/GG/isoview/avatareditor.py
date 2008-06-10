@@ -17,6 +17,26 @@ class ImageMapTransparent(ocempgui.widgets.ImageMap):
   def draw (self):
     self._image = self.picture
 
+class ImageButtonTransparent(ocempgui.widgets.ImageButton):
+
+  def __init__(self, image):
+    ocempgui.widgets.ImageButton.__init__(self, image)
+  
+  #def draw (self):
+    #ocempgui.widgets.ImageButton.draw(self)
+    #self.set_state(1)
+    #self.sensitive = True
+    #self._image = self.picture
+    #print self.sensitive
+
+  def update (self):
+    self._image = self.picture
+    #ocempgui.widgets.ImageButton.update(self)
+    #self.set_state(1)
+    #self.parent.update()
+    #self._image = self.picture
+    #print self.sensitive
+
 class AvatarEditor:
   """ AvatarEditor class.
   Defines the Avatar Editor
@@ -43,11 +63,11 @@ class AvatarEditor:
     tLv5 = 5, "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
 
-  def drawInGame(self):
+  def drawInGame(self, render):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     self.paintScreen()
     self.paintAvatar()
-    self.paintTags()
+    self.paintTags(render)
     self.paintCustomizeZone(self.activeOption)
     return self.window
     
@@ -58,8 +78,8 @@ class AvatarEditor:
     #background = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
     #self.screen.fill(GG.utils.GUADALINEX_BLUE, background)
 
-    imgBackground = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, "background.png"))
-    self.window.add_child(imgBackground)
+    #imgBackground = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, "background.png"))
+    #self.window.add_child(imgBackground)
     """
     self.paintLeftBackgroundScreen()
     
@@ -214,7 +234,7 @@ class AvatarEditor:
     self.skirtItem.topleft = 528,114
     self.window.add_child(self.skirtItem)
     
-  def paintTags(self):
+  def paintTags(self, render):
     """Paint the Tags Zone.
     """
     print "Pinta las pestanas"
@@ -222,15 +242,23 @@ class AvatarEditor:
     for pos in range(len(GG.utils.TAGS)):
       #img = pygame.image.load(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos])).convert_alpha()
       imgTag = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
+      #imgTag = ImageButtonTransparent(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
       #print dir(imgTag)
       imgTag.padding = 0
       imgTag.border = 0
       imgTag.border = ocempgui.widgets.Constants.BORDER_NONE
       imgTag.topleft = [288, GG.utils.TAG_OFFSET*pos]
-      print imgTag.topleft
+      #print imgTag.topleft
       imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
+      imgTag._image = imgTag.picture
+      #imgTag.connect_signal(ocempgui.widgets.Constants.SIG_MOUSEDOWN, self.casa, pos)
+      #print dir(self.renderer)
+      #render.get_managers()[0].add_high_priority_object(imgTag,ocempgui.widgets.Constants.SIG_MOUSEDOWN)
       #self.renderer.add_widget(imgTag)
       self.window.add_child(imgTag)
+
+  def casa(self,p):
+    print "hola"
     
   def paintCustomizeZone(self,idTag):
     """Paint the Customize Zone.
