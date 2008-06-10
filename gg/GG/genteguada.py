@@ -87,9 +87,18 @@ class GenteGuada:
     frameCounter = 0
     totalEllapsedTime = 0
 
+    # Avoid name resolution inside the loop
     theClock = pygame.time.Clock()
+    theClock_tick = theClock.tick
+    time_time = time.time
+    pygame_event_get = pygame.event.get
+    if self.client:
+      client_processEvents = self.client.processEvents
+    else:
+      client_processEvents = None
+
     while True:
-      ellapsedTime = theClock.tick(intentedFPS)
+      ellapsedTime = theClock_tick(intentedFPS)
 
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(totalEllapsedTime) / frameCounter
@@ -102,12 +111,13 @@ class GenteGuada:
         frameCounter += 1
         totalEllapsedTime += ellapsedTime
 
-      now = time.time() * 1000
-      if self.client:
-        self.client.processEvents()
+      now = time_time() * 1000
+      if client_processEvents:
+        client_processEvents()
 
-      self.activeScreen.processEvent(pygame.event.get())
-      self.activeScreen.updateFrame(now)
+      activeScreen = self.activeScreen
+      activeScreen.processEvent(pygame_event_get())
+      activeScreen.updateFrame(now)
 
 
   def getDataPath(self, img):
