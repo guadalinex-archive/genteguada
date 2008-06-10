@@ -170,7 +170,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
-    removed = False
     for ivplayer in self.__isoViewPlayers:
       if ivplayer.getModel() == event.getParams()['item']:
         self.removeIsoViewItem(ivplayer)
