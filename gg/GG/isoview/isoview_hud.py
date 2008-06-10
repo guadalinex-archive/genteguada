@@ -332,10 +332,15 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBar.add_child(button)
 
   def showDresser(self):
-    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer)
+    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self)
     self.winWardrobe = self.wardrobe.draw()
     self.widgetContainer.add_widget(self.winWardrobe)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
+
+  def closeDresser(self):
+    GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    self.winWardrobe.destroy()
+    self.winWardrobe = None
 
   def turnRight(self):
     print "turn right"
