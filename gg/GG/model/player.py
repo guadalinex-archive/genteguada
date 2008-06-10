@@ -120,6 +120,7 @@ class GGPlayer(GG.model.item.GGItem):
     #self.__inventory.append(item)
     #if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
     #  item.startCount()
+    item.setPlayer(self)
     self.triggerEvent('addInventory', item=item)
     
   def removeInventory(self, item):
@@ -127,7 +128,8 @@ class GGPlayer(GG.model.item.GGItem):
     item: item to be removed.
     """
     if item in self.__inventory:
-      self.__inventory.remove(item)
+      #self.__inventory.remove(item)
+      item.setPlayer(None)
       self.triggerEvent('removeInventory', item=item)
       return True
     return False
@@ -185,15 +187,11 @@ class GGPlayer(GG.model.item.GGItem):
     """
     return ["talk","exchange"]
       
-  def tick(self):
+  def tick(self, now):
     """ Calls for an update on player's position an movement direction.
     """
     for item in self.__inventory:
-      item.tick()
-      if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
-        if not item.timeLeft():
-          self.removeInventory(item)
-          item.getStartRoom().addItem(item, item.getPosition())
+      item.tick(now)
     if self.getPosition() == self.__destination:
       self.setState(GG.utils.STATE[1])
       return

@@ -142,11 +142,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
             return first[0]
     return "none"  
     
-  def tick(self):
+  def tick(self, now):
     """ Calls for an update on all player movements.
     """
     for item in self.__items:
-      item.tick()
+      item.tick(now)
 
   def getPlayers(self):
     """ Returns the players list.

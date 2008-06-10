@@ -101,7 +101,7 @@ class GGSystem(dMVC.model.Model):
     dictTrash = {"object": GG.model.inventory_only_item.GGInventoryOnlyItem, "params": [GG.utils.TRASH_SPRITE, [7, 0, 7], "llave dorada"]}
     myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [7, 0, 7], [20, 0], "Papelera", [], dictTrash)
     
-    myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 3, room1)
+    myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
     myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
     myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
@@ -184,15 +184,21 @@ class GGSystem(dMVC.model.Model):
   def __start(self):
     """ Starts the program.
     """
-    while True:
-      time.sleep(GG.utils.TICK_DELAY)
-      self.__tick()
+    time_time = time.time
+    time_sleep = time.sleep
+    delay = GG.utils.TICK_DELAY
+    try:
+        while True:
+            time_sleep(delay)
+            self.__tick(time_time()*1000)
+    except:
+        dMVC.utils.logger.exception('Exception in __start')
     
-  def __tick(self):
+  def __tick(self, now):
     """ Calls for a time tick on all rooms.
     """
     for room in self.__rooms:
-      room.tick()    
+      room.tick(now)    
 
   def getResource(self, img, date):
     """ Returns a resource path.
@@ -218,3 +224,4 @@ class GGSystem(dMVC.model.Model):
   #def onConnection(self, rhandler):
   #  print "en system"
   #  print rhandler
+

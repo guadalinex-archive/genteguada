@@ -116,9 +116,17 @@ class IsoViewHud(isoview.IsoView):
       if ivInventoryItem.getModel() == item:
         toBeRemoved = ivInventoryItem
     if toBeRemoved:    
+      posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
+      posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
+      pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
+      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, toBeRemoved, \
+                            pos, GG.utils.p3dToP2d(item.getPosition(), item.offset))
+      positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
+      positionAnim.setOnStop(self.__isoviewInventory.remove, toBeRemoved)
+      positionAnim.setOnStop(self.__player.getInventory().remove, item)
+      positionAnim.setOnStop(self.paintItemsInventory, None)
+      toBeRemoved.setAnimation(positionAnim)
       GG.utils.playSound(GG.utils.SOUND_DROPITEM)
-      self.__isoviewInventory.remove(toBeRemoved)
-    self.paintItemsInventory()
     
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
@@ -144,6 +152,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
     for item in self.__temporaryItems:
+      item.updateFrame(ellapsedTime)
+    for item in self.__isoviewInventory:
       item.updateFrame(ellapsedTime)
     pygame.display.update()
 
@@ -268,7 +278,6 @@ class IsoViewHud(isoview.IsoView):
       if item.getModel().getSender() == messageChat.getSender():
         item.getAnimation().stop()
     """
-    print ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR
     idleAnim = animation.IdleAnimation(GG.utils.ANIM_CHAT_TIME1, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)
