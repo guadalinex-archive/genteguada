@@ -6,5 +6,5 @@ echo "--------------------------"
 echo
 
 export PYTHONPATH="./dmvc"
-python -m cProfile -o genteguada.prof gg/genteguada 
-#python gg/genteguada 
+#python -m cProfile -o genteguada.prof gg/genteguada 
+python gg/genteguada 
