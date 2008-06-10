@@ -1,7 +1,6 @@
 import pickable_item
 import GG.utils
 import time
-import pygame
 import GG.isoview.isoview_item
 
 class GGPersistentItem(pickable_item.GGPickableItem):
