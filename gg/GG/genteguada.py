@@ -97,7 +97,10 @@ class GenteGuada:
         print "Average FPS: " + str(1000.0 / actualFps)
         fpsCounter = 0
         fpsTotal = 0
-        fps = int((fps + actualFps) / 2) + 5
+        newFps = int(((fps + actualFps) / 2) * 1.1)
+        if fps != newFps:
+          print "NEW FPS: " + str(newFps)
+          fps = newFps
       else:
         fpsTotal += ellapsedTime
 
