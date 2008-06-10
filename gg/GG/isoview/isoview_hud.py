@@ -33,8 +33,6 @@ class IsoViewHud(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.HUD_OR
     
-    #self.__temporaryItems = []
-
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
@@ -151,8 +149,6 @@ class IsoViewHud(isoview.IsoView):
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
-    #for item in self.__temporaryItems:
-    #  item.updateFrame(ellapsedTime)
     for item in self.__isoviewInventory:
       item.updateFrame(ellapsedTime)
     pygame.display.update()

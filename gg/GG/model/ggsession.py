@@ -8,12 +8,13 @@ class GGSession(ggmodel.GGModel):
   Includes room and player objects, and some procedures to manage data.
   """
     
-  def __init__(self, player):
+  def __init__(self, player, system):
     """ Initializes session attributes.
     player: session user.
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
+    self.__system = system
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
@@ -56,4 +57,7 @@ class GGSession(ggmodel.GGModel):
   
 
   def logout(self):
-    print str(self) + ": logout!"
+    self.__system.logout(self)
+
+    self.__player = None
+    self.__system = None

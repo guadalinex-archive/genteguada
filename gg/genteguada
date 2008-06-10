@@ -4,11 +4,11 @@ import sys
 from optparse import OptionParser
 import GG.genteguada
 
-try:
-  import psyco
-  psyco.full()
-except ImportError:
-  print 'Psyco not installed, the program will just run slower'
+#try:
+#  import psyco
+#  psyco.full()
+#except ImportError:
+#  print 'Psyco not installed, the program will just run slower'
 
 
 # Lectura de parametros de la linea de comandos 
