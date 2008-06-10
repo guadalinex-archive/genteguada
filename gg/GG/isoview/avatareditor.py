@@ -64,7 +64,9 @@ class AvatarEditor:
     tLv5 = 5, "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
 
+    #self.render = ocempgui.widgets.Renderer()
     self.render = render
+    print dir(self.render)
 
   def processEvent(self,events):
     for event in events:
@@ -89,6 +91,7 @@ class AvatarEditor:
     self.paintAvatar()
     self.paintTags()
     self.paintCustomizeZone(self.activeOption)
+    self.window.set_depth(1)
     return self.window
     
   def paintScreen(self):
