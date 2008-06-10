@@ -117,9 +117,9 @@ class GGPlayer(GG.model.item.GGItem):
     """ Adds a new item to the player's inventory.
     item: new item.
     """
-    self.__inventory.append(item)
-    if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
-      item.startCount()
+    #self.__inventory.append(item)
+    #if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
+    #  item.startCount()
     self.triggerEvent('addInventory', item=item)
     
   def removeInventory(self, item):

@@ -74,38 +74,33 @@ class IsoViewHud(isoview.IsoView):
   def getPlayer(self):
     return self.__player
   
+  def findIVItem(self, item):
+    for ivItem in self.__isoviewRoom.getIsoViewPlayers():
+      if ivItem.getModel() == item:
+        return ivItem
+  
   def inventoryAdded(self, event):
     """ Adds a new isoview inventory item.
-    item: new isoview inventory item.
+    item: new inventory item.
     """
     item = event.getParams()["item"]
-    
+    ivItem = self.findIVItem(item)
     posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
     posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
     
-    """
-    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
+    
+    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
     
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
+    positionAnim.setOnStop(item.getRoom().removeItem, item)
+    positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
+    positionAnim.setOnStop(self.__player.getInventory().append, item)
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
-    positionAnim.setOnStop(self.__temporaryItems.remove, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     #positionAnim.setOnStop(self.__isoviewRoom.removeTopSprite, invItem.getImg())
-    
-    """
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
-    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, invItem, \
-                            GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
-    positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
-    positionAnim.setOnStop(self.__temporaryItems.remove, invItem)
-    positionAnim.setOnStop(self.paintItemsInventory, None)
-    #positionAnim.setOnStop(self.__isoviewRoom.removeTopSprite, invItem.getImg())
-    
-    
-    invItem.setAnimation(positionAnim)
-    self.__temporaryItems.append(invItem)
+    ivItem.setAnimation(positionAnim)
     
   def inventoryRemoved(self, event):
     """ Removes an item from the inventory item list.
@@ -383,7 +378,7 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     self.__player.addInventory(self.__selectedItem)
-    self.__selectedItem.getRoom().removeItem(self.__selectedItem)
+    #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
  
   def itemToClone(self):

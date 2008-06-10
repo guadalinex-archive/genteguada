@@ -13,7 +13,6 @@ class Animation(object):
     time: animation length in time.
     isoview: isoview used on the animation.
     """
-    print "animacion creada: ", self
     self.__startedTime = None
     self.__time = time
     self.__isoview = isoview
@@ -59,7 +58,6 @@ class Animation(object):
   def stop(self):
     """ Stops the animation.
     """  
-    print "animacion parada: ", self
     self.onStop()
   
     
@@ -133,7 +131,6 @@ class ScreenPositionAnimation(Animation):
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
 
   def setScreenPosition(self, pos):
-    print "screen position: ", pos, self
     self.getIsoview().setScreenPosition(pos)
     
   def start(self):
@@ -148,8 +145,6 @@ class ScreenPositionAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     percent = self.getProgress(now)
-    #print now, percent
-    #print "percent: ", percent
     self.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
                             self.__origin[1] + int(self.__shift[1]*percent)])
       
@@ -185,7 +180,6 @@ class MovieAnimation(Animation):
     self.loadSprites()  
     
   def loadSprites(self):
-    #print "load sprites"
     self.__sprites = []
     for frame in self.__frames:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().imagePath + frame)
@@ -198,7 +192,6 @@ class MovieAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     if len(self.__sprites) == 0:
-      print "me paro"
       self.stop()
     else:
       time = self.getTime()
