@@ -15,7 +15,6 @@ class ChatMessage(ggmodel.GGModel):
     color: text color.
     position: on-screen chat message starting position.
     """
-    #self.dadada()
     ggmodel.GGModel.__init__(self)
     self.__message = message
     self.__sender = sender

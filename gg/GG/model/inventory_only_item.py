@@ -14,6 +14,13 @@ class GGInventoryOnlyItem(item.GGItem):
     item.GGItem.__init__(self, spriteName, position, [0, 0])
     self.spriteInventory = spriteName
     self.label = label
+    self.__player = None
+    
+  def setPlayer(self, player):
+    self.__player = player
+    
+  def getPlayer(self):
+    return self.__player  
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
