@@ -29,7 +29,8 @@ class GenteGuada:
   @staticmethod
   def getInstance():
     return GenteGuada.instance
-
+  
+  """
   def input(self, events):
     for event in events:
       if event.type == pygame.locals.QUIT:
@@ -46,6 +47,7 @@ class GenteGuada:
           if not dest == [-1, -1]:
             self.isoHud.getIsoviewRoom().getModel().clickedByPlayer(self.isoHud.getPlayer(), [dest[0], 0, dest[1]])
     self.isoHud.widgetContainer.distribute_events(*events)
+  """
 
   def finish(self):
     #print dMVC.utils.statClient.strClient()

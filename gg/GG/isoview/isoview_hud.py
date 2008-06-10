@@ -354,6 +354,10 @@ class IsoViewHud(isoview.IsoView):
 
   def showSoundControl(self):
     print "show sound control"
+    #Ejemplo de como abrir un url en un navegador
+    import webbrowser 
+    webbrowser.open("www.igosoftware.es")
+
 
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
