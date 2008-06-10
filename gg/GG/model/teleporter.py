@@ -125,5 +125,5 @@ class GGTeleporter(GG.model.item.GGItem):
     message: new chat message.
     """
     self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 'Teleporter', \
-                    GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(self.getPosition(), self.offset)))
+                    GG.utils.TEXT_COLOR["black"], self.getPosition()))
 

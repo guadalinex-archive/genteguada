@@ -161,8 +161,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """ Triggers a new avent after receiving a new chat message.
     """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username, \
-                    GG.utils.TEXT_COLOR["black"], GG.utils.p3dToP2d(player.getPosition(), player.offset)))    
-
+                    GG.utils.TEXT_COLOR["black"], player.getPosition()))    
+    
   def getEmptyCell(self):
     listCell = []
     for corx in range(GG.utils.SCENE_SZ[0]):
