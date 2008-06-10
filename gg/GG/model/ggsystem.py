@@ -223,8 +223,3 @@ class GGSystem(dMVC.model.Model):
       return imgData
     else:
       return None
-
-  #def onConnection(self, rhandler):
-  #  print "en system"
-  #  print rhandler
-
