@@ -97,8 +97,9 @@ class GenteGuada:
         averageFPS = 1000.0 / averageTimePerFrame
         print "Average: Time per Frame: " + str(averageTimePerFrame) +  ", FPS: " + str(averageFPS)
 
-        newFPS = int( ((intentedFPS + averageFPS) / 2) )
-        if newFPS < intentedFPS:
+        #newFPS = int( ((intentedFPS + averageFPS) / 2) )
+        newFPS = int( averageFPS * 1.1 )
+        if newFPS != intentedFPS:
           print "*** NEW FPS: " + str(newFPS)
           intentedFPS = newFPS
 
