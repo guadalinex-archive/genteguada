@@ -17,26 +17,6 @@ class ImageMapTransparent(ocempgui.widgets.ImageMap):
   def draw (self):
     self._image = self.picture
 
-class ImageButtonTransparent(ocempgui.widgets.ImageButton):
-
-  def __init__(self, image):
-    ocempgui.widgets.ImageButton.__init__(self, image)
-  
-  #def draw (self):
-    #ocempgui.widgets.ImageButton.draw(self)
-    #self.set_state(1)
-    #self.sensitive = True
-    #self._image = self.picture
-    #print self.sensitive
-
-  def update (self):
-    self._image = self.picture
-    #ocempgui.widgets.ImageButton.update(self)
-    #self.set_state(1)
-    #self.parent.update()
-    #self._image = self.picture
-    #print self.sensitive
-
 class AvatarEditor:
   """ AvatarEditor class.
   Defines the Avatar Editor
@@ -63,10 +43,7 @@ class AvatarEditor:
     tLv4 = 4, "hair"
     tLv5 = 5, "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
-
-    #self.render = ocempgui.widgets.Renderer()
     self.render = render
-    print dir(self.render)
 
   def processEvent(self,events):
     for event in events:
@@ -84,8 +61,7 @@ class AvatarEditor:
     #se vean sobre el HUD y no debajo como ahora.
     self.window.update()
 
-
-  def drawInGame(self):
+  def draw(self):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     self.paintScreen()
     self.paintAvatar()
@@ -97,33 +73,8 @@ class AvatarEditor:
   def paintScreen(self):
     """Paint the Avatar Editor background on screen.
     """
-    print "Pinta la pantalla"
-    #background = pygame.Rect(0, 0, self.screen.get_width(), self.screen.get_height())
-    #self.screen.fill(GG.utils.GUADALINEX_BLUE, background)
-
-    #imgBackground = ocempgui.widgets.ImageLabel(os.path.join(GG.utils.DATA_PATH, "background.png"))
-    #self.window.add_child(imgBackground)
-    """
-    self.paintLeftBackgroundScreen()
-    
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BACKGROUND_MIDDLE)
-    self.backgroundMiddleImage = pygame.image.load(imgPath)
-    self.screen.blit(self.backgroundMiddleImage, (288,0))
-    
-    self.paintRightBackgroundScreen()
-    
-    pygame.display.update()
-    """
-    
-  def paintLeftBackgroundScreen(self):
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BACKGROUND_LEFT)
-    self.backgroundLeftImage = pygame.image.load(imgPath)
-    self.screen.blit(self.backgroundLeftImage, (0,0))
-    
-  def paintRightBackgroundScreen(self):
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.BACKGROUND_RIGHT)
-    self.backgroundRightImage = pygame.image.load(imgPath)
-    self.screen.blit(self.backgroundRightImage, (385,0))
+    imgBackground = ImageMapTransparent(os.path.join(GG.utils.DATA_PATH, "background.png"))
+    self.window.add_child(imgBackground)
     
   def paintAvatar(self):
     """Paint the Composite Avatar Zone.
@@ -263,26 +214,15 @@ class AvatarEditor:
     print "Pinta las pestanas"
     
     for pos in range(len(GG.utils.TAGS)):
-      #img = pygame.image.load(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos])).convert_alpha()
       imgTag = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
-      #imgTag = ImageButtonTransparent(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
-      #print dir(imgTag)
       imgTag.padding = 0
       imgTag.border = 0
       imgTag.border = ocempgui.widgets.Constants.BORDER_NONE
       imgTag.topleft = [288, GG.utils.TAG_OFFSET*pos]
-      #print imgTag.topleft
       imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
       imgTag._image = imgTag.picture
-      #imgTag.connect_signal(ocempgui.widgets.Constants.SIG_MOUSEDOWN, self.casa, pos)
-      #print dir(self.renderer)
-      #render.get_managers()[0].add_high_priority_object(imgTag,ocempgui.widgets.Constants.SIG_MOUSEDOWN)
-      #self.renderer.add_widget(imgTag)
       self.window.add_child(imgTag)
 
-  def casa(self,p):
-    print "hola"
-    
   def paintCustomizeZone(self,idTag):
     """Paint the Customize Zone.
     """
@@ -579,33 +519,3 @@ class AvatarEditor:
         if pixel[3] != 0:
           item.set_at((x,y), color)
     
-  def draw(self):
-    self.initAvatarEditor()
-    self.paintScreen()
-    self.paintAvatar()
-    self.renderer = ocempgui.widgets.Renderer()
-    self.renderer.set_screen(self.screen)
-    self.paintTags()
-    self.paintCustomizeZone(self.activeOption)
-    while True:
-      time.sleep(0.4)
-      self.input(pygame.event.get())
-    
-  def input(self,events):
-    for event in events:
-      if event.type == pygame.locals.QUIT:
-        sys.exit(0)
-    self.renderer.distribute_events(*events)
-
-  def initAvatarEditor(self):
-    #Iniciar las ventanas pygame
-    pygame.init()
-    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,pygame.HWSURFACE|pygame.FULLSCREEN,0)
-    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
-    print self.screen
-    pygame.display.set_caption("DEMO AVATAR GENERATOR")
-
-if __name__=="__main__":
-  a = AvatarEditor()
-  a.draw()
-  
