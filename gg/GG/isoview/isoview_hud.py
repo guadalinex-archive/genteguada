@@ -332,9 +332,8 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBar.add_child(button)
 
   def showDresser(self):
-    print "show dresser room"
     self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer)
-    self.winWardrobe = self.wardrobe.drawInGame()
+    self.winWardrobe = self.wardrobe.draw()
     self.widgetContainer.add_widget(self.winWardrobe)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
 

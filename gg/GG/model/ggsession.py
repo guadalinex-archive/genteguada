@@ -57,7 +57,7 @@ class GGSession(ggmodel.GGModel):
   
 
   def logout(self):
+    print str(self) + ": logout!"
     self.__system.logout(self)
-
     self.__player = None
     self.__system = None
