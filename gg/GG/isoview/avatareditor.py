@@ -46,6 +46,7 @@ class AvatarEditor:
     """ Class constructor.
     """
     print "Iniciando Avatar Editor"
+    self.firstTime = 1
     self.activeWidget = []
     self.activeOption = 0
     self.avatarConfiguration = { "gender": "male", "headSize": "S",
@@ -283,9 +284,14 @@ class AvatarEditor:
     """Paint the Customize Zone.
     """
     print "Pinta la zona de personalizacion"
+    if idTag == self.activeOption and self.firstTime == 0:
+      return
+    
     self.removeWidgets()
     if idTag == 0:
       self.paintGenderFrame()
+      self.activeOption = 0
+      self.firstTime = 0
       """maleButton = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
       maleButton.border = 0
       maleButton.padding = 0
@@ -309,6 +315,7 @@ class AvatarEditor:
       else:
     #   self.paintSkinColorPalette(GG.utils.FEMALE_SKIN)
         self.paintSkinColorPalette()
+      self.activeOption = 1
         
     elif idTag == 5:
       if self.avatarConfiguration["gender"] == "male":
@@ -317,18 +324,22 @@ class AvatarEditor:
       else:
     #   self.paintHairColorPalette(GG.utils.FEMALE_HAIR)
         self.paintHairColorPalette()
+      self.activeOption = 5
         
     elif idTag == 6:
       #self.paintColorPalette(self.shirtItem)
       self.paintColorPalette("shirt")
+      self.activeOption = 6
       
     elif idTag == 7:
     #  self.paintColorPalette(GG.utils.MALE_TROUSERS)
       self.paintColorPalette("trousers")
+      self.activeOption = 7
       
     elif idTag == 8:
     #  self.paintColorPalette(GG.utils.FEMALE_SKIRT)
        self.paintColorPalette("skirt")
+       self.activeOption = 8
       
     elif idTag == 9:
       if self.avatarConfiguration["gender"] == "male":
@@ -337,14 +348,16 @@ class AvatarEditor:
       else:
     #    self.paintColorPalette(GG.utils.FEMALE_SHOES)
         self.paintColorPalette("shoes")
-    else:
-      self.paintLeftBackgroundScreen()
+      self.activeOption = 9
+    #else:
+    #  self.paintLeftBackgroundScreen()
       
   def removeWidgets(self):
     for widget in self.activeWidget:
       if widget in self.window.children:
         self.window.remove_child(widget)
         widget.destroy()
+    self.activeWidget = []
 
 
   def paintGenderFrame(self):
@@ -553,7 +566,7 @@ class AvatarEditor:
     
   def updateColorItem(self, item, color):
     self.avatarConfiguration[item] = color
-    self.paintAvatar()
+    self.paintAvatarItem(item)
     
   def updateColor(self, item, color):
     size = item.get_rect()
