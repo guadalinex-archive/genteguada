@@ -40,7 +40,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
-    self.__isoViewPlayers = []
+    self.__isoViewItems = []
     self.__allPlayers = GroupSprite()
     self.__allTopPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
@@ -58,7 +58,7 @@ class IsoViewRoom(isoview.IsoView):
     
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
-      self.__isoViewPlayers.append(isoviewitem)
+      self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
       pos = item.getPosition()
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
@@ -68,16 +68,16 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
     
-  def getIsoViewPlayers(self):
+  def getIsoViewItems(self):
     """ Returns the isometric view handler.
     """
-    return self.__isoViewPlayers
+    return self.__isoViewItems
   
   def updateFrame(self, ellapsedTime):
     """ Paints floor, players and items on the room.
     screen: screen handler.
     """
-    for isoitem in self.__isoViewPlayers:
+    for isoitem in self.__isoViewItems:
       isoitem.updateFrame(ellapsedTime)
 
     screen = self.getScreen()
@@ -94,7 +94,7 @@ class IsoViewRoom(isoview.IsoView):
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.
     """
-    return self.__isoViewPlayers
+    return self.__isoViewItems
     
   def paintPlayers(self):
     """ Paints all players on screen.
@@ -154,7 +154,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    for ivitem in self.__isoViewPlayers:
+    for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
@@ -165,7 +165,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
-    for ivplayer in self.__isoViewPlayers:
+    for ivplayer in self.__isoViewItems:
       if ivplayer.getModel() == event.getParams()['item']:
         self.removeIsoViewItem(ivplayer)
         removed = True
@@ -176,7 +176,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Inserts a new item view.
     ivItem: item view.
     """
-    self.__isoViewPlayers.append(ivItem)
+    self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
     pos = ivItem.getModel().getPosition()
     self.__tileList[pos[0]][pos[1]].setIsoItem(ivItem)
@@ -185,7 +185,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    self.__isoViewPlayers.remove(ivPlayer)
+    self.__isoViewItems.remove(ivPlayer)
     self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
     pos = ivPlayer.getModel().getPosition()
@@ -194,21 +194,21 @@ class IsoViewRoom(isoview.IsoView):
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
     """
-    for item in self.__isoViewPlayers:
+    for item in self.__isoViewItems:
       item.unsubscribeAllEvents()
     isoview.IsoView.unsubscribeAllEvents(self)
 
   def itemSelected(self,item):
     """ Sets an item on the room as selected.
     """
-    for isoItem in self.__isoViewPlayers:
+    for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
         isoItem.selected()
 
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
-    for isoItem in self.__isoViewPlayers:
+    for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
         isoItem.unselected()   
 

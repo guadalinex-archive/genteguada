@@ -75,7 +75,7 @@ class IsoViewHud(isoview.IsoView):
     return self.__player
   
   def findIVItem(self, item):
-    for ivItem in self.__isoviewRoom.getIsoViewPlayers():
+    for ivItem in self.__isoviewRoom.getIsoViewItems():
       if ivItem.getModel() == item:
         return ivItem
   
