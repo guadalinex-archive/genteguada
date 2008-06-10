@@ -25,13 +25,21 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), model.offset)
-    self.__isohud.getIsoviewRoom().addSprite(self.__img)
+    #self.__isohud.getIsoviewRoom().addSprite(self.__img)
+
+  def getImg(self):
+    return self.__img  
 
   def setScreenPosition(self, pos):
     """ Sets a new position for the item's image.
     pos: new position.
     """
     self.__img.rect.topleft = pos  
+  
+  def getScreenPosition(self):
+    """ Returns the item's image position.
+    """
+    return self.__img.rect.topleft  
   
   def getSpriteName(self):
     """ Returns the name of the sprite used to paint the item on the inventory.

@@ -6,12 +6,12 @@ class GGInventoryOnlyItem(item.GGItem):
   Defines an inventory-only item behaviour.
   """
   
-  def __init__(self, spriteName, label):
+  def __init__(self, spriteName, position, label):
     """ Class builder.
     spriteName: inventory item sprite. 
     label: item labe.
     """
-    item.GGItem.__init__(self, spriteName, [-1, -1, -1], [0, 0])
+    item.GGItem.__init__(self, spriteName, position, [0, 0])
     self.spriteInventory = spriteName
     self.label = label
     

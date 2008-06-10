@@ -95,10 +95,10 @@ class GGSystem(dMVC.model.Model):
     room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     
-    dictPenguin = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
+    dictPenguin = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [1, 0, 6], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
     myPenguin = GG.model.giver_npc.GGGiverNPC(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso", [], dictPenguin)
     
-    dictTrash = {"object": GG.model.inventory_only_item.GGInventoryOnlyItem, "params": [GG.utils.TRASH_SPRITE, "llave dorada"]}
+    dictTrash = {"object": GG.model.inventory_only_item.GGInventoryOnlyItem, "params": [GG.utils.TRASH_SPRITE, [7, 0, 7], "llave dorada"]}
     myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [7, 0, 7], [20, 0], "Papelera", [], dictTrash)
     
     myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 3, room1)

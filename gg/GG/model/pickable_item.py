@@ -36,4 +36,4 @@ class GGPickableItem(item.GGItem):
       clicker.setSelectedItem(self)
       #clicker.addInventory(self)
       #self.getRoom().removeItem(self)
-      
+

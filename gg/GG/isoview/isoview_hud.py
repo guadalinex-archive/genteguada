@@ -91,15 +91,19 @@ class IsoViewHud(isoview.IsoView):
     
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     
-    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+    if ivItem != None:
+      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+                            GG.utils.p3dToP2d(ivItem.getModel().getPosition(), invItem.getModel().offset), pos)
+      positionAnim.setOnStop(item.getRoom().removeItem, item)
+    else:
+      ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
+      self.__isoviewRoom.addIsoViewItem(ivItem)  
+      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
-    
-    positionAnim.setOnStop(item.getRoom().removeItem, item)
     positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__player.getInventory().append, item)
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
-    #positionAnim.setOnStop(self.__isoviewRoom.removeTopSprite, invItem.getImg())
     ivItem.setAnimation(positionAnim)
     
   def inventoryRemoved(self, event):
@@ -141,7 +145,6 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateFrame(ellapsedTime)
     for item in self.__temporaryItems:
       item.updateFrame(ellapsedTime)
-
     pygame.display.update()
 
   def roomChanged(self, event):
