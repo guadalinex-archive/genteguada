@@ -21,7 +21,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = [model.getPosition()[0] + 80, model.getPosition()[1] - 10]
+    pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
+    self.__img.rect.topleft = [pos[0] + 40, pos[1] - 30]
     self.__isohud.getIsoviewRoom().addTopSprite(self.__img)
     
   def getImg(self):
