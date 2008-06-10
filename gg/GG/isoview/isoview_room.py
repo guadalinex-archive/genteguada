@@ -79,22 +79,17 @@ class IsoViewRoom(isoview.IsoView):
     """
     for isoitem in self.__isoViewPlayers:
       isoitem.updateFrame(ellapsedTime)
+
+    screen = self.getScreen()
     
     # These 3 first sentences clean the unused part of the screen.
-    self.__allPlayers.clear(self.getScreen(), self.__bg.image)
-    self.__allTopPlayers.clear(self.getScreen(), self.__bg.image)
-    self.__allBackground.clear(self.getScreen(), self.__bg.image)
-    #self.__allBackground.update()                     
-    dirtyRects = self.__allBackground.draw(self.getScreen())
-    #pygame.display.update(dirtyRects)
-    
-    #self.__allPlayers.update()                     
-    dirtyRects = self.__allPlayers.draw(self.getScreen())
-    #pygame.display.update(dirtyRects)
-    
-    #self.__allTopPlayers.update()                     
-    dirtyRects = self.__allTopPlayers.draw(self.getScreen())
-    #pygame.display.update(dirtyRects)
+    self.__allPlayers.clear(screen, self.__bg.image)
+    self.__allTopPlayers.clear(screen, self.__bg.image)
+    self.__allBackground.clear(screen, self.__bg.image)
+
+    self.__allBackground.draw(screen)
+    self.__allPlayers.draw(screen)
+    self.__allTopPlayers.draw(screen)
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.
