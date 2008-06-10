@@ -59,7 +59,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       item.setPosition(self.getNearestEmptyCell(pos))
       self.__items.append(item)
       if isinstance(item, GG.model.player.GGPlayer):
-        item.setStartDestination(item.getPosition())
+        #item.setStartDestination(item.getPosition())
         item.setHeading("up")
       item.setRoom(self)
       self.triggerEvent('addItem', item=item)
@@ -181,9 +181,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
       return pos
     emptyCell = self.getEmptyCell()
     if len(emptyCell) == 0:
-      return False
+      return None
     dist = None 
-    point = False
+    point = None
     for emptyPos in emptyCell:
       newDist = GG.utils.distPoints([emptyPos[0], emptyPos[2]], [pos[0], pos[2]])
       if dist is None or dist > newDist:
