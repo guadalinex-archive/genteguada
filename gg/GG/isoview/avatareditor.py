@@ -22,7 +22,7 @@ class AvatarEditor:
   Defines the Avatar Editor
   """
 
-  def __init__(self,render):
+  def __init__(self,render,parent):
     """ Class constructor.
     """
     print "Iniciando Avatar Editor"
@@ -44,6 +44,8 @@ class AvatarEditor:
     tLv5 = 5, "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
     self.render = render
+    self.parent = parent
+    self.finish = False
 
   def processEvent(self,events):
     for event in events:
@@ -59,7 +61,8 @@ class AvatarEditor:
     """
     #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
     #se vean sobre el HUD y no debajo como ahora.
-    self.window.update()
+    if not self.finish:
+      self.window.update()
 
   def draw(self):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
@@ -219,9 +222,19 @@ class AvatarEditor:
       imgTag.border = 0
       imgTag.border = ocempgui.widgets.Constants.BORDER_NONE
       imgTag.topleft = [288, GG.utils.TAG_OFFSET*pos]
-      imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
+      if pos == 0:
+        imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeWindow)
+      else:
+        imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
       imgTag._image = imgTag.picture
       self.window.add_child(imgTag)
+  
+  def closeWindow(self):
+    print "==> a cerrar"
+    self.finish = True
+    self.parent.closeDresser()
+    
+
 
   def paintCustomizeZone(self,idTag):
     """Paint the Customize Zone.
