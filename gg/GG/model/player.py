@@ -120,6 +120,7 @@ class GGPlayer(GG.model.item.GGItem):
     #self.__inventory.append(item)
     #if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
     #  item.startCount()
+    print "added: ", item
     item.setPlayer(self)
     self.triggerEvent('addInventory', item=item)
     
@@ -264,5 +265,10 @@ class GGPlayer(GG.model.item.GGItem):
     """ Opens an item.
     open: item to open.
     """
+    print "en player: ", self.__inventory 
     item.openedBy(self)
     
+  def setStartPosition(self, pos):
+    self.__destination = pos
+    GG.model.item.GGItem.setStartPosition(self, pos)
+      

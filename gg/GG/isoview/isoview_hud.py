@@ -425,5 +425,6 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to open a teleporter item.
     """
     print "open"
+    print "en isohud: ", self.__player.getInventory()
     self.__player.open(self.__selectedItem)
     self.itemUnselected()
