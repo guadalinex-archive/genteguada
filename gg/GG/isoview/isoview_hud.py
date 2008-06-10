@@ -99,7 +99,6 @@ class IsoViewHud(isoview.IsoView):
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(invItem.getModel().getPosition(), invItem.getModel().offset), pos)
     positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
-    positionAnim.setOnStop(self.__player.getInventory().append, item)
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     ivItem.setAnimation(positionAnim)
@@ -121,7 +120,6 @@ class IsoViewHud(isoview.IsoView):
                             pos, GG.utils.p3dToP2d(item.getPosition(), item.offset))
       positionAnim.setOnStop(self.__isoviewRoom.removeSprite, toBeRemoved.getImg())
       positionAnim.setOnStop(self.__isoviewInventory.remove, toBeRemoved)
-      positionAnim.setOnStop(self.__player.getInventory().remove, item)
       positionAnim.setOnStop(self.paintItemsInventory, None)
       toBeRemoved.setAnimation(positionAnim)
       GG.utils.playSound(GG.utils.SOUND_DROPITEM)
@@ -306,7 +304,8 @@ class IsoViewHud(isoview.IsoView):
   
   def itemUnselected(self,event=None):
     if self.__selectedItem:
-      self.__isoviewRoom.itemUnselected(self.__selectedItem)
+      if self.__isoviewRoom:  
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
       self.dropActionsItembuttons()
 
   #Defincion de la buttonBar y sus acciones permanentes
@@ -425,6 +424,5 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to open a teleporter item.
     """
     print "open"
-    print "en isohud: ", self.__player.getInventory()
     self.__player.open(self.__selectedItem)
     self.itemUnselected()

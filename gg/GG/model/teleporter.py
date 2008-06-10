@@ -87,17 +87,6 @@ class GGTeleporter(GG.model.item.GGItem):
     """
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
-  def checkCondition(self, condition, player):
-    """ Checks a condition for a given player.
-    condition: condition to check.
-    player: given player.
-    """
-    #print "**************", player.getInventory(), condition
-    for item in player.getInventory():
-      if item.label == condition:
-        return True
-    return False    
-      
   def clickedBy(self, clicker):
     """ Triggers an event when the teleporter receives a click by a player.
     clicker: player who clicks.
@@ -112,10 +101,9 @@ class GGTeleporter(GG.model.item.GGItem):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    #print "inventario del tipo: ", clicker.getInventory()
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:
-        if not self.checkCondition(condition, clicker):
+        if not clicker.hasItemLabeledInInventory(condition):
           self.newChatMessage('Necesitas una llave')  
           return False
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)

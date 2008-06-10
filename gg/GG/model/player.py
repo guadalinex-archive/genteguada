@@ -98,11 +98,6 @@ class GGPlayer(GG.model.item.GGItem):
       
   # self.__inventory
   
-  def getInventory(self):
-    """ Return the player's inventory.
-    """
-    return self.__inventory
-
   def setInventory(self, inventory):
     """ Sets a new player's inventory.
     inventory: new player's inventory.
@@ -113,14 +108,19 @@ class GGPlayer(GG.model.item.GGItem):
       return True
     return False
 
+  def hasItemLabeledInInventory(self, label):
+    for item in self.__inventory:
+      if item.label == label:
+        return True  
+    return False
+
   def addInventory(self, item):
     """ Adds a new item to the player's inventory.
     item: new item.
     """
-    #self.__inventory.append(item)
+    self.__inventory.append(item)
     #if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
     #  item.startCount()
-    print "added: ", item
     item.setPlayer(self)
     self.triggerEvent('addInventory', item=item)
     
@@ -129,7 +129,7 @@ class GGPlayer(GG.model.item.GGItem):
     item: item to be removed.
     """
     if item in self.__inventory:
-      #self.__inventory.remove(item)
+      self.__inventory.remove(item)
       item.setPlayer(None)
       self.triggerEvent('removeInventory', item=item)
       return True
@@ -237,7 +237,6 @@ class GGPlayer(GG.model.item.GGItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    print self.getPosition()
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username, \
                     GG.utils.TEXT_COLOR["black"], self.getPosition()))
 
@@ -265,7 +264,6 @@ class GGPlayer(GG.model.item.GGItem):
     """ Opens an item.
     open: item to open.
     """
-    print "en player: ", self.__inventory 
     item.openedBy(self)
     
   def setStartPosition(self, pos):
