@@ -92,6 +92,7 @@ class GGTeleporter(GG.model.item.GGItem):
     condition: condition to check.
     player: given player.
     """
+    #print "**************", player.getInventory(), condition
     for item in player.getInventory():
       if item.label == condition:
         return True
@@ -111,6 +112,7 @@ class GGTeleporter(GG.model.item.GGItem):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    #print "inventario del tipo: ", clicker.getInventory()
     if clicker.getPosition() == self.__entryPosition:
       for condition in self.__condition:
         if not self.checkCondition(condition, clicker):

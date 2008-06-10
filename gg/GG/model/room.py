@@ -54,9 +54,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
       del item
       return True
     if not item in self.__items:
-      #item.setStartPosition(None)
+      item.setStartPosition(None)
       #item.setStartPosition(self.getNearestEmptyCell(pos))
-      item.setPosition(self.getNearestEmptyCell(pos))
+      item.setStartPosition(self.getNearestEmptyCell(pos))
       self.__items.append(item)
       if isinstance(item, GG.model.player.GGPlayer):
         #item.setStartDestination(item.getPosition())
