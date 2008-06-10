@@ -24,6 +24,7 @@ class GenteGuada:
     self.client = None
     GenteGuada.instance = self
     self.clearCache()
+    self.activeScreen = None
 
   @staticmethod
   def getInstance():
@@ -76,8 +77,9 @@ class GenteGuada:
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
-    self.isoHud = self.session.defaultView(self.screen)
+    self.isoHud = self.session.defaultView(self.screen,self)
     self.isoHud.draw()
+    self.activeScreen = self.isoHud
 
     theClock = pygame.time.Clock()
     while True:
@@ -86,8 +88,11 @@ class GenteGuada:
       now = time.time() * 1000
       if self.client:
         self.client.processEvents()
-      self.input(pygame.event.get())
-      self.isoHud.updateFrame(now)
+
+      self.activeScreen.processEvent(pygame.event.get())
+      self.activeScreen.updateFrame(now)
+      #self.input(pygame.event.get())
+      #self.isoHud.updateFrame(now)
 
 
   def getDataPath(self, img):

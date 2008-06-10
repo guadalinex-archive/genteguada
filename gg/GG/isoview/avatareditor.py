@@ -42,7 +42,7 @@ class AvatarEditor:
   Defines the Avatar Editor
   """
 
-  def __init__(self):
+  def __init__(self,render):
     """ Class constructor.
     """
     print "Iniciando Avatar Editor"
@@ -63,11 +63,30 @@ class AvatarEditor:
     tLv5 = 5, "mask"
     self.orderDrawAvatar = tLv0 ,tLv1, tLv2, tLv3, tLv4, tLv5
 
-  def drawInGame(self, render):
+    self.render = render
+
+  def processEvent(self,events):
+    for event in events:
+      if event.type == pygame.locals.QUIT:
+        GG.genteguada.GenteGuada.getInstance().finish()
+      if event.type == pygame.locals.KEYDOWN:
+        if event.key == pygame.locals.K_ESCAPE:
+          GG.genteguada.GenteGuada.getInstance().finish()
+    self.render.distribute_events(*events)
+
+  def updateFrame(self, ellapsedTime):
+    """ Updates all sprites for a new frame.
+    """
+    #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
+    #se vean sobre el HUD y no debajo como ahora.
+    self.window.update()
+
+
+  def drawInGame(self):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     self.paintScreen()
     self.paintAvatar()
-    self.paintTags(render)
+    self.paintTags()
     self.paintCustomizeZone(self.activeOption)
     return self.window
     
@@ -234,7 +253,7 @@ class AvatarEditor:
     self.skirtItem.topleft = 528,114
     self.window.add_child(self.skirtItem)
     
-  def paintTags(self, render):
+  def paintTags(self):
     """Paint the Tags Zone.
     """
     print "Pinta las pestanas"

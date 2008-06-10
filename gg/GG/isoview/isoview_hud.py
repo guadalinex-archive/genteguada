@@ -14,7 +14,7 @@ class IsoViewHud(isoview.IsoView):
   Defines the HUD.
   """
   
-  def __init__(self, model, screen):
+  def __init__(self, model, screen, parent):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
@@ -34,7 +34,7 @@ class IsoViewHud(isoview.IsoView):
     self.__img.rect.topleft = GG.utils.HUD_OR
     
     self.__temporaryItems = []
-    
+
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     self.__player.subscribeEvent('addInventory', self.inventoryAdded)
@@ -53,6 +53,23 @@ class IsoViewHud(isoview.IsoView):
     }
     self.winWardrobe = None
     self.wardrobe = None
+
+  def processEvent(self,events):
+    for event in events:
+      if event.type == pygame.locals.QUIT:
+        GG.genteguada.GenteGuada.getInstance().finish()
+      if event.type == pygame.locals.KEYDOWN:
+        if event.key == pygame.locals.K_ESCAPE:
+          GG.genteguada.GenteGuada.getInstance().finish()
+        elif event.key == pygame.locals.K_RETURN: 
+          self.chatMessageEntered()
+      if event.type == pygame.locals.MOUSEBUTTONDOWN:
+        cordX, cordY = pygame.mouse.get_pos()
+        if 0 <= cordY <= GG.utils.HUD_OR[1]:
+          dest = self.getIsoviewRoom().findTile([cordX, cordY])
+          if not dest == [-1, -1]:
+            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, [dest[0], 0, dest[1]])
+    self.widgetContainer.distribute_events(*events)
 
   def getPlayer(self):
     return self.__player
@@ -119,22 +136,16 @@ class IsoViewHud(isoview.IsoView):
     #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
     #se vean sobre el HUD y no debajo como ahora.
 
-    if self.wardrobe:
-      self.winWardrobe.update()
-    else:
-      self.paintBackground()
-      self.buttonBar.update()
-      self.textArea.update()
-      self.__textField.update()
-      self.windowInventory.update()
+    self.paintBackground()
+    self.buttonBar.update()
+    self.textArea.update()
+    self.__textField.update()
+    self.windowInventory.update()
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
     for item in self.__temporaryItems:
       item.updateFrame(ellapsedTime)
-
-    if self.wardrobe:
-      self.winWardrobe.update()
 
     pygame.display.update()
 
@@ -327,10 +338,10 @@ class IsoViewHud(isoview.IsoView):
 
   def showDresser(self):
     print "show dresser room"
-    self.wardrobe = avatareditor.AvatarEditor()
-    self.winWardrobe = self.wardrobe.drawInGame(self.widgetContainer)
+    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer)
+    self.winWardrobe = self.wardrobe.drawInGame()
     self.widgetContainer.add_widget(self.winWardrobe)
-    #self.winWardrobe.update()
+    GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
 
   def turnRight(self):
     print "turn right"
