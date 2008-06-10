@@ -91,16 +91,17 @@ class GenteGuada:
     while True:
       #time.sleep(GG.utils.ANIM_DELAY)
       ellapsedTime = theClock.tick(intentedFPS)
+
       fpsCounter += 1
       if fpsCounter == intentedFPS:
-        averageFps = fpsTotal / intentedFPS
-        print "Average FPS: " + str(1000.0 / averageFps)
+        averageFPS = fpsTotal / intentedFPS
+        print "Average FPS: " + str(1000.0 / averageFPS)
         fpsCounter = 0
         fpsTotal = 0
-        newFps = int(((intentedFPS + averageFps) / 2) * 1.2)
-        if intentedFPS != newFps:
-          print "NEW FPS: " + str(newFps)
-          intentedFPS = newFps
+        newFPS = int(((intentedFPS + averageFPS) / 2.0) * 1.2)
+        if intentedFPS != newFPS:
+          print "NEW FPS: " + str(newFPS)
+          intentedFPS = newFPS
       else:
         fpsTotal += ellapsedTime
 
