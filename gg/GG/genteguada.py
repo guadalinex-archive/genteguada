@@ -111,12 +111,12 @@ class GenteGuada:
         frameCounter += 1
         totalEllapsedTime += ellapsedTime
 
-      now = time_time() * 1000
       if client_processEvents:
         client_processEvents()
 
       activeScreen = self.activeScreen
       activeScreen.processEvent(pygame_event_get())
+      now = time_time() * 1000
       activeScreen.updateFrame(now)
 
 
