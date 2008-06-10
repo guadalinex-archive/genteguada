@@ -83,24 +83,24 @@ class GenteGuada:
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
-    fps = 100
+    intentedFPS = 100
     fpsCounter = 0
     fpsTotal = 0
 
     theClock = pygame.time.Clock()
     while True:
       #time.sleep(GG.utils.ANIM_DELAY)
-      ellapsedTime = theClock.tick(fps)
+      ellapsedTime = theClock.tick(intentedFPS)
       fpsCounter += 1
-      if fpsCounter == fps:
-        actualFps = fpsTotal / fps
-        print "Average FPS: " + str(1000.0 / actualFps)
+      if fpsCounter == intentedFPS:
+        averageFps = fpsTotal / intentedFPS
+        print "Average FPS: " + str(1000.0 / averageFps)
         fpsCounter = 0
         fpsTotal = 0
-        newFps = int(((fps + actualFps) / 2) * 1.1)
-        if fps != newFps:
+        newFps = int(((intentedFPS + averageFps) / 2) * 1.2)
+        if intentedFPS != newFps:
           print "NEW FPS: " + str(newFps)
-          fps = newFps
+          intentedFPS = newFps
       else:
         fpsTotal += ellapsedTime
 
