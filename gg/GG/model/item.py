@@ -128,7 +128,7 @@ class GGItem(ggmodel.GGModel):
     """
     clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.__position))
     
-  def tick(self):
+  def tick(self, now):
     """ Call for an update on item.
     Not used at the moment.
     """

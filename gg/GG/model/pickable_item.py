@@ -17,6 +17,7 @@ class GGPickableItem(item.GGItem):
     item.GGItem.__init__(self, spriteName, position, offset)
     self.spriteInventory = spriteInventory
     self.label = label
+    self.__player = None
     
   def variablesToSerialize(self):
     parentVars = item.GGItem.variablesToSerialize(self)
@@ -26,6 +27,12 @@ class GGPickableItem(item.GGItem):
     """ Returns the item's available options.
     """
     return ["inventory"]
+
+  def setPlayer(self, player):
+    self.__player = player
+    
+  def getPlayer(self):
+    return self.__player  
   
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
