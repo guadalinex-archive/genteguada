@@ -85,7 +85,7 @@ class GenteGuada:
 
     intentedFPS = 100
     fpsCounter = 0
-    fpsTotal = 0
+    fpsTotal = 0.0
 
     theClock = pygame.time.Clock()
     while True:
@@ -94,10 +94,10 @@ class GenteGuada:
 
       fpsCounter += 1
       if fpsCounter == intentedFPS:
-        averageFPS = fpsTotal / intentedFPS
+        averageFPS = fpsTotal / fpsCounter
         print "Average FPS: " + str(1000.0 / averageFPS)
         fpsCounter = 0
-        fpsTotal = 0
+        fpsTotal = 0.0
         newFPS = int(((intentedFPS + averageFPS) / 2.0) * 1.2)
         if intentedFPS > newFPS:
           print "NEW FPS: " + str(newFPS)
