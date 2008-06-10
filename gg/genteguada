@@ -4,6 +4,13 @@ import sys
 from optparse import OptionParser
 import GG.genteguada
 
+try:
+  import psyco
+  psyco.full()
+except ImportError:
+  print 'Psyco not installed, the program will just run slower'
+
+
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
