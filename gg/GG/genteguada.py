@@ -99,7 +99,7 @@ class GenteGuada:
         fpsCounter = 0
         fpsTotal = 0
         newFPS = int(((intentedFPS + averageFPS) / 2.0) * 1.2)
-        if intentedFPS != newFPS:
+        if intentedFPS > newFPS:
           print "NEW FPS: " + str(newFPS)
           intentedFPS = newFPS
       else:
