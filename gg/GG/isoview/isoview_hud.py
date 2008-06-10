@@ -33,7 +33,7 @@ class IsoViewHud(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.HUD_OR
     
-    self.__temporaryItems = []
+    #self.__temporaryItems = []
 
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
@@ -151,8 +151,8 @@ class IsoViewHud(isoview.IsoView):
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
-    for item in self.__temporaryItems:
-      item.updateFrame(ellapsedTime)
+    #for item in self.__temporaryItems:
+    #  item.updateFrame(ellapsedTime)
     for item in self.__isoviewInventory:
       item.updateFrame(ellapsedTime)
     pygame.display.update()
@@ -273,25 +273,18 @@ class IsoViewHud(isoview.IsoView):
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
     
-    """
-    for item in self.__temporaryItems:
-      if item.getModel().getSender() == messageChat.getSender():
-        item.getAnimation().stop()
-    """
     idleAnim = animation.IdleAnimation(GG.utils.ANIM_CHAT_TIME1, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(idleAnim)
     secAnim.addAnimation(positionAnim)
-        
     secAnim.setOnStop(self.printChatMessage, ivMessageChat)
-    secAnim.setOnStop(self.__temporaryItems.remove, ivMessageChat)
+    secAnim.setOnStop(self.__isoviewRoom.removeIsoViewItem, ivMessageChat)
     secAnim.setOnStop(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
-    
     ivMessageChat.setAnimation(secAnim)
-    self.__temporaryItems.append(ivMessageChat)
-    
+    self.__isoviewRoom.addIsoViewItem(ivMessageChat)
+        
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
     event: event info.

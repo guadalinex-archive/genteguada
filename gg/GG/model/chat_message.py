@@ -1,8 +1,9 @@
+import ggmodel
 import time
 import dMVC.model
 import GG.isoview.isoview_chatmessage
 
-class ChatMessage:
+class ChatMessage(ggmodel.GGModel):
   """ ChatMessage class.
   Defines a book object behaviour.
   """
@@ -14,6 +15,8 @@ class ChatMessage:
     color: text color.
     position: on-screen chat message starting position.
     """
+    #self.dadada()
+    ggmodel.GGModel.__init__(self)
     self.__message = message
     self.__sender = sender
     self.__hour = time.time()
@@ -24,7 +27,7 @@ class ChatMessage:
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return parentVars + ['imagePath']
+    return ['imagePath']
     
   def getMessage(self):
     """ Returns the chat message.
