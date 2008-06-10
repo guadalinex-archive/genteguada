@@ -83,7 +83,7 @@ class GenteGuada:
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
-    fps = 30
+    fps = 100
     fpsCounter = 0
     fpsTotal = 0
 
@@ -93,9 +93,11 @@ class GenteGuada:
       ellapsedTime = theClock.tick(fps)
       fpsCounter += 1
       if fpsCounter == fps:
-        print "Average FPS: " + str(1000.0 / (fpsTotal / fps))
+        actualFps = fpsTotal / fps
+        print "Average FPS: " + str(1000.0 / actualFps)
         fpsCounter = 0
         fpsTotal = 0
+        fps = int((fps + actualFps) / 2) + 5
       else:
         fpsTotal += ellapsedTime
 
