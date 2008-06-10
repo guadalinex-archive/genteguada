@@ -83,25 +83,18 @@ class GenteGuada:
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
-    intentedFPS = 100
+    intentedFPS = 35
     frameCounter = 0
     totalEllapsedTime = 0
 
     theClock = pygame.time.Clock()
     while True:
-      #time.sleep(GG.utils.ANIM_DELAY)
       ellapsedTime = theClock.tick(intentedFPS)
 
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(totalEllapsedTime) / frameCounter
-        averageFPS = 1000.0 / averageTimePerFrame
+        averageFPS = 1000 / averageTimePerFrame
         print "Average: Time per Frame: " + str(averageTimePerFrame) +  ", FPS: " + str(averageFPS)
-
-        #newFPS = int( ((intentedFPS + averageFPS) / 2) )
-        newFPS = int( averageFPS * 1.1 )
-        if newFPS != intentedFPS:
-          print "*** NEW FPS: " + str(newFPS)
-          intentedFPS = newFPS
 
         frameCounter = 0
         totalEllapsedTime = 0
@@ -115,8 +108,6 @@ class GenteGuada:
 
       self.activeScreen.processEvent(pygame.event.get())
       self.activeScreen.updateFrame(now)
-      #self.input(pygame.event.get())
-      #self.isoHud.updateFrame(now)
 
 
   def getDataPath(self, img):
