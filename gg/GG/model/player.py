@@ -1,5 +1,5 @@
 import GG.model.room_item
-import GG.model.temp_pickable_item
+#import GG.model.temp_pickable_item
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
@@ -268,4 +268,10 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   def setStartPosition(self, pos):
     self.__destination = pos
     GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
+    
+  def hasItemLabeledInInventory(self, label):
+    for item in self.__inventory:
+      if item.label == label:
+        return True  
+    return False    
       
