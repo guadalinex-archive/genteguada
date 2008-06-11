@@ -44,6 +44,9 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers = GroupSprite()
     self.__allTopPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
+    
+    self.__insertedIVItem = None
+    
     self.__tileList = []
     for corx in range(GG.utils.SCENE_SZ[0]):
       listTile = []
@@ -64,7 +67,8 @@ class IsoViewRoom(isoview.IsoView):
       #pos = item.getPosition()
       #self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
     
-    self.getModel().subscribeEvent('addItem', self.itemAdded)
+    self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
+    self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
     
@@ -140,17 +144,19 @@ class IsoViewRoom(isoview.IsoView):
             return [x, z]
       line -= 1
     return [-1, -1]
-        
-    """
-    for corx in range(GG.utils.SCENE_SZ[0]):
-      for corz in range(GG.utils.SCENE_SZ[1]):
-        if self.__tileList[corx][corz].contained(pos):
-          if not self.__tileList[corx][corz].onBlank(pos):
-            return [corx, corz]
-    return [-1, -1]
-    """
+
   
+  """
   def itemAdded(self, event):
+    for ivitem in self.__isoViewItems:
+      if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
+        if ivitem.getModel().username == event.getParams()['item'].username:
+          return
+          #raise "Ya existe el usuario dentro de la habitacion" 
+    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
+  """
+  
+  def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
@@ -159,7 +165,21 @@ class IsoViewRoom(isoview.IsoView):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
           #raise "Ya existe el usuario dentro de la habitacion" 
-    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
+    ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
+    self.addIsoViewItem(ivItem)
+    
+  def itemAddedFromInventory(self, event):
+    """ Updates the room view when an item add event happens.
+    event: even info.
+    """
+    for ivitem in self.__isoViewItems:
+      if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
+        if ivitem.getModel().username == event.getParams()['item'].username:
+          return
+          #raise "Ya existe el usuario dentro de la habitacion" 
+    ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
+    self.addIsoViewItem(ivItem)
+    self.__parent.addItemToRoomFromInventory(ivItem)
         
   def itemRemoved(self, event):
     """ Updates the room view when an item remove event happens.
@@ -211,6 +231,12 @@ class IsoViewRoom(isoview.IsoView):
     for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
         isoItem.unselected()   
+
+  def findIVItem(self, item):
+    for ivItem in self.__isoViewItems:
+      if ivItem.getModel() == item:
+        return ivItem
+    return None  
 
   def addSprite(self, sprite):
     self.__allPlayers.add(sprite)

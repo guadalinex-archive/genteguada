@@ -29,7 +29,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Changes the player's sprite heading.
     """
     self.__heading = event.getParams()["heading"]
-    if self.hasMovieAnimation():
+    if self.__movieAnimation != None:
       frames = self.createFrameSet()
       self.__movieAnimation.setFrames(frames)
     else:
