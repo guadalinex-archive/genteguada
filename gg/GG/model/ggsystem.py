@@ -4,10 +4,11 @@ import GG.model.room
 import GG.model.player
 import GG.model.ggsession
 import GG.model.inventory_item
-import GG.model.pickable_item
+#import GG.model.pickable_item
 import GG.model.persistent_item
-import GG.model.temp_pickable_item
-import GG.model.giver_npc
+import GG.model.mp3_lobby
+import GG.model.penguin_lobby
+import GG.model.book_lobby
 import GG.model.teleporter
 import thread
 import time
@@ -97,35 +98,36 @@ class GGSystem(dMVC.model.Model):
     room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     
-    dictPenguin = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [1, 0, 6], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
-    myPenguin = GG.model.giver_npc.GGGiverNPC(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso", [], dictPenguin)
+    #dictPenguin = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [1, 0, 6], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
+    myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso")
     
-    dictTrash = {"object": GG.model.room_item.GGRoomItem, "params": [GG.utils.TRASH_SPRITE, [7, 0, 7], [0, 0], "llave dorada"]}
-    myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [7, 0, 7], [20, 0], "Papelera", [], dictTrash)
+    #dictTrash = {"object": GG.model.room_item.GGRoomItem, "params": [GG.utils.TRASH_SPRITE, [7, 0, 7], [0, 0], "llave dorada"]}
+    #myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [7, 0, 7], [20, 0], "Papelera", [], dictTrash)
     
-    myMp3 = GG.model.temp_pickable_item.GGTempPickableItem(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
-    myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
+    myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
+    #myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
+    myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
     myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe", "1234")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [3, 0, 3], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe2", "12345")
     
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [2, 0, 0], [55, 43]), [2, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 0], [55, 43]), [4, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [5, 0, 0], [55, 43]), [5, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [6, 0, 0], [55, 43]), [6, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, 0], [55, 43]), [7, 0, 0])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 1], [55, 43]), [0, 0, 1])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 2], [55, 43]), [0, 0, 2])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 4], [55, 43]), [0, 0, 4])
-    room1.addItemFromVoid(GG.model.item.GGItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [2, 0, 0], [55, 43]), [2, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 0], [55, 43]), [4, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [5, 0, 0], [55, 43]), [5, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [6, 0, 0], [55, 43]), [6, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, 0], [55, 43]), [7, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 1], [55, 43]), [0, 0, 1])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 2], [55, 43]), [0, 0, 2])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 4], [55, 43]), [0, 0, 4])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
     
     room1.addItemFromVoid(myPenguin, myPenguin.getPosition())    
     room1.addItemFromVoid(myBook, myBook.getPosition())
     room1.addItemFromVoid(myMp3, myMp3.getPosition())
-    room1.addItemFromVoid(myTrash, myTrash.getPosition())
+    #room1.addItemFromVoid(myTrash, myTrash.getPosition())
     room1.addItemFromVoid(myDoor1, myDoor1.getPosition())    
     room2.addItemFromVoid(myDoor2, myDoor2.getPosition())
     self.__createPlayer(nino)

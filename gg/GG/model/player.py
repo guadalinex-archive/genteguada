@@ -108,19 +108,12 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
       return True
     return False
 
-  def hasItemLabeledInInventory(self, label):
-    for item in self.__inventory:
-      if item.label == label:
-        return True  
-    return False
+  def checkItemOnInventory(self, item):
+    for it in self.__inventory:
+      if it.checkSimilarity(item):
+        return True
+    return False      
 
-  """
-  def addInventory(self, item):
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addInventory', item=item)
-  """  
-  
   def addToInventoryFromRoom(self, item):
     self.__inventory.append(item)
     item.setPlayer(self)

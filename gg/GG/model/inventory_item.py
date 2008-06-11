@@ -7,7 +7,7 @@ class GGInventoryItem(ggmodel.GGModel):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, offset):
+  def __init__(self, spriteName):
     """ Class constructor.
     spriteName: image name.
     offset: offset for that position.
@@ -15,13 +15,12 @@ class GGInventoryItem(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.__player = None
     self.spriteName = spriteName
-    self.offset   = offset
     self.imagePath = ""
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'offset', 'imagePath']
+    return ['spriteName', 'imagePath']
   
   # self.__player
   
@@ -30,6 +29,11 @@ class GGInventoryItem(ggmodel.GGModel):
 
   def setPlayer(self, player):
     self.__player = player  
+
+  def checkSimilarity(self, item):
+    if item.spriteName == self.spriteName:
+      return True
+    return False   
     
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):

@@ -1,10 +1,10 @@
-import pickable_item
+import room_item
 import GG.utils
 import time
 import GG.isoview.isoview_item
 
-class GGTempPickableItem(pickable_item.GGPickableItem):
-  """ TempPickableItem class.
+class GGMP3Lobby(room_item.GGRoomItem):
+  """ GGMP3Lobby class.
   Defines a temporary pickable item behaviour.
   """
     
@@ -18,10 +18,18 @@ class GGTempPickableItem(pickable_item.GGPickableItem):
     time: item's life time.
     startRoom: item's starting room.
     """
-    pickable_item.GGPickableItem.__init__(self, spriteName, position, offset, spriteInventory, label)
+    room_item.GGRoomItem.__init__(self, spriteName, position, offset)
+    self.spriteInventory = spriteInventory
+    self.label = label
     self.__time = time*1000
     self.__startRoom = startRoom
     self.__startTime = 0
+  
+  def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
+    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    return parentVars + ['spriteInventory', 'label']
   
   def getStartRoom(self):
     """ Returns the item's starting room.
@@ -34,6 +42,11 @@ class GGTempPickableItem(pickable_item.GGPickableItem):
     """
     self.__startRoom = room
   
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["inventory"]
+  
   def tick(self, now):
     """ Call for an update on item.
     """
@@ -44,6 +57,8 @@ class GGTempPickableItem(pickable_item.GGPickableItem):
     if (now - self.__startTime) > self.__time: 
       self.getPlayer().removeInventory(self)
       self.__startRoom.addItemFromInventory(self, self.getPosition())
+      self.setPlayer(None)
+      self.__startTime = 0
     
   def timeLeft(self):
     """ Returns the item's time left.
@@ -57,7 +72,7 @@ class GGTempPickableItem(pickable_item.GGPickableItem):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.item.GGItem.clickedBy(self, clicker)
+    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     

@@ -15,14 +15,16 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     position: position on screen for the item.
     offset: offset for that position.
     """
-    inventory_item.GGInventoryItem.__init__(self, spriteName, offset)
+    inventory_item.GGInventoryItem.__init__(self, spriteName)
+    self.offset = offset
     self.__position = position
     self.__room = None
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return parentVars
+    parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
+    return parentVars + ['offset']
   
   # self.__position
   
@@ -78,6 +80,12 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     self.__room = room
     self.triggerEvent('room', room=room)
+
+  def checkSimilarity(self, item):
+    if inventory_item.GGInventoryItem.checkSimilarity(self, item):
+      if item.offset == self.offset:
+        return True
+    return False   
   
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):

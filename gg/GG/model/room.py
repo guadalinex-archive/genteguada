@@ -1,9 +1,9 @@
 import operator
 import GG.utils
 import GG.model.ggmodel
-import GG.model.item
+import GG.model.inventory_item
 import GG.model.chat_message
-import GG.model.inventory_only_item
+#import GG.model.inventory_only_item
 import GG.isoview.isoview_room
 import dMVC.model
 import GG.model.player
@@ -46,9 +46,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return False
 
   def addItemFromVoid(self, item, pos):
+    """
     if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
       del item
       return True
+    """  
     if not item in self.__items:
       item.setStartPosition(None)
       item.setStartPosition(self.getNearestEmptyCell(pos))
@@ -59,9 +61,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return False
   
   def addItemFromInventory(self, item, pos):
+    """
     if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
       del item
       return True
+    """  
     if not item in self.__items:
       item.setStartPosition(None)
       item.setStartPosition(self.getNearestEmptyCell(pos))
