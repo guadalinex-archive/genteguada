@@ -15,7 +15,13 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     model: chat message model.
     screen: screen handler.
     """
+    self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
+    self.label = GG.utils.OcempLabel(model.getMessage(),300)
+    pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
+    self.label.topleft = [pos[0] + 40, pos[1] - 30]
+    self.__isohud.getIsoviewRoom().addTopSprite(self.label)
+    """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("balloon.png")  
     self.__isohud = isohud
     self.__img = pygame.sprite.Sprite()
@@ -24,15 +30,19 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     self.__img.rect.topleft = [pos[0] + 40, pos[1] - 30]
     self.__isohud.getIsoviewRoom().addTopSprite(self.__img)
+    """
     
   def getImg(self):
-    return self.__img
+    return self.label
+    #return self.__img
   
   def getScreenPosition(self):
-    return self.__img.rect.topleft
+    return self.label.topleft
+    #return self.__img.rect.topleft
 
   def setScreenPosition(self, pos):
-    self.__img.rect.topleft = pos
+    #self.__img.rect.topleft = pos
+    self.label.topleft = pos
   
   #def setSprite(self, sprite):
   #  self.__img.image = sprite
