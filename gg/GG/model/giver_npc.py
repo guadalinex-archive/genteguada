@@ -1,8 +1,8 @@
-import GG.model.item
+import GG.model.room_item
 import GG.model.pickable_item
 import GG.isoview.isoview_item
 
-class GGGiverNPC(GG.model.item.GGItem):
+class GGGiverNPC(GG.model.room_item.GGRoomItem):
   """ GiverNPC class.
   Defines a giver npc object behaviour.
   """
@@ -14,7 +14,7 @@ class GGGiverNPC(GG.model.item.GGItem):
     offset: image offset on screen.
     label: penguin's label
     """
-    GG.model.item.GGItem.__init__(self, sprite, position, offset)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, offset)
     self.label = label
     self.__condition = condition
     self.__item = item
@@ -22,7 +22,7 @@ class GGGiverNPC(GG.model.item.GGItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.item.GGItem.variablesToSerialize(self)
+    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['label']
   
   def getOptions(self):
@@ -41,7 +41,7 @@ class GGGiverNPC(GG.model.item.GGItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.item.GGItem.clickedBy(self, clicker)
+    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     else:

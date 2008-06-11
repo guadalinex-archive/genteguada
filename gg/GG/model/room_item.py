@@ -1,10 +1,11 @@
 import ggmodel
 import GG.utils
+import inventory_item
 import GG.isoview.isoview_item
 import dMVC.model
 
-class GGItem(ggmodel.GGModel):
-  """GGItem class.
+class GGRoomItem(inventory_item.GGInventoryItem):
+  """GGRoomItem class.
   Defines item attributes and methods.
   """
   
@@ -14,19 +15,14 @@ class GGItem(ggmodel.GGModel):
     position: position on screen for the item.
     offset: offset for that position.
     """
-    ggmodel.GGModel.__init__(self)
-    self.spriteName = spriteName
-    self.offset   = offset
+    inventory_item.GGInventoryItem.__init__(self, spriteName, offset)
     self.__position = position
     self.__room = None
-    self.__upperItem = None
-    self.__lowerItem = None
-    self.imagePath = ""
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'offset', 'imagePath']
+    return parentVars
   
   # self.__position
   
@@ -83,37 +79,6 @@ class GGItem(ggmodel.GGModel):
     self.__room = room
     self.triggerEvent('room', room=room)
   
-  # self.__upperItem
-    
-  def getUpperItem(self):
-    """ Returns the item on top of this one.
-    """
-    return self.__upperItem
-  
-  def setUpperItem(self, item):
-    """ Sets a new upper item.
-    item: new upper item.
-    """
-    if self.__upperItem != None:
-      self.__upperItem.setUpperItem(item)
-    else:          
-      self.__upperItem = item
-      self.triggerEvent('upperItem', item=item)
-  
-  # self.__lowerItem
-  
-  def getLowerItem(self):
-    """ Returns the item at the bottom of this one.
-    """
-    return self.__lowerItem
-    
-  def setLowerItem(self, item):
-    """ Sets a new lower item.
-    item: new lower item.
-    """
-    self.__lowerItem = item
-    self.triggerEvent('lowerItem', item=item)
-
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.

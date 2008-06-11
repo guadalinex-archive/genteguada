@@ -1,11 +1,11 @@
-import GG.model.item
+import GG.model.room_item
 import GG.model.temp_pickable_item
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
 import dMVC.model
 
-class GGPlayer(GG.model.item.GGItem):
+class GGPlayer(GG.model.room_item.GGRoomItem):
   """ Player class.
   Defines a player object behaviour.
   """
@@ -19,7 +19,7 @@ class GGPlayer(GG.model.item.GGItem):
     password: user password.
     """
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
-    GG.model.item.GGItem.__init__(self, filename, position, offset)
+    GG.model.room_item.GGRoomItem.__init__(self, filename, position, offset)
     self.username = username
     self.imagePath = spritePath
     self.__password = password # Not used outside this class
@@ -34,7 +34,7 @@ class GGPlayer(GG.model.item.GGItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.item.GGItem.variablesToSerialize(self)
+    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['username']
   
     # self.__heading
@@ -184,7 +184,7 @@ class GGPlayer(GG.model.item.GGItem):
     """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
-    GG.model.item.GGItem.clickedBy(self, clicker)
+    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     #if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
     #  clicker.setSelectedItem(self)
     self.newChatMessage(clicker.username + ' ha pinchado en mi')
@@ -274,5 +274,5 @@ class GGPlayer(GG.model.item.GGItem):
     
   def setStartPosition(self, pos):
     self.__destination = pos
-    GG.model.item.GGItem.setStartPosition(self, pos)
+    GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
       
