@@ -409,17 +409,12 @@ def getRGBColor(color):
     rgb = [67, 36, 18]
   return rgb
     
-    
 def createBalloon(self, string):
   """ Creates a balloon for a given string:
   string: string to be included on the balloon.
   """
-  
   pygame.transform.resize(img, [(len(string)+2)*BALOON_FONT_SZ+40, BALOON_FONT_SZ+40])
   pass    
-    
-    
-    
     
 def distPoints(aPoint, anotherPoint):
   deltaX = anotherPoint[0] - aPoint[0]

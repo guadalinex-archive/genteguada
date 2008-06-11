@@ -45,24 +45,29 @@ class GGRoom(GG.model.ggmodel.GGModel):
       return True
     return False
 
-  def addItem(self, item, pos):
-    """ Adds a new item into the room and calls for an update on the room view.
-    item: new item.
-    pos: position of the item in the new room.
-    """
+  def addItemFromVoid(self, item, pos):
     if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
       del item
       return True
     if not item in self.__items:
       item.setStartPosition(None)
-      #item.setStartPosition(self.getNearestEmptyCell(pos))
       item.setStartPosition(self.getNearestEmptyCell(pos))
       self.__items.append(item)
-      if isinstance(item, GG.model.player.GGPlayer):
-        #item.setStartDestination(item.getPosition())
-        item.setHeading("up")
       item.setRoom(self)
-      self.triggerEvent('addItem', item=item)
+      self.triggerEvent('addItemFromVoid', item=item)
+      return True
+    return False
+  
+  def addItemFromInventory(self, item, pos):
+    if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
+      del item
+      return True
+    if not item in self.__items:
+      item.setStartPosition(None)
+      item.setStartPosition(self.getNearestEmptyCell(pos))
+      self.__items.append(item)
+      item.setRoom(self)
+      self.triggerEvent('addItemFromInventory', item=item)
       return True
     return False
     

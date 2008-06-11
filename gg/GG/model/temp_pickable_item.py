@@ -43,7 +43,7 @@ class GGTempPickableItem(pickable_item.GGPickableItem):
       self.__startTime = now    
     if (now - self.__startTime) > self.__time: 
       self.getPlayer().removeInventory(self)
-      self.__startRoom.addItem(self, self.getPosition())
+      self.__startRoom.addItemFromInventory(self, self.getPosition())
     
   def timeLeft(self):
     """ Returns the item's time left.

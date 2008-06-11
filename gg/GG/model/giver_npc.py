@@ -55,6 +55,6 @@ class GGGiverNPC(GG.model.item.GGItem):
       if not self.checkCondition(condition, talker):
         return False
     newItem = self.__item["object"](*self.__item["params"])
-    if talker.hasItemLabeledInInventory(newItem.label) and isinstance(item, self.__item["object"]):
+    if talker.hasItemLabeledInInventory(newItem.label):
       return False
-    talker.addInventory(newItem)
+    talker.addToInventoryFromVoid(newItem, self.getPosition())

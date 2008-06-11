@@ -114,15 +114,22 @@ class GGPlayer(GG.model.item.GGItem):
         return True  
     return False
 
+  """
   def addInventory(self, item):
-    """ Adds a new item to the player's inventory.
-    item: new item.
-    """
     self.__inventory.append(item)
-    #if isinstance(item, GG.model.temp_pickable_item.GGTempPickableItem):
-    #  item.startCount()
     item.setPlayer(self)
     self.triggerEvent('addInventory', item=item)
+  """  
+  
+  def addToInventoryFromRoom(self, item):
+    self.__inventory.append(item)
+    item.setPlayer(self)
+    self.triggerEvent('addToInventory', item=item, position=item.getPosition())
+    
+  def addToInventoryFromVoid(self, item, position):
+    self.__inventory.append(item)
+    item.setPlayer(self)
+    self.triggerEvent('addToInventory', item=item, position=position)
     
   def removeInventory(self, item):
     """ Removes an item from the player's inventory.
@@ -144,17 +151,16 @@ class GGPlayer(GG.model.item.GGItem):
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
-  def clickOnInventoryItem(self, item):
+  def inventoryToRoom(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
-    #dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    dropLocation = self.getRoom().getNearestEmptyCell(GG.utils.getFrontPosition(self.getPosition(), self.__heading))
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if dropLocation == [-1, -1, -1] or self.getRoom().getBlocked(dropLocation):
       return False
-    item.setPosition(dropLocation)
-    self.getRoom().addItem(item, item.getPosition())
-    self.removeInventory(item)
+    self.__inventory.remove(item)
+    item.setPlayer(None)
+    self.getRoom().addItemFromInventory(item, dropLocation)
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
   def checkUser(self, username, password):
@@ -230,7 +236,7 @@ class GGPlayer(GG.model.item.GGItem):
     oldRoom = self.getRoom()
     if oldRoom:
       oldRoom.removeItem(self)
-    room.addItem(self, pos)
+    room.addItemFromVoid(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
     
   def newChatMessage(self, message):
