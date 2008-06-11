@@ -2,12 +2,12 @@ import GG.model.room_item
 import GG.isoview.isoview_item
 import dMVC.model
 
-class GGTeleporter(GG.model.room_item.GGRoomItem):
-  """ Teleporter class.
+class GGDoorLobby(GG.model.room_item.GGRoomItem):
+  """ GGDoorLobby class.
   Defines a teleporter object behaviour.
   """
  
-  def __init__(self, sprite, entryPosition, exitPosition, position, offset, destinationRoom, condition):
+  def __init__(self, sprite, position, offset, entryPosition, exitPosition, destinationRoom):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     entryPosition: teleporter entrance position.
@@ -20,7 +20,6 @@ class GGTeleporter(GG.model.room_item.GGRoomItem):
     self.__entryPosition = entryPosition
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
-    self.__condition = condition
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -91,7 +90,7 @@ class GGTeleporter(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the teleporter receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRommItem.clickedBy(self, clicker)
+    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     else:
@@ -102,10 +101,9 @@ class GGTeleporter(GG.model.room_item.GGRoomItem):
     clicker: player to teleport.
     """
     if clicker.getPosition() == self.__entryPosition:
-      for condition in self.__condition:
-        if not clicker.hasItemLabeledInInventory(condition):
-          self.newChatMessage('Necesitas una llave')  
-          return False
+      if not clicker.hasItemLabeledInInventory('llave dorada'):
+        self.newChatMessage('Necesitas la llave dorada')  
+        return False
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    

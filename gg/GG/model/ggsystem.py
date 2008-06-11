@@ -9,7 +9,7 @@ import GG.model.persistent_item
 import GG.model.mp3_lobby
 import GG.model.penguin_lobby
 import GG.model.book_lobby
-import GG.model.teleporter
+import GG.model.door_lobby
 import thread
 import time
 import os
@@ -107,8 +107,8 @@ class GGSystem(dMVC.model.Model):
     myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
     #myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myDoor1 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room2, ["llave dorada"])
-    myDoor2 = GG.model.teleporter.GGTeleporter(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 1], [3, 0, 7], [3, 0, 0], [20, 62], room1, [])
+    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room2)
+    myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room1)
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe", "1234")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [3, 0, 3], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe2", "12345")
     
