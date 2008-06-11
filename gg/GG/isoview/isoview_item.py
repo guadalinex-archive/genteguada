@@ -19,7 +19,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__parent = parent
     self.loadImage()
     self.getModel().subscribeEvent('position', self.positionChanged)
-    self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
+    #self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
     #self.getModel().subscribeEvent('chat', parent.pruebaChat)
     #self.getModel().subscribeEvent('room', self.roomChanged)
         

@@ -60,9 +60,9 @@ class IsoViewRoom(isoview.IsoView):
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
-      pos = item.getPosition()
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
-      self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
+      #pos = item.getPosition()
+      #self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
     
     self.getModel().subscribeEvent('addItem', self.itemAdded)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)

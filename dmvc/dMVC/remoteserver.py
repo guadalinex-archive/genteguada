@@ -105,6 +105,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
           commandData += self.request.recv(size - len(commandData))
         command = pickle.loads(commandData)
         utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
+        #print "el cliente nos pide ",command
         command.setServerHandler(self)
         #Estadisticas de lo que recibe el servidor y tarda en procesarlas
         initTime = command.initStat(size)

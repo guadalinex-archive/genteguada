@@ -78,7 +78,7 @@ class AvatarEditor:
     """
     imgBackground = ImageMapTransparent(os.path.join(GG.utils.DATA_PATH, "background.png"))
     self.window.add_child(imgBackground)
-    
+
   def paintAvatar(self):
     """Paint the Composite Avatar Zone.
     """
@@ -226,7 +226,7 @@ class AvatarEditor:
         imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeWindow)
       else:
         imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
-      imgTag._image = imgTag.picture
+      #imgTag._image = imgTag.picture
       self.window.add_child(imgTag)
   
   def closeWindow(self):
