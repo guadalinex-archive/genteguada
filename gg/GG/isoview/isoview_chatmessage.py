@@ -51,12 +51,24 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   def draw(self):
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
+    hframe.set_align(ocempgui.widgets.Constants.ALIGN_TOP) 
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE)
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
+    style = self.getStyleMessageChat()
+    string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
+    label = GG.utils.OcempLabel(string,300)
+    label.set_style(ocempgui.widgets.WidgetStyle(style))
+    hframe.add_child(label)
+    label = GG.utils.OcempLabel(self.getModel().getMessage(),300)
+    label.set_style(ocempgui.widgets.WidgetStyle(style))
+    hframe.add_child(label)
+    """
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: " + self.getModel().getMessage()
-    label = ocempgui.widgets.Label(string)
+    #label = ocempgui.widgets.Label(string)
+    label = GG.utils.OcempLabel(string,200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.getStyleMessageChat()))
     hframe.add_child(label)
+    """
     return hframe

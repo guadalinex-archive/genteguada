@@ -423,3 +423,29 @@ def distPoints(aPoint, anotherPoint):
   dotProduct = deltaX*deltaX + deltaY*deltaY
 
   return math.sqrt(dotProduct)
+
+
+class OcempLabel( ocempgui.widgets.Label):
+
+  def __init__(self, text, width):
+    cad = text 
+    l = ocempgui.widgets.Label(cad)
+    if l.size[0] > width:
+      words = text.split(" ")
+      cad = ""
+      auxCad = ""
+      for word in words:
+        auxCad += word
+        l = ocempgui.widgets.Label(auxCad)
+        if l.size[0] < width:
+          cad += word+" "
+        else:
+          if auxCad == word:
+            cad += word
+          else:
+            cad += "\n"+word+" "
+          auxCad = word
+    ocempgui.widgets.Label.__init__(self,cad)
+    self.multiline = True
+    self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+
