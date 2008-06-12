@@ -121,7 +121,6 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(myPenguin, myPenguin.getPosition())    
     room1.addItemFromVoid(myBook, myBook.getPosition())
     room1.addItemFromVoid(myMp3, myMp3.getPosition())
-    #room1.addItemFromVoid(myTrash, myTrash.getPosition())
     room1.addItemFromVoid(myDoor1, myDoor1.getPosition())    
     room2.addItemFromVoid(myDoor2, myDoor2.getPosition())
     self.__createPlayer(nino)

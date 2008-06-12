@@ -175,8 +175,11 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item remove event happens.
     event: even info.
     """
+    item = event.getParams()['item']
+    pos = item.getPosition()
     for ivplayer in self.__isoViewItems:
-      if ivplayer.getModel() == event.getParams()['item']:
+      if ivplayer.getModel() == item:
+        self.__tileList[pos[0]][pos[2]].setIsoItem(None)  
         self.removeIsoViewItem(ivplayer)
         removed = True
     if not removed:
@@ -189,7 +192,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
     pos = ivItem.getModel().getPosition()
-    self.__tileList[pos[0]][pos[1]].setIsoItem(ivItem)
+    self.__tileList[pos[0]][pos[2]].setIsoItem(ivItem)
     
   def removeIsoViewItem(self, ivPlayer):
     """ Removes an isometric player viewer from the viewers list.
@@ -199,7 +202,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
     pos = ivPlayer.getModel().getPosition()
-    self.__tileList[pos[0]][pos[1]].setIsoItem(None)
+    self.__tileList[pos[0]][pos[2]].setIsoItem(None)
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
@@ -221,6 +224,9 @@ class IsoViewRoom(isoview.IsoView):
     for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
         isoItem.unselected()   
+
+  def setItemOnTile(self, item, position):
+    self.__tileList[position[0]][position[2]].setIsoItem(item)      
 
   def findIVItem(self, item):
     for ivItem in self.__isoViewItems:
