@@ -43,7 +43,7 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     return True
 
   def createKey(self):
-    return GG.model.golden_key.GGGoldenKey(GG.utils.KEY_SPRITE, "llave dorada")
+    return GG.model.golden_key.GGGoldenKey(GG.utils.KEY_SPRITE, "llave dorada", self.getPosition())
   
   def clickedBy(self, clicker):
     """ Triggers an event when the npc receives a click by a player.

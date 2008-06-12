@@ -16,11 +16,11 @@ class IsoViewInventoryItem(isoview.IsoView):
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__spriteName = model.spriteInventory
+    self.__spriteName = model.spriteName
     self.__label = model.label
     self.__count = 0
     self.__isohud = isohud
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteName)  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
