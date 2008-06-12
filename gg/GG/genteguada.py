@@ -161,3 +161,17 @@ class GenteGuada:
     for file in toRemove:
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
       os.remove(pathFile)
+
+  def uploadFile(self, file):
+    if not os.path.isfile(file):
+      return None
+    filepath , fileName = os.path.split(file)
+    name, ext = os.path.splitext(fileName)
+    try:
+      f = open(file , "rb")
+      dataFile = f.read()
+    except:
+      return None
+    return self.system.uploadFile([name,ext] ,dataFile)
+
+    

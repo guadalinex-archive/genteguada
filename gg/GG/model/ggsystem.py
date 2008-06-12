@@ -218,3 +218,15 @@ class GGSystem(dMVC.model.Model):
       return imgData
     else:
       return None
+
+
+  def uploadFile(self, fileName, fileData):
+    name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
+    try:
+      f = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
+      f.write(fileData)
+      f.close()
+    except:
+      return None
+    return name
+    
