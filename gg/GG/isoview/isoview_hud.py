@@ -229,7 +229,12 @@ class IsoViewHud(isoview.IsoView):
     """ Selects an item from the player's inventory.
     invIsoItem: selected item.
     """
-    self.__player.inventoryToRoom(invIsoItem.getModel())
+    if invIsoItem.getModel().inventoryOnly():
+      self.__player.removeInventory(invIsoItem.getModel())  
+      self.__isoviewInventory.remove(invIsoItem)
+      self.paintItemsInventory()
+    else:    
+      self.__player.inventoryToRoom(invIsoItem.getModel())
 
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.

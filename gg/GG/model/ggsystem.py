@@ -94,18 +94,12 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    #key = GG.model.pickable_item.GGPickableItem(GG.utils.KEY_SPRITE, [0, 0, 0], [20, -40], GG.utils.KEY_SPRITE, "llave dorada")
     room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
     room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     
-    #dictPenguin = {"object": GG.model.pickable_item.GGPickableItem, "params": [GG.utils.KEY_SPRITE, [1, 0, 6], [20, -40], GG.utils.KEY_SPRITE, "llave dorada"]}
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso")
     
-    #dictTrash = {"object": GG.model.room_item.GGRoomItem, "params": [GG.utils.TRASH_SPRITE, [7, 0, 7], [0, 0], "llave dorada"]}
-    #myTrash = GG.model.giver_npc.GGGiverNPC(GG.utils.TRASH_SPRITE, [7, 0, 7], [20, 0], "Papelera", [], dictTrash)
-    
     myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
-    #myBook = GG.model.pickable_item.GGPickableItem(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room2)
     myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room1)

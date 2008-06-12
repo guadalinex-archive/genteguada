@@ -9,7 +9,7 @@ class GGGoldenKey(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, label):
+  def __init__(self, spriteName, label, position):
     """ Class constructor.
     sprite: image name.
     position: position on screen for the item.
@@ -17,12 +17,17 @@ class GGGoldenKey(inventory_item.GGInventoryItem):
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.label = label
+    self.offset = [20, -40]
+    self.__position = position
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['label']
+    return parentVars + ['label', 'offset']
+  
+  def getPosition(self):
+    return self.__position    
   
   def checkSimilarity(self, item):
     if inventory_item.GGInventoryItem.checkSimilarity(self, item):
@@ -42,7 +47,6 @@ class GGGoldenKey(inventory_item.GGInventoryItem):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    #clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.__position))
     pass
     
   def tick(self, now):

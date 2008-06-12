@@ -21,6 +21,7 @@ class GGMP3Lobby(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, position, offset)
     self.spriteInventory = spriteInventory
     self.label = label
+    self.__startPosition = position
     self.__time = time*1000
     self.__startRoom = startRoom
     self.__startTime = 0
@@ -35,12 +36,11 @@ class GGMP3Lobby(room_item.GGRoomItem):
     """ Returns the item's starting room.
     """
     return self.__startRoom
-
-  def setStartRoom(self, room):
-    """ Sets a new item's starting room.
-    room: new starting room.
-    """
-    self.__startRoom = room
+  
+  def setPlayer(self, player):
+    if player == None:
+      self.__startTime = 0
+    room_item.GGRoomItem.setPlayer(self, player)
   
   def getOptions(self):
     """ Returns the item's available options.
@@ -50,13 +50,14 @@ class GGMP3Lobby(room_item.GGRoomItem):
   def tick(self, now):
     """ Call for an update on item.
     """
+    print self.__startTime, self.getPlayer() 
     if self.getPlayer() == None:
       return
     if self.__startTime == 0:
       self.__startTime = now    
     if (now - self.__startTime) > self.__time: 
       self.getPlayer().removeInventory(self)
-      self.__startRoom.addItemFromInventory(self, self.getPosition())
+      self.__startRoom.addItemFromInventory(self, self.__startPosition)
       self.setPlayer(None)
       self.__startTime = 0
     

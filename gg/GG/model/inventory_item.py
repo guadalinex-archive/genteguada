@@ -42,6 +42,9 @@ class GGInventoryItem(ggmodel.GGModel):
     parent: isoview hud handler.
     """
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
+
+  def inventoryOnly(self):
+    return True
   
   def clickedBy(self, clicker):
     """ Triggers an avent when the item receives a click by a player.

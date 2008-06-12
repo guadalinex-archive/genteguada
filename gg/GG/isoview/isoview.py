@@ -14,7 +14,6 @@ class IsoView:
     self.__model = model
     self.__screen = screen
     self.__animation = None
-    self.__clock = pygame.time.Clock()
     
   def getModel(self):
     """ Returns the list of observed models.

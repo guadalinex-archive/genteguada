@@ -95,6 +95,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
+  def inventoryOnly(self):
+    return False
+  
   def clickedBy(self, clicker):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
