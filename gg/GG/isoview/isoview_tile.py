@@ -46,15 +46,12 @@ class IsoViewTile(isoview.IsoView):
     return self.__isoItem
   
   def setIsoItem(self, item):
-    if item != None:  
-      self.__isoItem = item
-      #print "actualizada ", self.__position, " con ", self.__isoItem
+    self.__isoItem = item
     
   def contained(self, pos):
     """ Returns if a point is contained on a tile.
     pos: point.
     """
-    #print self.__position, self.__isoItem
     if self.__bottomRight[0] > pos[0] > self.__topLeft[0]:
       if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
         if not self.onBlank(pos):
@@ -62,7 +59,6 @@ class IsoViewTile(isoview.IsoView):
     if self.__isoItem == None:
       return 0
     rect = self.__isoItem.getImg().rect
-    #print self.__position, self.__isoItem.getScreenPosition(), rect, pos
     if rect[0] < pos[0] < (rect[0] + rect[2]):
       if rect[1] < pos[1] < (rect[1] + rect[3]):
         if self.__isoItem.getImg().image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:

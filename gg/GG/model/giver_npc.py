@@ -41,6 +41,7 @@ class GGGiverNPC(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
+    self.lalala()
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
@@ -51,6 +52,7 @@ class GGGiverNPC(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
+    self.lalala()
     for condition in self.__condition:
       if not self.checkCondition(condition, talker):
         return False

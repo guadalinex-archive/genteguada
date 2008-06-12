@@ -396,6 +396,7 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     self.__player.addToInventoryFromRoom(self.__selectedItem)
+    #self.__isoviewRoom.setItemOnTile(None, self.__selectedItem.getPosition())
     #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
     self.dropActionsItembuttons()
  
