@@ -4,8 +4,6 @@ import GG.model.room
 import GG.model.player
 import GG.model.ggsession
 import GG.model.inventory_item
-#import GG.model.pickable_item
-import GG.model.persistent_item
 import GG.model.mp3_lobby
 import GG.model.penguin_lobby
 import GG.model.book_lobby
