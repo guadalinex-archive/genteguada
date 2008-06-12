@@ -114,7 +114,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
       self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
-
+      
     elif st == GG.utils.STATE[2]: # walking
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
@@ -124,7 +124,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
       self.setImgPosition(self.getModel().getPosition())
-
+      
     elif st == GG.utils.STATE[4]: # walking_carrying
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
@@ -134,3 +134,4 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
       self.setImgPosition(self.getModel().getPosition())
+      

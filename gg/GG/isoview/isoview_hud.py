@@ -238,7 +238,7 @@ class IsoViewHud(isoview.IsoView):
     """
     if invIsoItem.getModel().inventoryOnly():
       self.__player.removeInventory(invIsoItem.getModel())  
-      self.__isoviewInventory.remove(invIsoItem)
+      #self.__isoviewInventory.remove(invIsoItem)
       self.paintItemsInventory()
     else:    
       self.__player.inventoryToRoom(invIsoItem.getModel())
