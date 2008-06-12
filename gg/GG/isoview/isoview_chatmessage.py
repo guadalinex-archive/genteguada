@@ -18,6 +18,10 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
     self.label = GG.utils.OcempLabel(model.getMessage(),300)
+    self.style = self.getStyleMessageChat()
+    self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["ballom"]))
+    self.label.padding = 5
+    self.label.set_minimum_size(150,50)
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     self.label.topleft = [pos[0] + 40, pos[1] - 30]
     self.__isohud.getIsoviewRoom().addTopSprite(self.label)
@@ -36,9 +40,12 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   def getStyleMessageChat(self):
     """ Returns the chat current style.
     """
-    #TODO entiendo que el color del chat depende de cada usuario 
-    listStyle = ["chatEntryBlack","chatEntryRed","chatEntryGreen","chatEntryBlue"]
-    return GG.utils.STYLES[listStyle[random.randint(0,len(listStyle)-1)]]
+    listStyle = ["Red","Green","Blue"]
+    color = listStyle[random.randint(0,len(listStyle)-1)]
+    styles = {}
+    styles["ballom"] = GG.utils.STYLES["chatBallom"+color]
+    styles["entry"] = GG.utils.STYLES["chatEntry"+color]
+    return styles
   
   def draw(self):
     hframe = ocempgui.widgets.HFrame()
@@ -48,12 +55,11 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
-    style = self.getStyleMessageChat()
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
     label = GG.utils.OcempLabel(string,300)
-    label.set_style(ocempgui.widgets.WidgetStyle(style))
+    label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     label = GG.utils.OcempLabel(self.getModel().getMessage(),300)
-    label.set_style(ocempgui.widgets.WidgetStyle(style))
+    label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe

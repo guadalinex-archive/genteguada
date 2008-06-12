@@ -211,13 +211,6 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                           }
                             },   
-          "chatEntryBlack" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
-                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
-                                           }
-                            },
           "chatEntryRed" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 0, 0),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 0, 0),
@@ -239,6 +232,25 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                           }
                             },
+          "chatBallomRed" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 0, 0) 
+                                         }
+                            },
+          "chatBallomGreen" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 255, 0),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 255, 0) 
+                                          }
+                            },
+          "chatBallomBlue" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                          }
+                            },
+
          }
 
 def getSpriteName(state, heading, frame):
@@ -447,5 +459,5 @@ class OcempLabel( ocempgui.widgets.Label):
           auxCad = word
     ocempgui.widgets.Label.__init__(self,cad)
     self.multiline = True
-    self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+    self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
