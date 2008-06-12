@@ -216,7 +216,6 @@ class GGSystem(dMVC.model.Model):
     else:
       return None
 
-
   def uploadFile(self, fileName, fileData):
     name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
     try:

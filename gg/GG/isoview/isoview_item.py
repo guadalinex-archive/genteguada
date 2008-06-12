@@ -105,6 +105,8 @@ class IsoViewItem(positioned_view.PositionedView):
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
                   GG.utils.p3dToP2d(event.getParams()["position"], self.getModel().offset))
     self.setAnimation(positionAnim)
+    self.getParent().getIsoviewRoom().setItemOnTile(None, event.getParams()["oldPosition"])
+    self.getParent().getIsoviewRoom().setItemOnTile(self, event.getParams()["position"])
       
   def startPositionChanged(self, event):
     """ Updates the item position without animation and draws the room after receiving a position change event.
@@ -112,4 +114,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     self.setPositionAnimation(None)
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().offset))
-  
+    self.getParent().getIsoviewRoom().setItemOnTile(None, event.getParams()["oldPosition"])
+    self.getParent().getIsoviewRoom().setItemOnTile(self, event.getParams()["position"])
+    

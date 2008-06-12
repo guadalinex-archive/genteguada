@@ -38,8 +38,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     pos: new position.
     """
     if not self.__position == pos:
+      old = self.__position
       self.__position = pos
-      self.triggerEvent('position', position=pos)
+      self.triggerEvent('position', position=pos, oldPosition=old)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.
