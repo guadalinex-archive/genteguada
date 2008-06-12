@@ -48,7 +48,8 @@ class IsoViewHud(isoview.IsoView):
         "up":{"image":"levantar.png", "action": self.itemToUp},
         "talk":{"image":"sonido.png", "action": self.itemToTalk},
         "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer},
-        "open":{"image":"sonido.png", "action": self.itemToOpen}
+        "open":{"image":"sonido.png", "action": self.itemToOpen},
+        "url":{"image":"derecha.png", "action": self.itemToUrl}
     }
     self.winWardrobe = None
     self.wardrobe = None
@@ -367,11 +368,7 @@ class IsoViewHud(isoview.IsoView):
 
   def showSoundControl(self):
     print "show sound control"
-    #Ejemplo de como abrir un url en un navegador
-    import webbrowser 
-    webbrowser.open("www.igosoftware.es")
-
-
+    
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
@@ -444,4 +441,12 @@ class IsoViewHud(isoview.IsoView):
     """
     print "open"
     self.__player.open(self.__selectedItem)
+    self.itemUnselected()
+
+  def itemToUrl(self):
+    """ Attempts to open a teleporter item.
+    """
+    print "url"
+    import webbrowser 
+    webbrowser.open(self.__selectedItem.url)
     self.itemUnselected()

@@ -106,6 +106,7 @@ DOOR_DOWN_SPRITE = "door_down.png"
 MP3_SPRITE = "mp3.png"
 TRASH_SPRITE = "trash.png"
 PUZZLECUBE_SPRITE = "puzzle_cube.png"
+PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
 BRICKCUBE_SPRITE = "brick_cube.png"
 
 # Sprites: avatar design and buttons
