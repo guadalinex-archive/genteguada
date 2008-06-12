@@ -130,7 +130,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """
     if item in self.__inventory:
       self.__inventory.remove(item)
-      item.setPlayer(None)
+      #item.setPlayer(None)
       self.triggerEvent('removeInventory', item=item)
       return True
     return False

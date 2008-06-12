@@ -64,8 +64,8 @@ class IsoViewRoom(isoview.IsoView):
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
-      #pos = item.getPosition()
-      #self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
+      pos = item.getPosition()
+      self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
     
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
@@ -144,17 +144,6 @@ class IsoViewRoom(isoview.IsoView):
             return [x, z]
       line -= 1
     return [-1, -1]
-
-  
-  """
-  def itemAdded(self, event):
-    for ivitem in self.__isoViewItems:
-      if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
-        if ivitem.getModel().username == event.getParams()['item'].username:
-          return
-          #raise "Ya existe el usuario dentro de la habitacion" 
-    self.addIsoViewItem(event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent))
-  """
   
   def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.
@@ -172,6 +161,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
+    print "*********************"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:

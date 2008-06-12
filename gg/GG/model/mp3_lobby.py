@@ -50,7 +50,6 @@ class GGMP3Lobby(room_item.GGRoomItem):
   def tick(self, now):
     """ Call for an update on item.
     """
-    print self.__startTime, self.getPlayer() 
     if self.getPlayer() == None:
       return
     if self.__startTime == 0:
@@ -58,7 +57,6 @@ class GGMP3Lobby(room_item.GGRoomItem):
     if (now - self.__startTime) > self.__time: 
       self.getPlayer().removeInventory(self)
       self.__startRoom.addItemFromInventory(self, self.__startPosition)
-      self.setPlayer(None)
       self.__startTime = 0
     
   def timeLeft(self):

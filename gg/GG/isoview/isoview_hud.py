@@ -37,7 +37,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
-    #self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
+    self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
@@ -85,6 +85,12 @@ class IsoViewHud(isoview.IsoView):
         return ivItem
     return None
   
+  def inventoryRemoved(self, event):
+    item = event.getParams()["item"]  
+    ivInventItem = self.findIVInventoryItem(item)
+    self.__isoviewInventory.remove(ivInventItem)
+    self.paintItemsInventory()
+      
   def addItemToInventory(self, event):
     """ Adds a new isoview inventory item.
     """
@@ -122,8 +128,9 @@ class IsoViewHud(isoview.IsoView):
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             pos, GG.utils.p3dToP2d(item.getPosition(), item.offset))
       ivItem.setAnimation(positionAnim)
-      self.__isoviewInventory.remove(ivInventItem)
-      self.paintItemsInventory()
+      if ivInventItem != None:
+        self.__isoviewInventory.remove(ivInventItem)
+        self.paintItemsInventory()
       GG.utils.playSound(GG.utils.SOUND_DROPITEM)
       
   def draw(self):
