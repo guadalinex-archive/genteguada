@@ -26,7 +26,6 @@ class IsoViewTile(isoview.IsoView):
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     self.__isoItem = None
     self.__position = position
-    #print "creada en ", position,
     
   def getImg(self):
     """ Returns the tile image.

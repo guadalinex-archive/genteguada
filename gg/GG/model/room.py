@@ -70,8 +70,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
       item.setStartPosition(None)
       item.setStartPosition(self.getNearestEmptyCell(pos))
       self.__items.append(item)
+      #if item.getRoom() == self:
       item.setRoom(self)
-      self.triggerEvent('addItemFromInventory', item=item)
+      item.setPlayer(None)
+      self.triggerEvent('addItemFromInventory', item=item, room=self)
       return True
     return False
     
