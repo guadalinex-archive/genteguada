@@ -100,6 +100,9 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
+    
+    """
     if clicker.getPosition() == self.__entryPosition:
       if not clicker.hasItemLabeledInInventory('llave dorada'):
         self.newChatMessage('Necesitas la llave dorada')  
@@ -107,6 +110,7 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    
+    """
     
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.

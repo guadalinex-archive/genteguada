@@ -28,6 +28,9 @@ class IsoViewHud(isoview.IsoView):
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
+    
+    self.__fullScreen = False
+    
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -281,8 +284,12 @@ class IsoViewHud(isoview.IsoView):
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
+
+    animTime = (len(messageChat.getMessage()) / 12) * 1000
+    if animTime < 2000:
+      animTime = 2000 
     
-    idleAnim = animation.IdleAnimation(GG.utils.ANIM_CHAT_TIME1, ivMessageChat)
+    idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)
     secAnim = animation.SecuenceAnimation()
@@ -374,6 +381,7 @@ class IsoViewHud(isoview.IsoView):
     """
     print "show help"
     #TODO solo funciona en linux con las X, para e
+    self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
 
   #definicion de las acciones y botones en funcion del item seleccionado
@@ -447,6 +455,8 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to open a teleporter item.
     """
     print "url"
-    import webbrowser 
+    import webbrowser
+    if self.__fullScreen:
+      self.showHelp()
     webbrowser.open(self.__selectedItem.url)
     self.itemUnselected()
