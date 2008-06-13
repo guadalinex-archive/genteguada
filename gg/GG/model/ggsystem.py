@@ -102,46 +102,50 @@ class GGSystem(dMVC.model.Model):
     
     # ROOMS
     room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1", [8, 8])
-    room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2", [7, 7])
-    room3 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 3", [7, 7])
-    room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [7, 7])
+    room2 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 2", [8, 8])
+    room3 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 3", [8, 8])
+    room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [8, 8])
     room5 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 5", [6, 8])
 
     # ROOM 1
-    
+    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [3, 0, 1], [6, 0, 7], room2)
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso")
     myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
     myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 6], room5)
     
     room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/"), [5, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [2, 0, 0], [55, 43]), [2, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 0], [55, 43]), [4, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [6, 0, 0], [55, 43]), [6, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [3, 0, 0], [55, 43]), [3, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [4, 0, 0], [55, 43]), [4, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, 0], [55, 43]), [7, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 1], [55, 43]), [0, 0, 1])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 2], [55, 43]), [0, 0, 2])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 4], [55, 43]), [0, 0, 4])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
+    for z in range(0, room2.size[1]):
+      room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
+    
     room1.addItemFromVoid(myPenguin, myPenguin.getPosition())    
     room1.addItemFromVoid(myBook, myBook.getPosition())
     room1.addItemFromVoid(myMp3, myMp3.getPosition())
     room1.addItemFromVoid(myDoor1, myDoor1.getPosition())    
     
     # ROOM 2
-    
-    myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room1)
-    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
-    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 6], [55, 43]), [1, 0, 6])
-    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [2, 0, 6], [55, 43]), [2, 0, 6])
-    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 6], [55, 43]), [4, 0, 6])
+    myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [3, 0, 1], [6, 0, 7], room3)
+    for z in range(0, room2.size[1]):
+      room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 0], [55, 43]), [5, 0, 0])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 1], [55, 43]), [5, 0, 1])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 2], [55, 43]), [5, 0, 2])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 5], [55, 43]), [5, 0, 5])
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 6], [55, 43]), [5, 0, 6])
-    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [6, 0, 6], [55, 43]), [6, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 7], [55, 43]), [5, 0, 7])
+        
     room2.addItemFromVoid(myDoor2, myDoor2.getPosition())
 
     # ROOM 3
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
     
     # ROOM 4
     

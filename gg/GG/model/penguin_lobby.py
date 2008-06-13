@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import GG.model.room_item
 import GG.model.golden_key
 #import GG.model.pickable_item
@@ -17,7 +19,8 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, offset)
     self.label = label
-    
+    self.__msg = "¡Bienvendido a GenteGuada! Soy Andatuz, y te guiare a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estes listo, ve a la puerta y abrela."
+        
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
@@ -59,7 +62,12 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
+    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition()))
+    """
     newKey = self.createKey()
     if talker.checkItemOnInventory(newKey):
       return False
     talker.addToInventoryFromVoid(newKey, self.getPosition())
+    """
+    
