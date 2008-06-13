@@ -57,10 +57,26 @@ class GenteGuada:
   
   def start(self, params):
     pygame.init()
-    pygame.display.list_modes(32)
-    #self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE|pygame.FULLSCREEN,0)
-    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ)
+
+    #print pygame.display.list_modes()
+
+    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,
+                                          pygame.HWSURFACE | pygame.DOUBLEBUF,
+                                          0)
     pygame.display.set_caption(GG.utils.VERSION)
+
+    print pygame.display.Info()
+
+    if self.screen.get_flags() & pygame.DOUBLEBUF:
+        print "Using Double Buffering!"
+    else:
+        print "*NOT* Using Double Buffering!"
+    if self.screen.get_flags() & pygame.HWSURFACE:
+        print "Using Hardware Surface!"
+    else:
+        print "*NOT* Using Hardware Surface!"
+    print
+
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
     #self.session = winLogin.draw()
