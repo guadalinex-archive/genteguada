@@ -22,7 +22,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('state', self.stateChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
     #self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
-    #self.getModel().subscribeEvent('removeInventory', self.inventoryRemoved)
+    #self.getModel().subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__heading = self.getModel().getHeading()
 
   def headingChanged(self, event):

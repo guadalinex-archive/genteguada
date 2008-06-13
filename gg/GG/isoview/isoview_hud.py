@@ -37,7 +37,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
-    self.__player.subscribeEvent('removeInventory', self.inventoryRemoved)
+    self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
@@ -238,11 +238,11 @@ class IsoViewHud(isoview.IsoView):
     invIsoItem: selected item.
     """
     if invIsoItem.getModel().inventoryOnly():
-      self.__player.removeInventory(invIsoItem.getModel())  
+      self.__player.removeFromInventory(invIsoItem.getModel())  
       #self.__isoviewInventory.remove(invIsoItem)
       self.paintItemsInventory()
     else:    
-      self.__player.inventoryToRoom(invIsoItem.getModel())
+      self.__player.addToRoomFromInventory(invIsoItem.getModel())
 
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.

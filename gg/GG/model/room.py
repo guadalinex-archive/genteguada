@@ -13,20 +13,21 @@ class GGRoom(GG.model.ggmodel.GGModel):
   Defines atributes and methods for a single room.
   """
 
-  def __init__(self, spriteFull, label):
+  def __init__(self, spriteFull, label, size):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     label: room label.
     """
     GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
+    self.size = size
     self.__items = []
     self.label = label # Variable para realizar pruebas, sera eliminada
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteFull']
+    return ['spriteFull', 'size']
 
   # self.__items
 
@@ -137,7 +138,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     direction.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
     
     for i in range(0, len(direction)):
-      if (pos2 == direction[i]) and (0 <= direction[i][0] <= GG.utils.SCENE_SZ[0]) and (0 <= direction[i][2] <= GG.utils.SCENE_SZ[1]):
+      if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
         if self.getBlocked(direction[i]) == 0:
           return GG.utils.HEADING[i+1]
     
@@ -147,7 +148,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (0 <= first[2][0] < GG.utils.SCENE_SZ[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
+      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
         if self.getBlocked(first[2]) == 0:
           if not player.hasBeenVisited(first[2]):
             return first[0]
@@ -176,8 +177,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     
   def getEmptyCell(self):
     listCell = []
-    for corx in range(GG.utils.SCENE_SZ[0]):
-      for cory in range(GG.utils.SCENE_SZ[1]):
+    for corx in range(self.size[0]):
+      for cory in range(self.size[1]):
         point = [corx,0,cory]
         if not self.getBlocked(point):
           listCell.append(point)
