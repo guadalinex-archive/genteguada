@@ -14,7 +14,7 @@ class Animation(object):
     isoview: isoview used on the animation.
     """
     self.__startedTime = None
-    self.__time = time
+    self.time = time
     self.isoview = isoview  # public, to speed up the access
     self.__gentlyProgress = gentlyProgress
     self.__endMethods = []
@@ -22,9 +22,9 @@ class Animation(object):
     
 
   def getLinearProgress(self, now):
-    percent = (now - self.__startedTime) / self.__time
-    if percent >= 1:
-      return 1
+    percent = (now - self.__startedTime) / self.time
+    #if percent >= 1:
+    #  return 1
     return percent
 
   def getGentlyProgress(self, now, lower=0.6, upper=0.85):
@@ -59,10 +59,6 @@ class Animation(object):
       return 1
 
     return result
-
-
-  def getTime(self):
-    return self.__time
 
 
   def getEllapsedTime(self, now):
@@ -124,7 +120,7 @@ class Animation(object):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
-    return (now - self.__startedTime) >= self.__time
+    return (now - self.__startedTime) >= self.time
     
 #*****************************************************************************
     
@@ -220,12 +216,16 @@ class MovieAnimation(Animation):
     time: elapsed time since the animation start.
     """
     #super(self.__class__, self).step(now)
-    if len(self.__sprites) == 0:
+
+    sprites = self.__sprites
+    len_sprites = len(sprites)
+
+    if len_sprites == 0:
       self.stop()
     else:
-      time = self.getTime()
-      currentFrame = int((self.getEllapsedTime(now) % time) / time * len(self.__sprites))
-      self.isoview.setSprite(self.__sprites[currentFrame])
+      time = self.time
+      currentFrame = int((self.getEllapsedTime(now) % time) / time * len_sprites)
+      self.isoview.setSprite(sprites[currentFrame])
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
@@ -286,14 +286,15 @@ class SecuenceAnimation(CompositionAnimation):
     time: elapsed time since the animation start.
     """
     #super(self.__class__, self).step(now)
-    if len(self.__animations):
-      if self.__animations[0].isFinished(now):
-        self.__animations[0].stop()
-        self.__animations.remove(self.__animations[0])
-        if len(self.__animations):
+    if self.__animations:
+      currentAnimation = self.__animations[0]
+      if currentAnimation.isFinished(now):
+        currentAnimation.stop()
+        self.__animations.remove(currentAnimation)
+        if self.__animations:
           self.__animations[0].start()
       else:
-        self.__animations[0].step(now)
+        currentAnimation.step(now)
     else:
       self.stop()
     
@@ -310,13 +311,14 @@ class SecuenceAnimation(CompositionAnimation):
     """ Checks if the animation is finished.
     time: elapsed time since the animation start.
     """
-    if len(self.__animations) > 1:
+    len_animations = len(self.__animations)
+    if len_animations > 1:
       return False
-    elif len(self.__animations) == 0:
+    elif len_animations == 0:
       return True
     else:
       return self.__animations[0].isFinished(now)
-        
+
 #*****************************************************************************
     
 class ParalelAnimation(CompositionAnimation):
