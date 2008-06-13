@@ -8,23 +8,58 @@ class Animation(object):
   Defines animation methods and atributes.
   """
     
-  def __init__(self, time, isoview):
+  def __init__(self, time, isoview, gentlyProgress=False):
     """ Class constructor.
     time: animation length in time.
     isoview: isoview used on the animation.
     """
     self.__startedTime = None
     self.__time = time
-    self.__isoview = isoview
+    self.isoview = isoview  # public, to speed up the access
+    self.__gentlyProgress = gentlyProgress
     self.__endMethods = []
     self.__startMethods = []
     
 
-  def getProgress(self, now):
+  def getLinearProgress(self, now):
     percent = (now - self.__startedTime) / self.__time
     if percent >= 1:
       return 1
     return percent
+
+  def getGentlyProgress(self, now, lower=0.6, upper=0.85):
+    x = self.getLinearProgress(now)
+
+    uperSquared = upper * upper
+    lowerPerUpper = lower * upper
+    tmp = uperSquared - lowerPerUpper + lower - 1
+
+    if x < lower:
+      return ((upper - 1) / (lower *  tmp)) * x * x
+
+    if x > upper:
+      a3 = 1 / tmp
+      b3 = -2 * a3
+      c3 = 1 + a3
+      return (a3 * x * x) + (b3 * x) + c3
+
+    m = 2 * (upper - 1) / tmp
+    b2 = (0 - m) * lower / 2
+    return m * x + b2
+
+
+  def getProgress(self, now):
+    if self.__gentlyProgress:
+      result = self.getGentlyProgress(now)
+    else:
+      result = self.getLinearProgress(now)
+
+    if result <= 0:
+      return 0
+    if result >= 1:
+      return 1
+
+    return result
 
 
   def getTime(self):
@@ -34,11 +69,6 @@ class Animation(object):
   def getEllapsedTime(self, now):
     return now - self.__startedTime
 
-
-  def getIsoview(self):
-    """ Returns the sprite used on the animation.
-    """
-    return self.__isoview
 
   
   def start(self):
@@ -130,14 +160,14 @@ class ScreenPositionAnimation(Animation):
     self.__destination = destination
     self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
 
-  def setScreenPosition(self, pos):
-    self.getIsoview().setScreenPosition(pos)
+  #def setScreenPosition(self, pos):
+  #  self.isoview.setScreenPosition(pos)
     
   def start(self):
     """ Starts the animation.
     """
     super(self.__class__, self).start()
-    self.setScreenPosition([self.__origin[0], self.__origin[1]])
+    self.isoview.setScreenPosition([self.__origin[0], self.__origin[1]])
     
   def step(self, now):
     """ Progresses the animation one frame.
@@ -145,13 +175,13 @@ class ScreenPositionAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     percent = self.getProgress(now)
-    self.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
-                            self.__origin[1] + int(self.__shift[1]*percent)])
+    self.isoview.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
+                                    self.__origin[1] + int(self.__shift[1]*percent)])
       
   def stop(self):
     """ Stops the animation.
     """
-    self.setScreenPosition([self.__destination[0], self.__destination[1]])
+    self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     #Animation.stop(self)
     super(self.__class__, self).stop()
     
@@ -182,7 +212,7 @@ class MovieAnimation(Animation):
   def loadSprites(self):
     self.__sprites = []
     for frame in self.__frames:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getIsoview().getModel().imagePath + frame)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.isoview.getModel().imagePath + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
       
     
@@ -196,7 +226,7 @@ class MovieAnimation(Animation):
     else:
       time = self.getTime()
       currentFrame = int((self.getEllapsedTime(now) % time) / time * len(self.__sprites))
-      self.getIsoview().setSprite(self.__sprites[currentFrame])
+      self.isoview.setSprite(self.__sprites[currentFrame])
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
