@@ -144,7 +144,7 @@ class IsoViewHud(isoview.IsoView):
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
-    self.paintBackground()
+    #self.paintBackground()
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
