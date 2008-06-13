@@ -160,8 +160,8 @@ class IsoViewHud(isoview.IsoView):
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
-    for item in self.__isoviewInventory:
-      item.updateFrame(ellapsedTime)
+    #for item in self.__isoviewInventory:
+    #  item.updateFrame(ellapsedTime)
     pygame.display.update()
 
   def roomChanged(self, event):
