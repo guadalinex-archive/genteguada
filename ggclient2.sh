@@ -6,4 +6,4 @@ echo "-----------------"
 echo
 
 export PYTHONPATH="./dmvc"
-python gg/genteguada -i 192.168.0.33 -u pepe2 -p 12345
+python gg/genteguada -i 192.168.0.39 -u pepe2 -p 12345

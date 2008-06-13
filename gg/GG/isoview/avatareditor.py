@@ -35,16 +35,24 @@ class AvatarEditor:
   def __init__(self,render,parent):
     """ Class constructor.
     """
-    print "Iniciando Avatar Editor"
     self.activeWidget = []
     self.activeOption = 0
-    self.avatarConfiguration = { "gender": "male", "headSize": "S",
-                                "mask": "none", "hairStyle": 1,
-                                "hairColor":  1, "skin": 1,
-                                "bodySize": "none", "sleeve": 0,
-                                "shirt": 3, "typeTrousers": 0,
-                                "trousers": 5, "skirt": 7,
-                                "shoes": 9}
+    self.avatarConfiguration = { 
+                                 "gender": "boy", 
+                                 "headSize": "S",
+                                 "mask": "mask.png", 
+                                 "hairStyle": "1",
+                                 "hairColor": "1", 
+                                 "skin": "1",
+                                 "bodySize": "S",
+                                 "typeShirt": "short", 
+                                 "shirt": "1", 
+                                 "typeTrousers": "short",
+                                 "trousers": "1", 
+                                 "typeSkirt": "short",
+                                 "skirt": "1",
+                                 "shoes": "1"
+                                }
     tLv0 = 0, "body"
     tLv1 = 1, "shirt", "trousers", "shoes"
     tLv2 = 2, "skirt", "shoes"
@@ -55,6 +63,10 @@ class AvatarEditor:
     self.render = render
     self.parent = parent
     self.finish = False
+
+    self.images = {
+                    "body":None,
+                  }
 
   def processEvent(self,events):
     for event in events:
@@ -76,7 +88,8 @@ class AvatarEditor:
   def draw(self):
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     self.paintScreen()
-    self.paintAvatar()
+    self.paintNewAvatar()
+    #self.paintAvatar()
     self.paintTags()
     self.paintCustomizeZone()
     self.window.set_depth(1)
@@ -87,6 +100,21 @@ class AvatarEditor:
     """
     imgBackground = ImageMapTransparent(os.path.join(GG.utils.DATA_PATH, "background.png"))
     self.window.add_child(imgBackground)
+
+  def paintNewAvatar(self):
+    self.paintNewBody()
+
+  def paintNewBody(self):
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG + GG.utils.MALE_SKIN, str(color) + GG.utils.IMG_EXTENSION)
+
+    if self.avatarConfiguration["gender"] == "male":
+      imgPath = os.path.join(GG.utils.DATA_PATH + GG.utils.MALE_SKIN, str(color) + GG.utils.IMG_EXTENSION)
+    else:
+      imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_DUMMY)
+    img = ocempgui.draw.Image.load_image(imgPath)
+    bodySizeItem = ImageMapTransparent(img)
+    bodySizeItem.topleft = 528,114
+    self.window.add_child(bodySizeItem)
 
   def paintAvatar(self):
     """Paint the Composite Avatar Zone.
@@ -127,7 +155,8 @@ class AvatarEditor:
     elif item == "shoes":
       self.paintShoes(self.avatarConfiguration["shoes"])
     elif item == "skirt":
-      self.paintSkirt(self.avatarConfiguration["sleeve"],self.avatarConfiguration["skirt"])
+      self.paintSkirt(self.avatarConfiguration["skirt"])
+      #self.paintSkirt(self.avatarConfiguration["sleeve"],self.avatarConfiguration["skirt"])
 
   def paintHead(self, size, color):
     #TODO: Modificar ajustando al tamano de cabeza
