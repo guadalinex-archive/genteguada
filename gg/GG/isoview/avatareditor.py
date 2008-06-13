@@ -3,8 +3,9 @@ import sys
 import time
 import GG.utils
 import pygame
-import pygame.locals
 import pygame.transform
+
+from pygame.locals import * # faster name resolution
 
 import ocempgui.widgets
 import ocempgui.draw
@@ -57,10 +58,10 @@ class AvatarEditor:
 
   def processEvent(self,events):
     for event in events:
-      if event.type == pygame.locals.QUIT:
+      if event.type == QUIT:
         GG.genteguada.GenteGuada.getInstance().finish()
-      if event.type == pygame.locals.KEYDOWN:
-        if event.key == pygame.locals.K_ESCAPE:
+      if event.type == KEYDOWN:
+        if event.key == K_ESCAPE:
           GG.genteguada.GenteGuada.getInstance().finish()
     self.render.distribute_events(*events)
 

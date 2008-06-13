@@ -103,7 +103,7 @@ class GenteGuada:
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(totalEllapsedTime) / frameCounter
         averageFPS = 1000 / averageTimePerFrame
-        print "Average: Time per Frame: " + str(averageTimePerFrame) +  ", FPS: " + str(averageFPS)
+        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(averageFPS)
 
         frameCounter = 0
         totalEllapsedTime = 0

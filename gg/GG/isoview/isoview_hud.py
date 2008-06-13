@@ -9,6 +9,9 @@ import random
 import avatareditor
 import animation
 
+from pygame.locals import * # faster name resolution
+
+
 class IsoViewHud(isoview.IsoView):
   """ IsoViewHud class.
   Defines the HUD.
@@ -57,16 +60,17 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = None
     self.wardrobe = None
 
-  def processEvent(self,events):
+  def processEvent(self, events):
     for event in events:
-      if event.type == pygame.locals.QUIT:
+      event_type = event.type
+      if event_type == QUIT:
         GG.genteguada.GenteGuada.getInstance().finish()
-      if event.type == pygame.locals.KEYDOWN:
-        if event.key == pygame.locals.K_ESCAPE:
+      elif event_type == KEYDOWN:
+        if event.key == K_ESCAPE:
           GG.genteguada.GenteGuada.getInstance().finish()
-        elif event.key == pygame.locals.K_RETURN: 
+        elif event.key == K_RETURN: 
           self.chatMessageEntered()
-      if event.type == pygame.locals.MOUSEBUTTONDOWN:
+      elif event_type == MOUSEBUTTONDOWN:
         cordX, cordY = pygame.mouse.get_pos()
         if 0 <= cordY <= GG.utils.HUD_OR[1]:
           dest = self.getIsoviewRoom().findTile([cordX, cordY])
