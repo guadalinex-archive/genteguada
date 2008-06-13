@@ -1,10 +1,12 @@
 import os
 import pygame
-import pygame.locals
 import ocempgui.widgets
 import GG.utils
 import sys
 import time
+
+from pygame.locals import * # faster name resolution
+
 
 class Login:
   """ Login class.
@@ -66,7 +68,7 @@ class Login:
       time.sleep(GG.utils.TICK_DELAY)
       events = pygame.event.get()
       for event in events:
-        if event.type == pygame.locals.QUIT:
+        if event.type == QUIT:
           sys.exit(0)
       self.widgetContainer.distribute_events(*events)
     if self.__session:

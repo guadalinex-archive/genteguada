@@ -151,18 +151,18 @@ class ScreenPositionAnimation(Animation):
     destination: animation movement destination.
     """
     Animation.__init__(self, time, isoview, gentlyProgress)
-    self.__origin = origin
+    self.__originX = origin[0]
+    self.__originY = origin[1]
     self.__destination = destination
-    self.__shift = [self.__destination[0] - self.__origin[0], self.__destination[1] - self.__origin[1]]
+    self.__shiftX = self.__destination[0] - self.__originX
+    self.__shiftY = self.__destination[1] - self.__originY
 
-  #def setScreenPosition(self, pos):
-  #  self.isoview.setScreenPosition(pos)
     
   def start(self):
     """ Starts the animation.
     """
     super(self.__class__, self).start()
-    self.isoview.setScreenPosition([self.__origin[0], self.__origin[1]])
+    self.isoview.setScreenPosition([self.__originX, self.__originY])
     
   def step(self, now):
     """ Progresses the animation one frame.
@@ -170,8 +170,8 @@ class ScreenPositionAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     percent = self.getProgress(now)
-    self.isoview.setScreenPosition([self.__origin[0] + int(self.__shift[0]*percent),
-                                    self.__origin[1] + int(self.__shift[1]*percent)])
+    self.isoview.setScreenPosition([self.__originX + int(self.__shiftX*percent),
+                                    self.__originY + int(self.__shiftY*percent)])
       
   def stop(self):
     """ Stops the animation.

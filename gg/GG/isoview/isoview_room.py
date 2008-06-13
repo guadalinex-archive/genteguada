@@ -88,11 +88,12 @@ class IsoViewRoom(isoview.IsoView):
       isoitem.updateFrame(ellapsedTime)
 
     screen = self.getScreen()
+    bg_image = self.__bg.image
     
     # These 3 first sentences clean the unused part of the screen.
-    self.__allPlayers.clear(screen, self.__bg.image)
-    self.__allTopPlayers.clear(screen, self.__bg.image)
-    self.__allBackground.clear(screen, self.__bg.image)
+    self.__allPlayers.clear(screen, bg_image)
+    self.__allTopPlayers.clear(screen, bg_image)
+    self.__allBackground.clear(screen, bg_image)
 
     self.__allBackground.draw(screen)
     self.__allPlayers.draw(screen)
@@ -103,18 +104,18 @@ class IsoViewRoom(isoview.IsoView):
     """
     return self.__isoViewItems
     
-  def paintPlayers(self):
-    """ Paints all players on screen.
-    """
-    self.__allPlayers.update()                     
-    self.__allPlayers.clear(self.getScreen(), self.__bg.image)
-    pygame.display.update(self.__allPlayers.draw(self.getScreen()))
+  #def paintPlayers(self):
+  #  """ Paints all players on screen.
+  #  """
+  #  self.__allPlayers.update()                     
+  #  self.__allPlayers.clear(self.getScreen(), self.__bg.image)
+  #  pygame.display.update(self.__allPlayers.draw(self.getScreen()))
     
-  def paintFloorFull(self):
-    """ Paints the room's floor using a single sprite.
-    screen: screen handler.
-    """
-    self.getScreen().blit(self.__bg.image, self.__bg.rect)
+  #def paintFloorFull(self):
+  #  """ Paints the room's floor using a single sprite.
+  #  screen: screen handler.
+  #  """
+  #  self.getScreen().blit(self.__bg.image, self.__bg.rect)
 
   def findTile(self, pos):
     """ Gets the 3d tile coords that match a 2d point.
