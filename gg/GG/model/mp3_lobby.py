@@ -55,7 +55,7 @@ class GGMP3Lobby(room_item.GGRoomItem):
     if self.__startTime == 0:
       self.__startTime = now    
     if (now - self.__startTime) > self.__time: 
-      self.getPlayer().removeInventory(self)
+      self.getPlayer().removeFromInventory(self)
       self.__startRoom.addItemFromInventory(self, self.__startPosition)
       self.__startTime = 0
     

@@ -48,9 +48,12 @@ class IsoViewRoom(isoview.IsoView):
     self.__insertedIVItem = None
     
     self.__tileList = []
-    for corx in range(GG.utils.SCENE_SZ[0]):
+    
+    print model.size
+    
+    for corx in range(model.size[0]):
       listTile = []
-      for corz in range(GG.utils.SCENE_SZ[1]):
+      for corz in range(model.size[1]):
         varPos = GG.utils.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
         isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
@@ -117,7 +120,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    round = GG.utils.SCENE_SZ[0]*2 - 1
+    round = self.getModel().size[0]*2 - 1
     halfRound = round/2
     line = round
     while line > 0:   

@@ -107,33 +107,6 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
       self.triggerEvent('inventory', inventory=inventory)
       return True
     return False
-
-  def checkItemOnInventory(self, item):
-    for it in self.__inventory:
-      if it.checkSimilarity(item):
-        return True
-    return False      
-
-  def addToInventoryFromRoom(self, item):
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=item.getPosition())
-    
-  def addToInventoryFromVoid(self, item, position):
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=position)
-    
-  def removeInventory(self, item):
-    """ Removes an item from the player's inventory.
-    item: item to be removed.
-    """
-    if item in self.__inventory:
-      self.__inventory.remove(item)
-      #item.setPlayer(None)
-      self.triggerEvent('removeInventory', item=item)
-      return True
-    return False
   
   @dMVC.model.localMethod
   def defaultView(self, screen, room, parent):
@@ -144,7 +117,29 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
-  def inventoryToRoom(self, item):
+  
+  def addToInventoryFromRoom(self, item):
+    self.__inventory.append(item)
+    item.setPlayer(self)
+    self.triggerEvent('addToInventory', item=item, position=item.getPosition())
+    
+  def addToInventoryFromVoid(self, item, position):
+    self.__inventory.append(item)
+    item.setPlayer(self)
+    self.triggerEvent('addToInventory', item=item, position=position)
+    
+  def removeFromInventory(self, item):
+    """ Removes an item from the player's inventory.
+    item: item to be removed.
+    """
+    if item in self.__inventory:
+      self.__inventory.remove(item)
+      #item.setPlayer(None)
+      self.triggerEvent('removeFromInventory', item=item)
+      return True
+    return False
+  
+  def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
@@ -156,6 +151,12 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.getRoom().addItemFromInventory(item, dropLocation)
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
+  def checkItemOnInventory(self, item):
+    for it in self.__inventory:
+      if it.checkSimilarity(item):
+        return True
+    return False      
+
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.

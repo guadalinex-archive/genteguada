@@ -93,20 +93,28 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
-    room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1")
-    room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2")
     
-    myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso")
-    
-    myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
-    myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room2)
-    myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room1)
+    # PLAYERS
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [1, 0, 1], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe", "1234")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [3, 0, 3], [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], "pepe2", "12345")
+    self.__createPlayer(nino)
+    self.__createPlayer(nina)
+    
+    # ROOMS
+    room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1", [8, 8])
+    room2 = self.__createRoom(GG.utils.TILE_WATER, "habitacion 2", [7, 7])
+    room3 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 3", [7, 7])
+    room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [7, 7])
+    room5 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 5", [6, 8])
+
+    # ROOM 1
+    
+    myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Pinguino Misterioso")
+    myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
+    myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
+    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 6], room5)
     
     room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/"), [5, 0, 0])
-    
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 0], [55, 43]), [0, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [2, 0, 0], [55, 43]), [2, 0, 0])
@@ -117,14 +125,30 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 2], [55, 43]), [0, 0, 2])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 4], [55, 43]), [0, 0, 4])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
-    
     room1.addItemFromVoid(myPenguin, myPenguin.getPosition())    
     room1.addItemFromVoid(myBook, myBook.getPosition())
     room1.addItemFromVoid(myMp3, myMp3.getPosition())
     room1.addItemFromVoid(myDoor1, myDoor1.getPosition())    
+    
+    # ROOM 2
+    
+    myDoor2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 1], [3, 0, 7], room1)
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [0, 0, 6], [55, 43]), [0, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [1, 0, 6], [55, 43]), [1, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [2, 0, 6], [55, 43]), [2, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 6], [55, 43]), [4, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [5, 0, 6], [55, 43]), [5, 0, 6])
+    room2.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [6, 0, 6], [55, 43]), [6, 0, 6])
     room2.addItemFromVoid(myDoor2, myDoor2.getPosition())
-    self.__createPlayer(nino)
-    self.__createPlayer(nina)
+
+    # ROOM 3
+    
+    # ROOM 4
+    
+    # ROOM 5
+    
+
+
     
     #prueba para seleccionar un jugador y poder hablar con el en privado y hacer intercambio de objetos
     #room1.addItem(nina,[4,0,5])
@@ -139,11 +163,11 @@ class GGSystem(dMVC.model.Model):
       self.__createPlayer(demoPlayer)
     
 
-  def __createRoom(self, spriteFull, label):
+  def __createRoom(self, spriteFull, label, size):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    newRoom = GG.model.room.GGRoom(spriteFull, label)
+    newRoom = GG.model.room.GGRoom(spriteFull, label, size)
     self.__rooms.append(newRoom)
     return newRoom
       
