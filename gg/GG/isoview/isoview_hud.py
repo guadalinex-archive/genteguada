@@ -107,13 +107,13 @@ class IsoViewHud(isoview.IsoView):
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            GG.utils.p3dToP2d(posOrigin, item.offset), pos)
+                            GG.utils.p3dToP2d(posOrigin, item.offset), pos, True)
       positionAnim.setOnStop(item.getRoom().removeItem, item)
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            GG.utils.p3dToP2d(posOrigin, [0, 0]), pos)
+                            GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
     positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
@@ -130,7 +130,7 @@ class IsoViewHud(isoview.IsoView):
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            pos, GG.utils.p3dToP2d(item.getPosition(), item.offset))
+                            pos, GG.utils.p3dToP2d(item.getPosition(), item.offset), True)
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
         self.__isoviewInventory.remove(ivInventItem)
@@ -291,7 +291,7 @@ class IsoViewHud(isoview.IsoView):
     
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
-                            ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR)
+                            ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR, True)
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(idleAnim)
     secAnim.addAnimation(positionAnim)
