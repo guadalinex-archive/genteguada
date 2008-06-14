@@ -5,7 +5,6 @@ import pygame.locals
 import stat
 import sys
 import time
-import time
 
 import dMVC.remoteclient
 
@@ -101,39 +100,37 @@ class GenteGuada:
 
     intentedFPS = 35
     frameCounter = 0
-    totalEllapsedTime = 0
 
     # Avoid name resolution inside the loop
     theClock = pygame.time.Clock()
     theClock_tick = theClock.tick
-    time_time = time.time
+    get_ticks = pygame.time.get_ticks
     pygame_event_get = pygame.event.get
     if self.client:
       client_processEvents = self.client.processEvents
     else:
-      client_processEvents = None
+      client_processEvents = lambda : None  # Do nothing!
 
+    last = get_ticks()
     while True:
-      ellapsedTime = theClock_tick(intentedFPS)
+      theClock_tick(intentedFPS)
 
-      if (frameCounter == intentedFPS):
-        averageTimePerFrame = float(totalEllapsedTime) / frameCounter
-        averageFPS = 1000 / averageTimePerFrame
-        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(averageFPS)
-
-        frameCounter = 0
-        totalEllapsedTime = 0
-      else:
-        frameCounter += 1
-        totalEllapsedTime += ellapsedTime
-
-      if client_processEvents:
-        client_processEvents()
+      client_processEvents()
 
       activeScreen = self.activeScreen
       activeScreen.processEvent(pygame_event_get())
-      now = time_time() * 1000
+      now = get_ticks()
       activeScreen.updateFrame(now)
+
+      # FPS statistics
+      if (frameCounter == intentedFPS):
+        averageTimePerFrame = float(now - last) / frameCounter
+        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
+
+        frameCounter = 0
+        last = now
+      else:
+        frameCounter += 1
 
 
   def getDataPath(self, img):

@@ -22,10 +22,7 @@ class Animation(object):
     
 
   def getLinearProgress(self, now):
-    percent = (now - self.__startedTime) / self.time
-    #if percent >= 1:
-    #  return 1
-    return percent
+    return (now - self.__startedTime) / self.time
 
   def getGentlyProgress(self, now, lower=0.6, upper=0.85):
     x = self.getLinearProgress(now)
@@ -69,7 +66,7 @@ class Animation(object):
   def start(self):
     """ Starts the animation.
     """
-    self.__startedTime = time.time() * 1000
+    self.__startedTime = float(pygame.time.get_ticks())
     self.onStart()
 
   
