@@ -147,7 +147,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setImgPosition(self.getModel().getPosition())
       
   def jump(self):
-    movieAnim = animation.MovieAnimation(GG.utils.JUMP_TIME, self, self.createFrameSet("walking"))
+    movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
     positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
                             self.getScreenPosition(), [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], True)
     positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \

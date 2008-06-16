@@ -7,6 +7,7 @@ import GG.model.inventory_item
 import GG.model.mp3_lobby
 import GG.model.penguin_lobby
 import GG.model.penguin_room3
+import GG.model.penguin_room5
 import GG.model.book_lobby
 import GG.model.door_lobby
 import GG.model.door_room3b
@@ -165,7 +166,6 @@ class GGSystem(dMVC.model.Model):
     myDoor3C2 = GG.model.door_room3c2.GGDoorRoom3C2(GG.utils.DOOR_DOWN_SPRITE, [4, 0, 0], [20, 62], [4, 0, 6], room5)
     myPenguinRoom3 = GG.model.penguin_room3.GGPenguinRoom3(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("black_tile.tga", [6, 0, 6], [65, -23]), [6, 0, 6])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [3, 0, 3], [55, 43]), [3, 0, 3])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [3, 0, 4], [55, 43]), [3, 0, 4])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.BRICKCUBE_SPRITE, [4, 0, 3], [55, 43]), [4, 0, 3])
@@ -192,6 +192,14 @@ class GGSystem(dMVC.model.Model):
     # ROOM 5
     myDoor5A1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 7], [20, 62], [3, 0, 1], room3)
     myDoor5A2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [4, 0, 7], [20, 62], [4, 0, 1], room3)
+    for z in range(0, 8):
+      room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
+      room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, z], [55, 43]), [1, 0, z])
+      room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [6, 0, z], [55, 43]), [6, 0, z])
+      room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, z], [55, 43]), [7, 0, z])
+    myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [4, 0, 4], [20, -20], "Andatuz")
+    
+    room5.addItemFromVoid(myPenguinRoom5, myPenguinRoom5.getPosition())
     room5.addItemFromVoid(myDoor5A1, myDoor5A1.getPosition())    
     room5.addItemFromVoid(myDoor5A2, myDoor5A2.getPosition())    
         
