@@ -31,6 +31,9 @@ class IsoViewTile(isoview.IsoView):
     """ Returns the tile image.
     """
     return self.__img
+  
+  def setImg(self, imageName):
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
     
   def getTopLeft(self):
     """ Returns the top left coord.

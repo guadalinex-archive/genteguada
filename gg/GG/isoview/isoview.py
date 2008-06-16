@@ -64,4 +64,7 @@ class IsoView:
     """
     self.getModel().unsubscribeEventObserver(self)
     
+  def stopAnimation(self):
+    if self.__animation:
+      self.__animation.stop()
   

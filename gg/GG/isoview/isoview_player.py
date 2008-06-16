@@ -20,6 +20,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__movieAnimation = None
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
+    self.getModel().subscribeEvent('jump', self.onJump)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
     #self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
     #self.getModel().subscribeEvent('removeFromInventory', self.inventoryRemoved)
@@ -127,6 +128,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
       
     elif st == GG.utils.STATE[2]: # walking
+      self.setAnimation(None)
+      self.setMovieAnimation(None)  
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
@@ -146,7 +149,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
       self.setImgPosition(self.getModel().getPosition())
       
-  def jump(self):
+  def onJump(self, event):
     movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
     positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
                             self.getScreenPosition(), [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], True)

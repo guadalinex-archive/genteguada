@@ -75,17 +75,14 @@ class Animation(object):
     time: elapsed time since the animation start.
     """
     pass
-
   
   def stop(self):
     """ Stops the animation.
     """  
     self.onStop()
-  
     
   def setOnStart(self, method, params):
     self.__startMethods.append([method, params])
-
     
   def onStart(self):
     """ Method triggered on animation start.
@@ -95,11 +92,9 @@ class Animation(object):
         method[0]()
       else:    
         method[0](method[1])
-  
 
   def setOnStop(self, method, params):
     self.__endMethods.append([method, params])
-
     
   def onStop(self):
     """ Method triggered on animation end.
@@ -301,6 +296,8 @@ class SecuenceAnimation(CompositionAnimation):
     if len(self.__animations):
       self.__animations[0].stop()
     for animation in self.__animations:
+      animation.start()
+      animation.stop()
       self.__animations.remove(animation)
     super(self.__class__, self).stop()
     
@@ -362,6 +359,8 @@ class ParalelAnimation(CompositionAnimation):
     for animation in self.__animations:
       animation.stop()
     for animation in self.__animations:
+      animation.start()
+      animation.stop()
       self.__animations.remove(animation)
     #super(self.__class__, self).stop()
       

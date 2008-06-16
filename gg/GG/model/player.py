@@ -276,3 +276,6 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
         return True  
     return False    
       
+  def jump(self):
+    self.triggerEvent('jump', position=self.getPosition())
+ 
