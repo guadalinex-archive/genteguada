@@ -127,6 +127,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
     pos1: starting point.
     pos2: ending point.
     """
+    
+    startingDistance = GG.utils.p2pDistance(pos1, pos2)
+    
     direction = []
     direction.append([pos1[0], pos1[1], pos1[2] - 1]) #up
     direction.append([pos1[0], pos1[1], pos1[2] + 1]) #down
@@ -151,7 +154,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
       if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
         if self.getBlocked(first[2]) == 0:
           if not player.hasBeenVisited(first[2]):
-            return first[0]
+            if first[1] < startingDistance:
+              return first[0]
     return "none"  
     
   def tick(self, now):

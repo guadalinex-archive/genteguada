@@ -370,6 +370,7 @@ class IsoViewHud(isoview.IsoView):
 
   def turnRight(self):
     print "turn right"
+    
 
   def turnLeft(self):
     print "turn left"

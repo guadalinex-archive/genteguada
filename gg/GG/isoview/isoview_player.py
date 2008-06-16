@@ -25,6 +25,11 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     #self.getModel().subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__heading = self.getModel().getHeading()
 
+  def __del__(self):
+    isoview.IsoView.__del__(self)
+    if self.__movieAnimation:
+      self.__movieAnimation.stop()
+
   def headingChanged(self, event):
     """ Changes the player's sprite heading.
     """
