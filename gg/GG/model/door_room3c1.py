@@ -2,8 +2,8 @@ import GG.model.room_item
 import GG.isoview.isoview_item
 import dMVC.model
 
-class GGDoorLobby(GG.model.room_item.GGRoomItem):
-  """ GGDoorLobby class.
+class GGDoorRoom3C1(GG.model.room_item.GGRoomItem):
+  """ GGDoorRoom3C1 class.
   Defines a teleporter object behaviour.
   """
  
@@ -83,22 +83,20 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
-    
-    """
-    if clicker.getPosition() == self.__entryPosition:
-      if not clicker.hasItemLabeledInInventory('llave dorada'):
-        self.newChatMessage('Necesitas la llave dorada')  
+    pos = self.getPosition()
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+      if not (self.getRoom().getBlocked([pos[0] - 1, pos[1], pos[2] + 1]) and \
+              self.getRoom().getBlocked([pos[0] + 2, pos[1], pos[2] + 1])):
+        self.newChatMessage('El resorte no esta activado.')  
         return False
       clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    
-    """
     
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 'Valla de madera', \
+    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 'Puerta misteriosa', \
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
