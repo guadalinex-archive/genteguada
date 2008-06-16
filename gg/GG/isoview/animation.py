@@ -344,7 +344,7 @@ class ParalelAnimation(CompositionAnimation):
   def start(self):
     """ Starts the animation.
     """
-    super(self.__class__, self).start()
+    #super(self.__class__, self).start()
     for animation in self.__animations:
       animation.start()
     
@@ -363,7 +363,7 @@ class ParalelAnimation(CompositionAnimation):
       animation.stop()
     for animation in self.__animations:
       self.__animations.remove(animation)
-    super(self.__class__, self).stop()
+    #super(self.__class__, self).stop()
       
   def isFinished(self, now):
     """ Checks if the animation is finished.

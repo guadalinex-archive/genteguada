@@ -370,8 +370,11 @@ class IsoViewHud(isoview.IsoView):
 
   def turnRight(self):
     print "turn right"
+    ivPlayer = self.findIVItem(self.__player)
+    if ivPlayer == None:
+      return
+    ivPlayer.jump()
     
-
   def turnLeft(self):
     print "turn left"
 

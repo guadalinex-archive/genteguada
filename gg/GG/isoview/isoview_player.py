@@ -58,7 +58,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     return self.__movieAnimation != None
       
-  def setMovieAnimation(self, animation):
+  def setMovieAnimation(self, animation=None):
     """ Creates a new movie animation.
     animation: new movie animation.
     """
@@ -109,6 +109,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if self.__movieAnimation:
       self.__movieAnimation.step(ellapsedTime)  
         
+  def restoreImageFrame(self):
+    self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
+  
+  def restoreImagePosition(self):  
+    self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
+      
   def stateChanged(self, event):
     """ Triggers after receiving a new state change event.
     event: event info.
@@ -139,4 +145,26 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
       self.setImgPosition(self.getModel().getPosition())
+      
+  def jump(self):
+    movieAnim = animation.MovieAnimation(GG.utils.JUMP_TIME, self, self.createFrameSet("walking"))
+    positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+                            self.getScreenPosition(), [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], True)
+    positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+                            [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], self.getScreenPosition(), True)
+
+    secAnim = animation.SecuenceAnimation()
+    secAnim.addAnimation(positionUp)
+    secAnim.addAnimation(positionDown)
+    secAnim.setOnStop(self.stopMovieAnimation, None)
+    self.setAnimation(secAnim)
+    self.setMovieAnimation(movieAnim)
+    
+  def stopMovieAnimation(self):
+    if self.__movieAnimation:
+      self.__movieAnimation.stop()
+      self.__movieAnimation = None
+      self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
+      
+      
       

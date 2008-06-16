@@ -49,14 +49,14 @@ class IsoView:
     """
     return self.__animation != None
     
-  def setAnimation(self, animation):
+  def setAnimation(self, animation=None):
     """ Creates a new position animation.
     animation: new position animation.
     """
     if self.__animation:
       self.__animation.stop()
     self.__animation = animation
-    if animation:
+    if animation != None:
       animation.start()
     
   def unsubscribeAllEvents(self):
