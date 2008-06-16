@@ -181,7 +181,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     #if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
     #  clicker.setSelectedItem(self)
-    self.newChatMessage(clicker.username + ' ha pinchado en mi')
+    self.newChatMessage(clicker.username + ' ha pinchado en mi', 0)
 
   def getOptions(self):
     """ Returns the available item options.
@@ -233,12 +233,12 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     room.addItemFromVoid(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
     
-  def newChatMessage(self, message):
+  def newChatMessage(self, message, type):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username, \
-                    GG.utils.TEXT_COLOR["black"], self.getPosition()))
+                    GG.utils.TEXT_COLOR["black"], self.getPosition(), type))
 
   def setSelectedItem(self, item):
     """ Sets an item as selected.

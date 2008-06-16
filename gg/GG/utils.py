@@ -88,6 +88,8 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
+CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
+
 # ======================= SPRITES ===========================
 
 LOGIN_SCREEN = "login.png"
@@ -213,43 +215,56 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                           }
                             },   
+          "chatEntryWhite" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                          }
+                            },
           "chatEntryRed" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
-                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 0, 0) 
+                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (120, 30, 30),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (120, 30, 30),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (120, 30, 30),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (120, 30, 30) 
                                          }
                             },
           "chatEntryGreen" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
-                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 255, 0) 
+                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 120, 30),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (30, 120, 30),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 120, 30),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 120, 30) 
                                           }
                             },
           "chatEntryBlue" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
-                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 30, 120),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (30, 30, 120),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 30, 120),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 30, 120) 
                                           }
                             },
-          "chatBallomRed" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 0, 0),
-                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 0, 0) 
+          "chatBalloonWhite" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
                                          }
                             },
-          "chatBallomGreen" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 255, 0),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 255, 0) 
+          "chatBalloonBlue" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 255),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 255),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 255) 
+                                         }
+                            },
+          "chatBalloonGreen" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (200, 255, 200),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 255, 200),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 255, 200) 
                                           }
                             },
-          "chatBallomBlue" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+          "chatBalloonRed" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
                                           }
                             },
 

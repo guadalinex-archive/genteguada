@@ -41,12 +41,18 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   def getStyleMessageChat(self):
     """ Returns the chat current style.
     """
-    listStyle = ["Red","Green","Blue"]
+    styles = {}
+    styles["ballom"] = GG.utils.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
+    styles["entry"] = GG.utils.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
+    return styles
+    """
+    listStyle = ["White","Red","Green","Blue"]
     color = listStyle[random.randint(0,len(listStyle)-1)]
     styles = {}
-    styles["ballom"] = GG.utils.STYLES["chatBallom"+color]
+    styles["ballom"] = GG.utils.STYLES["chatBalloon"+color]
     styles["entry"] = GG.utils.STYLES["chatEntry"+color]
     return styles
+    """
   
   def draw(self):
     hframe = ocempgui.widgets.HFrame()

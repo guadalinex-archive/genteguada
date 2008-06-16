@@ -169,11 +169,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
         result.append(item)
     return result
 
-  def newChatMessage(self, message, player):
+  def newChatMessage(self, message, player, type):
     """ Triggers a new avent after receiving a new chat message.
     """
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username, \
-                    GG.utils.TEXT_COLOR["black"], player.getPosition()))    
+                    GG.utils.TEXT_COLOR["black"], player.getPosition(), type))    
     
   def getEmptyCell(self):
     listCell = []
