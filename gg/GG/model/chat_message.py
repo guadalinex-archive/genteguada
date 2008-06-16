@@ -8,7 +8,7 @@ class ChatMessage(ggmodel.GGModel):
   Defines a book object behaviour.
   """
      
-  def __init__(self, message, sender, color, position):
+  def __init__(self, message, sender, color, position, type):
     """ Class constructor.
     message: chat message.
     sender: player who sends the message.
@@ -21,12 +21,13 @@ class ChatMessage(ggmodel.GGModel):
     self.__hour = time.time()
     self.__color = color
     self.__position = position
+    self.type = type
     self.imagePath = ""
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['imagePath']
+    return ['imagePath', 'type']
     
   def getMessage(self):
     """ Returns the chat message.
@@ -52,6 +53,9 @@ class ChatMessage(ggmodel.GGModel):
     """ On-screen chat message starting position.
     """
     return self.__position
+
+  def getType(self):
+    return self.type
 
   @dMVC.model.localMethod 
   def chatView(self, screen, isohud):
