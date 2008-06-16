@@ -22,6 +22,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     self.spriteFull = spriteFull
     self.size = size
     self.__items = []
+    self.__specialTiles = []
     self.label = label # Variable para realizar pruebas, sera eliminada
     
   def variablesToSerialize(self):
@@ -89,6 +90,21 @@ class GGRoom(GG.model.ggmodel.GGModel):
       return
     raise Exception("Error: item no eliminado")
 
+  def setSpecialTile(self, position, imageName):
+    k = 0
+    for tile in self.__specialTiles:
+      if tile[0] == position:
+        k = 1
+        tile[1] = imagename
+        print "1"
+        self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
+    if k == 0:
+      print "2"  
+      self.__specialTiles.append([position, imageName])
+      print "2A"  
+      self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
+      print "2B"  
+      
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
     """ Creates a view object associated with this room.

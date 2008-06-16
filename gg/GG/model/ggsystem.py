@@ -113,11 +113,11 @@ class GGSystem(dMVC.model.Model):
     room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [8, 8])
     room5 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 5", [8, 8])
 
+    room1.setSpecialTile([3, 0, 3], "black_tile.tga")
+
     # ROOM 1
     myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 7], room2)
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
-    #myMp3 = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [4, 0, 4], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 5, room1)
-    #myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     
     room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/"), [5, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
@@ -129,8 +129,6 @@ class GGSystem(dMVC.model.Model):
       room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
     
     room1.addItemFromVoid(myPenguin, myPenguin.getPosition())    
-    #room1.addItemFromVoid(myBook, myBook.getPosition())
-    #room1.addItemFromVoid(myMp3, myMp3.getPosition())
     room1.addItemFromVoid(myDoor1, myDoor1.getPosition())    
     
     # ROOM 2
@@ -184,9 +182,11 @@ class GGSystem(dMVC.model.Model):
     myMp3A = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [1, 0, 1], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 60, room4)
     myMp3B = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [3, 0, 3], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 60, room4)
     myMp3C = GG.model.mp3_lobby.GGMP3Lobby(GG.utils.MP3_SPRITE, [5, 0, 5], [15, -45], GG.utils.MP3_SPRITE, "Reproductor de MP3", 60, room4)
+    myBook = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [2, 0, 2], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     room4.addItemFromVoid(myMp3A, myMp3A.getPosition())
     room4.addItemFromVoid(myMp3B, myMp3B.getPosition())
     room4.addItemFromVoid(myMp3C, myMp3C.getPosition())
+    room4.addItemFromVoid(myBook, myBook.getPosition())
     
     
     # ROOM 5
@@ -197,7 +197,7 @@ class GGSystem(dMVC.model.Model):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, z], [55, 43]), [1, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [6, 0, z], [55, 43]), [6, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, z], [55, 43]), [7, 0, z])
-    myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [4, 0, 4], [20, -20], "Andatuz")
+    myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [2, 0, 3], [20, -20], "Andatuz")
     
     room5.addItemFromVoid(myPenguinRoom5, myPenguinRoom5.getPosition())
     room5.addItemFromVoid(myDoor5A1, myDoor5A1.getPosition())    

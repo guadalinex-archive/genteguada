@@ -19,7 +19,7 @@ class GGPenguinRoom5(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, offset)
     self.label = label
-    self.__msg = "¡Enhorabuena! Has conseguido cruzar las 5 salas y completar el tutorial de GenteGuada.\nAhora estás listo para entrar de lleno en el verdadero juego.\nCruza el portal para comenzar."
+    self.__msg = "¡Enhorabuena! Has conseguido cruzar las 5 salas y completar el tutorial de GenteGuada. Ahora estás listo para entrar de lleno en el verdadero juego. Cruza el portal para comenzar."
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -63,7 +63,7 @@ class GGPenguinRoom5(GG.model.room_item.GGRoomItem):
     talker: player.
     """
     self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition()))
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     """
     newKey = self.createKey()
     if talker.checkItemOnInventory(newKey):
