@@ -81,6 +81,9 @@ ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME1 = 2000
 ANIM_CHAT_TIME2 = 1000
 
+JUMP_TIME = 800
+JUMP_DISTANCE = 70
+
 TEXT_COLOR = {"black": 0, "blue": 1}
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
