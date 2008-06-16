@@ -2,6 +2,7 @@ import ocempgui
 import pygame
 import random
 import GG.utils
+import isoview
 import animation
 import positioned_view
 
@@ -26,6 +27,9 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     self.label.topleft = [pos[0] + 40, pos[1] - 30]
     self.__isohud.getIsoviewRoom().addTopSprite(self.label)
+    
+  def __del__(self):
+    isoview.IsoView.__del__(self)
     
   def getImg(self):
     return self.label

@@ -15,6 +15,10 @@ class IsoView:
     self.__screen = screen
     self.__animation = None
     
+  def __del__(self):
+    if self.__animation:
+      self.__animation.stop()
+    
   def getModel(self):
     """ Returns the list of observed models.
     """

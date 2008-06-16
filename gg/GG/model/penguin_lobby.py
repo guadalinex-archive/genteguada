@@ -63,7 +63,7 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     talker: player.
     """
     self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition()))
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
     """
     newKey = self.createKey()
     if talker.checkItemOnInventory(newKey):
