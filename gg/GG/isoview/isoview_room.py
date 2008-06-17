@@ -83,7 +83,11 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
     
     #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
-    
+  
+  def stopAnimations(self):
+    for item in self.__isoViewItems:
+      item.stopAnimation()
+  
   def getIsoViewItems(self):
     """ Returns the isometric view handler.
     """
