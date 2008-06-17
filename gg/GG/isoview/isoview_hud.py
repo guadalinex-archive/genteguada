@@ -173,6 +173,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__isoviewRoom:
+      self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
       GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
       self.__isoviewRoom = None
