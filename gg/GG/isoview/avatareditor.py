@@ -23,12 +23,12 @@ class MiImageButton(ocempgui.widgets.ImageButton):
   def __init__(self, image):
     ocempgui.widgets.ImageButton.__init__(self, image)
 
+  """
   def draw_bg(self):
     rect_image = self.picture.get_rect ()
     width = rect_image.width
     height = rect_image.height
     return self.picture
-  """
   def draw_bg(self):
     print self.state
     return self.picture
@@ -37,20 +37,20 @@ class MiImageButton(ocempgui.widgets.ImageButton):
     #area.fill([97,171,193,0])
     return area 
   """
-
   def draw(self):
-    oldrect = self.rect
     ocempgui.widgets.ImageButton.draw(self)
+    self._image = self.picture
+    """
     rect = self.picture.get_rect ()
     self._image = self.picture
-    topleft = oldrect.topleft
+    topleft = self.rect.topleft
     self._rect = rect
     self._rect.topleft = topleft
-    self._oldrect = oldrect
-
+    self._oldrect = self.rect
+    """
   def update(self): 
     self.draw()
-    self.dirty = False
+    #self.dirty = False
 
 class AvatarEditor:
   """ AvatarEditor class.
@@ -222,23 +222,10 @@ class AvatarEditor:
       self.imagesTag[img].padding = 0
       self.imagesTag[img].border = ocempgui.widgets.Constants.BORDER_NONE
       self.imagesTag[img].topleft = 296, pos * 76
-      self.imagesTag[img]._image = self.imagesTag[img].picture
       self.imagesTag[img].connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
       self.window.add_child(self.imagesTag[img])
       pos += 1
 
-    """
-    for pos in range(len(GG.utils.TAGS)):
-      imgTag = MiImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
-      imgTag.padding = 0
-      imgTag.border = 0
-      imgTag.border = ocempgui.widgets.Constants.BORDER_NONE
-      imgTag.topleft = [320, GG.utils.TAG_OFFSET*pos]
-      imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
-      imgTag._image = imgTag.picture
-      self.window.add_child(imgTag)
-    """
-  
   def closeWindow(self):
     print "==> a cerrar"
     self.finish = True
