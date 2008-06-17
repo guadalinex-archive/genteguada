@@ -19,6 +19,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.offset = offset
     self.__position = position
     self.__room = None
+    self.__upperItem = None
+    self.__lowerItem = None
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -82,11 +84,25 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = room
     self.triggerEvent('room', room=room)
 
-  def checkSimilarity(self, item):
-    if inventory_item.GGInventoryItem.checkSimilarity(self, item):
-      if item.offset == self.offset:
-        return True
-    return False   
+  # self.__upperItem
+  
+  def getUpperItem(self):
+    return self.__upperItem
+
+  def setUpperItem(self, item):
+    if not self.__upperItem.checkSimilarity(item):
+      self.__upperItem = item
+      self.triggerEvent('lowerItem', item=item)
+      
+  # self.__lowerItem
+  
+  def getLowerItem(self):
+    return self.__lowerItem
+
+  def setLowerItem(self, item):
+    if not self.__lowerItem.checkSimilarity(item):
+      self.__lowerItem = item
+      self.triggerEvent('lowerItem', item=item)
   
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
@@ -96,8 +112,16 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
+  def checkSimilarity(self, item):
+    if inventory_item.GGInventoryItem.checkSimilarity(self, item):
+      if item.offset == self.offset:
+        return True
+    return False   
+  
+  """
   def inventoryOnly(self):
     return False
+  """
   
   def clickedBy(self, clicker):
     """ Triggers an avent when the item receives a click by a player.

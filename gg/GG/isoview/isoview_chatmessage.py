@@ -19,13 +19,14 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
     self.label = GG.utils.OcempLabel(model.getMessage(),140)
+    print self.label
     self.style = self.getStyleMessageChat()
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["ballom"]))
     self.label.padding = 5
     self.label.set_minimum_size(150,50)
     self.label.opacity = 200
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    self.label.topleft = [pos[0] + 40, pos[1] - 30]
+    self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
     self.__isohud.getIsoviewRoom().addTopSprite(self.label)
     
   def __del__(self):

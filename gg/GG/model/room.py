@@ -99,14 +99,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
       if tile[0] == position:
         k = 1
         tile[1] = imagename
-        print "1"
         self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
     if k == 0:
-      print "2"  
       self.__specialTiles.append([position, imageName])
-      print "2A"  
       self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
-      print "2B"  
       
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
