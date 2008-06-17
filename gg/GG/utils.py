@@ -121,7 +121,9 @@ GENDER_TAG = "genderTag.png"
 
 # Avatar editor
 PATH_EDITOR_IMG = DATA_PATH + "/editor"
+PATH_EDITOR_INTERFACE = DATA_PATH + "/interface/editor"
 IMG_EXTENSION = ".png"
+
 BACKGROUND_LEFT = "background_left.png"
 BACKGROUND_RIGHT = "background_right.png"
 BACKGROUND_MIDDLE = "background_middle.png"

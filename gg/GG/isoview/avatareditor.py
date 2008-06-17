@@ -24,8 +24,33 @@ class MiImageButton(ocempgui.widgets.ImageButton):
     ocempgui.widgets.ImageButton.__init__(self, image)
 
   def draw_bg(self):
+    rect_image = self.picture.get_rect ()
+    width = rect_image.width
+    height = rect_image.height
+    return self.picture
+  """
+  def draw_bg(self):
+    print self.state
+    return self.picture
     size = self.picture.get_size()
-    return pygame.Surface(size)
+    area = pygame.Surface(size)
+    #area.fill([97,171,193,0])
+    return area 
+  """
+
+  def draw(self):
+    oldrect = self.rect
+    ocempgui.widgets.ImageButton.draw(self)
+    rect = self.picture.get_rect ()
+    self._image = self.picture
+    topleft = oldrect.topleft
+    self._rect = rect
+    self._rect.topleft = topleft
+    self._oldrect = oldrect
+
+  def update(self): 
+    self.draw()
+    self.dirty = False
 
 class AvatarEditor:
   """ AvatarEditor class.
@@ -46,12 +71,12 @@ class AvatarEditor:
                                  "skin": "1",
                                  "bodySize": "S",
                                  "typeShirt": "short", 
-                                 "shirt": "1", 
+                                 "shirt": "3", 
                                  "typeTrousers": "short",
-                                 "trousers": "1", 
+                                 "trousers": "5", 
                                  "typeSkirt": "short",
-                                 "skirt": "1",
-                                 "shoes": "1"
+                                 "skirt": "3",
+                                 "shoes": "9"
                                 }
     self.render = render
     self.parent = parent
@@ -67,6 +92,23 @@ class AvatarEditor:
                     "hair":None,
                     "mask":None,
                   }
+    self.imagesTag = self.loadImagesTag()
+
+  def loadImagesTag(self):
+    dict = {}
+    image = pygame.image.load(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_back.png")).convert_alpha()
+    dict["gender"] = MiImageButton(image)
+    dict["skin"] =  MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
+    dict["head"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png"))
+    dict["body"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "back_png.png"))
+    dict["mask"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
+    dict["hair"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
+    dict["shirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
+    dict["trousers"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
+    dict["skirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
+    dict["shoes"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
+    return dict
+
 
   def processEvent(self,events):
     for event in events:
@@ -97,8 +139,11 @@ class AvatarEditor:
   def paintScreen(self):
     """Paint the Avatar Editor background on screen.
     """
-    imgBackground = ImageMapTransparent(os.path.join(GG.utils.DATA_PATH, "background.png"))
-    self.window.add_child(imgBackground)
+    self.imgBackgroundLeft = ImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+    self.window.add_child(self.imgBackgroundLeft)
+    imgBackgroundRight = ImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_right.png"))
+    imgBackgroundRight.topleft = 297,0
+    self.window.add_child(imgBackgroundRight)
 
   def paintAvatar(self):
     self.paintBody()
@@ -170,18 +215,29 @@ class AvatarEditor:
   def paintTags(self):
     """Paint the Tags Zone.
     """
-    print "Pinta las pestanas"
+    imagesTagOrder = ["gender","skin","head","body","mask","hair","shirt","trousers","skirt","shoes"]
+    pos = 0
+    for img in imagesTagOrder:
+      self.imagesTag[img].border = 0
+      self.imagesTag[img].padding = 0
+      self.imagesTag[img].border = ocempgui.widgets.Constants.BORDER_NONE
+      self.imagesTag[img].topleft = 296, pos * 76
+      self.imagesTag[img]._image = self.imagesTag[img].picture
+      self.imagesTag[img].connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
+      self.window.add_child(self.imagesTag[img])
+      pos += 1
+
+    """
     for pos in range(len(GG.utils.TAGS)):
-      #imgTag = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
       imgTag = MiImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.TAGS[pos]))
       imgTag.padding = 0
       imgTag.border = 0
       imgTag.border = ocempgui.widgets.Constants.BORDER_NONE
-      #imgTag.topleft = [288, GG.utils.TAG_OFFSET*pos]
       imgTag.topleft = [320, GG.utils.TAG_OFFSET*pos]
       imgTag.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
       imgTag._image = imgTag.picture
       self.window.add_child(imgTag)
+    """
   
   def closeWindow(self):
     print "==> a cerrar"
