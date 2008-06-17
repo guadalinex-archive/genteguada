@@ -248,8 +248,10 @@ class AvatarEditor:
       self.imagesTag[idTag]._image =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
     self.removeWidgets()
     if idTag == "gender":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
       self.paintGenderFrame()
     elif idTag == "skin":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateSkin, "skin")
     elif idTag == 5:
       self.paintColorPalette(self.updateHairColor, "hair")
@@ -314,15 +316,15 @@ class AvatarEditor:
       
   
   def paintColorPalette(self, method, type):
-    baseX = 60
-    sizeX = 48
-    baseY = 500
-    sizeY = 27
+    baseX = 35
+    sizeX = 70
+    baseY = 510
+    sizeY = 45
     offset = 10
     buttons = self.getPaletteButtons(type)
     for i in range(len(buttons)):
       for j in range(len(buttons[0])):
-        button = ocempgui.widgets.ImageButton(os.path.join(GG.utils.DATA_PATH, buttons[i][j]))
+        button = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i][j]))
         button.border = 0
         button.padding = 0
         button.topleft = [baseX + sizeX * j + offset * j, baseY + sizeY * i + offset * i]
@@ -334,7 +336,7 @@ class AvatarEditor:
     if type == "cloth":
       return [ [GG.utils.COLOR_YELLOW, GG.utils.COLOR_ORANGE, GG.utils.COLOR_RED], 
                [GG.utils.COLOR_PINK, GG.utils.COLOR_BLUE, GG.utils.COLOR_PURPLE], 
-               [GG.utils.COLOR_GREEN, GG.utils.COLOR_WHITE, GG.utils.COLOR_BLACK] ]
+               [GG.utils.COLOR_GREEN, GG.utils.COLOR_WHITE, GG.utils.COLOR_BLACK] ] 
     elif type == "hair":
       return [ [GG.utils.COLOR_BLONDE, GG.utils.COLOR_BROWN, GG.utils.COLOR_BLACK] ]
     elif type == "skin":
