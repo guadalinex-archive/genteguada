@@ -244,8 +244,8 @@ class AvatarEditor:
     if not idTag:
       idTag = "gender"
     else:
-      self.imagesTag[self.activeOption]._image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
-      self.imagesTag[idTag]._image =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
+      self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
+      self.imagesTag[idTag].picture =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
     self.removeWidgets()
     if idTag == "gender":
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
@@ -255,6 +255,7 @@ class AvatarEditor:
       self.paintColorPalette(self.updateSkin, "skin")
     elif idTag == "head":
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.paintSizePalette(self.updateSizeHead)
     elif idTag == "body":
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
     elif idTag == "mask": 
@@ -385,3 +386,26 @@ class AvatarEditor:
   def updateShoesColor(self,color):
     self.avatarConfiguration["shoes"] = str(color)
     self.paintShoes()
+
+  def paintSizePalette(self, method):
+    baseX = 70
+    baseY = 70
+    sizeY = 150
+    offset = 10
+    buttons = ["s","m","l","xl"]
+    for i in range(len(buttons)):
+      button = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i]+".png"))
+      button.border = 0
+      button.padding = 0
+      button.topleft = [baseX , baseY + sizeY * i + offset * i]
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, buttons[i].upper())
+      self.window.add_child(button)
+      self.activeWidget.append(button)
+
+  def updateSizeHead(self,size):
+    self.avatarConfiguration["headSize"] = size
+    self.paintHead()
+    self.paintHair()
+    self.paintMask()
+
+
