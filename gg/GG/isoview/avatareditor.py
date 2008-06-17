@@ -61,7 +61,7 @@ class AvatarEditor:
     """ Class constructor.
     """
     self.activeWidget = []
-    self.activeOption = 0
+    self.activeOption = ""
     self.avatarConfiguration = { 
                                  "gender": "boy", 
                                  "headSize": "S",
@@ -96,11 +96,10 @@ class AvatarEditor:
 
   def loadImagesTag(self):
     dict = {}
-    image = pygame.image.load(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_back.png")).convert_alpha()
-    dict["gender"] = MiImageButton(image)
+    dict["gender"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png"))
     dict["skin"] =  MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
     dict["head"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png"))
-    dict["body"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "back_png.png"))
+    dict["body"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png"))
     dict["mask"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
     dict["hair"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
     dict["shirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
@@ -222,7 +221,7 @@ class AvatarEditor:
       self.imagesTag[img].padding = 0
       self.imagesTag[img].border = ocempgui.widgets.Constants.BORDER_NONE
       self.imagesTag[img].topleft = 296, pos * 76
-      self.imagesTag[img].connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, pos)
+      self.imagesTag[img].connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, img)
       self.window.add_child(self.imagesTag[img])
       pos += 1
 
@@ -236,13 +235,19 @@ class AvatarEditor:
     """
     if idTag == self.activeOption:
       return
+
+
     if not idTag:
-      idTag = 0
+      idTag = "gender"
+    else:
+      self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
+      self.imagesTag[idTag].picture =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
+
+ 
     self.removeWidgets()
-    if idTag == 0:
+    if idTag == "gender":
       self.paintGenderFrame()
-      self.firstTime = 0
-    elif idTag == 1:
+    elif idTag == "skin":
       self.paintColorPalette(self.updateSkin, "skin")
     elif idTag == 5:
       self.paintColorPalette(self.updateHairColor, "hair")
