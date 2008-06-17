@@ -49,15 +49,22 @@ class IsoViewRoom(isoview.IsoView):
     
     self.__tileList = []
     
-    print model.size
+    specialTiles = model.getSpecialTiles()
     
     for corx in range(model.size[0]):
       listTile = []
       for corz in range(model.size[1]):
         varPos = GG.utils.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
-        isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
-          self.getModel().spriteFull, [corx, 0, corz])
+        k = 0
+        for specTile in specialTiles:
+          if specTile[0] == [corx, 0, corz]:    
+            isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
+                specTile[1], [corx, 0, corz])
+            k = 1
+        if k == 0:
+          isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
+                self.getModel().spriteFull, [corx, 0, corz])
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)

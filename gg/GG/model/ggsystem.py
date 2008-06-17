@@ -112,8 +112,8 @@ class GGSystem(dMVC.model.Model):
     room3 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 3", [8, 8])
     room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [8, 8])
     room5 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 5", [8, 8])
-
-    room1.setSpecialTile([3, 0, 3], "black_tile.tga")
+    room3.setSpecialTile([2, 0, 1], "black_tile.tga")
+    room3.setSpecialTile([5, 0, 1], "black_tile.tga")
 
     # ROOM 1
     myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 7], room2)
