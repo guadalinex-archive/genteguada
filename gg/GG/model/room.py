@@ -90,6 +90,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
       return
     raise Exception("Error: item no eliminado")
 
+  def getSpecialTiles(self):
+    return self.__specialTiles
+
   def setSpecialTile(self, position, imageName):
     k = 0
     for tile in self.__specialTiles:
