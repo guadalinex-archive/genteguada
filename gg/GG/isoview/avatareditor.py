@@ -258,6 +258,7 @@ class AvatarEditor:
       self.paintSizePalette(self.updateSizeHead)
     elif idTag == "body":
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.paintSizePalette(self.updateSizeBody)
     elif idTag == "mask": 
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
     elif idTag == "hair":
@@ -408,4 +409,12 @@ class AvatarEditor:
     self.paintHair()
     self.paintMask()
 
-
+  def updateSizeBody(self,size):
+    self.avatarConfiguration["bodySize"] = size
+    self.paintBody()
+    self.paintShoes()
+    if self.avatarConfiguration["gender"] == "boy":
+      self.paintShirt()
+      self.paintTrousers()
+    else:
+      self.paintSkirt()
