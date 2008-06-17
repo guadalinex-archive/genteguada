@@ -488,3 +488,23 @@ class OcempLabel( ocempgui.widgets.Label):
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
+
+class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
+
+  def __init__(self, image):
+    ocempgui.widgets.ImageMap.__init__(self, image)
+  
+  def draw (self):
+    self._image = self.picture
+      
+class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
+
+  def __init__(self, image):
+    ocempgui.widgets.ImageButton.__init__(self, image)
+
+  def draw(self):
+    ocempgui.widgets.ImageButton.draw(self)
+    self._image = self.picture
+
+  def update(self): 
+    self.draw()
