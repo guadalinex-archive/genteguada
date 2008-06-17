@@ -371,6 +371,7 @@ class IsoViewHud(isoview.IsoView):
     dict["shirt"] = "3"
     dict["typeTrousers"] = "short"
     dict["trousers"] = "5"
+    dict["typeSkirt"] = "short"
     dict["skirt"] = "3"
     dict["shoes"] = "9"
     return dict

@@ -168,57 +168,79 @@ class AvatarEditor:
     imagesTagOrder = ["gender","skin","head","body","mask","hair","shirt","trousers","skirt","shoes"]
     pos = 0
     for img in imagesTagOrder:
-      self.imagesTag[img].border = 0
-      self.imagesTag[img].padding = 0
-      self.imagesTag[img].border = ocempgui.widgets.Constants.BORDER_NONE
       self.imagesTag[img].topleft = 296, pos * 76
       self.imagesTag[img].connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.paintCustomizeZone, img)
       self.window.add_child(self.imagesTag[img])
       pos += 1
 
-      
+  def changeImageTab(self, idTag):
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png")
+    self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(imgPath)
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png")
+    self.imagesTag[idTag].picture = ocempgui.draw.Image.load_image(imgPath)
+
+  def changeBackgroundLeft(self, image):
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, image)
+    self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(imgPath)
+
   def paintCustomizeZone(self,idTag = None):
     """Paint the Customize Zone.
     """
     if idTag == self.activeOption:
       return
+    
+    if idTag == "skirt" and self.avatarConfiguration["gender"] == "boy":
+      return 
 
+    if self.avatarConfiguration["gender"] == "girl" and idTag in ["shirt","trousers"]:
+      return
 
     if not idTag:
       idTag = "gender"
     else:
-      self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
-      self.imagesTag[idTag].picture =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
+      self.changeImageTab(idTag)
+      
     self.removeWidgets()
+
     if idTag == "gender":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.changeBackgroundLeft("background_left.png")
       self.paintGenderFrame()
+
     elif idTag == "skin":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
+      self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateSkin, "skin")
+
     elif idTag == "head":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.changeBackgroundLeft("background_left.png")
       self.paintSizePalette(self.updateSizeHead)
+
     elif idTag == "body":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.changeBackgroundLeft("background_left.png")
       self.paintSizePalette(self.updateSizeBody)
+
     elif idTag == "mask": 
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+      self.changeBackgroundLeft("background_left.png")
+
     elif idTag == "hair":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_small_palette.png"))
+      self.changeBackgroundLeft("background_left_small_palette.png")
       self.paintColorPalette(self.updateHairColor, "hair")
+
     elif idTag == "shirt":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
+      self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShirtColor, "cloth")
+
     elif idTag == "trousers":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
+      self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateTrouserColor, "cloth")
+
     elif idTag == "skirt":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
+      self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateSkirtColor, "cloth")
+
     elif idTag == "shoes":
-      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
+      self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShoesColor, "cloth")
+
     self.activeOption = idTag
       
   def removeWidgets(self):
@@ -230,16 +252,12 @@ class AvatarEditor:
 
   def paintGenderFrame(self):
     maleButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "boy_button.png"))
-    maleButton.border = 0
-    maleButton.padding = 0
     maleButton.topleft = [73, 191]
     maleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "boy")
     self.window.add_child(maleButton)
     self.activeWidget.append(maleButton)
      
     femaleButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "girl_button.png"))
-    femaleButton.border = 0
-    femaleButton.padding = 0
     femaleButton.topleft = [73, 441]
     femaleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "girl")
     self.window.add_child(femaleButton)
@@ -284,8 +302,6 @@ class AvatarEditor:
     for i in range(len(buttons)):
       for j in range(len(buttons[0])):
         button = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i][j]))
-        button.border = 0
-        button.padding = 0
         button.topleft = [baseX + sizeX * j + offset * j, baseY + sizeY * i + offset * i]
         button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, j + 1 + (i * 3))
         self.window.add_child(button)
@@ -342,8 +358,6 @@ class AvatarEditor:
     buttons = ["s","m","l","xl"]
     for i in range(len(buttons)):
       button = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i]+".png"))
-      button.border = 0
-      button.padding = 0
       button.topleft = [baseX , baseY + sizeY * i + offset * i]
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, buttons[i].upper())
       self.window.add_child(button)
@@ -368,15 +382,11 @@ class AvatarEditor:
 
   def paintButtons(self):
     buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"))
-    buttonOK.border = 0
-    buttonOK.padding = 0
     buttonOK.topleft = [780, 710]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeConfiguration)
     self.window.add_child(buttonOK)
      
     buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
-    buttonCancel.border = 0
-    buttonCancel.padding = 0
     buttonCancel.topleft = [900, 710]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeConfiguration)
     self.window.add_child(buttonCancel)
