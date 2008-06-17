@@ -15,42 +15,29 @@ class AvatarEditor:
   Defines the Avatar Editor
   """
 
-  def __init__(self,render,parent):
+  def __init__(self,render,parent,configuration):
     """ Class constructor.
     """
     self.activeWidget = []
     self.activeOption = ""
-    self.avatarConfiguration = { 
-                                 "gender": "boy", 
-                                 "headSize": "S",
-                                 "mask": "mask", 
-                                 "hairStyle": "1",
-                                 "hairColor": "1", 
-                                 "skin": "1",
-                                 "bodySize": "S",
-                                 "typeShirt": "short", 
-                                 "shirt": "3", 
-                                 "typeTrousers": "short",
-                                 "trousers": "5", 
-                                 "typeSkirt": "short",
-                                 "skirt": "3",
-                                 "shoes": "9"
-                                }
+    self.avatarConfiguration = configuration 
     self.render = render
     self.parent = parent
     self.finish = False
-
-    self.images = {
-                    "body":None,
-                    "shoes":None,
-                    "shirt":None,
-                    "trousers":None,
-                    "skirt":None,
-                    "head":None,
-                    "hair":None,
-                    "mask":None,
-                  }
+    self.images = self.loadImagesAvatar()
     self.imagesTag = self.loadImagesTag()
+
+  def loadImagesAvatar(self):
+    dict = {}
+    dict["body"] = None
+    dict["shoes"] = None
+    dict["shirt"] = None
+    dict["trousers"] = None
+    dict["skirt"] = None
+    dict["head"] = None
+    dict["hair"] = None
+    dict["mask"] = None
+    return dict
 
   def loadImagesTag(self):
     dict = {}
@@ -396,7 +383,7 @@ class AvatarEditor:
 
   def changeConfiguration(self):
     self.finish = True
-    self.parent.closeDresser()
+    self.parent.closeDresser(self.avatarConfiguration)
 
   def closeConfiguration(self):
     self.finish = True

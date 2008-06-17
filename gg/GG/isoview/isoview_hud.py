@@ -357,17 +357,40 @@ class IsoViewHud(isoview.IsoView):
       button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.buttonBar.add_child(button)
+  
+  def getPlayerConfiguration(self):
+    dict = {}
+    dict["gender"] = "boy"
+    dict["headSize"] = "S"
+    dict["mask"] = "mask"
+    dict["hairStyle"] = "1"
+    dict["hairColor"] = "1"
+    dict["skin"] = "1"
+    dict["bodySize"] = "S"
+    dict["typeShirt"] = "short"
+    dict["shirt"] = "3"
+    dict["typeTrousers"] = "short"
+    dict["trousers"] = "5"
+    dict["skirt"] = "3"
+    dict["shoes"] = "9"
+    return dict
 
   def showDresser(self):
-    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self)
+    playerConfiguration = self.getPlayerConfiguration()
+    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, playerConfiguration)
     self.winWardrobe = self.wardrobe.draw()
     self.widgetContainer.add_widget(self.winWardrobe)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
 
-  def closeDresser(self):
+  def closeDresser(self, configuration = None):
+    if configuration:
+      self.setPlayerConfiguration(configuration)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self
     self.winWardrobe.destroy()
     self.winWardrobe = None
+
+  def setPlayerConfiguration(self,configuration):
+    print configuration
 
   def turnRight(self):
     print "turn right"
