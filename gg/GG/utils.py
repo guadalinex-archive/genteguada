@@ -247,25 +247,29 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 30, 120) 
                                           }
                             },
-          "chatBalloonWhite" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+          "chatBalloonWhite" : { "font" : { "name" : "Helvetica", "size" : 22, "alias" : True }, 
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
                                          }
                             },
-          "chatBalloonBlue" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
+          "chatBalloonBlue" : {"font" : { "name" : "Helvetica", "size" : 22, "alias" : True }, 
+                               "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 255) 
                                          }
                             },
-          "chatBalloonGreen" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
+          "chatBalloonGreen" : { "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 255, 200) 
                                           }
                             },
-          "chatBalloonRed" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 200, 200),
+          "chatBalloonRed" : {  "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
