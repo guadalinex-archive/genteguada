@@ -253,15 +253,26 @@ class AvatarEditor:
     elif idTag == "skin":
       self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateSkin, "skin")
-    elif idTag == 5:
+    elif idTag == "head":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+    elif idTag == "body":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+    elif idTag == "mask": 
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+    elif idTag == "hair":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_small_palette.png"))
       self.paintColorPalette(self.updateHairColor, "hair")
-    elif idTag == 6:
+    elif idTag == "shirt":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateShirtColor, "cloth")
-    elif idTag == 7:
+    elif idTag == "trousers":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateTrouserColor, "cloth")
-    elif idTag == 8:
+    elif idTag == "skirt":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateSkirtColor, "cloth")
-    elif idTag == 9:
+    elif idTag == "shoes":
+      self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left_big_palette.png"))
       self.paintColorPalette(self.updateShoesColor, "cloth")
     self.activeOption = idTag
       
