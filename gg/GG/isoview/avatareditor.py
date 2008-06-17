@@ -50,7 +50,6 @@ class MiImageButton(ocempgui.widgets.ImageButton):
     """
   def update(self): 
     self.draw()
-    #self.dirty = False
 
 class AvatarEditor:
   """ AvatarEditor class.
@@ -102,9 +101,14 @@ class AvatarEditor:
     dict["body"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png"))
     dict["mask"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
     dict["hair"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
-    dict["shirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
-    dict["trousers"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
-    dict["skirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
+    if self.avatarConfiguration["gender"] == "boy":
+      dict["shirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
+      dict["trousers"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
+      dict["skirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
+    else:
+      dict["shirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
+      dict["trousers"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
+      dict["skirt"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
     dict["shoes"] = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
     return dict
 
@@ -240,10 +244,8 @@ class AvatarEditor:
     if not idTag:
       idTag = "gender"
     else:
-      self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
-      self.imagesTag[idTag].picture =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
-
- 
+      self.imagesTag[self.activeOption]._image = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
+      self.imagesTag[idTag]._image =  ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
     self.removeWidgets()
     if idTag == "gender":
       self.paintGenderFrame()
@@ -269,7 +271,7 @@ class AvatarEditor:
     self.activeWidget = []
 
   def paintGenderFrame(self):
-    maleButton = MiImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.MALE_BTN))
+    maleButton = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "boy_button.png"))
     maleButton.border = 0
     maleButton.padding = 0
     maleButton.topleft = [73, 191]
@@ -277,7 +279,7 @@ class AvatarEditor:
     self.window.add_child(maleButton)
     self.activeWidget.append(maleButton)
      
-    femaleButton = MiImageButton(os.path.join(GG.utils.DATA_PATH, GG.utils.FEMALE_BTN))
+    femaleButton = MiImageButton(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "girl_button.png"))
     femaleButton.border = 0
     femaleButton.padding = 0
     femaleButton.topleft = [73, 441]
@@ -293,10 +295,16 @@ class AvatarEditor:
       self.paintBody()
       self.paintShoes()
       if self.avatarConfiguration["gender"] == "boy":
+        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
+        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
+        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
         self.delAvatarImage("skirt")
         self.paintShirt()
         self.paintTrousers()
       else:
+        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
+        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
+        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
         self.delAvatarImage("shirt")
         self.delAvatarImage("trousers")
         self.paintSkirt()
