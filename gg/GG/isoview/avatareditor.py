@@ -311,33 +311,73 @@ class AvatarEditor:
 
   def paintSelectionItem(self, tag):
     if tag == "skin":
-      self.paintOptions(["skin.png"])
+      self.paintOptions(["skin.png"], "skin")
     elif tag == "mask":
       if self.avatarConfiguration["gender"] == "boy":
-        self.paintOptions(["masko.png"])
+        self.paintOptions(["masko.png"], "mask")
       else:
-        self.paintOptions(["maska.png"])
+        self.paintOptions(["maska.png"], "mask")
     elif tag == "hair":
       if self.avatarConfiguration["gender"] == "boy":
-        self.paintOptions(["hair1o.png","hair2o.png","hair3o.png"])
+        self.paintOptions(["hair1o.png","hair2o.png","hair3o.png"], "hairStyle")
       else:
-        self.paintOptions(["hair1a.png","hair2a.png","hair3a.png"])
+        self.paintOptions(["hair1a.png","hair2a.png","hair3a.png"], "hairStyle")
     elif tag == "shirt":
-      self.paintOptions(["shirt.png"])
+      self.paintOptions(["shirt.png"], "typeShirt")
     elif tag == "trousers":
-      self.paintOptions(["trousers.png"])
+      self.paintOptions(["trousers.png"], "typeTrousers")
     elif tag == "skirt":
-      self.paintOptions(["skirt.png"])
+      self.paintOptions(["skirt.png"], "typeSkirt")
     elif tag == "shoes":
-      self.paintOptions(["shoes.png"])
-        
+      self.paintOptions(["shoes.png"], "shoes")
 
-  def paintOptions(self, options):
-    img = options[0]
+  def paintOptions(self, options, tag):
+    if len(options) > 1:
+      img = options[int(self.avatarConfiguration[tag]) - 1]
+      buttonLeft = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png"))
+      buttonLeft.topleft = 30,400
+      buttonLeft.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveLeft, options, tag)
+      self.window.add_child(buttonLeft)
+      self.activeWidget.append(buttonLeft)
+      buttonRight = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "right_button.png"))
+      buttonRight.topleft = 200,400
+      buttonRight.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveRight, options, tag)
+      self.window.add_child(buttonRight)
+      self.activeWidget.append(buttonRight)
+    else:
+      img = options[0]
+
     self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
     self.imgOptionsTab.topleft = 30,150
     self.activeWidget.append(self.imgOptionsTab)
     self.window.add_child(self.imgOptionsTab)
+
+
+  def moveLeft(self, options, tag):
+    if int(self.avatarConfiguration[tag]) == 1:
+      return
+    newImgIndex = int(self.avatarConfiguration[tag]) - 1
+    self.avatarConfiguration[tag] = str(newImgIndex)
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1])
+    img = ocempgui.draw.Image.load_image(imgPath)
+    self.imgOptionsTab.picture = img
+    self.updateAvatar(tag)
+
+  def moveRight(self, options, tag):
+    if int(self.avatarConfiguration[tag]) == len(options):
+      return
+    newImgIndex = int(self.avatarConfiguration[tag]) + 1
+    self.avatarConfiguration[tag] = str(newImgIndex)
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1])
+    img = ocempgui.draw.Image.load_image(imgPath)
+    self.imgOptionsTab.picture = img
+    self.updateAvatar(tag)
+
+  def updateAvatar(self, tag):
+    if tag == "hairStyle":
+      self.paintHair()
+      
+
 
   def getPaletteButtons(self, type):
     if type == "cloth":
