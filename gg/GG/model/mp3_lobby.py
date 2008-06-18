@@ -8,17 +8,17 @@ class GGMP3Lobby(room_item.GGRoomItem):
   Defines a temporary pickable item behaviour.
   """
     
-  def __init__(self, spriteName, position, offset, spriteInventory, label, time, startRoom):
+  def __init__(self, spriteName, position, anchor, spriteInventory, label, time, startRoom):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
-    offset: image offset on screen.
+    anchor: image anchor on screen.
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     time: item's life time.
     startRoom: item's starting room.
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, offset)
+    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
     self.spriteInventory = spriteInventory
     self.label = label
     self.__startPosition = position
@@ -50,14 +50,29 @@ class GGMP3Lobby(room_item.GGRoomItem):
   def tick(self, now):
     """ Call for an update on item.
     """
-    if self.getPlayer() == None:
+    if self.getPlayer() == None and self.getLowerItem() == None and self.getRoom() == self.__startRoom \
+        and self.getPosition() == self.__startPosition:  
       return
     if self.__startTime == 0:
       self.__startTime = now    
     if (now - self.__startTime) > self.__time: 
-      self.getPlayer().removeFromInventory(self)
-      self.__startRoom.addItemFromInventory(self, self.__startPosition)
-      self.__startTime = 0
+      if self.getPlayer() == None and self.getLowerItem() == None:
+        # Esta en el suelo  
+        if self.getRoom() != self.__startRoom: 
+          # Colocado en una habitacion diferente
+          self.clearRoom()
+          self.setPosition(self.__startPosition)
+          self.setRoom(self.__startRoom)
+          self.__startTime = 0
+        else:
+          # Colocado en la misma habitacion.
+          self.setPosition(self.__startPosition)
+          self.__startTime = 0
+      else:
+        # Esta en el inventario de un jugador      
+        self.getPlayer().removeFromInventory(self)
+        self.__startRoom.addItemFromInventory(self, self.__startPosition)
+        self.__startTime = 0
     
   def timeLeft(self):
     """ Returns the item's time left.
@@ -75,4 +90,5 @@ class GGMP3Lobby(room_item.GGRoomItem):
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     
-  
+  def isStackable(self):
+    return True

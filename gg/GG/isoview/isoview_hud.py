@@ -111,7 +111,7 @@ class IsoViewHud(isoview.IsoView):
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, pos)
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            GG.utils.p3dToP2d(posOrigin, item.offset), pos, True)
+                            GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
       positionAnim.setOnStop(item.getRoom().removeItem, item)
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
@@ -121,8 +121,13 @@ class IsoViewHud(isoview.IsoView):
     positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
-    ivItem.setAnimation(positionAnim)
+    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", item.getPosition()
+    #self.dropActionsItembuttons()
+    #positionAnim.setOnStop(self.dropActionsItembuttons, None)
+    self.__isoviewRoom.itemUnselected(item)
     
+    ivItem.setAnimation(positionAnim)
+        
   def addItemToRoomFromInventory(self, ivItem):
     """ Removes an item from the inventory item list and creates an animation to the room.
     event: event info.
@@ -134,7 +139,8 @@ class IsoViewHud(isoview.IsoView):
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            pos, GG.utils.p3dToP2d(item.getPosition(), item.offset), True)
+                            pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
+      positionAnim.setOnStop(ivItem.updateScreenPosition, None)
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
         self.__isoviewInventory.remove(ivInventItem)
@@ -288,7 +294,7 @@ class IsoViewHud(isoview.IsoView):
     """
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
-    cad = messageChat.getHour()+" [" + messageChat.getSender() + "]: " + messageChat.getMessage()
+    cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()
 
     animTime = (len(messageChat.getMessage()) / 12) * 1000
     if animTime < 2000:
@@ -304,7 +310,7 @@ class IsoViewHud(isoview.IsoView):
     secAnim.setOnStop(self.__isoviewRoom.removeIsoViewItem, ivMessageChat)
     secAnim.setOnStop(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
     ivMessageChat.setAnimation(secAnim)
-    self.__isoviewRoom.addIsoViewItem(ivMessageChat)
+    self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
@@ -315,13 +321,12 @@ class IsoViewHud(isoview.IsoView):
     options = self.__selectedItem.getOptions()
     self.buttonBarActions = ocempgui.widgets.HFrame()
     if len(options) == 1:
-      offset = 0
+      anchor = 0
     else:
-      offset = 3 + len(options) 
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
+      anchor = 3 + len(options) 
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
                                      GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     #self.buttonBarActions.topleft = 0,0
-    print "********************", options
     for action in options:
       button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       button.border = 0
@@ -425,6 +430,9 @@ class IsoViewHud(isoview.IsoView):
   def dropActionsItembuttons(self):
     """ Removes the action buttons from the screen.
     """
+    print "DropActionsItembuttons: ", self.__selectedItem
+    if self.__selectedItem == None:
+      return
     self.__selectedItem = None
     children = copy.copy(self.buttonBarActions.children)
     for child in children:
@@ -436,6 +444,8 @@ class IsoViewHud(isoview.IsoView):
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
+    if self.__selectedItem == None:
+      return
     self.__player.addToInventoryFromRoom(self.__selectedItem)
     #self.__isoviewRoom.setItemOnTile(None, self.__selectedItem.getPosition())
     #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
@@ -476,7 +486,7 @@ class IsoViewHud(isoview.IsoView):
     window.set_minimum_size(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
     window.topleft = GG.utils.SCREEN_SZ[0] - 200, GG.utils.HUD_OR[1] - 200
     window.border = 1
-    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - offset), \
+    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
     #                                 GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
     self.widgetContainer.add_widget(window)
 

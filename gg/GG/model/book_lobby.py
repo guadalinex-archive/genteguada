@@ -6,15 +6,15 @@ class GGBookLobby(room_item.GGRoomItem):
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, position, offset, spriteInventory, label):
+  def __init__(self, spriteName, position, anchor, spriteInventory, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
-    offset: image offset on screen.
+    anchor: image anchor on screen.
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, offset)
+    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
     self.spriteInventory = spriteInventory
     self.label = label
     
@@ -43,3 +43,5 @@ class GGBookLobby(room_item.GGRoomItem):
       #clicker.addInventory(self)
       #self.getRoom().removeItem(self)
 
+  def isStackable(self):
+    return True

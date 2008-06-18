@@ -7,15 +7,15 @@ class GGDoorRoom3B(GG.model.room_item.GGRoomItem):
   Defines a teleporter object behaviour.
   """
  
-  def __init__(self, sprite, position, offset, exitPosition, destinationRoom):
+  def __init__(self, sprite, position, anchor, exitPosition, destinationRoom):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     exitPosition: teleporter exit position on the new room.
     position: teleporter position.
-    offset: image offset on screen.
+    anchor: image anchor on screen.
     destinationRoom: room the teleporter will carry players to.
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, offset)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
     

@@ -383,17 +383,19 @@ def p2pDistance(point1, point2):
     return 0
   return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
     
-def p3dToP2d(cord3d, offset):
+def p3dToP2d(cord3d, anchor):
   """ Returns the physical 2d coordinates of a 3d virtual point.
   cord3d: 3d virtual point.
-  offset: point's offset on screen.
+  anchor: point's anchor on screen.
   """
   x2d = SCREEN_OR[0]
   y2d = SCREEN_OR[1]
   x2d = x2d + (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[2]*(TILE_SZ[1])) 
   y2d = y2d + (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[2]*(TILE_SZ[1]/2)) 
-  x2d = x2d - (offset[0])
-  y2d = y2d - (offset[1])
+  x2d = x2d - (anchor[0])
+  y2d = y2d - (anchor[1])
+    
+  y2d = y2d - (cord3d[1]*TILE_SZ[1]) 
     
   cord2d = [x2d, y2d]
   return cord2d

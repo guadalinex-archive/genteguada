@@ -9,14 +9,14 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, position, offset):
+  def __init__(self, spriteName, position, anchor):
     """ Class constructor.
     sprite: image name.
     position: position on screen for the item.
-    offset: offset for that position.
+    anchor: anchor for that position.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
-    self.offset = offset
+    self.anchor = anchor
     self.__position = position
     self.__room = None
     self.__upperItem = None
@@ -26,23 +26,30 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['offset']
+    return parentVars + ['anchor']
   
   # self.__position
   
   def getPosition(self):
     """ Returns the item position.
     """
-    return self.__position
+    #print "KUKUYUKU", self
+    if self.__lowerItem != None:
+      return self.__lowerItem.getPosition()
+    else:        
+      return self.__position
 
   def setPosition(self, pos):
     """ Sets a new position for the item.
     pos: new position.
     """
-    if not self.__position == pos:
-      old = self.__position
-      self.__position = pos
-      self.triggerEvent('position', position=pos, oldPosition=old)
+    if self.__lowerItem != None:
+      return self.__lowerItem.setPosition(pos)
+    else:
+      if not self.__position == pos:
+        old = self.__position
+        self.__position = pos
+        self.triggerEvent('position', position=pos, oldPosition=old)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.
@@ -58,7 +65,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def getRoom(self):
     """ Returns the room where the player is.
     """
-    return self.__room
+    if self.__lowerItem != None:
+      return self.__lowerItem.getRoom()
+    else:
+      return self.__room
   
   def clearRoom(self):
     """ Sets the item's room as none.    
@@ -90,9 +100,20 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return self.__upperItem
 
   def setUpperItem(self, item):
-    if not self.__upperItem.checkSimilarity(item):
+    self.__upperItem = item
+  
+  def getTopMostItem(self):
+    if self.__upperItem == None:
+      return self
+    else:
+      return self.__upperItem.getTopMostItem()  
+    
+  def setTopMostItem(self, item):
+    if self.__upperItem == None:
       self.__upperItem = item
-      self.triggerEvent('lowerItem', item=item)
+      item.setLowerItem(self)
+    else:
+      self.__upperItem.setTopMostItem(item)
       
   # self.__lowerItem
   
@@ -100,10 +121,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return self.__lowerItem
 
   def setLowerItem(self, item):
-    if not self.__lowerItem.checkSimilarity(item):
-      self.__lowerItem = item
-      self.triggerEvent('lowerItem', item=item)
-  
+    self.__lowerItem = item
+   
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.
@@ -114,14 +133,12 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   
   def checkSimilarity(self, item):
     if inventory_item.GGInventoryItem.checkSimilarity(self, item):
-      if item.offset == self.offset:
+      if item.anchor == self.anchor:
         return True
     return False   
   
-  """
   def inventoryOnly(self):
     return False
-  """
   
   def clickedBy(self, clicker):
     """ Triggers an avent when the item receives a click by a player.
@@ -139,3 +156,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Tells a room to remove this item from it.
     """
     self.__room.removeItem(self)
+    
+  def isStackable(self):
+    return False

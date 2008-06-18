@@ -55,7 +55,13 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """  
     if not item in self.__items:
       item.setStartPosition(None)
-      item.setStartPosition(self.getNearestEmptyCell(pos))
+      #item.setStartPosition(self.getNearestEmptyCell(pos))
+      item.setStartPosition(pos)
+      
+      existingItem = self.getItemOnPosition(pos)
+      if existingItem != None:
+        existingItem.setTopMostItem(item)
+      
       self.__items.append(item)
       item.setRoom(self)
       self.triggerEvent('addItemFromVoid', item=item)
@@ -70,9 +76,14 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """  
     if not item in self.__items:
       item.setStartPosition(None)
-      item.setStartPosition(self.getNearestEmptyCell(pos))
+      #item.setStartPosition(self.getNearestEmptyCell(pos))
+      item.setStartPosition(pos)
+      
+      existingItem = self.getItemOnPosition(pos)
+      if existingItem != None:
+        existingItem.setTopMostItem(item)
+      
       self.__items.append(item)
-      #if item.getRoom() == self:
       item.setRoom(self)
       item.setPlayer(None)
       self.triggerEvent('addItemFromInventory', item=item, room=self)
@@ -84,6 +95,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
+      if item.getLowerItem() != None:
+        item.getLowerItem().setUpperItem(None)
+        item.setLowerItem(None)
       item.clearRoom()
       self.__items.remove(item)
       self.triggerEvent('removeItem', item=item)
@@ -222,6 +236,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
         point = emptyPos
     return point
       
+  def getItemOnPosition(self, pos):
+    for item in self.__items:
+      if item.getPosition() == pos:
+        return item
+    return None
       
     """
     retVar = None
