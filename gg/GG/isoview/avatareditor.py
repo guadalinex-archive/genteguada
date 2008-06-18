@@ -441,12 +441,12 @@ class AvatarEditor:
 
   def openFileDialog(self):
     self.dialog = ocempgui.widgets.Box(500,220)
-    self.dialog.topleft = 300, 200
+    self.dialog.topleft = 400, 200
     
     self.listDir = GG.utils.OcempImageFileList(300,200)
     self.listDir.topleft = 10,10
     self.dialog.add_child(self.listDir)
-    
+
     buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"))
     buttonOK.topleft = [350, 20]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"OK")
