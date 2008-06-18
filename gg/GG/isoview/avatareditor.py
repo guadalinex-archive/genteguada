@@ -26,6 +26,7 @@ class AvatarEditor:
     self.finish = False
     self.images = self.loadImagesAvatar()
     self.imagesTag = self.loadImagesTag()
+    self.fileDialogShow = False
 
   def loadImagesAvatar(self):
     dict = {}
@@ -190,6 +191,9 @@ class AvatarEditor:
   def paintCustomizeZone(self,idTag = None):
     """Paint the Customize Zone.
     """
+    if self.fileDialogShow:
+      return
+
     if idTag == self.activeOption:
       return
     
@@ -419,7 +423,11 @@ class AvatarEditor:
     self.activeWidget.append(buttonFileChooser)
 
   def changeMask(self, mask):
+    if self.fileDialogShow:
+      return
+
     if mask == "file":
+      self.fileDialogShow = True
       self.openFileDialog()
     else:
       if self.avatarConfiguration["gender"] == "boy":
@@ -433,7 +441,7 @@ class AvatarEditor:
 
   def openFileDialog(self):
     self.dialog = ocempgui.widgets.Box(500,220)
-    self.dialog.topleft = 400, 100
+    self.dialog.topleft = 300, 200
     
     self.listDir = GG.utils.OcempImageFileList(300,200)
     self.listDir.topleft = 10,10
@@ -449,22 +457,6 @@ class AvatarEditor:
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"KO")
     self.dialog.add_child(buttonCancel)
 
-
-
-    """
-    buttons = [ocempgui.widgets.Button ("#OK"), ocempgui.widgets.Button ("#Cancel")]
-    buttons[0].minsize = 80, buttons[0].minsize[1]
-    buttons[1].minsize = 80, buttons[1].minsize[1]
-    results = [ocempgui.widgets.Constants.DLGRESULT_OK, ocempgui.widgets.Constants.DLGRESULT_CANCEL]
-
-    #self.dialog = ocempgui.widgets.FileDialog ("Select your file(s)", buttons, results)
-    self.dialog = ocempgui.widgets.VFrame()
-    self.dialog.depth = 2 
-    self.dialog.topleft = 200, 300
-    self.dialog.set_minimum_size(200,200)
-    #self.dialog.connect_signal (ocempgui.widgets.Constants.SIG_DIALOGRESPONSE, self.closeFileDialog)
-    self.window.add_child (self.dialog)
-    """
     self.window.add_child (self.dialog)
 
   def closeFileDialog(self, result):
@@ -475,6 +467,7 @@ class AvatarEditor:
       self.showImage(filePath)
     self.window.remove_child(self.dialog)
     self.dialog.destroy()
+    self.fileDialogShow = False
 
   def showImage(self, filePath):
     from PIL import Image
