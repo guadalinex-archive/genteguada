@@ -367,7 +367,7 @@ class IsoViewHud(isoview.IsoView):
     dict = {}
     dict["gender"] = "boy"
     dict["headSize"] = "S"
-    dict["mask"] = "mask"
+    dict["mask"] = None
     dict["hairStyle"] = "1"
     dict["hairColor"] = "1"
     dict["skin"] = "1"

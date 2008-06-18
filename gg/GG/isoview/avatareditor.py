@@ -158,8 +158,11 @@ class AvatarEditor:
     self.newAvatarImage(imgPath, "hair")
 
   def paintMask(self):
-    #imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], self.avatarConfiguration["mask"] + GG.utils.IMG_EXTENSION)
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+    if self.avatarConfiguration["mask"]:
+      imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+    else:
+      #TODO hay que cambiar la careta en funcion de la que tenga seleccionada el usuario
+      imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
     self.newAvatarImage(imgPath, "mask")
 
 
@@ -352,7 +355,10 @@ class AvatarEditor:
     else:
       img = options[0]
 
-    self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
+    if tag == "mask" and self.avatarConfiguration["mask"]:
+      self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_PHOTO_MASK, self.avatarConfiguration["mask"]))
+    else:
+      self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
     self.imgOptionsTab.topleft = 30,150
     self.activeWidget.append(self.imgOptionsTab)
     self.window.add_child(self.imgOptionsTab)
@@ -423,23 +429,48 @@ class AvatarEditor:
       imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img)
       img = ocempgui.draw.Image.load_image(imgPath)
       self.imgOptionsTab.picture = img 
+      self.avatarConfiguration["mask"] = None
 
   def openFileDialog(self):
+    self.dialog = ocempgui.widgets.Box(500,220)
+    self.dialog.topleft = 400, 100
+    
+    self.listDir = ocempgui.widgets.FileList(300,200)
+    self.listDir.topleft = 10,10
+    self.dialog.add_child(self.listDir)
+    
+    buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"))
+    buttonOK.topleft = [350, 20]
+    buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"OK")
+    self.dialog.add_child(buttonOK)
+     
+    buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
+    buttonCancel.topleft = [350, 150]
+    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"KO")
+    self.dialog.add_child(buttonCancel)
+
+
+
+    """
     buttons = [ocempgui.widgets.Button ("#OK"), ocempgui.widgets.Button ("#Cancel")]
     buttons[0].minsize = 80, buttons[0].minsize[1]
     buttons[1].minsize = 80, buttons[1].minsize[1]
     results = [ocempgui.widgets.Constants.DLGRESULT_OK, ocempgui.widgets.Constants.DLGRESULT_CANCEL]
 
-    self.dialog = ocempgui.widgets.FileDialog ("Select your file(s)", buttons, results)
+    #self.dialog = ocempgui.widgets.FileDialog ("Select your file(s)", buttons, results)
+    self.dialog = ocempgui.widgets.VFrame()
     self.dialog.depth = 2 
-    self.dialog.topleft = 500, 300
-    self.dialog.connect_signal (ocempgui.widgets.Constants.SIG_DIALOGRESPONSE, self.closeFileDialog)
+    self.dialog.topleft = 200, 300
+    self.dialog.set_minimum_size(200,200)
+    #self.dialog.connect_signal (ocempgui.widgets.Constants.SIG_DIALOGRESPONSE, self.closeFileDialog)
+    self.window.add_child (self.dialog)
+    """
     self.window.add_child (self.dialog)
 
   def closeFileDialog(self, result):
     filePath = None
-    if result == ocempgui.widgets.Constants.DLGRESULT_OK:
-      filePath = self.dialog.get_filenames()
+    if result == "OK":
+      filePath = self.listDir.get_filename()
       if len(filePath):
         filePath = filePath[0]
     if filePath:
@@ -457,11 +488,10 @@ class AvatarEditor:
       return 
     img.thumbnail(size, Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.PATH_PHOTO_MASK,file))
-    #self.avatarConfiguration[tag] = str(newImgIndex)
     imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK,file)
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgOptionsTab.picture = img
-
+    self.avatarConfiguration["mask"] = file
   
   def getPaletteButtons(self, type):
     if type == "cloth":
@@ -534,7 +564,6 @@ class AvatarEditor:
       self.paintTrousers()
     else:
       self.paintSkirt()
-
 
   def paintButtons(self):
     buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"))
