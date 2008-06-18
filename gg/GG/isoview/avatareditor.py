@@ -158,7 +158,8 @@ class AvatarEditor:
     self.newAvatarImage(imgPath, "hair")
 
   def paintMask(self):
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], self.avatarConfiguration["mask"] + GG.utils.IMG_EXTENSION)
+    #imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], self.avatarConfiguration["mask"] + GG.utils.IMG_EXTENSION)
+    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
     self.newAvatarImage(imgPath, "mask")
 
 
@@ -412,9 +413,16 @@ class AvatarEditor:
     self.activeWidget.append(buttonFileChooser)
 
   def changeMask(self, mask):
-    print mask
     if mask == "file":
       self.openFileDialog()
+    else:
+      if self.avatarConfiguration["gender"] == "boy":
+        img = "masko.png"
+      else:
+        img = "maska.png"
+      imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img)
+      img = ocempgui.draw.Image.load_image(imgPath)
+      self.imgOptionsTab.picture = img 
 
   def openFileDialog(self):
     buttons = [ocempgui.widgets.Button ("#OK"), ocempgui.widgets.Button ("#Cancel")]
