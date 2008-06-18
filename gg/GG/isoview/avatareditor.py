@@ -435,7 +435,7 @@ class AvatarEditor:
     self.dialog = ocempgui.widgets.Box(500,220)
     self.dialog.topleft = 400, 100
     
-    self.listDir = ocempgui.widgets.FileList(300,200)
+    self.listDir = GG.utils.OcempImageFileList(300,200)
     self.listDir.topleft = 10,10
     self.dialog.add_child(self.listDir)
     
@@ -470,9 +470,7 @@ class AvatarEditor:
   def closeFileDialog(self, result):
     filePath = None
     if result == "OK":
-      filePath = self.listDir.get_filename()
-      if len(filePath):
-        filePath = filePath[0]
+      filePath = self.listDir.getFileName()
     if filePath:
       self.showImage(filePath)
     self.window.remove_child(self.dialog)

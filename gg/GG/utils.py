@@ -2,6 +2,7 @@ import math
 import os
 import pygame
 import ocempgui.widgets
+import stat
 
 #cache
 if os.path.isdir("gg/GG/cache"):
@@ -511,3 +512,48 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
 
   def update(self): 
     self.draw()
+
+
+class OcempImageFileList(ocempgui.widgets.FileList):
+  
+  def __init__(self, width, height):
+    ocempgui.widgets.FileList.__init__(self, width, height)
+
+  def _list_contents (self):
+    items = ocempgui.widgets.components.ListItemCollection ()
+    items.append (ocempgui.widgets.components.FileListItem (os.pardir, stat.S_IFDIR))
+    stats = None
+    files = []
+    dirs = []
+    dappend = dirs.append
+    fappend = files.append
+    entries = os.listdir (self._directory)
+    isdir = os.path.isdir
+    pjoin = os.path.join
+        
+    for filename in entries:
+      if not filename.startswith("."):
+        if isdir (pjoin (self._directory, filename)):
+          dappend (filename)
+        else:
+          file, ext = os.path.splitext(filename)
+          if ext in [".jpg",".JPG",".png",".PNG"]: 
+            fappend (filename)
+    dirs.sort ()
+    files.sort ()
+        
+    map (items.append, [ocempgui.widgets.components.FileListItem (d, stat.S_IFDIR) for d in dirs])
+    for filename in files:
+      stats = os.stat (pjoin (self._directory, filename))
+      items.append (ocempgui.widgets.components.FileListItem (filename, stats.st_mode))
+    self.set_items (items)
+
+  def getFileName(self):
+    item = self.get_selected()
+    if len(item):
+      file = os.path.join (self.directory, item[0].text)
+      if os.path.isfile(file):
+        return file
+    return None
+    
+    
