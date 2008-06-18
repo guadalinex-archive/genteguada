@@ -229,14 +229,17 @@ class AvatarEditor:
     elif idTag == "shirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShirtColor, "cloth", "shirt")
+      self.paintWinterSelection("typeShirt")
 
     elif idTag == "trousers":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateTrouserColor, "cloth", "trousers")
+      self.paintWinterSelection("typeTrousers")
 
     elif idTag == "skirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateSkirtColor, "cloth", "skirt")
+      self.paintWinterSelection("typeSkirt")
 
     elif idTag == "shoes":
       self.changeBackgroundLeft("background_left_big_palette.png")
@@ -336,12 +339,12 @@ class AvatarEditor:
       img = options[int(self.avatarConfiguration[tag]) - 1]
       buttonLeft = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png"))
       buttonLeft.topleft = 30,400
-      buttonLeft.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveLeft, options, tag)
+      buttonLeft.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveOptions, "left", options, tag)
       self.window.add_child(buttonLeft)
       self.activeWidget.append(buttonLeft)
       buttonRight = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "right_button.png"))
       buttonRight.topleft = 200,400
-      buttonRight.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveRight, options, tag)
+      buttonRight.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveOptions, "right", options, tag)
       self.window.add_child(buttonRight)
       self.activeWidget.append(buttonRight)
     else:
@@ -351,22 +354,17 @@ class AvatarEditor:
     self.imgOptionsTab.topleft = 30,150
     self.activeWidget.append(self.imgOptionsTab)
     self.window.add_child(self.imgOptionsTab)
+  
+  def moveOptions(self, direction, options, tag):
+    if direction == "left":
+      if int(self.avatarConfiguration[tag]) == 1:
+        return
+      newImgIndex = int(self.avatarConfiguration[tag]) - 1
+    else:
+      if int(self.avatarConfiguration[tag]) == len(options):
+        return
+      newImgIndex = int(self.avatarConfiguration[tag]) + 1
 
-
-  def moveLeft(self, options, tag):
-    if int(self.avatarConfiguration[tag]) == 1:
-      return
-    newImgIndex = int(self.avatarConfiguration[tag]) - 1
-    self.avatarConfiguration[tag] = str(newImgIndex)
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1])
-    img = ocempgui.draw.Image.load_image(imgPath)
-    self.imgOptionsTab.picture = img
-    self.updateAvatar(tag)
-
-  def moveRight(self, options, tag):
-    if int(self.avatarConfiguration[tag]) == len(options):
-      return
-    newImgIndex = int(self.avatarConfiguration[tag]) + 1
     self.avatarConfiguration[tag] = str(newImgIndex)
     imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1])
     img = ocempgui.draw.Image.load_image(imgPath)
@@ -376,8 +374,29 @@ class AvatarEditor:
   def updateAvatar(self, tag):
     if tag == "hairStyle":
       self.paintHair()
+    elif tag == "typeShirt":
+      self.paintShirt()
+    elif tag == "typeTrousers":
+      self.paintTrousers()
+    elif tag == "typeSkirt":
+      self.paintSkirt()
       
 
+  def paintWinterSelection(self, tag):
+    buttonWinter = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "winter_button.png"))
+    buttonWinter.topleft = 20,20
+    buttonWinter.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeCloth, "long", tag)
+    self.window.add_child(buttonWinter)
+    self.activeWidget.append(buttonWinter)
+    buttonSummer = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "summer_button.png"))
+    buttonSummer.topleft = 150,20
+    buttonSummer.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeCloth, "short", tag)
+    self.window.add_child(buttonSummer)
+    self.activeWidget.append(buttonSummer)
+
+  def changeCloth(self, type, tag):
+    self.avatarConfiguration[tag] = type
+    self.updateAvatar(tag)
 
   def getPaletteButtons(self, type):
     if type == "cloth":
