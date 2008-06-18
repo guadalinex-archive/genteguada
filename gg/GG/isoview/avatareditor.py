@@ -208,7 +208,7 @@ class AvatarEditor:
 
     elif idTag == "skin":
       self.changeBackgroundLeft("background_left_big_palette.png")
-      self.paintColorPalette(self.updateSkin, "skin")
+      self.paintColorPalette(self.updateSkin, "skin", "skin")
 
     elif idTag == "head":
       self.changeBackgroundLeft("background_left.png")
@@ -220,26 +220,27 @@ class AvatarEditor:
 
     elif idTag == "mask": 
       self.changeBackgroundLeft("background_left.png")
+      self.paintSelectionItem("mask")
 
     elif idTag == "hair":
       self.changeBackgroundLeft("background_left_small_palette.png")
-      self.paintColorPalette(self.updateHairColor, "hair")
+      self.paintColorPalette(self.updateHairColor, "hair", "hair")
 
     elif idTag == "shirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
-      self.paintColorPalette(self.updateShirtColor, "cloth")
+      self.paintColorPalette(self.updateShirtColor, "cloth", "shirt")
 
     elif idTag == "trousers":
       self.changeBackgroundLeft("background_left_big_palette.png")
-      self.paintColorPalette(self.updateTrouserColor, "cloth")
+      self.paintColorPalette(self.updateTrouserColor, "cloth", "trousers")
 
     elif idTag == "skirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
-      self.paintColorPalette(self.updateSkirtColor, "cloth")
+      self.paintColorPalette(self.updateSkirtColor, "cloth", "skirt")
 
     elif idTag == "shoes":
       self.changeBackgroundLeft("background_left_big_palette.png")
-      self.paintColorPalette(self.updateShoesColor, "cloth")
+      self.paintColorPalette(self.updateShoesColor, "cloth", "shoes")
 
     self.activeOption = idTag
       
@@ -289,7 +290,7 @@ class AvatarEditor:
       self.paintMask()
       
   
-  def paintColorPalette(self, method, type):
+  def paintColorPalette(self, method, type, tag):
     baseX = 35
     sizeX = 70
     if type == "hair":
@@ -306,6 +307,37 @@ class AvatarEditor:
         button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, j + 1 + (i * 3))
         self.window.add_child(button)
         self.activeWidget.append(button)
+    self.paintSelectionItem(tag)
+
+  def paintSelectionItem(self, tag):
+    if tag == "skin":
+      self.paintOptions(["skin.png"])
+    elif tag == "mask":
+      if self.avatarConfiguration["gender"] == "boy":
+        self.paintOptions(["masko.png"])
+      else:
+        self.paintOptions(["maska.png"])
+    elif tag == "hair":
+      if self.avatarConfiguration["gender"] == "boy":
+        self.paintOptions(["hair1o.png","hair2o.png","hair3o.png"])
+      else:
+        self.paintOptions(["hair1a.png","hair2a.png","hair3a.png"])
+    elif tag == "shirt":
+      self.paintOptions(["shirt.png"])
+    elif tag == "trousers":
+      self.paintOptions(["trousers.png"])
+    elif tag == "skirt":
+      self.paintOptions(["skirt.png"])
+    elif tag == "shoes":
+      self.paintOptions(["shoes.png"])
+        
+
+  def paintOptions(self, options):
+    img = options[0]
+    self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
+    self.imgOptionsTab.topleft = 30,150
+    self.activeWidget.append(self.imgOptionsTab)
+    self.window.add_child(self.imgOptionsTab)
 
   def getPaletteButtons(self, type):
     if type == "cloth":
