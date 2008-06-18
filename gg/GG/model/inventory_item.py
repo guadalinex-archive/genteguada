@@ -10,7 +10,7 @@ class GGInventoryItem(ggmodel.GGModel):
   def __init__(self, spriteName):
     """ Class constructor.
     spriteName: image name.
-    offset: offset for that position.
+    anchor: anchor for that position.
     """
     ggmodel.GGModel.__init__(self)
     self.__player = None

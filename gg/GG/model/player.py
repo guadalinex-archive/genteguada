@@ -10,16 +10,16 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, position, offset, username, password):
+  def __init__(self, spritePath, position, anchor, username, password):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
-    offset: image offset on screen.
+    anchor: image anchor on screen.
     username: user name.
     password: user password.
     """
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
-    GG.model.room_item.GGRoomItem.__init__(self, filename, position, offset)
+    GG.model.room_item.GGRoomItem.__init__(self, filename, position, anchor)
     self.username = username
     self.imagePath = spritePath
     self.__password = password # Not used outside this class
@@ -143,9 +143,14 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
+    #self.lala()
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    if dropLocation == [-1, -1, -1] or self.getRoom().getBlocked(dropLocation):
+    itemOnPosition = self.getRoom().getItemOnPosition(dropLocation)
+    if dropLocation == [-1, -1, -1]: 
       return False
+    if itemOnPosition != None:
+      if not itemOnPosition.isStackable():
+        return False
     self.__inventory.remove(item)
     item.setPlayer(None)
     self.getRoom().addItemFromInventory(item, dropLocation)

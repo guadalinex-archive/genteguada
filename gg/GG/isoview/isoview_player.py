@@ -107,14 +107,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Paints a new item frame on screen.
     """
     isoview_item.IsoViewItem.updateFrame(self, ellapsedTime)
-    if self.__movieAnimation:
+    if self.__movieAnimation != None:
       self.__movieAnimation.step(ellapsedTime)  
         
   def restoreImageFrame(self):
     self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
   
   def restoreImagePosition(self):  
-    self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
+    self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor))
       
   def stateChanged(self, event):
     """ Triggers after receiving a new state change event.
@@ -125,7 +125,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
-      self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().offset))
+      self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor))
       
     elif st == GG.utils.STATE[2]: # walking
       self.setAnimation(None)

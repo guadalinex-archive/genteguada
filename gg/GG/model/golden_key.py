@@ -13,18 +13,18 @@ class GGGoldenKey(inventory_item.GGInventoryItem):
     """ Class constructor.
     sprite: image name.
     position: position on screen for the item.
-    offset: offset for that position.
+    anchor: anchor for that position.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.label = label
-    self.offset = [20, -40]
+    self.anchor = [20, -40]
     self.__position = position
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['label', 'offset']
+    return parentVars + ['label', 'anchor']
   
   def getPosition(self):
     return self.__position    

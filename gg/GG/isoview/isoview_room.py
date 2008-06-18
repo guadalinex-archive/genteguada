@@ -75,7 +75,7 @@ class IsoViewRoom(isoview.IsoView):
       self.__allPlayers.add(isoviewitem.getImg())
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
       pos = item.getPosition()
-      self.__tileList[pos[0]][pos[2]].setIsoItem(isoviewitem)
+      self.__tileList[pos[0]][pos[2]].addIsoItem(isoviewitem)
     
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
@@ -178,7 +178,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    print "*********************"
+    print "*********** item Added from inventory **********"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
@@ -196,7 +196,7 @@ class IsoViewRoom(isoview.IsoView):
     pos = item.getPosition()
     for ivplayer in self.__isoViewItems:
       if ivplayer.getModel() == item:
-        self.__tileList[pos[0]][pos[2]].setIsoItem(None)  
+        self.__tileList[pos[0]][pos[2]].removeTopMostItem()  
         self.removeIsoViewItem(ivplayer)
         removed = True
     if not removed:
@@ -204,7 +204,7 @@ class IsoViewRoom(isoview.IsoView):
         
   def specialTileAdded(self, event):
       
-    print "***************************************************"  
+    print "*********************** SPECIAL TILE ADDED ***********************"  
       
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
@@ -223,7 +223,13 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
     pos = ivItem.getModel().getPosition()
-    self.__tileList[pos[0]][pos[2]].setIsoItem(ivItem)
+    self.__tileList[pos[0]][pos[2]].addIsoItem(ivItem)
+    ivItem.updateScreenPosition()
+    
+  def addIsoViewChatItem(self, ivChatItem):
+    self.__isoViewItems.append(ivChatItem)
+    self.__allPlayers.add(ivChatItem.getImg())
+    #ivChatItem.updateScreenPosition()
     
   def removeIsoViewItem(self, ivPlayer):
     """ Removes an isometric player viewer from the viewers list.
@@ -233,7 +239,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
     pos = ivPlayer.getModel().getPosition()
-    self.__tileList[pos[0]][pos[2]].setIsoItem(None)
+    self.__tileList[pos[0]][pos[2]].removeTopMostItem()
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
@@ -252,12 +258,22 @@ class IsoViewRoom(isoview.IsoView):
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
+    print "unselected"
+    pos = item.getPosition()
+    if self.__tileList[pos[0]][pos[2]].getIsoItem() != None:
+      self.__tileList[pos[0]][pos[2]].getIsoItem().unselected()
+    
+    """
     for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
-        isoItem.unselected()   
+        isoItem.unselected()
+    """      
 
   def setItemOnTile(self, item, position):
-    self.__tileList[position[0]][position[2]].setIsoItem(item)      
+    if item == None:
+      self.__tileList[position[0]][position[2]].removeTopMostItem()
+    else:
+      self.__tileList[position[0]][position[2]].addIsoItem(item)      
 
   def findIVItem(self, item):
     for ivItem in self.__isoViewItems:

@@ -46,11 +46,25 @@ class IsoViewTile(isoview.IsoView):
     return self.__bottomRight
   
   def getIsoItem(self):
-    return self.__isoItem
+    if self.__isoItem != None:  
+      return self.__isoItem.getTopMostItem()
+    else:
+      return None
+    #return self.__isoItem
   
-  def setIsoItem(self, item):
-    self.__isoItem = item
-    
+  def addIsoItem(self, item):
+    if self.__isoItem == None:
+      self.__isoItem = item
+    else:  
+      self.__isoItem.setTopMostItem(item)
+      
+  def removeTopMostItem(self):
+    if self.__isoItem != None:
+      if self.__isoItem.getUpperItem() == None:
+        self.__isoItem = None
+      else:
+        self.__isoItem.removeTopMostItem()
+      
   def contained(self, pos):
     """ Returns if a point is contained on a tile.
     pos: point.
@@ -61,13 +75,8 @@ class IsoViewTile(isoview.IsoView):
           return 1
     if self.__isoItem == None:
       return 0
-    rect = self.__isoItem.getImg().rect
-    if rect[0] < pos[0] < (rect[0] + rect[2]):
-      if rect[1] < pos[1] < (rect[1] + rect[3]):
-        if self.__isoItem.getImg().image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
-          return 1
-    return 0
-
+    return self.__isoItem.checkClickPosition(pos)
+  
   def onBlank(self, pos):
     """ Checks if one point is located on the blank zones of the tile sprite.
     pos: point.
