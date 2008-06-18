@@ -48,14 +48,14 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__selectedItem = None
     self.buttonActions = {
-        "inventory":{"image":"guardar.png", "action": self.itemToInventory},
-        "clone":{"image":"guardar.png", "action": self.itemToClone},
-        "push":{"image":"empujar.png", "action": self.itemToPush},
-        "up":{"image":"levantar.png", "action": self.itemToUp},
-        "talk":{"image":"sonido.png", "action": self.itemToTalk},
-        "exchange":{"image":"empujar.png", "action": self.exchangeItemPlayer},
-        "open":{"image":"sonido.png", "action": self.itemToOpen},
-        "url":{"image":"derecha.png", "action": self.itemToUrl}
+        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
+        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
+        "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
+        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
+        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk},
+        "exchange":{"image":"interface/hud/empujar.png", "action": self.exchangeItemPlayer},
+        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
+        "url":{"image":"interface/hud/rotateright.png", "action": self.itemToUrl}
     }
     self.winWardrobe = None
     self.wardrobe = None
@@ -346,12 +346,12 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the general action buttons.
     """
     ACTIONS = [
-                {"image":"vestidor.png", "action": self.showDresser},
-                {"image":"derecha.png", "action": self.turnRight},
-                {"image":"izquierda.png", "action": self.turnLeft},
-                {"image":"herramientas.png", "action": self.showTools},
-                {"image":"sonido.png", "action": self.showSoundControl},
-                {"image":"ayuda.png", "action": self.showHelp},
+                {"image":"interface/hud/dresser.png", "action": self.showDresser},
+                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
+                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/tools.png", "action": self.showTools},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
+                {"image":"interface/hud/help.png", "action": self.showHelp},
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
