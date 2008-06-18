@@ -221,6 +221,7 @@ class AvatarEditor:
     elif idTag == "mask": 
       self.changeBackgroundLeft("background_left.png")
       self.paintSelectionItem("mask")
+      self.paintMaskOptions()
 
     elif idTag == "hair":
       self.changeBackgroundLeft("background_left_small_palette.png")
@@ -398,6 +399,62 @@ class AvatarEditor:
     self.avatarConfiguration[tag] = type
     self.updateAvatar(tag)
 
+  def paintMaskOptions(self):
+    buttonMask = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "undo.png"))
+    buttonMask.topleft = 30,500
+    buttonMask.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeMask, "mask")
+    self.window.add_child(buttonMask)
+    self.activeWidget.append(buttonMask)
+    buttonFileChooser = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "file_button.png"))
+    buttonFileChooser.topleft = 150,500
+    buttonFileChooser.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeMask, "file")
+    self.window.add_child(buttonFileChooser)
+    self.activeWidget.append(buttonFileChooser)
+
+  def changeMask(self, mask):
+    print mask
+    if mask == "file":
+      self.openFileDialog()
+
+  def openFileDialog(self):
+    buttons = [ocempgui.widgets.Button ("#OK"), ocempgui.widgets.Button ("#Cancel")]
+    buttons[0].minsize = 80, buttons[0].minsize[1]
+    buttons[1].minsize = 80, buttons[1].minsize[1]
+    results = [ocempgui.widgets.Constants.DLGRESULT_OK, ocempgui.widgets.Constants.DLGRESULT_CANCEL]
+
+    self.dialog = ocempgui.widgets.FileDialog ("Select your file(s)", buttons, results)
+    self.dialog.depth = 2 
+    self.dialog.topleft = 500, 300
+    self.dialog.connect_signal (ocempgui.widgets.Constants.SIG_DIALOGRESPONSE, self.closeFileDialog)
+    self.window.add_child (self.dialog)
+
+  def closeFileDialog(self, result):
+    filePath = None
+    if result == ocempgui.widgets.Constants.DLGRESULT_OK:
+      filePath = self.dialog.get_filenames()
+      if len(filePath):
+        filePath = filePath[0]
+    if filePath:
+      self.showImage(filePath)
+    self.window.remove_child(self.dialog)
+    self.dialog.destroy()
+
+  def showImage(self, filePath):
+    from PIL import Image
+    path, file = os.path.split(filePath)
+    size = 244,244 
+    try:
+      img = Image.open(filePath)
+    except:
+      return 
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.PATH_PHOTO_MASK,file))
+    #self.avatarConfiguration[tag] = str(newImgIndex)
+    imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK,file)
+    img = ocempgui.draw.Image.load_image(imgPath)
+    self.imgOptionsTab.picture = img
+
+  
   def getPaletteButtons(self, type):
     if type == "cloth":
       return [ [GG.utils.COLOR_YELLOW, GG.utils.COLOR_ORANGE, GG.utils.COLOR_RED], 
