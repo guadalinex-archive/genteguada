@@ -340,11 +340,14 @@ class IsoViewHud(isoview.IsoView):
     else:
       anchor = 3 + len(options) 
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
-                                     GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
+                                     GG.utils.HUD_OR[1] - 65]
     #self.buttonBarActions.topleft = 0,0
+    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    self.buttonBarActions.border = 0
     for action in options:
-      button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
-      button.border = 0
+      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      #button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       self.buttonBarActions.add_child(button)
     self.widgetContainer.add_widget(self.buttonBarActions)
