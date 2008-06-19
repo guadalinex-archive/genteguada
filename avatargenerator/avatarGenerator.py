@@ -266,21 +266,21 @@ for act in actList:
     rotateObject("cameraAnchor", rot)
     if rot == 0:
       renderScene("imagesGenerated/" + action.getName() + "/down/", action.getName() + "_down_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 45:
-#      renderScene("imagesGenerated/" + action.getName() + "/bottomleft/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 90:
-#      renderScene("imagesGenerated/" + action.getName() + "/left/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 135:
-#      renderScene("imagesGenerated/" + action.getName() + "/topleft/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 180:
-#      renderScene("imagesGenerated/" + action.getName() + "/up/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 225:
-#      renderScene("imagesGenerated/" + action.getName() + "/topright/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 270:
-#      renderScene("imagesGenerated/" + action.getName() + "/right/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#    elif rot == 315:
-#      renderScene("imagesGenerated/" + action.getName() + "/bottomright/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-#
+    elif rot == 45:
+      renderScene("imagesGenerated/" + action.getName() + "/bottomleft/", action.getName() + "_bottomleft_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 90:
+      renderScene("imagesGenerated/" + action.getName() + "/left/", action.getName() + "_left_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 135:
+      renderScene("imagesGenerated/" + action.getName() + "/topleft/", action.getName() + "_topleft_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 180:
+      renderScene("imagesGenerated/" + action.getName() + "/up/", action.getName() + "_up_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 225:
+      renderScene("imagesGenerated/" + action.getName() + "/topright/", action.getName() + "_topright_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 270:
+      renderScene("imagesGenerated/" + action.getName() + "/right/", action.getName() + "_right_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+    elif rot == 315:
+      renderScene("imagesGenerated/" + action.getName() + "/bottomright/", action.getName() + "_bottomright_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+
 
 	
 	
