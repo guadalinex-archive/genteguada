@@ -253,6 +253,14 @@ class IsoViewHud(isoview.IsoView):
       #self.__isoviewInventory.remove(invIsoItem)
       self.paintItemsInventory()
     else:    
+      self.itemUnselected()
+      
+      if self.__selectedItem:
+        if self.__isoviewRoom:  
+          self.__isoviewRoom.itemUnselected(self.__selectedItem)
+          self.__selectedItem = None
+      self.dropActionsItembuttons()
+    
       self.__player.addToRoomFromInventory(invIsoItem.getModel())
 
   def paintItemOnInventory(self, invItem, position):

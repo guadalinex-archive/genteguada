@@ -120,7 +120,7 @@ class GGSystem(dMVC.model.Model):
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
     myBook1 = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [4, 0, 4], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
-    myBook2 = GG.model.book_lobby.GGBookLobby(GG.utils.MP3_SPRITE, [5, 0, 5], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos 2")
+    myBook2 = GG.model.book_lobby.GGBookLobby(GG.utils.MP3_SPRITE, [5, 0, 5], [20, -40], GG.utils.BOOK_SPRITE, "MP3")
     room1.addItemFromVoid(myBook1, myBook1.getPosition())
     room1.addItemFromVoid(myBook2, myBook2.getPosition())
     

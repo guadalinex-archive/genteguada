@@ -56,18 +56,69 @@ class GGMP3Lobby(room_item.GGRoomItem):
     if self.__startTime == 0:
       self.__startTime = now    
     if (now - self.__startTime) > self.__time: 
-      if self.getPlayer() == None and self.getLowerItem() == None:
+      if self.getPlayer() == None:
         # Esta en el suelo  
-        if self.getRoom() != self.__startRoom: 
-          # Colocado en una habitacion diferente
-          self.clearRoom()
-          self.setPosition(self.__startPosition)
-          self.setRoom(self.__startRoom)
+        if self.getLowerItem() == None:
+          # No hay objetos debajo
+          
+          if self.getUpperItem() == None:
+            # Ni arriba, esta solo en la celda
+            if self.getRoom() != self.__startRoom: 
+              # Colocado en una habitacion diferente
+              self.clearRoom()
+              self.setPosition(self.__startPosition)
+              self.setRoom(self.__startRoom)
+            else:
+              # Colocado en la misma habitacion.
+              self.setPosition(self.__startPosition)
+              
+          else:
+            # Tiene objetos arriba
+            self.getUpperItem().setPosition(self.getPosition())
+            self.getUpperItem().setLowerItem(None)
+            self.setUpperItem(None)
+            if self.getRoom() != self.__startRoom: 
+              # Colocado en una habitacion diferente
+              self.clearRoom()
+              self.setPosition(self.__startPosition)
+              self.setRoom(self.__startRoom)
+            else:
+              # Colocado en la misma habitacion.
+              self.setPosition(self.__startPosition)
           self.__startTime = 0
+              
         else:
-          # Colocado en la misma habitacion.
-          self.setPosition(self.__startPosition)
-          self.__startTime = 0
+          # Si hay objetos debajo
+          if self.getUpperItem() == None:
+            # No hay objetos arriba, esta en la cima
+            self.getLowerItem().setUpperItem(None)
+            self.setLowerItem(None)
+            if self.getRoom() != self.__startRoom: 
+              # Colocado en una habitacion diferente
+              self.clearRoom()
+              self.setPosition(self.__startPosition)
+              self.setRoom(self.__startRoom)
+            else:
+              # Colocado en la misma habitacion.
+              self.setPosition(self.__startPosition)
+            self.__startTime = 0
+          else:
+            # Y arriba
+            low = self.getLowerItem()
+            upp = self.getUpperItem()
+            self.getLowerItem().setUpperItem(upp)
+            self.getUpperItem().setLowerItem(low)
+            self.setLowerItem(None)
+            self.setUpperItem(None)
+            if self.getRoom() != self.__startRoom: 
+              # Colocado en una habitacion diferente
+              self.clearRoom()
+              self.setPosition(self.__startPosition)
+              self.setRoom(self.__startRoom)
+            else:
+              # Colocado en la misma habitacion.
+              self.setPosition(self.__startPosition)
+            self.__startTime = 0
       else:
         # Esta en el inventario de un jugador      
         self.getPlayer().removeFromInventory(self)
