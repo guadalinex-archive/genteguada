@@ -215,15 +215,11 @@ class IsoViewRoom(isoview.IsoView):
     """ Inserts a new item view.
     ivItem: item view.
     """
-    print "************************** anade item: ", ivItem
     self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
     pos = ivItem.getModel().getPosition()
-    print "1: ", self.__tileList[pos[0]][pos[2]].getIsoItem().getModel().label
     self.__tileList[pos[0]][pos[2]].addIsoItem(ivItem)
-    print "2: ", self.__tileList[pos[0]][pos[2]].getIsoItem().getModel().label
     ivItem.updateScreenPosition()
-    print "3"
     
   def addIsoViewChatItem(self, ivChatItem):
     self.__isoViewItems.append(ivChatItem)
@@ -233,20 +229,11 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    print "************************** elimina item: ", ivPlayer
     pos = ivPlayer.getModel().getPosition()
     self.__isoViewItems.remove(ivPlayer)
     self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
-    if self.__tileList[pos[0]][pos[2]].getIsoItem():
-      print "A: ", self.__tileList[pos[0]][pos[2]].getIsoItem().getModel().label
-    else:  
-      print "A: None"  
     self.__tileList[pos[0]][pos[2]].removeTopMostItem()
-    if self.__tileList[pos[0]][pos[2]].getIsoItem():
-      print "B: ", self.__tileList[pos[0]][pos[2]].getIsoItem().getModel().label
-    else:  
-      print "B: None"  
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.

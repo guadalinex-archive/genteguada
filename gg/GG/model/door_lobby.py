@@ -7,7 +7,7 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
   Defines a teleporter object behaviour.
   """
  
-  def __init__(self, sprite, position, anchor, exitPosition, destinationRoom):
+  def __init__(self, sprite, position, anchor, exitPosition, destinationRoom, label):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     exitPosition: teleporter exit position on the new room.
@@ -18,6 +18,14 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
+    self.points = 10
+    self.label = label
+    
+  def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
+    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    return parentVars + ['label']    
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -83,6 +91,7 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    clicker.addPoints(self.points, self.label)
     clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
     
     """

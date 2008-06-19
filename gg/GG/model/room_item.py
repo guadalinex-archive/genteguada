@@ -21,12 +21,16 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = None
     self.__upperItem = None
     self.__lowerItem = None
+    self.points = 0
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['anchor']
+    return parentVars + ['anchor', 'points']
+
+  def setPoints(self, points):
+    self.points = points
   
   # self.__position
   

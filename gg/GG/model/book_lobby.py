@@ -17,10 +17,11 @@ class GGBookLobby(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
     self.spriteInventory = spriteInventory
     self.label = label
+    self.points = 2
     
   def variablesToSerialize(self):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['spriteInventory', 'label']
+    return parentVars + ['spriteInventory', 'label', 'points']
 
   def getOptions(self):
     """ Returns the item's available options.

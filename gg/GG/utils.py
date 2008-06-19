@@ -86,6 +86,8 @@ JUMP_TIME = 800
 JUMP_ANIMATION_TIME = 100
 JUMP_DISTANCE = 70
 
+POINTS_LOCATION = [850, 30]
+
 TEXT_COLOR = {"black": 0, "blue": 1}
 
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
@@ -277,6 +279,18 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
+                                          }
+                            },
+          "points" : {  "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
+                                            },
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
           "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
