@@ -225,6 +225,19 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                           }
                             },   
+          "textFieldLogin" : { "font" : { "name" : "Helvetica", "size" : 40, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                          },
+                              "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 200),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 200) 
+                                          }
+                            },   
+
           "chatEntryWhite" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),

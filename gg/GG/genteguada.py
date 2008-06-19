@@ -78,8 +78,8 @@ class GenteGuada:
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    #self.session = winLogin.draw()
-    self.session = winLogin.draw(params.user, params.password)
+    self.session = winLogin.draw()
+    #self.session = winLogin.draw(params.user, params.password)
     self.initGame()
 
   def __getSystem(self, ipAddress):

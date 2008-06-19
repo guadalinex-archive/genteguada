@@ -24,11 +24,51 @@ class Login:
     self.__finish = False
     self.__parent = parent
     self.__session = None
-    
+  
   def draw(self, user=None, passw=None):
     if user and passw:
       return self.autoLogin(user, passw)
-    imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.LOGIN_SCREEN)
+
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(self.__screen)
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])  
+    self.__paintScreen()
+    self.__paintTextEntrys()
+    self.widgetContainer.add_widget(self.window)
+    self.__start()
+  
+  def __start(self):
+    while not self.__finish:
+      time.sleep(GG.utils.TICK_DELAY)
+      events = pygame.event.get()
+      for event in events:
+        if event.type == QUIT:
+          sys.exit(0)
+      self.widgetContainer.distribute_events(*events)
+    if self.__session:
+      return self.__session
+    self.cancelLogin()
+
+
+  def __paintScreen(self):
+    imgBackgroundRight = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
+    imgBackgroundRight.topleft = 0,0
+    self.window.add_child(imgBackgroundRight)
+
+  def __paintTextEntrys(self):
+    self.__textFieldUsername = ocempgui.widgets.Entry("")
+    self.__textFieldUsername.topleft = 700,460
+    self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    print dir(self.__textFieldUsername)
+    self.__textFieldUsername.set_minimum_size(230,40)
+    self.window.add_child(self.__textFieldUsername)
+
+  def drawOLD(self, user=None, passw=None):
+    if user and passw:
+      return self.autoLogin(user, passw)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png")
+    #imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.LOGIN_SCREEN)
+    #imgPath = os.path.join(GG.utils.)
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
     self.__screen.blit(img, (0, 0))
