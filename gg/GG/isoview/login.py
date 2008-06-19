@@ -34,6 +34,7 @@ class Login:
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])  
     self.__paintScreen()
     self.__paintTextEntrys()
+    self.__paintButtons()
     self.widgetContainer.add_widget(self.window)
     self.__start()
   
@@ -59,66 +60,34 @@ class Login:
     self.__textFieldUsername = ocempgui.widgets.Entry("")
     self.__textFieldUsername.topleft = 700,460
     self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
-    print dir(self.__textFieldUsername)
     self.__textFieldUsername.set_minimum_size(230,40)
     self.window.add_child(self.__textFieldUsername)
 
-  def drawOLD(self, user=None, passw=None):
-    if user and passw:
-      return self.autoLogin(user, passw)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png")
-    #imgPath = os.path.join(GG.utils.DATA_PATH, GG.utils.LOGIN_SCREEN)
-    #imgPath = os.path.join(GG.utils.)
-    img = pygame.sprite.Sprite()
-    img = pygame.image.load(imgPath).convert_alpha()
-    self.__screen.blit(img, (0, 0))
-    pygame.display.flip()
-   
-    self.widgetContainer = ocempgui.widgets.Renderer()
-    self.widgetContainer.set_screen(self.__screen)
-    
-    framelogin = ocempgui.widgets.VFrame()
-    framelogin.topleft = [200,200]
-
-    table = ocempgui.widgets.Table(3,2)
-
-    table.add_child(0,0,ocempgui.widgets.Label("Usuario"))
-    self.__textFieldUsername = ocempgui.widgets.Entry()
-    table.add_child(0,1,self.__textFieldUsername)
-
-    table.add_child(1,0,ocempgui.widgets.Label("Password"))
-    self.__textFieldPassword = ocempgui.widgets.Entry()
+    self.__textFieldPassword = ocempgui.widgets.Entry("")
+    self.__textFieldPassword.topleft = 700,570
+    self.__textFieldPassword.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    self.__textFieldPassword.set_minimum_size(230,40)
     self.__textFieldPassword.set_password(True)
-    table.add_child(1,1,self.__textFieldPassword)
-    
-    buttonOk = ocempgui.widgets.Button("Aceptar")
-    buttonOk.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.acceptLogin)
-    table.add_child(2,0,buttonOk)
-    buttonCancel = ocempgui.widgets.Button("Cancelar")
+    self.window.add_child(self.__textFieldPassword)
+
+  def __paintButtons(self):
+    imgPath = "interface/editor/ok_button.png"
+    buttonOK = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonOK.topleft = [750, 690]
+    buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.acceptLogin)
+    self.window.add_child(buttonOK)
+     
+    imgPath = "interface/editor/cancel_button.png"
+    buttonCancel = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonCancel.topleft = [870, 690]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
-    table.add_child(2,1,buttonCancel)
-
-
-    framelogin.add_child(table)
-
-    
-    self.widgetContainer.add_widget(framelogin)
-
-    while not self.__finish:
-      time.sleep(GG.utils.TICK_DELAY)
-      events = pygame.event.get()
-      for event in events:
-        if event.type == QUIT:
-          sys.exit(0)
-      self.widgetContainer.distribute_events(*events)
-    if self.__session:
-      return self.__session
-    self.cancelLogin()
+    self.window.add_child(buttonCancel)
 
   def acceptLogin(self):
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
     loginData = self.__parent.system.login(user,passw)
+    print loginData
     if loginData[0] == True:
       self.__session = loginData[1]
       self.finishLogin()

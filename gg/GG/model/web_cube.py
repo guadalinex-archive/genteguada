@@ -20,7 +20,7 @@ class GGWebCube(GG.model.room_item.GGRoomItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['url' + 'label']
+    return parentVars + ['url', 'label']
   
   def getOptions(self):
     """ Returns the item's available options.
