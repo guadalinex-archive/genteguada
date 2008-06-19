@@ -352,11 +352,14 @@ class IsoViewHud(isoview.IsoView):
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
+    self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    self.buttonBar.border = 0
     self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 80]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
-      button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
-      button.border = 0
+      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      #button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.buttonBar.add_child(button)
   
