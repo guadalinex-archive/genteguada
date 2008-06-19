@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import pygame
 import GG.utils
 import isoview
@@ -46,6 +48,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
+    self.__player.subscribeEvent('points', self.pointsAdded)
+    
     self.__selectedItem = None
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
@@ -59,6 +63,11 @@ class IsoViewHud(isoview.IsoView):
     }
     self.winWardrobe = None
     self.wardrobe = None
+
+    self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
+    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.__pointsLabel.topleft = [GG.utils.POINTS_LOCATION[0], GG.utils.POINTS_LOCATION[1] - self.__pointsLabel.height]
+    self.__isoviewRoom.addSprite(self.__pointsLabel)
 
   def processEvent(self, events):
     for event in events:
@@ -185,6 +194,7 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBar.update()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
+      self.__isoviewRoom.addSprite(self.__pointsLabel)
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
@@ -345,6 +355,9 @@ class IsoViewHud(isoview.IsoView):
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
     self.dropActionsItembuttons()
 
+  def pointsAdded(self, event):
+    self.__pointsLabel.set_text("Puntos: " + str(event.getParams()["points"]))
+    
   #Defincion de la buttonBar y sus acciones permanentes
 
   def paintActionButtons(self):

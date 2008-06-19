@@ -30,6 +30,18 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.__inventory = []
     self.__visited = []
     self.__selected = None
+    self.__points = 0
+    self.__pointGivers = []
+    
+  def getPoints(self):
+    return self.__points
+
+  def addPoints(self, points, giverLabel):
+    if (giverLabel in self.__pointGivers) or (points == 0):
+      return
+    self.__points += points
+    self.__pointGivers.append(giverLabel)
+    self.triggerEvent('points', points=self.__points)
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -119,6 +131,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   
   
   def addToInventoryFromRoom(self, item):
+    self.addPoints(item.points, item.label)
     self.__inventory.append(item)
     item.setPlayer(self)
     self.triggerEvent('addToInventory', item=item, position=item.getPosition())

@@ -5,7 +5,7 @@ class GGWebCube(GG.model.room_item.GGRoomItem):
   """ GGWebCube class.
   """
  
-  def __init__(self, sprite, position, anchor, url):
+  def __init__(self, sprite, position, anchor, url, label):
     """ Class builder.
     sprite: sprite used to paint the cube.
     position: penguin position.
@@ -14,12 +14,13 @@ class GGWebCube(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.url = url
+    self.label = label
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['url']
+    return parentVars + ['url' + 'label']
   
   def getOptions(self):
     """ Returns the item's available options.
