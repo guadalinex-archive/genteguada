@@ -5,8 +5,8 @@ import GG.model.golden_key
 #import GG.model.pickable_item
 import GG.isoview.isoview_item
 
-class GGPenguinLobby(GG.model.room_item.GGRoomItem):
-  """ GGPenguinLobby class.
+class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
+  """ GGPenguinQuiz class.
   Defines a giver npc object behaviour.
   """
  
@@ -19,13 +19,18 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.label = label
-    self.__msg = "¡Bienvendido a GenteGuada! Soy Andatuz, y te guiare a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estes listo, ve a la puerta y abrela."
+    self.msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutoria, deberás probar tu inteligencia con una sencilla pregunta."
+    self.msgQuestion = "¿De qué color era el caballo blanco de santiago?"
+    self.msgAnswer0 = "Verde"
+    self.msgAnswer1 = "Amarillo con topos azules"
+    self.msgAnswer2 = "Catorce"
+    self.msgAnswer3 = "Blanco"
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label']
+    return parentVars + ['label', 'msgIntro', 'msgQuestion', 'msgAnswer0', 'msgAnswer1', 'msgAnswer2', 'msgAnswer3']
   
   def getOptions(self):
     """ Returns the item's available options.
@@ -62,6 +67,6 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
     
