@@ -110,8 +110,8 @@ class IsoViewItem(positioned_view.PositionedView):
   def selected(self):
     """ Changes the item's color and sets it as selected.
     """
-    #if self.__upperItem != None:
-    #  self.__upperItem.selected()
+    if self.__lowerItem != None:
+      self.__lowerItem.selected()
     size = self.__img.rect
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
@@ -130,7 +130,6 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    print "************************** UNSELECTED"
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     if self.__lowerItem != None:

@@ -121,9 +121,6 @@ class IsoViewHud(isoview.IsoView):
     positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
-    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", item.getPosition()
-    #self.dropActionsItembuttons()
-    #positionAnim.setOnStop(self.dropActionsItembuttons, None)
     self.__isoviewRoom.itemUnselected(item)
     
     ivItem.setAnimation(positionAnim)
@@ -338,7 +335,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       if self.__isoviewRoom:  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
-      self.dropActionsItembuttons()
+    self.dropActionsItembuttons()
 
   #Defincion de la buttonBar y sus acciones permanentes
 
@@ -430,7 +427,6 @@ class IsoViewHud(isoview.IsoView):
   def dropActionsItembuttons(self):
     """ Removes the action buttons from the screen.
     """
-    print "DropActionsItembuttons: ", self.__selectedItem
     if self.__selectedItem == None:
       return
     self.__selectedItem = None

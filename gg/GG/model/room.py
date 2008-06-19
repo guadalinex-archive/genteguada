@@ -148,7 +148,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     else:
       for item in self.__items:
         if item.getPosition() == target:
-          item.clickedBy(player)
+          item.getTopMostItem().clickedBy(player)
           
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
