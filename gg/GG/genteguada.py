@@ -187,4 +187,5 @@ class GenteGuada:
       return None
     return self.system.uploadFile([name,ext] ,dataFile)
 
-    
+  def uploadAvatarConfiguration(self, configuration, player):
+    self.system.changeAvatarConfiguration(configuration, player) 

@@ -21,6 +21,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
+    self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     #self.getModel().subscribeEvent('destination', self.destinationChanged)
     #self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
     #self.getModel().subscribeEvent('removeFromInventory', self.inventoryRemoved)
@@ -30,6 +31,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     isoview.IsoView.__del__(self)
     if self.__movieAnimation:
       self.__movieAnimation.stop()
+
+  def avatarConfigurationChanged(self, event):
+    print "cambio la configuracion del jugador"
 
   def headingChanged(self, event):
     """ Changes the player's sprite heading.

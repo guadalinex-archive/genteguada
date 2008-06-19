@@ -20,6 +20,7 @@ import thread
 import time
 import os
 import stat
+import commands
 
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
@@ -310,4 +311,29 @@ class GGSystem(dMVC.model.Model):
     except:
       return None
     return name
-    
+
+  def changeAvatarConfiguration(self, configuration, player):
+    thread.start_new(self.__executeRenderCommand, (configuration, player))
+
+  def __executeRenderCommand(self, configuration, player):
+    comando = "ls -l"
+    output = commands.getstatusoutput(comando)
+    if not output[0] == 0:
+      print "Ocurrio un error al ejecutar el comando"
+    else:
+      player.setAvatarConfiguration(configuration)
+      #print "El comando se ejecuto correctamente"
+    """
+    import paramiko
+    comando = "ls -l"
+    #comando = "python /home/jmariscal/ejemplo.py"
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.connect('192.168.0.40', username = "jmariscal", password = "jmariscal")
+    stdin, stdout, stderr = client.exec_command(comando)
+    if len(stderr.readlines()):
+      print "Ocurrio un error al ejecutar el comando"
+    else:
+      print "El comando se ejecuto correctamente"
+    """
+

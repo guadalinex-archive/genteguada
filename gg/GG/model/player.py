@@ -32,7 +32,34 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.__selected = None
     self.__points = 0
     self.__pointGivers = []
-    
+
+    self.__avatarConfiguration = self.__dictAvatarConfiguration()
+
+  def __dictAvatarConfiguration(self):
+    dict = {}
+    dict["gender"] = "boy"
+    dict["headSize"] = "S"
+    dict["mask"] = None
+    dict["hairStyle"] = "1"
+    dict["hairColor"] = "1"
+    dict["skin"] = "1"
+    dict["bodySize"] = "S"
+    dict["typeShirt"] = "short"
+    dict["shirt"] = "3"
+    dict["typeTrousers"] = "short"
+    dict["trousers"] = "5"
+    dict["typeSkirt"] = "short"
+    dict["skirt"] = "3"
+    dict["shoes"] = "9"
+    return dict
+
+  def getAvatarConfiguration(self):
+    return self.__avatarConfiguration
+
+  def setAvatarConfiguration(self, avatarConfiguration):
+    self.__avatarConfiguration = avatarConfiguration
+    self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration)
+        
   def getPoints(self):
     return self.__points
 
