@@ -178,7 +178,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    print "*********** item Added from inventory **********"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
@@ -203,12 +202,8 @@ class IsoViewRoom(isoview.IsoView):
       raise Exception("Error: vista de item no eliminada")
         
   def specialTileAdded(self, event):
-      
-    print "*********************** SPECIAL TILE ADDED ***********************"  
-      
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
-    
     tile = self.__tileList[pos[0]][pos[2]].getImg()
     for img in self.__allBackground:
       if img == tile:
@@ -258,7 +253,6 @@ class IsoViewRoom(isoview.IsoView):
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
-    print "unselected"
     pos = item.getPosition()
     if self.__tileList[pos[0]][pos[2]].getIsoItem() != None:
       self.__tileList[pos[0]][pos[2]].getIsoItem().unselected()
