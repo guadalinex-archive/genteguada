@@ -63,5 +63,4 @@ class ChatMessage(ggmodel.GGModel):
     screen: screen handler.
     """
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
-  
-  
+    
