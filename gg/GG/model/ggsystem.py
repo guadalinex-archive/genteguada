@@ -318,7 +318,10 @@ class GGSystem(dMVC.model.Model):
     thread.start_new(self.__executeRenderCommand, (configuration, player))
 
   def __executeRenderCommand(self, configuration, player):
+    # aqui comprobar los casos posibles: si hay 2 en ejecucion, si llega otro a mitad de ejecucion, etc.
+    
     comando = "ls -l"
+    # aqui hay que cambiar el comando por la llamada necesaria para blender
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
       print "Ocurrio un error al ejecutar el comando"
