@@ -17,6 +17,7 @@ class GGSession(ggmodel.GGModel):
     self.__system = system
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
+    player.getRoom().subscribeEvent('quizAdded', self.quizAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
       
   # self.__player
@@ -36,6 +37,7 @@ class GGSession(ggmodel.GGModel):
     newRoom = self.__player.getRoom()
     if newRoom: 
       newRoom.subscribeEvent('chatAdded', self.chatAdded)
+      newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod
   def defaultView(self, screen, parent):
@@ -54,6 +56,12 @@ class GGSession(ggmodel.GGModel):
     event: event info.
     """
     self.triggerEvent('chatAdded', message=event.getParams()['message'])
+  
+  def quizAdded(self, event):
+    """ Triggers after receiving a chat added event.
+    event: event info.
+    """
+    self.triggerEvent('quizAdded', message=event.getParams()['message'])
   
 
   def logout(self):
