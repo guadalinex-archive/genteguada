@@ -17,8 +17,34 @@ class IsoViewQuiz(positioned_view.PositionedView):
     screen: screen handler.
     """
     self.__isohud = isohud
+    self.__answers = model.getAnswers()
+    
     positioned_view.PositionedView.__init__(self, model, screen)
     self.container = ocempgui.widgets.VFrame()
+    
+    self.container.add_child(GG.utils.OcempLabel(model.getMessage() ,140))
+    for answer in self.__answers:
+      self.container.add_child(GG.utils.OcempLabel(answer ,140))
+    self.buttonBar = ocempgui.widgets.HFrame()
+    
+    i = 1
+    for answer in self.__answers:
+      button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png"))
+      button.border = 0
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, i)
+      i += 1
+      self.buttonBar.add_child(button)
+    self.buttonBar.border = 0
+      
+    self.container.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+    self.container.add_child(self.buttonBar)
+    self.container.topleft = [20, 20]
+    self.container.border = 0
+    self.__isohud.getIsoviewRoom().addTopSprite(self.container)
+    self.__isohud.widgetContainer.add_widget(self.container)
+    
+    
+    """
     self.labelQ = GG.utils.OcempLabel("de que color es el caballo blanco de santiago" ,140)
     self.labelWhite = GG.utils.OcempLabel("blanco" ,140)
     self.labelBlue = GG.utils.OcempLabel("azul" ,140)
@@ -27,7 +53,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.container.add_child(self.labelWhite)
     self.container.add_child(self.labelBlue)
     self.container.add_child(self.labelGrey)
-    
     self.buttonBar = ocempgui.widgets.HFrame()
     
     button1 = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png"))
@@ -50,14 +75,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__isohud.widgetContainer.add_widget(self.container)
     #self.widgetContainer.add_widget(self.buttonBarActions)
     """
-    self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["ballom"]))
-    self.label.padding = 5
-    self.label.set_minimum_size(150,50)
-    self.label.opacity = 200
-    pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
-    self.__isohud.getIsoviewRoom().addTopSprite(self.label)
-    """
     
   def actionButton(self, option):
     print option
@@ -69,24 +86,23 @@ class IsoViewQuiz(positioned_view.PositionedView):
     isoview.IsoView.__del__(self)
     
   def getImg(self):
-    return self.label
+    return self.container
     #return self.__img
   
   def getScreenPosition(self):
-    return self.label.topleft
+    return self.container.topleft
     #return self.__img.rect.topleft
 
   def setScreenPosition(self, pos):
-    self.label.topleft = pos
-  
+    self.container.topleft = pos
+  """
   def getStyleMessageChat(self):
-    """ Returns the chat current style.
-    """
     styles = {}
     styles["ballom"] = GG.utils.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
     styles["entry"] = GG.utils.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
     return styles
-    """
+  """  
+  """
     listStyle = ["White","Red","Green","Blue"]
     color = listStyle[random.randint(0,len(listStyle)-1)]
     styles = {}
@@ -95,6 +111,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     return styles
     """
   
+  """
   def draw(self):
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
@@ -111,3 +128,4 @@ class IsoViewQuiz(positioned_view.PositionedView):
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe
+  """

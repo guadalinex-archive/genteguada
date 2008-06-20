@@ -1,21 +1,25 @@
 import ggmodel
 import time
 import dMVC.model
+import GG.model.chat_message
 import GG.isoview.isoview_quiz
   
-class ChatQuiz(chat_message.GGChatMessage):
+class ChatQuiz(GG.model.chat_message.ChatMessage):
   """ ChatQuiz class.
-  Defines a book object behaviour.
   """
      
-  def __init__(self, message, sender, color, position, type):
+  def __init__(self, message, answers, sender, color, position, type):
     """ Class constructor.
     message: chat message.
     sender: player who sends the message.
     color: text color.
     position: on-screen chat message starting position.
     """
-    chat_message.GGChatMessage.__init__(self, message, sender, color, position, type)
+    GG.model.chat_message.ChatMessage.__init__(self, message, sender, color, position, type)
+    self.__answers = answers
+    
+  def getAnswers(self):
+    return self.__answers
     
   @dMVC.model.localMethod 
   def chatView(self, screen, isohud):

@@ -42,6 +42,7 @@ class IsoViewHud(isoview.IsoView):
     self.__img.rect.topleft = GG.utils.HUD_OR
     
     model.subscribeEvent('chatAdded', self.chatAdded)
+    model.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
@@ -327,6 +328,15 @@ class IsoViewHud(isoview.IsoView):
     secAnim.setOnStop(self.__isoviewRoom.removeIsoViewItem, ivMessageChat)
     secAnim.setOnStop(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
     ivMessageChat.setAnimation(secAnim)
+    self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
+
+  def quizAdded(self, event):
+    """ Triggers after receiving a new quiz event.
+    event: event info.
+    """
+    print "quizzzzzzzzzzzzzzz"
+    messageChat = event.getParams()['message']
+    ivMessageChat = messageChat.chatView(self.getScreen(), self)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def itemSelected(self,event):

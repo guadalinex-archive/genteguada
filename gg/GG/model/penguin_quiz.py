@@ -4,6 +4,7 @@ import GG.model.room_item
 import GG.model.golden_key
 #import GG.model.pickable_item
 import GG.isoview.isoview_item
+import GG.model.chat_quiz
 
 class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
   """ GGPenguinQuiz class.
@@ -19,18 +20,22 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.label = label
-    self.msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutoria, deberás probar tu inteligencia con una sencilla pregunta."
-    self.msgQuestion = "¿De qué color era el caballo blanco de santiago?"
-    self.msgAnswer0 = "Verde"
-    self.msgAnswer1 = "Amarillo con topos azules"
-    self.msgAnswer2 = "Catorce"
-    self.msgAnswer3 = "Blanco"
+    self.loadQuestion()
+        
+  def loadQuestion(self):        
+    #self.__msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutoria, deberás probar tu inteligencia con una sencilla pregunta."
+    self.__msgQuestion = "¿De qué color era el caballo blanco de santiago?"
+    self.__msgAnswers = []
+    self.__msgAnswers.append("Verde")
+    self.__msgAnswers.append("Amarillo con topos azules")
+    self.__msgAnswers.append("Catorce")
+    self.__msgAnswers.append("Blanco")
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label', 'msgIntro', 'msgQuestion', 'msgAnswer0', 'msgAnswer1', 'msgAnswer2', 'msgAnswer3']
+    return parentVars + ['label']
   
   def getOptions(self):
     """ Returns the item's available options.
@@ -67,6 +72,6 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msg, \
+    self.getRoom().triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msgQuestion, self.__msgAnswers, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
     

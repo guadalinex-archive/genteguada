@@ -204,7 +204,9 @@ class GGSystem(dMVC.model.Model):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [6, 0, z], [55, 43]), [6, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [7, 0, z], [55, 43]), [7, 0, z])
     myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [2, 0, 3], [20, -20], "Andatuz")
-    #myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [3, 0, 0], [20, -20], "Andatuz Quiz")
+    
+    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [3, 0, 1], [20, -20], "Andatuz Quiz")
+    room1.addItemFromVoid(myPenguinQuiz, myPenguinQuiz.getPosition())
     
     room5.addItemFromVoid(myPenguinRoom5, myPenguinRoom5.getPosition())
     room5.addItemFromVoid(myDoor5A1, myDoor5A1.getPosition())    
