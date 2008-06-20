@@ -24,6 +24,7 @@ class Login:
     self.__finish = False
     self.__parent = parent
     self.__session = None
+    self.dialog = None
   
   def draw(self, user=None, passw=None):
     if user and passw:
@@ -36,15 +37,30 @@ class Login:
     self.__paintTextEntrys()
     self.__paintButtons()
     self.widgetContainer.add_widget(self.window)
+    self.__textFieldUsername.set_focus()
     return self.__start()
   
   def __start(self):
     while not self.__finish:
-      time.sleep(GG.utils.TICK_DELAY)
+      #time.sleep(GG.utils.TICK_DELAY)
+      time.sleep(0.02)
       events = pygame.event.get()
       for event in events:
         if event.type == QUIT:
           sys.exit(0)
+      
+        if event.type == KEYDOWN:
+          if event.key == K_ESCAPE:
+            if self.dialog:
+              self.__closeDialog()
+            else:
+              sys.exit(0)
+          elif event.key == K_RETURN: 
+            if self.dialog:
+              self.__closeDialog()
+            else:
+              self.acceptLogin()
+          
       self.widgetContainer.distribute_events(*events)
     if self.__session:
       return self.__session
@@ -95,6 +111,9 @@ class Login:
       self.__showError(loginData[1])
   
   def __showError(self,errorText):
+    if self.dialog:
+      return
+    
     self.dialog = ocempgui.widgets.Box(500,220)
     self.dialog.topleft = 400, 200
     
@@ -108,10 +127,12 @@ class Login:
     self.dialog.add_child(buttonCancel)
 
     self.window.add_child (self.dialog)
+    
 
   def __closeDialog (self):
     self.window.remove_child(self.dialog)
     self.dialog.destroy ()
+    self.dialog = None
 
   def cancelLogin(self):
     sys.exit(0)

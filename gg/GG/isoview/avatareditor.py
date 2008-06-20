@@ -161,8 +161,8 @@ class AvatarEditor:
   def paintMask(self):
     if self.avatarConfiguration["mask"]:
       imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+      # si hay mascara, en vez de pintar "mask.png" habria que pintar su ruta.
     else:
-      #TODO hay que cambiar la careta en funcion de la que tenga seleccionada el usuario
       imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
     self.newAvatarImage(imgPath, "mask")
 
@@ -483,6 +483,10 @@ class AvatarEditor:
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgOptionsTab.picture = img
     self.avatarConfiguration["mask"] = file
+    # Aqui tiene que generar tambien la imagen con mascara.
+    # Despues de eso, en lugar de la linea de arriba ser haria:
+    # self.avatarConfiguration["mask"] = imagen_generada_con_mascara_molona
+    # self.paintMask()
   
   def getPaletteButtons(self, type):
     if type == "cloth":

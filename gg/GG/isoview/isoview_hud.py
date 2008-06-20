@@ -384,7 +384,8 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
                 {"image":"interface/hud/tools.png", "action": self.showTools},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
-                {"image":"interface/hud/help.png", "action": self.showHelp},
+                #{"image":"interface/hud/help.png", "action": self.showHelp},
+                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
@@ -439,6 +440,11 @@ class IsoViewHud(isoview.IsoView):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
     print "show help"
+    
+  def showFullScreen(self):
+    """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
+    """
+    print "show full screen"
     #TODO solo funciona en linux con las X, para e
     self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
