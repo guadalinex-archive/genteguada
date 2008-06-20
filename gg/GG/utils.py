@@ -15,13 +15,13 @@ CLEAR_CACHE_WEEKS = 4
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
   SOUND_PATH = "gg/GG/data/sound"
-  NINO_PATH = "nino/"
-  NINA_PATH = "nina/"
+  NINO_PATH = "avatars/default_boy/"
+  NINA_PATH = "avatars/default_girl/"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
-  NINO_PATH = "/usr/share/pixmaps/genteguada/nino"
-  NINA_PATH = "/usr/share/pixmaps/genteguada/nina"
+  NINO_PATH = "/usr/share/pixmaps/genteguada/avatars/default_boy/"
+  NINA_PATH = "/usr/share/pixmaps/genteguada/avatars/default_girl/"
 
 VERSION = "GenteGuada 0.0.3.1"
 BG_FULL_OR = [0, 0]
@@ -319,19 +319,19 @@ def getSpriteName(state, heading, frame):
   #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
   maxFrames = 10
   if state == STATE[1] or state == STATE[3]:
-    return str(state + "_" + heading + ".png")
+    return str(state + "_" + heading + "_0001")
   elif state == STATE[2] or state == STATE[4]:
     maxFrames = ANIM_WALKING_COUNT
   elif state == STATE[5]:
     maxFrames = ANIM_RELAX_COUNT  
     
   if frame == 0:
-    fileName = state + "_" + heading + "_0" + str(maxFrames) + ".png"
+    fileName = state + "_" + heading + "_00" + str(maxFrames)
   elif frame < 10:
     rgb= [0, 0, 0]
-    fileName = state + "_" + heading + "_00" + str(frame) + ".png"
+    fileName = state + "_" + heading + "_000" + str(frame)
   else:  
-    fileName = state + "_" + heading + "_0" + str(frame) + ".png"
+    fileName = state + "_" + heading + "_00" + str(frame)
   return fileName
 
 def getNextDirection(pos1, pos2):
