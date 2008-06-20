@@ -62,11 +62,11 @@ class GenteGuada:
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,
                                           pygame.HWSURFACE | pygame.DOUBLEBUF,
                                           0)
-    #imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
-    #img = pygame.sprite.Sprite()
-    #img = pygame.image.load(imgPath).convert_alpha()
-    #self.screen.blit(img, (0, 0))
-    #pygame.display.flip()
+    imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
+    img = pygame.sprite.Sprite()
+    img = pygame.image.load(imgPath).convert_alpha()
+    self.screen.blit(img, (0, 0))
+    pygame.display.flip()
 
     pygame.display.set_caption(GG.utils.VERSION)
 
@@ -101,6 +101,7 @@ class GenteGuada:
 
   def initGame(self):
     self.isoHud = self.session.defaultView(self.screen,self)
+    self.screen.fill([0,0,0])
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
