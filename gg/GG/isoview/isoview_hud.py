@@ -28,8 +28,8 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
-    self.widgetContainer = ocempgui.widgets.Renderer()
-    self.widgetContainer.set_screen(screen)
+    #self.widgetContainer = ocempgui.widgets.Renderer()
+    #self.widgetContainer.set_screen(screen)
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
@@ -157,6 +157,8 @@ class IsoViewHud(isoview.IsoView):
     """ Updates the changed zones on the room view and draws the hud.
     """
     #self.paintBackground()
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(self.getScreen())
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
