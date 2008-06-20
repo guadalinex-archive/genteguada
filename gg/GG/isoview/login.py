@@ -36,7 +36,7 @@ class Login:
     self.__paintTextEntrys()
     self.__paintButtons()
     self.widgetContainer.add_widget(self.window)
-    self.__start()
+    return self.__start()
   
   def __start(self):
     while not self.__finish:
@@ -95,19 +95,23 @@ class Login:
       self.__showError(loginData[1])
   
   def __showError(self,errorText):
-    buttons = [ocempgui.widgets.Button ("#OK")]
-    results = [ocempgui.widgets.Constants.DLGRESULT_OK]
-    self.dialog = ocempgui.widgets.GenericDialog ("Error", buttons, results)
-    lbl = ocempgui.widgets.Label (errorText)
-    self.dialog.content.add_child (lbl)
-    self.dialog.connect_signal (ocempgui.widgets.Constants.SIG_DIALOGRESPONSE, self.__closeDialog, self.dialog, lbl)
-    self.dialog.topleft = 100, 100
-    self.dialog.depth = 1
-    self.widgetContainer.add_widget(self.dialog)
+    self.dialog = ocempgui.widgets.Box(500,220)
+    self.dialog.topleft = 400, 200
     
-  def __closeDialog (self,result, dialog, label):
-    if result == ocempgui.widgets.Constants.DLGRESULT_OK:
-      self.dialog.destroy ()
+    label = ocempgui.widgets.Label(errorText)
+    label.topleft = 10,10
+    self.dialog.add_child(label)
+
+    buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
+    buttonCancel.topleft = [350, 150]
+    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
+    self.dialog.add_child(buttonCancel)
+
+    self.window.add_child (self.dialog)
+
+  def __closeDialog (self):
+    self.window.remove_child(self.dialog)
+    self.dialog.destroy ()
 
   def cancelLogin(self):
     sys.exit(0)
