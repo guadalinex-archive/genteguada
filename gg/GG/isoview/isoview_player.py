@@ -122,6 +122,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     st = event.getParams()["state"]
+    print "===========>>>>> Estado: ", st
     if st == GG.utils.STATE[1]: # standing
       self.setAnimation(None)
       self.setMovieAnimation(None)  
@@ -141,6 +142,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setImgPosition(self.getModel().getPosition())
       
     elif st == GG.utils.STATE[4]: # walking_carrying
+      self.setAnimation(None)
+      self.setMovieAnimation(None)  
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 

@@ -1,0 +1,31 @@
+Última modificación: 23/06/08
+
+=== Dependencias de ejecución ===
+
+La ejecución de GenteGuada requiere la instalación previa de las siguiente librerías:
+- pygame 1.8
+- ocempgui 0.2.9
+- PIL 1.1.6
+
+
+=== Cuentas de prueba ===
+
+Las siguientes cuentas de usuario están creadas y pueden usarse para realizar pruebas:
+
+Username: pepe
+Password: 1234
+
+Username: pepe2
+Password: 12345
+
+Username: user0
+Password: user0
+
+Username: user1
+Password: user1
+
+      ...
+
+Username: user99
+Password: user99
+
