@@ -123,6 +123,7 @@ TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png"]
 TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
 TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]
 TILES_SMALLSTONES = ["smallStones01.png", "smallStones02.png", "smallStones03.png"]
+TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png"]
 
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
