@@ -50,6 +50,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__player.subscribeEvent('points', self.pointsAdded)
+    self.__player.subscribeEvent('exp', self.expAdded)
     
     self.__selectedItem = None
     self.buttonActions = {
@@ -69,6 +70,11 @@ class IsoViewHud(isoview.IsoView):
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__pointsLabel.topleft = [GG.utils.POINTS_LOCATION[0], GG.utils.POINTS_LOCATION[1] - self.__pointsLabel.height]
     self.__isoviewRoom.addSprite(self.__pointsLabel)
+    
+    self.__expLabel = GG.utils.OcempLabel("Exp: 0",140)
+    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.__expLabel.topleft = [GG.utils.EXP_LOCATION[0], GG.utils.EXP_LOCATION[1] - self.__expLabel.height]
+    self.__isoviewRoom.addSprite(self.__expLabel)
 
   def processEvent(self, events):
     for event in events:
@@ -198,6 +204,7 @@ class IsoViewHud(isoview.IsoView):
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.addSprite(self.__pointsLabel)
+      self.__isoviewRoom.addSprite(self.__expLabel)
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
@@ -303,6 +310,8 @@ class IsoViewHud(isoview.IsoView):
   def chatMessageEntered(self):
     """ Prints a new message on chat window.
     """
+    if self.__textField.text == "":
+      return
     self.__player.getRoom().newChatMessage(self.__textField.text, self.__player, 0)
     self.__textField.text = ""
 
@@ -373,6 +382,9 @@ class IsoViewHud(isoview.IsoView):
   def pointsAdded(self, event):
     self.__pointsLabel.set_text("Puntos: " + str(event.getParams()["points"]))
     
+  def expAdded(self, event):
+    self.__expLabel.set_text("Exp: " + str(event.getParams()["exp"]))
+  
   #Defincion de la buttonBar y sus acciones permanentes
 
   def paintActionButtons(self):
@@ -431,9 +443,11 @@ class IsoViewHud(isoview.IsoView):
     print "turn left"
 
   def showTools(self):
+    self.__player.setCarrying()
     print "show tools"
 
   def showSoundControl(self):
+    self.__player.setNotCarrying()
     print "show sound control"
     
   def showHelp(self):

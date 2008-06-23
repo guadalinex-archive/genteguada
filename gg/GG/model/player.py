@@ -3,6 +3,7 @@ import GG.model.room_item
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
+import time
 import dMVC.model
 
 class GGPlayer(GG.model.room_item.GGRoomItem):
@@ -18,6 +19,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     username: user name.
     password: user password.
     """
+    #print username, password
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
     GG.model.room_item.GGRoomItem.__init__(self, filename, position, anchor)
     self.username = username
@@ -30,11 +32,28 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.__inventory = []
     self.__visited = []
     self.__selected = None
-    self.__points = 0
     self.__pointGivers = []
-
+    self.__points = 0
+    self.__playedTime = 0
+    self.__startPlayedTime = 0
+    self.startSessionTiming()    
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
 
+  def startSessionTiming(self):
+    #print "**********************************"  
+    tmp = time.localtime(time.time())
+    self.__startPlayedTime = tmp
+    
+  def updateSessionTiming(self):
+    tmp = time.localtime(time.time())
+    #print self.__startPlayedTime
+    v1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
+    v2 = (tmp[4]*60 + tmp[5])
+    playedTime = v2 - v1
+    self.__startPlayedTime = tmp  
+    self.__playedTime += playedTime
+    self.triggerEvent('exp', exp=self.__playedTime)
+  
   def __dictAvatarConfiguration(self):
     dict = {}
     dict["gender"] = "boy"
@@ -104,6 +123,24 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     if not self.__state == state:
       self.__state = state
       self.triggerEvent('state', state=state)
+      
+  def setCarrying(self):
+    #print "--> print setCarrying"
+    if self.__state == GG.utils.STATE[1]:
+      self.__state == GG.utils.STATE[3]   
+      self.triggerEvent('state', state=self.__state)
+    if self.__state == GG.utils.STATE[2]:
+      self.__state == GG.utils.STATE[4]   
+      self.triggerEvent('state', state=self.__state)
+
+  def setNotCarrying(self):
+    #print "--> print setNotCarrying"
+    if self.__state == GG.utils.STATE[3]:
+      self.__state == GG.utils.STATE[1]   
+      self.triggerEvent('state', state=self.__state)
+    if self.__state == GG.utils.STATE[4]:
+      self.__state == GG.utils.STATE[2]   
+      self.triggerEvent('state', state=self.__state)
 
   # self.__destination
   
@@ -276,6 +313,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     if oldRoom:
       oldRoom.removeItem(self)
     room.addItemFromVoid(self, pos)
+    self.updateSessionTiming()
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
     
   def newChatMessage(self, message, type):

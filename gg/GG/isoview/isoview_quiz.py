@@ -43,39 +43,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__isohud.getIsoviewRoom().addTopSprite(self.container)
     self.__isohud.widgetContainer.add_widget(self.container)
     
-    
-    """
-    self.labelQ = GG.utils.OcempLabel("de que color es el caballo blanco de santiago" ,140)
-    self.labelWhite = GG.utils.OcempLabel("blanco" ,140)
-    self.labelBlue = GG.utils.OcempLabel("azul" ,140)
-    self.labelGrey = GG.utils.OcempLabel("gris" ,140)
-    self.container.add_child(self.labelQ)
-    self.container.add_child(self.labelWhite)
-    self.container.add_child(self.labelBlue)
-    self.container.add_child(self.labelGrey)
-    self.buttonBar = ocempgui.widgets.HFrame()
-    
-    button1 = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png"))
-    button1.border = 0
-    button1.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)
-    button2 = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png"))
-    button2.border = 0
-    button2.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 2)
-    button3 = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png"))
-    button3.border = 0
-    button3.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
-    self.buttonBar.add_child(button1)
-    self.buttonBar.add_child(button2)
-    self.buttonBar.add_child(button3)
-    
-    self.container.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
-    self.container.add_child(self.buttonBar)
-    self.container.topleft = [20, 20]
-    self.__isohud.getIsoviewRoom().addTopSprite(self.container)
-    self.__isohud.widgetContainer.add_widget(self.container)
-    #self.widgetContainer.add_widget(self.buttonBarActions)
-    """
-    
   def actionButton(self, option):
     print option
     self.__isohud.widgetContainer.remove_widget(self.container)
@@ -95,37 +62,4 @@ class IsoViewQuiz(positioned_view.PositionedView):
 
   def setScreenPosition(self, pos):
     self.container.topleft = pos
-  """
-  def getStyleMessageChat(self):
-    styles = {}
-    styles["ballom"] = GG.utils.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
-    styles["entry"] = GG.utils.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
-    return styles
-  """  
-  """
-    listStyle = ["White","Red","Green","Blue"]
-    color = listStyle[random.randint(0,len(listStyle)-1)]
-    styles = {}
-    styles["ballom"] = GG.utils.STYLES["chatBalloon"+color]
-    styles["entry"] = GG.utils.STYLES["chatEntry"+color]
-    return styles
-    """
   
-  """
-  def draw(self):
-    hframe = ocempgui.widgets.HFrame()
-    hframe.border = 0
-    hframe.set_align(ocempgui.widgets.Constants.ALIGN_TOP) 
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE)
-    image = ocempgui.widgets.ImageLabel(imgPath)
-    image.buttom = 0
-    hframe.add_child(image)
-    string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    label = GG.utils.OcempLabel(string,300)
-    label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
-    hframe.add_child(label)
-    label = GG.utils.OcempLabel(self.getModel().getMessage(),300)
-    label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
-    hframe.add_child(label)
-    return hframe
-  """
