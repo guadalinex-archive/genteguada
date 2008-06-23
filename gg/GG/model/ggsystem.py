@@ -122,14 +122,14 @@ class GGSystem(dMVC.model.Model):
     room3.setSpecialTile([5, 0, 1], "black_tile.tga")
 
     # ROOM 1
-    myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 6], room2, "puerta lobby")
+    #myDoor1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 6], room2, "puerta lobby")
+    myDoor1 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[0], [6, 0, 0], GG.utils.FLOOR_SHIFT, [6, 0, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
     myBook1 = GG.model.book_lobby.GGBookLobby(GG.utils.BOOK_SPRITE, [4, 0, 4], [20, -40], GG.utils.BOOK_SPRITE, "Guia de Telefonos")
     myBook2 = GG.model.book_lobby.GGBookLobby(GG.utils.MP3_SPRITE, [5, 0, 5], [20, -40], GG.utils.BOOK_SPRITE, "MP3")
     room1.addItemFromVoid(myBook1, myBook1.getPosition())
     room1.addItemFromVoid(myBook2, myBook2.getPosition())
-    
     room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [5, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, 0], [55, 43]), [1, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [2, 0, 0], [55, 43]), [2, 0, 0])
@@ -144,8 +144,10 @@ class GGSystem(dMVC.model.Model):
     
     # ROOM 2
     wallOffset = [25, 10]
-    myDoor2A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 6], room3, "puerta room2a")
-    myDoor2B = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 7], [20, 62], [6, 0, 1], room1, "puerta room2b")
+    #myDoor2A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 0], [20, 62], [6, 0, 6], room3, "puerta room2a")
+    #myDoor2B = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 7], [20, 62], [6, 0, 1], room1, "puerta room2b")
+    myDoor2A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[0], [6, 0, 0], GG.utils.FLOOR_SHIFT, [6, 0, 6], room3, "puerta room2a")
+    myDoor2B = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [6, 0, 7], GG.utils.FLOOR_SHIFT, [6, 0, 1], room1, "puerta room2b")
     myDoor2C = GG.model.door_secretroom.GGDoorSecretRoom("wall_right_TEMP.png", [0, 0, 6], wallOffset, [6, 0, 6], room6, "puerta room2c")
     myGoldenKeyRoom2 = GG.model.golden_key_room2.GGGoldenKeyRoom2(GG.utils.KEY_SPRITE, [4, 0, 6], [20, -40], GG.utils.KEY_SPRITE, "llave dorada")    
     
@@ -172,7 +174,8 @@ class GGSystem(dMVC.model.Model):
     room2.addItemFromVoid(myGoldenKeyRoom2, myGoldenKeyRoom2.getPosition())
     
     # ROOM 3
-    myDoor3A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 7], [20, 62], [6, 0, 1], room2, "puerta room3a")
+    #myDoor3A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [6, 0, 7], [20, 62], [6, 0, 1], room2, "puerta room3a")
+    myDoor3A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [6, 0, 7], GG.utils.FLOOR_SHIFT, [6, 0, 1], room2, "puerta room3a")
     myDoor3B = GG.model.door_room3b.GGDoorRoom3B(GG.utils.DOOR_DOWN_SPRITE, [0, 0, 5], [20, 62], [6, 0, 5], room4, "puerta room3b")
     myDoor3C1 = GG.model.door_room3c1.GGDoorRoom3C1(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 0], [20, 62], [3, 0, 6], room5, "puerta room3c")
     myDoor3C2 = GG.model.door_room3c2.GGDoorRoom3C2(GG.utils.DOOR_DOWN_SPRITE, [4, 0, 0], [20, 62], [4, 0, 6], room5, "puerta room3c")
@@ -203,8 +206,10 @@ class GGSystem(dMVC.model.Model):
     room4.addItemFromVoid(myBook, myBook.getPosition())
     
     # ROOM 5
-    myDoor5A1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 7], [20, 62], [3, 0, 1], room3, "puerta room5a")
-    myDoor5A2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [4, 0, 7], [20, 62], [4, 0, 1], room3, "puerta room5a")
+    #myDoor5A1 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [3, 0, 7], [20, 62], [3, 0, 1], room3, "puerta room5a")
+    #myDoor5A2 = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [4, 0, 7], [20, 62], [4, 0, 1], room3, "puerta room5a")
+    myDoor5A1 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [3, 0, 7], GG.utils.FLOOR_SHIFT, [3, 0, 1], room3, "puerta room5a")
+    myDoor5A2 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [4, 0, 7], GG.utils.FLOOR_SHIFT, [4, 0, 1], room3, "puerta room5a")
     for z in range(0, 8):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [1, 0, z], [55, 43]), [1, 0, z])
@@ -220,8 +225,9 @@ class GGSystem(dMVC.model.Model):
     room5.addItemFromVoid(myDoor5A2, myDoor5A2.getPosition())    
         
     # ROOM 6
+    #myDoor6A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [7, 0, 6], [20, 62], [1, 0, 6], room2, "puerta room6a")
+    myDoor6A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[3], [7, 0, 6], GG.utils.FLOOR_SHIFT, [1, 0, 6], room2, "puerta room6a")
     myPenguinGift = GG.model.penguin_gift.GGPenguinGift(GG.utils.PENGUIN_SPRITE, [3, 0, 3], [20, -20], "Andatuz Gift")
-    myDoor6A = GG.model.door_lobby.GGDoorLobby(GG.utils.DOOR_DOWN_SPRITE, [7, 0, 6], [20, 62], [1, 0, 6], room2, "puerta room6a")
     for z in range(0, 8):
       room6.addItemFromVoid(GG.model.room_item.GGRoomItem(GG.utils.PUZZLECUBE_SPRITE, [0, 0, z], [55, 43]), [0, 0, z])
     for x in range(1, 8):
