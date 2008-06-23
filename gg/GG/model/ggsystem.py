@@ -111,13 +111,13 @@ class GGSystem(dMVC.model.Model):
     self.__createPlayer(nina)
     
     # ROOMS
-    room1 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 1", [8, 8])
-    room2 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 2", [8, 8])
-    room3 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 3", [8, 8])
-    room4 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 4", [8, 8])
-    room5 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 5", [8, 8])
-    room6 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 6", [8, 8])
-    room7 = self.__createRoom(GG.utils.TILE_STONE, "habitacion 7", [8, 8])
+    room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8])
+    room2 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8])
+    room3 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 3", [8, 8])
+    room4 = self.__createRoom(GG.utils.TILES_SMALLSTONES, "habitacion 4", [8, 8])
+    room5 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 5", [8, 8])
+    room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8])
+    room7 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 7", [8, 8])
     room3.setSpecialTile([2, 0, 1], "black_tile.tga")
     room3.setSpecialTile([5, 0, 1], "black_tile.tga")
 
