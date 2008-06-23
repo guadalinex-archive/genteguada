@@ -127,19 +127,19 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   def setCarrying(self):
     #print "--> print setCarrying"
     if self.__state == GG.utils.STATE[1]:
-      self.__state == GG.utils.STATE[3]   
+      self.__state = GG.utils.STATE[3]   
       self.triggerEvent('state', state=self.__state)
     if self.__state == GG.utils.STATE[2]:
-      self.__state == GG.utils.STATE[4]   
+      self.__state = GG.utils.STATE[4]   
       self.triggerEvent('state', state=self.__state)
 
   def setNotCarrying(self):
     #print "--> print setNotCarrying"
     if self.__state == GG.utils.STATE[3]:
-      self.__state == GG.utils.STATE[1]   
+      self.__state = GG.utils.STATE[1]   
       self.triggerEvent('state', state=self.__state)
     if self.__state == GG.utils.STATE[4]:
-      self.__state == GG.utils.STATE[2]   
+      self.__state = GG.utils.STATE[2]   
       self.triggerEvent('state', state=self.__state)
 
   # self.__destination
@@ -273,17 +273,27 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   def tick(self, now):
     """ Calls for an update on player's position an movement direction.
     """
+    if self.getRoom() == None:
+      return
     for item in self.__inventory:
       item.tick(now)
     if self.getPosition() == self.__destination:
-      self.setState(GG.utils.STATE[1])
-      return
+      if self.__state == GG.utils.STATE[2]:
+        self.setState(GG.utils.STATE[1])
+        return
+      if self.__state == GG.utils.STATE[4]:
+        self.setState(GG.utils.STATE[3])
+        return
     direction = self.getRoom().getNextDirection(self, self.getPosition(), self.getDestination())
     if direction == GG.utils.HEADING[0]:
       self.setDestination(self.getPosition())
       return
     pos = self.getPosition()
-    self.setState(GG.utils.STATE[2])
+    if self.__state == GG.utils.STATE[1]:
+      self.setState(GG.utils.STATE[2])
+    elif self.__state == GG.utils.STATE[3]:
+        self.setState(GG.utils.STATE[4])
+    #self.setState(GG.utils.STATE[2])
     self.setHeading(direction)
     if self.getHeading() == "up":
       next = [pos[0], pos[1], pos[2] - 1]
