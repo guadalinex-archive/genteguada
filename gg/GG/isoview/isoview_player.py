@@ -122,7 +122,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     st = event.getParams()["state"]
-    print "===========>>>>> Estado: ", st
     if st == GG.utils.STATE[1]: # standing
       self.setAnimation(None)
       self.setMovieAnimation(None)  
@@ -139,7 +138,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
-      self.setImgPosition(self.getModel().getPosition())
+      self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor))
       
     elif st == GG.utils.STATE[4]: # walking_carrying
       self.setAnimation(None)
@@ -151,7 +150,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
-      self.setImgPosition(self.getModel().getPosition())
+      self.setScreenPosition(GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor))
       
   def onJump(self, event):
     movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))

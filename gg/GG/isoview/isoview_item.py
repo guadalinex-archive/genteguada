@@ -78,7 +78,6 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__upperItem = item
   
   def getTopMostItem(self):
-    print self.getModel().label
     if self.__upperItem == None:
       return self
     else:
@@ -137,7 +136,6 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__lowerItem.unselected()
     
   def getScreenPosition(self):
-    #print self, self.__img.rect.topleft  
     return self.__img.rect.topleft
     
   def setScreenPosition(self, pos):
@@ -148,7 +146,6 @@ class IsoViewItem(positioned_view.PositionedView):
       return
     pos = self.getScreenPosition()
     self.setScreenPosition([pos[0], self.getAccumulatedHeight()])
-    print ">>>>>>> Screen Position: ", self.getScreenPosition()
     
   def getAccumulatedHeight(self):
     if self.__lowerItem == None:
