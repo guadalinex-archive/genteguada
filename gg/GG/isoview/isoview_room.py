@@ -1,4 +1,5 @@
 import pygame
+import random
 import GG.utils
 import isoview
 import isoview_tile
@@ -57,6 +58,9 @@ class IsoViewRoom(isoview.IsoView):
         varPos = GG.utils.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
         k = 0
+        
+        image = "tiles/" + model.spriteFull[random.randint(0,len(model.spriteFull)-1)]
+        
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
             isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
@@ -64,7 +68,8 @@ class IsoViewRoom(isoview.IsoView):
             k = 1
         if k == 0:
           isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
-                self.getModel().spriteFull, [corx, 0, corz])
+                #self.getModel().spriteFull, [corx, 0, corz])
+                image, [corx, 0, corz])
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
