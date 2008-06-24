@@ -121,7 +121,11 @@ BRICKCUBE_SPRITE = "brick_cube.png"
 
 FENCE_UP = "fence_up.png"
 FENCE_LEFT = "fence_left.png"
+WALL_UP = "wall_up.png"
+WALL_LEFT = "wall_left.png"
+WALL_UP_GRAFFITI = "wall_up_graffiti.png"
 
+HEDGE = "hedge.png"
 DOOR_GARDEN = "garden_door.png"
 DOOR_WOODEN = "wooden_door.png"
 DOOR_WOODEN_A = "wooden_door_a.png"
