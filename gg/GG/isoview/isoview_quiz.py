@@ -45,6 +45,12 @@ class IsoViewQuiz(positioned_view.PositionedView):
     
   def actionButton(self, option):
     print option
+    if option == self.getModel().getRightAnswer():
+      self.getModel().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta correcta", \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    else:   
+      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     self.__isohud.widgetContainer.remove_widget(self.container)
     self.__isohud.getIsoviewRoom().removeTopSprite(self.container)
     self.container.destroy()

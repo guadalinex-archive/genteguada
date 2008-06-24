@@ -119,11 +119,21 @@ PUZZLECUBE_SPRITE = "puzzle_cube.png"
 PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
 BRICKCUBE_SPRITE = "brick_cube.png"
 
+FENCE_UP = "fence_up.png"
+FENCE_LEFT = "fence_left.png"
+
+DOOR_GARDEN = "garden_door.png"
+DOOR_WOODEN = "wooden_door.png"
+DOOR_WOODEN_A = "wooden_door_a.png"
+DOOR_WOODEN_B = "wooden_door_b.png"
+
 TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png"]
 TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
 TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]
 TILES_SMALLSTONES = ["smallStones01.png", "smallStones02.png", "smallStones03.png"]
 TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png"]
+TILES_CASTLE1 = ["castle01.png"]
+TILES_CASTLE2 = ["castle02.png"]
 
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
