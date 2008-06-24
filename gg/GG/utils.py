@@ -131,6 +131,9 @@ DOOR_WOODEN = "wooden_door.png"
 DOOR_WOODEN_A = "wooden_door_a.png"
 DOOR_WOODEN_B = "wooden_door_b.png"
 
+SKYLINES_UP = ["skylineWallUp01.png", "skylineWallUp02.png", "skylineWallUp03.png", "skylineWallUp04.png"]
+SKYLINES_LEFT = ["skylineWallLeft01.png", "skylineWallLeft02.png"]
+
 TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png"]
 TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
 TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]

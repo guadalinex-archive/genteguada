@@ -23,6 +23,7 @@ import time
 import os
 import stat
 import commands
+import random
 
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
@@ -227,21 +228,23 @@ class GGSystem(dMVC.model.Model):
     # ROOM 6
     myDoor6A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[3], [7, 0, 6], GG.utils.FLOOR_SHIFT, [1, 0, 6], room2, "puerta room6a")
 
-    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [3, 0, 1], [20, -20], "Andatuz Quiz")
+    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [0, 0, 0], [20, -20], "Andatuz Quiz")
     room6.addItemFromVoid(myPenguinQuiz, myPenguinQuiz.getPosition())
     
     #myPenguinGift = GG.model.penguin_gift.GGPenguinGift(GG.utils.PENGUIN_SPRITE, [3, 0, 3], [20, -20], "Andatuz Gift")
     #room6.addItemFromVoid(myPenguinGift, myPenguinGift.getPosition())
-    
-    for z in range(0, 8):
-      room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [0, 0, z], [55, 13]), [0, 0, z])
+    wallOffset = [55, 40]
+    for z in range(1, 8):
+      image = "furniture/" + GG.utils.SKYLINES_LEFT[random.randint(0,len(GG.utils.SKYLINES_LEFT)-1)]
+      room6.addItemFromVoid(GG.model.room_item.GGRoomItem(image, [0, 0, z], wallOffset), [0, 0, z])
+    wallOffset = [15, 40]
     for x in range(1, 8):
-      room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [x, 0, 0], [55, 13]), [x, 0, 0])
+      image = "furniture/" + GG.utils.SKYLINES_UP[random.randint(0,len(GG.utils.SKYLINES_LEFT)-1)]
+      room6.addItemFromVoid(GG.model.room_item.GGRoomItem(image, [x, 0, 0], wallOffset), [x, 0, 0])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [2, 0, 3], [55, 13]), [2, 0, 3])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [5, 0, 2], [55, 13]), [5, 0, 2])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [4, 0, 6], [55, 13]), [4, 0, 6])
     room6.addItemFromVoid(myDoor6A, myDoor6A.getPosition())
-    
     
     # ROOM 7
     for z in range(0, 8):
