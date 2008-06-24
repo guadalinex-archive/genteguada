@@ -30,6 +30,7 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     self.__msgAnswers.append("Amarillo con topos azules")
     self.__msgAnswers.append("Catorce")
     self.__msgAnswers.append("Blanco")
+    self.__rightAnswer = 4
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -42,19 +43,15 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     """
     return ["talk"]
   
+  def getRightAnswer(self):
+    return sefl.__rightAnswer
+  
   def checkSimilarity(self, item):
     if GG.model.room_item.GGRoomItem.checkSimilarity(self, item):
       if item.label == self.label:
         return True
     return False   
   
-  def checkCondition(self, condition, player):
-    """ Checks a condition for a given player.
-    condition: condition to check.
-    player: given player.
-    """
-    return True
-
   def createKey(self):
     return GG.model.golden_key.GGGoldenKey(GG.utils.KEY_SPRITE, "llave dorada", self.getPosition())
   
@@ -73,5 +70,5 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     talker: player.
     """
     self.getRoom().triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msgQuestion, self.__msgAnswers, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3, self.__rightAnswer))
     
