@@ -6,7 +6,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, position, anchor, label):
+  def __init__(self, spriteName, position, anchor, label, time, startRoom):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
@@ -16,6 +16,10 @@ class GGBoxHeavy(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
     self.label = label
     self.points = 2
+    self.__startPosition = position
+    self.__time = time*1000
+    self.__startRoom = startRoom
+    self.__startTime = 0
     
   def variablesToSerialize(self):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)

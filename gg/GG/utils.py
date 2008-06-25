@@ -111,7 +111,7 @@ OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE = "andatuz_01.png"
 BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
-KEY_SPRITE = "key.png"
+KEY_SPRITE = "golden_key.png"
 DOOR_DOWN_SPRITE = "door_down.png"
 MP3_SPRITE = "mp3.png"
 TRASH_SPRITE = "trash.png"
@@ -119,6 +119,8 @@ PUZZLECUBE_SPRITE = "puzzle_cube.png"
 PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
 BRICKCUBE_SPRITE = "brick_cube.png"
 
+KEY_GOLDEN = "golden_key.png"
+GIFT = "gift.png"
 BOX_HEAVY = "heavy_box.png"
 BEAM_WOODEN = "wooden_beam.png"
 
@@ -136,6 +138,10 @@ DOOR_WOODEN = "wooden_door.png"
 DOOR_WOODEN_A = "wooden_door_a.png"
 DOOR_WOODEN_B = "wooden_door_b.png"
 DOOR_AMORED = "armored_door_left.png"
+
+WAREHOUSE_UP = ["warehouseWallUp01.png", "warehouseWallUp02.png"]
+WAREHOUSE_LEFT = ["warehouseWallLeft01.png", "warehouseWallLeft02.png"]
+WAREHOUSE_CORNER = "warehouseWallCorner.png"
 
 SKYLINES_UP = ["skylineWallUp01.png", "skylineWallUp02.png", "skylineWallUp03.png", "skylineWallUp04.png"]
 SKYLINES_LEFT = ["skylineWallLeft01.png", "skylineWallLeft02.png"]
