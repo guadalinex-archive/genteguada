@@ -117,7 +117,7 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
       
-  def liftItem(self, event):    
+  def liftItem(self, event):
     item = event.getParams()["item"]  
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
@@ -558,3 +558,9 @@ class IsoViewHud(isoview.IsoView):
     print "lift"
     self.__player.lift(self.__selectedItem)
     self.itemUnselected()
+    if self.__selectedItem:
+      if self.__isoviewRoom:  
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.__selectedItem = None
+    self.dropActionsItembuttons()
+    
