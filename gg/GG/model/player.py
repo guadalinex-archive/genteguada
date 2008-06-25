@@ -355,10 +355,24 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     
   def open(self, item):
     """ Opens an item.
-    open: item to open.
+    item: item to open.
     """
     item.openedBy(self)
     
+  def lift(self, item):
+    """ Lifts an item.
+    item: item to lift.
+    """
+    #item.liftedBy(self)
+    #self.addPoints(item.points, item.label)
+    #self.__inventory.append(item)
+    if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
+      return
+    item.setLowerItem(self)
+    self.setUpperItem(item)
+    self.setState(GG.utils.STATE[3])
+    self.triggerEvent('liftItem', item=item, position=item.getPosition())
+  
   def setStartPosition(self, pos):
     self.__destination = pos
     GG.model.room_item.GGRoomItem.setStartPosition(self, pos)

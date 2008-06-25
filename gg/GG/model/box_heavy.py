@@ -1,32 +1,30 @@
 import room_item
 import GG.isoview.isoview_item
 
-class GGBookLobby(room_item.GGRoomItem):
-  """ GGBookLobby class.
+class GGBoxHeavy(room_item.GGRoomItem):
+  """ GGBoxHeavy class.
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, position, anchor, spriteInventory, label):
+  def __init__(self, spriteName, position, anchor, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
     anchor: image anchor on screen.
-    spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
     room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
-    self.spriteInventory = spriteInventory
     self.label = label
     self.points = 2
     
   def variablesToSerialize(self):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['spriteInventory', 'label', 'points']
+    return parentVars + ['label', 'points']
 
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["inventory", "lift"]
+    return ["lift"]
 
   def setPlayer(self, player):
     self.__player = player
@@ -41,13 +39,6 @@ class GGBookLobby(room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-      #clicker.addInventory(self)
-      #self.getRoom().removeItem(self)
 
   def isStackable(self):
     return True
-
-  """
-  def liftedBy(self, lifter):
-    pass
-  """

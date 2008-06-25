@@ -45,6 +45,7 @@ class IsoViewHud(isoview.IsoView):
     model.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
+    self.__player.subscribeEvent('liftItem', self.liftItem)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
     self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
@@ -55,6 +56,7 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedItem = None
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
+        "lift":{"image":"interface/hud/rotateright.png", "action": self.itemToLift},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
@@ -114,6 +116,13 @@ class IsoViewHud(isoview.IsoView):
     ivInventItem = self.findIVInventoryItem(item)
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
+      
+  def liftItem(self, event):    
+    item = event.getParams()["item"]  
+    ivItem = self.__isoviewRoom.findIVItem(item)  
+    if ivItem != None:
+      print ">>>>>>>>>>>>< encontrado"
+      ivItem.updateScreenPosition()  
       
   def addItemToInventory(self, event):
     """ Adds a new isoview inventory item.
@@ -542,4 +551,10 @@ class IsoViewHud(isoview.IsoView):
     if self.__fullScreen:
       self.showHelp()
     webbrowser.open(self.__selectedItem.url)
+    self.itemUnselected()
+
+
+  def itemToLift(self):
+    print "lift"
+    self.__player.lift(self.__selectedItem)
     self.itemUnselected()
