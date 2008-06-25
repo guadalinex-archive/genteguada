@@ -120,8 +120,8 @@ class GGSystem(dMVC.model.Model):
     room5 = self.__createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8])
     room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8])
     #room7 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 7", [8, 8])
-    room3.setSpecialTile([2, 0, 1], "black_tile.tga")
-    room3.setSpecialTile([5, 0, 1], "black_tile.tga")
+    room3.setSpecialTile([2, 0, 1], "tiles/black_tile.png")
+    room3.setSpecialTile([5, 0, 1], "tiles/black_tile.png")
 
     # ROOM 1
     myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [6, 0, 6], room2, "puerta lobby")
@@ -212,10 +212,10 @@ class GGSystem(dMVC.model.Model):
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontDownLeft.png", [4, 0, 6], [0, 0]), [4, 0, 4])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontDownRight.png", [6, 0, 4], [0, 0]), [4, 0, 3])
     """
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("brick_cube.png", [3, 0, 3], [55, 43]), [3, 0, 3])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("brick_cube.png", [3, 0, 4], [55, 43]), [3, 0, 4])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("brick_cube.png", [4, 0, 3], [55, 43]), [4, 0, 3])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("brick_cube.png", [4, 0, 4], [55, 43]), [4, 0, 4])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [3, 0, 3], [13, 15]), [3, 0, 3])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [3, 0, 4], [13, 15]), [3, 0, 4])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [4, 0, 3], [13, 15]), [4, 0, 3])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [4, 0, 4], [13, 15]), [4, 0, 4])
     
     room3.addItemFromVoid(myPenguinRoom3, myPenguinRoom3.getPosition())
     room3.addItemFromVoid(myDoor3A, myDoor3A.getPosition())    
