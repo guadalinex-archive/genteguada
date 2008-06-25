@@ -119,6 +119,11 @@ PUZZLECUBE_SPRITE = "puzzle_cube.png"
 PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
 BRICKCUBE_SPRITE = "brick_cube.png"
 
+BOX_HEAVY = "heavy_box.png"
+BEAM_WOODEN = "wooden_beam.png"
+
+COLUMN_STONE = "stone_column.png"
+BEAM_WOODEN = "wooden_beam.png"
 FENCE_UP = "fence_up.png"
 FENCE_LEFT = "fence_left.png"
 WALL_UP = "wall_up.png"
@@ -130,10 +135,14 @@ DOOR_GARDEN = "garden_door.png"
 DOOR_WOODEN = "wooden_door.png"
 DOOR_WOODEN_A = "wooden_door_a.png"
 DOOR_WOODEN_B = "wooden_door_b.png"
+DOOR_AMORED = "armored_door_left.png"
 
 SKYLINES_UP = ["skylineWallUp01.png", "skylineWallUp02.png", "skylineWallUp03.png", "skylineWallUp04.png"]
 SKYLINES_LEFT = ["skylineWallLeft01.png", "skylineWallLeft02.png"]
+SKYLINE_CORNER = "skylineCorner.png"
 
+TILE_MYSTCYRCLE = "mystCircle.png"
+TILE_MYSTCYRCLE_CASTLE01 = "mystCircleCastle01.png"
 TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png"]
 TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
 TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]

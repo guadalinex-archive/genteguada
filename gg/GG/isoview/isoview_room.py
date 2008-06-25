@@ -70,6 +70,13 @@ class IsoViewRoom(isoview.IsoView):
           isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
                 #self.getModel().spriteFull, [corx, 0, corz])
                 image, [corx, 0, corz])
+        """
+        img = pygame.sprite.Sprite()
+        img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(image)).convert_alpha()
+        img.rect = img.image.get_rect()
+        img.rect.topleft = GG.utils.p3dToP2d([corx, 0 , corz], GG.utils.FLOOR_SHIFT)
+        self.__allBackground.add(img)
+        """
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
