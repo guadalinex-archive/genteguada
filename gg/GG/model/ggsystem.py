@@ -16,6 +16,7 @@ import GG.model.door_lobby
 import GG.model.door_room3b
 import GG.model.door_room3c1
 import GG.model.door_room3c2
+import GG.model.door_room5b
 import GG.model.door_secretroom
 import GG.model.web_cube
 import GG.model.golden_key_room2
@@ -120,16 +121,14 @@ class GGSystem(dMVC.model.Model):
     room5 = self.__createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8])
     room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8])
     #room7 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 7", [8, 8])
-    room3.setSpecialTile([2, 0, 1], "tiles/black_tile.png")
-    room3.setSpecialTile([5, 0, 1], "tiles/black_tile.png")
+    room3.setSpecialTile([2, 0, 1], "tiles/pressed.png")
+    room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
 
     # ROOM 1
     myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [6, 0, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
-    myGift1 = GG.model.book_lobby.GGBookLobby("furniture/" + GG.utils.GIFT, [4, 0, 4], [15, -30], GG.utils.GIFT, "Regalo")
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [5, 0, 5], [26, -10], "Caja pesada", 10, room1)
-    room1.addItemFromVoid(myGift1, myGift1.getPosition())
     room1.addItemFromVoid(myBox, myBox.getPosition())
     
     fenceOffset = [25, -15]
@@ -251,17 +250,21 @@ class GGSystem(dMVC.model.Model):
     # ROOM 5
     myDoor5A1 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [3, 0, 7], GG.utils.FLOOR_SHIFT, [3, 0, 1], room3, "puerta room5a")
     myDoor5A2 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], [4, 0, 7], GG.utils.FLOOR_SHIFT, [4, 0, 1], room3, "puerta room5a")
-    myDoor5B1 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, [3, 0, 0], GG.utils.FLOOR_SHIFT, [3, 0, 7], room1, "puerta room5b")
-    myDoor5B2 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, [4, 0, 0], GG.utils.FLOOR_SHIFT, [4, 0, 7], room1, "puerta room5b")
+    myDoor5B1 = GG.model.door_room5b.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, [3, 0, 0], GG.utils.FLOOR_SHIFT, [3, 0, 7], room1, "puerta room5b")
+    myDoor5B2 = GG.model.door_room5b.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, [4, 0, 0], GG.utils.FLOOR_SHIFT, [4, 0, 7], room1, "puerta room5b")
     columnOffset = [13, 15]
     for z in range(0, 8):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [0, 0, z], columnOffset), [0, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [1, 0, z], columnOffset), [1, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [6, 0, z], columnOffset), [6, 0, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [7, 0, z], columnOffset), [7, 0, z])
-    myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [2, 0, 3], [20, -20], "Andatuz")
     
-    room5.addItemFromVoid(myPenguinRoom5, myPenguinRoom5.getPosition())
+    #myPenguinRoom5 = GG.model.penguin_room5.GGPenguinRoom5(GG.utils.PENGUIN_SPRITE, [2, 0, 3], [20, -20], "Andatuz")
+    #room5.addItemFromVoid(myPenguinRoom5, myPenguinRoom5.getPosition())
+    
+    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [2, 0, 3], [20, -20], "Andatuz Quiz")
+    room5.addItemFromVoid(myPenguinQuiz, myPenguinQuiz.getPosition())
+
     room5.addItemFromVoid(myDoor5A1, myDoor5A1.getPosition())    
     room5.addItemFromVoid(myDoor5A2, myDoor5A2.getPosition())    
     room5.addItemFromVoid(myDoor5B1, myDoor5B1.getPosition())    
@@ -270,9 +273,9 @@ class GGSystem(dMVC.model.Model):
     # ROOM 6
     myDoor6A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[3], [7, 0, 6], GG.utils.FLOOR_SHIFT, [1, 0, 6], room2, "puerta room6a")
 
-    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE, [3, 0, 2], [20, -20], "Andatuz Quiz")
-    room6.addItemFromVoid(myPenguinQuiz, myPenguinQuiz.getPosition())
-    
+    myGift1 = GG.model.gift.GGGift("furniture/" + GG.utils.GIFT, [4, 0, 4], [15, -30], "furniture/" + GG.utils.GIFT, "Regalo")
+    room6.addItemFromVoid(myGift1, myGift1.getPosition())
+
     wallOffset = [35, 40]
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.SKYLINE_CORNER, [0, 0, 0], wallOffset), [0, 0, 0])
     for z in range(1, 8):
