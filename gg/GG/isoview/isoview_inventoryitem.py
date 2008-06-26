@@ -16,11 +16,12 @@ class IsoViewInventoryItem(isoview.IsoView):
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__spriteName = model.spriteName
+    self.__spriteName = model.spriteInventory
     self.__label = model.label
     self.__count = 0
     self.__isohud = isohud
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteName)  
+    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteName)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -71,6 +72,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     """ Draws an inventory item.
     render: widget container. 
     """
+    #imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
     imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
     imgInventory.border = 0
     imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.selected)

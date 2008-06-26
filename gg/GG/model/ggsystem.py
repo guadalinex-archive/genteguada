@@ -4,6 +4,7 @@ import GG.model.room
 import GG.model.player
 import GG.model.ggsession
 import GG.model.inventory_item
+import GG.model.kilo
 import GG.model.mp3_lobby
 import GG.model.box_heavy
 import GG.model.penguin_lobby
@@ -125,11 +126,16 @@ class GGSystem(dMVC.model.Model):
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
 
     # ROOM 1
-    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [6, 0, 6], room2, "puerta lobby")
+    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [5, 0, 6], room4, "puerta lobby")
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [5, 0, 5], [26, -10], "Caja pesada", 10, room1)
     room1.addItemFromVoid(myBox, myBox.getPosition())
+    
+    myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [2, 0, 2], [18, -38], "furniture/" + GG.utils.KEY_GOLDEN, "llave dorada prueba")    
+    myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.GIFT, [3, 0, 2], [15, -30], "furniture/" + GG.utils.KEY_GOLDEN, "regalo prueba")
+    room1.addItemFromVoid(myGK1, myGK1.getPosition())
+    room1.addItemFromVoid(myGK2, myGK2.getPosition())
     
     fenceOffset = [25, -15]
     #room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [5, 0, 0])
@@ -223,7 +229,7 @@ class GGSystem(dMVC.model.Model):
     room3.addItemFromVoid(myDoor3C2, myDoor3C2.getPosition())    
     
     # ROOM 4
-    myDoor4A = GG.model.door_room3b.GGDoorRoom3B(GG.utils.DOOR_DOWN_SPRITE, [7, 0, 5], [20, 62], [1, 0, 5], room3, "puerta room4a")
+    myDoor4A = GG.model.door_room3b.GGDoorRoom3B("furniture/" + GG.utils.DOOR_AMORED, [7, 0, 5], [17, 15], [1, 0, 5], room3, "puerta room4a")
     room4.addItemFromVoid(myDoor4A, myDoor4A.getPosition())    
     
     wallOffset = [35, 33]
@@ -235,10 +241,25 @@ class GGSystem(dMVC.model.Model):
       image = "furniture/" + GG.utils.WAREHOUSE_UP[random.randint(0,len(GG.utils.WAREHOUSE_UP)-1)]
       room4.addItemFromVoid(GG.model.room_item.GGRoomItem(image, [x, 0, 0], wallOffset), [x, 0, 0])
     
-    myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [3, 0, 1], [26, -10], "Caja pesada 1", 10, room4)
-    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [5, 0, 2], [26, -10], "Caja pesada 2", 10, room4)
-    myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [4, 0, 6], [26, -10], "Caja pesada 3", 10, room4)
-    beamOffset = [57, 127]
+    #pesas: [2, 0, 1] [3, 0, 1][4, 0, 1][5, 0, 1][3, 0, 2][4, 0, 2]
+    #cajas: [1, 0, 4] [4, 0, 6][6, 0, 2]
+    myKilo1 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [2, 0, 1], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    myKilo2 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [3, 0, 1], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    myKilo3 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [4, 0, 1], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    myKilo4 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [5, 0, 1], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    myKilo5 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [3, 0, 2], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    myKilo6 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [4, 0, 2], [32, -17], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    room4.addItemFromVoid(myKilo1, myKilo1.getPosition())
+    room4.addItemFromVoid(myKilo2, myKilo2.getPosition())
+    room4.addItemFromVoid(myKilo3, myKilo3.getPosition())
+    room4.addItemFromVoid(myKilo4, myKilo4.getPosition())
+    room4.addItemFromVoid(myKilo5, myKilo5.getPosition())
+    room4.addItemFromVoid(myKilo6, myKilo6.getPosition())
+    
+    myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [1, 0, 4], [26, -10], "Caja pesada 1", 10, room4)
+    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [4, 0, 6], [26, -10], "Caja pesada 2", 10, room4)
+    myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [6, 0, 2], [26, -10], "Caja pesada 3", 10, room4)
+    beamOffset = [57, 142]
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, [1, 0, 1], beamOffset), [1, 0, 1])
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, [1, 0, 6], beamOffset), [1, 0, 6])
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, [6, 0, 1], beamOffset), [6, 0, 1])

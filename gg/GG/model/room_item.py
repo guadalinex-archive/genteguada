@@ -138,7 +138,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def checkSimilarity(self, item):
     if inventory_item.GGInventoryItem.checkSimilarity(self, item):
       if item.anchor == self.anchor:
-        return True
+        if item.getPosition() == self.getPosition():  
+          return True
     return False   
   
   def inventoryOnly(self):
