@@ -122,6 +122,8 @@ BRICKCUBE_SPRITE = "brick_cube.png"
 KEY_GOLDEN = "golden_key.png"
 GIFT = "gift.png"
 BOX_HEAVY = "heavy_box.png"
+KILOGRAMME = "kilogramme.png"
+KILOGRAMME_INV = "kilogramme_inv.png"
 BEAM_WOODEN = "wooden_beam.png"
 
 COLUMN_STONE = "stone_column.png"

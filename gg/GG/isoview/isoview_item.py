@@ -92,13 +92,13 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__upperItem.setTopMostItem(item)
     
   def removeTopMostItem(self):
-    if self.__upperItem != None:
-      if self.__upperItem.getUpperItem() == None:
+    if self.__upperItem:
+      if self.__upperItem.getUpperItem():
+        self.__upperItem.removeTopMostItem()
+      else:  
         self.__upperItem.setLowerItem(None)
         self.__upperItem = None
-      else:  
-        self.__upperItem.removeTopMostItem()
-          
+        
   # self.__lowerItem
   
   def getLowerItem(self):
