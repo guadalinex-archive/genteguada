@@ -83,12 +83,18 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     return self.__points
 
   def addPoints(self, points, giverLabel):
-    if (giverLabel in self.__pointGivers) or (points == 0):
+    if giverLabel in self.__pointGivers:
       return
     self.__points += points
     self.__pointGivers.append(giverLabel)
-    self.triggerEvent('points', points=self.__points)
+    if points != 0:
+      self.triggerEvent('points', points=self.__points)
     
+  def checkPointGiver(self, pointGiver):
+    if pointGiver in self.__pointGivers:
+      return True
+    return False
+
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """

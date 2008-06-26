@@ -56,6 +56,7 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedItem = None
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
+        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory},
         "lift":{"image":"interface/hud/rotateright.png", "action": self.itemToLift},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
@@ -495,6 +496,17 @@ class IsoViewHud(isoview.IsoView):
     self.__player.addToInventoryFromRoom(self.__selectedItem)
     #self.__isoviewRoom.setItemOnTile(None, self.__selectedItem.getPosition())
     #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
+    self.dropActionsItembuttons()
+ 
+  def itemCopyToInventory(self):
+    """ Brings an item from the room to the player's inventory.
+    """
+    if self.__selectedItem == None:
+      return
+    item = self.__selectedItem.getCopyFor(self.__player)
+    if item != None:
+      self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
+    self.itemUnselected()
     self.dropActionsItembuttons()
  
   def itemToClone(self):

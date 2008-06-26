@@ -19,7 +19,7 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
     self.label = label
-    self.__msg = "¡Bienvendido a GenteGuada! Soy Andatuz, y te guiare a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estes listo, ve a la puerta y abrela."
+    self.__msg = "¡Bienvendido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y abrela."
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
