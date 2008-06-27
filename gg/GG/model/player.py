@@ -374,9 +374,8 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     #self.__inventory.append(item)
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       return
-    item.setLowerItem(self)
-    self.setUpperItem(item)
     self.setState(GG.utils.STATE[3])
+    item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
   
   def setStartPosition(self, pos):

@@ -26,7 +26,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     for i in range(0, self.size[0]):
       line = []  
       for j in range(0, self.size[1]):
-        image = self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
+        image = "tiles/" + self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
         line.append(GG.model.tile.Tile([i, 0, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []
@@ -46,6 +46,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
       pos = item.getPosition()
       return self.__tiles[pos[0]][pos[2]]
     return None                        
+  
+  def moveItem(self, pos1, pos2, item):
+    print "****************************************** move"
+    self.__tiles[pos1[0]][pos1[2]].unstackItem()
+    self.__tiles[pos2[0]][pos2[2]].stackItem(item)
   
   # self.__items
 

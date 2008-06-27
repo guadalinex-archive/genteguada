@@ -19,9 +19,13 @@ class GroupSprite(pygame.sprite.Group):
   def sprites(self):
     """ Order the group sprites according to their position.
     """
+    #def sortFunct(x, y):
+    #  return (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3])      
     keys = self.spritedict.keys()
     keys.sort(lambda x, y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
+    #keys.sort(lambda x, y : sortFunct(x, y))
     return keys
+  
   
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
@@ -59,25 +63,15 @@ class IsoViewRoom(isoview.IsoView):
         pos = [int(varPos[0]), int(varPos[1])]
         k = 0
         
-        image = "tiles/" + model.spriteFull[random.randint(0,len(model.spriteFull)-1)]
-        
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
-            isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
-                specTile[1], [corx, 0, corz])
+            isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], self.__parent)
             k = 1
         if k == 0:
-          isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
-                #self.getModel().spriteFull, [corx, 0, corz])
-                #image, [corx, 0, corz])
-                "tiles/" + self.getModel().getTile([corx, 0, corz]).spriteName, [corx, 0, corz])
-        """
-        img = pygame.sprite.Sprite()
-        img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(image)).convert_alpha()
-        img.rect = img.image.get_rect()
-        img.rect.topleft = GG.utils.p3dToP2d([corx, 0 , corz], GG.utils.FLOOR_SHIFT)
-        self.__allBackground.add(img)
-        """
+          isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], self.__parent)
+        
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
       self.__tileList.append(listTile)
@@ -88,8 +82,7 @@ class IsoViewRoom(isoview.IsoView):
       self.__allPlayers.add(isoviewitem.getImg())
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
       pos = item.getPosition()
-      self.__tileList[pos[0]][pos[2]].addIsoItem(isoviewitem)
-    
+      
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -130,23 +123,11 @@ class IsoViewRoom(isoview.IsoView):
     """
     return self.__isoViewItems
     
-  #def paintPlayers(self):
-  #  """ Paints all players on screen.
-  #  """
-  #  self.__allPlayers.update()                     
-  #  self.__allPlayers.clear(self.getScreen(), self.__bg.image)
-  #  pygame.display.update(self.__allPlayers.draw(self.getScreen()))
-    
-  #def paintFloorFull(self):
-  #  """ Paints the room's floor using a single sprite.
-  #  screen: screen handler.
-  #  """
-  #  self.getScreen().blit(self.__bg.image, self.__bg.rect)
-
   def findTile(self, pos):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
+    print ">>>", pos
     round = self.getModel().size[0]*2 - 1
     halfRound = round/2
     line = round
@@ -208,7 +189,6 @@ class IsoViewRoom(isoview.IsoView):
     pos = item.getPosition()
     for ivplayer in self.__isoViewItems:
       if ivplayer.getModel() == item:
-        self.__tileList[pos[0]][pos[2]].removeTopMostItem()  
         self.removeIsoViewItem(ivplayer)
         removed = True
     if not removed:
@@ -231,9 +211,20 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
     pos = ivItem.getModel().getPosition()
-    self.__tileList[pos[0]][pos[2]].addIsoItem(ivItem)
-    ivItem.updateScreenPosition()
+    self.updateScreenPositionsOn(pos)
+        
+  def updateScreenPositionsOn(self, pos):
     
+    itemList = self.__tileList[pos[0]][pos[2]].getModel().getItems()
+    accHeight = 0
+    for item in itemList:
+      scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
+      ivIt = self.__parent.findIVItem(item)
+      if ivIt != None:  
+        ivIt.setScreenPosition([scPos[0], scPos[1] - accHeight])
+        #ivIt.updateScreenPosition(accHeight)
+        accHeight += item.topAnchor 
+          
   def addIsoViewChatItem(self, ivChatItem):
     self.__isoViewItems.append(ivChatItem)
     self.__allPlayers.add(ivChatItem.getImg())
@@ -246,7 +237,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.remove(ivPlayer)
     self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
-    self.__tileList[pos[0]][pos[2]].removeTopMostItem()
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
@@ -265,9 +255,10 @@ class IsoViewRoom(isoview.IsoView):
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
-    pos = item.getPosition()
-    if self.__tileList[pos[0]][pos[2]].getIsoItem() != None:
-      self.__tileList[pos[0]][pos[2]].getIsoItem().unselected()
+    print item
+    ivItem = self.__parent.findIVItem(item)
+    if ivItem != None:
+      ivItem.unselected()
     
     """
     for isoItem in self.__isoViewItems:

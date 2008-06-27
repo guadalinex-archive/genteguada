@@ -133,9 +133,11 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(myBox, myBox.getPosition())
     
     myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [2, 0, 2], [18, -38], "furniture/" + GG.utils.KEY_GOLDEN, "llave dorada prueba")    
-    myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.GIFT, [3, 0, 2], [15, -30], "furniture/" + GG.utils.KEY_GOLDEN, "regalo prueba")
+    myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.GIFT, [3, 0, 2], [15, -30], "furniture/" + GG.utils.GIFT, "regalo prueba")
+    myGK3 = GG.model.golden_key_room2.GGGoldenKeyRoom2("andatuz_01.png", [3, 0, 3], [20, -20], "andatuz_01.png", "andatuz prueba")
     room1.addItemFromVoid(myGK1, myGK1.getPosition())
     room1.addItemFromVoid(myGK2, myGK2.getPosition())
+    room1.addItemFromVoid(myGK3, myGK3.getPosition())
     
     fenceOffset = [25, -15]
     #room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [5, 0, 0])
