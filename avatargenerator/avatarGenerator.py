@@ -5,6 +5,7 @@ import Blender.Image
 import Blender.Scene
 import Blender.Draw
 import os
+import shutil
 
 #The object rotate so many deegrees as the parameter rotation 
 def rotateObject(nameObject,rotation):
@@ -13,21 +14,21 @@ def rotateObject(nameObject,rotation):
 	obj.RotZ = float(rotation) * (3.1416/180)		#Convert degrees to radians
 
 #Renderize the scene
-def renderScene(renderPath, fileName, startFrame, endFrame):
-  scn = Blender.Scene.GetCurrent()
-  context = scn.getRenderingContext()
-  if os.path.exists(renderPath) == False:
-	  print "folder ", renderPath, "was created"
-	  os.mkdir(renderPath)
+def renderScene(renderPath, startFrame, endFrame):
+  if os.path.exists(renderPath  + "tmp/") == False:
+	print "folder ", renderPath, "was created"
+	os.mkdir(renderPath + "tmp/")
   else:
-		print "folder ", renderPath, "already exist"
-  context.setRenderPath(os.path.join(renderPath))
+	print "folder ", renderPath, "already exist"
+  context.setRenderPath(os.path.join(renderPath + "tmp/"))
   print "apcth actual", context.getRenderPath()
   context.imageType = Blender.Scene.Render.PNG  
   context.sFrame = startFrame
   context.eFrame = endFrame
   context.renderAnim()
-  renameFiles(context.getRenderPath(), fileName)	
+
+  #renameFiles(context.getRenderPath(), fileName)	
+  #moveFiles(context.getRenderPath() + "tmp", context.getRenderPath())
 
   #Rename the rendered image
 #  defaultFileName = "0001.png"
@@ -79,6 +80,13 @@ def renameFiles(filePath, fileName):
   for i in files:
 	#shutil.move(filePath + i, filePath + fileName + i)
 	os.rename(filePath + i, filePath + fileName + i)
+	print "Renamed",i," to ", fileName + i
+	
+def copyFiles(filePathSrc, filePathDst):
+  files = os.listdir(filePathSrc)
+  for i in files:
+	shutil.move(filePathSrc+ i, filePathDst)
+	
 	
 	
 #Asign the arguments to local variables
@@ -246,11 +254,17 @@ if shoes <> "":
   changeTexture(avatar + "LeftLeg", texturePath, "defaultShoes.tga")
   changeTexture(avatar + "RightLeg", texturePath, "defaultShoes.tga")
 	
+scn = Blender.Scene.GetCurrent()
+context = scn.getRenderingContext()	
+
 #Generate one image for each rotation
 rotations = [0, 45, 90, 135, 180, 225, 270, 315]
 arm = Blender.Object.Get("Armature")
 actDict = Blender.Armature.NLA.GetActions()
 actList = Blender.Armature.NLA.GetActions().keys()
+actList.remove("pickup")
+actList.remove("sleeping")
+print actList
 
 
 if os.path.exists("imagesGenerated/") == False:
@@ -260,27 +274,41 @@ for act in actList:
   action = actDict[act]
   action.setActive(arm)
   action.getFrameNumbers()[-1]
-  if os.path.exists("imagesGenerated/" + action.getName()) == False:
-    os.mkdir("imagesGenerated/" + action.getName())
+  if os.path.exists("imagesGenerated/") == False:
+    os.mkdir("imagesGenerated/")
   for rot in rotations:
-    rotateObject("cameraAnchor", rot)
-    if rot == 0:
-      renderScene("imagesGenerated/" + action.getName() + "/down/", action.getName() + "_down_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 45:
-      renderScene("imagesGenerated/" + action.getName() + "/bottomleft/", action.getName() + "_bottomleft_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 90:
-      renderScene("imagesGenerated/" + action.getName() + "/left/", action.getName() + "_left_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 135:
-      renderScene("imagesGenerated/" + action.getName() + "/topleft/", action.getName() + "_topleft_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 180:
-      renderScene("imagesGenerated/" + action.getName() + "/up/", action.getName() + "_up_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 225:
-      renderScene("imagesGenerated/" + action.getName() + "/topright/", action.getName() + "_topright_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 270:
-      renderScene("imagesGenerated/" + action.getName() + "/right/", action.getName() + "_right_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
-    elif rot == 315:
-      renderScene("imagesGenerated/" + action.getName() + "/bottomright/", action.getName() + "_bottomright_", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	fileName = ""
+	rotateObject("cameraAnchor", rot)
+	if rot == 0:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_down_"
+	elif rot == 45:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_bottomleft_"
+	elif rot == 90:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_left_"
+	elif rot == 135:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_topleft_"
+	elif rot == 180:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName =  action.getName() + "_up_"
+	elif rot == 225:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_topright_"
+	elif rot == 270:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_right_"
+	elif rot == 315:
+	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  fileName = action.getName() + "_bottomright_"
+	
+	renameFiles(context.getRenderPath(), fileName)
+	copyFiles(context.getRenderPath(), "imagesGenerated/")
 
+print context.getRenderPath(), "directorio a borrar???"
+shutil.rmdir("tmp")
 
 	
 	
