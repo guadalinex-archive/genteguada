@@ -159,6 +159,9 @@ TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png
 TILES_CASTLE1 = ["castle01.png"]
 TILES_CASTLE2 = ["castle02.png"]
 
+#Backgrounds
+PATH_EDITOR_BACKGROUNDS = "/interface/backgrounds"
+
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
 GENDER_TAG = "genderTag.png"
@@ -168,6 +171,8 @@ PATH_EDITOR_IMG = DATA_PATH + "/editor"
 PATH_EDITOR_INTERFACE = DATA_PATH + "/interface/editor"
 IMG_EXTENSION = ".png"
 PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
+MASK_SIZE = {"S": [112,105],"M": [124,116],"L": [134,127],"XL": [146,137]}
+MASK_COORD = {"S": (91,114),"M": (86,111), "L": (80,105),"XL": (74,100)}
 
 BACKGROUND_LEFT = "background_left.png"
 BACKGROUND_RIGHT = "background_right.png"

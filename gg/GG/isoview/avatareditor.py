@@ -160,7 +160,8 @@ class AvatarEditor:
 
   def paintMask(self):
     if self.avatarConfiguration["mask"]:
-      imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+      #imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+      imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUploadMask.png")
       # si hay mascara, en vez de pintar "mask.png" habria que pintar su ruta.
     else:
       imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
@@ -329,6 +330,7 @@ class AvatarEditor:
         self.paintOptions(["masko.png"], "mask")
       else:
         self.paintOptions(["maska.png"], "mask")
+
     elif tag == "hair":
       if self.avatarConfiguration["gender"] == "boy":
         self.paintOptions(["hair1o.png","hair2o.png","hair3o.png"], "hairStyle")
@@ -360,7 +362,7 @@ class AvatarEditor:
       img = options[0]
 
     if tag == "mask" and self.avatarConfiguration["mask"]:
-      self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_PHOTO_MASK, self.avatarConfiguration["mask"]))
+      self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUpload.png"))
     else:
       self.imgOptionsTab = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
     self.imgOptionsTab.topleft = 30,150
@@ -478,16 +480,73 @@ class AvatarEditor:
     except:
       return 
     img.thumbnail(size, Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.PATH_PHOTO_MASK,file))
-    imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK,file)
+    img.save(os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png"))
+    imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgOptionsTab.picture = img
-    self.avatarConfiguration["mask"] = file
+    #self.avatarConfiguration["mask"] = img
+    self.generateMask("imgUpload.png")
     # Aqui tiene que generar tambien la imagen con mascara.
     # Despues de eso, en lugar de la linea de arriba ser haria:
     # self.avatarConfiguration["mask"] = imagen_generada_con_mascara_molona
     # self.paintMask()
-  
+
+
+  def generateMask(self,nameFile):
+    from PIL import Image
+    imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, nameFile)
+
+    imgMask = Image.open(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "mask.png"))
+    imgTemplate = Image.open(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "template.png"))
+    imgUpload = Image.open(imgPath)
+
+    size = GG.utils.MASK_SIZE[self.avatarConfiguration["headSize"]]
+
+    imgUploadResized = imgUpload.resize(size, Image.ANTIALIAS)
+
+
+    imgMask.paste(imgUploadResized,GG.utils.MASK_COORD[self.avatarConfiguration["headSize"]],imgTemplate)
+
+    imgMask.save(os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUploadMask.png"))
+
+    self.avatarConfiguration["mask"] = "imgUploadMask.png"
+    self.paintMask()
+
+
+
+
+
+
+
+    """   imgTemplate = Image.open("/home/edu/Documentos/GenteGuada/subversion/gg/GG/data/editor/boy/S/maskTemplate.png")
+    #os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"],     "maskTemplate.png"))
+
+    imgUpload.save(os.path.join("/home/edu/Escritorio","prueba.png"))
+
+    sizeImgUpload = imgUpload.size
+    x1 = 225
+    y1 = 234
+    if sizeImgUpload[0] < 225:
+      x1 = sizeImgUpload[0]
+
+    if sizeImgUpload[1] < 234:
+      y1 = sizeImgUpload[1]
+    
+
+    #pixTemplate = imgTemplate.load()
+    #pixUpload = imgUpload.load()
+    for x in range(66,x1):
+      for y in range(202,y1):
+        coord1 = x,y
+        coord2 = x-66,y-102
+        pixelValue = imgTemplate.getpixel(coord1)
+        print "Antes",x,y,pixelValue
+        if pixelValue[0] == 255 and pixelValue[1] == 0 and pixelValue[2] == 0 and pixelValue[3] == 255:
+          imgTemplate.setPixel(coord1,imgUpload.getpixel(coord2))
+          print "Despues", imgTemplate.getpixel(coord1)
+    imgTemplate.save(os.path.join("/home/edu/Escritorio","exito.png"))
+"""    
+
   def getPaletteButtons(self, type):
     if type == "cloth":
       return [ [GG.utils.COLOR_YELLOW, GG.utils.COLOR_ORANGE, GG.utils.COLOR_RED], 
@@ -548,6 +607,8 @@ class AvatarEditor:
     self.avatarConfiguration["headSize"] = size
     self.paintHead()
     self.paintHair()
+    if (self.avatarConfiguration["mask"]):
+      self.generateMask("imgUpload.png")
     self.paintMask()
 
   def updateSizeBody(self,size):
