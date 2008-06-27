@@ -114,8 +114,9 @@ class Login:
     if self.dialog:
       return
     
-    self.dialog = ocempgui.widgets.Box(500,220)
-    self.dialog.topleft = 400, 200
+    self.dialog = ocempgui.widgets.Box(516,216)
+    self.dialog.topleft = 254, 276
+    #self.dialog.image = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png"))
     
     label = ocempgui.widgets.Label(errorText)
     label.topleft = 10,10
