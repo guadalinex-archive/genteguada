@@ -98,35 +98,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = room
     self.triggerEvent('room', room=room)
 
-  # self.__upperItem
-  
-  def getUpperItem(self):
-    return self.__upperItem
-
-  def setUpperItem(self, item):
-    self.__upperItem = item
-  
-  def getTopMostItem(self):
-    if self.__upperItem == None:
-      return self
-    else:
-      return self.__upperItem.getTopMostItem()  
-    
-  def setTopMostItem(self, item):
-    if self.__upperItem == None:
-      self.__upperItem = item
-      item.setLowerItem(self)
-    else:
-      self.__upperItem.setTopMostItem(item)
-      
-  # self.__lowerItem
-  
-  def getLowerItem(self):
-    return self.__lowerItem
-
-  def setLowerItem(self, item):
-    self.__lowerItem = item
-   
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.

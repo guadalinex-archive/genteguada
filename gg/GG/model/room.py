@@ -1,9 +1,10 @@
+import random
 import operator
 import GG.utils
 import GG.model.ggmodel
+import GG.model.tile
 import GG.model.inventory_item
 import GG.model.chat_message
-#import GG.model.inventory_only_item
 import GG.isoview.isoview_room
 import dMVC.model
 import GG.model.player
@@ -21,6 +22,13 @@ class GGRoom(GG.model.ggmodel.GGModel):
     GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.size = size
+    self.__tiles = []
+    for i in range(0, self.size[0]):
+      line = []  
+      for j in range(0, self.size[1]):
+        image = self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
+        line.append(GG.model.tile.Tile([i, 0, j], image, [0, 0], self))
+      self.__tiles.append(line)  
     self.__items = []
     self.__specialTiles = []
     self.label = label # Variable para realizar pruebas, sera eliminada
@@ -30,6 +38,15 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """
     return ['spriteFull', 'size']
 
+  def getTile(self, pos):
+    return self.__tiles[pos[0]][pos[2]]  
+
+  def getItemTile(self, item):
+    if item in self.__items:
+      pos = item.getPosition()
+      return self.__tiles[pos[0]][pos[2]]
+    return None                        
+  
   # self.__items
 
   def getItems(self):
@@ -43,25 +60,18 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """
     if not self.__items == items:
       self.__items = items
+      for item in self.__items:
+        self.__tiles[item.getPosition()[0]][item.getPosition()[2]].stackItem(item)
       self.triggerEvent('items', items=items)
       return True
     return False
 
   def addItemFromVoid(self, item, pos):
-    """
-    if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
-      del item
-      return True
-    """  
     if not item in self.__items:
       item.setStartPosition(None)
-      #item.setStartPosition(self.getNearestEmptyCell(pos))
       item.setStartPosition(pos)
-      
-      existingItem = self.getItemOnPosition(pos)
-      if existingItem != None:
-        existingItem.setTopMostItem(item)
-      
+      #if not self.__tiles[pos[0]][pos[2]].stepOn(): return
+      self.__tiles[pos[0]][pos[2]].stackItem(item)
       self.__items.append(item)
       item.setRoom(self)
       self.triggerEvent('addItemFromVoid', item=item)
@@ -69,20 +79,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return False
   
   def addItemFromInventory(self, item, pos):
-    """
-    if isinstance(item, GG.model.inventory_only_item.GGInventoryOnlyItem):
-      del item
-      return True
-    """  
     if not item in self.__items:
       item.setStartPosition(None)
-      #item.setStartPosition(self.getNearestEmptyCell(pos))
       item.setStartPosition(pos)
-      
-      existingItem = self.getItemOnPosition(pos)
-      if existingItem != None:
-        existingItem.setTopMostItem(item)
-      
+      #if not self.__tiles[pos[0]][pos[2]].stepOn(): return
+      self.__tiles[pos[0]][pos[2]].stackItem(item)
       self.__items.append(item)
       item.setRoom(self)
       item.setPlayer(None)
@@ -95,9 +96,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
-      if item.getLowerItem() != None:
-        item.getLowerItem().setUpperItem(None)
-        item.setLowerItem(None)
+      pos = item.getPosition()
+      self.__tiles[pos[0]][pos[2]].unstackItem()
       item.clearRoom()
       self.__items.remove(item)
       self.triggerEvent('removeItem', item=item)
@@ -130,27 +130,22 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """ Checks if a tile is blocked or not.
     pos: tile position.
     """
-    for item in self.__items:
-      if item.getPosition() == pos:
-        return True
-    return False  
-  
+    if self.__tiles[pos[0]][pos[2]].getDepth() != 0:
+      return True
+    return False
+    
   def clickedByPlayer(self, player, target):
     """ Indicates players inside that a player has made click on another one.
     player: active player.
     target: position the active player clicked on.
     """
-    print target, player.getPosition()
+    #print target, player.getPosition()
     player.setUnselectedItem()
     if not self.getBlocked(target) and player.getPosition != target:
       #direction = self.getNextDirection(player, player.getPosition(), target)
       player.setDestination(target)
     else:
-      for item in self.__items:
-        if item.getPosition() == target:
-          print item  
-          item.getTopMostItem().clickedBy(player)
-          return
+      self.__tiles[target[0]][target[2]].getTopItem().clickedBy(player)  
           
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
@@ -213,12 +208,19 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def getEmptyCell(self):
     listCell = []
     for corx in range(self.size[0]):
+      for corz in range(self.size[1]):
+        if self.__tiles[corx, 0, corz].getDepth():
+          listCell.append([corx, 0, corz])
+    return listCell        
+    """
+    listCell = []
+    for corx in range(self.size[0]):
       for cory in range(self.size[1]):
         point = [corx,0,cory]
         if not self.getBlocked(point):
           listCell.append(point)
     return listCell
-    
+    """
 
   def getNearestEmptyCell(self, pos):
     """ Returns the nearest empty cell to a position.
@@ -239,57 +241,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return point
       
   def getItemOnPosition(self, pos):
+    return self.__tiles[pos[0]][pos[2]].getTopItem()
+    """  
     for item in self.__items:
       if item.getPosition() == pos:
         return item
     return None
-      
-    """
-    retVar = None
-    if pos[2] > 0:
-      auxPos = [pos[0], pos[1], pos[2] - 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    elif pos[2] < (GG.utils.SCENE_SZ[1] - 1):
-      auxPos = [pos[0], pos[1], pos[2] + 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-
-    elif pos[0] > 0:
-      auxPos = [pos[0] - 1, pos[1], pos[2]]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    elif pos[0] < (GG.utils.SCENE_SZ[0] - 1):
-      auxPos = [pos[0] + 1, pos[1], pos[2]]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-
-    elif (pos[0] > 0) and (pos[2] > 0):
-      auxPos = [pos[0] - 1, pos[1], pos[2] - 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    elif (pos[2] < (GG.utils.SCENE_SZ[1] - 1)) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
-      auxPos = [pos[0] + 1, pos[1], pos[2] + 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    elif (pos[0] > 0) and (pos[0] < (GG.utils.SCENE_SZ[0] - 1)):
-      auxPos = [pos[0] - 1, pos[1], pos[2] + 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    elif (pos[0] < (GG.utils.SCENE_SZ[0] - 1)) and (pos[2] > 0):
-      auxPos = [pos[0] + 1, pos[1], pos[2] - 1]
-      res = self.getNearestEmptyCell(auxPos)
-      if res != None:
-        retVar = res
-    else:
-      retVar = False
-    
-    return retVar
     """
