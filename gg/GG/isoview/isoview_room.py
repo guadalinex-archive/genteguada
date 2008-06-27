@@ -69,7 +69,8 @@ class IsoViewRoom(isoview.IsoView):
         if k == 0:
           isotile = isoview_tile.IsoViewTile([pos[0], pos[1]], [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], \
                 #self.getModel().spriteFull, [corx, 0, corz])
-                image, [corx, 0, corz])
+                #image, [corx, 0, corz])
+                "tiles/" + self.getModel().getTile([corx, 0, corz]).spriteName, [corx, 0, corz])
         """
         img = pygame.sprite.Sprite()
         img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(image)).convert_alpha()
