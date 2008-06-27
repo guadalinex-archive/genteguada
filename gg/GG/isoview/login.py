@@ -114,16 +114,18 @@ class Login:
     if self.dialog:
       return
     
-    self.dialog = ocempgui.widgets.Box(516,216)
-    self.dialog.topleft = 254, 276
-    #self.dialog.image = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png"))
+    self.dialog = ocempgui.widgets.Box(516,236)
+    self.dialog.topleft = 254, 50
+
+    background = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_BACKGROUNDS, "alertWindow.png"))
+    self.dialog.add_child(background)
     
-    label = ocempgui.widgets.Label(errorText)
-    label.topleft = 10,10
-    self.dialog.add_child(label)
+    #label = ocempgui.widgets.Label(errorText)
+    #label.topleft = 10,10
+    #self.dialog.add_child(label)
 
     buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
-    buttonCancel.topleft = [350, 150]
+    buttonCancel.topleft = [375, 173]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
     self.dialog.add_child(buttonCancel)
 

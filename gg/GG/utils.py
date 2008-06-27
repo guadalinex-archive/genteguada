@@ -160,7 +160,7 @@ TILES_CASTLE1 = ["castle01.png"]
 TILES_CASTLE2 = ["castle02.png"]
 
 #Backgrounds
-PATH_EDITOR_BACKGROUNDS = "/interface/backgrounds"
+PATH_EDITOR_BACKGROUNDS = DATA_PATH + "/interface/backgrounds"
 
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
