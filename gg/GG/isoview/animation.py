@@ -171,7 +171,6 @@ class ScreenPositionAnimation(Animation):
     self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     #Animation.stop(self)
     super(self.__class__, self).stop()
-    
   
 #*****************************************************************************
     

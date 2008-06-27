@@ -17,17 +17,16 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.anchor = anchor
+    self.topAnchor = GG.utils.TILE_SZ[1] + anchor[1]
     self.__position = position
     self.__room = None
-    self.__upperItem = None
-    self.__lowerItem = None
     self.points = 0
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['anchor', 'points']
+    return parentVars + ['anchor', 'topAnchor', 'points']
 
   def setPoints(self, points):
     self.points = points
@@ -38,22 +37,17 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Returns the item position.
     """
     #print "KUKUYUKU", self
-    if self.__lowerItem != None:
-      return self.__lowerItem.getPosition()
-    else:        
-      return self.__position
+    return self.__position
 
   def setPosition(self, pos):
     """ Sets a new position for the item.
     pos: new position.
     """
-    if self.__lowerItem != None:
-      return self.__lowerItem.setPosition(pos)
-    else:
-      if not self.__position == pos:
-        old = self.__position
-        self.__position = pos
-        self.triggerEvent('position', position=pos, oldPosition=old)
+    self.__room.moveItem(self.__position, pos, self)
+    if not self.__position == pos:
+      old = self.__position
+      self.__position = pos
+      self.triggerEvent('position', position=pos, oldPosition=old)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.
@@ -69,10 +63,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def getRoom(self):
     """ Returns the room where the player is.
     """
-    if self.__lowerItem != None:
-      return self.__lowerItem.getRoom()
-    else:
-      return self.__room
+    return self.__room
   
   def clearRoom(self):
     """ Sets the item's room as none.    

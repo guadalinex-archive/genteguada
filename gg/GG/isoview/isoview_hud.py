@@ -123,7 +123,7 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
       print ">>>>>>>>>>>>< encontrado"
-      ivItem.updateScreenPosition()  
+      self.__isoviewRoom.updateScreenPositionsOn(item.getPosition())  
       
   def addItemToInventory(self, event):
     """ Adds a new isoview inventory item.
@@ -163,7 +163,8 @@ class IsoViewHud(isoview.IsoView):
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
-      positionAnim.setOnStop(ivItem.updateScreenPosition, None)
+      #positionAnim.setOnStop(ivItem.updateScreenPosition, None)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, item.getPosition())
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
         self.__isoviewInventory.remove(ivInventItem)
