@@ -45,3 +45,6 @@ class GGGoldenKeyRoom2(room_item.GGRoomItem):
 
   def isStackable(self):
     return True
+
+  def stepOn(self):
+    return True

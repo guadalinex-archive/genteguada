@@ -126,3 +126,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     
   def isStackable(self):
     return False
+
+  def stepOn(self):
+    return False

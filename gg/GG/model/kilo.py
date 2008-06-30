@@ -48,7 +48,6 @@ class GGKilo(room_item.GGRoomItem):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
-    print ">>>>>>>>>> pinchado"
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)

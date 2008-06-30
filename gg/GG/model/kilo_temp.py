@@ -81,3 +81,5 @@ class GGKiloTemp(room_item.GGRoomItem):
     
   def isStackable(self):
     return False
+
+

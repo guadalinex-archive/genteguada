@@ -46,3 +46,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
 
   def isStackable(self):
     return True
+
+  def stepOn(self):
+    return False
+

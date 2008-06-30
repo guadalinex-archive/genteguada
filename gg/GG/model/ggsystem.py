@@ -126,7 +126,7 @@ class GGSystem(dMVC.model.Model):
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
 
     # ROOM 1
-    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [5, 0, 6], room4, "puerta lobby")
+    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [6, 0, 0], [25, 2], [5, 0, 6], room3, "puerta lobby")
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [1, 0, 6], [20, -20], "Andatuz")
     
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [5, 0, 5], [26, -10], "Caja pesada", 10, room1)
@@ -213,17 +213,18 @@ class GGSystem(dMVC.model.Model):
       room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_LEFT, [0, 0, z], wallOffset), [0, 0, z])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_LEFT, [0, 0, 6], wallOffset), [0, 0, 6])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_LEFT, [0, 0, 7], wallOffset), [0, 0, 7])
-    """    
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontUpLeft.png", [3, 0, 5], [0, 0]), [3, 0, 4])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontUpRight.png", [5, 0, 3], [0, 0]), [3, 0, 3])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontDownLeft.png", [4, 0, 6], [0, 0]), [4, 0, 4])
-    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/fontDownRight.png", [6, 0, 4], [0, 0]), [4, 0, 3])
+
+    fountainVertOffset = 10
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/font_topleft.png", [3, 0, 3], [46, -35 + fountainVertOffset]), [3, 0, 3])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/font_topright.png", [4, 0, 3], [55, -35 + fountainVertOffset]), [4, 0, 3])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/font_bottomleft.png", [3, 0, 4], [4, -34 + fountainVertOffset]), [3, 0, 4])
+    room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/font_bottomright.png", [4, 0, 4], [50, -30 + fountainVertOffset]), [4, 0, 4])
     """
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [3, 0, 3], [13, 15]), [3, 0, 3])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [3, 0, 4], [13, 15]), [3, 0, 4])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [4, 0, 3], [13, 15]), [4, 0, 3])
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [4, 0, 4], [13, 15]), [4, 0, 4])
-    
+    """
     room3.addItemFromVoid(myPenguinRoom3, myPenguinRoom3.getPosition())
     room3.addItemFromVoid(myDoor3A, myDoor3A.getPosition())    
     room3.addItemFromVoid(myDoor3B, myDoor3B.getPosition())    

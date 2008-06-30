@@ -234,9 +234,10 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     if itemOnPosition != None:
       if not itemOnPosition.isStackable():
         return False
+    if not self.getRoom().addItemFromInventory(item, dropLocation):
+      return False
     self.__inventory.remove(item)
     item.setPlayer(None)
-    self.getRoom().addItemFromInventory(item, dropLocation)
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
   def checkItemOnInventory(self, item):
