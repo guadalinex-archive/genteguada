@@ -84,8 +84,8 @@ class GenteGuada:
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    self.session = winLogin.draw()
-    #self.session = winLogin.draw(params.user, params.password)
+    #self.session = winLogin.draw()
+    self.session = winLogin.draw(params.user, params.password)
 
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
     img = pygame.sprite.Sprite()

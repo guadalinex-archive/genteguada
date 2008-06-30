@@ -264,13 +264,30 @@ BALLOON_FON_SZ = 16
 #styles
 #TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
 STYLES = {
+          "inventoryArea" : { "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                              },
+                            },
+          "chatArea" : { "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                           ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                         },
+                            },
           "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 30, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
-                                          }
-                            },   
+                                          },
+                              "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                              },
+                            },
           "textFieldLogin" : { "font" : { "name" : "Helvetica", "size" : 40, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
@@ -281,9 +298,13 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 200),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 200) 
-                                          }
+                                          },
+                              "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                                ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
+                                              },
                             },   
-
           "chatEntryWhite" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),

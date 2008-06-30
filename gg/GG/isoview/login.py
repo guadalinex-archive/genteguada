@@ -76,12 +76,14 @@ class Login:
     self.__textFieldUsername = ocempgui.widgets.Entry("")
     self.__textFieldUsername.topleft = 700,460
     self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    self.__textFieldUsername.border = 1
     self.__textFieldUsername.set_minimum_size(230,40)
     self.window.add_child(self.__textFieldUsername)
 
     self.__textFieldPassword = ocempgui.widgets.Entry("")
     self.__textFieldPassword.topleft = 700,570
     self.__textFieldPassword.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    self.__textFieldPassword.border = 1
     self.__textFieldPassword.set_minimum_size(230,40)
     self.__textFieldPassword.set_password(True)
     self.window.add_child(self.__textFieldPassword)

@@ -68,7 +68,7 @@ class IsoViewHud(isoview.IsoView):
     }
     self.winWardrobe = None
     self.wardrobe = None
-
+    """
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__pointsLabel.topleft = [GG.utils.POINTS_LOCATION[0], GG.utils.POINTS_LOCATION[1] - self.__pointsLabel.height]
@@ -78,7 +78,7 @@ class IsoViewHud(isoview.IsoView):
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__expLabel.topleft = [GG.utils.EXP_LOCATION[0], GG.utils.EXP_LOCATION[1] - self.__expLabel.height]
     self.__isoviewRoom.addSprite(self.__expLabel)
-
+    """
   def processEvent(self, events):
     for event in events:
       event_type = event.type
@@ -181,6 +181,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintChat()
     self.paintTextBox()
     self.paintActionButtons()
+    self.paintUserActions()
 
   def updateFrame(self, ellapsedTime):
     """ Updates all sprites for a new frame.
@@ -234,6 +235,7 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the chat window on screen.
     """
     self.textArea = ocempgui.widgets.ScrolledWindow(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
+    self.textArea.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["chatArea"]))
     self.textArea.set_scrolling(1)
     self.textArea.border = 1
     self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
@@ -257,6 +259,7 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the inventory box and its items on it.    
     """
     self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
+    self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
     self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1] - 15
     self.widgetContainer.add_widget(self.windowInventory)
@@ -401,6 +404,7 @@ class IsoViewHud(isoview.IsoView):
   def paintActionButtons(self):
     """ Paints the general action buttons.
     """
+    """
     ACTIONS = [
                 {"image":"interface/hud/dresser.png", "action": self.showDresser},
                 {"image":"interface/hud/rotateright.png", "action": self.turnRight},
@@ -409,6 +413,12 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
                 #{"image":"interface/hud/help.png", "action": self.showHelp},
                 {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
+              ]
+    """
+    ACTIONS = [
+                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
+                {"image":"interface/hud/help.png", "action": self.showHelp},
               ]
 
     self.buttonBar = ocempgui.widgets.HFrame()
@@ -473,6 +483,40 @@ class IsoViewHud(isoview.IsoView):
     #TODO solo funciona en linux con las X, para e
     self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
+
+  def paintUserActions(self):
+    
+    self.userBar = ocempgui.widgets.VFrame()
+    self.userBar.topleft = [GG.utils.SCREEN_SZ[0] - 280 ,GG.utils.HUD_OR[1] - 145]
+    
+    labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
+    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.userBar.add_child(labelUserName)
+
+    pointsBar = ocempgui.widgets.HFrame()
+    self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
+    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    pointsBar.add_child(self.__pointsLabel)
+    self.__expLabel = GG.utils.OcempLabel("Exp: 0",140)
+    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    pointsBar.add_child(self.__expLabel)
+    self.userBar.add_child(pointsBar)
+
+    actionsBar = ocempgui.widgets.HFrame()
+    ACTIONS = [
+                {"image":"interface/hud/dresser.png", "action": self.showDresser},
+                {"image":"interface/hud/jump.png", "action": self.showDresser},
+                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
+                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
+              ]
+    for buttonData in ACTIONS:
+      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
+      actionsBar.add_child(button)
+    self.userBar.add_child(actionsBar)
+
+    self.widgetContainer.add_widget(self.userBar)
+
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
