@@ -214,8 +214,8 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBar.update()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
-      self.__isoviewRoom.addSprite(self.__pointsLabel)
-      self.__isoviewRoom.addSprite(self.__expLabel)
+      #self.__isoviewRoom.addSprite(self.__pointsLabel)
+      #self.__isoviewRoom.addSprite(self.__expLabel)
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
@@ -373,13 +373,12 @@ class IsoViewHud(isoview.IsoView):
       anchor = 0
     else:
       anchor = 3 + len(options) 
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
-                                     0]
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor),0]
     #self.buttonBarActions.topleft = 0,0
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBarActions.border = 0
     for action in options:
-      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getI nstance().getDataPath(self.buttonActions[action]['image']))
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       #button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
@@ -451,7 +450,7 @@ class IsoViewHud(isoview.IsoView):
 
   def turnRight(self):
     print "turn right"
-    self.__player.jump()
+    #self.__player.jump()
     """
     ivPlayer = self.findIVItem(self.__player)
     if ivPlayer == None:
@@ -486,25 +485,33 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     self.userBar = ocempgui.widgets.VFrame()
-    self.userBar.topleft = [GG.utils.SCREEN_SZ[0] - 280 ,GG.utils.HUD_OR[1] - 145]
+    self.userBar.topleft = [GG.utils.SCREEN_SZ[0] - 400 ,GG.utils.HUD_OR[1] - 90]
+    self.userBar.border = 0
+    self.userBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    self.userBar.align = ocempgui.widgets.Constants.ALIGN_LEFT
     
     labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
     labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.userBar.add_child(labelUserName)
 
-    pointsBar = ocempgui.widgets.HFrame()
+    pointsBar = ocempgui.widgets.VFrame()
+    pointsBar.border = 0
+    pointsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    pointsBar.align = ocempgui.widgets.Constants.ALIGN_RIGHT
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     pointsBar.add_child(self.__pointsLabel)
     self.__expLabel = GG.utils.OcempLabel("Exp: 0",140)
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     pointsBar.add_child(self.__expLabel)
-    self.userBar.add_child(pointsBar)
+    #self.userBar.add_child(pointsBar)
 
     actionsBar = ocempgui.widgets.HFrame()
+    actionsBar.border = 0
+    actionsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     ACTIONS = [
                 {"image":"interface/hud/dresser.png", "action": self.showDresser},
-                {"image":"interface/hud/jump.png", "action": self.showDresser},
+                {"image":"interface/hud/jump.png", "action": self.jump},
                 {"image":"interface/hud/rotateright.png", "action": self.turnRight},
                 {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
               ]
@@ -512,10 +519,13 @@ class IsoViewHud(isoview.IsoView):
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       actionsBar.add_child(button)
+    actionsBar.add_child(pointsBar)
     self.userBar.add_child(actionsBar)
 
     self.widgetContainer.add_widget(self.userBar)
 
+  def jump(self):
+    self.__player.jump()
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
