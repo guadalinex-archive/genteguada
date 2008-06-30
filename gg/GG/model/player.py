@@ -1,12 +1,11 @@
-import GG.model.room_item
-#import GG.model.temp_pickable_item
+import GG.model.item_with_inventory
 import GG.model.chat_message
 import GG.isoview.isoview_player
 import GG.utils
 import time
 import dMVC.model
 
-class GGPlayer(GG.model.room_item.GGRoomItem):
+class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   """ Player class.
   Defines a player object behaviour.
   """
@@ -21,7 +20,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """
     #print username, password
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
-    GG.model.room_item.GGRoomItem.__init__(self, filename, position, anchor)
+    GG.model.item_with_inventory.GGItemWithInventory.__init__(self, filename, position, anchor)
     self.username = username
     self.imagePath = spritePath
     self.__password = password # Not used outside this class
@@ -29,7 +28,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.__heading = GG.utils.HEADING[2]
     self.__state = GG.utils.STATE[1]
     self.__destination = position
-    self.__inventory = []
+    #self.__inventory = []
     self.__visited = []
     self.__selected = None
     self.__pointGivers = []
@@ -178,18 +177,6 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
       self.__visited = []
       self.__destination = destination
       
-  # self.__inventory
-  
-  def setInventory(self, inventory):
-    """ Sets a new player's inventory.
-    inventory: new player's inventory.
-    """
-    if not self.__inventory == inventory:
-      self.__inventory = inventory
-      self.triggerEvent('inventory', inventory=inventory)
-      return True
-    return False
-  
   @dMVC.model.localMethod
   def defaultView(self, screen, room, parent):
     """ Creates a view object associated with this player.
@@ -199,53 +186,17 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
-  
   def addToInventoryFromRoom(self, item):
     self.addPoints(item.points, item.label)
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=item.getPosition())
+    GG.model.item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, item)
     
-  def addToInventoryFromVoid(self, item, position):
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=position)
-    
-  def removeFromInventory(self, item):
-    """ Removes an item from the player's inventory.
-    item: item to be removed.
-    """
-    if item in self.__inventory:
-      self.__inventory.remove(item)
-      #item.setPlayer(None)
-      self.triggerEvent('removeFromInventory', item=item)
-      return True
-    return False
-  
   def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
-    #self.lala()
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    itemOnPosition = self.getRoom().getItemOnPosition(dropLocation)
-    if dropLocation == [-1, -1, -1]: 
-      return False
-    if itemOnPosition != None:
-      if not itemOnPosition.isStackable():
-        return False
-    if not self.getRoom().addItemFromInventory(item, dropLocation):
-      return False
-    self.__inventory.remove(item)
-    item.setPlayer(None)
-    self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
+    GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation) 
     
-  def checkItemOnInventory(self, item):
-    for it in self.__inventory:
-      if it.checkSimilarity(item):
-        return True
-    return False      
-
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
     username: user name.
@@ -282,8 +233,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     """
     if self.getRoom() == None:
       return
-    for item in self.__inventory:
-      item.tick(now)
+    GG.model.item_with_inventory.GGItemWithInventory.tick(self, now) 
     if self.getPosition() == self.__destination:
       if self.__state == GG.utils.STATE[2]:
         self.setState(GG.utils.STATE[1])
@@ -384,12 +334,6 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
     self.__destination = pos
     GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
     
-  def hasItemLabeledInInventory(self, label):
-    for item in self.__inventory:
-      if item.label == label:
-        return True  
-    return False    
-      
   def jump(self):
     self.triggerEvent('jump', position=self.getPosition())
  
