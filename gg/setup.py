@@ -52,6 +52,6 @@ setup (
         license='(c) Igo Software.',
         platforms= ["UNIX"],
         packages = ["GG","GG.isoview","GG.model"],
-        scripts = ["genteguada"],
+        scripts = ["genteguada","ggserver"],
       )
 
