@@ -522,6 +522,8 @@ class IsoViewHud(isoview.IsoView):
     actionsBar.add_child(pointsBar)
     self.userBar.add_child(actionsBar)
 
+    self.__isoviewRoom.addSprite(self.userBar)
+
     self.widgetContainer.add_widget(self.userBar)
 
   def jump(self):
