@@ -54,7 +54,7 @@ class GGKiloTemp(room_item.GGRoomItem):
       if self.getPlayer() != None:
         self.getPlayer().removeFromInventory(self)
       else:
-        self.getRoom().removeItem(self)  
+        self.getRoom().removeItem(self)
         
   def timeLeft(self):
     """ Returns the item's time left.

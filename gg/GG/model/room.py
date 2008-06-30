@@ -41,6 +41,9 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def getTile(self, pos):
     return self.__tiles[pos[0]][pos[2]]  
 
+  def getTiles(self):
+    return self.__tiles
+
   def getItemTile(self, item):
     if item in self.__items:
       pos = item.getPosition()
