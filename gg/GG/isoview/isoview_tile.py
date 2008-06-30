@@ -42,7 +42,7 @@ class IsoViewTile(isoview.IsoView):
     """
     return self.__bottomRight
   
-  def contained(self, pos):
+  def contained(self, pos, depth, items):
     """ Checks if a point is contained on a tile.
     pos: point.
     """
@@ -50,9 +50,11 @@ class IsoViewTile(isoview.IsoView):
       if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
         if not self.onBlank(pos):
           return 1
-    if self.getModel().getDepth() == 0:
+    #if self.getModel().getDepth() == 0:
+    if depth == 0:
       return 0
-    itemList = self.getModel().getItems()
+    #itemList = self.getModel().getItems()
+    itemList = items
     for item in itemList:
       if self.__hud.findIVItem(item).checkClickPosition(pos):
         return 1

@@ -54,6 +54,8 @@ class IsoViewRoom(isoview.IsoView):
     
     self.__tileList = []
     
+    tiles = model.getTiles()
+    
     specialTiles = model.getSpecialTiles()
     
     for corx in range(model.size[0]):
@@ -65,13 +67,18 @@ class IsoViewRoom(isoview.IsoView):
         
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
-            isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+            #isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+            isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], specTile[1], self.__parent)
             k = 1
         if k == 0:
-          isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+          #isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
+          #         [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
+          #          model.getTile([corx, 0, corz]).spriteName, self.__parent)
+        
+          isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
-                    model.getTile([corx, 0, corz]).spriteName, self.__parent)
+                    tiles[corx][corz].spriteName, self.__parent)
         
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
@@ -128,31 +135,32 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    #print ">>>", pos
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", pos
     round = self.getModel().size[0]*2 - 1
     halfRound = round/2
     line = round
+    tiles = self.getModel().getTiles()
     while line > 0:   
       if line > halfRound + 1:
         # Mitad inferior
         for x in range(line - (halfRound+1), halfRound + 1):
           z = line - x - 1 
           #print "checked [", x, ", ", z, "]", self.__tileList[x][z].getIsoItem() 
-          if self.__tileList[x][z].contained(pos):
+          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
             return [x, z]
       elif line < halfRound + 1:
         # Mitad superior
         for x in range(0, line):
           z = line - x - 1
           #print "checked [", x, ", ", z, "]"
-          if self.__tileList[x][z].contained(pos):
+          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
             return [x, z]
       else:
         # Diagonal media  
         for x in range(0, halfRound + 1):
           z = halfRound - x
           #print "checked [", x, ", ", z, "]"
-          if self.__tileList[x][z].contained(pos):
+          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
             return [x, z]
       line -= 1
     return [-1, -1]
@@ -187,13 +195,11 @@ class IsoViewRoom(isoview.IsoView):
     event: even info.
     """
     item = event.getParams()['item']
-    pos = item.getPosition()
-    for ivplayer in self.__isoViewItems:
-      if ivplayer.getModel() == item:
-        self.removeIsoViewItem(ivplayer)
-        removed = True
-    if not removed:
+    ivItem = self.findIVItem(item)
+    if ivItem == None:
       raise Exception("Error: vista de item no eliminada")
+    self.removeSprite(ivItem.getImg())
+    self.removeIsoViewItem(ivItem)
         
   def specialTileAdded(self, event):
     pos = event.getParams()['position']
@@ -216,16 +222,19 @@ class IsoViewRoom(isoview.IsoView):
         
   def updateScreenPositionsOn(self, pos):
     
-    itemList = self.__tileList[pos[0]][pos[2]].getModel().getItems()
-    accHeight = 0
+    tile = self.__tileList[pos[0]][pos[2]].getModel()
+    itemList = tile.getItems()
+    accHeight = tile.anchor[0]
+    accWidth = tile.anchor[1]
     for item in itemList:
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
         #print item, item.getPosition(), (scPos[1] - accHeight), ivIt.hasAnimation()
-        ivIt.setScreenPosition([scPos[0], scPos[1] - accHeight])
+        ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
         #ivIt.updateScreenPosition(accHeight)
-        accHeight += item.topAnchor 
+        accWidth += item.topAnchor[0] 
+        accHeight += item.topAnchor[1] 
           
   def addIsoViewChatItem(self, ivChatItem):
     self.__isoViewItems.append(ivChatItem)
@@ -235,10 +244,8 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    pos = ivPlayer.getModel().getPosition()
-    self.__isoViewItems.remove(ivPlayer)
     self.removeSprite((ivPlayer.getImg()))
-    #self.__allPlayers.remove(ivPlayer.getImg())
+    self.__isoViewItems.remove(ivPlayer)
     ivPlayer.unsubscribeAllEvents()
     
   def unsubscribeAllEvents(self):
@@ -255,24 +262,12 @@ class IsoViewRoom(isoview.IsoView):
     for item in items:
       self.findIVItem(item).selected()
 
-    """
-    for isoItem in self.__isoViewItems:
-      if isoItem.getModel() == item:
-        isoItem.selected()
-    """
-
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
     items = self.getModel().getTile(item.getPosition()).getItems()
     for item in items:
       self.findIVItem(item).unselected()
-
-    """
-    ivItem = self.__parent.findIVItem(item)
-    if ivItem != None:
-      ivItem.unselected()
-    """  
     
   def setItemOnTile(self, item, position):
     if item == None:
