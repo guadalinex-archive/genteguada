@@ -19,6 +19,7 @@ class GGKiloTemp(room_item.GGRoomItem):
     startRoom: item's starting room.
     """
     room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
+    #self.setStartPosition(position)
     self.spriteInventory = spriteInventory
     self.label = label
     self.__time = time*1000
@@ -64,7 +65,6 @@ class GGKiloTemp(room_item.GGRoomItem):
       return False
   
   def checkSimilarity(self, item):
-    print "****************** comprobando"  
     if kilo.GGKilo.checkSimilarity(self, item):
       if item.label == self.label:
         if item.getStartTime() == self.__startTime:

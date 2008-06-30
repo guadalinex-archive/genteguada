@@ -8,7 +8,7 @@ class IsoViewTile(isoview.IsoView):
   Defines a room tile view
   """
 
-  def __init__(self, model, topLeft, bottomRight, position, hud):
+  def __init__(self, model, topLeft, bottomRight, position, img, hud):
     """ Class constructor.
     topLeft: top left tile coord.
     bottomRight: lower right tile coord.
@@ -20,7 +20,7 @@ class IsoViewTile(isoview.IsoView):
     self.__position = position
     self.__hud = hud
     self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteName)).convert_alpha()
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(img)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     

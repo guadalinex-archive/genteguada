@@ -18,8 +18,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.anchor = anchor
     self.topAnchor = GG.utils.TILE_SZ[1] + anchor[1]
-    self.__position = position
     self.__room = None
+    self.__tile = None
     self.points = 0
     
   def variablesToSerialize(self):
@@ -31,32 +31,38 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def setPoints(self, points):
     self.points = points
   
-  # self.__position
+  # self.__tile
+  
+  def getTile(self):
+    return self.__tile
+  
+  def setTile(self, tile):
+    self.__tile = tile
+    #self.setPosition(tile.position)
   
   def getPosition(self):
     """ Returns the item position.
     """
-    #print "KUKUYUKU", self
-    return self.__position
-
+    return self.getTile().position
+  
   def setPosition(self, pos):
     """ Sets a new position for the item.
     pos: new position.
     """
-    self.__room.moveItem(self.__position, pos, self)
-    if not self.__position == pos:
-      old = self.__position
-      self.__position = pos
-      self.triggerEvent('position', position=pos, oldPosition=old)
+    if pos == self.__tile.position:
+      return
+    old = self.__tile.position
+    self.__room.moveItem(self.__tile.position, pos, self)
+    self.triggerEvent('position', position=pos, oldPosition=old)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.
     pos: new position.
     """
-    if self.__position != pos:
-      self.__position = pos
-      if pos != None:
-        self.triggerEvent('startPosition', position=pos)
+    if self.__tile.position == pos:
+      return
+    self.__room.moveItem(self.__tile.position, pos, self)
+    self.triggerEvent('startPosition', position=pos)
 
   # self.__room
     
@@ -111,7 +117,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.__position))
+    clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
     
   def tick(self, now):
     """ Call for an update on item.

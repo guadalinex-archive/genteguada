@@ -122,7 +122,6 @@ class IsoViewHud(isoview.IsoView):
     item = event.getParams()["item"]  
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
-      print ">>>>>>>>>>>>< encontrado"
       self.__isoviewRoom.updateScreenPositionsOn(item.getPosition())  
       
   def addItemToInventory(self, event):

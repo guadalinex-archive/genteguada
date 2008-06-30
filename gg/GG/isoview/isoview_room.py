@@ -66,11 +66,12 @@ class IsoViewRoom(isoview.IsoView):
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
             isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
-                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], self.__parent)
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], specTile[1], self.__parent)
             k = 1
         if k == 0:
           isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
-                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], self.__parent)
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
+                    model.getTile([corx, 0, corz]).spriteName, self.__parent)
         
         self.__allBackground.add(isotile.getImg())
         listTile.append(isotile)
@@ -127,7 +128,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    print ">>>", pos
+    #print ">>>", pos
     round = self.getModel().size[0]*2 - 1
     halfRound = round/2
     line = round
@@ -221,7 +222,7 @@ class IsoViewRoom(isoview.IsoView):
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
-        print item, item.getPosition(), (scPos[1] - accHeight), ivIt.hasAnimation()
+        #print item, item.getPosition(), (scPos[1] - accHeight), ivIt.hasAnimation()
         ivIt.setScreenPosition([scPos[0], scPos[1] - accHeight])
         #ivIt.updateScreenPosition(accHeight)
         accHeight += item.topAnchor 
@@ -236,7 +237,8 @@ class IsoViewRoom(isoview.IsoView):
     """
     pos = ivPlayer.getModel().getPosition()
     self.__isoViewItems.remove(ivPlayer)
-    self.__allPlayers.remove(ivPlayer.getImg())
+    self.removeSprite((ivPlayer.getImg()))
+    #self.__allPlayers.remove(ivPlayer.getImg())
     ivPlayer.unsubscribeAllEvents()
     
   def unsubscribeAllEvents(self):
@@ -291,7 +293,9 @@ class IsoViewRoom(isoview.IsoView):
     self.__allTopPlayers.add(sprite)
   
   def removeSprite(self, sprite):
+    print "eliminando: ", self.__allPlayers  
     self.__allPlayers.remove(sprite)
+    print "eliminado: ", self.__allPlayers
     
   def removeTopSprite(self, sprite):
     self.__allTopPlayers.remove(sprite)    

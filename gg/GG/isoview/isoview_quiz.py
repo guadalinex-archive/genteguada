@@ -53,7 +53,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__isohud.widgetContainer.add_widget(self.container)
     
   def actionButton(self, option):
-    print option
     if option == self.getModel().getRightAnswer():
       self.__isohud.getIsoviewRoom().getModel().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta correcta. Ahora puedes cruzar los circulos misticos.", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
