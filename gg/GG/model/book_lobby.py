@@ -47,7 +47,6 @@ class GGBookLobby(room_item.GGRoomItem):
   def isStackable(self):
     return True
 
-  """
-  def liftedBy(self, lifter):
-    pass
-  """
+  def stepOn(self):
+    return True
+

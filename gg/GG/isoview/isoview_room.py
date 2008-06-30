@@ -221,6 +221,7 @@ class IsoViewRoom(isoview.IsoView):
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
+        print item, item.getPosition(), (scPos[1] - accHeight), ivIt.hasAnimation()
         ivIt.setScreenPosition([scPos[0], scPos[1] - accHeight])
         #ivIt.updateScreenPosition(accHeight)
         accHeight += item.topAnchor 
@@ -248,24 +249,29 @@ class IsoViewRoom(isoview.IsoView):
   def itemSelected(self,item):
     """ Sets an item on the room as selected.
     """
+    items = self.getModel().getTile(item.getPosition()).getItems()
+    for item in items:
+      self.findIVItem(item).selected()
+
+    """
     for isoItem in self.__isoViewItems:
       if isoItem.getModel() == item:
         isoItem.selected()
+    """
 
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
-    print item
+    items = self.getModel().getTile(item.getPosition()).getItems()
+    for item in items:
+      self.findIVItem(item).unselected()
+
+    """
     ivItem = self.__parent.findIVItem(item)
     if ivItem != None:
       ivItem.unselected()
+    """  
     
-    """
-    for isoItem in self.__isoViewItems:
-      if isoItem.getModel() == item:
-        isoItem.unselected()
-    """      
-
   def setItemOnTile(self, item, position):
     if item == None:
       self.__tileList[position[0]][position[2]].removeTopMostItem()

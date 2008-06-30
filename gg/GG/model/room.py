@@ -48,7 +48,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return None                        
   
   def moveItem(self, pos1, pos2, item):
-    print "****************************************** move"
     self.__tiles[pos1[0]][pos1[2]].unstackItem()
     self.__tiles[pos2[0]][pos2[2]].stackItem(item)
   
@@ -73,9 +72,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
 
   def addItemFromVoid(self, item, pos):
     if not item in self.__items:
+      if not self.__tiles[pos[0]][pos[2]].stepOn(): 
+        return
       item.setStartPosition(None)
       item.setStartPosition(pos)
-      #if not self.__tiles[pos[0]][pos[2]].stepOn(): return
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       self.__items.append(item)
       item.setRoom(self)
@@ -85,9 +85,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
   
   def addItemFromInventory(self, item, pos):
     if not item in self.__items:
+      if not self.__tiles[pos[0]][pos[2]].stepOn(): 
+        return
       item.setStartPosition(None)
       item.setStartPosition(pos)
-      #if not self.__tiles[pos[0]][pos[2]].stepOn(): return
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       self.__items.append(item)
       item.setRoom(self)
