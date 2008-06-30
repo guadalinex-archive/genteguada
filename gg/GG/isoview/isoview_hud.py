@@ -375,7 +375,7 @@ class IsoViewHud(isoview.IsoView):
     else:
       anchor = 3 + len(options) 
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
-                                     GG.utils.HUD_OR[1] - 65]
+                                     0]
     #self.buttonBarActions.topleft = 0,0
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBarActions.border = 0
