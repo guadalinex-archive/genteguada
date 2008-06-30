@@ -343,6 +343,7 @@ class GGPlayer(GG.model.room_item.GGRoomItem):
   def setSelectedItem(self, item):
     """ Sets an item as selected.
     """
+    print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
       self.triggerEvent('selectedItem', item=item)

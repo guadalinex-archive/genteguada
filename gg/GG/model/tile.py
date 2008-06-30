@@ -29,6 +29,7 @@ class Tile(GG.model.ggmodel.GGModel):
     aux = self.__items.pop()
     aux = None
     
+    
   def getTopItem(self):
     if len(self.__items) == 0:
       return None
@@ -40,6 +41,20 @@ class Tile(GG.model.ggmodel.GGModel):
   def getItemsAndDestroy(self):
     items = self.__items
     self.__items = []
+    return items
+
+  def getItemsAndDestroyFrom(self, item):
+    items = []
+    k = 0
+    for it in self.__items:
+      if not k:
+        if it == item:
+          items.append(it)
+          self.__items.remove(it)  
+          k = 1
+      else:
+        items.append(it)
+        self.__items.remove(it)
     return items
 
   def stepOn(self):

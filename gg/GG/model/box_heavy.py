@@ -26,10 +26,8 @@ class GGBoxHeavy(room_item.GGRoomItem):
     return parentVars + ['label', 'points']
 
   def getOptions(self):
-    """ Returns the item's available options.
-    """
     return ["lift"]
-
+  
   def setPlayer(self, player):
     self.__player = player
     
@@ -43,7 +41,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-
+    
   def isStackable(self):
     return True
 

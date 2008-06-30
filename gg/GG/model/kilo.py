@@ -42,7 +42,9 @@ class GGKilo(room_item.GGRoomItem):
   
   def getCopyFor(self, player):
     #if player.hasItemLabeledInInventory("Regalo"):
-    return GG.model.kilo_temp.GGKiloTemp(self.spriteName, self.getPosition(), self.anchor, self.spriteInventory, "Pesa", 10)
+    kilo = GG.model.kilo_temp.GGKiloTemp(self.spriteName, self.getPosition(), self.anchor, self.spriteInventory, "Pesa", 6)
+    kilo.setTile(self.getTile())
+    return kilo
     
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.

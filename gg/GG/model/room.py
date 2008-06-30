@@ -50,6 +50,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def moveItem(self, pos1, pos2, item):
     self.__tiles[pos1[0]][pos1[2]].unstackItem()
     self.__tiles[pos2[0]][pos2[2]].stackItem(item)
+    item.setTile(self.__tiles[pos2[0]][pos2[2]])
+    item.setPosition(item.getTile().position)      
   
   # self.__items
 
@@ -74,9 +76,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[2]].stepOn(): 
         return
-      item.setStartPosition(None)
-      item.setStartPosition(pos)
+      #item.setStartPosition(None)
+      #item.setStartPosition(pos)
       self.__tiles[pos[0]][pos[2]].stackItem(item)
+      item.setTile(self.__tiles[pos[0]][pos[2]])
+      item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
       self.triggerEvent('addItemFromVoid', item=item)
@@ -87,9 +91,11 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[2]].stepOn(): 
         return
-      item.setStartPosition(None)
-      item.setStartPosition(pos)
+      #item.setStartPosition(None)
+      #item.setStartPosition(pos)
       self.__tiles[pos[0]][pos[2]].stackItem(item)
+      item.setTile(self.__tiles[pos[0]][pos[2]])
+      item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
       item.setPlayer(None)
@@ -104,8 +110,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if item in self.__items:
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
-      item.clearRoom()
       self.__items.remove(item)
+      item.clearRoom()
       self.triggerEvent('removeItem', item=item)
       return
     raise Exception("Error: item no eliminado")
@@ -119,10 +125,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
       if tile[0] == position:
         k = 1
         tile[1] = imagename
-        self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
+        #self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
     if k == 0:
       self.__specialTiles.append([position, imageName])
-      self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
+      #self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
       
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):

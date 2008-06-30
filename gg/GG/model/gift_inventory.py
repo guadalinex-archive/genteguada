@@ -14,6 +14,7 @@ class GGGiftInventory(inventory_item.GGInventoryItem):
     spriteName: image name.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
+    self.spriteInventory = spriteName
     self.label = label
     self.points = 0
     self.anchor = anchor
@@ -24,7 +25,7 @@ class GGGiftInventory(inventory_item.GGInventoryItem):
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     #return parentVars + ['label', 'points', 'anchor']
-    return parentVars + ['label', 'points']
+    return parentVars + ['label', 'points', 'spriteInventory']
 
   def getPosition(self):
     return self.__position
