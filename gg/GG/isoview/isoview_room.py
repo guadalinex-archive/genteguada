@@ -47,6 +47,8 @@ class IsoViewRoom(isoview.IsoView):
     self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewItems = []
     self.__allPlayers = GroupSprite()
+    self.__spritesDict = {}
+    self.__bottomSpritesDict = {}
     self.__allTopPlayers = GroupSprite()
     self.__allBackground = GroupSprite()
     
@@ -67,20 +69,16 @@ class IsoViewRoom(isoview.IsoView):
         
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
-            #isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
             isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], specTile[1], self.__parent)
             k = 1
         if k == 0:
-          #isotile = isoview_tile.IsoViewTile(model.getTile([corx, 0, corz]), [pos[0], pos[1]], \
-          #         [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
-          #          model.getTile([corx, 0, corz]).spriteName, self.__parent)
-        
           isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
                     tiles[corx][corz].spriteName, self.__parent)
         
         self.__allBackground.add(isotile.getImg())
+        self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
     
@@ -88,6 +86,7 @@ class IsoViewRoom(isoview.IsoView):
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
       self.__allPlayers.add(isoviewitem.getImg())
+      self.__spritesDict[isoviewitem.getImg()] = isoviewitem
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
       pos = item.getPosition()
       
@@ -95,8 +94,6 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
-    
-    #self.getModel().subscribeEvent('changeActiveRoom', self.changeActiveRoom)
   
   def stopAnimations(self):
     for item in self.__isoViewItems:
@@ -135,35 +132,13 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", pos
-    round = self.getModel().size[0]*2 - 1
-    halfRound = round/2
-    line = round
-    tiles = self.getModel().getTiles()
-    while line > 0:   
-      if line > halfRound + 1:
-        # Mitad inferior
-        for x in range(line - (halfRound+1), halfRound + 1):
-          z = line - x - 1 
-          #print "checked [", x, ", ", z, "]", self.__tileList[x][z].getIsoItem() 
-          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
-            return [x, z]
-      elif line < halfRound + 1:
-        # Mitad superior
-        for x in range(0, line):
-          z = line - x - 1
-          #print "checked [", x, ", ", z, "]"
-          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
-            return [x, z]
-      else:
-        # Diagonal media  
-        for x in range(0, halfRound + 1):
-          z = halfRound - x
-          #print "checked [", x, ", ", z, "]"
-          if self.__tileList[x][z].contained(pos, tiles[x][z].getDepth(), tiles[x][z].getItems()):
-            return [x, z]
-      line -= 1
-    return [-1, -1]
+    for image in self.__spritesDict:
+      if self.__spritesDict[image].checkClickPosition(pos):
+        return self.__spritesDict[image].getModel().getPosition()
+    for image in self.__bottomSpritesDict:
+      if self.__bottomSpritesDict[image].checkClickPosition(pos):
+        return self.__bottomSpritesDict[image].getModel().position
+    return [-1, -1, -1]
   
   def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.
@@ -217,6 +192,7 @@ class IsoViewRoom(isoview.IsoView):
     """
     self.__isoViewItems.append(ivItem)
     self.__allPlayers.add(ivItem.getImg())
+    self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getModel().getPosition()
     self.updateScreenPositionsOn(pos)
         
@@ -283,13 +259,15 @@ class IsoViewRoom(isoview.IsoView):
 
   def addSprite(self, sprite):
     self.__allPlayers.add(sprite)
-    
+        
   def addTopSprite(self, sprite):
     self.__allTopPlayers.add(sprite)
   
   def removeSprite(self, sprite):
     print "eliminando: ", self.__allPlayers  
     self.__allPlayers.remove(sprite)
+    if sprite in self.__spritesDict:
+      del self.__spritesDict[sprite]
     print "eliminado: ", self.__allPlayers
     
   def removeTopSprite(self, sprite):

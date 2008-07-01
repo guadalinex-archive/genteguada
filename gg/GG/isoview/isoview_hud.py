@@ -93,8 +93,8 @@ class IsoViewHud(isoview.IsoView):
         cordX, cordY = pygame.mouse.get_pos()
         if 0 <= cordY <= GG.utils.HUD_OR[1]:
           dest = self.getIsoviewRoom().findTile([cordX, cordY])
-          if not dest == [-1, -1]:
-            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, [dest[0], 0, dest[1]])
+          if not dest == [-1, -1, -1]:
+            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest)
     self.widgetContainer.distribute_events(*events)
 
   def getPlayer(self):
@@ -137,13 +137,14 @@ class IsoViewHud(isoview.IsoView):
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
+      #positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
       positionAnim.setOnStop(item.getRoom().removeItem, item)
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
-    positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
+      positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     self.__isoviewRoom.itemUnselected(item)
@@ -162,7 +163,6 @@ class IsoViewHud(isoview.IsoView):
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
-      #positionAnim.setOnStop(ivItem.updateScreenPosition, None)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, item.getPosition())
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
