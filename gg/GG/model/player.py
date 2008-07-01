@@ -186,8 +186,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
   def addToInventoryFromRoom(self, item):
-    self.addPoints(item.points, item.label)
-    GG.model.item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, item)
+    tile = item.getTile()
+    itemList = tile.getItemsFrom(item)
+    itemList.reverse()
+    for it in itemList:
+      self.addPoints(it.points, it.label)
+      GG.model.item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, it)
     
   def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
@@ -292,7 +296,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def setSelectedItem(self, item):
     """ Sets an item as selected.
     """
-    print "Selected: ", item
+    #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
       self.triggerEvent('selectedItem', item=item)
