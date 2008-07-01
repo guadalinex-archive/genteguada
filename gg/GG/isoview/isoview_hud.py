@@ -39,8 +39,19 @@ class IsoViewHud(isoview.IsoView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = GG.utils.HUD_OR
-    
+    #self.__img.rect.topleft = GG.utils.HUD_OR
+
+    self.__toolBarBackground = pygame.sprite.Sprite()
+    self.__toolBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_upper.png")).convert_alpha()
+    #self.__toolBarBackground.rect = self.__img.image.get_rect()
+    #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
+
+    self.__optionsBarBackground = pygame.sprite.Sprite()
+    self.__optionsBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")).convert_alpha()
+    #self.__optionsBarBackground.rect = self.__img.image.get_rect()
+    #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
+
+
     model.subscribeEvent('chatAdded', self.chatAdded)
     model.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
@@ -229,6 +240,8 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the HUD background on screen.
     """
     self.getScreen().blit(self.__img.image, GG.utils.HUD_OR)
+    self.getScreen().blit(self.__toolBarBackground.image, [GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 63])
+    self.getScreen().blit(self.__optionsBarBackground.image, [GG.utils.SCREEN_SZ[0] - 260,0])
     #pygame.display.update()
 
   def paintChat(self):
@@ -371,7 +384,7 @@ class IsoViewHud(isoview.IsoView):
     options = self.__selectedItem.getOptions()
     
     self.buttonBarActions = ocempgui.widgets.VFrame()
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 300,0]
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBarActions.border = 0
     self.buttonBarActions.align = ocempgui.widgets.Constants.ALIGN_RIGHT
@@ -411,7 +424,8 @@ class IsoViewHud(isoview.IsoView):
       optionsBar.add_child(button)
 
     self.buttonBarActions.add_child(optionsBar)
-    self.buttonBarActions.set_minimum_size(300,self.buttonBarActions.height)
+    self.buttonBarActions.set_minimum_size(260,self.buttonBarActions.height)
+    self.__isoviewRoom.addSprite(self.buttonBarActions)
     self.widgetContainer.add_widget(self.buttonBarActions)
   
   def itemUnselected(self,event=None):
@@ -446,8 +460,9 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
                 {"image":"interface/hud/help.png", "action": self.showHelp},
+                {"image":"interface/hud/exit.png", "action": self.finishGame},
               ]
-
+    
     self.buttonBar = ocempgui.widgets.HFrame()
     self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBar.border = 0
@@ -502,6 +517,9 @@ class IsoViewHud(isoview.IsoView):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
     print "show help"
+
+  def finishGame(self):
+    GG.genteguada.GenteGuada.getInstance().finish()
     
   def showFullScreen(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
