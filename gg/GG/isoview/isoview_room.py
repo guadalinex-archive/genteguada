@@ -233,7 +233,9 @@ class IsoViewRoom(isoview.IsoView):
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
-    self.findIVItem(item).unselected()
+    cosa = self.findIVItem(item)
+    if cosa:
+      cosa.unselected()
     """
     items = self.getModel().getTile(item.getPosition()).getItems()
     for item in items:
