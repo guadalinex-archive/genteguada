@@ -43,6 +43,17 @@ class Tile(GG.model.ggmodel.GGModel):
     self.__items = []
     return items
 
+  def getItemsFrom(self, item):
+    items = []
+    k = 0
+    for it in self.__items:
+      if it == item:
+        items.append(it)
+        k = 1
+      elif k:  
+        items.append(it)
+    return items
+
   def getItemsAndDestroyFrom(self, item):
     items = []
     k = 0

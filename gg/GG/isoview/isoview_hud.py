@@ -162,7 +162,8 @@ class IsoViewHud(isoview.IsoView):
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
+                            #pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
+                            pos, self.__isoviewRoom.getFutureScreenPosition(ivItem), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, item.getPosition())
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:

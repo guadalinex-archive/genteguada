@@ -173,18 +173,8 @@ class IsoViewRoom(isoview.IsoView):
     ivItem = self.findIVItem(item)
     if ivItem == None:
       raise Exception("Error: vista de item no eliminada")
-    self.removeSprite(ivItem.getImg())
+    #self.removeSprite(ivItem.getImg())
     self.removeIsoViewItem(ivItem)
-        
-  def specialTileAdded(self, event):
-    pos = event.getParams()['position']
-    imageName = event.getParams()['imageName']
-    tile = self.__tileList[pos[0]][pos[2]].getImg()
-    for img in self.__allBackground:
-      if img == tile:
-        img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-        self.__tileList[pos[0]][pos[2]].setImg(imageName)
-        return
         
   def addIsoViewItem(self, ivItem):
     """ Inserts a new item view.
@@ -195,9 +185,19 @@ class IsoViewRoom(isoview.IsoView):
     self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getModel().getPosition()
     self.updateScreenPositionsOn(pos)
-        
-  def updateScreenPositionsOn(self, pos):
+
+  def removeIsoViewItem(self, ivPlayer):
+    """ Removes an isometric player viewer from the viewers list.
+    ivPlayer: ivPlayer view to be removed.
+    """
+    self.removeSprite((ivPlayer.getImg()))
+    for image in self.__spritesDict:
+      if self.__spritesDict[image] == ivPlayer:
+        self.removeSprite(image)  
+    self.__isoViewItems.remove(ivPlayer)
+    ivPlayer.unsubscribeAllEvents()
     
+  def updateScreenPositionsOn(self, pos):
     tile = self.__tileList[pos[0]][pos[2]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
@@ -206,23 +206,37 @@ class IsoViewRoom(isoview.IsoView):
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
-        #print item, item.getPosition(), (scPos[1] - accHeight), ivIt.hasAnimation()
         ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
-        #ivIt.updateScreenPosition(accHeight)
         accWidth += item.topAnchor[0] 
         accHeight += item.topAnchor[1] 
+          
+  def getFutureScreenPosition(self, ivItem, pos):
+    tile = self.__tileList[pos[0]][pos[2]].getModel()
+    itemList = tile.getItems()
+    accHeight = tile.anchor[0]
+    accWidth = tile.anchor[1]
+    itemModel = ivItem.getModel()
+    listaAux = itemList[:len(itemList)-2]
+    print listaAux
+    for item in listaAux:
+      accWidth += item.topAnchor[0] 
+      accHeight += item.topAnchor[1]
+    scPos = GG.utils.p3dToP2d(itemModel.getPosition(), itemModel.anchor)
+    return [scPos[0] - accWidth, scPos[1] - accHeight]
           
   def addIsoViewChatItem(self, ivChatItem):
     self.__isoViewItems.append(ivChatItem)
     self.__allPlayers.add(ivChatItem.getImg())
-    
-  def removeIsoViewItem(self, ivPlayer):
-    """ Removes an isometric player viewer from the viewers list.
-    ivPlayer: ivPlayer view to be removed.
-    """
-    self.removeSprite((ivPlayer.getImg()))
-    self.__isoViewItems.remove(ivPlayer)
-    ivPlayer.unsubscribeAllEvents()
+  
+  def specialTileAdded(self, event):
+    pos = event.getParams()['position']
+    imageName = event.getParams()['imageName']
+    tile = self.__tileList[pos[0]][pos[2]].getImg()
+    for img in self.__allBackground:
+      if img == tile:
+        img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
+        self.__tileList[pos[0]][pos[2]].setImg(imageName)
+        return
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands its children from all events.
