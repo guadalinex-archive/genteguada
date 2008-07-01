@@ -6,17 +6,16 @@ class GGBoxHeavy(room_item.GGRoomItem):
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, position, anchor, label, time, startRoom):
+  def __init__(self, spriteName, anchor, topAnchor, label, time, startRoom):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
     anchor: image anchor on screen.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.label = label
     self.points = 2
-    self.__startPosition = position
     self.__time = time*1000
     self.__startRoom = startRoom
     self.__startTime = 0

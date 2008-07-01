@@ -5,14 +5,14 @@ class GGWebCube(GG.model.room_item.GGRoomItem):
   """ GGWebCube class.
   """
  
-  def __init__(self, sprite, position, anchor, url, label):
+  def __init__(self, sprite, anchor, topAnchor, url, label):
     """ Class builder.
     sprite: sprite used to paint the cube.
     position: penguin position.
     anchor: image anchor on screen.
     url:
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.url = url
     self.label = label
     

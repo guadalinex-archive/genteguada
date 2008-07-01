@@ -6,7 +6,7 @@ class GGBookLobby(room_item.GGRoomItem):
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, position, anchor, spriteInventory, label):
+  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
@@ -14,7 +14,7 @@ class GGBookLobby(room_item.GGRoomItem):
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     self.points = 2

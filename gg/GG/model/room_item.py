@@ -9,7 +9,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, position, anchor):
+  def __init__(self, spriteName, anchor, topAnchor):
     """ Class constructor.
     sprite: image name.
     position: position on screen for the item.
@@ -18,7 +18,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.anchor = anchor
     #TODO: calcular la primera coordenada de topAnchor
-    self.topAnchor = [0 , GG.utils.TILE_SZ[1] + anchor[1]]
+    self.topAnchor = [topAnchor[0] , GG.utils.TILE_SZ[1] + anchor[1] + topAnchor[1]]
     self.__room = None
     self.__tile = None
     self.points = 0
@@ -95,6 +95,17 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     self.__room = room
     self.triggerEvent('room', room=room)
+
+  def changeRoom(self, room, pos):
+    """ Changes the item's room.
+    room: new room.
+    pos: starting position on the new room.
+    """
+    oldRoom = self.getRoom()
+    if oldRoom:
+      oldRoom.removeItem(self)
+    room.addItemFromVoid(self, pos)
+    #self.triggerEvent('roomChanged', oldRoom=oldRoom)
 
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):

@@ -216,12 +216,11 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     itemModel = ivItem.getModel()
-    listaAux = itemList[:len(itemList)-2]
-    print listaAux
+    listaAux = itemList[:len(itemList)-1]
     for item in listaAux:
       accWidth += item.topAnchor[0] 
       accHeight += item.topAnchor[1]
-    scPos = GG.utils.p3dToP2d(itemModel.getPosition(), itemModel.anchor)
+    scPos = GG.utils.p3dToP2d(pos, itemModel.anchor)
     return [scPos[0] - accWidth, scPos[1] - accHeight]
           
   def addIsoViewChatItem(self, ivChatItem):

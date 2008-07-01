@@ -10,7 +10,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, position, anchor, username, password):
+  def __init__(self, spritePath, anchor, topAnchor, username, password):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
@@ -20,15 +20,14 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     #print username, password
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
-    GG.model.item_with_inventory.GGItemWithInventory.__init__(self, filename, position, anchor)
+    GG.model.item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
     self.username = username
     self.imagePath = spritePath
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]
     self.__state = GG.utils.STATE[1]
-    self.__destination = position
-    #self.__inventory = []
+    self.__destination = None
     self.__visited = []
     self.__selected = None
     self.__pointGivers = []
@@ -112,7 +111,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     if self.__heading != heading:
       self.__heading = heading
-      self.triggerEvent('heading', heading=heading)
+      self.triggerEvent('heading', heading=heading, state=self.__state)
 
   # self.__state
   
@@ -272,7 +271,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     #self.setPosition(next)
     
     items = self.getTile().getItemsFrom(self)
-    print items
     for item in items:
       item.setPosition(next)
 
@@ -281,12 +279,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     room: new room.
     pos: starting position on the new room.
     """
-    oldRoom = self.getRoom()
-    if oldRoom:
-      oldRoom.removeItem(self)
-    room.addItemFromVoid(self, pos)
     self.updateSessionTiming()
-    self.triggerEvent('roomChanged', oldRoom=oldRoom)
+    GG.model.item_with_inventory.GGItemWithInventory.changeRoom(self, room, pos)
     
   def newChatMessage(self, message, type):
     """ Triggers a new event after receiving a new chat message.
