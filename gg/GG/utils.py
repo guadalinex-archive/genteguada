@@ -97,6 +97,7 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
 CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
+#0: general; 1: privado; 2: npcs; 3: sistema)
 
 # ======================= SPRITES ===========================
 
