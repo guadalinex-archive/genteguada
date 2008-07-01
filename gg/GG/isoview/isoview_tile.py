@@ -42,14 +42,26 @@ class IsoViewTile(isoview.IsoView):
     """
     return self.__bottomRight
   
+  def checkClickPosition(self, pos):
+    rect = self.__img.rect
+    if rect[0] < pos[0] < (rect[0] + rect[2]):
+      if rect[1] < pos[1] < (rect[1] + rect[3]):
+        if self.__img.image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
+          return 1
+    return 0
+  
   def contained(self, pos, depth, items):
     """ Checks if a point is contained on a tile.
     pos: point.
     """
     if self.__bottomRight[0] > pos[0] > self.__topLeft[0]:
       if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
-        if not self.onBlank(pos):
+        rect = self.__rect.rect  
+        if self.__img.image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
           return 1
+        #if not self.onBlank(pos):
+        #  return 1
+        
     #if self.getModel().getDepth() == 0:
     if depth == 0:
       return 0
@@ -60,10 +72,8 @@ class IsoViewTile(isoview.IsoView):
         return 1
     return 0
     
+  """  
   def onBlank(self, pos):
-    """ Checks if one point is located on the blank zones of the tile sprite.
-    pos: point.
-    """
     iniPos = [pos[0] - self.__topLeft[0], pos[1] - self.__topLeft[1]]
     if iniPos[0] < (GG.utils.TILE_SZ[0] / 2):
       if iniPos[1] < (GG.utils.TILE_SZ[1] / 2):
@@ -92,3 +102,4 @@ class IsoViewTile(isoview.IsoView):
         if (iniPos[0] + (iniPos[1] * 2)) <= (GG.utils.TILE_SZ[0]/2):
           return 1
     return 0    
+  """

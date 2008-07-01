@@ -98,7 +98,6 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.rect.topleft = pos
     
   def updateScreenPosition(self, height):
-    #self.lalala()
     pos = self.getScreenPosition()
     self.setScreenPosition([pos[0], pos[1] - height])
     
