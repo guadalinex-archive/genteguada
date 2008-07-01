@@ -68,6 +68,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
         "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory},
+        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory},
         "lift":{"image":"interface/hud/rotateright.png", "action": self.itemToLift},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
@@ -159,7 +160,7 @@ class IsoViewHud(isoview.IsoView):
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     self.__isoviewRoom.itemUnselected(item)
-    
+    self.__player.setUnselectedItem()
     ivItem.setAnimation(positionAnim)
         
   def addItemToRoomFromInventory(self, ivItem):
@@ -295,11 +296,19 @@ class IsoViewHud(isoview.IsoView):
     """ Selects an item from the player's inventory.
     invIsoItem: selected item.
     """
-    if invIsoItem.getModel().inventoryOnly():
-      self.__player.removeFromInventory(invIsoItem.getModel())  
+    #print "item seleccionado"
+    item = invIsoItem.getModel()
+    self.__player.setSelectedItem(item)
+
+  def itemOutInventory(self):
+    if self.__selectedItem.inventoryOnly():
+      self.__player.removeFromInventory(self.__selectedItem)  
       #self.__isoviewInventory.remove(invIsoItem)
       self.paintItemsInventory()
-    else:    
+    else:   
+      self.__player.addToRoomFromInventory(self.__selectedItem)
+    self.__player.setUnselectedItem()
+    """
       self.itemUnselected()
       
       if self.__selectedItem:
@@ -307,8 +316,7 @@ class IsoViewHud(isoview.IsoView):
           self.__isoviewRoom.itemUnselected(self.__selectedItem)
           self.__selectedItem = None
       self.dropActionsItembuttons()
-    
-      self.__player.addToRoomFromInventory(invIsoItem.getModel())
+    """
 
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.
@@ -430,7 +438,7 @@ class IsoViewHud(isoview.IsoView):
   
   def itemUnselected(self,event=None):
     if self.__selectedItem:
-      if self.__isoviewRoom:  
+      if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
     self.dropActionsItembuttons()
 
