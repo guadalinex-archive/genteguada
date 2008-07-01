@@ -248,16 +248,51 @@ class IsoViewHud(isoview.IsoView):
   def paintChat(self):
     """ Paints the chat window on screen.
     """
+    myOwnStyle = ocempgui.widgets.WidgetStyle ({
+            "bgcolor" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_ENTERED : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_ACTIVE : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_INSENSITIVE : (255, 0, 255) }),
+           "fgcolor" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_ENTERED : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_ACTIVE : (255, 0, 255),
+                                       ocempgui.widgets.Constants.STATE_INSENSITIVE : (255, 0, 255) }),
+            "lightcolor" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_ENTERED : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE : (0, 0, 0) }),
+            "darkcolor" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : (0, 0, 0),
+                                         ocempgui.widgets.Constants.STATE_ENTERED : (0, 0, 0),
+                                         ocempgui.widgets.Constants.STATE_ACTIVE : (0, 0, 0),
+                                         ocempgui.widgets.Constants.STATE_INSENSITIVE : (0, 0, 0) }),
+            "bordercolor" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : (0, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ENTERED : (0, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_ACTIVE : (0, 0, 0),
+                                           ocempgui.widgets.Constants.STATE_INSENSITIVE : (0, 0, 0) }),
+            "shadowcolor": ((0, 0, 0), (0, 0, 0)),
+            "image" : ocempgui.widgets.WidgetStyle ({ ocempgui.widgets.Constants.STATE_NORMAL : None,
+                                     ocempgui.widgets.Constants.STATE_ENTERED : None,
+                                     ocempgui.widgets.Constants.STATE_ACTIVE : None,
+                                     ocempgui.widgets.Constants.STATE_INSENSITIVE : None }),
+            "font" : ocempgui.widgets.WidgetStyle ({ "name" : None,
+                                    "size" : 0,
+                                    "alias" : False,
+                                    "style" : 0 }),
+            "shadow" : 0
+            })
     self.textArea = ocempgui.widgets.ScrolledWindow(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
-    self.textArea.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["chatArea"]))
+    self.textArea.set_style(myOwnStyle)
+    self.textArea.update()
     self.textArea.set_scrolling(1)
-    self.textArea.border = 1
+   # self.textArea.border = 1
     self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.textArea.child = self.__layoutTextArea
     self.widgetContainer.add_widget(self.textArea)
+    self.widgetContainer.update()
+    print self.textArea.create_style()
   
   def paintTextBox(self):
     """ Paints the editable text box on screen.
