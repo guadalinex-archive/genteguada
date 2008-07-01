@@ -482,18 +482,14 @@ class IsoViewHud(isoview.IsoView):
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
     self.buttonBarActions.add_child(itemLabel)
-    
-    optionsBar = ocempgui.widgets.HFrame()
-    optionsBar.topleft = 6,33
-    optionsBar.set_minimum_size(260,45)
-    optionsBar.set_align(ocempgui.widgets.Constants.ALIGN_RIGHT)
-    optionsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    optionsBar.border = 0
+
+    i = 0
     for action in options:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
-      optionsBar.add_child(button)
-    self.buttonBarActions.add_child(optionsBar)
+      button.topleft = 195 - i*60 ,40
+      self.buttonBarActions.add_child(button)
+      i+=1
 
     self.buttonBarActions.zOrder = 10000
     self.addSprite(self.buttonBarActions)
