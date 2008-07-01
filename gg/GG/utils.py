@@ -394,10 +394,10 @@ STYLES = {
                                           }
                             },
           "points" : {  "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
-                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                             },
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
@@ -405,10 +405,29 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
+            "itemLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
+                            "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
+                                        },
+                            "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (5, 7, 255),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (5, 7, 255),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (5, 7, 255),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (5, 7, 255) 
+                                        }
+                            },
+
           "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
+                                          }
+                            },
+          "buttonTopBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL    : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
           "nameFrame" : {  "font" : { "name" : "Helvetica", "size" : 40, "alias" : True },

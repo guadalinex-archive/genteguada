@@ -261,7 +261,7 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 70])
+    self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
     #self.addSprite(self.__img)
     #pygame.display.update()
 
@@ -305,7 +305,7 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.update()
     self.textArea.set_scrolling(1)
    # self.textArea.border = 1
-    self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1]
+    self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1] + 20
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
@@ -320,7 +320,7 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = 14, 712
+    self.__textField.topleft = 14, 732
     self.__textField.set_minimum_size(571, 30)
     self.widgetContainer.add_widget(self.__textField)
 
@@ -330,7 +330,7 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = ocempgui.widgets.ScrolledWindow(190, 163)
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
-    self.windowInventory.topleft = 805, 579
+    self.windowInventory.topleft = 805, 599
     self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
@@ -451,17 +451,17 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem.getRoom() != None:
       self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
-    
-    self.buttonBarActions = ocempgui.widgets.VFrame()
+
+
+    self.buttonBarActions = ocempgui.widgets.Box(259,95)
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
-    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    self.buttonBarActions.border = 0
-    self.buttonBarActions.align = ocempgui.widgets.Constants.ALIGN_RIGHT
-
-    informationBar = ocempgui.widgets.HFrame()
-    informationBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    informationBar.border = 0
-
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")
+    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.buttonBarActions.add_child(imgBackground)
+    
     if self.__selectedItem.spriteInventory:
       img = self.__selectedItem.spriteInventory
     else:
@@ -470,34 +470,35 @@ class IsoViewHud(isoview.IsoView):
     import os
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
-    size = 20,20
+    size = 23,23
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
-    informationBar.add_child(img)
-    
-    
+    img.topleft = 5,6
+    self.buttonBarActions.add_child(img)
+
     itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
-    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    informationBar.add_child(itemLabel)
-
-    self.buttonBarActions.add_child(informationBar)
-
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+    itemLabel.topleft = 35,10
+    self.buttonBarActions.add_child(itemLabel)
+    
     optionsBar = ocempgui.widgets.HFrame()
+    optionsBar.topleft = 6,33
+    optionsBar.set_minimum_size(260,45)
+    optionsBar.set_align(ocempgui.widgets.Constants.ALIGN_RIGHT)
     optionsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     optionsBar.border = 0
     for action in options:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       optionsBar.add_child(button)
-
     self.buttonBarActions.add_child(optionsBar)
-    self.buttonBarActions.set_minimum_size(260,self.buttonBarActions.height)
+
     self.buttonBarActions.zOrder = 10000
     self.addSprite(self.buttonBarActions)
     self.widgetContainer.add_widget(self.buttonBarActions)
-  
+
   def itemUnselected(self,event=None):
     if self.__selectedItem:
       if self.__isoviewRoom:
@@ -538,7 +539,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBar = ocempgui.widgets.HFrame()
     self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBar.border = 0
-    self.buttonBar.topleft = [16, 512]
+    self.buttonBar.topleft = [16, 532]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
@@ -599,7 +600,7 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     self.userBar = ocempgui.widgets.HFrame()
-    self.userBar.topleft = [776 ,512]
+    self.userBar.topleft = [776 ,532]
     self.userBar.border = 0
     self.userBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.userBar.align = ocempgui.widgets.Constants.ALIGN_LEFT
@@ -627,31 +628,31 @@ class IsoViewHud(isoview.IsoView):
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
-    img.topleft = 662,589 
+    img.topleft = 662,609 
     img.zOrder = 10000
     self.addSprite(img)
 
     labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
     labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 605, 660
+    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 605, 680
     labelUserName.zOrder = 10000
     self.addSprite(labelUserName)
     
     self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__pointsLabel.topleft = 617, 680
+    self.__pointsLabel.topleft = 617, 700
     self.__pointsLabel.zOrder = 10000
     self.addSprite(self.__pointsLabel)
 
     self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280)
     self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__labelOld.topleft = 617, 700
+    self.__labelOld.topleft = 617, 720
     self.__labelOld.zOrder = 10000
     self.addSprite(self.__labelOld)
 
     self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280)
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__expLabel.topleft = 617, 720
+    self.__expLabel.topleft = 617, 740
     self.__expLabel.zOrder = 10000
     self.addSprite(self.__expLabel) 
 
