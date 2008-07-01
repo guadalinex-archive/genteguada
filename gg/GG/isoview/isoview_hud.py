@@ -369,21 +369,49 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedItem = event.getParams()['item'] 
     self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
-    self.buttonBarActions = ocempgui.widgets.HFrame()
-    if len(options) == 1:
-      anchor = 0
-    else:
-      anchor = 3 + len(options) 
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor),0]
-    #self.buttonBarActions.topleft = 0,0
+    
+    self.buttonBarActions = ocempgui.widgets.VFrame()
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 300,0]
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBarActions.border = 0
+    self.buttonBarActions.align = ocempgui.widgets.Constants.ALIGN_RIGHT
+
+    informationBar = ocempgui.widgets.HFrame()
+    informationBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    informationBar.border = 0
+
+    if self.__selectedItem.spriteInventory:
+      img = self.__selectedItem.spriteInventory
+    else:
+      img = self.__selectedItem.spriteName
+    from PIL import Image
+    import os
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
+    img = Image.open(filePath)
+    size = 20,20
+    img.thumbnail(size,Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
+    img = GG.utils.OcempImageButtonTransparent(imgPath)
+    informationBar.add_child(img)
+    
+    
+    itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    informationBar.add_child(itemLabel)
+
+    self.buttonBarActions.add_child(informationBar)
+
+    optionsBar = ocempgui.widgets.HFrame()
+    optionsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
+    optionsBar.border = 0
     for action in options:
-      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getI nstance().getDataPath(self.buttonActions[action]['image']))
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
-      #button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
-      self.buttonBarActions.add_child(button)
+      optionsBar.add_child(button)
+
+    self.buttonBarActions.add_child(optionsBar)
+    self.buttonBarActions.set_minimum_size(300,self.buttonBarActions.height)
     self.widgetContainer.add_widget(self.buttonBarActions)
   
   def itemUnselected(self,event=None):
