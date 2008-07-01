@@ -334,5 +334,31 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
     
   def jump(self):
+    if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
+      self.newChatMessage("No puedo saltar con tanto peso", 1)
+      return
     self.triggerEvent('jump', position=self.getPosition())
- 
+
+  def turnRight(self):
+    heading = {1: "topleft", 2: "up", 3: "topright", 4: "right",
+           5: "bottomright", 6: "down", 7: "bottomleft", 8: "left"}
+    for i in range(1, 9):
+      if heading[i] == self.__heading:
+        if i == 8:
+          self.setHeading(heading[1])
+          return
+        else:    
+          self.setHeading(heading[i+1])
+          return
+
+  def turnLeft(self):
+    heading = {1: "topleft", 2: "up", 3: "topright", 4: "right",
+           5: "bottomright", 6: "down", 7: "bottomleft", 8: "left"}
+    for i in range(1, 9):
+      if heading[i] == self.__heading:
+        if i == 1:
+          self.setHeading(heading[8])
+          return
+        else:    
+          self.setHeading(heading[i-1])
+          return
