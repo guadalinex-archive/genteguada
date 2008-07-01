@@ -47,7 +47,7 @@ class GGMP3Lobby(room_item.GGRoomItem):
     """
     if self.getRoom():
       return ["inventory"]
-    else
+    else:
       return ["removeInventory"]
   
   def tick(self, now):
