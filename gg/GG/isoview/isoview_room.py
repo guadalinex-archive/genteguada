@@ -67,6 +67,12 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
   
+  def getSpritesDict(self):
+    return self.__spritesDict
+
+  def getBottomSpritesDict(self):
+    return self.__bottomSpritesDict
+  
   def stopAnimations(self):
     for item in self.__isoViewItems:
       item.stopAnimation()

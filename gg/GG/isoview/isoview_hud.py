@@ -174,7 +174,7 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
-      positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
+      positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     self.__isoviewRoom.itemUnselected(item)
@@ -244,6 +244,14 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
       GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
+
+      list = self.__isoviewRoom.getSpritesDict()
+      for img in list.keys():
+        self.removeSprite(img)
+      list = self.__isoviewRoom.getBottomSpritesDict()
+      for img in list.keys():
+        self.removeSprite(img)
+
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
