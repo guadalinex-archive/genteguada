@@ -25,6 +25,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
+    self.__img.zOrder = 10001
     #self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), model.anchor)
     #self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     #self.__isohud.getIsoviewRoom().addSprite(self.__img)

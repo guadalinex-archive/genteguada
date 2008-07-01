@@ -123,7 +123,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     st = event.getParams()["state"]
-    print "************>>>>>>>>>>>>>>> Evento de estado: ", st
+    #print "************>>>>>>>>>>>>>>> Evento de estado: ", st
     if st == GG.utils.STATE[1]: # standing
       self.setAnimation(None)
       self.setMovieAnimation(None)  

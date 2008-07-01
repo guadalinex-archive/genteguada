@@ -18,6 +18,7 @@ class Animation(object):
     self.isoview = isoview  # public, to speed up the access
     self.__gentlyProgress = gentlyProgress
     self.__endMethods = []
+    self.__halfMethods = []
     self.__startMethods = []
     
 
@@ -49,26 +50,20 @@ class Animation(object):
       result = self.getGentlyProgress(now)
     else:
       result = self.getLinearProgress(now)
-
     if result <= 0:
       return 0
     if result >= 1:
       return 1
-
     return result
-
 
   def getEllapsedTime(self, now):
     return now - self.__startedTime
-
-
   
   def start(self):
     """ Starts the animation.
     """
     self.__startedTime = float(pygame.time.get_ticks())
     self.onStart()
-
   
   def step(self, now):
     """ Progresses the animation one frame.
@@ -88,6 +83,18 @@ class Animation(object):
     """ Method triggered on animation start.
     """
     for method in self.__startMethods:
+      if method[1] == None:
+        method[0]()
+      else:    
+        method[0](method[1])
+
+  def setOnHalf(self, method, params):
+    self.__halfMethods.append([method, params])
+  
+  def onHalf(self):
+    """ Method triggered on animation half.
+    """
+    for method in self.__halfMethods:
       if method[1] == None:
         method[0]()
       else:    
@@ -148,7 +155,7 @@ class ScreenPositionAnimation(Animation):
     self.__destination = destination
     self.__shiftX = self.__destination[0] - self.__originX
     self.__shiftY = self.__destination[1] - self.__originY
-
+    self.isoview.updateZOrder()
     
   def start(self):
     """ Starts the animation.
@@ -162,6 +169,8 @@ class ScreenPositionAnimation(Animation):
     """
     #super(self.__class__, self).step(now)
     percent = self.getProgress(now)
+    if percent > 0.5:
+      self.isoview.updateZOrder()
     self.isoview.setScreenPosition([self.__originX + int(self.__shiftX*percent),
                                     self.__originY + int(self.__shiftY*percent)])
       
@@ -187,6 +196,7 @@ class MovieAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     self.setFrames(frames)
+    self.isoview.updateZOrder()
     
   def setFrames(self, frames):
     """ Sets a new frame set for the animation.

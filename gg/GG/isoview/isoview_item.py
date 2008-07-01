@@ -31,6 +31,14 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor)
+    self.updateZOrder()
+            
+  def updateZOrder(self, value=None):
+    if value == None:
+      pos = self.getModel().getPosition()
+      self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
+    else:
+      self.__img.zOrder = value
         
   def getParent(self):
     """ Returns the isoview hud handler.

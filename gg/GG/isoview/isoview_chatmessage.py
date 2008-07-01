@@ -26,10 +26,14 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.label.opacity = 200
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
-    self.__isohud.getIsoviewRoom().addTopSprite(self.label)
+    self.label.zOrder = 20000
+    self.__isohud.addSprite(self.label)
     
   def __del__(self):
     isoview.IsoView.__del__(self)
+    
+  def updateZOrder(self):  
+    self.label.zOrder = 20000  
     
   def getImg(self):
     return self.label
@@ -49,14 +53,6 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     styles["ballom"] = GG.utils.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
     styles["entry"] = GG.utils.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
     return styles
-    """
-    listStyle = ["White","Red","Green","Blue"]
-    color = listStyle[random.randint(0,len(listStyle)-1)]
-    styles = {}
-    styles["ballom"] = GG.utils.STYLES["chatBalloon"+color]
-    styles["entry"] = GG.utils.STYLES["chatEntry"+color]
-    return styles
-    """
   
   def draw(self):
     hframe = ocempgui.widgets.HFrame()

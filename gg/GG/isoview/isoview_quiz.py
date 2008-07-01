@@ -49,7 +49,8 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.container.add_child(self.buttonBar)
     self.container.topleft = [20, 20]
     self.container.border = 0
-    self.__isohud.getIsoviewRoom().addTopSprite(self.container)
+    self.container.zOrder = 20000
+    self.__isohud.addSprite(self.container)
     self.__isohud.widgetContainer.add_widget(self.container)
     
   def actionButton(self, option):
@@ -66,6 +67,9 @@ class IsoViewQuiz(positioned_view.PositionedView):
     
   def __del__(self):
     isoview.IsoView.__del__(self)
+
+  def updateZOrder(self):  
+    self.label.zOrder = 20000  
     
   def getImg(self):
     return self.container

@@ -419,6 +419,9 @@ STYLES = {
                             },
 
          }
+# ===============================================================
+# ========================== FUNCTIONS ==========================
+# ===============================================================
 
 def getSpriteName(state, heading, frame):
   #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
@@ -605,6 +608,37 @@ def distPoints(aPoint, anotherPoint):
 
   return math.sqrt(dotProduct)
 
+# ===============================================================
+# =========================== CLASSES ===========================
+# ===============================================================
+
+class GroupSprite(pygame.sprite.Group):
+  """ GroupSprite class.
+  Redefines an OrderedUpdates sprite group class.
+  """
+  
+  def __init__(self, *sprites):
+    """ Constructor method.
+    *sprites: sprites list.
+    """
+    pygame.sprite.Group.__init__(self, *sprites)
+  
+  def sprites(self):
+    """ Order the group sprites according to their position.
+    """
+    keys = self.spritedict.keys()
+    keys.sort(lambda x, y : (x.zOrder - y.zOrder))
+    return keys
+  
+  def add(self, *sprites):
+    for sprite in sprites:
+      if hasattr(sprite, "zOrder"):
+        if sprite.zOrder != None:
+          pygame.sprite.Group.add(self, sprite)
+        else:  
+          raise "ERROR: zOrder = None"  
+      else:    
+        raise "ERROR: sprite sin zOrder"
 
 class OcempLabel( ocempgui.widgets.Label):
 

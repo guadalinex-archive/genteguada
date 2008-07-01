@@ -5,28 +5,6 @@ import isoview
 import isoview_tile
 import GG.model.player
 
-class GroupSprite(pygame.sprite.Group):
-  """ GroupSprite class.
-  Redefines an OrderedUpdates sprite group class.
-  """
-  
-  def __init__(self, *sprites):
-    """ Constructor method.
-    *sprites: sprites list.
-    """
-    pygame.sprite.Group.__init__(self, *sprites)
-  
-  def sprites(self):
-    """ Order the group sprites according to their position.
-    """
-    #def sortFunct(x, y):
-    #  return (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3])      
-    keys = self.spritedict.keys()
-    keys.sort(lambda x, y : (x.rect[1]+x.rect[3]) - (y.rect[1]+y.rect[3]))
-    #keys.sort(lambda x, y : sortFunct(x, y))
-    return keys
-  
-  
 class IsoViewRoom(isoview.IsoView):
   """ IsoViewRoom class.
   Defines the room view.
@@ -40,17 +18,10 @@ class IsoViewRoom(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
-    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
-    self.__bg = pygame.sprite.Sprite()
-    self.__bg.image = pygame.image.load(bgPath).convert_alpha()
-    self.__bg.rect = self.__bg.image.get_rect()
-    self.__bg.rect.topleft = GG.utils.BG_FULL_OR
     self.__isoViewItems = []
-    self.__allPlayers = GroupSprite()
+    #self.__allPlayers = GroupSprite()
     self.__spritesDict = {}
     self.__bottomSpritesDict = {}
-    self.__allTopPlayers = GroupSprite()
-    self.__allBackground = GroupSprite()
     
     self.__insertedIVItem = None
     
@@ -77,7 +48,8 @@ class IsoViewRoom(isoview.IsoView):
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
                     tiles[corx][corz].spriteName, self.__parent)
         
-        self.__allBackground.add(isotile.getImg())
+        #self.__allPlayers.add(isotile.getImg())
+        self.__parent.addSprite(isotile.getImg())
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
@@ -85,7 +57,7 @@ class IsoViewRoom(isoview.IsoView):
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
-      self.__allPlayers.add(isoviewitem.getImg())
+      self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
       pos = item.getPosition()
@@ -110,18 +82,14 @@ class IsoViewRoom(isoview.IsoView):
     """
     for isoitem in self.__isoViewItems:
       isoitem.updateFrame(ellapsedTime)
-
+    
+    """
     screen = self.getScreen()
     bg_image = self.__bg.image
     
-    # These 3 first sentences clean the unused part of the screen.
     self.__allPlayers.clear(screen, bg_image)
-    self.__allTopPlayers.clear(screen, bg_image)
-    self.__allBackground.clear(screen, bg_image)
-
-    self.__allBackground.draw(screen)
     self.__allPlayers.draw(screen)
-    self.__allTopPlayers.draw(screen)
+    """
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.
@@ -181,7 +149,7 @@ class IsoViewRoom(isoview.IsoView):
     ivItem: item view.
     """
     self.__isoViewItems.append(ivItem)
-    self.__allPlayers.add(ivItem.getImg())
+    self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getModel().getPosition()
     self.updateScreenPositionsOn(pos)
@@ -190,10 +158,10 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    self.removeSprite((ivPlayer.getImg()))
+    self.__parent.removeSprite((ivPlayer.getImg()))
     for image in self.__spritesDict:
       if self.__spritesDict[image] == ivPlayer:
-        self.removeSprite(image)  
+        self.__parent.removeSprite(image)  
     self.__isoViewItems.remove(ivPlayer)
     ivPlayer.unsubscribeAllEvents()
     
@@ -225,13 +193,14 @@ class IsoViewRoom(isoview.IsoView):
           
   def addIsoViewChatItem(self, ivChatItem):
     self.__isoViewItems.append(ivChatItem)
-    self.__allPlayers.add(ivChatItem.getImg())
+    self.__parent.addSprite(ivChatItem.getImg())
   
   def specialTileAdded(self, event):
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
     tile = self.__tileList[pos[0]][pos[2]].getImg()
-    for img in self.__allBackground:
+    #for img in self.__allBackground:
+    for img in self.__allPlayers:
       if img == tile:
         img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
         self.__tileList[pos[0]][pos[2]].setImg(imageName)
@@ -269,19 +238,3 @@ class IsoViewRoom(isoview.IsoView):
       if ivItem.getModel() == item:
         return ivItem
     return None  
-
-  def addSprite(self, sprite):
-    self.__allPlayers.add(sprite)
-        
-  def addTopSprite(self, sprite):
-    self.__allTopPlayers.add(sprite)
-  
-  def removeSprite(self, sprite):
-    print "eliminando: ", self.__allPlayers  
-    self.__allPlayers.remove(sprite)
-    if sprite in self.__spritesDict:
-      del self.__spritesDict[sprite]
-    print "eliminado: ", self.__allPlayers
-    
-  def removeTopSprite(self, sprite):
-    self.__allTopPlayers.remove(sprite)    
