@@ -15,12 +15,13 @@ class GGInventoryItem(ggmodel.GGModel):
     ggmodel.GGModel.__init__(self)
     self.__player = None
     self.spriteName = spriteName
+    self.spriteInventory = None
     self.imagePath = ""
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'imagePath']
+    return ['spriteName', 'imagePath', 'spriteInventory']
   
   # self.__player
   
