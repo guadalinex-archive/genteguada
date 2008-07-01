@@ -373,10 +373,10 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+          "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
 
