@@ -54,7 +54,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     self.__tiles[pos1[0]][pos1[2]].unstackItem()
     self.__tiles[pos2[0]][pos2[2]].stackItem(item)
     item.setTile(self.__tiles[pos2[0]][pos2[2]])
-    item.setPosition(item.getTile().position)      
+    #item.setPosition(item.getTile().position)      
   
   # self.__items
 

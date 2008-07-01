@@ -269,7 +269,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.__visited.append(pos)
-    self.setPosition(next)
+    #self.setPosition(next)
+    
+    items = self.getTile().getItemsFrom(self)
+    print items
+    for item in items:
+      item.setPosition(next)
 
   def changeRoom(self, room, pos):
     """ Changes the player's room.
