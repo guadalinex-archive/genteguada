@@ -42,7 +42,10 @@ class GGKiloTemp(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["inventory"]
+    if self.getRoom():
+      return ["inventory"]
+    else:
+      return ["removeInventory"]
   
   def tick(self, now):
     """ Call for an update on item.
