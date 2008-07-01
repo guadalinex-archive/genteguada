@@ -108,11 +108,12 @@ class IsoViewRoom(isoview.IsoView):
     """
     for image in self.__spritesDict:
       if self.__spritesDict[image].checkClickPosition(pos):
-        return self.__spritesDict[image].getModel().getPosition()
+        item = self.__spritesDict[image].getModel() 
+        return item.getPosition(), item
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
-        return self.__bottomSpritesDict[image].getModel().position
-    return [-1, -1, -1]
+        return self.__bottomSpritesDict[image].getModel().position, None
+    return [-1, -1, -1], None
   
   def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.
@@ -222,16 +223,22 @@ class IsoViewRoom(isoview.IsoView):
   def itemSelected(self,item):
     """ Sets an item on the room as selected.
     """
+    self.findIVItem(item).selected()
+    """
     items = self.getModel().getTile(item.getPosition()).getItems()
     for item in items:
       self.findIVItem(item).selected()
+    """  
 
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
+    self.findIVItem(item).unselected()
+    """
     items = self.getModel().getTile(item.getPosition()).getItems()
     for item in items:
       self.findIVItem(item).unselected()
+    """  
     
   def setItemOnTile(self, item, position):
     if item == None:

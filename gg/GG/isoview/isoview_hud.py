@@ -116,9 +116,9 @@ class IsoViewHud(isoview.IsoView):
       elif event_type == MOUSEBUTTONDOWN:
         cordX, cordY = pygame.mouse.get_pos()
         if 0 <= cordY <= GG.utils.HUD_OR[1]:
-          dest = self.getIsoviewRoom().findTile([cordX, cordY])
+          dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
           if not dest == [-1, -1, -1]:
-            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest)
+            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
   def addSprite(self, sprite):
@@ -167,14 +167,14 @@ class IsoViewHud(isoview.IsoView):
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
-      #positionAnim.setOnStop(self.__isoviewRoom.removeSprite, ivItem.getImg())
       positionAnim.setOnStop(item.getRoom().removeItem, item)
+      #positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
-      positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
+      #positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     self.__isoviewRoom.itemUnselected(item)
@@ -363,6 +363,11 @@ class IsoViewHud(isoview.IsoView):
     invIsoItem: selected item.
     """
     #print "item seleccionado"
+    if self.__selectedItem:
+      if self.__isoviewRoom:
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
+    self.dropActionsItembuttons()
+    
     item = invIsoItem.getModel()
     self.__player.setSelectedItem(item)
 
@@ -454,7 +459,8 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item'] 
-    self.__isoviewRoom.itemSelected(self.__selectedItem)
+    if self.__selectedItem.getRoom() != None:
+      self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
     
     self.buttonBarActions = ocempgui.widgets.VFrame()

@@ -49,20 +49,19 @@ class Tile(GG.model.ggmodel.GGModel):
       if it == item:
         items.append(it)
         k = 1
-      elif k:  
+      elif k == 1:  
         items.append(it)
     return items
 
-  def getItemsAndDestroyFrom(self, item):
+  def getItemsAndRemoveFrom(self, item):
     items = []
     k = 0
     for it in self.__items:
-      if not k:
-        if it == item:
-          items.append(it)
-          self.__items.remove(it)  
-          k = 1
-      else:
+      if it == item:
+        items.append(it)
+        self.__items.remove(it)
+        k = 1
+      elif k:  
         items.append(it)
         self.__items.remove(it)
     return items

@@ -143,18 +143,17 @@ class GGRoom(GG.model.ggmodel.GGModel):
       return True
     return False
     
-  def clickedByPlayer(self, player, target):
+  def clickedByPlayer(self, player, target, item):
     """ Indicates players inside that a player has made click on another one.
     player: active player.
     target: position the active player clicked on.
     """
-    #print target, player.getPosition()
     player.setUnselectedItem()
-    if not self.getBlocked(target) and player.getPosition != target:
-      #direction = self.getNextDirection(player, player.getPosition(), target)
-      player.setDestination(target)
+    if item != None:
+      item.clickedBy(player)  
     else:
-      self.__tiles[target[0]][target[2]].getTopItem().clickedBy(player)  
+      if not self.getBlocked(target) and player.getPosition != target:
+        player.setDestination(target)
           
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
@@ -162,7 +161,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
     pos1: starting point.
     pos2: ending point.
     """
-    
     startingDistance = GG.utils.p2pDistance(pos1, pos2)
     
     direction = []
