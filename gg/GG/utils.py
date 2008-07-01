@@ -105,7 +105,7 @@ LOGIN_SCREEN = "login.png"
 BG_BLACK = "bg_black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
-INTERFACE_LOWER = "interface_lower.png"
+INTERFACE_LOWER = "interface/hud/interface_lower.png"
 
 # Sprites: items
 OAK_SPRITE = "oak.png"
@@ -302,7 +302,7 @@ STYLES = {
                                     "style" : 0 },
                            "shadow" : 0
             },
-          "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 30, "alias" : True },
+          "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 25, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
@@ -314,7 +314,7 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                               },
                             },
-          "textFieldLogin" : { "font" : { "name" : "Helvetica", "size" : 40, "alias" : True },
+          "textFieldLogin" : { "font" : { "name" : "Helvetica", "size" : 25, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
@@ -387,16 +387,16 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
                                           }
                             },
-          "points" : {  "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+          "points" : {  "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
                                             },
-                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
           "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),

@@ -29,6 +29,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player = self.getModel().getPlayer()
     
     self.__allSprites = GG.utils.GroupSprite()
+    
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
@@ -48,20 +49,9 @@ class IsoViewHud(isoview.IsoView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
+    self.__img.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 70
     self.__img.zOrder = 10000
     #self.__img.rect.topleft = GG.utils.HUD_OR
-
-    self.__toolBarBackground = pygame.sprite.Sprite()
-    self.__toolBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_upper.png")).convert_alpha()
-    self.__toolBarBackground.zOrder = 10000
-    #self.__toolBarBackground.rect = self.__img.image.get_rect()
-    #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
-
-    self.__optionsBarBackground = pygame.sprite.Sprite()
-    self.__optionsBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")).convert_alpha()
-    self.__optionsBarBackground.zOrder = 10000
-    #self.__optionsBarBackground.rect = self.__img.image.get_rect()
-    #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
 
     model.subscribeEvent('chatAdded', self.chatAdded)
     model.subscribeEvent('quizAdded', self.quizAdded)
@@ -271,9 +261,8 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    self.getScreen().blit(self.__img.image, GG.utils.HUD_OR)
-    self.getScreen().blit(self.__toolBarBackground.image, [GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 63])
-    self.getScreen().blit(self.__optionsBarBackground.image, [GG.utils.SCREEN_SZ[0] - 260,0])
+    self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 70])
+    #self.addSprite(self.__img)
     #pygame.display.update()
 
   def paintChat(self):
@@ -311,7 +300,7 @@ class IsoViewHud(isoview.IsoView):
                                     "style" : 0 }),
             "shadow" : 0
             })
-    self.textArea = ocempgui.widgets.ScrolledWindow(GG.utils.CHAT_SZ[0], GG.utils.CHAT_SZ[1])
+    self.textArea = ocempgui.widgets.ScrolledWindow(573, 117)
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
@@ -331,17 +320,17 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = GG.utils.TEXT_BOX_OR[0], GG.utils.TEXT_BOX_OR[1]
-    self.__textField.set_minimum_size(GG.utils.TEXT_BOX_SZ[0], GG.utils.TEXT_BOX_SZ[1])
+    self.__textField.topleft = 14, 712
+    self.__textField.set_minimum_size(571, 30)
     self.widgetContainer.add_widget(self.__textField)
 
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
-    self.windowInventory = ocempgui.widgets.ScrolledWindow(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
+    self.windowInventory = ocempgui.widgets.ScrolledWindow(190, 163)
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
-    self.windowInventory.topleft = GG.utils.INV_OR[0], GG.utils.INV_OR[1] - 15
+    self.windowInventory.topleft = 805, 579
     self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
@@ -538,16 +527,18 @@ class IsoViewHud(isoview.IsoView):
               ]
     """
     ACTIONS = [
-                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
-                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
                 {"image":"interface/hud/help.png", "action": self.showHelp},
                 {"image":"interface/hud/exit.png", "action": self.finishGame},
+                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
+                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
+                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
               ]
     
     self.buttonBar = ocempgui.widgets.HFrame()
     self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBar.border = 0
-    self.buttonBar.topleft = [0,GG.utils.HUD_OR[1] - 65]
+    self.buttonBar.topleft = [16, 512]
     self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
       #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
@@ -607,31 +598,11 @@ class IsoViewHud(isoview.IsoView):
 
   def paintUserActions(self):
     
-    self.userBar = ocempgui.widgets.VFrame()
-    self.userBar.topleft = [GG.utils.SCREEN_SZ[0] - 400 ,GG.utils.HUD_OR[1] - 90]
+    self.userBar = ocempgui.widgets.HFrame()
+    self.userBar.topleft = [776 ,512]
     self.userBar.border = 0
     self.userBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.userBar.align = ocempgui.widgets.Constants.ALIGN_LEFT
-    
-    labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
-    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.userBar.add_child(labelUserName)
-
-    pointsBar = ocempgui.widgets.VFrame()
-    pointsBar.border = 0
-    pointsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    pointsBar.align = ocempgui.widgets.Constants.ALIGN_RIGHT
-    self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
-    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    pointsBar.add_child(self.__pointsLabel)
-    self.__expLabel = GG.utils.OcempLabel("Exp: 0",140)
-    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    pointsBar.add_child(self.__expLabel)
-    #self.userBar.add_child(pointsBar)
-
-    actionsBar = ocempgui.widgets.HFrame()
-    actionsBar.border = 0
-    actionsBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     ACTIONS = [
                 {"image":"interface/hud/dresser.png", "action": self.showDresser},
                 {"image":"interface/hud/jump.png", "action": self.jump},
@@ -641,13 +612,48 @@ class IsoViewHud(isoview.IsoView):
     for buttonData in ACTIONS:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
-      actionsBar.add_child(button)
-    actionsBar.add_child(pointsBar)
-    self.userBar.add_child(actionsBar)
+      self.userBar.add_child(button)
     self.userBar.zOrder = 10000
     self.addSprite(self.userBar)
 
     self.widgetContainer.add_widget(self.userBar)
+
+    from PIL import Image
+    import os
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/masko.png")
+    img = Image.open(filePath)
+    size = 64,64
+    img.thumbnail(size,Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
+    img = GG.utils.OcempImageButtonTransparent(imgPath)
+    img.topleft = 662,589 
+    img.zOrder = 10000
+    self.addSprite(img)
+
+    labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
+    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 605, 660
+    labelUserName.zOrder = 10000
+    self.addSprite(labelUserName)
+    
+    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280)
+    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.__pointsLabel.topleft = 617, 680
+    self.__pointsLabel.zOrder = 10000
+    self.addSprite(self.__pointsLabel)
+
+    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280)
+    self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.__labelOld.topleft = 617, 700
+    self.__labelOld.zOrder = 10000
+    self.addSprite(self.__labelOld)
+
+    self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280)
+    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
+    self.__expLabel.topleft = 617, 720
+    self.__expLabel.zOrder = 10000
+    self.addSprite(self.__expLabel) 
 
   def jump(self):
     self.__player.jump()
