@@ -10,14 +10,14 @@ class GGPenguinRoom5(GG.model.room_item.GGRoomItem):
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, position, anchor, label):
+  def __init__(self, sprite, anchor, topAnchor, label):
     """ Class builder.
     sprite: sprite used to paint the npc.
     position: penguin position.
     anchor: image anchor on screen.
     label: penguin's label
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
     self.__msg = "¡Enhorabuena! Has conseguido cruzar las 5 salas y completar el tutorial de GenteGuada. Ahora estás listo para entrar de lleno en el verdadero juego. Cruza el portal para comenzar."
         

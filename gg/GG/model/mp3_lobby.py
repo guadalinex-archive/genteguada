@@ -8,7 +8,7 @@ class GGMP3Lobby(room_item.GGRoomItem):
   Defines a temporary pickable item behaviour.
   """
     
-  def __init__(self, spriteName, position, anchor, spriteInventory, label, time, startRoom):
+  def __init__(self, spriteName, topAnchor, anchor, spriteInventory, label, time, startRoom):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
@@ -18,7 +18,7 @@ class GGMP3Lobby(room_item.GGRoomItem):
     time: item's life time.
     startRoom: item's starting room.
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     self.__startPosition = position

@@ -8,14 +8,14 @@ class GGPenguinGift(GG.model.room_item.GGRoomItem):
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, position, anchor, label):
+  def __init__(self, sprite, topAnchor, anchor, label):
     """ Class builder.
     sprite: sprite used to paint the npc.
     position: penguin position.
     anchor: image anchor on screen.
     label: penguin's label
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
     self.__msg1 = "Debes ser muy habil para haber llegado hasta aquí. Toma esto como premio a tu esfuerzo."
     self.__msg2 = "¿Has vuelto? Ya no me quedan más cosas que darte" 

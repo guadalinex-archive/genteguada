@@ -10,14 +10,14 @@ class GGPenguinRoom3(GG.model.room_item.GGRoomItem):
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, position, anchor, label):
+  def __init__(self, sprite, anchor, topAnchor, label):
     """ Class builder.
     sprite: sprite used to paint the npc.
     position: penguin position.
     anchor: image anchor on screen.
     label: penguin's label
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, position, anchor)
+    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
     self.__msg = "Para abrir el portón de madera deberás depositar algo pesado sobre ese resorte. Quizá puedas hallar cajas en el almacén, pero la puerta está cerrada. Me pregunto dónde estará la llave que abre la puerta..."
         

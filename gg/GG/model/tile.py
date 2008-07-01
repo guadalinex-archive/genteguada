@@ -29,7 +29,6 @@ class Tile(GG.model.ggmodel.GGModel):
     aux = self.__items.pop()
     aux = None
     
-    
   def getTopItem(self):
     if len(self.__items) == 0:
       return None

@@ -77,10 +77,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
 
   def addItemFromVoid(self, item, pos):
     if not item in self.__items:
-      if not self.__tiles[pos[0]][pos[2]].stepOn(): 
-        return
-      #item.setStartPosition(None)
-      #item.setStartPosition(pos)
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[2]])
       item.setStartPosition(item.getTile().position)
@@ -94,8 +90,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[2]].stepOn(): 
         return
-      #item.setStartPosition(None)
-      #item.setStartPosition(pos)
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[2]])
       item.setStartPosition(item.getTile().position)

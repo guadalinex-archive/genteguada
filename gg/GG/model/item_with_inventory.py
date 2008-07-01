@@ -6,13 +6,13 @@ class GGItemWithInventory(GG.model.room_item.GGRoomItem):
   """ GGItemWithInventory class.
   """
  
-  def __init__(self, spritePath, position, anchor):
+  def __init__(self, spritePath, anchor, topAnchor):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
     anchor: image anchor on screen.
     """
-    GG.model.room_item.GGRoomItem.__init__(self, spritePath, position, anchor)
+    GG.model.room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
     self.__inventory = []
     
   # self.__inventory

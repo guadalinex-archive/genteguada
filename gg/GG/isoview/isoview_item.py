@@ -59,7 +59,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    pygame.display.update()
+    #pygame.display.update()
     
   def setSprite(self, sprite):
     """ Sets a new sprite for the item

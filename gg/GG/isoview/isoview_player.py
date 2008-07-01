@@ -18,6 +18,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
     self.__movieAnimation = None
+    self.setImg(GG.utils.getSpriteName(model.getState(), model.getHeading(), 0))
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
@@ -43,7 +44,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       frames = self.createFrameSet()
       self.__movieAnimation.setFrames(frames)
     else:
-      str = GG.utils.getSpriteName(GG.utils.STATE[1], event.getParams()["heading"], 0)
+      str = GG.utils.getSpriteName(event.getParams()["state"], event.getParams()["heading"], 0)
       self.setImg(str)
     
   def inventoryAdded(self, event):
@@ -122,6 +123,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     st = event.getParams()["state"]
+    print "************>>>>>>>>>>>>>>> Evento de estado: ", st
     if st == GG.utils.STATE[1]: # standing
       self.setAnimation(None)
       self.setMovieAnimation(None)  
@@ -171,6 +173,4 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation.stop()
       self.__movieAnimation = None
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
-      
-      
       

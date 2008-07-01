@@ -10,11 +10,11 @@ class GGKilo(room_item.GGRoomItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, position, anchor, spriteInventory, label):
+  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
     """ Class constructor.
     spriteName: image name.
     """
-    room_item.GGRoomItem.__init__(self, spriteName, position, anchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     self.points = 0
