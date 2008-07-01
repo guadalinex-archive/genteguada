@@ -27,6 +27,15 @@ class IsoViewHud(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
+    
+    self.__allSprites = GG.utils.GroupSprite()
+    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
+    self.__bg = pygame.sprite.Sprite()
+    self.__bg.image = pygame.image.load(bgPath).convert_alpha()
+    self.__bg.rect = self.__bg.image.get_rect()
+    self.__bg.rect.topleft = GG.utils.BG_FULL_OR
+    self.__bg.zOrder = -2
+    
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     #self.widgetContainer = ocempgui.widgets.Renderer()
     #self.widgetContainer.set_screen(screen)
@@ -39,18 +48,20 @@ class IsoViewHud(isoview.IsoView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
+    self.__img.zOrder = 10000
     #self.__img.rect.topleft = GG.utils.HUD_OR
 
     self.__toolBarBackground = pygame.sprite.Sprite()
     self.__toolBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_upper.png")).convert_alpha()
+    self.__toolBarBackground.zOrder = 10000
     #self.__toolBarBackground.rect = self.__img.image.get_rect()
     #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
 
     self.__optionsBarBackground = pygame.sprite.Sprite()
     self.__optionsBarBackground.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")).convert_alpha()
+    self.__optionsBarBackground.zOrder = 10000
     #self.__optionsBarBackground.rect = self.__img.image.get_rect()
     #self.__toolBarBackground.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 400
-
 
     model.subscribeEvent('chatAdded', self.chatAdded)
     model.subscribeEvent('quizAdded', self.quizAdded)
@@ -91,6 +102,7 @@ class IsoViewHud(isoview.IsoView):
     self.__expLabel.topleft = [GG.utils.EXP_LOCATION[0], GG.utils.EXP_LOCATION[1] - self.__expLabel.height]
     self.__isoviewRoom.addSprite(self.__expLabel)
     """
+  
   def processEvent(self, events):
     for event in events:
       event_type = event.type
@@ -108,6 +120,12 @@ class IsoViewHud(isoview.IsoView):
           if not dest == [-1, -1, -1]:
             self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest)
     self.widgetContainer.distribute_events(*events)
+
+  def addSprite(self, sprite):
+    self.__allSprites.add(sprite)
+
+  def removeSprite(self, sprite):
+    self.__allSprites.remove(sprite)
 
   def getPlayer(self):
     return self.__player
@@ -209,8 +227,13 @@ class IsoViewHud(isoview.IsoView):
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
-    #for item in self.__isoviewInventory:
-    #  item.updateFrame(ellapsedTime)
+    
+    screen = self.getScreen()
+    bg_image = self.__bg.image
+    self.__allSprites.clear(screen, bg_image)
+    self.__allSprites.draw(screen)
+    
+    
     pygame.display.update()
 
   def roomChanged(self, event):
@@ -405,7 +428,7 @@ class IsoViewHud(isoview.IsoView):
     secAnim.addAnimation(positionAnim)
     secAnim.setOnStop(self.printChatMessage, ivMessageChat)
     secAnim.setOnStop(self.__isoviewRoom.removeIsoViewItem, ivMessageChat)
-    secAnim.setOnStop(self.__isoviewRoom.removeTopSprite, ivMessageChat.getImg())
+    secAnim.setOnStop(self.removeSprite, ivMessageChat.getImg())
     ivMessageChat.setAnimation(secAnim)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
 
@@ -468,7 +491,8 @@ class IsoViewHud(isoview.IsoView):
 
     self.buttonBarActions.add_child(optionsBar)
     self.buttonBarActions.set_minimum_size(260,self.buttonBarActions.height)
-    self.__isoviewRoom.addSprite(self.buttonBarActions)
+    self.buttonBarActions.zOrder = 10000
+    self.addSprite(self.buttonBarActions)
     self.widgetContainer.add_widget(self.buttonBarActions)
   
   def itemUnselected(self,event=None):
@@ -606,8 +630,8 @@ class IsoViewHud(isoview.IsoView):
       actionsBar.add_child(button)
     actionsBar.add_child(pointsBar)
     self.userBar.add_child(actionsBar)
-
-    self.__isoviewRoom.addSprite(self.userBar)
+    self.userBar.zOrder = 10000
+    self.addSprite(self.userBar)
 
     self.widgetContainer.add_widget(self.userBar)
 
