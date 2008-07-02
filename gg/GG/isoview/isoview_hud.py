@@ -75,7 +75,8 @@ class IsoViewHud(isoview.IsoView):
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
         "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk},
-        "exchange":{"image":"interface/hud/empujar.png", "action": self.exchangeItemPlayer},
+        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat},
+        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
         "url":{"image":"interface/hud/rotateright.png", "action": self.itemToUrl}
     }
@@ -463,7 +464,10 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem.spriteInventory:
       img = self.__selectedItem.spriteInventory
     else:
-      img = self.__selectedItem.spriteName
+      if not hasattr(self.__selectedItem, "username"):
+        img = self.__selectedItem.spriteName
+      else:
+        img = "interface/editor/masko.png"
     from PIL import Image
     import os
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
@@ -476,7 +480,10 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 5,6
     self.buttonBarActions.add_child(img)
 
-    itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
+    if not hasattr(self.__selectedItem, "username"):
+      itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
+    else:
+      itemLabel = GG.utils.OcempLabel(self.__selectedItem.username,290)    
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
     self.buttonBarActions.add_child(itemLabel)
@@ -706,6 +713,9 @@ class IsoViewHud(isoview.IsoView):
     print "lift"
     self.itemUnselected()
 
+  def privateChat(self):
+    self.__player.setUnselectedItem()
+    
   def itemToTalk(self):
     """ Talks to an item.
     """
