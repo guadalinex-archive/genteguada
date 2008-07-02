@@ -19,6 +19,16 @@ class Tile(GG.model.ggmodel.GGModel):
   def getDepth(self):
     return len(self.__items)
 
+  def getItemDepth(self, item):
+    return self.__items.index(item)
+
+  def hasPlayer(self):
+    items = self.__room.getItems()
+    for item in items:
+      if hasattr(item, "username"):
+        return True
+    return False
+
   def getRoom(self):
     return self.__room
 

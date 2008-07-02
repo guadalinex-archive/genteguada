@@ -139,7 +139,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     if not self.__state == state:
       self.__state = state
-      self.triggerEvent('state', state=state)
+      self.triggerEvent('state', state=state, position=self.getPosition())
       
   def setCarrying(self):
     #print "--> print setCarrying"
@@ -252,7 +252,14 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       if self.__state == GG.utils.STATE[4]:
         self.setState(GG.utils.STATE[3])
         return
-    direction = self.getRoom().getNextDirection(self, self.getPosition(), self.getDestination())
+    
+    ori = self.getPosition()
+    end = self.getDestination()
+    if GG.utils.checkNeighbour(ori, end):
+      direction = GG.utils.getNextDirection(ori, end)   
+    else:
+      direction = self.getRoom().getNextDirection(self, ori, end)
+    
     if direction == GG.utils.HEADING[0]:
       self.setDestination(self.getPosition())
       return
@@ -307,16 +314,18 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
-      #item.addSelecteer(self)
       self.triggerEvent('selectedItem', item=item)
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.
     """
     if self.__selected:
-      #self.__selected.removeSelecteer(self)
       self.__selected = None
       self.triggerEvent('unselectedItem')
+    
+  def setStartPosition(self, pos):
+    self.__destination = pos
+    GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
     
   def talkTo(self, item):
     """ Talks to an item.
@@ -335,6 +344,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     item: item to lift.
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
+      self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)  
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
@@ -348,16 +358,25 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podrÃ­a aplastarlo", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
     else:
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
       self.triggerEvent('dropItem', item=item, position=item.getPosition())
   
-  def setStartPosition(self, pos):
-    self.__destination = pos
-    GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
-    
+  def climb(self, itemToClimb):
+    tile = itemToClimb.getTile()  
+    if tile.getDepth() <= GG.utils.MAX_DEPTH and tile.stepOn():
+      self.setDestination(itemToClimb.getPosition())
+    else:
+      self.newChatMessage("No puedo subirme ahi", 1)
+    """
+    items = self.getTile().getItemsFrom(self)
+    for item in items:
+      item.setPosition(itemToClimb.getPosition())
+    """
+    #self.setDestination(itemToClimb.getPosition())  
+
   def jump(self):
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       self.newChatMessage("No puedo saltar con tanto peso", 1)

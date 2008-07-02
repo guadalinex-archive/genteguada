@@ -27,7 +27,11 @@ class GGBookLobby(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     if self.getRoom():
-      return ["inventory", "lift"]
+      tile = self.getTile()  
+      if tile.stepOn() and tile.getDepth() <= GG.utils.MAX_DEPTH:  
+        return ["inventory", "climb"]
+      else:
+        return ["inventory"]
     else:
       return ["removeInventory"]
   
