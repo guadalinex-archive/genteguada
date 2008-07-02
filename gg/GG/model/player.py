@@ -38,6 +38,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__startPlayedTime = 0
     self.startSessionTiming()    
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
+    self.__exchangeTo = None
       
   def getName(self):
     return self.username
@@ -409,3 +410,40 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
         else:    
           self.setHeading(heading[i-1])
           return
+
+  def isExchange(self):
+    return self.__exchangeTo
+
+  def initExchangeTo(self,player, list = []):
+    self.setUnselectedItem()
+    if not self.__exchangeTo:
+      self.__exchangeTo = player
+      self.triggerEvent('initExchange', list = list)
+
+  def cancelExchangeTo(self, step):
+    if step == 1:
+      self.__exchangeTo = None
+      self.triggerEvent('cancelExchange')
+
+  def acceptExchangeTo(self, step, list):
+    print step
+    if step == 1:
+      self.__exchangeTo.initExchangeTo(self, list)
+    elif step == 2:
+      self.__exchangeTo.triggerEvent("listExchange", list = list)
+
+  def finishExchange(self, listIn, listOut):
+
+    for item in listOut:
+      self.removeFromInventory(item)
+      self.__exchangeTo.addToInventoryFromVoid(item, self.getPosition())
+    for item in listIn:
+      self.addToInventoryFromVoid(item, self.__exchangeTo.getPosition())
+      self.__exchangeTo.removeFromInventory(item)
+
+    self.__exchangeTo.cancelExchangeTo(1)
+    self.cancelExchangeTo(1)
+    
+    
+    
+    

@@ -419,7 +419,18 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (48, 122, 173) 
                                         }
                             },
-
+          "exchangeLabel" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                            "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
+                                        },
+                            "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (99, 172, 193),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (99, 172, 193),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (99, 172, 193),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (99, 172, 193) 
+                                        }
+                            },
           "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
