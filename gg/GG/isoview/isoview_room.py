@@ -179,13 +179,20 @@ class IsoViewRoom(isoview.IsoView):
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
+    i = 0
     for item in itemList:
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
+        if i == 0:
+          zOrder = ivIt.getZOrder()
+          i = 1
+        else:
+          zOrder += 2
         ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
+        ivIt.updateZOrder(zOrder)
         accWidth += item.topAnchor[0] 
-        accHeight += item.topAnchor[1] 
+        accHeight += item.topAnchor[1]
           
   def getFutureScreenPosition(self, ivItem, pos):
     tile = self.__tileList[pos[0]][pos[2]].getModel()

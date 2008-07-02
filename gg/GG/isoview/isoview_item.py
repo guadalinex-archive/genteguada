@@ -40,6 +40,9 @@ class IsoViewItem(positioned_view.PositionedView):
     else:
       self.__img.zOrder = value
         
+  def getZOrder(self):
+    return self.__img.zOrder
+        
   def getParent(self):
     """ Returns the isoview hud handler.
     """

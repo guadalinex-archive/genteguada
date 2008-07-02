@@ -73,7 +73,7 @@ class IsoViewHud(isoview.IsoView):
         "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory},
         "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift},
         "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop},
-        "climb":{"image":"interface/hud/rotateright.png", "action": self.itemToClimb},
+        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
