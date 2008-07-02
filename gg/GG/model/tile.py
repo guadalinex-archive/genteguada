@@ -43,6 +43,11 @@ class Tile(GG.model.ggmodel.GGModel):
     if len(self.__items) == 0:
       return None
     return self.__items[len(self.__items)-1]  
+
+  def getBottomItem(self):
+    if len(self.__items) == 0:
+      return None
+    return self.__items[0]  
   
   def getItems(self):
     return self.__items  
