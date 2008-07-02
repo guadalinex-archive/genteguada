@@ -26,6 +26,12 @@ class GGGiftInventory(inventory_item.GGInventoryItem):
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     #return parentVars + ['label', 'points', 'anchor']
     return parentVars + ['label', 'points', 'spriteInventory']
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteInventory
 
   def getPosition(self):
     return self.__position

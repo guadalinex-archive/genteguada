@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import GG.model.item_with_inventory
 import GG.model.chat_message
 import GG.isoview.isoview_player
@@ -36,6 +38,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__startPlayedTime = 0
     self.startSessionTiming()    
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
+      
+  def getName(self):
+    return self.username
+  
+  def getImageLabel(self):
+    return "interface/editor/masko.png"
 
   def startSessionTiming(self):
     #print "**********************************"  
@@ -324,14 +332,25 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """ Lifts an item.
     item: item to lift.
     """
-    #item.liftedBy(self)
-    #self.addPoints(item.points, item.label)
-    #self.__inventory.append(item)
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
+  
+  def drop(self, item):
+    """ Drops an item.
+    item: item to drop.
+    """
+    if not (self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]):
+      return
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    if self.getRoom().getTile(dropLocation).getDepth():
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
+    else:
+      self.setState(GG.utils.STATE[1])
+      item.setPosition(dropLocation)
+      self.triggerEvent('dropItem', item=item, position=item.getPosition())
   
   def setStartPosition(self, pos):
     self.__destination = pos

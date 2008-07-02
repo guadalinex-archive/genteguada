@@ -30,6 +30,12 @@ class GGBookLobby(room_item.GGRoomItem):
       return ["inventory", "lift"]
     else:
       return ["removeInventory"]
+  
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteName
 
   def setPlayer(self, player):
     self.__player = player

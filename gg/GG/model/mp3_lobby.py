@@ -31,6 +31,12 @@ class GGMP3Lobby(room_item.GGRoomItem):
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteInventory
   
   def getStartRoom(self):
     """ Returns the item's starting room.
