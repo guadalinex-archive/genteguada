@@ -28,7 +28,10 @@ class GGGoldenKeyRoom2(room_item.GGRoomItem):
     if self.getRoom():
       return ["inventory"]
     else:
-      return ["removeInventory"]
+      if self.__player.isExchange():
+        return ["toExchange"]
+      else:
+        return ["removeInventory"]
 
   def getName(self):
     return self.label

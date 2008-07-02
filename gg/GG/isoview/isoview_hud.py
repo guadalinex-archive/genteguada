@@ -10,6 +10,7 @@ import copy
 import random
 import avatareditor
 import animation
+import exchangewindow
 
 from pygame.locals import * # faster name resolution
 
@@ -65,6 +66,9 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__player.subscribeEvent('points', self.pointsAdded)
     self.__player.subscribeEvent('exp', self.expAdded)
+    self.__player.subscribeEvent('initExchange', self.initExchange)
+    self.__player.subscribeEvent('cancelExchange', self.cancelExchange)
+    self.__player.subscribeEvent('listExchange', self.addListExchange)
     
     self.__selectedItem = None
     self.buttonActions = {
@@ -81,7 +85,8 @@ class IsoViewHud(isoview.IsoView):
         "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat},
         "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
-        "url":{"image":"interface/hud/rotateright.png", "action": self.itemToUrl}
+        "url":{"image":"interface/hud/rotateright.png", "action": self.itemToUrl},
+        "toExchange":{"image":"interface/hud/push.png", "action": self.itemToExchange}
     }
     self.winWardrobe = None
     self.wardrobe = None
@@ -130,6 +135,10 @@ class IsoViewHud(isoview.IsoView):
   def getPlayer(self):
     return self.__player
   
+  def getSelectedItem(self):
+    return self.__selectedItem
+
+
   def findIVItem(self, item):
     for ivItem in self.__isoviewRoom.getIsoViewItems():
       if ivItem.getModel() == item:
@@ -755,18 +764,8 @@ class IsoViewHud(isoview.IsoView):
     """ Shows the trade window.
     """
     #print "intercambio"
-    self.showExchangeWindow()
-
-  def showExchangeWindow(self):
-    """ Shows the exchange items window.
-    """
-    window = ocempgui.widgets.VFrame()
-    window.set_minimum_size(GG.utils.INV_SZ[0], GG.utils.INV_SZ[1])
-    window.topleft = GG.utils.SCREEN_SZ[0] - 200, GG.utils.HUD_OR[1] - 200
-    window.border = 1
-    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - (GG.utils.ACTION_BUTTON_SZ[0]*len(options) - anchor), \
-    #                                 GG.utils.HUD_OR[1] - GG.utils.ACTION_BUTTON_SZ[1]]
-    self.widgetContainer.add_widget(window)
+    self.__player.initExchangeTo(self.__selectedItem)
+    #self.showExchangeWindow()
 
   def itemToOpen(self):
     """ Attempts to open a teleporter item.
@@ -805,6 +804,30 @@ class IsoViewHud(isoview.IsoView):
         self.__selectedItem = None
     self.dropActionsItembuttons()
 
+  def initExchange(self,event):
+    itemList = event.getParams()["list"]
+    if len(itemList):
+      step = 2
+    else:
+      step = 1
+    self.exchangeWindow = exchangewindow.ExchangeWindow(self, step, itemList)
+    self.exchangeWindow.draw()
+    self.addSprite(self.exchangeWindow.window)
+    self.widgetContainer.add_widget(self.exchangeWindow.window)
+  
+  def itemToExchange(self):
+    self.exchangeWindow.addItemOut(self.__selectedItem)
+    self.__player.setUnselectedItem()
+
+  def cancelExchange(self,event):
+    self.widgetContainer.remove_widget(self.exchangeWindow.window)
+    self.removeSprite(self.exchangeWindow.window)
+    self.exchangeWindow = None
+
+  def addListExchange(self, event):
+    itemList = event.getParams()["list"]
+    self.exchangeWindow.addInList(itemList) 
+
   def itemToClimb(self):
     print "climb"
     self.__player.climb(self.__selectedItem)
@@ -814,4 +837,3 @@ class IsoViewHud(isoview.IsoView):
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.__selectedItem = None
     self.dropActionsItembuttons()
-    

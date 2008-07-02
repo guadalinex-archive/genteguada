@@ -158,6 +158,8 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(myGK1, [2, 0, 2])
     room1.addItemFromVoid(myGK2, [3, 0, 2])
     room1.addItemFromVoid(myGK3, [3, 0, 3])
+
+    #room1.addItemFromVoid(nina, [2,0,1])
     
     # ROOM 2
     wallOffset = [35, -10]
