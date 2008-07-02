@@ -31,7 +31,13 @@ class GGDoorLobby(GG.model.room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["open"]    
-    
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteName
+
   # self.__exitPosition
   
   def getExitPosition(self):

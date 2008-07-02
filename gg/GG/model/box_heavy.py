@@ -25,7 +25,17 @@ class GGBoxHeavy(room_item.GGRoomItem):
     return parentVars + ['label', 'points']
 
   def getOptions(self):
-    return ["lift"]
+    list = self.getTile().getItems()
+    if len(list) == 1:
+      return ["lift"]
+    else:
+      return ["drop"]
+  
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteName
   
   def setPlayer(self, player):
     self.__player = player
@@ -38,7 +48,8 @@ class GGBoxHeavy(room_item.GGRoomItem):
     clicker: player who clicks.
     """
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
-    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()) \
+        or (self.getPosition() == clicker.getPosition()):
       clicker.setSelectedItem(self)
     
   def isStackable(self):

@@ -30,6 +30,12 @@ class GGGoldenKeyRoom2(room_item.GGRoomItem):
     else:
       return ["removeInventory"]
 
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteInventory
+
   def setPlayer(self, player):
     self.__player = player
     

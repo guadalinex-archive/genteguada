@@ -129,7 +129,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
+    clickerPos = clicker.getPosition()
+    selfPos = self.getPosition()
+    if clickerPos != selfPos:
+      clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
     
   def tick(self, now):
     """ Call for an update on item.

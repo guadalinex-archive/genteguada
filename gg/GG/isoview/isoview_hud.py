@@ -58,6 +58,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('liftItem', self.liftItem)
+    self.__player.subscribeEvent('liftItem', self.dropItem)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
     self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
@@ -70,7 +71,8 @@ class IsoViewHud(isoview.IsoView):
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
         "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory},
         "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory},
-        "lift":{"image":"interface/hud/rotateright.png", "action": self.itemToLift},
+        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift},
+        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
@@ -140,6 +142,12 @@ class IsoViewHud(isoview.IsoView):
     self.paintItemsInventory()
       
   def liftItem(self, event):
+    item = event.getParams()["item"]  
+    ivItem = self.__isoviewRoom.findIVItem(item)  
+    if ivItem != None:
+      self.__isoviewRoom.updateScreenPositionsOn(item.getPosition())  
+  
+  def dropItem(self, event):
     item = event.getParams()["item"]  
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
@@ -461,6 +469,7 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0,0
     self.buttonBarActions.add_child(imgBackground)
     
+    """
     if self.__selectedItem.spriteInventory:
       img = self.__selectedItem.spriteInventory
     else:
@@ -468,6 +477,9 @@ class IsoViewHud(isoview.IsoView):
         img = self.__selectedItem.spriteName
       else:
         img = "interface/editor/masko.png"
+    """
+    img = self.__selectedItem.getImageLabel()
+        
     from PIL import Image
     import os
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
@@ -479,15 +491,24 @@ class IsoViewHud(isoview.IsoView):
     img = GG.utils.OcempImageButtonTransparent(imgPath)
     img.topleft = 5,6
     self.buttonBarActions.add_child(img)
-
-    if not hasattr(self.__selectedItem, "username"):
+    """
+    print self.__selectedItem
+    #if not hasattr(self.__selectedItem, "username"):
+    if hasattr(self.__selectedItem, "username"):
+      print "Username = ", self.__selectedItem.username
+      itemLabel = GG.utils.OcempLabel(self.__selectedItem.username,290)
+    elif hasattr(self.__selectedItem, "label"):
+      print "Label = ", self.__selectedItem.label
       itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
     else:
-      itemLabel = GG.utils.OcempLabel(self.__selectedItem.username,290)    
+      raise "Error: item o jugador sin etiqueta"
+    """
+    
+    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290)
+    
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
     self.buttonBarActions.add_child(itemLabel)
-
     i = 0
     for action in options:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
@@ -757,7 +778,6 @@ class IsoViewHud(isoview.IsoView):
     webbrowser.open(self.__selectedItem.url)
     self.itemUnselected()
 
-
   def itemToLift(self):
     print "lift"
     self.__player.lift(self.__selectedItem)
@@ -768,3 +788,12 @@ class IsoViewHud(isoview.IsoView):
         self.__selectedItem = None
     self.dropActionsItembuttons()
     
+  def itemToDrop(self):
+    print "drop"
+    self.__player.drop(self.__selectedItem)
+    self.itemUnselected()
+    if self.__selectedItem:
+      if self.__isoviewRoom:  
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.__selectedItem = None
+    self.dropActionsItembuttons()

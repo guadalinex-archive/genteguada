@@ -31,6 +31,12 @@ class GGPenguinLobby(GG.model.room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["talk"]
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteName
   
   def checkSimilarity(self, item):
     if GG.model.room_item.GGRoomItem.checkSimilarity(self, item):

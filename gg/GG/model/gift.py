@@ -29,6 +29,12 @@ class GGGift(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["copy"]   
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteInventory
 
   def setPoints(self, points):
     self.points = points

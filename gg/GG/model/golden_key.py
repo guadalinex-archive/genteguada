@@ -25,6 +25,12 @@ class GGGoldenKey(inventory_item.GGInventoryItem):
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     return parentVars + ['label', 'anchor']
+      
+  def getName(self):
+    return self.label
+  
+  def getImageLabel(self):
+    return self.spriteName
   
   def getPosition(self):
     return self.__position    
