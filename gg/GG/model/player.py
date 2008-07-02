@@ -76,6 +76,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def setAvatarConfiguration(self, avatarConfiguration):
     self.__avatarConfiguration = avatarConfiguration
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration)
+
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["privateChat", "exchange"]
         
   def getPoints(self):
     return self.__points
@@ -222,15 +227,10 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     clicker: player who clicks.
     """
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
-    #if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-    #  clicker.setSelectedItem(self)
-    self.newChatMessage(clicker.username + ' ha pinchado en mi', 0)
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+      clicker.setSelectedItem(self)
+    #self.newChatMessage(clicker.username + ' ha pinchado en mi', 0)
 
-  def getOptions(self):
-    """ Returns the available item options.
-    """
-    return ["talk","exchange"]
-      
   def tick(self, now):
     """ Calls for an update on player's position an movement direction.
     """
