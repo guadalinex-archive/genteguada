@@ -109,6 +109,7 @@ class IsoViewRoom(isoview.IsoView):
     for image in self.__spritesDict:
       if self.__spritesDict[image].checkClickPosition(pos):
         item = self.__spritesDict[image].getModel() 
+        print item.label
         return item.getPosition(), item
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):

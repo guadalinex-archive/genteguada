@@ -150,9 +150,14 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """
     player.setUnselectedItem()
     if item != None:
-      item.clickedBy(player)  
+      item.clickedBy(player)
     else:
-      if not self.getBlocked(target) and player.getPosition != target:
+      #if not self.getBlocked(target) and player.getPosition() != target:
+      if player.getPosition() != target:
+        top = self.getTile(target).getTopItem()
+        if top:
+          if not top.stepOn():
+            return
         player.setDestination(target)
           
   def getNextDirection(self, player, pos1, pos2):
