@@ -148,7 +148,7 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [7, 0, 0])
     for z in range(1, room2.size[1]-1):
       room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_LEFT, fenceOffset, [0, 0]), [0, 0, z])
-    #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.TREE, [100, 150], [0, 0]), [0, 0, 7])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.TREE, [100, 150], [0, 0]), [0, 0, 7])
     
     room1.addItemFromVoid(myDoor1, [6, 0, 0])    
     room1.addItemFromVoid(myPenguin, [1, 0, 6])    
