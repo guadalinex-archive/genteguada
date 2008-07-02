@@ -158,13 +158,13 @@ class IsoViewHud(isoview.IsoView):
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
       positionAnim.setOnStop(item.getRoom().removeItem, item)
-      #positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
+      positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
-      #positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
+      positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
     self.__isoviewRoom.itemUnselected(item)
@@ -446,11 +446,11 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item'] 
-    if self.__selectedItem.getRoom() != None:
+    if self.__selectedItem.getRoom():
+      #print "***********************"
       self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
-
-
+    
     self.buttonBarActions = ocempgui.widgets.Box(259,95)
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
     
@@ -561,11 +561,13 @@ class IsoViewHud(isoview.IsoView):
 
   def turnRight(self):
     print "turn right"
-    self.__player.turnRight()
+    if not self.findIVItem(self.__player).hasAnimation():
+      self.__player.turnRight()
     
   def turnLeft(self):
     print "turn left"
-    self.__player.turnLeft()
+    if not self.findIVItem(self.__player).hasAnimation():
+      self.__player.turnLeft()
     
   def showTools(self):
     self.__player.setCarrying()

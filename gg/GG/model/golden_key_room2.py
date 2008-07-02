@@ -43,9 +43,7 @@ class GGGoldenKeyRoom2(room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-      #clicker.addInventory(self)
-      #self.getRoom().removeItem(self)
-
+    
   def isStackable(self):
     return True
 
