@@ -114,6 +114,9 @@ class IsoViewHud(isoview.IsoView):
             self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
+  def compareSelectedItem(self, item):
+    return self.__selectedItem.checkSimilarity(item)
+
   def addSprite(self, sprite):
     self.__allSprites.add(sprite)
 
