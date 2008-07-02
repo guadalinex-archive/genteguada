@@ -211,7 +211,10 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     item: item to drop.
     """
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation) 
+    if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1, -1]:
+      self.newChatMessage("No puedo soltarlo ahí", 1)
+    else:    
+      GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
