@@ -221,7 +221,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     listCell = []
     for corx in range(self.size[0]):
       for corz in range(self.size[1]):
-        if self.__tiles[corx, 0, corz].getDepth():
+        if not self.__tiles[corx][corz].getDepth():
           listCell.append([corx, 0, corz])
     return listCell        
     """
