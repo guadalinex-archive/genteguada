@@ -22,6 +22,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = None
     self.__tile = None
     self.points = 0
+    #self.__selecteers = []
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -31,7 +32,20 @@ class GGRoomItem(inventory_item.GGInventoryItem):
 
   def setPoints(self, points):
     self.points = points
+
+  # self.__selecteers
   
+  """
+  def getSelecteers(self):
+    return self.__selecteers
+  
+  def addSelecteer(self, selecteer):
+    self.__selecteers.append(selecteer)
+
+  def removeSelecteer(self, selecteer):
+    self.__selecteers.remove(selecteer)
+  """  
+    
   # self.__tile
   
   def getTile(self):
@@ -77,6 +91,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     if self.__room == None:
       raise Exception("Error en limpieza de room")
+    """
+    for selecteer in self.__selecteers:
+      selecteer.setUnselected()
+    """  
     self.__setRoom(None)
     
   def setRoom(self, room):

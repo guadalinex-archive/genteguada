@@ -307,12 +307,14 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
+      #item.addSelecteer(self)
       self.triggerEvent('selectedItem', item=item)
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.
     """
     if self.__selected:
+      #self.__selected.removeSelecteer(self)
       self.__selected = None
       self.triggerEvent('unselectedItem')
     
