@@ -53,7 +53,7 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
-    
+
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
@@ -223,24 +223,16 @@ class IsoViewRoom(isoview.IsoView):
   def itemSelected(self,item):
     """ Sets an item on the room as selected.
     """
-    self.findIVItem(item).selected()
-    """
-    items = self.getModel().getTile(item.getPosition()).getItems()
-    for item in items:
-      self.findIVItem(item).selected()
-    """  
-
+    ivItem = self.findIVItem(item)
+    if ivItem:
+      ivItem.selected()
+    
   def itemUnselected(self,item):
     """ Sets an item on the room as unselected.
     """
     cosa = self.findIVItem(item)
     if cosa:
       cosa.unselected()
-    """
-    items = self.getModel().getTile(item.getPosition()).getItems()
-    for item in items:
-      self.findIVItem(item).unselected()
-    """  
     
   def setItemOnTile(self, item, position):
     if item == None:
