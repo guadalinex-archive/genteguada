@@ -73,6 +73,7 @@ class IsoViewHud(isoview.IsoView):
         "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory},
         "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift},
         "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop},
+        "climb":{"image":"interface/hud/rotateright.png", "action": self.itemToClimb},
         "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
@@ -115,7 +116,10 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.distribute_events(*events)
 
   def compareSelectedItem(self, item):
-    return self.__selectedItem.checkSimilarity(item)
+    if self.__selectedItem:  
+      return self.__selectedItem.checkSimilarity(item)
+    else:
+      return False
 
   def addSprite(self, sprite):
     self.__allSprites.add(sprite)
@@ -800,3 +804,14 @@ class IsoViewHud(isoview.IsoView):
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.__selectedItem = None
     self.dropActionsItembuttons()
+
+  def itemToClimb(self):
+    print "climb"
+    self.__player.climb(self.__selectedItem)
+    self.itemUnselected()
+    if self.__selectedItem:
+      if self.__isoviewRoom:  
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.__selectedItem = None
+    self.dropActionsItembuttons()
+    
