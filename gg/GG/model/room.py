@@ -105,6 +105,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
+      print item
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
       self.__items.remove(item)

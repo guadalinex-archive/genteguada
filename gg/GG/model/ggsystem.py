@@ -21,6 +21,7 @@ import GG.model.door_room5b
 import GG.model.door_secretroom
 import GG.model.web_cube
 import GG.model.golden_key_room2
+import GG.model.persistent_key
 import thread
 import time
 import os
@@ -127,7 +128,7 @@ class GGSystem(dMVC.model.Model):
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
 
     # ROOM 1
-    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [5, 0, 6], room4, "puerta lobby")
+    myDoor1 = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [5, 0, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [20, -20], [0, 0], "Andatuz")
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
@@ -153,14 +154,23 @@ class GGSystem(dMVC.model.Model):
     
     room1.addItemFromVoid(myDoor1, [6, 0, 0])    
     room1.addItemFromVoid(myPenguin, [1, 0, 6])    
-    room1.addItemFromVoid(myBox, [5, 0, 5])
+    #room1.addItemFromVoid(myBox, [5, 0, 5])
     room1.addItemFromVoid(myBox2, [7, 0, 5])
     room1.addItemFromVoid(myGK1, [2, 0, 2])
     room1.addItemFromVoid(myGK2, [3, 0, 2])
     room1.addItemFromVoid(myGK3, [3, 0, 3])
 
+    ###################
+    #myKilo1 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [32, -17], [0, 0], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
+    #room1.addItemFromVoid(myKilo1, [1, 0, 2])
+    blueKey = GG.model.persistent_key.GGPersistentKey("furniture/" + GG.utils.BLUE_KEY, [15, -30], [0, 0], "furniture/" + GG.utils.BLUE_KEY, "Llave")
+    room1.addItemFromVoid(blueKey, [1, 0, 2])
+    ###################
+
+
     #room1.addItemFromVoid(nina, [2,0,1])
     
+
     # ROOM 2
     wallOffset = [35, -10]
     columnOffset = [13, 15]
@@ -242,7 +252,7 @@ class GGSystem(dMVC.model.Model):
     room3.addItemFromVoid(myPenguinRoom3, [1, 0, 6])
     
     # ROOM 4
-    myDoor4A = GG.model.door_room3b.GGDoorRoom3B("furniture/" + GG.utils.DOOR_AMORED, [17, 15], [0, 0], [1, 0, 5], room3, "puerta room4a")
+    myDoor4A = GG.model.door_room3b.GGDoorRoom3B("furniture/" + GG.utils.DOOR_AMORED, [17, 15], [0, 0], [1, 0, 5], room4, "puerta room4a")
     room4.addItemFromVoid(myDoor4A, [7, 0, 5])    
     
     wallOffset = [35, 33]
