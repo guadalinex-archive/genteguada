@@ -570,8 +570,8 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame},
                 {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
-                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
-                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/spinright.png", "action": self.turnRight},
+                {"image":"interface/hud/spinleft.png", "action": self.turnLeft},
               ]
     
     self.buttonBar = ocempgui.widgets.HFrame()
@@ -730,7 +730,6 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     item = self.__selectedItem.getCopyFor(self.__player)
-    print item
     if item != None:
       self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
     self.itemUnselected()
