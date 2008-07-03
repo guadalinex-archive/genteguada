@@ -87,6 +87,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return False
   
   def addItemFromInventory(self, item, pos):
+    print "add item from inventory",item,pos
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[2]].stepOn(): 
         return
@@ -105,7 +106,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
-      print item
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
       self.__items.remove(item)

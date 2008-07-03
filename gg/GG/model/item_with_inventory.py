@@ -80,6 +80,13 @@ class GGItemWithInventory(GG.model.room_item.GGRoomItem):
   def tick(self, now):
     for item in self.__inventory:
       item.tick(now)
+
+  def getItemFromInventory(self, label):
+    for item in self.__inventory:
+      if item.label == label:
+        return item 
+    return None
+
     
   
       

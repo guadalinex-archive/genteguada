@@ -65,12 +65,15 @@ class GGPenguinRoom5Shirt(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    if talker.hasItemLabeledInInventory("Regalo"):
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+    giftItem = talker.getItemFromInventory("Regalo")
+    if giftItem:
+      print "tenemos regalo"
+      talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      talker.removeFromInventory(giftItem)
       return GG.model.gift_inventory.GGGiftInventory("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio.", \
+      talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio...", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
       

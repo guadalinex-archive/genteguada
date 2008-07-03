@@ -23,13 +23,13 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     self.loadQuestion()
         
   def loadQuestion(self):        
-    #self.__msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutoria, deberás probar tu inteligencia con una sencilla pregunta."
-    self.__msgQuestion = "¿De qué color era el caballo blanco de santiago?"
+    #self.__msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutorial, deberás probar tu inteligencia con una sencilla pregunta."
+    self.__msgQuestion = "¿De que color era el caballo blanco de Santiago?"
     self.__msgAnswers = []
-    self.__msgAnswers.append("Verde")
-    self.__msgAnswers.append("Amarillo con topos azules")
-    self.__msgAnswers.append("Catorce")
-    self.__msgAnswers.append("Blanco")
+    self.__msgAnswers.append(" A. Verde")
+    self.__msgAnswers.append(" B. Amarillo con topos azules")
+    self.__msgAnswers.append(" C. 14")
+    self.__msgAnswers.append(" D. Blanco")
     self.__rightAnswer = 4
         
   def variablesToSerialize(self):
@@ -75,6 +75,6 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    self.getRoom().triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msgQuestion, self.__msgAnswers, \
+    talker.triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msgQuestion, self.__msgAnswers, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3, self.__rightAnswer))
     

@@ -6,23 +6,19 @@ import GG.isoview.isoview_item
 import dMVC.model
 
 class GGPersistentKey(room_item.GGRoomItem):
-  """ GGGoldenKeyRoom2 class.
-  Defines a persistent item behaviour.
+  """GGPersistentKey class.
+  Defines item attributes and methods.
   """
-
+  
   def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
-    """ Class builder.
-    spriteName: sprite used to paint the item on the screen game zone.
-    position: item position.
-    anchor: image anchor on screen.
-    spriteInventory: sprite used to paint the item on the screen inventory zone.
-    label: item's label
+    """ Class constructor.
+    spriteName: image name.
     """
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     self.points = 0
-
+    
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
@@ -32,8 +28,8 @@ class GGPersistentKey(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["copy"]
-
+    return ["copy"]   
+      
   def getName(self):
     return self.label
   
@@ -42,22 +38,27 @@ class GGPersistentKey(room_item.GGRoomItem):
 
   def setPoints(self, points):
     self.points = points
-
-  def getCopyFor(self, player):
-    if  player.checkPointGiver(self.label):
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido una llave", \
-                'Llave', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None
-    else:
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave", \
-                'Llave', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      #player.addPoints(0, 'Llave')
-      #return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition())
-      keyaux = GG.model.generated_golden_key.GGGeneratedGoldenKey(self.getImageLabel(), self.anchor, self.topAnchor, self.getImageLabel(), 'Llave')
-      keyaux.setTile(self.getTile())
-      return keyaux 
-
   
+  """
+  @dMVC.model.localMethod 
+  def defaultView(self, screen, room, parent):
+    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
+    #return GG.isoview.isoview_inventoryitem.IsoViewInventoryItem(self, screen, parent)
+  """
+  
+  def getCopyFor(self, player):
+    print "ejeuccion getcopyfor"
+    if player.hasItemLabeledInInventory("Llave Dorada"):
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu llave dorada", \
+                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return None
+    else:  
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave dorada", \
+                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    
+      return GG.model.generated_golden_key.GGGeneratedGoldenKey(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition())
+
+    
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
@@ -65,9 +66,23 @@ class GGPersistentKey(room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-
-  def isStackable(self):
+  
+  def checkSimilarity(self, item):
+    if room_item.GGRoomItem.checkSimilarity(self, item):
+      if item.label == self.label:
+        if item.points == self.points:
+          if item.spriteInventory == self.spriteInventory:
+            return True
+    return False   
+  
+  def inventoryOnly(self):
     return False
-
-  def stepOn(self):
+  
+  def tick(self, now):
+    """ Call for an update on item.
+    Not used at the moment.
+    """
+    pass
+  
+  def isStackable(self):
     return False

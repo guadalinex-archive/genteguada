@@ -171,7 +171,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__parent.removeSprite((ivPlayer.getImg()))
     for image in self.__spritesDict:
       if self.__spritesDict[image] == ivPlayer:
-        self.__parent.removeSprite(image)  
+        self.__parent.removeSprite(image) 
     self.__isoViewItems.remove(ivPlayer)
     ivPlayer.unsubscribeAllEvents()
     
@@ -234,6 +234,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Sets an item on the room as selected.
     """
     ivItem = self.findIVItem(item)
+    print "itemSelected",ivItem
     if ivItem:
       ivItem.selected()
     

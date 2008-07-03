@@ -457,6 +457,18 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (186, 216, 232) 
                                           }
                             },
+          "quizLabel" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+                            "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                        },
+                            "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (254, 245, 155),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (254, 245, 155),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (254, 245, 155),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (254, 245, 155) 
+                                        }
+                            }
 
          }
 # ===============================================================

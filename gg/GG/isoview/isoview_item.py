@@ -82,6 +82,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Changes the item's color and sets it as selected.
     """
     size = self.__img.rect
+    print "tamano imagen",size
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
@@ -99,6 +100,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
+    print "no seleccionado"
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
