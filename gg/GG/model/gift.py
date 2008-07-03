@@ -47,12 +47,15 @@ class GGGift(room_item.GGRoomItem):
   """
   
   def getCopyFor(self, player):
+    print "ejeuccion getcopyfor"
     if player.hasItemLabeledInInventory("Regalo"):
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu regalo", \
+      print "ya tiene l regalo"
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
     else:  
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
+      print "no tiene regalo"
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     
       return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition())

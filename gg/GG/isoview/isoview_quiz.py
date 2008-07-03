@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import ocempgui
 import pygame
 import random
@@ -20,33 +22,52 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__answers = model.getAnswers()
     
     positioned_view.PositionedView.__init__(self, model, screen)
-    self.container = ocempgui.widgets.VFrame()
+    self.container = ocempgui.widgets.Box(358,258)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/trivialWindow.png")
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.container.add_child(imgBackground)
     
-    self.container.add_child(GG.utils.OcempLabel(model.getMessage() ,140))
+    label = GG.utils.OcempLabel(model.getMessage() ,250)
+    label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["quizLabel"]))
+    label.topleft = 10, 60
+    self.container.add_child(label)
+    i = 0
     for answer in self.__answers:
-      self.container.add_child(GG.utils.OcempLabel(answer ,140))
-    self.buttonBar = ocempgui.widgets.HFrame()
-   
-    buttonA = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
-    buttonA.border = 0
+       label = GG.utils.OcempLabel(answer ,250)
+       label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["quizLabel"]))
+       label.topleft = 10, 80 + i *30
+       self.container.add_child(label)
+       i = i + 1
+    
+    #self.buttonBar = ocempgui.widgets.HFrame()
+    #self.buttonBar.topleft = 6, 297
+    buttonA = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
+    buttonA.topleft = [16,200]
     buttonA.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)
-    buttonB = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerB.png"))
-    buttonB.border = 0
+    buttonB = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerB.png"))
+    buttonB.topleft = [66,200]
     buttonB.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 2)
-    buttonC = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
-    buttonC.border = 0
+    buttonC = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
+    buttonC.topleft = [116,200]
     buttonC.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
-    buttonD = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerD.png"))
-    buttonD.border = 0
+    buttonD = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerD.png"))
+    buttonD.topleft = [166,200]
     buttonD.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 4)
+    """
     self.buttonBar.add_child(buttonA)
     self.buttonBar.add_child(buttonB)
     self.buttonBar.add_child(buttonC)
     self.buttonBar.add_child(buttonD)
     self.buttonBar.border = 0
-      
-    self.container.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
-    self.container.add_child(self.buttonBar)
+    """ 
+    #self.container.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+
+    #self.container.add_child(self.buttonBar)
+    self.container.add_child(buttonA)
+    self.container.add_child(buttonB)
+    self.container.add_child(buttonC)
+    self.container.add_child(buttonD)
     self.container.topleft = [20, 20]
     self.container.border = 0
     self.container.zOrder = 20000
@@ -55,14 +76,14 @@ class IsoViewQuiz(positioned_view.PositionedView):
     
   def actionButton(self, option):
     if option == self.getModel().getRightAnswer():
-      self.__isohud.getIsoviewRoom().getModel().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta correcta. Ahora puedes cruzar los circulos misticos.", \
+      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta correcta. Ahora puedes cruzar los circulos misticos.", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
       self.__isohud.getPlayer().addPoints(0, "Penguin Quiz")
     else:   
-      self.__isohud.getIsoviewRoom().getModel().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
+      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
     self.__isohud.widgetContainer.remove_widget(self.container)
-    self.__isohud.getIsoviewRoom().removeTopSprite(self.container)
+    #self.__isohud.getIsoviewRoom().removeTopSprite(self.container)
     self.container.destroy()
     
   def __del__(self):

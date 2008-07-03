@@ -101,7 +101,7 @@ class GGDoorRoom3C2(GG.model.room_item.GGRoomItem):
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       if not (self.getRoom().getBlocked([pos[0] + 1, pos[1], pos[2] + 1]) and \
               self.getRoom().getBlocked([pos[0] - 2, pos[1], pos[2] + 1])):
-        self.newChatMessage('El resorte no esta activado.')  
+        clicker.newChatMessage('El resorte no esta activado.')  
         return False
       clicker.addPoints(self.points, self.label)
       itemList = clicker.getTile().getItemsFrom(clicker)      

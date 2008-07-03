@@ -27,6 +27,11 @@ class GGGiftInventory(inventory_item.GGInventoryItem):
     #return parentVars + ['label', 'points', 'anchor']
     return parentVars + ['label', 'points', 'spriteInventory']
       
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["removeInventory"]  
+
   def getName(self):
     return self.label
   

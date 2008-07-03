@@ -98,8 +98,8 @@ class GGDoorRoom3B(GG.model.room_item.GGRoomItem):
     clicker: player to teleport.
     """
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      if not clicker.hasItemLabeledInInventory('llave dorada'):
-        self.newChatMessage('Necesitas la llave dorada')  
+      if not clicker.hasItemLabeledInInventory('Llave Dorada'):
+        clicker.newChatMessage('Necesitas la llave dorada',2)  
         return False
       clicker.addPoints(self.points, self.label)   
       itemList = clicker.getTile().getItemsFrom(clicker)

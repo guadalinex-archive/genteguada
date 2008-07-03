@@ -68,7 +68,8 @@ class GGPenguinRoom3(GG.model.room_item.GGRoomItem):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+    print "ejecutamos talkedby"
+    talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     """
     newKey = self.createKey()

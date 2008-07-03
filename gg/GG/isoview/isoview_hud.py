@@ -54,8 +54,8 @@ class IsoViewHud(isoview.IsoView):
     self.__img.zOrder = 10000
     #self.__img.rect.topleft = GG.utils.HUD_OR
 
-    model.subscribeEvent('chatAdded', self.chatAdded)
-    model.subscribeEvent('quizAdded', self.quizAdded)
+    self.__player.subscribeEvent('chatAdded', self.chatAdded)
+    self.__player.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('liftItem', self.liftItem)
@@ -157,6 +157,7 @@ class IsoViewHud(isoview.IsoView):
   def inventoryRemoved(self, event):
     item = event.getParams()["item"]  
     ivInventItem = self.findIVInventoryItem(item)
+    print "inventoryRemoved",ivInventItem
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
       
@@ -182,6 +183,7 @@ class IsoViewHud(isoview.IsoView):
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
+    print "@@@@",ivItem
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
@@ -378,18 +380,18 @@ class IsoViewHud(isoview.IsoView):
     invIsoItem: selected item.
     """
     #print "item seleccionado"
-    if self.__selectedItem:
+    """if self.__selectedItem:
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
-    self.dropActionsItembuttons()
-    
+        self.dropActionsItembuttons()
+    """
     item = invIsoItem.getModel()
     self.__player.setSelectedItem(item)
 
   def itemOutInventory(self):
     if self.__selectedItem.inventoryOnly():
-      self.__player.removeFromInventory(self.__selectedItem)  
-      #self.__isoviewInventory.remove(invIsoItem)
+      #self.__player.removeFromInventory(self.__selectedItem) 
+      self.__player.newChatMessage("Mejor no. Creo que puede ser util mas adelante.", 2) 
       self.paintItemsInventory()
     else:   
       self.__player.addToRoomFromInventory(self.__selectedItem)
@@ -474,9 +476,9 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item'] 
-    if self.__selectedItem.getRoom():
-      print "***********************"
-      self.__isoviewRoom.itemSelected(self.__selectedItem)
+    if not self.__selectedItem.inventoryOnly():
+      if self.__selectedItem.getRoom():
+        self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
     
     self.buttonBarActions = ocempgui.widgets.Box(259,95)
@@ -721,23 +723,25 @@ class IsoViewHud(isoview.IsoView):
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
+    print "################",self.__selectedItem
     if self.__selectedItem == None:
       return
     self.__player.addToInventoryFromRoom(self.__selectedItem)
     #self.__isoviewRoom.setItemOnTile(None, self.__selectedItem.getPosition())
     #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
-    self.dropActionsItembuttons()
- 
+    #self.dropActionsItembuttons()
+    self.__player.setUnselectedItem()    
+
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
     if self.__selectedItem == None:
       return
     item = self.__selectedItem.getCopyFor(self.__player)
+    print "*********************",item
     if item != None:
       self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
-    self.itemUnselected()
-    self.dropActionsItembuttons()
+    self.__player.setUnselectedItem()
  
   def itemToClone(self):
     """ Clones an item from the room and inserts it on the player's inventory
