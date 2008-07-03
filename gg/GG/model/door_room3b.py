@@ -102,7 +102,9 @@ class GGDoorRoom3B(GG.model.room_item.GGRoomItem):
         self.newChatMessage('Necesitas la llave dorada')  
         return False
       clicker.addPoints(self.points, self.label)   
-      clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
+      itemList = clicker.getTile().getItemsFrom(clicker)
+      for item in itemList:
+        item.changeRoom(self.__destinationRoom, self.__exitPosition)
     else:
       return False    
     

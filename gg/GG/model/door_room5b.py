@@ -102,7 +102,9 @@ class GGDoorRoom5b(GG.model.room_item.GGRoomItem):
       return False
     else:
       clicker.addPoints(self.points, self.label)
-      clicker.changeRoom(self.__destinationRoom, self.__exitPosition)
+      itemList = clicker.getTile().getItemsFrom(clicker)
+      for item in itemList:
+        item.changeRoom(self.__destinationRoom, self.__exitPosition)
     
   def newChatMessage(self, message):
     """ Triggers a new event after receiving a new chat message.

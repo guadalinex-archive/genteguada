@@ -25,9 +25,12 @@ class GGGeneratedGoldenKey(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
+    
     if self.getRoom():
+      print "001"  
       return ["inventory"]
     else:
+      print "002"  
       return ["removeInventory"]
 
   def getName(self):
