@@ -335,7 +335,7 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.child = self.__layoutTextArea
     self.widgetContainer.add_widget(self.textArea)
     self.widgetContainer.update()
-    print self.textArea.create_style()
+    #print self.textArea.create_style()
   
   def paintTextBox(self):
     """ Paints the editable text box on screen.
@@ -730,6 +730,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     item = self.__selectedItem.getCopyFor(self.__player)
+    print item
     if item != None:
       self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
     self.itemUnselected()
