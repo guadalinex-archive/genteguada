@@ -82,6 +82,7 @@ class IsoViewHud(isoview.IsoView):
         "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
         "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk},
+        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet},
         "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat},
         "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
@@ -472,7 +473,7 @@ class IsoViewHud(isoview.IsoView):
     """
     self.__selectedItem = event.getParams()['item'] 
     if self.__selectedItem.getRoom():
-      #print "***********************"
+      print "***********************"
       self.__isoviewRoom.itemSelected(self.__selectedItem)
     options = self.__selectedItem.getOptions()
     
@@ -697,7 +698,8 @@ class IsoViewHud(isoview.IsoView):
     self.addSprite(self.__expLabel) 
 
   def jump(self):
-    self.__player.jump()
+    if not self.findIVItem(self.__player).hasAnimation():
+      self.__player.jump()
 
   #definicion de las acciones y botones en funcion del item seleccionado
   
@@ -742,6 +744,18 @@ class IsoViewHud(isoview.IsoView):
     self.__player.addInventory(clone)
     self.itemUnselected()
 
+    
+  def itemToTalkAndGet(self):
+    """ Talks to an item and gets another one.
+    """
+    if self.__selectedItem == None:
+      return
+    item = self.__player.talkAndGetFrom(self.__selectedItem)
+    if item:
+      self.__player.addToInventoryFromVoid(item, self.__player.getPosition())          
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+ 
   def itemToPush(self):
     print "push"
     self.itemUnselected()

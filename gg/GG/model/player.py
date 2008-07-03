@@ -337,6 +337,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     item.talkedBy(self)
     
+  def talkAndGetFrom(self, item):
+    """ Talks to an item.
+    item: item to talk to.
+    """
+    return item.talkAndGet(self)
+  
   def open(self, item):
     """ Opens an item.
     item: item to open.
