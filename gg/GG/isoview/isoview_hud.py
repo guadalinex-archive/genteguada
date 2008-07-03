@@ -157,7 +157,7 @@ class IsoViewHud(isoview.IsoView):
   def inventoryRemoved(self, event):
     item = event.getParams()["item"]  
     ivInventItem = self.findIVInventoryItem(item)
-    print "inventoryRemoved",ivInventItem
+    #print "inventoryRemoved",ivInventItem
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
       
@@ -183,7 +183,7 @@ class IsoViewHud(isoview.IsoView):
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
-    print "@@@@",ivItem
+    #print "@@@@",ivItem
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
@@ -466,7 +466,7 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a new quiz event.
     event: event info.
     """
-    print "quizzzzzzzzzzzzzzz"
+    #print "quizzzzzzzzzzzzzzz"
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
@@ -606,30 +606,30 @@ class IsoViewHud(isoview.IsoView):
 
   def setAvatarConfiguration(self,configuration):
     GG.genteguada.GenteGuada.getInstance().uploadAvatarConfiguration(configuration, self.__player)
-    print configuration
+    #print configuration
 
   def turnRight(self):
-    print "turn right"
+    #print "turn right"
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.turnRight()
     
   def turnLeft(self):
-    print "turn left"
+    #print "turn left"
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.turnLeft()
     
   def showTools(self):
     self.__player.setCarrying()
-    print "show tools"
+    #print "show tools"
 
   def showSoundControl(self):
     self.__player.setNotCarrying()
-    print "show sound control"
+    #print "show sound control"
     
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
-    print "show help"
+    #print "show help"
 
   def finishGame(self):
     GG.genteguada.GenteGuada.getInstance().finish()
@@ -723,7 +723,7 @@ class IsoViewHud(isoview.IsoView):
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
-    print "################",self.__selectedItem
+    #print "################",self.__selectedItem
     if self.__selectedItem == None:
       return
     self.__player.addToInventoryFromRoom(self.__selectedItem)
@@ -738,7 +738,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     item = self.__selectedItem.getCopyFor(self.__player)
-    print "*********************",item
+    #print "*********************",item
     if item != None:
       self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
     self.__player.setUnselectedItem()
@@ -763,11 +763,11 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
  
   def itemToPush(self):
-    print "push"
+    #print "push"
     self.itemUnselected()
 
   def itemToUp(self):
-    print "lift"
+    #print "lift"
     self.itemUnselected()
 
   def privateChat(self):
@@ -790,14 +790,14 @@ class IsoViewHud(isoview.IsoView):
   def itemToOpen(self):
     """ Attempts to open a teleporter item.
     """
-    print "open"
+    #print "open"
     self.__player.open(self.__selectedItem)
     self.itemUnselected()
 
   def itemToUrl(self):
     """ Attempts to open a teleporter item.
     """
-    print "url"
+    #print "url"
     import webbrowser
     if self.__fullScreen:
       self.showHelp()
@@ -805,7 +805,7 @@ class IsoViewHud(isoview.IsoView):
     self.itemUnselected()
 
   def itemToLift(self):
-    print "lift"
+    #print "lift"
     self.__player.lift(self.__selectedItem)
     self.itemUnselected()
     if self.__selectedItem:
@@ -815,7 +815,7 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
     
   def itemToDrop(self):
-    print "drop"
+    #print "drop"
     self.__player.drop(self.__selectedItem)
     self.itemUnselected()
     if self.__selectedItem:
@@ -849,7 +849,7 @@ class IsoViewHud(isoview.IsoView):
     self.exchangeWindow.addInList(itemList) 
 
   def itemToClimb(self):
-    print "climb"
+    #print "climb"
     self.__player.climb(self.__selectedItem)
     self.itemUnselected()
     if self.__selectedItem:

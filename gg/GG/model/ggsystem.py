@@ -134,8 +134,8 @@ class GGSystem(dMVC.model.Model):
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
 
-    myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [18, -38], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave amarilla")    
-    myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.BLUE_KEY, [18, -38], [0, 0], "furniture/" + GG.utils.BLUE_KEY, "Llava azul")    
+    #myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [18, -38], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave amarilla")    
+    #myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.BLUE_KEY, [18, -38], [0, 0], "furniture/" + GG.utils.BLUE_KEY, "Llava azul")    
 
     
     fenceOffset = [25, -15]
@@ -158,8 +158,8 @@ class GGSystem(dMVC.model.Model):
     room1.addItemFromVoid(myPenguin, [1, 0, 6])    
     room1.addItemFromVoid(myBox, [5, 0, 5])
     room1.addItemFromVoid(myBox2, [7, 0, 5])
-    room1.addItemFromVoid(myGK1, [2, 0, 2])
-    room1.addItemFromVoid(myGK2, [3, 0, 2])
+    #room1.addItemFromVoid(myGK1, [2, 0, 2])
+    #room1.addItemFromVoid(myGK2, [3, 0, 2])
     
 
     # ROOM 2
