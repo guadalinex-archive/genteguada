@@ -427,9 +427,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.triggerEvent('initExchange', list = list)
 
   def cancelExchangeTo(self, step):
-    if step == 1:
-      self.__exchangeTo = None
-      self.triggerEvent('cancelExchange')
+    #print "el paso es ", step
+    if not step == 1:
+      self.__exchangeTo.cancelExchangeTo(1)
+    
+    self.__exchangeTo = None
+    self.triggerEvent('cancelExchange')
 
   def acceptExchangeTo(self, step, list):
     print step
