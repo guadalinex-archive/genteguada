@@ -70,8 +70,9 @@ class GenteGuada:
 
     pygame.display.set_caption(GG.utils.VERSION)
 
-    print pygame.display.Info()
+    #print pygame.display.Info()
 
+    """
     if self.screen.get_flags() & pygame.DOUBLEBUF:
         print "Using Double Buffering!"
     else:
@@ -81,11 +82,12 @@ class GenteGuada:
     else:
         print "*NOT* Using Hardware Surface!"
     print
+    """
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    #self.session = winLogin.draw()
-    self.session = winLogin.draw(params.user, params.password)
+    self.session = winLogin.draw()
+    #self.session = winLogin.draw(params.user, params.password)
 
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
     img = pygame.sprite.Sprite()
@@ -139,7 +141,7 @@ class GenteGuada:
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
-        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
+        #print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
 
         frameCounter = 0
         last = now
