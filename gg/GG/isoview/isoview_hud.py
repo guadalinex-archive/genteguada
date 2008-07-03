@@ -54,7 +54,7 @@ class IsoViewHud(isoview.IsoView):
     self.__img.zOrder = 10000
     #self.__img.rect.topleft = GG.utils.HUD_OR
 
-    self.__player.subscribeEvent('chatAdded', self.chatAdded)
+    model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
