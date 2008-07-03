@@ -1,6 +1,9 @@
+import ggmodel
+import GG.utils
 import room_item
-import GG.model.generated_golden_key
+import generated_golden_key
 import GG.isoview.isoview_item
+import dMVC.model
 
 class GGPersistentKey(room_item.GGRoomItem):
   """ GGGoldenKeyRoom2 class.
@@ -37,11 +40,8 @@ class GGPersistentKey(room_item.GGRoomItem):
   def getImageLabel(self):
     return self.spriteInventory
 
-  def setPlayer(self, player):
-    self.__player = player
-    
-  def getPlayer(self):
-    return self.__player  
+  def setPoints(self, points):
+    self.points = points
 
   def getCopyFor(self, player):
     if  player.checkPointGiver(self.label):
@@ -51,7 +51,7 @@ class GGPersistentKey(room_item.GGRoomItem):
     else:
       self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave", \
                 'Llave', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      player.addPoints(0, 'Llave')
+      #player.addPoints(0, 'Llave')
       #return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition())
       keyaux = GG.model.generated_golden_key.GGGeneratedGoldenKey(self.getImageLabel(), self.anchor, self.topAnchor, self.getImageLabel(), 'Llave')
       keyaux.setTile(self.getTile())

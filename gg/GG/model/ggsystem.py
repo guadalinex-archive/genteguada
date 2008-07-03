@@ -252,7 +252,7 @@ class GGSystem(dMVC.model.Model):
     room3.addItemFromVoid(myPenguinRoom3, [1, 0, 6])
     
     # ROOM 4
-    myDoor4A = GG.model.door_room3b.GGDoorRoom3B("furniture/" + GG.utils.DOOR_AMORED, [17, 15], [0, 0], [1, 0, 5], room4, "puerta room4a")
+    myDoor4A = GG.model.door_room3b.GGDoorRoom3B("furniture/" + GG.utils.DOOR_AMORED, [17, 15], [0, 0], [1, 0, 5], room3, "puerta room4a")
     room4.addItemFromVoid(myDoor4A, [7, 0, 5])    
     
     wallOffset = [35, 33]
@@ -266,6 +266,8 @@ class GGSystem(dMVC.model.Model):
     
     #pesas: [2, 0, 1] [3, 0, 1][4, 0, 1][5, 0, 1][3, 0, 2][4, 0, 2]
     #cajas: [1, 0, 4] [4, 0, 6][6, 0, 2]
+    
+    """
     myKilo1 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [32, -17], [0, 0], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
     myKilo2 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [32, -17], [0, 0], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
     myKilo3 = GG.model.kilo.GGKilo("furniture/" + GG.utils.KILOGRAMME, [32, -17], [0, 0], "furniture/" + GG.utils.KILOGRAMME_INV, "Pesa")
@@ -278,10 +280,14 @@ class GGSystem(dMVC.model.Model):
     room4.addItemFromVoid(myKilo4, [5, 0, 1])
     room4.addItemFromVoid(myKilo5, [3, 0, 2])
     room4.addItemFromVoid(myKilo6, [4, 0, 2])
+    """
     
     myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 1", 10, room4)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 2", 10, room4)
     myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 3", 10, room4)
+    myBox4 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 4", 10, room4)
+    myBox5 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 5", 10, room4)
+    myBox6 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 6", 10, room4)
     beamOffset = [57, 142]
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, beamOffset, [0, 0]), [1, 0, 1])
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, beamOffset, [0, 0]), [1, 0, 6])
@@ -290,6 +296,9 @@ class GGSystem(dMVC.model.Model):
     room4.addItemFromVoid(myBox1, [1, 0, 4])
     room4.addItemFromVoid(myBox2, [4, 0, 6])
     room4.addItemFromVoid(myBox3, [6, 0, 2])
+    room4.addItemFromVoid(myBox4, [4, 0, 1])
+    room4.addItemFromVoid(myBox5, [3, 0, 2])
+    room4.addItemFromVoid(myBox6, [7, 0, 3])
     
     # ROOM 5
     myDoor5A1 = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [3, 0, 1], room3, "puerta room5a")

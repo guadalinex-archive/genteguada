@@ -122,6 +122,7 @@ PUZZLECUBE_SPRITE = "puzzle_cube.png"
 PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
 BRICKCUBE_SPRITE = "brick_cube.png"
 
+BLUE_KEY = "blue_key.png"
 KEY_GOLDEN = "golden_key.png"
 GIFT = "gift.png"
 BOX_HEAVY = "heavy_box.png"

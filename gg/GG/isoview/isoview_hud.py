@@ -15,7 +15,7 @@ import exchangewindow
 from pygame.locals import * # faster name resolution
 
 
-class IsoViewHud(isoview.IsoView):
+class IsoViewHud(isoview.IsoView): 
   """ IsoViewHud class.
   Defines the HUD.
   """
