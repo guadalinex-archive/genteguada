@@ -647,8 +647,8 @@ class IsoViewHud(isoview.IsoView):
     ACTIONS = [
                 {"image":"interface/hud/dresser.png", "action": self.showDresser},
                 {"image":"interface/hud/jump.png", "action": self.jump},
-                {"image":"interface/hud/spinleft.png", "action": self.turnLeft},
-                {"image":"interface/hud/spinright.png", "action": self.turnRight},
+                {"image":"interface/hud/spinleft.png", "action": self.turnRight},
+                {"image":"interface/hud/spinright.png", "action": self.turnLeft},
               ]
     for buttonData in ACTIONS:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
