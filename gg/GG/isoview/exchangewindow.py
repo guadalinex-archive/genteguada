@@ -71,14 +71,23 @@ class ExchangeWindow:
     self.window.add_child(buttonCancel)
 
   def okExchange(self):
-    self.__isohud.getPlayer().acceptExchangeTo(self.__step, self.__listOut)
     if self.__step == 1:
-      self.__labelExchange.set_text("Espere a que el otro usuario nos envie el intercambio")
-      self.__step = 2
-    if self.__step == 2:
+      if len(self.__listOut) == 0:
+        self.__labelExchange.set_text("Deberia de seleccionar algun elemento del inventario")
+      else:
+        self.__isohud.getPlayer().acceptExchangeTo(self.__step, self.__listOut)
+        self.__labelExchange.set_text("Espere a que el otro usuario nos envie el intercambio")
+        self.__step = 3
+
+    elif self.__step == 2:
+      self.__isohud.getPlayer().acceptExchangeTo(self.__step, self.__listOut)
       self.__labelExchange.set_text("Espere a que el otro usuario acepte el intercambio")
-      self.__step = 3
-    if self.__step == 4:
+      self.__step = 4
+
+    elif self.__step == 3 or self.__step == 4:
+      return
+
+    elif self.__step == 5:
       self.__isohud.getPlayer().finishExchange(self.__listIn, self.__listOut)
 
   def koExchange(self):
@@ -97,8 +106,8 @@ class ExchangeWindow:
   def addInList(self, list):
     self.__listIn = list
     self.__paintListItems()
-    self.__labelExchange.set_text("Acepte para iniciar el intercambio")
-    self.__step = 4
+    self.__labelExchange.set_text("Acepte para finalizar el intercambio !!!")
+    self.__step = 5
 
   def __paintItemOnList(self, hframe, boxChild, item, position):
     img = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(item.spriteInventory))
