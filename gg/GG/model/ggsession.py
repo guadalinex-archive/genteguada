@@ -17,7 +17,7 @@ class GGSession(ggmodel.GGModel):
     self.__system = system
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
-    player.getRoom().subscribeEvent('quizAdded', self.quizAdded)
+    #player.getRoom().subscribeEvent('quizAdded', self.quizAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
       
   # self.__player
@@ -37,7 +37,8 @@ class GGSession(ggmodel.GGModel):
     newRoom = self.__player.getRoom()
     if newRoom: 
       newRoom.subscribeEvent('chatAdded', self.chatAdded)
-      newRoom.subscribeEvent('quizAdded', self.quizAdded)
+      self.__player.subscribeEvent('chatAdded', self.chatAdded)
+      #newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod
   def defaultView(self, screen, parent):

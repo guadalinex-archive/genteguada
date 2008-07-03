@@ -276,8 +276,10 @@ class IsoViewHud(isoview.IsoView):
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
       self.buttonBar.update()
+      self.getModel().unsubscribeAllEvents()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
+      self.getModel().subscribeEvent('chatAdded', self.chatAdded)
       
   def getIsoviewRoom(self):
     """ Returns the isometric view room.
