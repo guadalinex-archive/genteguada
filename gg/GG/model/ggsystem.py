@@ -133,6 +133,10 @@ class GGSystem(dMVC.model.Model):
     myPenguin = GG.model.penguin_lobby.GGPenguinLobby(GG.utils.PENGUIN_SPRITE, [20, -20], [0, 0], "Andatuz")
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
+
+    myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [18, -38], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave amarilla")    
+    myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.BLUE_KEY, [18, -38], [0, 0], "furniture/" + GG.utils.BLUE_KEY, "Llava azul")    
+
     
     fenceOffset = [25, -15]
     #room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [5, 0, 0])
@@ -152,8 +156,10 @@ class GGSystem(dMVC.model.Model):
     
     room1.addItemFromVoid(myDoor1, [6, 0, 0])    
     room1.addItemFromVoid(myPenguin, [1, 0, 6])    
-    #room1.addItemFromVoid(myBox, [5, 0, 5])
+    room1.addItemFromVoid(myBox, [5, 0, 5])
     room1.addItemFromVoid(myBox2, [7, 0, 5])
+    room1.addItemFromVoid(myGK1, [2, 0, 2])
+    room1.addItemFromVoid(myGK2, [3, 0, 2])
     
 
     # ROOM 2
