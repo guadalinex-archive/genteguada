@@ -570,8 +570,8 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame},
                 {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
-                {"image":"interface/hud/spinright.png", "action": self.turnRight},
-                {"image":"interface/hud/spinleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
+                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
               ]
     
     self.buttonBar = ocempgui.widgets.HFrame()
@@ -647,8 +647,8 @@ class IsoViewHud(isoview.IsoView):
     ACTIONS = [
                 {"image":"interface/hud/dresser.png", "action": self.showDresser},
                 {"image":"interface/hud/jump.png", "action": self.jump},
-                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
-                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/spinleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/spinright.png", "action": self.turnRight},
               ]
     for buttonData in ACTIONS:
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
