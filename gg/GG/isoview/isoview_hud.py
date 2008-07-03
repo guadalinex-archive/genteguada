@@ -91,6 +91,7 @@ class IsoViewHud(isoview.IsoView):
     }
     self.winWardrobe = None
     self.wardrobe = None
+    self.exchangeWindow = None
     """
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
@@ -114,11 +115,12 @@ class IsoViewHud(isoview.IsoView):
         elif event.key == K_RETURN: 
           self.chatMessageEntered()
       elif event_type == MOUSEBUTTONDOWN:
-        cordX, cordY = pygame.mouse.get_pos()
-        if 0 <= cordY <= GG.utils.HUD_OR[1]:
-          dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
-          if not dest == [-1, -1, -1]:
-            self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
+        if not self.exchangeWindow:
+          cordX, cordY = pygame.mouse.get_pos()
+          if 0 <= cordY <= GG.utils.HUD_OR[1]:
+            dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
+            if not dest == [-1, -1, -1]:
+              self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
   def compareSelectedItem(self, item):
