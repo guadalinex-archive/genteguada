@@ -52,13 +52,13 @@ class GGGift(room_item.GGRoomItem):
       print "ya tiene l regalo"
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None
+      return None, [-1, -1, -1]
     else:  
       print "no tiene regalo"
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     
-      return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition())
+      return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition()), self.getPosition()
 
     
   def clickedBy(self, clicker):
