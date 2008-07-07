@@ -46,6 +46,10 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = None
     
     self.__fullScreen = False
+    self.__sound = True
+    
+    self.__soundButton = None
+    self.__fullscreenButton = None
     
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
@@ -76,6 +80,12 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
     #self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor)
+    
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_TARGET)  
+    self.__targetTile = None
+    self.__targetTileImage = pygame.sprite.Sprite()
+    self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
+    self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
     
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
@@ -464,6 +474,17 @@ class IsoViewHud(isoview.IsoView):
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
+  def setMovementDestination(self, target):
+    self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
+    self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
+    self.addSprite(self.__targetTileImage)        
+    self.__targetTile = True  
+    
+  def removeMovementDestination(self):
+    if self.__targetTile:
+      self.removeSprite(self.__targetTileImage)        
+      self.__targetTile = False  
+    
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
     event: event info.
@@ -554,7 +575,7 @@ class IsoViewHud(isoview.IsoView):
     ACTIONS = [
                 {"image":"interface/hud/help.png", "action": self.showHelp},
                 {"image":"interface/hud/exit.png", "action": self.finishGame},
-                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
+                {"image":"interface/hud/maximize.png", "action": self.showFullScreen},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl},
                 {"image":"interface/hud/rotateright.png", "action": self.turnRight},
                 {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
@@ -570,6 +591,11 @@ class IsoViewHud(isoview.IsoView):
       button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       #button.border = 0
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
+      if buttonData['image'] == "interface/hud/maximize.png":
+        self.__fullscreenButton = button
+      elif  buttonData['image'] == "interface/hud/sound.png":
+        self.__soundButton = button
+      
       self.buttonBar.add_child(button)
   
   def showDresser(self):
@@ -605,7 +631,12 @@ class IsoViewHud(isoview.IsoView):
 
   def showSoundControl(self):
     #print "show sound control"
-    pass
+    self.__sound
+    if self.__fullScreen:
+      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
+    else:
+      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
+    self.__sound = not self.__sound
     
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
@@ -621,6 +652,10 @@ class IsoViewHud(isoview.IsoView):
     """
     print "show full screen"
     #TODO solo funciona en linux con las X, para e
+    if self.__fullScreen:
+      self.__fullscreenButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
+    else:
+      self.__fullscreenButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
     self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
 

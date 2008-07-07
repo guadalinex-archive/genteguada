@@ -23,7 +23,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
-    #self.getModel().subscribeEvent('destination', self.destinationChanged)
+    self.getModel().subscribeEvent('destination', self.destinationChanged)
     #self.getModel().subscribeEvent('addInventory', self.inventoryAdded)
     #self.getModel().subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__heading = self.getModel().getHeading()
@@ -129,6 +129,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
+      self.getParent().removeMovementDestination()
       self.getIVRoom().updateScreenPositionsOn(pos)
       
     elif st == GG.utils.STATE[2]: # walking
@@ -141,6 +142,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
+      self.getParent().removeMovementDestination()
       self.getIVRoom().updateScreenPositionsOn(pos)
       
     elif st == GG.utils.STATE[4]: # walking_carrying
@@ -153,6 +155,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0))
+      self.getParent().removeMovementDestination()
       self.getIVRoom().updateScreenPositionsOn(pos)
       
   def onJump(self, event):
@@ -175,3 +178,5 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation = None
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0))
       
+  def destinationChanged(self, event):
+    self.getParent().setMovementDestination(event.getParams()['destination'])
