@@ -71,6 +71,12 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('listExchange', self.addListExchange)
     
     self.__selectedItem = None
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
+    self.__selectedImage = pygame.sprite.Sprite()
+    self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
+    self.__selectedImage.rect = self.__selectedImage.image.get_rect()
+    #self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor)
+    
     self.buttonActions = {
         "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
         "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory},
@@ -476,6 +482,10 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item'] 
+    selImgPos = self.__selectedItem.getPosition()
+    self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
+    self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10
+    self.addSprite(self.__selectedImage)        
     if not self.__selectedItem.inventoryOnly():
       if self.__selectedItem.getRoom():
         self.__isoviewRoom.itemSelected(self.__selectedItem)
@@ -546,6 +556,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.removeSprite(self.__selectedImage)        
+    
     self.dropActionsItembuttons()
 
   def pointsAdded(self, event):
@@ -713,6 +725,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     self.__selectedItem = None
+    self.removeSprite(self.__selectedImage)        
+    
     children = copy.copy(self.buttonBarActions.children)
     for child in children:
       self.buttonBarActions.remove_child(child)
@@ -812,6 +826,8 @@ class IsoViewHud(isoview.IsoView):
       if self.__isoviewRoom:  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.__selectedItem = None
+        self.removeSprite(self.__selectedImage)        
+    
     self.dropActionsItembuttons()
     
   def itemToDrop(self):
@@ -821,6 +837,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       if self.__isoviewRoom:  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.removeSprite(self.__selectedImage)        
         self.__selectedItem = None
     self.dropActionsItembuttons()
 
@@ -855,5 +872,6 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       if self.__isoviewRoom:  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.removeSprite(self.__selectedImage)        
         self.__selectedItem = None
     self.dropActionsItembuttons()
