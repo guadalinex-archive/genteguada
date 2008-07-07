@@ -113,7 +113,9 @@ INTERFACE_LOWER = "interface/hud/interface_lower.png"
 
 # Sprites: items
 OAK_SPRITE = "oak.png"
-PENGUIN_SPRITE = "andatuz_01.png"
+PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
+PENGUIN_SPRITE_DOWN = "andatuz_down.png"
+PENGUIN_SPRITE_BOTTOMRIGHT = "andatuz_bottomright.png"
 BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "golden_key.png"
