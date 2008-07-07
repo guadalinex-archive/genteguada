@@ -509,7 +509,8 @@ class IsoViewHud(isoview.IsoView):
     options = self.__selectedItem.getOptions()
     
     self.buttonBarActions = ocempgui.widgets.Box(259,95)
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
+    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
@@ -538,7 +539,9 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarActions.add_child(itemLabel)
     i = 0
     for action in options:
-      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      button = GG.utils.OcempImageButtonTransparent2(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']), \
+                                                     "prueba", self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       button.topleft = 195 - i*60 ,40
       self.buttonBarActions.add_child(button)
@@ -591,11 +594,11 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
     self.buttonBar.border = 0
     self.buttonBar.topleft = [16, 532]
-    self.widgetContainer.add_widget(self.buttonBar)
+    #self.widgetContainer.add_widget(self.buttonBar)
     for buttonData in ACTIONS:
-      #button = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
-      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
-      #button.border = 0
+      #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      button = GG.utils.OcempImageButtonTransparent2(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']), \
+                                                     "prueba", self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       if buttonData['image'] == "interface/hud/maximize.png":
         self.__fullscreenButton = button
@@ -603,6 +606,27 @@ class IsoViewHud(isoview.IsoView):
         self.__soundButton = button
       
       self.buttonBar.add_child(button)
+      
+    self.buttonBar.zOrder = 10000
+    self.addSprite(self.buttonBar)
+    self.widgetContainer.add_widget(self.buttonBar)
+    #self.buttonBar.zOrder = 20000
+    #self.addSprite(self.buttonBar)
+  
+  def showTooltip(self, label):
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
+    self.tooltipWindow.depth = 1
+    x, y = pygame.mouse.get_pos ()
+    self.tooltipWindow.topleft = x + 8, y - 5
+    self.tooltipWindow.depth = 99 # Make it the topmost widget.
+    self.tooltipWindow.zOrder = 30000
+    self.addSprite(self.tooltipWindow)
+      
+  def removeTooltip(self):
+    if self.tooltipWindow:
+      self.removeSprite(self.tooltipWindow)  
+      self.tooltipWindow.destroy ()
+      self.tooltipWindow = None
   
   def showDresser(self):
     self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
