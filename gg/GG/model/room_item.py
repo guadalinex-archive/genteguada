@@ -133,7 +133,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     selfPos = self.getPosition()
     if clickerPos != selfPos:
       clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
-      #clicker.setDestination(self.__tile.position)
+      if not GG.utils.checkNeighbour(clicker.getPosition(), self.__tile.position):
+        direction = self.__room.getNextDirection(clicker, self.__tile.position, clicker.getPosition())
+        destination = GG.utils.getFrontPosition(self.__tile.position, direction)
+        clicker.setDestination(destination)
     
   def tick(self, now):
     """ Call for an update on item.
