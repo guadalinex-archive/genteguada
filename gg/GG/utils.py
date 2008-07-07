@@ -31,6 +31,7 @@ CHAR_POS = [0, 0, 0]
 SCREEN_SZ = [1024, 768]
 SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
 FLOOR_SHIFT = [55, -30]
+SELECTED_FLOOR_SHIFT = [55, -25]
 SCENE_SZ = [8, 8]
 GAMEZONE_SZ = [1024, 578]
 HUD_SZ = [1024, SCREEN_SZ[1] - GAMEZONE_SZ[1]]
@@ -160,6 +161,7 @@ SKYLINES_UP = ["skylineWallUp01.png", "skylineWallUp02.png", "skylineWallUp03.pn
 SKYLINES_LEFT = ["skylineWallLeft01.png", "skylineWallLeft02.png"]
 SKYLINE_CORNER = "skylineCorner.png"
 
+TILE_SELECTED = "selected.png"
 TILE_MYSTCYRCLE = "mystCircle.png"
 TILE_MYSTCYRCLE_CASTLE01 = "mystCircleCastle01.png"
 TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png", "grass04.png"]
