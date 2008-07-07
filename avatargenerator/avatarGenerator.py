@@ -27,17 +27,6 @@ def renderScene(renderPath, startFrame, endFrame):
   context.eFrame = endFrame
   context.renderAnim()
 
-  #renameFiles(context.getRenderPath(), fileName)	
-  #moveFiles(context.getRenderPath() + "tmp", context.getRenderPath())
-
-  #Rename the rendered image
-#  defaultFileName = "0001.png"
-#  try:
-#		print "Rendered Image renamed to", renderFileName
-#		os.rename(context.getRenderPath() + defaultFileName, context.getRenderPath() + renderFileName)
-#  except:
-#		pass
-
 #Update the texture object
 def changeTexture(objectName,pathNewTexture,defaultTexture):  
 	if gender == "female":
@@ -160,6 +149,7 @@ if skin <> "":
 if bodySize <> "":
 	valueSizeDefault = 0
 	valueSize = 0
+	valueSize2 = 0.1
 	if bodySize == "M":
 		print "Body size selected M"
  		valueSize = 0.1
@@ -169,11 +159,14 @@ if bodySize <> "":
 	elif bodySize == "XL":
 		print "Body size selected XL"
  		valueSize = 0.3
-	scaleObject(avatar + "Body", valueSize, valueSizeDefault, valueSize)
-	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSize)
-	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSize)
-	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSize)
-	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSize)
+        valueSize2 = valueSize2 * 2
+	scaleObject(avatar + "Body", valueSize, valueSize, valueSizeDefault)
+	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSizeDefault)
+	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSizeDefault)
+	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSizeDefault)
+	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSizeDefault)
+	scaleObject("bagHandle",valueSize2, valueSizeDefault, valueSizeDefault)
+	
 	
 if shirt <> "" and gender == "male":
   print "Shirt texture updated"
@@ -307,8 +300,8 @@ for act in actList:
 	renameFiles(context.getRenderPath(), fileName)
 	copyFiles(context.getRenderPath(), "imagesGenerated/")
 
-print context.getRenderPath(), "directorio a borrar???"
-shutil.rmdir("tmp")
+print "Direcotorio ", context.getRenderPath(), " borrado"
+shutil.rmtree(context.getRenderPath())
 
 	
 	
