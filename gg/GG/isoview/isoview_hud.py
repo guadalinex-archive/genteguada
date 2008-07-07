@@ -92,7 +92,7 @@ class IsoViewHud(isoview.IsoView):
         "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat},
         "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
-        "url":{"image":"interface/hud/rotateright.png", "action": self.itemToUrl},
+        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl},
         "toExchange":{"image":"interface/hud/push.png", "action": self.itemToExchange}
     }
     self.winWardrobe = None
@@ -169,15 +169,17 @@ class IsoViewHud(isoview.IsoView):
       
   def liftItem(self, event):
     item = event.getParams()["item"]  
+    pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
-      self.__isoviewRoom.updateScreenPositionsOn(item.getPosition())  
+      self.__isoviewRoom.updateScreenPositionsOn(pos)  
   
   def dropItem(self, event):
     item = event.getParams()["item"]  
+    pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
-      self.__isoviewRoom.updateScreenPositionsOn(item.getPosition())  
+      self.__isoviewRoom.updateScreenPositionsOn(pos)  
       
   def addItemToInventory(self, event):
     """ Adds a new isoview inventory item.
@@ -258,7 +260,6 @@ class IsoViewHud(isoview.IsoView):
     bg_image = self.__bg.image
     self.__allSprites.clear(screen, bg_image)
     self.__allSprites.draw(screen)
-    
     
     pygame.display.update()
 
@@ -386,11 +387,6 @@ class IsoViewHud(isoview.IsoView):
     invIsoItem: selected item.
     """
     #print "item seleccionado"
-    """if self.__selectedItem:
-      if self.__isoviewRoom:
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.dropActionsItembuttons()
-    """
     item = invIsoItem.getModel()
     self.__player.setSelectedItem(item)
 
@@ -402,16 +398,7 @@ class IsoViewHud(isoview.IsoView):
     else:   
       self.__player.addToRoomFromInventory(self.__selectedItem)
     self.__player.setUnselectedItem()
-    """
-      self.itemUnselected()
-      
-      if self.__selectedItem:
-        if self.__isoviewRoom:  
-          self.__isoviewRoom.itemUnselected(self.__selectedItem)
-          self.__selectedItem = None
-      self.dropActionsItembuttons()
-    """
-
+    
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the hud inventory.
     spriteName: sprite name.
@@ -481,10 +468,13 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item selected event.
     event: event info.
     """
-    self.__selectedItem = event.getParams()['item'] 
+    self.__selectedItem = event.getParams()['item']
     selImgPos = self.__selectedItem.getPosition()
+    #selImgPos = event.getParams()['position']
+    #self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
+    #self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10
     self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
-    self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10
+    self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
     self.addSprite(self.__selectedImage)        
     if not self.__selectedItem.inventoryOnly():
       if self.__selectedItem.getRoom():
@@ -500,15 +490,6 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0,0
     self.buttonBarActions.add_child(imgBackground)
     
-    """
-    if self.__selectedItem.spriteInventory:
-      img = self.__selectedItem.spriteInventory
-    else:
-      if not hasattr(self.__selectedItem, "username"):
-        img = self.__selectedItem.spriteName
-      else:
-        img = "interface/editor/masko.png"
-    """
     img = self.__selectedItem.getImageLabel()
         
     from PIL import Image
@@ -522,18 +503,6 @@ class IsoViewHud(isoview.IsoView):
     img = GG.utils.OcempImageButtonTransparent(imgPath)
     img.topleft = 5,6
     self.buttonBarActions.add_child(img)
-    """
-    print self.__selectedItem
-    #if not hasattr(self.__selectedItem, "username"):
-    if hasattr(self.__selectedItem, "username"):
-      print "Username = ", self.__selectedItem.username
-      itemLabel = GG.utils.OcempLabel(self.__selectedItem.username,290)
-    elif hasattr(self.__selectedItem, "label"):
-      print "Label = ", self.__selectedItem.label
-      itemLabel = GG.utils.OcempLabel(self.__selectedItem.label,290)
-    else:
-      raise "Error: item o jugador sin etiqueta"
-    """
     
     itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290)
     
@@ -631,17 +600,18 @@ class IsoViewHud(isoview.IsoView):
       self.__player.turnLeft()
     
   def showTools(self):
-    self.__player.setCarrying()
     #print "show tools"
+    pass
 
   def showSoundControl(self):
-    self.__player.setNotCarrying()
     #print "show sound control"
+    pass
     
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
     #print "show help"
+    pass
 
   def finishGame(self):
     GG.genteguada.GenteGuada.getInstance().finish()
@@ -741,9 +711,6 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     self.__player.addToInventoryFromRoom(self.__selectedItem)
-    #self.__isoviewRoom.setItemOnTile(None, self.__selectedItem.getPosition())
-    #self.__selectedItem.getRoom().removeItem(self.__selectedItem)
-    #self.dropActionsItembuttons()
     self.__player.setUnselectedItem()    
 
   def itemCopyToInventory(self):
@@ -751,10 +718,11 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__selectedItem == None:
       return
-    item = self.__selectedItem.getCopyFor(self.__player)
+    item, pos = self.__selectedItem.getCopyFor(self.__player)
     #print "*********************",item
     if item != None:
-      self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
+      #self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
+      self.__player.addToInventoryFromVoid(item, pos)
     self.__player.setUnselectedItem()
  
   def itemToClone(self):
@@ -814,7 +782,8 @@ class IsoViewHud(isoview.IsoView):
     #print "url"
     import webbrowser
     if self.__fullScreen:
-      self.showHelp()
+      self.__fullScreen = False
+      pygame.display.toggle_fullscreen()
     webbrowser.open(self.__selectedItem.url)
     self.itemUnselected()
 

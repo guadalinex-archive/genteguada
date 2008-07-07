@@ -19,7 +19,6 @@ class IsoViewRoom(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__parent = hud
     self.__isoViewItems = []
-    #self.__allPlayers = GroupSprite()
     self.__spritesDict = {}
     self.__bottomSpritesDict = {}
     

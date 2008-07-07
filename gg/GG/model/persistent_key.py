@@ -51,12 +51,12 @@ class GGPersistentKey(room_item.GGRoomItem):
     if player.hasItemLabeledInInventory("Llave Dorada"):
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu llave dorada", \
                 'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None
+      return None, [-1, -1, -1]
     else:  
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave dorada", \
                 'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     
-      return GG.model.generated_golden_key.GGGeneratedGoldenKey(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition())
+      return GG.model.generated_golden_key.GGGeneratedGoldenKey(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition()), self.getPosition()
 
     
   def clickedBy(self, clicker):
