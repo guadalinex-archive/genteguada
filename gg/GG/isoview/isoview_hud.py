@@ -479,9 +479,7 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def setMovementDestination(self, target):
-    if self.__targetTile:
-      self.removeMovementDestination()  
-    print "*** Anade 1"  
+    self.removeMovementDestination()  
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
@@ -489,7 +487,6 @@ class IsoViewHud(isoview.IsoView):
     
   def removeMovementDestination(self):
     if self.__targetTile:
-      print "*** Borra 1"  
       self.removeSprite(self.__targetTileImage)        
       self.__targetTile = False  
     
