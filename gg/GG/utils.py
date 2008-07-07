@@ -162,7 +162,7 @@ SKYLINE_CORNER = "skylineCorner.png"
 
 TILE_MYSTCYRCLE = "mystCircle.png"
 TILE_MYSTCYRCLE_CASTLE01 = "mystCircleCastle01.png"
-TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png"]
+TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png", "grass04.png"]
 TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
 TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]
 TILES_SMALLSTONES = ["smallStones01.png", "smallStones02.png", "smallStones03.png"]
