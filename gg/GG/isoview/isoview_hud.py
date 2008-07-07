@@ -157,6 +157,8 @@ class IsoViewHud(isoview.IsoView):
   def getSelectedItem(self):
     return self.__selectedItem
 
+  def getSound(self):
+    return self.__sound
 
   def findIVItem(self, item):
     for ivItem in self.__isoviewRoom.getIsoViewItems():
@@ -237,7 +239,8 @@ class IsoViewHud(isoview.IsoView):
       if ivInventItem != None:
         self.__isoviewInventory.remove(ivInventItem)
         self.paintItemsInventory()
-      GG.utils.playSound(GG.utils.SOUND_DROPITEM)
+      if self.__sound:  
+        GG.utils.playSound(GG.utils.SOUND_DROPITEM)
       
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
@@ -280,7 +283,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
-      GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
+      if self.__sound:
+        GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
 
       list = self.__isoviewRoom.getSpritesDict()
       for img in list.keys():
@@ -475,6 +479,9 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def setMovementDestination(self, target):
+    if self.__targetTile:
+      self.removeMovementDestination()  
+    print "*** Anade 1"  
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
@@ -482,6 +489,7 @@ class IsoViewHud(isoview.IsoView):
     
   def removeMovementDestination(self):
     if self.__targetTile:
+      print "*** Borra 1"  
       self.removeSprite(self.__targetTileImage)        
       self.__targetTile = False  
     
@@ -490,16 +498,14 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item']
-    selImgPos = self.__selectedItem.getPosition()
-    #selImgPos = event.getParams()['position']
-    #self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
-    #self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10
-    self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
-    self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
-    self.addSprite(self.__selectedImage)        
     if not self.__selectedItem.inventoryOnly():
       if self.__selectedItem.getRoom():
         self.__isoviewRoom.itemSelected(self.__selectedItem)
+        selImgPos = self.__selectedItem.getPosition()
+        self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
+        self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
+        self.addSprite(self.__selectedImage)        
+    
     options = self.__selectedItem.getOptions()
     
     self.buttonBarActions = ocempgui.widgets.Box(259,95)

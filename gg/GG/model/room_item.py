@@ -133,6 +133,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     selfPos = self.getPosition()
     if clickerPos != selfPos:
       clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
+      #clicker.setDestination(self.__tile.position)
     
   def tick(self, now):
     """ Call for an update on item.

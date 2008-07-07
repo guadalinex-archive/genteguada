@@ -260,7 +260,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     ori = self.getPosition()
     end = self.getDestination()
     if GG.utils.checkNeighbour(ori, end):
-      direction = GG.utils.getNextDirection(ori, end)   
+      direction = GG.utils.getNextDirection(ori, end)
+      """
+      if self.getRoom().getTile(end).getDepth():
+        direction = GG.utils.HEADING[0]
+      else:
+        direction = GG.utils.getNextDirection(ori, end)
+      """     
     else:
       direction = self.getRoom().getNextDirection(self, ori, end)
     
