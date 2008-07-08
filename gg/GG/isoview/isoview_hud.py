@@ -110,6 +110,10 @@ class IsoViewHud(isoview.IsoView):
         "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a "},
         "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar"}
     }
+    
+    self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
+                    K_d: self.showDresser, K_j: self.jump, K_r: self.turnRight, K_l: self.turnLeft}
+                          
     self.winWardrobe = None
     self.wardrobe = None
     self.exchangeWindow = None
@@ -124,22 +128,39 @@ class IsoViewHud(isoview.IsoView):
     self.__expLabel.topleft = [GG.utils.EXP_LOCATION[0], GG.utils.EXP_LOCATION[1] - self.__expLabel.height]
     self.__isoviewRoom.addSprite(self.__expLabel)
     """
+    self.ctrl = 0
   
   def processEvent(self, events):
     for event in events:
       event_type = event.type
       if event_type == QUIT:
         GG.genteguada.GenteGuada.getInstance().finish()
+        
+      elif event_type == KEYUP:
+        if event.key == K_LCTRL or event.key == K_RCTRL:
+          print "Set ctrl = 0"  
+          self.ctrl = 0
+          
       elif event_type == KEYDOWN:
-        if event.key == K_ESCAPE:
-          GG.genteguada.GenteGuada.getInstance().finish()
-        elif event.key == K_RETURN: 
-          self.chatMessageEntered()
+        if self.ctrl:
+          print "Set ctrl = 0"  
+          self.ctrl = 0
+          self.hotkeys[event.key]()
+          # atajos de teclado
+        else:  
+          if event.key == K_LCTRL or event.key == K_RCTRL:
+            print "Set ctrl = 1"  
+            self.ctrl = 1  
+          if event.key == K_ESCAPE:
+            GG.genteguada.GenteGuada.getInstance().finish()
+          elif event.key == K_RETURN: 
+            self.chatMessageEntered()
       elif event_type == MOUSEBUTTONDOWN:
         if not self.exchangeWindow:
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
+            print dest
             if not dest == [-1, -1, -1]:
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
@@ -231,6 +252,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
+    itemPos = item.getPosition()
     ivInventItem = self.findIVInventoryItem(item)
     if ivItem:    
       posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
@@ -238,8 +260,8 @@ class IsoViewHud(isoview.IsoView):
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             #pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
-                            pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, item.getPosition()), True)
-      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, item.getPosition())
+                            pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos), True)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
         self.__isoviewInventory.remove(ivInventItem)

@@ -173,8 +173,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     destination: movement destination.
     """
     if not self.__destination == destination:
-      #for vis in self.__visited:
-      #  self.__visited.remove(vis)
       self.__visited = []
       self.__destination = destination
       self.triggerEvent('destination', destination=destination)
@@ -272,7 +270,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       direction = self.getRoom().getNextDirection(self, ori, end)
       if direction == GG.utils.HEADING[0]:
         #print self.getPosition(), self.__destination  
-        self.newChatMessage("No puedo llegar hasta alli", 2)
+        self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
         self.setDestination(self.getPosition())
         return
     

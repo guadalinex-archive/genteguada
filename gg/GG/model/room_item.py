@@ -44,7 +44,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def getPosition(self):
     """ Returns the item position.
     """
-    return self.getTile().position
+    return self.__tile.position
   
   def setPosition(self, pos):
     """ Sets a new position for the item.

@@ -738,7 +738,7 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
     ocempgui.widgets.ImageButton.__init__(self, image)
     #trultri = ocempgui.widgets.TooltipWindow("CULO")
     #print trultri
-    self.tooltip = "CULO3"
+    self.tooltip = "tooltip"
     self.tooltipWindow = None
     self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, self._make_tooltip)
     self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, self._destroy_tooltip)
@@ -783,7 +783,7 @@ class OcempImageButtonTransparent2(ocempgui.widgets.ImageButton):
     self.tooltipWindow = None
     self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, tooltipShow, label)
     self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, tooltipRemove)
-
+    
   def draw(self):
     ocempgui.widgets.ImageButton.draw(self)
     self._image = self.picture

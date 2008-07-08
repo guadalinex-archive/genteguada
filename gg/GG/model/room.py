@@ -161,7 +161,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
           bottom.clickedBy(player)
         else:
           if not GG.utils.checkNeighbour(target, player.getPosition()) and self.getNextDirectionForAnItem(target, player.getPosition()) == "none":
-            player.newChatMessage("No puedo llegar hasta alli­", 2)
+            player.newChatMessage("No puedo llegar hasta ese lugar.", 2)
+            print "que no estoy saltando"
             return
           player.setDestination(target)
           
