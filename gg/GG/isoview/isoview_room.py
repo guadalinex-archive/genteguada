@@ -180,8 +180,10 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     i = 0
+    if len(itemList):
+      fixedScPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
     for item in itemList:
-      scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
+      scPos = fixedScPos  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
         if i == 0:
