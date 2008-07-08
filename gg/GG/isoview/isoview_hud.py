@@ -93,22 +93,22 @@ class IsoViewHud(isoview.IsoView):
     self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
     
     self.buttonActions = {
-        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory, "tooltip":"al inventario"},
-        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory, "tooltip":"al inventario"},
-        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory, "tooltip":" sacar del inventario"},
-        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift, "tooltip":"levantar"},
-        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop, "tooltip":" arrastrar"},
-        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb, "tooltip":"subir"},
-        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone, "tooltip":"al inventario"},
-        "push":{"image":"interface/hud/push.png", "action": self.itemToPush, "tooltip":"empujar"},
-        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "subir"},
-        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"hablar"},
-        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"hablar"},
-        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"chat"},
-        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"intercambio"},
-        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"abrir"},
-        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"ir a "},
-        "toExchange":{"image":"interface/hud/push.png", "action": self.itemToExchange, "tooltip":"al intercambio"}
+        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory, "tooltip":"Al inventario"},
+        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory, "tooltip":"Al inventario"},
+        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory, "tooltip":" Sacar del inventario"},
+        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift, "tooltip":"Levantar"},
+        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop, "tooltip":" Arrastrar"},
+        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb, "tooltip":"Subir"},
+        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone, "tooltip":"Al inventario"},
+        "push":{"image":"interface/hud/push.png", "action": self.itemToPush, "tooltip":"Empujar"},
+        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "Subir"},
+        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"Hablar"},
+        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"Hablar"},
+        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"Chat"},
+        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"Intercambiar"},
+        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir"},
+        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a "},
+        "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar"}
     }
     self.winWardrobe = None
     self.wardrobe = None
@@ -728,9 +728,9 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     ACTIONS = [
-                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"rotar derecha"},
-                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"rotar izquierda"},
-                {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"saltar"},
+                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"Rotar derecha"},
+                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"Rotar izquierda"},
+                {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar"},
                 {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar"},
               ]
     i = 0
