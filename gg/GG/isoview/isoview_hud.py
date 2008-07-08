@@ -88,22 +88,22 @@ class IsoViewHud(isoview.IsoView):
     self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
     
     self.buttonActions = {
-        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory},
-        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory},
-        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory},
-        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift},
-        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop},
-        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb},
-        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone},
-        "push":{"image":"interface/hud/push.png", "action": self.itemToPush},
-        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp},
-        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk},
-        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet},
-        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat},
-        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer},
-        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen},
-        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl},
-        "toExchange":{"image":"interface/hud/push.png", "action": self.itemToExchange}
+        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory, "tooltip":"al inventario"},
+        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory, "tooltip":"al inventario"},
+        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory, "tooltip":" sacar del inventario"},
+        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift, "tooltip":"levantar"},
+        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop, "tooltip":" arrastrar"},
+        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb, "tooltip":"subir"},
+        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone, "tooltip":"al inventario"},
+        "push":{"image":"interface/hud/push.png", "action": self.itemToPush, "tooltip":"empujar"},
+        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "subir"},
+        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"hablar"},
+        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"hablar"},
+        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"chat"},
+        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"intercambio"},
+        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"abrir"},
+        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"ir a "},
+        "toExchange":{"image":"interface/hud/push.png", "action": self.itemToExchange, "tooltip":"al intercambio"}
     }
     self.winWardrobe = None
     self.wardrobe = None
@@ -245,14 +245,19 @@ class IsoViewHud(isoview.IsoView):
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
-    #self.paintBackground()
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.getScreen())
+    self.paintBackground()
     self.paintInventory()
     self.paintChat()
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
+
+    self.hud.zOrder = 10000
+    self.addSprite(self.hud)
+    self.widgetContainer.add_widget(self.hud)
+
 
   def updateFrame(self, ellapsedTime):
     """ Updates all sprites for a new frame.
@@ -260,11 +265,11 @@ class IsoViewHud(isoview.IsoView):
     #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
     #se vean sobre el HUD y no debajo como ahora.
 
-    self.paintBackground()
-    self.buttonBar.update()
-    self.textArea.update()
-    self.__textField.update()
-    self.windowInventory.update()
+    #self.paintBackground()
+    #self.buttonBar.update()
+    #self.textArea.update()
+    #self.__textField.update()
+    #self.windowInventory.update()
 
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
@@ -310,7 +315,15 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
+    self.hud = ocempgui.widgets.Box(1024,262)
+    self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_lower.png")
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.hud.add_child(imgBackground)
+
+    #self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
+    #self.__img.zOrder = 0
     #self.addSprite(self.__img)
     #pygame.display.update()
 
@@ -354,13 +367,15 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.update()
     self.textArea.set_scrolling(1)
    # self.textArea.border = 1
-    self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1] + 20
+    #self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1] + 20
+    self.textArea.topleft = GG.utils.CHAT_OR[0], 70
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.textArea.child = self.__layoutTextArea
-    self.widgetContainer.add_widget(self.textArea)
-    self.widgetContainer.update()
+    self.hud.add_child(self.textArea)
+    #self.widgetContainer.add_widget(self.textArea)
+    #self.widgetContainer.update()
     #print self.textArea.create_style()
   
   def paintTextBox(self):
@@ -369,9 +384,11 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = 14, 732
+    #self.__textField.topleft = 14, 732
+    self.__textField.topleft = 14, 190
     self.__textField.set_minimum_size(571, 30)
-    self.widgetContainer.add_widget(self.__textField)
+    self.hud.add_child(self.__textField)
+    #self.widgetContainer.add_widget(self.__textField)
 
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
@@ -379,8 +396,9 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = ocempgui.widgets.ScrolledWindow(190, 163)
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
-    self.windowInventory.topleft = 805, 599
-    self.widgetContainer.add_widget(self.windowInventory)
+    self.windowInventory.topleft = 805, 70
+    self.hud.add_child(self.windowInventory)
+    #self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
   def paintItemsInventory(self):
@@ -539,8 +557,8 @@ class IsoViewHud(isoview.IsoView):
     i = 0
     for action in options:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
-      button = GG.utils.OcempImageButtonTransparent2(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']), \
-                                                     "prueba", self.showTooltip, self.removeTooltip)
+      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image'])
+      button = GG.utils.OcempImageButtonTransparent2(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       button.topleft = 195 - i*60 ,40
       self.buttonBarActions.add_child(button)
@@ -581,36 +599,27 @@ class IsoViewHud(isoview.IsoView):
               ]
     """
     ACTIONS = [
-                {"image":"interface/hud/help.png", "action": self.showHelp},
-                {"image":"interface/hud/exit.png", "action": self.finishGame},
-                {"image":"interface/hud/maximize.png", "action": self.showFullScreen},
-                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
-                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
-                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
+                {"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
+                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
+                {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Pantalla completa"},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
+                {"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
+                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
               ]
     
-    self.buttonBar = ocempgui.widgets.HFrame()
-    self.buttonBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    self.buttonBar.border = 0
-    self.buttonBar.topleft = [16, 532]
-    #self.widgetContainer.add_widget(self.buttonBar)
+    i = 0
     for buttonData in ACTIONS:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
-      button = GG.utils.OcempImageButtonTransparent2(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']), \
-                                                     "prueba", self.showTooltip, self.removeTooltip)
+      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
+      button = GG.utils.OcempImageButtonTransparent2(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button.topleft = 16 + i*60 ,10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       if buttonData['image'] == "interface/hud/maximize.png":
         self.__fullscreenButton = button
       elif  buttonData['image'] == "interface/hud/sound.png":
         self.__soundButton = button
-      
-      self.buttonBar.add_child(button)
-      
-    self.buttonBar.zOrder = 10000
-    self.addSprite(self.buttonBar)
-    self.widgetContainer.add_widget(self.buttonBar)
-    #self.buttonBar.zOrder = 20000
-    #self.addSprite(self.buttonBar)
+      i+=1
+      self.hud.add_child(button)
   
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
@@ -689,25 +698,21 @@ class IsoViewHud(isoview.IsoView):
 
   def paintUserActions(self):
     
-    self.userBar = ocempgui.widgets.HFrame()
-    self.userBar.topleft = [776 ,532]
-    self.userBar.border = 0
-    self.userBar.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonBar"]))
-    self.userBar.align = ocempgui.widgets.Constants.ALIGN_LEFT
     ACTIONS = [
-                {"image":"interface/hud/dresser.png", "action": self.showDresser},
-                {"image":"interface/hud/jump.png", "action": self.jump},
-                {"image":"interface/hud/spinleft.png", "action": self.turnRight},
-                {"image":"interface/hud/spinright.png", "action": self.turnLeft},
+                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"rotar derecha"},
+                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"rotar izquierda"},
+                {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"saltar"},
+                {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar"},
               ]
+    i = 0
     for buttonData in ACTIONS:
-      button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
+      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
+      button = GG.utils.OcempImageButtonTransparent2(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button.topleft = 950 - i * 60 , 10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
-      self.userBar.add_child(button)
-    self.userBar.zOrder = 10000
-    self.addSprite(self.userBar)
-
-    self.widgetContainer.add_widget(self.userBar)
+      self.hud.add_child(button)
+      i += 1
 
     from PIL import Image
     import os
@@ -718,33 +723,28 @@ class IsoViewHud(isoview.IsoView):
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
-    img.topleft = 662,609 
-    img.zOrder = 10000
-    self.addSprite(img)
+    img.topleft = 660,84 
+    self.hud.add_child(img)
 
     labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
     labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 605, 680
-    labelUserName.zOrder = 10000
-    self.addSprite(labelUserName)
+    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 600, 150
+    self.hud.add_child(labelUserName)
     
     self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__pointsLabel.topleft = 617, 700
-    self.__pointsLabel.zOrder = 10000
-    self.addSprite(self.__pointsLabel)
+    self.__pointsLabel.topleft = 617, 170
+    self.hud.add_child(self.__pointsLabel)
 
     self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280)
     self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__labelOld.topleft = 617, 720
-    self.__labelOld.zOrder = 10000
-    self.addSprite(self.__labelOld)
+    self.__labelOld.topleft = 617, 190
+    self.hud.add_child(self.__labelOld)
 
     self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280)
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__expLabel.topleft = 617, 740
-    self.__expLabel.zOrder = 10000
-    self.addSprite(self.__expLabel) 
+    self.__expLabel.topleft = 617, 210
+    self.hud.add_child(self.__expLabel)
 
   def jump(self):
     if not self.findIVItem(self.__player).hasAnimation():
@@ -757,6 +757,7 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__selectedItem == None:
       return
+    self.removeTooltip()
     self.__selectedItem = None
     self.removeSprite(self.__selectedImage)        
     

@@ -8,7 +8,7 @@ import stat
 if os.path.isdir("gg/GG/cache"):
   LOCAL_DATA_PATH = "gg/GG/cache"
 else:
-  LOCAL_DATA_PATH = "/usr/share/pixmaps/genteguada"
+  LOCAL_DATA_PATH = "/usr/share/pixmaps/genteguada/cache"
 CLEAR_CACHE_WEEKS = 4
 
 #resources
@@ -18,10 +18,10 @@ if os.path.isdir("gg/GG/data"):
   NINO_PATH = "avatars/default_boy/"
   NINA_PATH = "avatars/default_girl/"
 else:
-  DATA_PATH = "/usr/share/pixmaps/genteguada"
-  SOUND_PATH = "/usr/share/pixmaps/genteguada/sound"
-  NINO_PATH = "/usr/share/pixmaps/genteguada/avatars/default_boy/"
-  NINA_PATH = "/usr/share/pixmaps/genteguada/avatars/default_girl/"
+  DATA_PATH = "/usr/share/pixmaps/genteguada/data"
+  SOUND_PATH = "/usr/share/pixmaps/genteguada/data/sound"
+  NINO_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_boy/"
+  NINA_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_girl/"
 
 VERSION = "GenteGuada 0.0.3.1"
 BG_FULL_OR = [0, 0]
