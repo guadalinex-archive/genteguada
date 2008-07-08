@@ -82,7 +82,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Changes the item's color and sets it as selected.
     """
     size = self.__img.rect
-    print "tamano imagen",size
+    #print "tamano imagen",size
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
