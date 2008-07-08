@@ -476,6 +476,7 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a new chat message event.
     event: event info.
     """
+    print "*** Recibido"
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()

@@ -272,7 +272,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       direction = self.getRoom().getNextDirection(self, ori, end)
       if direction == GG.utils.HEADING[0]:
         #print self.getPosition(), self.__destination  
-        self.newChatMessage("No puedo llegar hasta allí", 2)
+        self.newChatMessage("No puedo llegar hasta alli", 2)
         self.setDestination(self.getPosition())
         return
     
@@ -315,7 +315,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     pos: starting position on the new room.
     """
     self.updateSessionTiming()
-    GG.model.item_with_inventory.GGItemWithInventory.changeRoom(self, room, pos)
+    GG.model.room_item.GGRoomItem.changeRoom(self, room, pos)
     
   def newChatMessage(self, message, type):
     """ Triggers a new event after receiving a new chat message.

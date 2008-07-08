@@ -158,10 +158,10 @@ class GGSystem(dMVC.model.Model):
     
     room1.addItemFromVoid(myDoor1, [6, 0, 0])    
     room1.addItemFromVoid(myPenguin, [1, 0, 6])    
-    room1.addItemFromVoid(myBox, [5, 0, 5])
-    room1.addItemFromVoid(myBox2, [7, 0, 5])
-    #room1.addItemFromVoid(myGK1, [2, 0, 2])
-    #room1.addItemFromVoid(myGK2, [3, 0, 2])
+    #room1.addItemFromVoid(myBox, [5, 0, 5])
+    #room1.addItemFromVoid(myBox2, [7, 0, 5])
+    room1.addItemFromVoid(myBox, [6, 0, 6])
+    room1.addItemFromVoid(myBox2, [7, 0, 6])
     
 
     # ROOM 2
