@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import random
 import operator
 import GG.utils
@@ -157,7 +159,10 @@ class GGRoom(GG.model.ggmodel.GGModel):
         bottom = self.getTile(target).getBottomItem()
         if bottom:
           bottom.clickedBy(player)
-        else:    
+        else:
+          if not GG.utils.checkNeighbour(target, player.getPosition()) and self.getNextDirectionForAnItem(target, player.getPosition()) == "none":
+            player.newChatMessage("No puedo llegar hasta alli­", 2)
+            return
           player.setDestination(target)
           
   def getNextDirection(self, player, pos1, pos2):

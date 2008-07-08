@@ -37,7 +37,8 @@ class GGSession(ggmodel.GGModel):
     newRoom = self.__player.getRoom()
     if newRoom: 
       newRoom.subscribeEvent('chatAdded', self.chatAdded)
-      self.__player.subscribeEvent('chatAdded', self.chatAdded)
+      #self.__player.subscribeEvent('chatAdded', self.chatAdded)
+      
       #newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod

@@ -59,7 +59,7 @@ class IsoViewRoom(isoview.IsoView):
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
       #print "Insercion en ", pos, ": ", isoviewitem.getModel()
-      pos = item.getPosition()
+      #pos = item.getPosition()
       
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
