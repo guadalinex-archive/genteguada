@@ -196,6 +196,40 @@ class GGRoom(GG.model.ggmodel.GGModel):
               return first[0]
     return "none"  
     
+  def getNextDirectionForAnItem(self, pos1, pos2):
+    """ Gets the direction of an item's movement between 2 points.
+    pos1: starting point.
+    pos2: ending point.
+    """
+    startingDistance = GG.utils.p2pDistance(pos1, pos2)
+    
+    direction = []
+    direction.append([pos1[0], pos1[1], pos1[2] - 1]) #up
+    direction.append([pos1[0], pos1[1], pos1[2] + 1]) #down
+    direction.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
+    direction.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
+    direction.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
+    direction.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
+    direction.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
+    direction.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
+    
+    for i in range(0, len(direction)):
+      if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
+        if self.getBlocked(direction[i]) == 0:
+          return GG.utils.HEADING[i+1]
+    
+    dist = []
+    for i in range(0, len(direction)):
+      dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])
+    dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
+    while len(dist) > 0:
+      first = dist.pop()
+      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
+        if self.getBlocked(first[2]) == 0:
+          if first[1] < startingDistance:
+            return first[0]
+    return "none"    
+    
   def tick(self, now):
     """ Calls for an update on all player movements.
     """

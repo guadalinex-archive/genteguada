@@ -126,17 +126,19 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return False
   
   def clickedBy(self, clicker):
-    """ Triggers an avent when the item receives a click by a player.
+    """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
     clickerPos = clicker.getPosition()
     selfPos = self.getPosition()
     if clickerPos != selfPos:
-      clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.getPosition()))
-      if not GG.utils.checkNeighbour(clicker.getPosition(), self.__tile.position):
-        direction = self.__room.getNextDirection(clicker, self.__tile.position, clicker.getPosition())
+      clicker.setHeading(GG.utils.getNextDirection(clickerPos, selfPos))
+      if not GG.utils.checkNeighbour(clickerPos, self.__tile.position):
+        #direction = self.__room.getNextDirection(clicker, self.__tile.position, clickerPos)
+        direction = self.__room.getNextDirectionForAnItem(self.__tile.position, clickerPos)
         destination = GG.utils.getFrontPosition(self.__tile.position, direction)
-        clicker.setDestination(destination)
+        if destination != clickerPos and destination != [-1, -1, -1]:
+          clicker.setDestination(destination)
     
   def tick(self, now):
     """ Call for an update on item.

@@ -31,7 +31,6 @@ class GGSession(ggmodel.GGModel):
     """ Triggers after receiving a change room event.
     event: event info.
     """
-    print "ejecutamos esto???"
     oldRoom = event.getParams()['oldRoom']
     if oldRoom:
       oldRoom.unsubscribeEventMethod(self.chatAdded)

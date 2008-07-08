@@ -479,16 +479,18 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def setMovementDestination(self, target):
-    self.removeMovementDestination()  
+    self.removeMovementDestination()
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
+    print "*** Activada"
     
   def removeMovementDestination(self):
     if self.__targetTile:
       self.removeSprite(self.__targetTileImage)        
-      self.__targetTile = False  
+      self.__targetTile = False
+      print "*** Desctivada"  
     
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
@@ -658,9 +660,8 @@ class IsoViewHud(isoview.IsoView):
 
   def showSoundControl(self):
     #print "show sound control"
-    self.__sound
-    if self.__fullScreen:
-      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
+    if self.__sound:
+      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/mute.png")
     else:
       self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
     self.__sound = not self.__sound
