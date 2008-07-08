@@ -654,12 +654,12 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = self.wardrobe.draw()
     self.widgetContainer.add_widget(self.winWardrobe)
     self.addSprite(self.winWardrobe)
-    #GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
+    GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
 
   def closeDresser(self, configuration = None):
     if configuration:
       self.setAvatarConfiguration(configuration)
-    #GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    GG.genteguada.GenteGuada.getInstance().activeScreen = self
     self.removeSprite(self.winWardrobe)
     self.winWardrobe.destroy()
     self.winWardrobe = None
@@ -692,7 +692,9 @@ class IsoViewHud(isoview.IsoView):
     else:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/sound.png")
       self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
-
+    
+    self.hud.remove_child(self.__soundButton)
+    self.hud.add_child(self.__soundButton)
     self.__sound = not self.__sound
 
     
@@ -711,9 +713,15 @@ class IsoViewHud(isoview.IsoView):
     print "show full screen"
     #TODO solo funciona en linux con las X, para e
     if self.__fullScreen:
-      self.__fullscreenButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
+      self.__fullscreenButton.picture = ocempgui.draw.Image.load_image(imgPath)
     else:
-      self.__fullscreenButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
+      self.__fullscreenButton.picture = ocempgui.draw.Image.load_image(imgPath)
+    
+    self.hud.remove_child(self.__fullscreenButton)
+    self.hud.add_child(self.__fullscreenButton)
+
     self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
 
