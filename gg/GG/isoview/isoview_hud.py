@@ -673,10 +673,13 @@ class IsoViewHud(isoview.IsoView):
     print "show sound control"
     if self.__sound:
       print "Cambiamos el icono a mute"
-      self.__soundButton.set_picture(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/mute.png"))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/mute.png")
+      self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
     else:
       print "Cambiamos el icono a sonido"
-      self.__soundButton.set_picture(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png"))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/sound.png")
+      self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
+    self.__soundButton.dirty = True 
     self.__sound = not self.__sound
 
     
