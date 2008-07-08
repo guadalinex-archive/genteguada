@@ -261,6 +261,7 @@ class IsoViewHud(isoview.IsoView):
 
     self.hud.zOrder = 1
     self.addSprite(self.hud)
+    print "hud ",self.hud.depth
     self.widgetContainer.add_widget(self.hud)
 
 
@@ -322,10 +323,11 @@ class IsoViewHud(isoview.IsoView):
     """
     self.hud = ocempgui.widgets.Box(1024,262)
     self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
+
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_lower.png")
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
-    self.hud.add_child(imgBackground)
+    self.imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    self.imgBackground.topleft = 0,0
+    self.hud.add_child(self.imgBackground)
 
     #self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
     #self.__img.zOrder = 0
@@ -402,6 +404,8 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
     self.windowInventory.topleft = 805, 70
+    self.windowInventory.set_depth(1)
+    print "inventario ",self.windowInventory.depth
     self.hud.add_child(self.windowInventory)
     #self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
@@ -632,7 +636,6 @@ class IsoViewHud(isoview.IsoView):
   
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
-    self.tooltipWindow.depth = 1
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8, y - 5
     self.tooltipWindow.depth = 99 # Make it the topmost widget.
@@ -649,14 +652,18 @@ class IsoViewHud(isoview.IsoView):
     self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
     self.winWardrobe = self.wardrobe.draw()
     self.widgetContainer.add_widget(self.winWardrobe)
-    GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
+    self.addSprite(self.winWardrobe)
+    #GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
 
   def closeDresser(self, configuration = None):
     if configuration:
       self.setAvatarConfiguration(configuration)
-    GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    #GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    self.removeSprite(self.winWardrobe)
     self.winWardrobe.destroy()
     self.winWardrobe = None
+    self.hud.remove_child(self.imgBackground)
+    self.hud.insert_child(0,self.imgBackground)
 
   def setAvatarConfiguration(self,configuration):
     GG.genteguada.GenteGuada.getInstance().uploadAvatarConfiguration(configuration, self.__player)
@@ -677,16 +684,14 @@ class IsoViewHud(isoview.IsoView):
     pass
 
   def showSoundControl(self):
-    print "show sound control"
+    
     if self.__sound:
-      print "Cambiamos el icono a mute"
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/mute.png")
       self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
     else:
-      print "Cambiamos el icono a sonido"
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/sound.png")
       self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
-    self.__soundButton.dirty = True 
+
     self.__sound = not self.__sound
 
     
