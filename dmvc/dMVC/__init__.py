@@ -41,7 +41,7 @@ def objectToSerialize(obj, rServer): #{{{
     return obj.objectToSerialize(rServer)
 
   elif isinstance(obj, list): 
-    return tuple(map(lambda each: objectToSerialize(each, rServer), obj))
+    return list(map(lambda each: objectToSerialize(each, rServer), obj))
 
   elif isinstance(obj, tuple):
     return tuple(map(lambda each: objectToSerialize(each, rServer), obj))
