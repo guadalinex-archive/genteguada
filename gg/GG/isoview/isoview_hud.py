@@ -21,10 +21,11 @@ class IsoViewHud(isoview.IsoView):
   Defines the HUD.
   """
   
-  def __init__(self, model, screen, parent):
+  def __init__(self, model, screen, parent, fullscreen):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
+    fullscreen: sets the game as started on fullscreen or not.
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__isoviewInventory = []
@@ -46,7 +47,10 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = None
     self.windowInventory = None
     
-    self.__fullScreen = False
+    if fullscreen:
+      self.__fullScreen = True
+    else:
+      self.__fullScreen = False
     self.__sound = True
     
     self.__soundButton = None
@@ -588,26 +592,24 @@ class IsoViewHud(isoview.IsoView):
   def paintActionButtons(self):
     """ Paints the general action buttons.
     """
-    """
-    ACTIONS = [
-                {"image":"interface/hud/dresser.png", "action": self.showDresser},
-                {"image":"interface/hud/rotateright.png", "action": self.turnRight},
-                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft},
-                {"image":"interface/hud/tools.png", "action": self.showTools},
-                {"image":"interface/hud/sound.png", "action": self.showSoundControl},
-                #{"image":"interface/hud/help.png", "action": self.showHelp},
-                {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
-              ]
-    """
-
-    ACTIONS = [
+    if not self.__fullScreen:
+      ACTIONS = [
                 #{"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
-                {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Pantalla completa"},
+                {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
-              ]
+                ]
+    else:
+      ACTIONS = [
+                #{"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
+                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
+                {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla"},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
+                #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
+                #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
+                ]
     
     i = 0
     for buttonData in ACTIONS:
@@ -616,9 +618,9 @@ class IsoViewHud(isoview.IsoView):
       button = GG.utils.OcempImageButtonTransparent2(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = 16 + i*60 ,10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
-      if buttonData['image'] == "interface/hud/maximize.png":
+      if buttonData['action'] == self.showFullScreen:
         self.__fullscreenButton = button
-      elif  buttonData['image'] == "interface/hud/sound.png":
+      elif  buttonData['action'] == self.showSoundControl:
         self.__soundButton = button
       i+=1
       self.hud.add_child(button)

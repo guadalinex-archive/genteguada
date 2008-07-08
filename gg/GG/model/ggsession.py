@@ -41,11 +41,11 @@ class GGSession(ggmodel.GGModel):
       #newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod
-  def defaultView(self, screen, parent):
+  def defaultView(self, screen, parent, fullscreen):
     """ Esto deberia ser IsoViewSession.
     screen: screen handler.
     """
-    return GG.isoview.isoview_hud.IsoViewHud(self, screen, parent)
+    return GG.isoview.isoview_hud.IsoViewHud(self, screen, parent, fullscreen)
 
   def logout(self):
     """ Ends an user session.

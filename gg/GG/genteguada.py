@@ -62,6 +62,12 @@ class GenteGuada:
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,
                                           pygame.HWSURFACE | pygame.DOUBLEBUF,
                                           0)
+    if params.fullscreen:
+      pygame.display.toggle_fullscreen()
+      self.fs = params.fullscreen
+    else:
+      self.fs = 0    
+    
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
@@ -109,7 +115,7 @@ class GenteGuada:
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
-    self.isoHud = self.session.defaultView(self.screen,self)
+    self.isoHud = self.session.defaultView(self.screen,self,self.fs)
     self.screen.fill([0,0,0])
     self.isoHud.draw()
     self.activeScreen = self.isoHud
