@@ -598,13 +598,14 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/fullscreen.png", "action": self.showFullScreen},
               ]
     """
+
     ACTIONS = [
-                {"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
+                #{"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
                 {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Pantalla completa"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
-                {"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
-                {"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
+                #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
+                #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
               ]
     
     i = 0
