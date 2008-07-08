@@ -11,6 +11,7 @@ import random
 import avatareditor
 import animation
 import exchangewindow
+import os
 
 from pygame.locals import * # faster name resolution
 
@@ -669,12 +670,15 @@ class IsoViewHud(isoview.IsoView):
     pass
 
   def showSoundControl(self):
-    #print "show sound control"
+    print "show sound control"
     if self.__sound:
-      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/mute.png")
+      print "Cambiamos el icono a mute"
+      self.__soundButton.set_picture(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/mute.png"))
     else:
-      self.__soundButton.picture = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
+      print "Cambiamos el icono a sonido"
+      self.__soundButton.set_picture(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png"))
     self.__sound = not self.__sound
+
     
   def showHelp(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
