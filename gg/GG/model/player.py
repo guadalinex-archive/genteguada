@@ -256,7 +256,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       if self.__state == GG.utils.STATE[4]:
         self.setState(GG.utils.STATE[3])
         return
-    
+      return
+  
     ori = self.getPosition()
     end = self.getDestination()
     if GG.utils.checkNeighbour(ori, end):
@@ -269,6 +270,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       """     
     else:
       direction = self.getRoom().getNextDirection(self, ori, end)
+      if direction == GG.utils.HEADING[0]:
+        #print self.getPosition(), self.__destination  
+        self.newChatMessage("No puedo llegar hasta allí", 2)
+        self.setDestination(self.getPosition())
+        return
     
     if direction == GG.utils.HEADING[0]:
       self.setDestination(self.getPosition())

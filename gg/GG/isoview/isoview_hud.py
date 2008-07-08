@@ -259,7 +259,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintActionButtons()
     self.paintUserActions()
 
-    self.hud.zOrder = 10000
+    self.hud.zOrder = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
 
@@ -306,7 +306,7 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
-      self.buttonBar.update()
+      #self.buttonBar.update()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       
@@ -507,13 +507,18 @@ class IsoViewHud(isoview.IsoView):
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
-    print "*** Activada"
     
   def removeMovementDestination(self):
-    if self.__targetTile:
-      self.removeSprite(self.__targetTileImage)        
-      self.__targetTile = False
-      print "*** Desctivada"  
+    #if self.__targetTile:
+    #if self.__allSprites.has(self.__targetTileImage):
+      #if self.__allSprites.has(self.__targetTileImage):
+    try:
+      self.removeSprite(self.__targetTileImage)  
+    except KeyError:
+        # This can happen if a sprite is removed before
+        # update() has had a chance to be called.
+      pass
+    self.__targetTile = False
     
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
