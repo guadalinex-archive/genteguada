@@ -170,7 +170,7 @@ class GGSystem(dMVC.model.Model):
     myDoor2A = GG.model.door_lobby.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [6, 0, 1], room1, "puerta room2b")
     myDoor2B = GG.model.door_lobby.GGDoorLobby("furniture/" + GG.utils.DOOR_WOODEN, [30, 22], [0, 0], [6, 0, 6], room3, "puerta room2a")
     myDoor2C = GG.model.door_secretroom.GGDoorSecretRoom("furniture/" + GG.utils.WALL_LEFT, wallOffset, [0, 0], [6, 0, 6], room6, "puerta room2c")
-    myPenguinShirt = GG.model.penguin_room5_shirt.GGPenguinRoom5Shirt(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt")
+    myPenguinShirt = GG.model.penguin_room5_shirt.GGPenguinRoom5Shirt(GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt")
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
     myGoldenKeyRoom2 = GG.model.persistent_key.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
