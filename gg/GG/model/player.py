@@ -173,8 +173,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     destination: movement destination.
     """
     if not self.__destination == destination:
-      for vis in self.__visited:
-        self.__visited.remove(vis)
+      #for vis in self.__visited:
+      #  self.__visited.remove(vis)
       self.__visited = []
       self.__destination = destination
       self.triggerEvent('destination', destination=destination)
