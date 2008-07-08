@@ -582,12 +582,12 @@ class AvatarEditor:
 
   def paintButtons(self):
     buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"))
-    buttonOK.topleft = [780, 710]
+    buttonOK.topleft = [770, 30]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeConfiguration)
     self.window.add_child(buttonOK)
      
     buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
-    buttonCancel.topleft = [900, 710]
+    buttonCancel.topleft = [890, 30]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeConfiguration)
     self.window.add_child(buttonCancel)
 
