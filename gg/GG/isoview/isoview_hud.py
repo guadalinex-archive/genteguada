@@ -595,7 +595,7 @@ class IsoViewHud(isoview.IsoView):
     for action in options:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image'])
-      button = GG.utils.OcempImageButtonTransparent2(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
+      button = GG.utils.OcempImageButtonTransparent(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       button.topleft = 195 - i*60 ,40
       self.buttonBarActions.add_child(button)
@@ -647,7 +647,7 @@ class IsoViewHud(isoview.IsoView):
     for buttonData in ACTIONS:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
-      button = GG.utils.OcempImageButtonTransparent2(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button = GG.utils.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = 16 + i*60 ,10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       if buttonData['action'] == self.showFullScreen:
@@ -759,7 +759,7 @@ class IsoViewHud(isoview.IsoView):
     for buttonData in ACTIONS:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image']))
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
-      button = GG.utils.OcempImageButtonTransparent2(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button = GG.utils.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = 950 - i * 60 , 10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.hud.add_child(button)
