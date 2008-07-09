@@ -105,7 +105,13 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    for image in self.__spritesDict:
+    def cmp(x, y):
+      return y.zOrder - x.zOrder
+    images = self.__spritesDict.keys()
+    images.sort(cmp)  
+    
+    #for image in self.__spritesDict:
+    for image in images:
       if self.__spritesDict[image].checkClickPosition(pos):
         item = self.__spritesDict[image].getModel() 
         return item.getPosition(), item
@@ -183,7 +189,9 @@ class IsoViewRoom(isoview.IsoView):
     if len(itemList):
       fixedScPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
     for item in itemList:
-      scPos = fixedScPos  
+      #scPos = fixedScPos
+      #scPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
+      scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
         if i == 0:

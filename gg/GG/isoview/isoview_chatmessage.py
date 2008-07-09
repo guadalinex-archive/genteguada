@@ -25,7 +25,11 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.label.set_minimum_size(150,50)
     self.label.opacity = 200
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
+    #self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
+    if (pos[1] - 40 - (self.label.height/2)) > 0:
+      self.label.topleft = [pos[0] + 40, pos[1] - 40 - (self.label.height/2)]
+    else:  
+      self.label.topleft = [pos[0] + 40, 0]  
     self.label.zOrder = 20000
     self.__isohud.addSprite(self.label)
     
