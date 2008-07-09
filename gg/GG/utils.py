@@ -732,17 +732,15 @@ class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
   def draw (self):
     self._image = self.picture
       
+
 class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
 
-  def __init__(self, image):
+  def __init__(self, image, label = None, tooltipShow = None, tooltipRemove = None):
     ocempgui.widgets.ImageButton.__init__(self, image)
-    #trultri = ocempgui.widgets.TooltipWindow("CULO")
-    #print trultri
-    self.tooltip = "tooltip"
-    self.tooltipWindow = None
-    self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, self._make_tooltip)
-    self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, self._destroy_tooltip)
-
+    if tooltipShow and label:
+      self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, tooltipShow, label)
+    if tooltipShow and label and tooltipRemove:
+      self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, tooltipRemove)
     
   def draw(self):
     ocempgui.widgets.ImageButton.draw(self)
@@ -751,67 +749,6 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
   def update(self): 
     self.draw()
   
-  def _make_tooltip (self):
-        # Destroy the tooltip, if it exists.
-    if self.tooltipWindow:
-        self.tooltipWindow.destroy ()
-
-    # Create a new tooltip.
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (self.tooltip)
-    x, y = pygame.mouse.get_pos ()
-    self.tooltipWindow.topleft = x + 8, y - 5
-    self.tooltipWindow.depth = 99 # Make it the topmost widget.
-
-    #renderer.add_widget (self.tooltipWindow)
-
-  def _destroy_tooltip (self):
-    # Destroy the tooltip, if it exists.
-    
-    if self.tooltipWindow:
-        self.tooltipWindow.destroy ()
-        self.tooltipWindow = None
-
-#*************************************************************
-
-class OcempImageButtonTransparent2(ocempgui.widgets.ImageButton):
-
-  def __init__(self, image, label, tooltipShow, tooltipRemove):
-    ocempgui.widgets.ImageButton.__init__(self, image)
-    #trultri = ocempgui.widgets.TooltipWindow("CULO")
-    #print trultri
-    self.tooltip = label
-    self.tooltipWindow = None
-    self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, tooltipShow, label)
-    self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, tooltipRemove)
-    
-  def draw(self):
-    ocempgui.widgets.ImageButton.draw(self)
-    self._image = self.picture
-  
-  def update(self): 
-    self.draw()
-  
-  def _make_tooltip (self):
-        # Destroy the tooltip, if it exists.
-    if self.tooltipWindow:
-        self.tooltipWindow.destroy ()
-
-    # Create a new tooltip.
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (self.tooltip)
-    x, y = pygame.mouse.get_pos ()
-    self.tooltipWindow.topleft = x + 8, y - 5
-    self.tooltipWindow.depth = 99 # Make it the topmost widget.
-
-    #renderer.add_widget (self.tooltipWindow)
-
-  def _destroy_tooltip (self):
-    # Destroy the tooltip, if it exists.
-    
-    if self.tooltipWindow:
-        self.tooltipWindow.destroy ()
-        self.tooltipWindow = None
-
-#*************************************************************
 
 class OcempImageFileList(ocempgui.widgets.FileList):
   
