@@ -92,27 +92,36 @@ class IsoViewHud(isoview.IsoView):
     self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
     
+    self.__activeActions = []
+    self.restoreActiveActionButtonsList()
+    
     self.buttonActions = {
-        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory, "tooltip":"Al inventario"},
-        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory, "tooltip":"Al inventario"},
-        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory, "tooltip":" Sacar del inventario"},
-        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift, "tooltip":"Levantar"},
-        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop, "tooltip":" Arrastrar"},
-        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb, "tooltip":"Subir"},
-        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone, "tooltip":"Al inventario"},
-        "push":{"image":"interface/hud/push.png", "action": self.itemToPush, "tooltip":"Empujar"},
-        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "Subir"},
-        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"Hablar"},
-        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"Hablar"},
-        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"Chat"},
-        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"Intercambiar"},
-        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir"},
-        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a "},
-        "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar"}
+        "inventory":{"image":"interface/hud/movein.png", "action": self.itemToInventory, "tooltip":"Al inventario (P)"},
+        "copy":{"image":"interface/hud/movein.png", "action": self.itemCopyToInventory, "tooltip":"Al inventario (C)"},
+        "removeInventory":{"image":"interface/hud/moveout.png", "action": self.itemOutInventory, "tooltip":" Sacar del inventario (M)"},
+        "lift":{"image":"interface/hud/lift.png", "action": self.itemToLift, "tooltip":"Levantar (I)"},
+        "drop":{"image":"interface/hud/drop.png", "action": self.itemToDrop, "tooltip":"Soltar (Q)"},
+        "climb":{"image":"interface/hud/climb.png", "action": self.itemToClimb, "tooltip":"Subir (B)"},
+        "clone":{"image":"interface/hud/movein.png", "action": self.itemToClone, "tooltip":"Al inventario (Y)"},
+        "push":{"image":"interface/hud/push.png", "action": self.itemToPush, "tooltip":"Empujar (K)"},
+        "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "Subir (P)"},
+        "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"Hablar (T)"},
+        "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"Hablar (G)"},
+        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"Chat (H)"},
+        "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"Intercambiar (E)"},
+        "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir (O)"},
+        "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a (W)"},
+        "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"}
     }
     
     self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
-                    K_d: self.showDresser, K_j: self.jump, K_r: self.turnRight, K_l: self.turnLeft}
+                    K_d: self.showDresser, K_j: self.jump, K_r: self.turnRight, K_l: self.turnLeft, \
+                    K_p: self.itemToInventory, K_c: self.itemCopyToInventory, K_m: self.itemOutInventory, \
+                    K_i: self.itemToLift , K_q: self.itemToDrop , K_b: self.itemToClimb , \
+                    K_y: self.itemToClone , K_k: self.itemToPush , K_p: self.itemToUp , \
+                    K_t: self.itemToTalk , K_g: self.itemToTalkAndGet , K_h: self.privateChat , \
+                    K_e: self.exchangeItemPlayer , K_o: self.itemToOpen , K_w: self.itemToUrl , \
+                    K_a: self.itemToExchange}
                           
     self.winWardrobe = None
     self.wardrobe = None
@@ -139,18 +148,16 @@ class IsoViewHud(isoview.IsoView):
         
       elif event_type == KEYUP:
         if event.key == K_LCTRL or event.key == K_RCTRL:
-          print "Set ctrl = 0"  
           self.ctrl = 0
           
       elif event_type == KEYDOWN:
         if self.ctrl:
-          print "Set ctrl = 0"  
-          self.ctrl = 0
-          self.hotkeys[event.key]()
-          # atajos de teclado
+          #self.ctrl = 0
+          if self.hotkeys[event.key] in self.__activeActions:
+            self.hotkeys[event.key]()
+            # atajos de teclado
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
-            print "Set ctrl = 1"  
             self.ctrl = 1  
           if event.key == K_ESCAPE:
             GG.genteguada.GenteGuada.getInstance().finish()
@@ -161,11 +168,20 @@ class IsoViewHud(isoview.IsoView):
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
-            print dest
             if not dest == [-1, -1, -1]:
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
+  def restoreActiveActionButtonsList(self):
+    self.__activeActions = []  
+    self.__activeActions.append(self.finishGame)
+    self.__activeActions.append(self.showFullScreen)
+    self.__activeActions.append(self.showSoundControl)
+    self.__activeActions.append(self.showDresser)
+    self.__activeActions.append(self.jump)
+    self.__activeActions.append(self.turnRight)
+    self.__activeActions.append(self.turnLeft)
+    
   def compareSelectedItem(self, item):
     if self.__selectedItem:  
       return self.__selectedItem.checkSimilarity(item)
@@ -284,7 +300,7 @@ class IsoViewHud(isoview.IsoView):
 
     self.hud.zOrder = 1
     self.addSprite(self.hud)
-    print "hud ",self.hud.depth
+    #print "hud ",self.hud.depth
     self.widgetContainer.add_widget(self.hud)
 
 
@@ -428,7 +444,7 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory.border = 1
     self.windowInventory.topleft = 805, 70
     self.windowInventory.set_depth(1)
-    print "inventario ",self.windowInventory.depth
+    #print "inventario ",self.windowInventory.depth
     self.hud.add_child(self.windowInventory)
     #self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
@@ -593,11 +609,13 @@ class IsoViewHud(isoview.IsoView):
     itemLabel.topleft = 35,10
     self.buttonBarActions.add_child(itemLabel)
     i = 0
+    self.restoreActiveActionButtonsList()
     for action in options:
       #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image'])
       button = GG.utils.OcempImageButtonTransparent(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
+      self.__activeActions.append(self.buttonActions[action]['action'])
       button.topleft = 195 - i*60 ,40
       self.buttonBarActions.add_child(button)
       i+=1
@@ -610,7 +628,8 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.removeSprite(self.__selectedImage)        
+        self.removeSprite(self.__selectedImage)
+        self.restoreActiveActionButtonsList()     
     
     self.dropActionsItembuttons()
 
@@ -628,18 +647,18 @@ class IsoViewHud(isoview.IsoView):
     if not self.__fullScreen:
       ACTIONS = [
                 #{"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
-                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
-                {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla"},
-                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
+                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
+                {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
     else:
       ACTIONS = [
                 #{"image":"interface/hud/help.png", "action": self.showHelp, "tooltip":"Ayuda"},
-                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar"},
-                {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla"},
-                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido"},
+                {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
+                {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
+                {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
@@ -736,10 +755,12 @@ class IsoViewHud(isoview.IsoView):
     print "show full screen"
     #TODO solo funciona en linux con las X, para e
     if self.__fullScreen:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
+      #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
       self.__fullscreenButton.picture = ocempgui.draw.Image.load_image(imgPath)
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
+      #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/maximize.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
       self.__fullscreenButton.picture = ocempgui.draw.Image.load_image(imgPath)
     
     self.hud.remove_child(self.__fullscreenButton)
@@ -751,10 +772,10 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     ACTIONS = [
-                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"Rotar derecha"},
-                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"Rotar izquierda"},
-                {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar"},
-                {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar"},
+                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"Rotar derecha (R)"},
+                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"Rotar izquierda (L)"},
+                {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar (J)"},
+                {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar (D)"},
               ]
     i = 0
     for buttonData in ACTIONS:
