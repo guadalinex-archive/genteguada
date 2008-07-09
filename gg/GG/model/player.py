@@ -328,7 +328,15 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
-      self.triggerEvent('selectedItem', item=item, position=self.getPosition())
+      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=1)
+  
+  def setSelectedItemWithoutHighlight(self, item):
+    """ Sets an item as selected, but it doesn't hightlights it.
+    """
+    #print "Selected: ", item
+    if self.__selected != item:
+      self.__selected = item
+      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=0)
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.

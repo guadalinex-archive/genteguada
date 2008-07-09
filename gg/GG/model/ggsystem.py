@@ -21,6 +21,7 @@ import GG.model.door_room3c2
 import GG.model.door_room5b
 import GG.model.door_secretroom
 import GG.model.web_cube
+import GG.model.web_pannel
 import GG.model.golden_key_room2
 import GG.model.persistent_key
 import thread
@@ -151,9 +152,9 @@ class GGSystem(dMVC.model.Model):
     #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [3, 0, 0])
     #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [4, 0, 0])
     #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [5, 0, 0])
-    room1.addItemFromVoid(GG.model.web_cube.GGWebCube("furniture/" + GG.utils.ADVERTISEMENT_LEFT, [60, 140], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [3, 0, 0])
-    room1.addItemFromVoid(GG.model.web_cube.GGWebCube("furniture/" + GG.utils.ADVERTISEMENT_MIDDLE, [40, 170], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [4, 0, 0])
-    room1.addItemFromVoid(GG.model.web_cube.GGWebCube("furniture/" + GG.utils.ADVERTISEMENT_RIGHT, [20, 200], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [5, 0, 0])
+    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_LEFT, [60, 140], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [3, 0, 0])
+    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_MIDDLE, [40, 170], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [4, 0, 0])
+    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_RIGHT, [20, 200], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [5, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [7, 0, 0])
     for z in range(1, room2.size[1]-1):
       room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_LEFT, fenceOffset, [0, 0]), [0, 0, z])

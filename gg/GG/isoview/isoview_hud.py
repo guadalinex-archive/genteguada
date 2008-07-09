@@ -569,9 +569,11 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item']
+    highlight = event.getParams()['highlight']
     if not self.__selectedItem.inventoryOnly():
       if self.__selectedItem.getRoom():
-        self.__isoviewRoom.itemSelected(self.__selectedItem)
+        if highlight:  
+          self.__isoviewRoom.itemSelected(self.__selectedItem)
         selImgPos = self.__selectedItem.getPosition()
         self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
         self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
