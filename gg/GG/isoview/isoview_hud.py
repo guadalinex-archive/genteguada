@@ -117,6 +117,7 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = None
     self.wardrobe = None
     self.exchangeWindow = None
+    self.tooltipWindow = None
     """
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
