@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+echo -n "cambiando permisos...."
+
+chmod 777 /usr/share/avatargenerator/imagesGenerated
+
