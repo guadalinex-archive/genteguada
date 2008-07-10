@@ -29,6 +29,14 @@ class GenteGuada:
   def getInstance():
     return GenteGuada.instance
   
+  def input(self, events):
+    for event in events:
+      if event.type == pygame.locals.QUIT:
+        self.finish()
+      if event.type == pygame.locals.KEYDOWN:
+        if event.key == pygame.locals.K_ESCAPE:
+          self.finish()
+    
   """
   def input(self, events):
     for event in events:
@@ -101,7 +109,8 @@ class GenteGuada:
     self.screen.blit(img, (0, 0))
     pygame.display.flip()
     while self.system.getEntryRoom().isFull():
-      time.sleep(1)  
+      time.sleep(2) 
+      self.input(pygame.event.get())
     self.initGame()
 
   def __getSystem(self, ipAddress):
