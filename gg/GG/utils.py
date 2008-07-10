@@ -39,6 +39,7 @@ HUD_SZ = [1024, SCREEN_SZ[1] - GAMEZONE_SZ[1]]
 HUD_OR = [0, GAMEZONE_SZ[1]]
 
 COLOR_SHIFT = 80
+TEXT_LINE_LENGTH = 40
 
 # Login
 LOGIN_USERNAME_OR = [SCREEN_SZ[0]/2 + 10, SCREEN_SZ[1]/2 - 20]
@@ -705,51 +706,24 @@ class GroupSprite(pygame.sprite.Group):
 class OcempLabel( ocempgui.widgets.Label):
 
   def __init__(self, text, width):
-    cad = text 
-    l = ocempgui.widgets.Label(cad)
-    if l.size[0] > width:
-      words = text.split(" ")
-      cad = ""
-      auxCad = ""
-      for word in words:
-        auxCad += word
-        l = ocempgui.widgets.Label(auxCad)
-        if l.size[0] < width:
-          cad += word+" "
-        else:
-          if auxCad == word:
-            cad += word
-          else:
-            cad += "\n"+word+" "
-          auxCad = word
-    ocempgui.widgets.Label.__init__(self,cad)
+    line = ""  
+    cad = text
+    width = width/5
+    while len(cad) > width:
+      cad2aux = cad[0:width]
+      blankPos = cad2aux.rfind(" ")
+      if blankPos > 0:
+        line = line + cad[0:blankPos] + "\n"     
+        cad = cad[blankPos+1:]
+      else:  
+        line = line + cad[0:width] + "\n"     
+        cad = cad[width:]  
+    line = line + cad    
+    
+    ocempgui.widgets.Label.__init__(self,line)
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
-  
-  """
-  def __init__(self, text, width):
-    cad = text 
-    l = ocempgui.widgets.Label(cad)
-    if l.size[0] > width:
-      words = text.split(" ")
-      cad = ""
-      auxCad = ""
-      for word in words:
-        auxCad += word
-        l = ocempgui.widgets.Label(auxCad)
-        if l.size[0] < width:
-          cad += word+" "
-        else:
-          if auxCad == word:
-            cad += word
-          else:
-            cad += "\n"+word+" "
-          auxCad = word
-    ocempgui.widgets.Label.__init__(self,cad)
-    self.multiline = True
-    self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
-  """
-
+    
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
 
   def __init__(self, image):

@@ -468,7 +468,6 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory.border = 1
     self.windowInventory.topleft = 805, 70
     self.windowInventory.set_depth(1)
-    #print "inventario ",self.windowInventory.depth
     self.hud.add_child(self.windowInventory)
     #self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
