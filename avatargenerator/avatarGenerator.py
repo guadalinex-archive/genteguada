@@ -79,6 +79,7 @@ def copyFiles(filePathSrc, filePathDst):
 	
 	
 #Asign the arguments to local variables
+user = os.getenv('user')
 gender = os.getenv('gender')
 headSize = os.getenv('headSize')
 mask = os.getenv('mask')
@@ -160,12 +161,12 @@ if bodySize <> "":
 		print "Body size selected XL"
  		valueSize = 0.3
         valueSize2 = valueSize2 * 2
-	scaleObject(avatar + "Body", valueSize, valueSize, valueSizeDefault)
-	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSizeDefault)
-	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSizeDefault)
-	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSizeDefault)
-	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSizeDefault)
-	scaleObject("bagHandle",valueSize2, valueSizeDefault, valueSizeDefault)
+#	scaleObject(avatar + "Body", valueSize, valueSize, valueSizeDefault)
+#	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSizeDefault)
+#	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSizeDefault)
+#	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSizeDefault)
+#	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSizeDefault)
+#	scaleObject("bagHandle",valueSize2, valueSizeDefault, valueSizeDefault)
 	
 	
 if shirt <> "" and gender == "male":
@@ -260,47 +261,47 @@ actList.remove("sleeping")
 print actList
 
 
-if os.path.exists("imagesGenerated/") == False:
-  os.mkdir("imagesGenerated")
+if os.path.exists("imagesGenerated/" + user + "/") == False:
+  os.mkdir("imagesGenerated/" + user + "/")
 	
 for act in actList:
   action = actDict[act]
   action.setActive(arm)
   action.getFrameNumbers()[-1]
-  if os.path.exists("imagesGenerated/") == False:
-    os.mkdir("imagesGenerated/")
+#  if os.path.exists("imagesGenerated/") == False:
+#    os.mkdir("imagesGenerated/")
   for rot in rotations:
 	fileName = ""
 	rotateObject("cameraAnchor", rot)
 	if rot == 0:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_down_"
 	elif rot == 45:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_bottomleft_"
 	elif rot == 90:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_left_"
 	elif rot == 135:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_topleft_"
 	elif rot == 180:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName =  action.getName() + "_up_"
 	elif rot == 225:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_topright_"
 	elif rot == 270:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_right_"
 	elif rot == 315:
-	  renderScene("imagesGenerated/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
+	  renderScene("imagesGenerated/" + user + "/", action.getFrameNumbers()[0], action.getFrameNumbers()[-1])
 	  fileName = action.getName() + "_bottomright_"
 	
 	renameFiles(context.getRenderPath(), fileName)
-	copyFiles(context.getRenderPath(), "imagesGenerated/")
+	copyFiles(context.getRenderPath(), "imagesGenerated/" + user + "/")
 
-print "Direcotorio ", context.getRenderPath(), " borrado"
+print "Directory ", context.getRenderPath(), " deleted"
 shutil.rmtree(context.getRenderPath())
 
 	
