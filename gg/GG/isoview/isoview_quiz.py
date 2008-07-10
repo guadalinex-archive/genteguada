@@ -51,9 +51,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
     buttonC = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
     buttonC.topleft = [116,200]
     buttonC.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
-    buttonD = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerD.png"))
-    buttonD.topleft = [166,200]
-    buttonD.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 4)
     """
     self.buttonBar.add_child(buttonA)
     self.buttonBar.add_child(buttonB)
@@ -67,23 +64,25 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.container.add_child(buttonA)
     self.container.add_child(buttonB)
     self.container.add_child(buttonC)
-    self.container.add_child(buttonD)
     self.container.topleft = [20, 20]
     self.container.border = 0
     self.container.zOrder = 20000
     self.__isohud.addSprite(self.container)
     self.__isohud.widgetContainer.add_widget(self.container)
+    self.__isohud.setActiveQuizWindow(True)
     
   def actionButton(self, option):
     if option == self.getModel().getRightAnswer():
-      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta correcta. Ahora puedes cruzar los circulos misticos.", \
+      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("¡Respuesta correcta!", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
-      self.__isohud.getPlayer().addPoints(0, "Penguin Quiz")
+      self.__isohud.getPlayer().addPoints(0, self.getModel().question)
+      self.getModel().removeRightAnsweredQuestion()
     else:   
       self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
     self.__isohud.widgetContainer.remove_widget(self.container)
     #self.__isohud.getIsoviewRoom().removeTopSprite(self.container)
+    self.__isohud.setActiveQuizWindow(False)
     self.container.destroy()
     
   def __del__(self):

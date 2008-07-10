@@ -93,10 +93,15 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
   def transportTo(self,clicker):
+    if self.__destinationRoom.isFull():
+      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
     clicker.addPoints(self.points, self.label)
     itemList = clicker.getTile().getItemsFrom(clicker)
     for item in itemList:
       item.changeRoom(self.__destinationRoom, self.__exitPosition)
+
+#================================================================================
 
 class GGDoorLobby(GGTeleport):
 
@@ -119,6 +124,9 @@ class GGDoorRoom3B(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    if self.__destinationRoom.isFull():
+      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
     if not clicker.hasItemLabeledInInventory('Llave Dorada'):
@@ -136,6 +144,9 @@ class GGDoorRoom3C1(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    if self.__destinationRoom.isFull():
+      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
     pos = self.getPosition()
@@ -153,6 +164,9 @@ class GGDoorRoom3C2(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    if self.__destinationRoom.isFull():
+      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
     pos = self.getPosition()
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
@@ -170,6 +184,9 @@ class GGDoorRoom5b(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
+    if self.__destinationRoom.isFull():
+      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
     if not clicker.checkPointGiver("Penguin Quiz"):
       self.newChatMessage('Antes de pasar, debes responder al acertijo de Andatuz.', 2)
       return False

@@ -126,6 +126,8 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = None
     self.wardrobe = None
     self.exchangeWindow = None
+    self.activeExchageWindow = False
+    self.activeQuizWindow = False
     self.tooltipWindow = None
     """
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
@@ -164,7 +166,8 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN: 
             self.chatMessageEntered()
       elif event_type == MOUSEBUTTONDOWN:
-        if not self.exchangeWindow:
+        #if not self.exchangeWindow:
+        if not self.activeExchageWindow and not self.activeQuizWindow:
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
@@ -187,6 +190,12 @@ class IsoViewHud(isoview.IsoView):
       return self.__selectedItem.checkSimilarity(item)
     else:
       return False
+
+  def setActiveQuizWindow(self, value):
+    self.activeQuizWindow = value
+    
+  def getActiveQuizWindow(self):
+    return self.activeQuizWindow
 
   def addSprite(self, sprite):
     self.__allSprites.add(sprite)
@@ -959,7 +968,8 @@ class IsoViewHud(isoview.IsoView):
     self.exchangeWindow.draw()
     self.addSprite(self.exchangeWindow.window)
     self.widgetContainer.add_widget(self.exchangeWindow.window)
-  
+    self.activeWindow = True
+    
   def itemToExchange(self):
     self.exchangeWindow.addItemOut(self.__selectedItem)
     self.__player.setUnselectedItem()
@@ -968,6 +978,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.exchangeWindow.window)
     self.removeSprite(self.exchangeWindow.window)
     self.exchangeWindow = None
+    self.activeWindow = False
 
   def addListExchange(self, event):
     itemList = event.getParams()["list"]

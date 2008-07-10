@@ -5,13 +5,15 @@ import GG.model.golden_key
 #import GG.model.pickable_item
 import GG.isoview.isoview_item
 import GG.model.chat_quiz
+import random
+import GG.utils
 
 class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
   """ GGPenguinQuiz class.
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label):
+  def __init__(self, sprite, anchor, topAnchor, label, fileList):
     """ Class builder.
     sprite: sprite used to paint the npc.
     position: penguin position.
@@ -20,18 +22,29 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
-    self.loadQuestion()
-        
-  def loadQuestion(self):        
-    #self.__msgIntro = "Enhorabuena por conseguir llegar hasta aquí. Para finalizar el tutorial, deberás probar tu inteligencia con una sencilla pregunta."
-    self.__msgQuestion = "¿De que color era el caballo blanco de Santiago?"
+    self.__fileList = fileList
+    self.__availableQuestions = {}
+    #self.loadQuestion()
+    
+  """      
+  def loadQuestion(self):
+    question = random.randint(0,len(self.__fileList)-1)   
+    fileName = "questions/" + self.__fileList[question]  
+    #filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(fileName)
+    filePath = "gg/GG/data/questions/q1"
+    f = open(filePath)
+    self.__msgQuestion = f.readline()
     self.__msgAnswers = []
-    self.__msgAnswers.append(" A. Verde")
-    self.__msgAnswers.append(" B. Amarillo con topos azules")
-    self.__msgAnswers.append(" C. 14")
-    self.__msgAnswers.append(" D. Blanco")
-    self.__rightAnswer = 4
-        
+    self.__msgAnswers.append(f.readline())
+    self.__msgAnswers.append(f.readline())
+    self.__msgAnswers.append(f.readline())
+    answer = f.readline()
+    if answer == "A":  self.__rightAnswer = 1
+    elif answer == "B":  self.__rightAnswer = 2
+    elif answer == "C":  self.__rightAnswer = 2
+    f.close()
+  """
+
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
@@ -71,10 +84,27 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     else:
       return False    
 
+  def removeRightQuestionForPlayer(self, question, player):
+    name = player.getName()
+    self.__availableQuestions[name].remove(question)
+    if len(self.__availableQuestions[name]) == 0:
+      player.addPoints(0, "Penguin Quiz")
+      
   def talkedBy(self, talker):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    talker.triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self.__msgQuestion, self.__msgAnswers, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3, self.__rightAnswer))
-    
+    name = talker.getName()
+    if not name in self.__availableQuestions.keys():
+      self.__availableQuestions[name] = self.__fileList  
+    if len(self.__availableQuestions[name]) == 0:
+      talker.newChatMessage("Ya no tengo preguntas que hacerte", 2)
+      return  
+    question = random.randint(0,len(self.__availableQuestions[name])-1)
+    fileName = "questions/" + self.__availableQuestions[name][question]
+    print "==============================="
+    print self.__availableQuestions[name][question]
+    print fileName
+    print "==============================="
+    talker.triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
+                                        GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
