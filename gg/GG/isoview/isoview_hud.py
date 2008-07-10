@@ -295,6 +295,21 @@ class IsoViewHud(isoview.IsoView):
       if self.__sound:  
         GG.utils.playSound(GG.utils.SOUND_DROPITEM)
       
+  def addItemToRoomFromVoid(self, ivItem):
+    """ Creates an animation from the top of the screen to the room.
+    event: event info.
+    """
+    item = ivItem.getModel()
+    itemPos = item.getPosition()
+    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
+    if ivItem:
+      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+                            [endPos[0], 0], endPos, True)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
+      ivItem.setAnimation(positionAnim)
+      if self.__sound:  
+        GG.utils.playSound(GG.utils.SOUND_DROPITEM)
+  
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
