@@ -124,7 +124,7 @@ class GGDoorRoom3B(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.__destinationRoom.isFull():
+    if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
@@ -144,7 +144,7 @@ class GGDoorRoom3C1(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.__destinationRoom.isFull():
+    if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
@@ -164,7 +164,7 @@ class GGDoorRoom3C2(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.__destinationRoom.isFull():
+    if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
     pos = self.getPosition()
@@ -184,7 +184,7 @@ class GGDoorRoom5b(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.__destinationRoom.isFull():
+    if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
     if not clicker.checkPointGiver("Penguin Quiz"):

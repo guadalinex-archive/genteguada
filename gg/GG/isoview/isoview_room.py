@@ -127,6 +127,7 @@ class IsoViewRoom(isoview.IsoView):
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
+          self.__parent.addItemToRoomFromVoid(ivitem)  
           return
           #raise "Ya existe el usuario dentro de la habitacion" 
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
@@ -136,6 +137,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
+    print "itemAddedFromInventory"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
