@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /usr/share/avatargenerator/
+gender=male headSize=  mask= hairStyle=01 hairColour= skin= bodySize= sleeve=0 shirt= typeTrousers=0 trousers= skirt= shoes= blender -b avatar.blend -P avatarGenerator.py
