@@ -26,6 +26,8 @@ import stat
 import commands
 import random
 
+import GG.avatargenerator.generator
+
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
   Includes room and player objects, and some procedures to manage data.
@@ -39,6 +41,7 @@ class GGSystem(dMVC.model.Model):
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
     self.__loadData()
+    self.__avatarGeneratorHandler = GG.avatargenerator.generator.AvatarGenerator()
     thread.start_new(self.__start, ())
      
   def getEntryRoom(self):
@@ -440,30 +443,5 @@ class GGSystem(dMVC.model.Model):
     return name
 
   def changeAvatarConfiguration(self, configuration, player):
-    thread.start_new(self.__executeRenderCommand, (configuration, player))
-
-  def __executeRenderCommand(self, configuration, player):
-    # aqui comprobar los casos posibles: si hay 2 en ejecucion, si llega otro a mitad de ejecucion, etc.
-    
-    comando = "ls -l"
-    # aqui hay que cambiar el comando por la llamada necesaria para blender
-    output = commands.getstatusoutput(comando)
-    if not output[0] == 0:
-      print "Ocurrio un error al ejecutar el comando"
-    else:
-      player.setAvatarConfiguration(configuration)
-      #print "El comando se ejecuto correctamente"
-    """
-    import paramiko
-    comando = "ls -l"
-    #comando = "python /home/jmariscal/ejemplo.py"
-    client = paramiko.SSHClient()
-    client.load_system_host_keys()
-    client.connect('192.168.0.40', username = "jmariscal", password = "jmariscal")
-    stdin, stdout, stderr = client.exec_command(comando)
-    if len(stderr.readlines()):
-      print "Ocurrio un error al ejecutar el comando"
-    else:
-      print "El comando se ejecuto correctamente"
-    """
+    thread.start_new(self.__avatarGeneratorHandler.executeCommand, (configuration, player))
 
