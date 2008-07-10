@@ -114,12 +114,12 @@ class GGSystem(dMVC.model.Model):
     self.__createPlayer(nina)
     
     # ROOMS
-    room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8])
-    room2 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8])
-    room3 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 3", [8, 8])
-    room4 = self.__createRoom(GG.utils.TILES_SMALLSTONES, "habitacion 4", [8, 8])
-    room5 = self.__createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8])
-    room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8])
+    room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
+    room2 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8)
+    room3 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8)
+    room4 = self.__createRoom(GG.utils.TILES_SMALLSTONES, "habitacion 4", [8, 8], 8)
+    room5 = self.__createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8], 8)
+    room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8)
     #room7 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 7", [8, 8])
     room3.setSpecialTile([2, 0, 1], "tiles/pressed.png")
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
@@ -304,7 +304,7 @@ class GGSystem(dMVC.model.Model):
     myDoor5A2 = GG.model.teleport.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 1], room3, "puerta room5a")
     myDoor5B1 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 0, 7], room1, "puerta room5b")
     myDoor5B2 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 7], room1, "puerta room5b")
-    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz")
+    myPenguinQuiz = GG.model.penguin_quiz.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", ["q1", "q10"])
     columnOffset = [13, 15]
     for z in range(0, 8):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, z])
@@ -350,11 +350,11 @@ class GGSystem(dMVC.model.Model):
       self.__createPlayer(demoPlayer)
     
 
-  def __createRoom(self, spriteFull, label, size):
+  def __createRoom(self, spriteFull, label, size, maxUsers):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
-    newRoom = GG.model.room.GGRoom(spriteFull, label, size)
+    newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers)
     self.__rooms.append(newRoom)
     return newRoom
       

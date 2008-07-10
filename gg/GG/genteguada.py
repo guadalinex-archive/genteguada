@@ -100,7 +100,8 @@ class GenteGuada:
     img = pygame.image.load(imgPath).convert_alpha()
     self.screen.blit(img, (0, 0))
     pygame.display.flip()
-
+    while self.system.getEntryRoom().isFull():
+      time.sleep(1)  
     self.initGame()
 
   def __getSystem(self, ipAddress):

@@ -16,7 +16,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
   Defines atributes and methods for a single room.
   """
 
-  def __init__(self, spriteFull, label, size):
+  def __init__(self, spriteFull, label, size, maxUsers):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     label: room label.
@@ -24,6 +24,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.size = size
+    self.label = label # Variable para realizar pruebas, sera eliminada
+    self.maxUsers = maxUsers
     self.__tiles = []
     for i in range(0, self.size[0]):
       line = []  
@@ -33,12 +35,21 @@ class GGRoom(GG.model.ggmodel.GGModel):
       self.__tiles.append(line)  
     self.__items = []
     self.__specialTiles = []
-    self.label = label # Variable para realizar pruebas, sera eliminada
+    self.__population = 0
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteFull', 'size']
+    return ['spriteFull', 'size', 'label', 'maxUsers']
+
+  def getPopulation(self):
+    return self.__population
+
+  def isFull(self):
+    if self.__population >= self.maxUsers:
+      return True
+    else:
+      return False    
 
   def getTile(self, pos):
     return self.__tiles[pos[0]][pos[2]]  
@@ -56,8 +67,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     self.__tiles[pos1[0]][pos1[2]].unstackItem()
     self.__tiles[pos2[0]][pos2[2]].stackItem(item)
     item.setTile(self.__tiles[pos2[0]][pos2[2]])
-    #item.setPosition(item.getTile().position)      
-  
+    
   # self.__items
 
   def getItems(self):
@@ -72,6 +82,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not self.__items == items:
       self.__items = items
       for item in self.__items:
+        if isinstance(item, GG.model.player.GGPlayer):
+          self.__population += 1    
         self.__tiles[item.getPosition()[0]][item.getPosition()[2]].stackItem(item)
       self.triggerEvent('items', items=items)
       return True
@@ -79,6 +91,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
 
   def addItemFromVoid(self, item, pos):
     if not item in self.__items:
+      if isinstance(item, GG.model.player.GGPlayer):
+        self.__population += 1    
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[2]])
       item.setStartPosition(item.getTile().position)
@@ -108,6 +122,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
+      if isinstance(item, GG.model.player.GGPlayer):
+        self.__population -= 1    
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
       self.__items.remove(item)
