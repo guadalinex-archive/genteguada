@@ -155,9 +155,10 @@ class IsoViewHud(isoview.IsoView):
       elif event_type == KEYDOWN:
         if self.ctrl:
           #self.ctrl = 0
-          if self.hotkeys[event.key] in self.__activeActions:
-            self.hotkeys[event.key]()
-            # atajos de teclado
+          if event.key in self.hotkeys.keys():
+            if self.hotkeys[event.key] in self.__activeActions:
+              self.hotkeys[event.key]()
+              # atajos de teclado
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
             self.ctrl = 1  
