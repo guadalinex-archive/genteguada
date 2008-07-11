@@ -703,7 +703,7 @@ class GroupSprite(pygame.sprite.Group):
       else:    
         raise "ERROR: sprite sin zOrder"
 
-class OcempLabel( ocempgui.widgets.Label):
+class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, width):
     line = ""  
