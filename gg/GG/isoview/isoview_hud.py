@@ -11,7 +11,7 @@ import random
 import avatareditor
 import animation
 import exchangewindow
-import os
+import privatechatwindow
 
 from pygame.locals import * # faster name resolution
 
@@ -46,6 +46,7 @@ class IsoViewHud(isoview.IsoView):
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
+    self.privateChatWindow = None
     
     if fullscreen:
       self.__fullScreen = True
@@ -683,6 +684,7 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
                 {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
+                {"image":"interface/hud/chat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
@@ -692,6 +694,7 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
                 {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
+                {"image":"interface/hud/chat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
@@ -709,6 +712,27 @@ class IsoViewHud(isoview.IsoView):
         self.__soundButton = button
       i+=1
       self.hud.add_child(button)
+      
+  def privateChatHandler(self):
+    if not self.privateChatWindow:
+        self.showPrivateChat()
+    else:
+        if self.privateChatWindow.hide:
+            self.showPrivateChat()
+        else:
+            self.hidePrivateChat()
+      
+  def showPrivateChat(self):
+    if not self.privateChatWindow:
+      self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado")
+    self.addSprite(self.privateChatWindow.window)
+    self.widgetContainer.add_widget(self.privateChatWindow.window)
+    self.privateChatWindow.hide = False
+    
+  def hidePrivateChat(self):
+    self.removeSprite(self.privateChatWindow.window)
+    self.widgetContainer.remove_widget(self.privateChatWindow.window)
+    self.privateChatWindow.hide = True
   
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
