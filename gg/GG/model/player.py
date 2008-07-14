@@ -2,6 +2,7 @@
 
 import GG.model.item_with_inventory
 import GG.model.chat_message
+import GG.model.private_contact
 import GG.isoview.isoview_player
 import GG.utils
 import time
@@ -38,6 +39,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.startSessionTiming()    
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
     self.__exchangeTo = None
+    self.__agenda = []
     self.__timestamp = timestamp
     if not self.__timestamp == "":
       self.imagePath = "avatars/"+self.username+"/"
@@ -103,7 +105,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["privateChat", "exchange"]
+    return ["privateChat", "exchange", "giveCard"]
         
   def getPoints(self):
     return self.__points
@@ -391,7 +393,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
-  
+    
   def drop(self, item):
     """ Drops an item.
     item: item to drop.
@@ -485,6 +487,28 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__exchangeTo.cancelExchangeTo(1)
     self.cancelExchangeTo(1)
     
+  # contacts, private chat & agenda  
     
+  def checkContact(self, player):
+    if self.checkContactOnAgenda(player):
+      player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
+    else:
+      player.newChatMessage("Preguntando a " + self.username + "...", 1)  
+      self.triggerEvent("contactDialog", contact=player)
     
+  def addContact(self, player):
+    if self.checkContactOnAgenda(player):
+      player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
+      return
+    self.__agenda.append(GG.model.private_contact.PrivateContact(player))
+    self.newChatMessage("Tarjeta recibida: " + player.username, 1)
+    player.newChatMessage("Tarjeta entregada: ahora eres un contacto de " + player.username, 1)
+    self.triggerEvent("contactAdded", contact=player)
     
+  def checkContactOnAgenda(self, contact):
+    for cont in self.__agenda:
+      if cont.getPlayer().username == contact.username:
+        return True
+    return False  
+    
+  

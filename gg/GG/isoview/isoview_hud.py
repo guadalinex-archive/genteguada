@@ -61,15 +61,14 @@ class IsoViewHud(isoview.IsoView):
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 70
-    self.__img.zOrder = 10000
-    #self.__img.rect.topleft = GG.utils.HUD_OR
-
+    self.__img.zOrder = -1
+    
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
     #elf.__player.subscribeEvent('addInventory', self.inventoryAdded)
     self.__player.subscribeEvent('liftItem', self.liftItem)
-    self.__player.subscribeEvent('liftItem', self.dropItem)
+    self.__player.subscribeEvent('dropItem', self.dropItem)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
     self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
@@ -79,6 +78,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('initExchange', self.initExchange)
     self.__player.subscribeEvent('cancelExchange', self.cancelExchange)
     self.__player.subscribeEvent('listExchange', self.addListExchange)
+    self.__player.subscribeEvent('contactDialog', self.newContactDialog)
+    self.__player.subscribeEvent('contactAdded', self.newContactAdded)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
@@ -112,7 +113,8 @@ class IsoViewHud(isoview.IsoView):
         "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"Intercambiar (E)"},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir (O)"},
         "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a (W)"},
-        "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"}
+        "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"},
+        "giveCard":{"image":"interface/hud/4.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"}
     }
     
     self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
@@ -122,13 +124,14 @@ class IsoViewHud(isoview.IsoView):
                     K_y: self.itemToClone , K_k: self.itemToPush , K_p: self.itemToUp , \
                     K_t: self.itemToTalk , K_g: self.itemToTalkAndGet , K_h: self.privateChat , \
                     K_e: self.exchangeItemPlayer , K_o: self.itemToOpen , K_w: self.itemToUrl , \
-                    K_a: self.itemToExchange}
+                    K_a: self.itemToExchange, K_v: self.itemToGiveCard}
                           
     self.winWardrobe = None
     self.wardrobe = None
     self.exchangeWindow = None
     self.activeExchageWindow = False
     self.activeQuizWindow = False
+    self.activeContactDialog = None
     self.tooltipWindow = None
     """
     self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
@@ -191,6 +194,8 @@ class IsoViewHud(isoview.IsoView):
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
         return True
+    if self.activeContactDialog != None:
+      return True
     return False
 
   def restoreActiveActionButtonsList(self):
@@ -255,7 +260,7 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem != None:
       self.__isoviewRoom.updateScreenPositionsOn(pos)  
-  
+    
   def dropItem(self, event):
     item = event.getParams()["item"]  
     pos = event.getParams()["position"]
@@ -365,6 +370,7 @@ class IsoViewHud(isoview.IsoView):
     bg_image = self.__bg.image
     self.__allSprites.clear(screen, bg_image)
     self.__allSprites.draw(screen)
+    #print self.__img.zOrder, self.hud.zOrder
     
     pygame.display.update()
 
@@ -844,8 +850,8 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     ACTIONS = [
-                {"image":"interface/hud/spinright.png", "action": self.turnLeft, "tooltip":"Rotar derecha (R)"},
-                {"image":"interface/hud/spinleft.png", "action": self.turnRight, "tooltip":"Rotar izquierda (L)"},
+                {"image":"interface/hud/spinright.png", "action": self.turnRight, "tooltip":"Rotar derecha (R)"},
+                {"image":"interface/hud/spinleft.png", "action": self.turnLeft, "tooltip":"Rotar izquierda (L)"},
                 {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar (J)"},
                 {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar (D)"},
               ]
@@ -998,6 +1004,8 @@ class IsoViewHud(isoview.IsoView):
 
   def itemToLift(self):
     #print "lift"
+    pass
+    """
     self.__player.lift(self.__selectedItem)
     self.itemUnselected()
     if self.__selectedItem:
@@ -1007,7 +1015,7 @@ class IsoViewHud(isoview.IsoView):
         self.removeSprite(self.__selectedImage)        
     
     self.dropActionsItembuttons()
-    
+    """
   def itemToDrop(self):
     #print "drop"
     self.__player.drop(self.__selectedItem)
@@ -1055,3 +1063,47 @@ class IsoViewHud(isoview.IsoView):
         self.removeSprite(self.__selectedImage)        
         self.__selectedItem = None
     self.dropActionsItembuttons()
+    
+  def itemToGiveCard(self):
+    self.__selectedItem.checkContact(self.__player)
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+    
+  def newContactDialog(self, event):
+    if self.activeContactDialog:
+      return  
+    newContact = event.getParams()["contact"]
+    self.confirmDialog = ocempgui.widgets.Box(300, 120)
+    self.confirmDialog.set_position = [0, 0]
+    okButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png"))
+    #okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.giveContactCard)
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.giveContactCard, event.getParams()['contact'])
+    okButton.topleft = [20, 55]
+    cancelButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png"))
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.dropContactDialog)
+    cancelButton.topleft = [170, 55]
+    self.confirmDialog.add_child(okButton)
+    self.confirmDialog.add_child(cancelButton)
+    self.confirmDialog.zOrder = 20000
+    self.addSprite(self.confirmDialog)
+    self.widgetContainer.add_widget(self.confirmDialog)
+    self.dropActionsItembuttons()
+    self.activeContactDialog = event.getParams()['contact']
+    
+  def giveContactCard(self, contact):
+    #self.activeContactDialog.addContact(self.__player)
+    #self.__player.addContact(self.activeContactDialog)
+    contact.addContact(self.__player)
+    self.__player.addContact(contact)
+    self.dropContactDialog()
+      
+  def dropContactDialog(self):
+    self.widgetContainer.remove_widget(self.confirmDialog)
+    self.removeSprite(self.confirmDialog)
+    self.activeContactDialog = None
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+    
+  def newContactAdded(self, event):
+    contact = event.getParams()['contact']
+    pass
