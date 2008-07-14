@@ -32,7 +32,7 @@ class RemoteModel: #{{{
     if attrName in self.__variablesDict:
       raise Exception("Can't assign to transplantable variables")
 
-    print "__setattr__ name " + attrName + " to " + str(attrValue)
+    #print "__setattr__ name " + attrName + " to " + str(attrValue)
     self.__dict__[attrName] = attrValue
     
 
