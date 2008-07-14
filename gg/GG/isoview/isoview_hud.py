@@ -551,6 +551,7 @@ class IsoViewHud(isoview.IsoView):
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR, True)
+    idleAnim.setOnStop(self.removeSprite, ivMessageChat.getTail())
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(idleAnim)
     secAnim.addAnimation(positionAnim)
