@@ -28,40 +28,38 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.balloon = self.drawBalloon(model.getMessage())
     
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    #self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
+    aux = self.balloon.topleft[0] + self.balloon.size[0]
+    if (pos[0] + 40 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
+      xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
+    else:
+      xCord = pos[0] + 40
     if (pos[1] - 20 - (self.label.height/2)) > 0:
-      self.balloon.topleft = [pos[0] + 40, pos[1] - 20 - (self.balloon.height/2)]
+      yCord = pos[1] - 20 - (self.balloon.height/2)  
     else:  
-      self.balloon.topleft = [pos[0] + 40, 0]  
+      yCord = 0
+          
+    self.balloon.topleft = [xCord, yCord]    
+    #self.balloon.opacity = 200
     self.balloon.zOrder = 20000
     self.__isohud.addSprite(self.balloon)
+    
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + "tail.png")  
+    self.tail = GG.utils.OcempImageMapTransparent(imgPath)
+    self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
+    #self.tail.opacity = 200
+    self.tail.zOrder = 20002
+    self.__isohud.addSprite(self.tail)
        
+    """   
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + "tail.png")  
     self.tail = pygame.sprite.Sprite()
     self.tail.image = pygame.image.load(imgPath).convert_alpha()
     self.tail.rect = self.tail.image.get_rect()
     pos = self.getModel().getPosition()
     self.tail.rect.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
+    self.tail.opacity = 200
     self.tail.zOrder = 20002
     self.__isohud.addSprite(self.tail)
-        
-    """
-    self.__isohud = isohud
-    positioned_view.PositionedView.__init__(self, model, screen)
-    self.label = GG.utils.OcempLabel(model.getMessage(),140)
-    self.style = self.getStyleMessageChat()
-    self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["ballom"]))
-    self.label.padding = 5
-    self.label.set_minimum_size(150,50)
-    self.label.opacity = 200
-    pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    #self.label.topleft = [pos[0] + 40, pos[1] - 20 - self.label.height]
-    if (pos[1] - 40 - (self.label.height/2)) > 0:
-      self.label.topleft = [pos[0] + 40, pos[1] - 40 - (self.label.height/2)]
-    else:  
-      self.label.topleft = [pos[0] + 40, 0]  
-    self.label.zOrder = 20000
-    self.__isohud.addSprite(self.label)
     """
     
   def __del__(self):
