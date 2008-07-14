@@ -427,7 +427,7 @@ class IsoViewHud(isoview.IsoView):
                                      ocempgui.widgets.Constants.STATE_ENTERED : None,
                                      ocempgui.widgets.Constants.STATE_ACTIVE : None,
                                      ocempgui.widgets.Constants.STATE_INSENSITIVE : None }),
-            "font" : ocempgui.widgets.WidgetStyle ({ "name" : None,
+            "font" : ocempgui.widgets.WidgetStyle ({ "name" : "Bitstream",
                                     "size" : 0,
                                     "alias" : False,
                                     "style" : 0 }),
@@ -571,13 +571,17 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def setMovementDestination(self, target):
+    #print "===>>> Ini"  
     self.removeMovementDestination()
+    #print "setMovementDestination"
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
+    #print "<<<=== Fin"  
     
   def removeMovementDestination(self):
+    #print "removeMovementDestination"
     #if self.__targetTile:
     #if self.__allSprites.has(self.__targetTileImage):
       #if self.__allSprites.has(self.__targetTileImage):
@@ -586,8 +590,10 @@ class IsoViewHud(isoview.IsoView):
     except KeyError:
         # This can happen if a sprite is removed before
         # update() has had a chance to be called.
+      self.__targetTile = not self.__targetTile
       pass
-    self.__targetTile = False
+    self.__targetTile = not self.__targetTile
+    #self.__targetTile = False
     
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.

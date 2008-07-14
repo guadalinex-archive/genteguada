@@ -286,13 +286,15 @@ BALLOON_FON_SZ = 16
 #styles
 #TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
 STYLES = {
-          "inventoryArea" : { "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
+          "inventoryArea" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+                              "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                                 ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                                 ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                               },
                             },
-           "chatArea" : { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL : (255, 0, 255),
+           "chatArea" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+                          "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL : (255, 0, 255),
                                        ocempgui.widgets.Constants.STATE_ENTERED : (255, 0, 255),
                                        ocempgui.widgets.Constants.STATE_ACTIVE : (255, 0, 255),
                                        ocempgui.widgets.Constants.STATE_INSENSITIVE : (255, 0, 255) },
@@ -420,7 +422,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
-            "itemLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
+            "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -432,7 +434,7 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (48, 122, 173) 
                                         }
                             },
-          "exchangeLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
+          "exchangeLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -444,19 +446,21 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (99, 172, 193) 
                                         }
                             },
-          "buttonBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
+          "buttonBar" :     { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+                             "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
-          "buttonTopBar" :     { "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL    : (0, 0, 0),
+          "buttonTopBar" :     { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL    : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "nameFrame" : {  "font" : { "name" : "Helvetica", "size" : 40, "alias" : True },
+          "nameFrame" : {  "font" : { "name" : "Bitstream", "size" : 40, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -468,7 +472,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (186, 216, 232) 
                                           }
                             },
-          "quizLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
+          "quizLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -609,8 +613,9 @@ def playSound(sound):
   sndPath = os.path.join(SOUND_PATH, sound)
   if not os.path.isfile(sndPath):
     return False
-  pygame.mixer.music.load(sndPath)
-  pygame.mixer.music.play()
+  if not pygame.mixer.get_busy():
+    pygame.mixer.music.load(sndPath)
+    pygame.mixer.music.play()
 
 def getRGBColor(color):
   rgb = [0,0,0]
