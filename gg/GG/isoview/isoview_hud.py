@@ -166,16 +166,32 @@ class IsoViewHud(isoview.IsoView):
           if event.key == K_ESCAPE:
             GG.genteguada.GenteGuada.getInstance().finish()
           elif event.key == K_RETURN: 
-            self.chatMessageEntered()
+            if self.privateChatWindow:
+              if not self.privateChatWindow.hide:
+                self.privateChatWindow.chatMessageEntered()
+              else:
+                self.chatMessageEntered()
+            else:
+              self.chatMessageEntered()
       elif event_type == MOUSEBUTTONDOWN:
         #if not self.exchangeWindow:
-        if not self.activeExchageWindow and not self.activeQuizWindow:
+        if not self.windowOpen():
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
             if not dest == [-1, -1, -1]:
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
+
+  def windowOpen(self):
+    if self.activeExchageWindow:
+      return True
+    if self.activeQuizWindow:
+      return True
+    if self.privateChatWindow:
+      if not self.privateChatWindow.hide:
+        return True
+    return False
 
   def restoreActiveActionButtonsList(self):
     self.__activeActions = []  
@@ -714,12 +730,12 @@ class IsoViewHud(isoview.IsoView):
       
   def privateChatHandler(self):
     if not self.privateChatWindow:
-        self.showPrivateChat()
+      self.showPrivateChat()
     else:
-        if self.privateChatWindow.hide:
-            self.showPrivateChat()
-        else:
-            self.hidePrivateChat()
+      if self.privateChatWindow.hide:
+        self.showPrivateChat()
+      else:
+        self.hidePrivateChat()
       
   def showPrivateChat(self):
     if not self.privateChatWindow:

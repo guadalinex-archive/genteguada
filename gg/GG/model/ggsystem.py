@@ -27,6 +27,7 @@ import commands
 import random
 
 import GG.avatargenerator.generator
+import time
 
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
@@ -111,8 +112,8 @@ class GGSystem(dMVC.model.Model):
     """
     
     # PLAYERS
-    nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234")
-    nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "pepe2", "12345")
+    nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "")
+    nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "pepe2", "12345", "")
     self.__createPlayer(nino)
     self.__createPlayer(nina)
     
@@ -349,7 +350,7 @@ class GGSystem(dMVC.model.Model):
         demoPlayerPath = GG.utils.NINA_PATH
       else:
         demoPlayerPath = GG.utils.NINO_PATH
-      demoPlayer = GG.model.player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user"+str(i), "user"+str(i))
+      demoPlayer = GG.model.player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user"+str(i), "user"+str(i), "")
       self.__createPlayer(demoPlayer)
     
 
@@ -443,5 +444,27 @@ class GGSystem(dMVC.model.Model):
     return name
 
   def changeAvatarConfiguration(self, configuration, player):
-    thread.start_new(self.__avatarGeneratorHandler.executeCommand, (configuration, player))
+    thread.start_new(self.__changeAvatarConfiguration, (configuration, player))
 
+  def __changeAvatarConfiguration(self, configuration, player):
+    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player)
+    if execCommand:
+      images = self.__avatarGeneratorHandler.getImages(player)
+      timestamp = self.__copyImages(images, player)
+      self.__avatarGeneratorHandler.deleteImages(player)
+      player.setAvatarConfiguration(configuration, timestamp)
+
+  def __copyImages(self,images, player):
+    #dir = "/home/jmariscal/proyectos/genteguada/src/gg/GG/data/avatars"
+    dir = GG.utils.DATA_PATH+"/avatars/"+player.username
+    if os.path.isdir(dir):
+      for file in os.listdir(dir):
+        os.remove(os.path.join(dir,file))
+    else:
+      os.mkdir(dir)
+    timestamp = int(time.time())
+    for image in images.keys():
+      f = open(os.path.join(dir,image+"_"+str(timestamp)),"wb")
+      f.write(images[image])
+      f.close()
+    return timestamp

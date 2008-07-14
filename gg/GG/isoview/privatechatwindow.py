@@ -3,13 +3,8 @@
 import pygame
 import ocempgui.widgets
 import GG.utils
-
-class myContactItem(ocempgui.widgets.components.FileListItem):
-    
-  def __init__(self, name, type):
-    ocempgui.widgets.components.FileListItem.__init__(self, name, type)
-    
-  
+import os
+import copy
 
 class PrivateChatWindow:
   """ AvatarEditor class.
@@ -21,18 +16,16 @@ class PrivateChatWindow:
     self.window = ocempgui.widgets.Window(title)
     self.window.topleft = 200, 200
     self.window.zOrder = 10000
-    self.contactsList = ocempgui.widgets.components.ListItemCollection()
-    prueba = myContactItem("pepe",1)
-    self.contactsList.append(prueba)
-    #self.window.opacity = 100
-    
+    self.contactsList = ["pepe","juan","pepa"]
     self.draw()
 
   def draw(self):
     self.container = ocempgui.widgets.Box(373,372)
-    #self.container.opacity = 100
     self.__paintBackground()
-    self.paintChat()
+    self.__paintContactList()
+    self.__paintDeleteButton()
+    self.__paintChat()
+    self.__paintChatArea()
     return self.window
 
   def __paintBackground(self):
@@ -42,47 +35,85 @@ class PrivateChatWindow:
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-  def paintChat(self):
+  def __paintContactList(self):
     """ Paints the chat window on screen.
     """
     from PIL import Image
-    self.contactsArea = ocempgui.widgets.ScrolledList(162, 264,self.contactsList)
+    self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.contactsList)
     self.contactsArea.topleft = 10, 10
+    self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
-    
-    
-#    self.selectionmode = ocempgui.widgets.Constants.SELECTION_SINGLE
-    
-#    self.__layoutTextArea= ocempgui.widgets.VFrame()
-#    self.__layoutTextArea.border = 0
-#    self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
-#    self.textArea.child = self.__layoutTextArea
 
-    
-#    self.item = ocempgui.widgets.HFrame()
-#    self.item.border = 0
-#    self.item.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
-#    try: 
-#      self.imguser = Image.open(GG.utils.PATH_PHOTO_MASK,"imgMaskUser.png")
-#    except:
-#      return 
-#    size = 16,16
-#    self.imguser.thumbnail(size, Image.ANTIALIAS)
-#    self.container.add_child(self.imguser)
-
-    
-    #self.nameuser = GG.utils.OcempLabel('Eduardo', 16)
-    #self.item.add_child(self.imguser)
-    #self.item.add_child(self.nameuser)
-    #self.textArea.items = self.item
-    
-#    listaux = ocempgui.widgets.components.ListItemCollection()
-#    for i in xrange (5):
-#        listaux.append(ocempgui.widgets.components.TextListItem ("Contacto no. %d" % i))
-#    self.textArea.items = listaux
-    
-    
+  def __selectionChange(self):
+    print self.contactsArea.getSelectedName()
+    self.clearChatArea()
     
 
-    
-    
+  def __paintDeleteButton(self):
+    deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"), "eliminar contacto", self.showTooltip, self.removeTooltip)
+    deleteButton.topleft = 6, 315
+    deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
+    self.container.add_child(deleteButton)
+
+  def showTooltip(self, label):
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
+    x, y = pygame.mouse.get_pos ()
+    self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
+    self.tooltipWindow.depth = 99 # Make it the topmost widget.
+    self.tooltipWindow.zOrder = 30000
+    self.container.add_child(self.tooltipWindow)
+      
+  def removeTooltip(self): 
+    if self.tooltipWindow:
+      self.container.remove_child(self.tooltipWindow)  
+      self.tooltipWindow.destroy ()
+      self.tooltipWindow = None
+
+  def deleteContacts(self):
+    print "a eliminar toca!!!"
+
+  def __paintChat(self):
+    self.__textField = ocempgui.widgets.Entry()
+    self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
+    self.__textField.border = 1
+    self.__textField.topleft = 160, 330
+    self.__textField.set_minimum_size(200, 30)
+    self.container.add_child(self.__textField)
+
+  def chatMessageEntered(self):
+    text = self.__textField.text
+    if not text.strip() == "" and self.contactsArea.getSelectedName():
+      self.writeChatMessage(text)
+      self.__textField.text = ""
+  
+  def __paintChatArea(self):
+    self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
+    self.textArea.set_scrolling(1)
+    self.textArea.topleft = 190, 10
+    self.__layoutTextArea= ocempgui.widgets.VFrame()
+    self.__layoutTextArea.border = 0
+    self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
+    self.textArea.child = self.__layoutTextArea
+    self.container.add_child(self.textArea)
+
+  def writeChatMessage(self, string):
+    self.__layoutTextArea.add_child(self.createChatMessage(string))
+    self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+
+  def createChatMessage(self, string):
+    hframe = ocempgui.widgets.HFrame()
+    hframe.border = 0
+    hframe.set_align(ocempgui.widgets.Constants.ALIGN_TOP) 
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.IMAGE_CHAT_MESSAGE)
+    image = ocempgui.widgets.ImageLabel(imgPath)
+    image.buttom = 0
+    hframe.add_child(image)
+    label = GG.utils.OcempLabel(string,300)
+    hframe.add_child(label)
+    return hframe
+
+  def clearChatArea(self):
+    children = copy.copy(self.__layoutTextArea.children)
+    for child in children:
+      self.__layoutTextArea.remove_child(child)
+      child.destroy()

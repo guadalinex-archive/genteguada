@@ -12,7 +12,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, anchor, topAnchor, username, password):
+  def __init__(self, spritePath, anchor, topAnchor, username, password, timestamp):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
@@ -21,10 +21,9 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     password: user password.
     """
     #print username, password
-    filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0)
+    filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
     GG.model.item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
     self.username = username
-    self.imagePath = spritePath
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]
@@ -39,6 +38,20 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.startSessionTiming()    
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
     self.__exchangeTo = None
+    self.__timestamp = timestamp
+    if not self.__timestamp == "":
+      self.imagePath = "avatars/"+self.username+"/"
+    else:
+      self.imagePath = spritePath
+
+  def getTimestamp(self):
+    return self.__timestamp
+
+  def setTimestamp(self, timestamp):
+    timestamp = str(timestamp)
+    self.__timestamp = timestamp
+    self.imgPath = "avatars/"+self.username+"/"
+    self.triggerEvent('timestamp', timestamp=timestamp, imgPath = self.imgPath)
       
   def getName(self):
     return self.username
@@ -82,8 +95,9 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def getAvatarConfiguration(self):
     return self.__avatarConfiguration
 
-  def setAvatarConfiguration(self, avatarConfiguration):
+  def setAvatarConfiguration(self, avatarConfiguration, timestamp):
     self.__avatarConfiguration = avatarConfiguration
+    self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration)
 
   def getOptions(self):
