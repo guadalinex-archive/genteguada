@@ -323,7 +323,7 @@ STYLES = {
                                     "style" : 0 },
                            "shadow" : 0
             },
-          "textFieldChat" : { "font" : { "name" : "Helvetica", "size" : 25, "alias" : True },
+          "textFieldChat" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
@@ -335,7 +335,7 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                               },
                             },
-          "textFieldLogin" : { "font" : { "name" : "Helvetica", "size" : 25, "alias" : True },
+          "textFieldLogin" : { "font" : { "name" : "Bitstream", "size" : 25, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
@@ -352,63 +352,63 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                               },
                             },   
-          "chatEntryWhite" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "chatEntryWhite" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "chatEntryRed" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "chatEntryRed" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (120, 30, 30) 
                                          }
                             },
-          "chatEntryGreen" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "chatEntryGreen" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 120, 30) 
                                           }
                             },
-          "chatEntryBlue" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "chatEntryBlue" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 30, 120) 
                                           }
                             },
-          "chatBalloonWhite" : { "font" : { "name" : "Helvetica", "size" : 22, "alias" : True }, 
+          "chatBalloonWhite" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
                                          }
                             },
-          "chatBalloonBlue" : {"font" : { "name" : "Helvetica", "size" : 22, "alias" : True }, 
+          "chatBalloonBlue" : {"font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 255) 
                                          }
                             },
-          "chatBalloonGreen" : { "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+          "chatBalloonGreen" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                  "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 255, 200) 
                                           }
                             },
-          "chatBalloonRed" : {  "font" : { "name" : "Helvetica", "size" : 22, "alias" : True },
+          "chatBalloonRed" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
                                           }
                             },
-          "points" : {  "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
+          "points" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
@@ -432,7 +432,7 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (48, 122, 173) 
                                         }
                             },
-          "exchangeLabel" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "exchangeLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -468,7 +468,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (186, 216, 232) 
                                           }
                             },
-          "quizLabel" : { "font" : { "name" : "Helvetica", "size" : 20, "alias" : True },
+          "quizLabel" : { "font" : { "name" : "Helvetica", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
