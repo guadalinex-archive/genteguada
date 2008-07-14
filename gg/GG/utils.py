@@ -104,6 +104,18 @@ STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carryi
 CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
 #0: general; 1: privado; 2: npcs; 3: sistema)
 
+CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
+CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
+CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
+CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
+
+BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
+BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
+BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
+BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
+
+TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
+
 # ======================= SPRITES ===========================
 
 LOGIN_SCREEN = "login.png"

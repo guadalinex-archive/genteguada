@@ -102,9 +102,5 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
       return  
     question = random.randint(0,len(self.__availableQuestions[name])-1)
     fileName = "questions/" + self.__availableQuestions[name][question]
-    print "==============================="
-    print self.__availableQuestions[name][question]
-    print fileName
-    print "==============================="
     talker.triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))

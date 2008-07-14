@@ -47,14 +47,11 @@ class GGGift(room_item.GGRoomItem):
   """
   
   def getCopyFor(self, player):
-    print "ejeuccion getcopyfor"
     if player.hasItemLabeledInInventory("Regalo"):
-      print "ya tiene l regalo"
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None, [-1, -1, -1]
     else:  
-      print "no tiene regalo"
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     
