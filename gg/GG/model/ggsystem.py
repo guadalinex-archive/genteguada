@@ -114,6 +114,9 @@ class GGSystem(dMVC.model.Model):
     # PLAYERS
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "pepe2", "12345", "")
+    nina2 = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user0", "user0", "")
+    nino.addContactTEST(nina)
+    nino.addContactTEST(nina2)
     self.__createPlayer(nino)
     self.__createPlayer(nina)
     
