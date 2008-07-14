@@ -130,7 +130,7 @@ class GenteGuada:
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
-    intentedFPS = 35
+    intentedFPS = 30
     frameCounter = 0
 
     # Avoid name resolution inside the loop
@@ -138,6 +138,7 @@ class GenteGuada:
     theClock_tick = theClock.tick
     get_ticks = pygame.time.get_ticks
     pygame_event_get = pygame.event.get
+    time_sleep = time.sleep
     if self.client:
       client_processEvents = self.client.processEvents
     else:
@@ -145,6 +146,7 @@ class GenteGuada:
 
     last = get_ticks()
     while True:
+      time_sleep(0.02) # Minor sleep to give oportunity to other thread to execute
       theClock_tick(intentedFPS)
 
       client_processEvents()
@@ -157,7 +159,7 @@ class GenteGuada:
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
-        #print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
+        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
 
         frameCounter = 0
         last = now
