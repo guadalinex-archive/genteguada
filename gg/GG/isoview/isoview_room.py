@@ -137,7 +137,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    print "itemAddedFromInventory"
+    #print "itemAddedFromInventory"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
@@ -245,7 +245,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Sets an item on the room as selected.
     """
     ivItem = self.findIVItem(item)
-    print "itemSelected",ivItem
+    #print "itemSelected",ivItem
     if ivItem:
       ivItem.selected()
     

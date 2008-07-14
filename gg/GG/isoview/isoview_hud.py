@@ -540,7 +540,6 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a new chat message event.
     event: event info.
     """
-    print "*** Recibido"
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()
@@ -809,7 +808,7 @@ class IsoViewHud(isoview.IsoView):
   def showFullScreen(self):
     """ Show help menu. (At the moment, It doesn't. It just toggles the full screen mode)
     """
-    print "show full screen"
+    #print "show full screen"
     #TODO solo funciona en linux con las X, para e
     if self.__fullScreen:
       #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/minimize.png")
