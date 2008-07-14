@@ -1,5 +1,7 @@
 
 import dMVC.model
+import commands
+import os
 
 class AvatarGenerator(dMVC.model.Model):
 
@@ -7,14 +9,13 @@ class AvatarGenerator(dMVC.model.Model):
     dMVC.model.Model.__init__(self)
 
   def executeCommand(self, configuration, player):
+    return True
     comando = self.__generateRenderCommand(player.username, configuration)
-    """
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
-      print "Ocurrio un error al ejecutar el comando"
+      return False
     else:
-      print "finalizo"
-    """
+      return True
 
   def __generateRenderCommand(self, name, configuration):
     #gender 
@@ -73,4 +74,19 @@ class AvatarGenerator(dMVC.model.Model):
 
     command = "avatargenerator "+name+" "+configuration["gender"]+" "+configuration["headSize"]+" "+configuration["mask"]+" "+configuration["hairStyle"]+" "+configuration["hairColor"]+" "+configuration["skin"]+" "+configuration["bodySize"]+" "+configuration["typeShirt"]+" "+configuration["shirt"]+" "+configuration["typeTrousers"]+" "+configuration["trousers"]+" "+configuration["skirt"]+" "+configuration["shoes"]
     return command
+
+  def getImages(self, player):
+    dir = "/usr/share/avatargenerator/imagesGenerated/"+player.username
+    files = {}
+    for file in os.listdir(dir):
+      f = open(os.path.join(dir,file),"rb")
+      files[file] = f.read()
+      f.close()
+    return files
+
+  def deleteImages(self, player):
+    dir = "/usr/share/avatargenerator/imagesGenerated/"+player.username
+    for file in os.listdir(dir):
+      os.remove(os.path.join(dir,file))
+    os.rmdir(dir)
 

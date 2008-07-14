@@ -502,11 +502,17 @@ STYLES = {
 # ========================== FUNCTIONS ==========================
 # ===============================================================
 
-def getSpriteName(state, heading, frame):
+def getSpriteName(state, heading, frame, timestamp):
   #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
+  timestamp = str(timestamp)
+  if timestamp == "":
+    tail = ""
+  else:
+    tail = "_"+timestamp
+
   maxFrames = 10
   if state == STATE[1] or state == STATE[3]:
-    return str(state + "_" + heading + "_0001")
+    return str(state + "_" + heading + "_0001"+tail)
   elif state == STATE[2] or state == STATE[4]:
     maxFrames = ANIM_WALKING_COUNT
   elif state == STATE[5]:
@@ -519,7 +525,7 @@ def getSpriteName(state, heading, frame):
     fileName = state + "_" + heading + "_000" + str(frame)
   else:  
     fileName = state + "_" + heading + "_00" + str(frame)
-  return fileName
+  return fileName+tail
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
@@ -808,5 +814,31 @@ class OcempImageFileList(ocempgui.widgets.FileList):
       if os.path.isfile(file):
         return file
     return None
+
+class OcempContactListItem(ocempgui.widgets.components.FileListItem):
+
+  def __init__(self, name):
+    ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
+    filePath = DATA_PATH+"/book.png"
+    self._icon = ocempgui.draw.Image.load_image(filePath)
     
     
+class OcempImageContactList(OcempImageFileList):
+  
+  def __init__(self, width, height, contactList):
+    self.contactList = contactList
+    OcempImageFileList.__init__(self, width, height)
+
+  def _list_contents (self):
+    items = ocempgui.widgets.components.ListItemCollection ()
+    for contact in self.contactList:
+      items.append (OcempContactListItem (contact))
+    self.set_items (items)
+
+  def getSelectedName(self):
+    item = self.get_selected()
+    if len(item):
+      return item[0].text
+    return None
+
+
