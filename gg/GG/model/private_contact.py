@@ -12,8 +12,8 @@ class PrivateContact:
   def getChat(self):
     return self.__chat
 
-  def addChatLine(self, line):
-    self.__chat.append(line)
+  def addChatLine(self, player, line):
+    self.__chat.append([player, line])
 
   def clearChat(self):
     self.__chat = []

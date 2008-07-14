@@ -488,6 +488,21 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.cancelExchangeTo(1)
     
   # contacts, private chat & agenda  
+  
+  def getContact(self, name):
+    for contact in self.__agenda:
+      if contact.getPlayer().username == name:
+        return contact
+    return None
+    
+  def addContactTEST(self, player):  
+    self.__agenda.append(GG.model.private_contact.PrivateContact(player))
+    
+  def getAgenda(self):
+    return self.__agenda
+
+  def removeContact(self, contact):
+    self.__agenda.remove(contact)
     
   def checkContact(self, player):
     if self.checkContactOnAgenda(player):

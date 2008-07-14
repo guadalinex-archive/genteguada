@@ -832,7 +832,7 @@ class OcempImageContactList(OcempImageFileList):
   def _list_contents (self):
     items = ocempgui.widgets.components.ListItemCollection ()
     for contact in self.contactList:
-      items.append (OcempContactListItem (contact))
+      items.append (OcempContactListItem (contact.getPlayer().username))
     self.set_items (items)
 
   def getSelectedName(self):

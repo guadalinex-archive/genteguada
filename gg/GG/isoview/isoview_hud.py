@@ -745,7 +745,7 @@ class IsoViewHud(isoview.IsoView):
       
   def showPrivateChat(self):
     if not self.privateChatWindow:
-      self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado")
+      self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
     self.addSprite(self.privateChatWindow.window)
     self.widgetContainer.add_widget(self.privateChatWindow.window)
     self.privateChatWindow.hide = False
