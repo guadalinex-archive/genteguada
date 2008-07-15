@@ -115,16 +115,17 @@ class PrivateChatWindow:
     self.container.add_child(self.__textField)
 
   def chatMessageEntered(self):
-    if self.selected != None:
+    if self.selected:
       text = self.selected.getPlayer().username + ": " + self.__textField.text
       self.selected.addChatLine(self.player, text)
       if not text.strip() == "" and self.contactsArea.getSelectedName():
         self.writeChatMessage(text)
         self.__textField.text = ""
     else:
-      self.writeChatMessage("Seleccione un contacto para iniciar una conversacion")
+      line = self.sliceLine("Seleccione un contacto para iniciar una conversacion")  
+      self.__layoutTextArea.add_child(self.createChatMessage(line))
+      self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
       self.__textField.text = ""
-        
   
   def __paintChatArea(self):
     #self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
