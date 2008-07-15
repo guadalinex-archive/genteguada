@@ -428,12 +428,24 @@ STYLES = {
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
                                             },
-                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },
+          "userName" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
+                                            },
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
+                                          }
+                            },                            
             "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),

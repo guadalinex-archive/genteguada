@@ -110,12 +110,12 @@ class IsoViewHud(isoview.IsoView):
         "up":{"image":"interface/hud/lift.png", "action": self.itemToUp, "tooltip": "Subir (P)"},
         "talk":{"image":"interface/hud/chat.png", "action": self.itemToTalk, "tooltip":"Hablar (T)"},
         "talkAndGet":{"image":"interface/hud/chat.png", "action": self.itemToTalkAndGet, "tooltip":"Hablar (G)"},
-        "privateChat":{"image":"interface/hud/chat.png", "action": self.privateChat, "tooltip":"Chat (H)"},
+        "privateChat":{"image":"interface/hud/privatechat.png", "action": self.privateChat, "tooltip":"Chat (H)"},
         "exchange":{"image":"interface/hud/exchange.png", "action": self.exchangeItemPlayer, "tooltip":"Intercambiar (E)"},
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir (O)"},
         "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a (W)"},
         "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"},
-        "giveCard":{"image":"interface/hud/4.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"}
+        "giveCard":{"image":"interface/hud/contact.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"}
     }
     
     self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
@@ -457,13 +457,13 @@ class IsoViewHud(isoview.IsoView):
                                     "style" : 0 }),
             "shadow" : 0
             })
-    self.textArea = ocempgui.widgets.ScrolledWindow(573, 117)
+    self.textArea = ocempgui.widgets.ScrolledWindow(478, 110)
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
    # self.textArea.border = 1
     #self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1] + 20
-    self.textArea.topleft = GG.utils.CHAT_OR[0], 70
+    self.textArea.topleft = GG.utils.CHAT_OR[0], 90
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
@@ -480,8 +480,8 @@ class IsoViewHud(isoview.IsoView):
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
     #self.__textField.topleft = 14, 732
-    self.__textField.topleft = 14, 190
-    self.__textField.set_minimum_size(571, 30)
+    self.__textField.topleft = 14, 210
+    self.__textField.set_minimum_size(479, 20)
     self.hud.add_child(self.__textField)
     #self.widgetContainer.add_widget(self.__textField)
 
@@ -888,27 +888,29 @@ class IsoViewHud(isoview.IsoView):
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
-    img.topleft = 660,84 
+    #img.topleft = 660,84
+    img.topleft = 540,110
     self.hud.add_child(img)
 
     labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
-    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    labelUserName.topleft = ((182 - labelUserName.width) / 2) + 600, 150
+    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    #labelUserName.topleft = ((182 - labelUserName.width) / 2) + 600, 150
+    labelUserName.topleft = 620,80
     self.hud.add_child(labelUserName)
     
     self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280)
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__pointsLabel.topleft = 617, 170
+    self.__pointsLabel.topleft = 620, 120
     self.hud.add_child(self.__pointsLabel)
 
     self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280)
     self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__labelOld.topleft = 617, 190
+    self.__labelOld.topleft = 620, 140
     self.hud.add_child(self.__labelOld)
 
     self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280)
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__expLabel.topleft = 617, 210
+    self.__expLabel.topleft = 620, 160
     self.hud.add_child(self.__expLabel)
 
   def jump(self):
