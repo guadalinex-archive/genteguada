@@ -80,6 +80,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('listExchange', self.addListExchange)
     self.__player.subscribeEvent('contactDialog', self.newContactDialog)
     self.__player.subscribeEvent('contactAdded', self.newContactAdded)
+    self.__player.subscribeEvent("privateChatReceived", self.privateChatReceived)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
@@ -748,6 +749,19 @@ class IsoViewHud(isoview.IsoView):
       self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
     self.addSprite(self.privateChatWindow.window)
     self.widgetContainer.add_widget(self.privateChatWindow.window)
+    x, y = self.privateChatWindow.getScreenPosition()
+    width, height = self.privateChatWindow.getSize()
+    cordX = x
+    cordY = y
+    if x < 0:
+      cordX = 0
+    if y < 0:
+      cordY = 0
+    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
+      cordX = GG.utils.GAMEZONE_SZ[0] - width  
+    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
+      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    self.privateChatWindow.setScreenPosition(cordX, cordY)  
     self.privateChatWindow.hide = False
     
   def hidePrivateChat(self):
@@ -1107,3 +1121,9 @@ class IsoViewHud(isoview.IsoView):
   def newContactAdded(self, event):
     contact = event.getParams()['contact']
     pass
+
+  def privateChatReceived(self, event):
+    chat = event.getParams()['chat']
+    player = event.getParams()['player']
+    self.privateChatWindow.incomingChatMessage(chat, player)
+    

@@ -14,14 +14,14 @@ class PrivateChatWindow:
   def __init__(self, title, player):
     self.hide = False
     self.window = ocempgui.widgets.Window(title)
-    self.window.topleft = 200, 200
+    #self.window.topleft = 200, 200
+    self.window.topleft = 0, 0
     self.window.zOrder = 10000
     self.player = player
     self.agenda = player.getAgenda()
     self.contactsList = []
     for contact in self.agenda:
       self.contactsList.append(contact.getPlayer().username)
-    #self.contactsList = ["pepe","juan","pepa"]
     self.selected = None
     self.draw()
 
@@ -33,6 +33,15 @@ class PrivateChatWindow:
     self.__paintChat()
     self.__paintChatArea()
     return self.window
+
+  def setScreenPosition(self, x, y):
+    self.window.topleft = x, y  
+
+  def getScreenPosition(self):
+    return self.window.topleft
+
+  def getSize(self):
+    return self.container.width, self.container.height     
 
   def __paintBackground(self):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
@@ -121,7 +130,13 @@ class PrivateChatWindow:
     
   def writeChatMessage(self, string):
     line = self.sliceLine(string)  
+    self.selected.getPlayer().newPrivateChatReceived(line, self.player)
     self.__layoutTextArea.add_child(self.createChatMessage(line))
+    self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+
+  def incomingChatMessage(self, string, player):
+    self.player.newChatForPlayer(string, player)
+    self.__layoutTextArea.add_child(self.createChatMessage(string))
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def createChatMessage(self, string):
