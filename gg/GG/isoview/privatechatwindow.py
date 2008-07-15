@@ -52,12 +52,12 @@ class PrivateChatWindow:
     
     labelChat = GG.utils.OcempLabel("Contactos", 280)
     labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
-    labelChat.topleft = 10, 10
+    labelChat.topleft = 20, 20
     self.container.add_child(labelChat)
     
     labelContacts = GG.utils.OcempLabel("Chat", 280)
     labelContacts.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
-    labelContacts.topleft = 160, 10
+    labelContacts.topleft = 150, 20
     self.container.add_child(labelContacts)
     
   def __paintContactList(self):
@@ -65,8 +65,8 @@ class PrivateChatWindow:
     """
     from PIL import Image
     #self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.agenda)
-    self.contactsArea = GG.utils.OcempImageContactList(130, 290,self.agenda)
-    self.contactsArea.topleft = 10, 30
+    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.agenda)
+    self.contactsArea.topleft = 20, 40
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
 
@@ -81,7 +81,7 @@ class PrivateChatWindow:
 
   def __paintDeleteButton(self):
     deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
-    deleteButton.topleft = 6, 315
+    deleteButton.topleft = 20, 315
     deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
     self.container.add_child(deleteButton)
 
@@ -110,7 +110,7 @@ class PrivateChatWindow:
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = 150, 340
+    self.__textField.topleft = 150, 320
     self.__textField.set_minimum_size(203, 20)
     self.container.add_child(self.__textField)
 
@@ -128,10 +128,10 @@ class PrivateChatWindow:
   
   def __paintChatArea(self):
     #self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
-    self.textArea = ocempgui.widgets.ScrolledWindow(203, 290)
+    self.textArea = ocempgui.widgets.ScrolledWindow(203, 270)
     self.textArea.set_scrolling(1)
     #self.textArea.topleft = 190, 10
-    self.textArea.topleft = 160, 30
+    self.textArea.topleft = 150, 40
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
