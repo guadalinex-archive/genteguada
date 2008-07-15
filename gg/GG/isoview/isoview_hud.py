@@ -416,6 +416,21 @@ class IsoViewHud(isoview.IsoView):
     self.imgBackground = GG.utils.OcempImageMapTransparent(filePath)
     self.imgBackground.topleft = 0,0
     self.hud.add_child(self.imgBackground)
+    
+    labelChat = GG.utils.OcempLabel("Chat", 280)
+    labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
+    labelChat.topleft = 17, 65
+    self.hud.add_child(labelChat)
+    
+    labelProfile = GG.utils.OcempLabel("Mi perfil:", 280)
+    labelProfile.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    labelProfile.topleft = 540, 80
+    self.hud.add_child(labelProfile)
+    
+    labelInventory = GG.utils.OcempLabel("Inventario:", 280)
+    labelInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
+    labelInventory.topleft = 819, 65
+    self.hud.add_child(labelInventory)
 
     #self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
     #self.__img.zOrder = 0
@@ -457,7 +472,7 @@ class IsoViewHud(isoview.IsoView):
                                     "style" : 0 }),
             "shadow" : 0
             })
-    self.textArea = ocempgui.widgets.ScrolledWindow(478, 110)
+    self.textArea = ocempgui.widgets.ScrolledWindow(490, 110)
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
@@ -481,17 +496,17 @@ class IsoViewHud(isoview.IsoView):
     self.__textField.border = 1
     #self.__textField.topleft = 14, 732
     self.__textField.topleft = 14, 210
-    self.__textField.set_minimum_size(479, 20)
+    self.__textField.set_minimum_size(490, 20)
     self.hud.add_child(self.__textField)
     #self.widgetContainer.add_widget(self.__textField)
 
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
     """
-    self.windowInventory = ocempgui.widgets.ScrolledWindow(190, 163)
+    self.windowInventory = ocempgui.widgets.ScrolledWindow(186, 135)
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.windowInventory.border = 1
-    self.windowInventory.topleft = 805, 70
+    self.windowInventory.topleft = 819, 90
     self.windowInventory.set_depth(1)
     self.hud.add_child(self.windowInventory)
     #self.widgetContainer.add_widget(self.windowInventory)
