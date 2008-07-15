@@ -445,7 +445,19 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 246, 155),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
-                            },                            
+                            },   
+          "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
+                                            },
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (107, 177, 197),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (107, 177, 197),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (107, 177, 197),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (107, 177, 197) 
+                                          }
+                            },                          
             "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
