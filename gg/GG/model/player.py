@@ -525,5 +525,14 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       if cont.getPlayer().username == contact.username:
         return True
     return False  
+
+  def newChatForPlayer(self, string, player):
+    for item in self.__agenda:
+      print player  
+      if item.getPlayer().username == player.username:
+        item.addChatLine(player, string)        
+
+  def newPrivateChatReceived(self, line, player):
+    self.triggerEvent("privateChatReceived", chat=line, player=player)
     
   

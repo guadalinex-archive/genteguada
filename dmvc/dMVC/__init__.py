@@ -66,7 +66,7 @@ def serverMaterialize(obj, rServer): #{{{
     return obj.serverMaterialize(rServer)
 
   elif isinstance(obj, list): 
-    return map(lambda each: serverMaterialize(each, rServer), obj)
+    return list(map(lambda each: serverMaterialize(each, rServer), obj))
 
   elif isinstance(obj, tuple):
     return tuple(map(lambda each: serverMaterialize(each, rServer), obj))
