@@ -146,7 +146,7 @@ class GenteGuada:
 
     last = get_ticks()
     while True:
-      time_sleep(0.02) # Minor sleep to give oportunity to other thread to execute
+      time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
       theClock_tick(intentedFPS)
 
       client_processEvents()

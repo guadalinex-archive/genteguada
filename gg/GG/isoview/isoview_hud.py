@@ -1154,7 +1154,6 @@ class IsoViewHud(isoview.IsoView):
     
   def newContactAdded(self, event):
     contact = event.getParams()['contact']
-    pass
 
   def privateChatReceived(self, event):
     chat = event.getParams()['chat']

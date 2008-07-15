@@ -499,6 +499,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__agenda.append(GG.model.private_contact.PrivateContact(player))
     
   def getAgenda(self):
+    print self.__agenda[0].getPlayer()
     return self.__agenda
     
   def removeContact(self, contact):

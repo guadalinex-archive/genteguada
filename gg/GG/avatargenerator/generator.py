@@ -9,8 +9,8 @@ class AvatarGenerator(dMVC.model.Model):
     dMVC.model.Model.__init__(self)
 
   def executeCommand(self, configuration, player):
-    return True
     comando = self.__generateRenderCommand(player.username, configuration)
+    return True
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
       return False
@@ -73,6 +73,7 @@ class AvatarGenerator(dMVC.model.Model):
       configuration["shoes"] = "0"+configuration["shoes"]+".tga"
 
     command = "avatargenerator "+name+" "+configuration["gender"]+" "+configuration["headSize"]+" "+configuration["mask"]+" "+configuration["hairStyle"]+" "+configuration["hairColor"]+" "+configuration["skin"]+" "+configuration["bodySize"]+" "+configuration["typeShirt"]+" "+configuration["shirt"]+" "+configuration["typeTrousers"]+" "+configuration["trousers"]+" "+configuration["skirt"]+" "+configuration["shoes"]
+    print command
     return command
 
   def getImages(self, player):

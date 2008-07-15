@@ -118,8 +118,8 @@ class GGSystem(dMVC.model.Model):
     self.__createPlayer(nino)
     self.__createPlayer(nina)
     nino.addContactTEST(nina)
-    #nino.addContactTEST(user0)
-    #nina.addContactTEST(nino)
+    nino.addContactTEST(user0)
+    nina.addContactTEST(nino)
     
     # ROOMS
     room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
