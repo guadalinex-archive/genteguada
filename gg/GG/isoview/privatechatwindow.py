@@ -50,13 +50,23 @@ class PrivateChatWindow:
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
+    labelChat = GG.utils.OcempLabel("Contactos", 280)
+    labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    labelChat.topleft = 10, 10
+    self.container.add_child(labelChat)
+    
+    labelContacts = GG.utils.OcempLabel("Chat", 280)
+    labelContacts.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    labelContacts.topleft = 160, 10
+    self.container.add_child(labelContacts)
+    
   def __paintContactList(self):
     """ Paints the chat window on screen.
     """
     from PIL import Image
     #self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.agenda)
     self.contactsArea = GG.utils.OcempImageContactList(130, 290,self.agenda)
-    self.contactsArea.topleft = 10, 10
+    self.contactsArea.topleft = 10, 30
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
 
@@ -100,8 +110,8 @@ class PrivateChatWindow:
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = 150, 330
-    self.__textField.set_minimum_size(203, 30)
+    self.__textField.topleft = 150, 340
+    self.__textField.set_minimum_size(203, 20)
     self.container.add_child(self.__textField)
 
   def chatMessageEntered(self):
@@ -121,7 +131,7 @@ class PrivateChatWindow:
     self.textArea = ocempgui.widgets.ScrolledWindow(203, 290)
     self.textArea.set_scrolling(1)
     #self.textArea.topleft = 190, 10
-    self.textArea.topleft = 150, 10
+    self.textArea.topleft = 160, 30
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
