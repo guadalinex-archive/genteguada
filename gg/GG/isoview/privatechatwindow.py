@@ -70,7 +70,7 @@ class PrivateChatWindow:
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def __paintDeleteButton(self):
-    deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"), "eliminar contacto", self.showTooltip, self.removeTooltip)
+    deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
     deleteButton.topleft = 6, 315
     deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
     self.container.add_child(deleteButton)
@@ -112,7 +112,7 @@ class PrivateChatWindow:
         self.writeChatMessage(text)
         self.__textField.text = ""
     else:
-      self.writeChatMessage("Para iniciar una conversacion, debes seleccionar un contacto")
+      self.writeChatMessage("Seleccione un contacto para iniciar una conversacion")
       self.__textField.text = ""
         
   

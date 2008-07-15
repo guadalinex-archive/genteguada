@@ -123,7 +123,7 @@ BG_BLACK = "bg_black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
 INTERFACE_LOWER = "interface/hud/interface_lower.png"
-PATH_HUD = "interface/hud"
+PATH_HUD = DATA_PATH + "/interface/hud"
 
 # Sprites: items
 OAK_SPRITE = "oak.png"
