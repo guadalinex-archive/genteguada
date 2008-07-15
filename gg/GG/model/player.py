@@ -500,7 +500,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     
   def getAgenda(self):
     return self.__agenda
-
+    
   def removeContact(self, contact):
       if len(self.__agenda) <> 0:
         self.__agenda.remove(contact)

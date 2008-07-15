@@ -20,6 +20,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__movieAnimation = None
     self.__destination = None
     self.__timestamp = model.getTimestamp()
+    #self.agenda = model.getAgenda()
     self.setImg(GG.utils.getSpriteName(model.getState(), model.getHeading(), 0, self.__timestamp))
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
@@ -50,7 +51,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Changes the player's sprite heading.
     """
     self.__heading = event.getParams()["heading"]
-    print ">>>>>>>>>>>>>>>>>>>>>>>>>", self.__heading
     if self.__movieAnimation != None:
       frames = self.createFrameSet()
       self.__movieAnimation.setFrames(frames)

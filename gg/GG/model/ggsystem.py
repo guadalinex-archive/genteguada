@@ -115,11 +115,11 @@ class GGSystem(dMVC.model.Model):
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "")
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "pepe2", "12345", "")
     user0 = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user0", "user0", "")
+    self.__createPlayer(nino)
+    self.__createPlayer(nina)
     nino.addContactTEST(nina)
     #nino.addContactTEST(user0)
     #nina.addContactTEST(nino)
-    self.__createPlayer(nino)
-    self.__createPlayer(nina)
     
     # ROOMS
     room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
