@@ -46,7 +46,8 @@ class IsoViewHud(isoview.IsoView):
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
-    self.privateChatWindow = None
+    self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
+    self.privateChatWindow.hide = True
     
     if fullscreen:
       self.__fullScreen = True
@@ -56,6 +57,7 @@ class IsoViewHud(isoview.IsoView):
     
     self.__soundButton = None
     self.__fullscreenButton = None
+    self.__privateChatButton = None
     
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
@@ -694,7 +696,7 @@ class IsoViewHud(isoview.IsoView):
       button.topleft = 195 - i*60 ,40
       self.buttonBarActions.add_child(button)
       i+=1
-
+      
     self.buttonBarActions.zOrder = 10000
     self.addSprite(self.buttonBarActions)
     self.widgetContainer.add_widget(self.buttonBarActions)
@@ -749,6 +751,7 @@ class IsoViewHud(isoview.IsoView):
         self.__fullscreenButton = button
       elif  buttonData['action'] == self.showSoundControl:
         self.__soundButton = button
+        
       i+=1
       self.hud.add_child(button)
       
@@ -762,8 +765,14 @@ class IsoViewHud(isoview.IsoView):
         self.hidePrivateChat()
       
   def showPrivateChat(self):
-    if not self.privateChatWindow:
-      self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
+    #if not self.privateChatWindow:
+    #  self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
+    
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/privatechat.png")
+    self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
+    self.hud.remove_child(self.__privateChatButton)
+    self.hud.add_child(self.__privateChatButton)
+    
     self.addSprite(self.privateChatWindow.window)
     self.widgetContainer.add_widget(self.privateChatWindow.window)
     x, y = self.privateChatWindow.getScreenPosition()
@@ -911,6 +920,8 @@ class IsoViewHud(isoview.IsoView):
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.hud.add_child(button)
       i += 1
+      if buttonData['action'] == self.privateChatHandler:
+        self.__privateChatButton = button
 
     from PIL import Image
     import os
@@ -1159,5 +1170,11 @@ class IsoViewHud(isoview.IsoView):
   def privateChatReceived(self, event):
     chat = event.getParams()['chat']
     player = event.getParams()['player']
+    if self.privateChatWindow.hide == True:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/4.png")
+      self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
+      self.hud.remove_child(self.__privateChatButton)
+      self.hud.add_child(self.__privateChatButton)
     self.privateChatWindow.incomingChatMessage(chat, player)
+      
     
