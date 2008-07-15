@@ -124,7 +124,7 @@ class IsoViewHud(isoview.IsoView):
                     K_y: self.itemToClone , K_k: self.itemToPush , K_p: self.itemToUp , \
                     K_t: self.itemToTalk , K_g: self.itemToTalkAndGet , K_h: self.privateChat , \
                     K_e: self.exchangeItemPlayer , K_o: self.itemToOpen , K_w: self.itemToUrl , \
-                    K_a: self.itemToExchange, K_v: self.itemToGiveCard}
+                    K_a: self.itemToExchange, K_v: self.itemToGiveCard, K_z: self.privateChatHandler}
                           
     self.winWardrobe = None
     self.wardrobe = None
@@ -207,6 +207,7 @@ class IsoViewHud(isoview.IsoView):
     self.__activeActions.append(self.jump)
     self.__activeActions.append(self.turnRight)
     self.__activeActions.append(self.turnLeft)
+    self.__activeActions.append(self.privateChatHandler)
     
   def compareSelectedItem(self, item):
     if self.__selectedItem:  
@@ -787,7 +788,11 @@ class IsoViewHud(isoview.IsoView):
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
-    self.tooltipWindow.topleft = x + 8, y - 5
+    szX, szY = self.tooltipWindow.size
+    if (x + 8 + szX) > GG.utils.GAMEZONE_SZ[0]:
+      self.tooltipWindow.topleft = GG.utils.GAMEZONE_SZ[0] - szX, y - 5
+    else:
+      self.tooltipWindow.topleft = x + 8, y - 5
     self.tooltipWindow.depth = 99 # Make it the topmost widget.
     self.tooltipWindow.zOrder = 30000
     self.addSprite(self.tooltipWindow)
@@ -890,7 +895,7 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     ACTIONS = [
-                {"image":"interface/hud/privatechat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
+                {"image":"interface/hud/privatechat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado (Z)"},
                 {"image":"interface/hud/spinright.png", "action": self.turnRight, "tooltip":"Rotar derecha (R)"},
                 {"image":"interface/hud/spinleft.png", "action": self.turnLeft, "tooltip":"Rotar izquierda (L)"},
                 {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar (J)"},
