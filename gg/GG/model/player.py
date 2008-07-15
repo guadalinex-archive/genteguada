@@ -227,7 +227,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1, -1]:
-      self.newChatMessage("No puedo soltarlo ahí", 1)
+      self.newChatMessage("No puedo soltarlo ahï¿½", 1)
     else:    
       GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
@@ -388,7 +388,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     item: item to lift.
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
-      self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)  
+      self.newChatMessage("Ya tengo algo cogido. ï¿½No puedo aguantar mï¿½s peso!", 1)  
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
@@ -402,7 +402,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podrï¿½a aplastarlo", 1)
     else:
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
@@ -502,7 +502,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return self.__agenda
 
   def removeContact(self, contact):
-    self.__agenda.remove(contact)
+      if len(self.__agenda) <> 0:
+        self.__agenda.remove(contact)
     
   def checkContact(self, player):
     if self.checkContactOnAgenda(player):

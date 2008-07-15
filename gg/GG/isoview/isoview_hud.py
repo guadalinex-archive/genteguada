@@ -580,6 +580,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
+    #print "Fuente utilizada",messageChat
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()
 
@@ -722,7 +723,6 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
                 {"image":"interface/hud/maximize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
-                {"image":"interface/hud/chat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
@@ -732,7 +732,6 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/exit.png", "action": self.finishGame, "tooltip":"Finalizar (X)"},
                 {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
-                {"image":"interface/hud/chat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
                 #{"image":"interface/hud/rotateright.png", "action": self.turnRight, "tooltip":"rotar derecha"},
                 #{"image":"interface/hud/rotateleft.png", "action": self.turnLeft, "tooltip":"rotar izquierda"},
                 ]
@@ -891,6 +890,7 @@ class IsoViewHud(isoview.IsoView):
   def paintUserActions(self):
     
     ACTIONS = [
+                {"image":"interface/hud/privatechat.png", "action": self.privateChatHandler, "tooltip":"Abre o cierra chat privado"},
                 {"image":"interface/hud/spinright.png", "action": self.turnRight, "tooltip":"Rotar derecha (R)"},
                 {"image":"interface/hud/spinleft.png", "action": self.turnLeft, "tooltip":"Rotar izquierda (L)"},
                 {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar (J)"},
