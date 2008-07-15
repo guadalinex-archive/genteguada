@@ -1,8 +1,9 @@
+import ggmodel
 
-
-class PrivateContact:
+class PrivateContact(ggmodel.GGModel):
   
   def __init__(self, player):
+    ggmodel.GGModel.__init__(self)
     self.__player = player
     self.__chat = []
     

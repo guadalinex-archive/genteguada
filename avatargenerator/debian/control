@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: avatargenerator
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, blender (>=2.44)
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Generador de avatares de Gente Guada
  Generador de avatares, creado en Blender, para el juego 
  colaborativo 3D Gente Guada.
