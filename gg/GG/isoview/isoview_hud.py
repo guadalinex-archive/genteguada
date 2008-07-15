@@ -87,7 +87,6 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedImage = pygame.sprite.Sprite()
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
-    #self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(self.getModel().getPosition(), self.getModel().anchor)
     
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_TARGET)  
     self.__targetTile = None
@@ -302,7 +301,8 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
-    itemPos = item.getPosition()
+    #itemPos = item.getPosition()
+    itemPos = ivItem.getPosition()
     ivInventItem = self.findIVInventoryItem(item)
     if ivItem:    
       posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
@@ -324,7 +324,8 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
-    itemPos = item.getPosition()
+    #itemPos = item.getPosition()
+    itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
@@ -804,7 +805,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.winWardrobe)
     self.addSprite(self.winWardrobe)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
-
+    
   def closeDresser(self, configuration = None):
     if configuration:
       self.setAvatarConfiguration(configuration)
@@ -814,7 +815,19 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = None
     self.hud.remove_child(self.imgBackground)
     self.hud.insert_child(0,self.imgBackground)
-
+    
+    #self.removeSprite(self.hud)
+    #self.addSprite(self.hud)
+        
+    #self.showSoundControl()
+    #self.showSoundControl()
+    
+    #self.hud.update()
+    #self.__allSprites.update()
+    
+    #self.hud.remove_child(self.__fullscreenButton)
+    #self.hud.add_child(self.__fullscreenButton)
+    
   def setAvatarConfiguration(self,configuration):
     GG.genteguada.GenteGuada.getInstance().uploadAvatarConfiguration(configuration, self.__player)
     #print configuration
@@ -872,10 +885,9 @@ class IsoViewHud(isoview.IsoView):
     
     self.hud.remove_child(self.__fullscreenButton)
     self.hud.add_child(self.__fullscreenButton)
-
     self.__fullScreen = not self.__fullScreen
     pygame.display.toggle_fullscreen()
-
+    
   def paintUserActions(self):
     
     ACTIONS = [
@@ -967,7 +979,6 @@ class IsoViewHud(isoview.IsoView):
     item, pos = self.__selectedItem.getCopyFor(self.__player)
     #print "*********************",item
     if item != None:
-      #self.__player.addToInventoryFromVoid(item, self.__selectedItem.getPosition())
       self.__player.addToInventoryFromVoid(item, pos)
     self.__player.setUnselectedItem()
  
@@ -1035,8 +1046,9 @@ class IsoViewHud(isoview.IsoView):
 
   def itemToLift(self):
     #print "lift"
-    pass
-    """
+    #self.removeSprite(self.hud)
+    #self.addSprite(self.hud)
+    #self.widgetContainer.update()
     self.__player.lift(self.__selectedItem)
     self.itemUnselected()
     if self.__selectedItem:
@@ -1046,7 +1058,7 @@ class IsoViewHud(isoview.IsoView):
         self.removeSprite(self.__selectedImage)        
     
     self.dropActionsItembuttons()
-    """
+    
   def itemToDrop(self):
     #print "drop"
     self.__player.drop(self.__selectedItem)
