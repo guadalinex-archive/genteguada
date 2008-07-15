@@ -45,8 +45,8 @@ class PrivateChatWindow:
     """ Paints the chat window on screen.
     """
     from PIL import Image
-    #self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.contactsList)
-    self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.agenda)
+    #self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.agenda)
+    self.contactsArea = GG.utils.OcempImageContactList(130, 290,self.agenda)
     self.contactsArea.topleft = 10, 10
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
@@ -54,12 +54,10 @@ class PrivateChatWindow:
   def __selectionChange(self):
     name = self.contactsArea.getSelectedName()
     self.selected = self.player.getContact(name)
-    print self.selected
-    print name
     self.clearChatArea()
     chat = self.selected.getChat()
     for line in chat:    
-      self.__layoutTextArea.add_child(self.createChatMessage(line[1]))
+      self.__layoutTextArea.add_child(self.createChatMessage(self.sliceLine(line[1])))
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def __paintDeleteButton(self):
@@ -83,29 +81,38 @@ class PrivateChatWindow:
       self.tooltipWindow = None
 
   def deleteContacts(self):
-    #self.player.removeContact  
-    print "a eliminar toca!!!"
-    pass
-
+    self.player.removeContact(self.selected)
+    self.__agenda = self.player.getAgenda()  
+    self.container.remove_child(self.contactsArea)
+    self.__paintContactList()
+    self.clearChatArea()
+    
   def __paintChat(self):
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    self.__textField.topleft = 160, 330
-    self.__textField.set_minimum_size(200, 30)
+    self.__textField.topleft = 150, 330
+    self.__textField.set_minimum_size(203, 30)
     self.container.add_child(self.__textField)
 
   def chatMessageEntered(self):
-    text = self.selected.getPlayer().username + ": " + self.__textField.text
-    self.selected.addChatLine(self.player, text)
-    if not text.strip() == "" and self.contactsArea.getSelectedName():
-      self.writeChatMessage(text)
+    if self.selected != None:
+      text = self.selected.getPlayer().username + ": " + self.__textField.text
+      self.selected.addChatLine(self.player, text)
+      if not text.strip() == "" and self.contactsArea.getSelectedName():
+        self.writeChatMessage(text)
+        self.__textField.text = ""
+    else:
+      self.writeChatMessage("Para iniciar una conversacion, debes seleccionar un contacto")
       self.__textField.text = ""
+        
   
   def __paintChatArea(self):
-    self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
+    #self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
+    self.textArea = ocempgui.widgets.ScrolledWindow(203, 290)
     self.textArea.set_scrolling(1)
-    self.textArea.topleft = 190, 10
+    #self.textArea.topleft = 190, 10
+    self.textArea.topleft = 150, 10
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
@@ -113,7 +120,8 @@ class PrivateChatWindow:
     self.container.add_child(self.textArea)
     
   def writeChatMessage(self, string):
-    self.__layoutTextArea.add_child(self.createChatMessage(string))
+    line = self.sliceLine(string)  
+    self.__layoutTextArea.add_child(self.createChatMessage(line))
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def createChatMessage(self, string):
@@ -133,3 +141,19 @@ class PrivateChatWindow:
     for child in children:
       self.__layoutTextArea.remove_child(child)
       child.destroy()
+
+  def sliceLine(self, string):
+    width = 20
+    line = ""  
+    cad = string
+    while len(cad) > width:
+      cad2aux = cad[0:width]
+      blankPos = cad2aux.rfind(" ")
+      if blankPos > 0:
+        line = line + cad[0:blankPos] + "\n"     
+        cad = cad[blankPos+1:]
+      else:  
+        line = line + cad[0:width] + "\n"     
+        cad = cad[width:]  
+    line = line + cad
+    return line    
