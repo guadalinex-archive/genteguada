@@ -147,8 +147,12 @@ class PrivateChatWindow:
 
   def incomingChatMessage(self, string, player):
     self.player.newChatForPlayer(string, player)
-    self.__layoutTextArea.add_child(self.createChatMessage(string))
-    self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+    if self.selected == None:
+      self.__layoutTextArea.add_child(self.createChatMessage(string))
+      self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+    elif self.selected.getPlayer().username == player.username:
+      self.__layoutTextArea.add_child(self.createChatMessage(string))
+      self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def createChatMessage(self, string):
     hframe = ocempgui.widgets.HFrame()
