@@ -770,7 +770,26 @@ class OcempLabel(ocempgui.widgets.Label):
     ocempgui.widgets.Label.__init__(self,line)
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
+
+class LabelTransparent(ocempgui.widgets.Label):
+  
+  def __init__(self,label, style):
+    self.label = label
+    self.typeFont = style["font"]["name"] 
+    self.sizeFont = style["font"]["size"]
+    self.aliasFont = style["font"]["alias"]
+    self.colorFont = style["fgcolor"][0]
+    ocempgui.widgets.Label.__init__(self,label)
+
+  def update(self):
+    self.draw()
+
+  def draw(self):
+    #ocempgui.widgets.Label.draw(self)
+    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
+
     
+
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
 
   def __init__(self, image):

@@ -419,8 +419,9 @@ class IsoViewHud(isoview.IsoView):
     self.imgBackground.topleft = 0,0
     self.hud.add_child(self.imgBackground)
     
-    labelChat = GG.utils.OcempLabel("Chat", 280)
-    labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
+    #labelChat = GG.utils.OcempLabel("Chat", 280)
+    labelChat = GG.utils.LabelTransparent("Chat",GG.utils.STYLES["hudLabel"])
+    #labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
     labelChat.topleft = 17, 65
     self.hud.add_child(labelChat)
     
