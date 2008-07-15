@@ -58,8 +58,6 @@ class IsoViewRoom(isoview.IsoView):
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
-      #print "Insercion en ", pos, ": ", isoviewitem.getModel()
-      #pos = item.getPosition()
       
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
@@ -114,7 +112,8 @@ class IsoViewRoom(isoview.IsoView):
     for image in images:
       if self.__spritesDict[image].checkClickPosition(pos):
         item = self.__spritesDict[image].getModel() 
-        return item.getPosition(), item
+        #return item.getPosition(), item
+        return self.__spritesDict[image].getPosition(), item
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
         return self.__bottomSpritesDict[image].getModel().position, None
@@ -165,7 +164,8 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.append(ivItem)
     self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
-    pos = ivItem.getModel().getPosition()
+    #pos = ivItem.getModel().getPosition()
+    pos = ivItem.getPosition()
     self.updateScreenPositionsOn(pos)
 
   def removeIsoViewItem(self, ivPlayer):

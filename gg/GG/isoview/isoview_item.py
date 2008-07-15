@@ -17,6 +17,7 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
+    self.__position = model.getPosition()
     self.loadImage()
     self.getModel().subscribeEvent('position', self.positionChanged)
     #self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
@@ -30,14 +31,17 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    pos = self.getModel().getPosition()
+    pos = self.__position
     self.__img.rect.topleft = GG.utils.p3dToP2d(pos, self.getModel().anchor)
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
     #self.updateZOrder()
             
+  def getPosition(self):
+    return self.__position
+            
   def updateZOrder(self, value=None):
     if value == None:
-      pos = self.getModel().getPosition()
+      pos = self.__position
       self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
     else:
       self.__img.zOrder = value
@@ -128,6 +132,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
+    self.__position = event.getParams()['position']
     if self.__parent.getSound():
       GG.utils.playSound(GG.utils.SOUND_STEPS01)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
@@ -140,6 +145,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the item position without animation and draws the room after receiving a position change event.
     event: even info.
     """
+    self.__position = event.getParams()['position']
     self.setPositionAnimation(None)
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
     
