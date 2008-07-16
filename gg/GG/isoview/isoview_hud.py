@@ -83,6 +83,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('contactDialog', self.newContactDialog)
     self.__player.subscribeEvent('contactAdded', self.newContactAdded)
     self.__player.subscribeEvent("privateChatReceived", self.privateChatReceived)
+    self.__player.subscribeEvent("removeContactRemote", self.removeContactRemote)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
@@ -824,23 +825,10 @@ class IsoViewHud(isoview.IsoView):
     if configuration:
       self.setAvatarConfiguration(configuration)
     GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    self.widgetContainer.remove_widget(self.winWardrobe)  
     self.removeSprite(self.winWardrobe)
     self.winWardrobe.destroy()
     self.winWardrobe = None
-    self.hud.remove_child(self.imgBackground)
-    self.hud.insert_child(0,self.imgBackground)
-    
-    #self.removeSprite(self.hud)
-    #self.addSprite(self.hud)
-        
-    #self.showSoundControl()
-    #self.showSoundControl()
-    
-    #self.hud.update()
-    #self.__allSprites.update()
-    
-    #self.hud.remove_child(self.__fullscreenButton)
-    #self.hud.add_child(self.__fullscreenButton)
     
   def setAvatarConfiguration(self,configuration):
     GG.genteguada.GenteGuada.getInstance().uploadAvatarConfiguration(configuration, self.__player)
@@ -1177,4 +1165,6 @@ class IsoViewHud(isoview.IsoView):
       self.hud.add_child(self.__privateChatButton)
     self.privateChatWindow.incomingChatMessage(chat, player)
       
-    
+  def removeContactRemote(self, event):
+    contact = event.getParams()['contact']
+    self.privateChatWindow.removeContactRemote(contact)      
