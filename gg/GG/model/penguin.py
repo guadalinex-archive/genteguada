@@ -2,7 +2,7 @@
 import GG.model.room_item
 import GG.isoview.isoview_item
 import random
-import GG.model.gift
+import GG.model.giver_npc
 import GG.model.chat_message
 
 class GGPenguin(GG.model.room_item.GGRoomItem):
