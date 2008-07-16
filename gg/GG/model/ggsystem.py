@@ -5,7 +5,6 @@ import GG.model.player
 import GG.model.ggsession
 import GG.model.inventory_item
 import GG.model.giver_npc
-import GG.model.mp3_lobby
 import GG.model.box_heavy
 import GG.model.penguin
 import GG.model.teleport
