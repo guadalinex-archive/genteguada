@@ -72,6 +72,12 @@ class PrivateChatWindow:
 
   def __selectionChange(self):
     name = self.contactsArea.getSelectedName()
+    if name.find(" ") > -1:
+      #cad1, cad2, cad3 = name.partition(" ") 
+      #name = cad1
+      name = name[0:name.find(" ")]
+      self.contactsArea.restoreContactName()
+    
     self.selected = self.player.getContact(name)
     self.clearChatArea()
     chat = self.selected.getChat()
@@ -148,11 +154,14 @@ class PrivateChatWindow:
   def incomingChatMessage(self, string, player):
     self.player.newChatForPlayer(string, player)
     if self.selected == None:
-      self.__layoutTextArea.add_child(self.createChatMessage(string))
-      self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+      self.contactsArea.addMessageHintForContact(player)
+      #self.__layoutTextArea.add_child(self.createChatMessage(string))
+      #self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
     elif self.selected.getPlayer().username == player.username:
       self.__layoutTextArea.add_child(self.createChatMessage(string))
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
+    else:
+      self.contactsArea.addMessageHintForContact(player)
 
   def createChatMessage(self, string):
     hframe = ocempgui.widgets.HFrame()
