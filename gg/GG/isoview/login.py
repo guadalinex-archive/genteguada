@@ -110,34 +110,42 @@ class Login:
       self.__session = loginData[1]
       self.finishLogin()
     else:
-      self.__showError(loginData[1])
-  
-  def __showError(self,errorText):
-    if self.dialog:
-      return
-    
-    self.dialog = ocempgui.widgets.Box(516,236)
-    self.dialog.topleft = 254, 50
+      self.__showErrorDialog(loginData[1])
 
-    background = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_BACKGROUNDS, "alertWindow.png"))
-    self.dialog.add_child(background)
-    
-    #label = ocempgui.widgets.Label(errorText)
-    #label.topleft = 10,10
-    #self.dialog.add_child(label)
+  def __showErrorDialog (self, errorText):
 
-    buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
-    buttonCancel.topleft = [375, 173]
-    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
-    self.dialog.add_child(buttonCancel)
+     if self.dialog:
+       return
+   
+     self.container = ocempgui.widgets.Box(516,197)
 
-    self.window.add_child (self.dialog)
+     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png")
+     imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+     imgBackground.topleft = 0,0
+     self.container.add_child(imgBackground)
     
+     self.dialog = ocempgui.widgets.DialogWindow("Error")
+     self.dialog.topleft = 254, 50
+     self.dialog.child = self.container
+     self.widgetContainer.add_widget(self.dialog)
+     
+     buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
+     buttonCancel.topleft = [400, 140]
+     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
+     self.container.add_child(buttonCancel)
+     
+     labelAlert = GG.utils.LabelTransparent("Error: Usuario o password incorrectos.",GG.utils.STYLES["dialogFont"])
+     labelAlert.topleft = 180, 80
+     self.container.add_child(labelAlert)
+
+     return self.dialog
 
   def __closeDialog (self):
-    self.window.remove_child(self.dialog)
+    self.widgetContainer.remove_widget(self.dialog)
     self.dialog.destroy ()
     self.dialog = None
+    self.__textFieldUsername.text = ""
+    self.__textFieldPassword.text = ""
 
   def cancelLogin(self):
     sys.exit(0)
