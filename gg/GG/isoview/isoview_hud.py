@@ -422,7 +422,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.imgBackground)
     
     #labelChat = GG.utils.OcempLabel("Chat", 280)
-    labelChat = GG.utils.LabelTransparent("Chat",GG.utils.STYLES["hudLabel"])
+    labelChat = GG.utils.LabelTransparent("Chat", GG.utils.STYLES["hudLabel"])
     #labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
     labelChat.topleft = 17, 65
     self.hud.add_child(labelChat)
@@ -510,7 +510,7 @@ class IsoViewHud(isoview.IsoView):
     """
     self.windowInventory = ocempgui.widgets.ScrolledWindow(186, 135)
     self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
-    self.windowInventory.border = 1
+    self.windowInventory.border = ocempgui.widgets.Constants.BORDER_FLAT
     self.windowInventory.topleft = 819, 90
     self.windowInventory.set_depth(1)
     self.hud.add_child(self.windowInventory)
