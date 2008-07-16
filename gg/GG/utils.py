@@ -884,4 +884,40 @@ class OcempImageContactList(OcempImageFileList):
       return item[0].text
     return None
 
+  def select(self, *items):
+    print "LOCOMOTORO LOCOMOTORO"
+    OcempImageFileList.select(self, items)  
 
+  def addMessageHintForContact(self, contact):
+    for item in self.items:
+      if item.text.find(contact.username) > -1:
+        if item.text.find(" ") == -1:
+          item.text = item.text + " (*)"
+          return
+        
+      """
+      if len(item):
+        if item[0].text.find(contact.username) > -1:
+          string = item[0].text
+          num = int(string[len(string)-2])
+          string[len(string)-2] = str(num+1)
+          item[0].text = string
+          return
+      """
+      
+  def restoreContactName(self):
+    item = self.get_selected()
+    if len(item):
+      cad = item[0].text
+      cad = cad[0:cad.find(" ")]
+      item[0].text = cad
+      
+    """
+    item = self.get_selected()
+    if len(item):
+      cad1, cad2, cad3 = item[0].text.partition(" ") 
+      item[0].text = cad1
+    """
+    
+  def setContactList(self, list):
+    self.contactList = list
