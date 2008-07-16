@@ -18,9 +18,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     """
     self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
-    self.label = GG.utils.OcempLabel(model.getMessage(),140)
     self.style = self.getStyleMessageChat()
-    print self.style["balloon"]["font"]
+    self.label = GG.utils.OcempLabelNotTransparent(model.getMessage(),140)
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     self.label.padding = 5
     self.label.set_minimum_size(150,50)
@@ -94,7 +93,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   
   def drawBalloon(self, message):
     
-    label = GG.utils.OcempLabel(message,140)
+    #label = GG.utils.OcempLabel(message,140,self.style["balloon"])
+    label = GG.utils.OcempLabelNotTransparent(message,140)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     label.padding = 5
     label.set_minimum_size(150,50)
@@ -179,10 +179,12 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image.buttom = 0
     hframe.add_child(image)
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    label = GG.utils.OcempLabel(string,300)
+    #label = GG.utils.OcempLabel(string,300,self.style["entry"])
+    label = GG.utils.OcempLabelNotTransparent(string,300)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
-    label = GG.utils.OcempLabel(self.getModel().getMessage(),300)
+    #label = GG.utils.OcempLabel(self.getModel().getMessage(),300,self.style["entry"])
+    label = GG.utils.OcempLabelNotTransparent(self.getModel().getMessage(),300)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe
