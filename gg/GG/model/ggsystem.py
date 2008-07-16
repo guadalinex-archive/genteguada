@@ -163,7 +163,6 @@ class GGSystem(dMVC.model.Model):
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
     myGoldenKeyRoom2 = GG.model.giver_npc.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
- 
     
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, 0])
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [5, 0, 0])

@@ -15,8 +15,11 @@ class AvatarEditor:
   Defines the Avatar Editor
   """
 
-  def __init__(self,render,parent,configuration):
+  def __init__(self, render, parent, configuration):
     """ Class constructor.
+    render: render object used for the ocempgui elements.
+    parents: isometric view hud handler.
+    configuration: avatar initial configuration.
     """
     self.activeWidget = []
     self.activeOption = ""
@@ -27,7 +30,6 @@ class AvatarEditor:
     self.images = self.loadImagesAvatar()
     self.imagesTag = self.loadImagesTag()
     self.fileDialogShow = False
-    
     self.buttonTooltips = {
         "boy":{"tooltip":"Avatar masculino"},
         "girl":{"tooltip":"Avatar femenino"},
@@ -46,6 +48,8 @@ class AvatarEditor:
     }
 
   def loadImagesAvatar(self):
+    """ Loads the default avatar images.
+    """  
     dict = {}
     dict["body"] = None
     dict["shoes"] = None
@@ -58,6 +62,8 @@ class AvatarEditor:
     return dict
 
   def loadImagesTag(self):
+    """ Loads the editor images.
+    """  
     dict = {}
     dict["gender"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png"))
     dict["skin"] =  GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
@@ -76,8 +82,9 @@ class AvatarEditor:
     dict["shoes"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
     return dict
 
-
   def processEvent(self,events):
+    """ Handles the mouse and keyboard events.
+    """  
     for event in events:
       if event.type == QUIT:
         GG.genteguada.GenteGuada.getInstance().finish()
@@ -95,18 +102,19 @@ class AvatarEditor:
       self.window.update()
 
   def draw(self):
+    """ Draws all the editor elements on screen.    
+    """  
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     self.paintScreen()
     self.paintAvatar()
     self.paintTags()
     self.paintCustomizeZone()
     self.paintButtons()
-    #self.window.set_depth(1)
     self.window.zOrder = 90000
     return self.window
     
   def paintScreen(self):
-    """Paint the Avatar Editor background on screen.
+    """Paints the Avatar Editor background on screen.
     """
     self.imgBackgroundLeft = GG.utils.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
     self.window.add_child(self.imgBackgroundLeft)
@@ -115,6 +123,8 @@ class AvatarEditor:
     self.window.add_child(imgBackgroundRight)
 
   def paintAvatar(self):
+    """ Paints the avatar on screen.    
+    """
     self.paintBody()
     self.paintShoes()
     if self.avatarConfiguration["gender"] == "boy":
@@ -127,6 +137,9 @@ class AvatarEditor:
     self.paintMask()
 
   def delAvatarImage(self, imgName = None):
+    """ Deletes the avatar image.
+    imgName: image file name.
+    """  
     if imgName:
       self.window.remove_child(self.images[imgName])
       self.images[imgName].destroy()
@@ -139,6 +152,10 @@ class AvatarEditor:
           self.images[key] = None  
 
   def newAvatarImage(self, imgPath, imgName):
+    """ Sets a new avatar image.
+    imgPath: image file path.
+    imgName: image file name.
+    """  
     img = ocempgui.draw.Image.load_image(imgPath)
     if not self.images[imgName]: 
       imgOcemp = GG.utils.OcempImageMapTransparent(img)
@@ -149,43 +166,58 @@ class AvatarEditor:
       self.images[imgName].picture = img
 
   def paintBody(self):
+    """ Paints the avatar's body.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "skin", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "body")
 
   def paintShoes(self):
+    """ Paints the avatar's shoes.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "shoes", self.avatarConfiguration["shoes"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "shoes")
 
   def paintShirt(self):
+    """ Paints the avatar's shirt.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeShirt"]+"_shirt", self.avatarConfiguration["shirt"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "shirt")
 
   def paintTrousers(self):
+    """ Paints the avatar's trousers.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeTrousers"]+"_trousers", self.avatarConfiguration["trousers"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "trousers")
 
   def paintSkirt(self):
+    """ Paints the avatar's skirt.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeSkirt"]+"_skirt", self.avatarConfiguration["skirt"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "skirt")
 
   def paintHead(self):
+    """ Paints the avatar's head.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "head", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "head")
 
   def paintHair(self):
+    """ Paints the avatar's hair.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "hair_"+self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"] + GG.utils.IMG_EXTENSION)
     self.newAvatarImage(imgPath, "hair")
 
   def paintMask(self):
+    """ Paints the avatar's mask.
+    """
     if self.avatarConfiguration["mask"]:
       imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUploadMask.png")
     else:
       imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
     self.newAvatarImage(imgPath, "mask")
 
-
   def paintTags(self):
-    """Paint the Tags Zone.
+    """Paints the Tags Zone.
     """
     imagesTagOrder = ["gender","skin","head","body","mask","hair","shirt","trousers","skirt","shoes"]
     pos = 0
@@ -196,77 +228,70 @@ class AvatarEditor:
       pos += 1
 
   def changeImageTab(self, idTag):
+    """ Changes the tab's image.
+    idTag: new image id.
+    """
     imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png")
     self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(imgPath)
     imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png")
     self.imagesTag[idTag].picture = ocempgui.draw.Image.load_image(imgPath)
 
   def changeBackgroundLeft(self, image):
+    """ Changes the left background.
+    image: new background.
+    """  
     imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, image)
     self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(imgPath)
 
   def paintCustomizeZone(self,idTag = None):
-    """Paint the Customize Zone.
+    """Paints the Customize Zone.
+    idTag: tag identifier. 
     """
     if self.fileDialogShow:
       return
-
     if idTag == self.activeOption:
       return
-    
     if idTag == "skirt" and self.avatarConfiguration["gender"] == "boy":
       return 
-
     if self.avatarConfiguration["gender"] == "girl" and idTag in ["shirt","trousers"]:
       return
-
     if not idTag:
       idTag = "gender"
     else:
       self.changeImageTab(idTag)
-      
     self.removeWidgets()
 
     if idTag == "gender":
       self.changeBackgroundLeft("background_left.png")
       self.paintGenderFrame()
-
     elif idTag == "skin":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateSkin, "skin", "skin")
-
     elif idTag == "head":
       self.changeBackgroundLeft("background_left.png")
       self.paintSizePalette(self.updateSizeHead)
-
     elif idTag == "body":
       self.changeBackgroundLeft("background_left.png")
       self.paintSizePalette(self.updateSizeBody)
-
     elif idTag == "mask": 
       self.changeBackgroundLeft("background_left.png")
       self.paintSelectionItem("mask")
       self.paintMaskOptions()
-
     elif idTag == "hair":
       self.changeBackgroundLeft("background_left_small_palette.png")
       self.paintColorPalette(self.updateHairColor, "hair", "hair")
-
     elif idTag == "shirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShirtColor, "cloth", "shirt")
       self.paintWinterSelection("typeShirt")
-
     elif idTag == "trousers":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateTrouserColor, "cloth", "trousers")
       self.paintWinterSelection("typeTrousers")
-
     elif idTag == "skirt":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateSkirtColor, "cloth", "skirt")
       self.paintWinterSelection("typeSkirt")
-
     elif idTag == "shoes":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShoesColor, "cloth", "shoes")
@@ -274,6 +299,8 @@ class AvatarEditor:
     self.activeOption = idTag
       
   def removeWidgets(self):
+    """ Remove the screen active widgets.
+    """  
     for widget in self.activeWidget:
       if widget in self.window.children:
         self.window.remove_child(widget)
@@ -281,6 +308,8 @@ class AvatarEditor:
     self.activeWidget = []
 
   def paintGenderFrame(self):
+    """ Paints the gender frames on screen.
+    """  
     maleButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "boy_button.png"), self.buttonTooltips["boy"]['tooltip'], self.showTooltip, self.removeTooltip)
     maleButton.topleft = [73, 191]
     maleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "boy")
@@ -294,7 +323,8 @@ class AvatarEditor:
     self.activeWidget.append(femaleButton)
     
   def updateGender(self, gender):
-    """ Update the Avatar Composite Zone with the appropiate gender.
+    """ Updates the Avatar Composite Zone with the appropiate gender.
+    gender: new gender.
     """
     if not gender == self.avatarConfiguration["gender"]:
       self.avatarConfiguration["gender"] = gender
@@ -320,9 +350,13 @@ class AvatarEditor:
       self.paintHead()
       self.paintHair()
       self.paintMask()
-      
   
   def paintColorPalette(self, method, type, tag):
+    """ Paints the color palette on screen.
+    method: method used to paint.
+    type: palette type.
+    tag: active tag.
+    """  
     baseX = 35
     sizeX = 70
     if type == "hair":
@@ -342,6 +376,9 @@ class AvatarEditor:
     self.paintSelectionItem(tag)
 
   def paintSelectionItem(self, tag):
+    """ Paints the selection item.
+    tag: active tag.
+    """  
     if tag == "skin":
       self.paintOptions(["skin.png"], "skin")
     elif tag == "mask":
@@ -365,9 +402,12 @@ class AvatarEditor:
       self.paintOptions(["shoes.png"], "shoes")
 
   def paintOptions(self, options, tag):
+    """ Paints the tag options on screen.
+    options: active options.
+    tag: active tag.
+    """  
     if len(options) > 1:
       img = options[int(self.avatarConfiguration[tag]) - 1]
-                                   
 
       buttonLeft = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png"), self.buttonTooltips["before"]['tooltip'], self.showTooltip, self.removeTooltip)
       buttonLeft.topleft = 30,400
@@ -391,6 +431,11 @@ class AvatarEditor:
     self.window.add_child(self.imgOptionsTab)
   
   def moveOptions(self, direction, options, tag):
+    """ Shifts options on screen.
+    direction: shift direction.
+    options: options to be moved.
+    tag: active tag.
+    """  
     if direction == "left":
       if int(self.avatarConfiguration[tag]) == 1:
         return
@@ -407,6 +452,9 @@ class AvatarEditor:
     self.updateAvatar(tag)
 
   def updateAvatar(self, tag):
+    """ Updates the avatar.
+    tag: active tag.
+    """  
     if tag == "hairStyle":
       self.paintHair()
     elif tag == "typeShirt":
@@ -416,8 +464,10 @@ class AvatarEditor:
     elif tag == "typeSkirt":
       self.paintSkirt()
       
-
   def paintWinterSelection(self, tag):
+    """ Paints the winter mode for the selected tag items.
+    tag: selected tag.
+    """  
     buttonWinter = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "winter_button.png"), self.buttonTooltips["winter"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonWinter.topleft = 20,20
     buttonWinter.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeCloth, "long", tag)
@@ -430,10 +480,16 @@ class AvatarEditor:
     self.activeWidget.append(buttonSummer)
 
   def changeCloth(self, type, tag):
+    """ Changes the avatar's clothes.
+    type: clothes type.
+    tag: active tag.
+    """  
     self.avatarConfiguration[tag] = type
     self.updateAvatar(tag)
 
   def paintMaskOptions(self):
+    """ Paints the mask options on screen.
+    """  
     buttonMask = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "undo.png"), self.buttonTooltips["undo"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonMask.topleft = 30,500
     buttonMask.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeMask, "mask")
@@ -446,6 +502,9 @@ class AvatarEditor:
     self.activeWidget.append(buttonFileChooser)
 
   def changeMask(self, mask):
+    """ Changes the mask image.
+    mask: new mask mode.
+    """  
     if self.fileDialogShow:
       return
 
@@ -463,6 +522,8 @@ class AvatarEditor:
       self.avatarConfiguration["mask"] = None
 
   def openFileDialog(self):
+    """ Opens the OpenFile dialog.
+    """  
     self.dialog = ocempgui.widgets.Box(373,372)
     self.dialog.topleft = 528, 205
 
@@ -486,6 +547,9 @@ class AvatarEditor:
     self.window.add_child (self.dialog)
 
   def closeFileDialog(self, result):
+    """ Opens the close file dialog.
+    result: file dialog result.
+    """  
     filePath = None
     if result == "OK":
       filePath = self.listDir.getFileName()
@@ -496,6 +560,9 @@ class AvatarEditor:
     self.fileDialogShow = False
 
   def showImage(self, filePath):
+    """ Show a loaded image.
+    filePath: image path.
+    """  
     from PIL import Image
     path, file = os.path.split(filePath)
     size = 244,244 
@@ -510,8 +577,10 @@ class AvatarEditor:
     self.imgOptionsTab.picture = img
     self.generateMask("imgUpload.png")
 
-
   def generateMask(self,nameFile):
+    """ Generates a new mask from an image file.
+    nameFile: image file name.
+    """  
     from PIL import Image
     imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, nameFile)
     imgMask = Image.open(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "mask.png"))
@@ -524,8 +593,10 @@ class AvatarEditor:
     self.avatarConfiguration["mask"] = "imgUploadMask.png"
     self.paintMask()
 
-
   def getPaletteButtons(self, type):
+    """ Returns the selected palette buttons.
+    type: selected palette.
+    """  
     if type == "cloth":
       return [ [GG.utils.COLOR_YELLOW, GG.utils.COLOR_ORANGE, GG.utils.COLOR_RED], 
                [GG.utils.COLOR_PINK, GG.utils.COLOR_BLUE, GG.utils.COLOR_PURPLE], 
@@ -535,7 +606,7 @@ class AvatarEditor:
     elif type == "skin":
       return [ [GG.utils.SKIN_1, GG.utils.SKIN_2, GG.utils.SKIN_3], 
                [GG.utils.SKIN_4, GG.utils.SKIN_5, GG.utils.SKIN_6], 
-               [GG.utils.SKIN_7, GG.utils.SKIN_8, GG.utils.SKIN_9] ]
+               [GG.utils.SKIN_7, GG.utils.SKIN_8, GG.utils.SKIN_9]]
     else:
       return []
 
