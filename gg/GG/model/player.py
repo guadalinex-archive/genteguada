@@ -502,11 +502,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return self.__agenda
     
   def removeContact(self, contact):
-      if len(self.__agenda) <> 0:
-        self.__agenda.remove(contact)
-    
+      for item in self.__agenda:
+        if item.getPlayer().username == contact.username:
+          self.__agenda.remove(item)
+          return
+        
   def removeContactRemote(self, contact):  
-    player.newChatMessage(contact.username + " te ha eliminado de su lista de contactos.", 1)  
+    #self.newChatMessage(contact.username + " te ha eliminado de su lista de contactos.", 1)  
     self.triggerEvent("removeContactRemote", contact=contact)  
     
   def checkContact(self, player):
