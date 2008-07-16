@@ -99,7 +99,8 @@ class PrivateChatWindow:
       self.tooltipWindow = None
 
   def deleteContacts(self):
-    self.player.removeContact(self.selected)
+    print "***** A", self.selected  
+    self.player.removeContact(self.selected.getPlayer())
     self.selected.getPlayer().removeContactRemote(self.player)
     self.__agenda = self.player.getAgenda()  
     self.container.remove_child(self.contactsArea)
@@ -108,6 +109,7 @@ class PrivateChatWindow:
     self.clearChatArea()
     
   def removeContactRemote(self, contact):
+    print "***** B", contact  
     self.player.removeContact(contact)
     self.__agenda = self.player.getAgenda()  
     self.container.remove_child(self.contactsArea)
