@@ -3,7 +3,7 @@ import GG.model.room_item
 import GG.isoview.isoview_item
 import random
 import GG.model.gift
-import GG.model.chat_quiz
+import GG.model.chat_message
 
 class GGPenguin(GG.model.room_item.GGRoomItem):
   """ GGPenguin class.
@@ -251,7 +251,7 @@ class GGPenguinQuiz(GGPenguin):
       return  
     question = random.randint(0,len(self.__availableQuestions[name])-1)
     fileName = "questions/" + self.__availableQuestions[name][question]
-    talker.triggerEvent('quizAdded', message=GG.model.chat_quiz.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
+    talker.triggerEvent('quizAdded', message=GG.model.chat_message.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))   
         
 #================================================================================

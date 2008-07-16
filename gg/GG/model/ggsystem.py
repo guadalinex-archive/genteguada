@@ -4,7 +4,7 @@ import GG.model.room
 import GG.model.player
 import GG.model.ggsession
 import GG.model.inventory_item
-import GG.model.kilo
+import GG.model.giver_npc
 import GG.model.mp3_lobby
 import GG.model.box_heavy
 import GG.model.penguin
@@ -312,7 +312,7 @@ class GGSystem(dMVC.model.Model):
     
     # ROOM 6
     myDoor6A = GG.model.teleport.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[3], GG.utils.FLOOR_SHIFT, [0, 0], [1, 0, 6], room2, "puerta room6a")
-    myGift1 = GG.model.gift.GGGift("furniture/" + GG.utils.GIFT, [15, -30], [0, 0], "furniture/" + GG.utils.GIFT, "Regalo")
+    myGift1 = GG.model.giver_npc.GGGift("furniture/" + GG.utils.GIFT, [15, -30], [0, 0], "furniture/" + GG.utils.GIFT, "Regalo")
     
     wallOffset = [35, 40]
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.SKYLINE_CORNER, wallOffset, [0, 0]), [0, 0, 0])
