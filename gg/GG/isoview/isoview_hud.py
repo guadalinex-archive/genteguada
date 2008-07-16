@@ -136,17 +136,6 @@ class IsoViewHud(isoview.IsoView):
     self.activeQuizWindow = False
     self.activeContactDialog = None
     self.tooltipWindow = None
-    """
-    self.__pointsLabel = GG.utils.OcempLabel("Puntos: 0",140)
-    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__pointsLabel.topleft = [GG.utils.POINTS_LOCATION[0], GG.utils.POINTS_LOCATION[1] - self.__pointsLabel.height]
-    self.__isoviewRoom.addSprite(self.__pointsLabel)
-    
-    self.__expLabel = GG.utils.OcempLabel("Exp: 0",140)
-    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__expLabel.topleft = [GG.utils.EXP_LOCATION[0], GG.utils.EXP_LOCATION[1] - self.__expLabel.height]
-    self.__isoviewRoom.addSprite(self.__expLabel)
-    """
     self.ctrl = 0
   
   def processEvent(self, events):
@@ -422,18 +411,16 @@ class IsoViewHud(isoview.IsoView):
     self.imgBackground.topleft = 0,0
     self.hud.add_child(self.imgBackground)
     
-    #labelChat = GG.utils.OcempLabel("Chat", 280)
     labelChat = GG.utils.LabelTransparent("Chat", GG.utils.STYLES["hudLabel"])
-    #labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
     labelChat.topleft = 17, 65
     self.hud.add_child(labelChat)
     
-    labelProfile = GG.utils.OcempLabel("Mi perfil:", 280)
+    labelProfile = GG.utils.OcempLabel("Mi perfil:", 280, GG.utils.STYLES["userName"])
     labelProfile.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
     labelProfile.topleft = 540, 80
     self.hud.add_child(labelProfile)
     
-    labelInventory = GG.utils.OcempLabel("Inventario:", 280)
+    labelInventory = GG.utils.OcempLabel("Inventario:", 280, GG.utils.STYLES["hudLabel"])
     labelInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
     labelInventory.topleft = 819, 65
     self.hud.add_child(labelInventory)
@@ -681,7 +668,7 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 5,6
     self.buttonBarActions.add_child(img)
     
-    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290)
+    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290, GG.utils.STYLES["itemLabel"])
     
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
@@ -924,23 +911,23 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 540,110
     self.hud.add_child(img)
 
-    labelUserName = GG.utils.OcempLabel(self.__player.username, 280)
+    labelUserName = GG.utils.OcempLabel(self.__player.username, 280, GG.utils.STYLES["userName"])
     labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
     #labelUserName.topleft = ((182 - labelUserName.width) / 2) + 600, 150
     labelUserName.topleft = 620,80
     self.hud.add_child(labelUserName)
     
-    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280)
+    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280, GG.utils.STYLES["points"])
     self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__pointsLabel.topleft = 620, 120
     self.hud.add_child(self.__pointsLabel)
 
-    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280)
+    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280, GG.utils.STYLES["points"])
     self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__labelOld.topleft = 620, 140
     self.hud.add_child(self.__labelOld)
 
-    self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280)
+    self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280, GG.utils.STYLES["points"])
     self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
     self.__expLabel.topleft = 620, 160
     self.hud.add_child(self.__expLabel)

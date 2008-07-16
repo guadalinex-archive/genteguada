@@ -400,20 +400,35 @@ STYLES = {
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
-                                         }
+                                         },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                          }
                             },
           "chatBalloonBlue" : {"font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 200, 255) 
-                                         }
+                                         },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                          }
                             },
           "chatBalloonGreen" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                  "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (200, 255, 200) 
+                                          },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
           "chatBalloonRed" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
@@ -421,6 +436,11 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 200, 200) 
+                                          },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
           "points" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
@@ -758,7 +778,46 @@ class GroupSprite(pygame.sprite.Group):
       else:    
         raise "ERROR: sprite sin zOrder"
 
-class OcempLabel(ocempgui.widgets.Label):
+class LabelTransparent(ocempgui.widgets.Label):
+  
+  def __init__(self,label, style):
+    self.label = label
+    self.typeFont = style["font"]["name"] 
+    self.sizeFont = style["font"]["size"]
+    self.aliasFont = style["font"]["alias"]
+    self.colorFont = style["fgcolor"][0]
+    ocempgui.widgets.Label.__init__(self,label)
+
+  def update(self):
+    self.draw()
+
+  def draw(self):
+    #ocempgui.widgets.Label.draw(self)
+    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
+
+class OcempLabel(LabelTransparent):
+#class OcempLabel(LabelTransparent):
+
+  def __init__(self, text, width, style):
+    line = ""  
+    cad = text
+    width = width/5
+    while len(cad) > width:
+      cad2aux = cad[0:width]
+      blankPos = cad2aux.rfind(" ")
+      if blankPos > 0:
+        line = line + cad[0:blankPos] + "\n"     
+        cad = cad[blankPos+1:]
+      else:  
+        line = line + cad[0:width] + "\n"     
+        cad = cad[width:]  
+    line = line + cad    
+    
+    LabelTransparent.__init__(self,line, style)
+    self.multiline = True
+    self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
+
+class OcempLabelNotTransparent(ocempgui.widgets.Label):
 
   def __init__(self, text, width):
     line = ""  
@@ -779,24 +838,6 @@ class OcempLabel(ocempgui.widgets.Label):
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
-class LabelTransparent(ocempgui.widgets.Label):
-  
-  def __init__(self,label, style):
-    self.label = label
-    self.typeFont = style["font"]["name"] 
-    self.sizeFont = style["font"]["size"]
-    self.aliasFont = style["font"]["alias"]
-    self.colorFont = style["fgcolor"][0]
-    ocempgui.widgets.Label.__init__(self,label)
-
-  def update(self):
-    self.draw()
-
-  def draw(self):
-    #ocempgui.widgets.Label.draw(self)
-    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
-
-    
 
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
 

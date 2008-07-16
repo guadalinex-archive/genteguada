@@ -46,12 +46,12 @@ class PrivateChatWindow:
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-    labelChat = GG.utils.OcempLabel("Contactos", 280)
+    labelChat = GG.utils.OcempLabel("Contactos", 280, GG.utils.STYLES["userName"])
     labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
     labelChat.topleft = 20, 20
     self.container.add_child(labelChat)
     
-    labelContacts = GG.utils.OcempLabel("Chat", 280)
+    labelContacts = GG.utils.OcempLabel("Chat", 280, GG.utils.STYLES["userName"])
     labelContacts.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
     labelContacts.topleft = 150, 20
     self.container.add_child(labelContacts)
@@ -99,7 +99,6 @@ class PrivateChatWindow:
       self.tooltipWindow = None
 
   def deleteContacts(self):
-    print "***** A", self.selected  
     self.player.removeContact(self.selected.getPlayer())
     self.selected.getPlayer().removeContactRemote(self.player)
     self.__agenda = self.player.getAgenda()  
@@ -109,7 +108,6 @@ class PrivateChatWindow:
     self.clearChatArea()
     
   def removeContactRemote(self, contact):
-    print "***** B", contact  
     self.player.removeContact(contact)
     self.__agenda = self.player.getAgenda()  
     self.container.remove_child(self.contactsArea)
