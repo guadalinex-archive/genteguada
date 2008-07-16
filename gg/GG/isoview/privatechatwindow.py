@@ -14,14 +14,10 @@ class PrivateChatWindow:
   def __init__(self, title, player):
     self.hide = False
     self.window = ocempgui.widgets.Window(title)
-    #self.window.topleft = 200, 200
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
     self.player = player
-    self.agenda = player.getAgenda()
-    self.contactsList = []
-    for contact in self.agenda:
-      self.contactsList.append(contact.getPlayer().username)
+    #self.agenda = player.getAgenda()
     self.selected = None
     self.draw()
 
@@ -64,8 +60,7 @@ class PrivateChatWindow:
     """ Paints the chat window on screen.
     """
     from PIL import Image
-    #self.contactsArea = GG.utils.OcempImageContactList(162, 290,self.agenda)
-    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.agenda)
+    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.player.getAgenda())
     self.contactsArea.topleft = 20, 40
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
@@ -73,8 +68,6 @@ class PrivateChatWindow:
   def __selectionChange(self):
     name = self.contactsArea.getSelectedName()
     if name.find(" ") > -1:
-      #cad1, cad2, cad3 = name.partition(" ") 
-      #name = cad1
       name = name[0:name.find(" ")]
       self.contactsArea.restoreContactName()
     
@@ -107,8 +100,18 @@ class PrivateChatWindow:
 
   def deleteContacts(self):
     self.player.removeContact(self.selected)
+    self.selected.getPlayer().removeContactRemote(self.player)
     self.__agenda = self.player.getAgenda()  
     self.container.remove_child(self.contactsArea)
+    self.selected = None
+    self.__paintContactList()
+    self.clearChatArea()
+    
+  def removeContactRemote(self, contact):
+    self.player.removeContact(contact)
+    self.__agenda = self.player.getAgenda()  
+    self.container.remove_child(self.contactsArea)
+    self.selected = None
     self.__paintContactList()
     self.clearChatArea()
     
@@ -134,10 +137,8 @@ class PrivateChatWindow:
       self.__textField.text = ""
   
   def __paintChatArea(self):
-    #self.textArea = ocempgui.widgets.ScrolledWindow(162, 290)
     self.textArea = ocempgui.widgets.ScrolledWindow(203, 270)
     self.textArea.set_scrolling(1)
-    #self.textArea.topleft = 190, 10
     self.textArea.topleft = 150, 40
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
@@ -155,8 +156,6 @@ class PrivateChatWindow:
     self.player.newChatForPlayer(string, player)
     if self.selected == None:
       self.contactsArea.addMessageHintForContact(player)
-      #self.__layoutTextArea.add_child(self.createChatMessage(string))
-      #self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
     elif self.selected.getPlayer().username == player.username:
       self.__layoutTextArea.add_child(self.createChatMessage(string))
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum

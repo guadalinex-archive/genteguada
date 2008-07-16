@@ -101,7 +101,7 @@ class AvatarEditor:
     self.paintTags()
     self.paintCustomizeZone()
     self.paintButtons()
-    self.window.set_depth(1)
+    #self.window.set_depth(1)
     self.window.zOrder = 90000
     return self.window
     
