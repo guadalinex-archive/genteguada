@@ -1,7 +1,6 @@
 import ggmodel
 import GG.utils
 import room_item
-import kilo_temp
 import gift_inventory
 import GG.isoview.isoview_item
 import dMVC.model
@@ -94,17 +93,3 @@ class GGGift(GGGiverNpc):
 
 #================================================================================
 
-class GGKilo(GGGiverNpc):
-  
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
-    """ Class constructor.
-    spriteName: image name.
-    """
-    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
-
-  def getCopyFor(self, player):
-    kilo = GG.model.kilo_temp.GGKiloTemp(self.spriteName, self.getPosition(), self.anchor, self.spriteInventory, "Pesa", 6)
-    kilo.setTile(self.getTile())
-    return kilo, self.getPosition()
-    
-#================================================================================
