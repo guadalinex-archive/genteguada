@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd /usr/share/avatargenerator/
-user=$1 gender=$2 headSize=$3 mask=$4 hairStyle=$5 hairColour=$6 skin=$7 bodySize=$8 sleeve=$9 shirt=$10 typeTrousers=$11 trousers=$12 skirt=$13 shoes=$14 ./blender -b avatar.blend -P avatarGenerator.py
+user=$1 gender=$2 headSize=$3 mask=$4 hairStyle=$5 hairColour=$6 skin=$7 bodySize=$8 sleeve=$9 shirt=${10} typeTrousers=${11} trousers=${12} skirt=${13} shoes=${14} ./blender -b avatar.blend -P avatarGenerator.py
