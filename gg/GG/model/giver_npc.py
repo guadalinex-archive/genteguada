@@ -93,3 +93,25 @@ class GGGift(GGGiverNpc):
 
 #================================================================================
 
+class GGPersistentKey(GGGiverNpc):
+  """GGPersistentKey class.
+  Defines item attributes and methods.
+  """
+  
+  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
+    """ Class constructor.
+    spriteName: image name.
+    """
+    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
+  
+  def getCopyFor(self, player):
+    if player.hasItemLabeledInInventory("Llave Dorada"):
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu llave dorada", \
+                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return None, [-1, -1, -1]
+    else:  
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave dorada", \
+                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition()), self.getPosition()
+    
+#================================================================================

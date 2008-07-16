@@ -9,7 +9,6 @@ import GG.model.box_heavy
 import GG.model.penguin
 import GG.model.teleport
 import GG.model.web_item
-import GG.model.persistent_key
 import thread
 import time
 import os
@@ -163,7 +162,7 @@ class GGSystem(dMVC.model.Model):
     myPenguinShirt = GG.model.penguin.GGPenguinRoom5Shirt(GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt")
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
-    myGoldenKeyRoom2 = GG.model.persistent_key.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
+    myGoldenKeyRoom2 = GG.model.giver_npc.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
  
     
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, 0])
