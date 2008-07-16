@@ -1,8 +1,8 @@
 import room_item
 import GG.isoview.isoview_item
 
-class GGBookLobby(room_item.GGRoomItem):
-  """ GGBookLobby class.
+class GGPickableItem(room_item.GGRoomItem):
+  """ GGPickableItem class.
   Defines a pickable item behaviour.
   """
  
@@ -17,29 +17,27 @@ class GGBookLobby(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
-    self.points = 2
     
   def variablesToSerialize(self):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['spriteInventory', 'label', 'points']
+    return parentVars + ['spriteInventory', 'label']
 
   def getOptions(self):
     """ Returns the item's available options.
     """
     if self.getRoom():
-      tile = self.getTile()  
-      if tile.stepOn() and tile.getDepth() <= GG.utils.MAX_DEPTH:  
-        return ["inventory", "climb"]
-      else:
-        return ["inventory"]
+      return ["inventory"]
     else:
-      return ["removeInventory"]
-  
+      if self.__player.isExchange():
+        return ["toExchange"]
+      else:
+        return ["removeInventory"]
+
   def getName(self):
     return self.label
   
   def getImageLabel(self):
-    return self.spriteName
+    return self.spriteInventory
 
   def setPlayer(self, player):
     self.__player = player
@@ -54,12 +52,9 @@ class GGBookLobby(room_item.GGRoomItem):
     GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-      #clicker.addInventory(self)
-      #self.getRoom().removeItem(self)
-
+    
   def isStackable(self):
     return True
 
   def stepOn(self):
     return True
-

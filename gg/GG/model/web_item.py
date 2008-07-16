@@ -1,8 +1,8 @@
 import GG.model.room_item
 import GG.isoview.isoview_item
 
-class GGWebPannel(GG.model.room_item.GGRoomItem):
-  """ GGWebPannel class.
+class GGWebItem(GG.model.room_item.GGRoomItem):
+  """ GGWebItem class.
   """
  
   def __init__(self, sprite, anchor, topAnchor, url, label):
@@ -38,7 +38,26 @@ class GGWebPannel(GG.model.room_item.GGRoomItem):
       if item.url == self.url:
         return True
     return False   
+
+  def clickedBy(self, clicker):
+    """ Triggers an event when the npc receives a click by a player.
+    clicker: player who clicks.
+    """
+    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
+      clicker.setSelectedItem(self)
+    else:
+      return False    
   
+#================================================================================
+
+class GGWebPannel(GGWebItem):
+  """ GGWebPannel class.
+  """
+ 
+  def __init__(self, sprite, anchor, topAnchor, url, label):
+    GGWebItem.__init__(self, sprite, anchor, topAnchor, url, label)
+
   def clickedBy(self, clicker):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
@@ -48,3 +67,5 @@ class GGWebPannel(GG.model.room_item.GGRoomItem):
       clicker.setSelectedItemWithoutHighlight(self)
     else:
       return False    
+
+#================================================================================
