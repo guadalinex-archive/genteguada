@@ -412,17 +412,15 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.imgBackground)
     
     labelChat = GG.utils.LabelTransparent("Chat", GG.utils.STYLES["hudLabel"])
-    labelChat.topleft = 17, 65
+    labelChat.topleft = 17, 70
     self.hud.add_child(labelChat)
     
-    labelProfile = GG.utils.OcempLabel("Mi perfil:", 280, GG.utils.STYLES["userName"])
-    labelProfile.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
-    labelProfile.topleft = 540, 80
+    labelProfile = GG.utils.LabelTransparent("Mi perfil:", GG.utils.STYLES["hudLabel"])
+    labelProfile.topleft = 555, 90
     self.hud.add_child(labelProfile)
     
-    labelInventory = GG.utils.OcempLabel("Inventario:", 280, GG.utils.STYLES["hudLabel"])
-    labelInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["hudLabel"]))
-    labelInventory.topleft = 819, 65
+    labelInventory = GG.utils.LabelTransparent("Inventario:", GG.utils.STYLES["hudLabel"])
+    labelInventory.topleft = 819, 70
     self.hud.add_child(labelInventory)
 
     #self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
@@ -908,28 +906,23 @@ class IsoViewHud(isoview.IsoView):
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
     #img.topleft = 660,84
-    img.topleft = 540,110
+    img.topleft = 548,110
     self.hud.add_child(img)
 
-    labelUserName = GG.utils.OcempLabel(self.__player.username, 280, GG.utils.STYLES["userName"])
-    labelUserName.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
-    #labelUserName.topleft = ((182 - labelUserName.width) / 2) + 600, 150
-    labelUserName.topleft = 620,80
+    labelUserName = GG.utils.LabelTransparent(self.__player.username, GG.utils.STYLES["userName"])
+    labelUserName.topleft = 620, 90
     self.hud.add_child(labelUserName)
     
-    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 280, GG.utils.STYLES["points"])
-    self.__pointsLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__pointsLabel.topleft = 620, 120
+    self.__pointsLabel = GG.utils.LabelTransparent("GuadaPuntos: 0", GG.utils.STYLES["userName"])
+    self.__pointsLabel.topleft = 630, 120
     self.hud.add_child(self.__pointsLabel)
 
-    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 280, GG.utils.STYLES["points"])
-    self.__labelOld.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__labelOld.topleft = 620, 140
+    self.__labelOld = GG.utils.LabelTransparent("ClockPuntos: 0", GG.utils.STYLES["userName"])
+    self.__labelOld.topleft = 630, 140
     self.hud.add_child(self.__labelOld)
 
-    self.__expLabel = GG.utils.OcempLabel("Experiencia: 0", 280, GG.utils.STYLES["points"])
-    self.__expLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["points"]))
-    self.__expLabel.topleft = 620, 160
+    self.__expLabel = GG.utils.LabelTransparent("Experiencia: 0", GG.utils.STYLES["userName"])
+    self.__expLabel.topleft = 630, 160
     self.hud.add_child(self.__expLabel)
 
   def jump(self):
