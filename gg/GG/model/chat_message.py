@@ -5,7 +5,7 @@ import GG.isoview.isoview_chatmessage
 
 class ChatMessage(ggmodel.GGModel):
   """ ChatMessage class.
-  Defines a book object behaviour.
+  Defines a chat message behaviour.
   """
      
   def __init__(self, message, sender, color, position, type):

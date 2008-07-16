@@ -8,11 +8,8 @@ import GG.model.kilo
 import GG.model.mp3_lobby
 import GG.model.box_heavy
 import GG.model.penguin
-import GG.model.book_lobby
 import GG.model.teleport
-import GG.model.web_cube
-import GG.model.web_pannel
-import GG.model.golden_key_room2
+import GG.model.web_item
 import GG.model.persistent_key
 import thread
 import time
@@ -135,24 +132,16 @@ class GGSystem(dMVC.model.Model):
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
 
-    #myGK1 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.KEY_GOLDEN, [18, -38], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave amarilla")    
-    #myGK2 = GG.model.golden_key_room2.GGGoldenKeyRoom2("furniture/" + GG.utils.BLUE_KEY, [18, -38], [0, 0], "furniture/" + GG.utils.BLUE_KEY, "Llava azul")    
-
-    
     fenceOffset = [25, -15]
-    #room1.addItemFromVoid(GG.model.web_cube.GGWebCube(GG.utils.PUZZLECUBEBLUE_SPRITE, [5, 0, 0], [55, 43], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [5, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [0, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [6, 0, 3])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [2, 0, 4])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [6, 0, 7])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [1, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [2, 0, 0])
-    #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [3, 0, 0])
-    #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [4, 0, 0])
-    #room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [5, 0, 0])
-    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_LEFT, [60, 140], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [3, 0, 0])
-    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_MIDDLE, [40, 170], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [4, 0, 0])
-    room1.addItemFromVoid(GG.model.web_pannel.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_RIGHT, [20, 200], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [5, 0, 0])
+    room1.addItemFromVoid(GG.model.web_item.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_LEFT, [60, 140], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [3, 0, 0])
+    room1.addItemFromVoid(GG.model.web_item.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_MIDDLE, [40, 170], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [4, 0, 0])
+    room1.addItemFromVoid(GG.model.web_item.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_RIGHT, [20, 200], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [5, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [7, 0, 0])
     for z in range(1, room2.size[1]-1):
       room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_LEFT, fenceOffset, [0, 0]), [0, 0, z])
@@ -194,7 +183,7 @@ class GGSystem(dMVC.model.Model):
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_LEFT, wallOffset, [0, 0]), [3, 0, 6])
     
     #room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_UP_GRAFFITI, wallOffset, [0, 0]), [1, 0, 0])
-    room2.addItemFromVoid(GG.model.web_cube.GGWebCube("furniture/" + GG.utils.WALL_UP_GRAFFITI, wallOffset, [0, 0], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "web cube"), [1, 0, 0])
+    room2.addItemFromVoid(GG.model.web_item.GGWebItem("furniture/" + GG.utils.WALL_UP_GRAFFITI, wallOffset, [0, 0], "http://forja.guadalinex.org/repositorio/projects/genteguada/", "Graffitti GenteGuada"), [1, 0, 0])
 
     for x in range(2, 5):
       room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WALL_UP, wallOffset, [0, 0]), [x, 0, 0])
