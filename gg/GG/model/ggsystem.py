@@ -341,7 +341,7 @@ class GGSystem(dMVC.model.Model):
     room6.addItemFromVoid(myGift1, [4, 0, 4])
         
     #prueba para seleccionar un jugador y poder hablar con el en privado y hacer intercambio de objetos
-    #room1.addItem(nina,[4,0,5])
+    #room1.addItemFromVoid(nina,[1,0,2])
 
     demoPlayerPath = GG.utils.NINO_PATH
     for i in range(100):

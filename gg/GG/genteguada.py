@@ -29,6 +29,7 @@ class GenteGuada:
   def getInstance():
     return GenteGuada.instance
   
+  
   def input(self, events):
     for event in events:
       if event.type == pygame.locals.QUIT:

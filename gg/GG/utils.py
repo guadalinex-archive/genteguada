@@ -447,6 +447,13 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },   
+          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
+                                            }
+                            }, 
           "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
