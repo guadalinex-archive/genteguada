@@ -28,9 +28,6 @@ class GGBoxHeavy(room_item.GGRoomItem):
     tile = self.getTile()
     depth = tile.getDepth()
     selfDepth = tile.getItemDepth(self)
-    
-    #return ["lift", "drop", "climb"]
-  
     if (selfDepth + 1) != depth:
       # Hay elementos por encima de el
       return ["climb"]
@@ -39,16 +36,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
         return ["lift", "drop", "climb"]
       else: 
         return ["lift", "climb"]
-    """
-    if depth:
-      if tile.stepOn() and depth <= GG.utils.MAX_DEPTH:
-        return ["lift", "climb"]
-      else:
-        return ["lift"]
-    else:
-      return ["drop"]
-    """
-  
+    
   def getName(self):
     return self.label
   
@@ -75,4 +63,3 @@ class GGBoxHeavy(room_item.GGRoomItem):
 
   def stepOn(self):
     return True
-

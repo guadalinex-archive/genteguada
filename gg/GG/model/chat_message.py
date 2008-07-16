@@ -2,6 +2,7 @@ import ggmodel
 import time
 import dMVC.model
 import GG.isoview.isoview_chatmessage
+import GG.isoview.isoview_quiz
 
 class ChatMessage(ggmodel.GGModel):
   """ ChatMessage class.
@@ -63,4 +64,49 @@ class ChatMessage(ggmodel.GGModel):
     screen: screen handler.
     """
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
+
+#================================================================================
+
+class ChatQuiz(ChatMessage):
+  """ ChatQuiz class.
+  """
+     
+  def __init__(self, parent, fileName, question, player, sender, color, position, type):
+    self.loadQuestion(question)
+    ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, type)
+    self.__parent = parent
+    self.question = question
+    self.player = player
+    
+  def loadQuestion(self, question):
+    filePath = "gg/GG/data/questions/" + question
+    f = open(filePath)
+    self.__msgQuestion = f.readline()
+    self.__msgAnswers = []
+    self.__msgAnswers.append(f.readline())
+    self.__msgAnswers.append(f.readline())
+    self.__msgAnswers.append(f.readline())
+    answer = f.readline()
+    if answer == "A":  self.__rightAnswer = 1
+    elif answer == "B":  self.__rightAnswer = 2
+    elif answer == "C":  self.__rightAnswer = 2
+    f.close()
+  
+  def removeRightAnsweredQuestion(self):  
+    self.__parent.removeRightQuestionForPlayer(self.question, self.player)  
+    
+  def getAnswers(self):
+    return self.__msgAnswers
+
+  def getRightAnswer(self):
+    return self.__rightAnswer
+    
+  @dMVC.model.localMethod 
+  def chatView(self, screen, isohud):
+    """ Creates an isometric view object for the chat message.
+    screen: screen handler.
+    """
+    return GG.isoview.isoview_quiz.IsoViewQuiz(self, screen, isohud)
+
+#================================================================================
     
