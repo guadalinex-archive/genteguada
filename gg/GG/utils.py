@@ -3,6 +3,7 @@ import os
 import pygame
 import ocempgui.widgets
 import stat
+import ocempgui.widgets.base
 
 #cache
 if os.path.isdir("gg/GG/cache"):
