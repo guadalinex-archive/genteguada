@@ -25,26 +25,7 @@ class GGPenguinQuiz(GG.model.room_item.GGRoomItem):
     self.__fileList = fileList
     self.__availableQuestions = {}
     #self.loadQuestion()
-    
-  """      
-  def loadQuestion(self):
-    question = random.randint(0,len(self.__fileList)-1)   
-    fileName = "questions/" + self.__fileList[question]  
-    #filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(fileName)
-    filePath = "gg/GG/data/questions/q1"
-    f = open(filePath)
-    self.__msgQuestion = f.readline()
-    self.__msgAnswers = []
-    self.__msgAnswers.append(f.readline())
-    self.__msgAnswers.append(f.readline())
-    self.__msgAnswers.append(f.readline())
-    answer = f.readline()
-    if answer == "A":  self.__rightAnswer = 1
-    elif answer == "B":  self.__rightAnswer = 2
-    elif answer == "C":  self.__rightAnswer = 2
-    f.close()
-  """
-
+  
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
