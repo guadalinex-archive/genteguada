@@ -8,12 +8,6 @@ import GG.model.kilo
 import GG.model.mp3_lobby
 import GG.model.box_heavy
 import GG.model.penguin
-import GG.model.penguin_lobby
-import GG.model.penguin_room3
-import GG.model.penguin_room5
-import GG.model.penguin_room5_shirt
-import GG.model.penguin_quiz
-import GG.model.penguin_gift
 import GG.model.book_lobby
 import GG.model.teleport
 import GG.model.web_cube
@@ -136,7 +130,7 @@ class GGSystem(dMVC.model.Model):
     penguinRightOffset = [30, 0]
 
     # ROOM 1
-    myDoor1 = GG.model.teleport.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [6, 0, 6], room5, "puerta lobby")
+    myDoor1 = GG.model.teleport.GGDoorLobby("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [6, 0, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin.GGPenguinLobby(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz")
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
