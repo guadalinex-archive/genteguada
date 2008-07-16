@@ -1,7 +1,7 @@
 import ggmodel
 import GG.utils
 import room_item
-import generated_golden_key
+import generated_inventory_item
 import GG.isoview.isoview_item
 import dMVC.model
 
@@ -55,9 +55,7 @@ class GGPersistentKey(room_item.GGRoomItem):
     else:  
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave dorada", \
                 'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    
-      return GG.model.generated_golden_key.GGGeneratedGoldenKey(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition()), self.getPosition()
-
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition()), self.getPosition()
     
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.

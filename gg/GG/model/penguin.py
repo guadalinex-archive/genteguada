@@ -170,7 +170,7 @@ class GGPenguinRoom5Shirt(GGPenguin):
       talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       talker.removeFromInventory(giftItem)
-      return GG.model.gift_inventory.GGGiftInventory("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
       talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio...", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))

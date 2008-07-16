@@ -1,7 +1,7 @@
 import ggmodel
 import GG.utils
 import room_item
-import gift_inventory
+import generated_inventory_item
 import GG.isoview.isoview_item
 import dMVC.model
 
@@ -89,7 +89,7 @@ class GGGift(GGGiverNpc):
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
                 'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     
-      return GG.model.gift_inventory.GGGiftInventory(self.spriteInventory, "Regalo", self.anchor, self.getPosition()), self.getPosition()
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, "Regalo", self.anchor, self.getPosition()), self.getPosition()
 
 #================================================================================
 
