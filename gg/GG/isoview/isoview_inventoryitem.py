@@ -14,23 +14,22 @@ class IsoViewInventoryItem(isoview.IsoView):
     """ Class constructor.
     model: inventory item model.
     screen: screen handler.
+    isohud: isometric view hud handler.
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__spriteName = model.spriteInventory
     self.__label = model.label
     self.__count = 0
     self.__isohud = isohud
-    #imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteName)  
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.zOrder = 10001
-    #self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), model.anchor)
-    #self.__img.rect.topleft = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    #self.__isohud.getIsoviewRoom().addSprite(self.__img)
-
+    
   def getImg(self):
+    """ Returns the item's image.
+    """  
     return self.__img  
 
   def setScreenPosition(self, pos):
@@ -73,7 +72,6 @@ class IsoViewInventoryItem(isoview.IsoView):
     """ Draws an inventory item.
     render: widget container. 
     """
-    #imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
     imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
     imgInventory.border = 0
     imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.selected)

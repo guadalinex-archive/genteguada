@@ -21,13 +21,9 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems = []
     self.__spritesDict = {}
     self.__bottomSpritesDict = {}
-    
     self.__insertedIVItem = None
-    
     self.__tileList = []
-    
     tiles = model.getTiles()
-    
     specialTiles = model.getSpecialTiles()
     
     for corx in range(model.size[0]):
@@ -47,7 +43,6 @@ class IsoViewRoom(isoview.IsoView):
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
                     tiles[corx][corz].spriteName, self.__parent)
         
-        #self.__allPlayers.add(isotile.getImg())
         self.__parent.addSprite(isotile.getImg())
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
@@ -65,17 +60,23 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
   
   def getSpritesDict(self):
+    """ Returns the sprites dictionary.
+    """
     return self.__spritesDict
 
   def getBottomSpritesDict(self):
+    """ Returns the bottom sprites dictionary.
+    """  
     return self.__bottomSpritesDict
   
   def stopAnimations(self):
+    """ Stop all room current animations.
+    """  
     for item in self.__isoViewItems:
       item.stopAnimation()
   
   def getIsoViewItems(self):
-    """ Returns the isometric view handler.
+    """ Returns the item's isometric view handlers.
     """
     return self.__isoViewItems
   
@@ -85,14 +86,6 @@ class IsoViewRoom(isoview.IsoView):
     """
     for isoitem in self.__isoViewItems:
       isoitem.updateFrame(ellapsedTime)
-    
-    """
-    screen = self.getScreen()
-    bg_image = self.__bg.image
-    
-    self.__allPlayers.clear(screen, bg_image)
-    self.__allPlayers.draw(screen)
-    """
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.
@@ -105,18 +98,19 @@ class IsoViewRoom(isoview.IsoView):
     """
     def cmp(x, y):
       return y.zOrder - x.zOrder
+
     images = self.__spritesDict.keys()
     images.sort(cmp)  
     
-    #for image in self.__spritesDict:
     for image in images:
       if self.__spritesDict[image].checkClickPosition(pos):
         item = self.__spritesDict[image].getModel() 
-        #return item.getPosition(), item
         return self.__spritesDict[image].getPosition(), item
+
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
         return self.__bottomSpritesDict[image].getModel().position, None
+
     return [-1, -1, -1], None
   
   def itemAddedFromVoid(self, event):
@@ -128,7 +122,6 @@ class IsoViewRoom(isoview.IsoView):
         if ivitem.getModel().username == event.getParams()['item'].username:
           self.__parent.addItemToRoomFromVoid(ivitem)  
           return
-          #raise "Ya existe el usuario dentro de la habitacion" 
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     self.addIsoViewItem(ivItem)
     
@@ -136,12 +129,10 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    #print "itemAddedFromInventory"
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
-          #raise "Ya existe el usuario dentro de la habitacion" 
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     self.addIsoViewItem(ivItem)
     self.__parent.addItemToRoomFromInventory(ivItem)
@@ -154,7 +145,6 @@ class IsoViewRoom(isoview.IsoView):
     ivItem = self.findIVItem(item)
     if ivItem == None:
       raise Exception("Error: vista de item no eliminada")
-    #self.removeSprite(ivItem.getImg())
     self.removeIsoViewItem(ivItem)
         
   def addIsoViewItem(self, ivItem):
@@ -164,7 +154,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.append(ivItem)
     self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
-    #pos = ivItem.getModel().getPosition()
     pos = ivItem.getPosition()
     self.updateScreenPositionsOn(pos)
 
@@ -172,8 +161,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    #if self.__parent.compareSelectedItem(ivPlayer.getModel()):
-    #  self.__parent.itemUnselected()
     self.__parent.itemUnselected()
     self.__parent.removeSprite((ivPlayer.getImg()))
     for image in self.__spritesDict:
@@ -183,6 +170,8 @@ class IsoViewRoom(isoview.IsoView):
     ivPlayer.unsubscribeAllEvents()
     
   def updateScreenPositionsOn(self, pos):
+    """ Updates the creen position of all items on a room position.
+    """  
     tile = self.__tileList[pos[0]][pos[2]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
@@ -191,8 +180,6 @@ class IsoViewRoom(isoview.IsoView):
     if len(itemList):
       fixedScPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
     for item in itemList:
-      #scPos = fixedScPos
-      #scPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
       if ivIt != None:  
@@ -207,6 +194,8 @@ class IsoViewRoom(isoview.IsoView):
         accHeight += item.topAnchor[1]
           
   def getFutureScreenPosition(self, ivItem, pos):
+    """ Returns the future screen position for an item moving towards a room position.
+    """  
     tile = self.__tileList[pos[0]][pos[2]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
@@ -220,14 +209,18 @@ class IsoViewRoom(isoview.IsoView):
     return [scPos[0] - accWidth, scPos[1] - accHeight]
           
   def addIsoViewChatItem(self, ivChatItem):
+    """ Adds a new isometric view chat item.
+    """  
     self.__isoViewItems.append(ivChatItem)
     self.__parent.addSprite(ivChatItem.getImg())
   
   def specialTileAdded(self, event):
+    """ Triggers after receiving a new special tile added event.
+    event: event info.
+    """  
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
     tile = self.__tileList[pos[0]][pos[2]].getImg()
-    #for img in self.__allBackground:
     for img in self.__allPlayers:
       if img == tile:
         img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
@@ -235,7 +228,7 @@ class IsoViewRoom(isoview.IsoView):
         return
     
   def unsubscribeAllEvents(self):
-    """ Unsubscribe this view ands its children from all events.
+    """ Unsubscribe this view ands all its children from all events.
     """
     for item in self.__isoViewItems:
       item.unsubscribeAllEvents()
@@ -245,7 +238,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Sets an item on the room as selected.
     """
     ivItem = self.findIVItem(item)
-    #print "itemSelected",ivItem
     if ivItem:
       ivItem.selected()
     
@@ -257,12 +249,19 @@ class IsoViewRoom(isoview.IsoView):
       cosa.unselected()
     
   def setItemOnTile(self, item, position):
+    """ Adds an item to a room position.
+    item: item to add.
+    position: room position.
+    """  
     if item == None:
       self.__tileList[position[0]][position[2]].removeTopMostItem()
     else:
       self.__tileList[position[0]][position[2]].addIsoItem(item)      
 
   def findIVItem(self, item):
+    """ Returns the isometric view object that contains a given item.
+    item: given item.
+    """  
     for ivItem in self.__isoViewItems:
       if ivItem.getModel() == item:
         return ivItem

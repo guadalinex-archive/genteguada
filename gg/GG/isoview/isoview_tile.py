@@ -10,9 +10,12 @@ class IsoViewTile(isoview.IsoView):
 
   def __init__(self, model, topLeft, bottomRight, position, img, hud):
     """ Class constructor.
+    model: tile model.
     topLeft: top left tile coord.
     bottomRight: lower right tile coord.
     position: tile position.
+    img: tile image.
+    hud: hud handler.
     """
     isoview.IsoView.__init__(self, model, None)
     self.__topLeft = topLeft
@@ -31,6 +34,8 @@ class IsoViewTile(isoview.IsoView):
     return self.__img
   
   def setImg(self, imageName):
+    """ Sets a new tile image.
+    """  
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
     
   def getTopLeft(self):
@@ -44,6 +49,9 @@ class IsoViewTile(isoview.IsoView):
     return self.__bottomRight
   
   def checkClickPosition(self, pos):
+    """ Checks if one point is inside the tile limits.
+    pos: point.
+    """  
     rect = self.__img.rect
     if rect[0] < pos[0] < (rect[0] + rect[2]):
       if rect[1] < pos[1] < (rect[1] + rect[3]):
@@ -60,47 +68,11 @@ class IsoViewTile(isoview.IsoView):
         rect = self.__rect.rect  
         if self.__img.image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
           return 1
-        #if not self.onBlank(pos):
-        #  return 1
-        
-    #if self.getModel().getDepth() == 0:
     if depth == 0:
       return 0
-    #itemList = self.getModel().getItems()
     itemList = items
     for item in itemList:
       if self.__hud.findIVItem(item).checkClickPosition(pos):
         return 1
     return 0
     
-  """  
-  def onBlank(self, pos):
-    iniPos = [pos[0] - self.__topLeft[0], pos[1] - self.__topLeft[1]]
-    if iniPos[0] < (GG.utils.TILE_SZ[0] / 2):
-      if iniPos[1] < (GG.utils.TILE_SZ[1] / 2):
-        #top left corner
-        if (iniPos[0] + (iniPos[1] * 2)) <= (GG.utils.TILE_SZ[0]/2):
-          return 1
-      else:
-        #bottom left corner
-        iniPos[1] -= (GG.utils.TILE_SZ[1] / 2)
-        iniPos[1] = (GG.utils.TILE_SZ[1] / 2) - iniPos[1]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (GG.utils.TILE_SZ[0]/2):
-          return 1
-    else:
-      if iniPos[1] < (GG.utils.TILE_SZ[1] / 2):
-        #top right corner
-        iniPos[0] -= (GG.utils.TILE_SZ[0] / 2)
-        iniPos[0] = (GG.utils.TILE_SZ[0] / 2) - iniPos[0]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (GG.utils.TILE_SZ[0]/2):
-          return 1
-      else:
-        #bottom right corner
-        iniPos[0] -= (GG.utils.TILE_SZ[0] / 2)
-        iniPos[1] -= (GG.utils.TILE_SZ[1] / 2)
-        iniPos[0] = (GG.utils.TILE_SZ[0] / 2) - iniPos[0]
-        iniPos[1] = (GG.utils.TILE_SZ[1] / 2) - iniPos[1]
-        if (iniPos[0] + (iniPos[1] * 2)) <= (GG.utils.TILE_SZ[0]/2):
-          return 1
-    return 0    
-  """

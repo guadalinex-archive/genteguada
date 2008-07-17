@@ -10,13 +10,14 @@ import positioned_view
 
 class IsoViewQuiz(positioned_view.PositionedView):
   """ IsoViewQuiz class.
-  Defines a chat message view.
+  Defines a quiz message view.
   """
   
   def __init__(self, model, screen, isohud):
     """ Class constructor.
     model: chat message model.
     screen: screen handler.
+    isohud: isoview_hud handler.
     """
     self.__isohud = isohud
     self.__answers = model.getAnswers()
@@ -59,7 +60,15 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__isohud.widgetContainer.add_widget(self.container)
     self.__isohud.setActiveQuizWindow(True)
     
+  def __del__(self):
+    """ Class destructor.
+    """  
+    isoview.IsoView.__del__(self)
+    
   def actionButton(self, option):
+    """ Processes the quiz answer.
+    option: quiz answer.
+    """ 
     if option == self.getModel().getRightAnswer():
       self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("¡Respuesta correcta!", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
@@ -72,18 +81,24 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__isohud.setActiveQuizWindow(False)
     self.container.destroy()
     
-  def __del__(self):
-    isoview.IsoView.__del__(self)
-
-  def updateZOrder(self):  
+  def updateZOrder(self):
+    """ Updates the quiz window zOrder attribute with a new value.
+    """    
     self.label.zOrder = 20000  
     
   def getImg(self):
+    """ Returns the quiz window.
+    """  
     return self.container
     
   def getScreenPosition(self):
+    """ Returns the quiz window screen position.
+    """  
     return self.container.topleft
     
   def setScreenPosition(self, pos):
+    """ Sets a new value for the quiz window screen position.
+    pos: new position value. 
+    """   
     self.container.topleft = pos
   

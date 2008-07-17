@@ -10,12 +10,15 @@ class IsoView:
   def __init__(self, model, screen):
     """ Class constructor.
     name: view name.
+    screen: screen handler.
     """  
     self.__model = model
     self.__screen = screen
     self.__animation = None
     
   def __del__(self):
+    """ Class destructor.
+    """  
     if self.__animation:
       self.__animation.stop()
     
@@ -65,6 +68,8 @@ class IsoView:
     self.getModel().unsubscribeEventObserver(self)
     
   def stopAnimation(self):
+    """ Stops the isometric view current animation.
+    """  
     if self.__animation:
       self.__animation.stop()
   
