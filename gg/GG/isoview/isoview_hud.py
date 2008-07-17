@@ -1187,7 +1187,7 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.incomingChatMessage(chat, player)
       
   def removeContactRemote(self, event):
-    """ Triggers after receiving a remove contact event from another user.
+    """ Triggers after receiving a remove contact event from another player.
     event: event info.
     """  
     contact = event.getParams()['contact']

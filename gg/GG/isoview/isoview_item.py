@@ -1,6 +1,5 @@
 import pygame
 import GG.utils
-#import isoview
 import animation
 import positioned_view
 
@@ -11,7 +10,9 @@ class IsoViewItem(positioned_view.PositionedView):
   
   def __init__(self, model, screen, room, parent):
     """ Class constructor.
+    model: isometric view model.
     screen: screen handler.
+    room: item's isometric room object.
     parent: isoview_hud handler.
     """
     positioned_view.PositionedView.__init__(self, model, screen)
@@ -20,9 +21,6 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__position = model.getPosition()
     self.loadImage()
     self.getModel().subscribeEvent('position', self.positionChanged)
-    #self.getModel().subscribeEvent('startPosition', self.startPositionChanged)
-    #self.getModel().subscribeEvent('chat', parent.pruebaChat)
-    #self.getModel().subscribeEvent('room', self.roomChanged)
         
   def loadImage(self):
     """ Loads the item's image.
@@ -34,12 +32,16 @@ class IsoViewItem(positioned_view.PositionedView):
     pos = self.__position
     self.__img.rect.topleft = GG.utils.p3dToP2d(pos, self.getModel().anchor)
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
-    #self.updateZOrder()
             
   def getPosition(self):
+    """ Returns the item's position on the room.
+    """  
     return self.__position
             
   def updateZOrder(self, value=None):
+    """ Updates the zOrder value, used to properly order sprites for painting.
+    value: zOrder value.
+    """  
     if value == None:
       pos = self.__position
       self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
@@ -47,6 +49,8 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__img.zOrder = value
         
   def getZOrder(self):
+    """ Returns the zOrder value of item's image.
+    """  
     return self.__img.zOrder
         
   def getParent(self):
@@ -66,7 +70,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__ivroom = ivroom
   
   def getImg(self):
-    """ Returns a sprite.
+    """ Returns the item's image.
     """
     return self.__img
   
@@ -76,7 +80,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    #pygame.display.update()
     
   def setSprite(self, sprite):
     """ Sets a new sprite for the item
@@ -88,7 +91,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Changes the item's color and sets it as selected.
     """
     size = self.__img.rect
-    #print "tamano imagen",size
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
@@ -106,21 +108,31 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    #print "no seleccionado"
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
   def getScreenPosition(self):
+    """ Returns the item's screen position.
+    """  
     return self.__img.rect.topleft
     
   def setScreenPosition(self, pos):
+    """ Sets a new screen position for the item.
+    pos: new screen position.
+    """  
     self.__img.rect.topleft = pos
     
   def updateScreenPosition(self, height):
+    """ Updates the item's screen position.
+    height: added height.
+    """  
     pos = self.getScreenPosition()
     self.setScreenPosition([pos[0], pos[1] - height])
     
   def checkClickPosition(self, pos):
+    """ Checks if the user clicked on the item's image.
+    pos: click position.
+    """  
     rect = self.getImg().rect
     if rect[0] < pos[0] < (rect[0] + rect[2]):
       if rect[1] < pos[1] < (rect[1] + rect[3]):
@@ -137,7 +149,6 @@ class IsoViewItem(positioned_view.PositionedView):
       GG.utils.playSound(GG.utils.SOUND_STEPS01)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
                   self.__ivroom.getFutureScreenPosition(self, event.getParams()['position']))
-                  #GG.utils.p3dToP2d(event.getParams()["position"], self.getModel().anchor))
     positionAnim.setOnStop(self.__ivroom.updateScreenPositionsOn, event.getParams()['position'])
     self.setAnimation(positionAnim)
       
@@ -148,4 +159,3 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__position = event.getParams()['position']
     self.setPositionAnimation(None)
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
-    
