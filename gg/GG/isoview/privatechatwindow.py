@@ -90,7 +90,7 @@ class PrivateChatWindow:
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
-    self.tooltipWindow.depth = 99 # Make it the topmost widget.
+    self.tooltipWindow.depth = 99
     self.tooltipWindow.zOrder = 30000
     self.container.add_child(self.tooltipWindow)
       
@@ -104,43 +104,17 @@ class PrivateChatWindow:
     if not self.selected:
       return    
     self.player.removeContact(self.selected.getPlayer())
+    self.updateContactList()
     self.selected.getPlayer().removeContactRemote(self.player)
-    self.container.remove_child(self.contactsArea)
     self.selected = None
-    self.__paintContactList()
     self.clearChatArea()
     
   def updateContactList(self):
     self.contactsArea.setContacts(self.player.getAgendaNames())
-    #self.container.remove_child(self.contactsArea)
-    #self.container.add_child(self.contactsArea)
-    
-    """
-    list = self.contactsArea.get_selected()
-    if list:
-      self.contactsArea.deselect(list)    
-    
-    self.container.remove_child(self.contactsArea)
-    self.contactsArea.destroy()
-    self.selected = None
-    self.contactsArea = None
-    #del self.contactsArea
-    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.player.getAgenda())
-    
-    list = self.contactsArea.get_selected()
-    if list:
-      self.contactsArea.deselect(list)    
-    
-    self.contactsArea.topleft = 20, 40
-    self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
-    self.container.add_child(self.contactsArea)
-    self.clearChatArea()
-    #self.player.newChatMessage("Nuevo contacto en la agenda.", 1)
-    """
     
   def removeContactRemote(self, contact):
     self.player.removeContact(contact)
-    self.__agenda = self.player.getAgenda()  
+    self.__agenda = self.player.getAgenda()
     self.container.remove_child(self.contactsArea)
     self.selected = None
     self.__paintContactList()

@@ -1101,11 +1101,8 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
     
   def newContactDialog(self, event):
-    print "^^^^ 1"  
     if self.activeContactDialog:
-      print "********************************* Salto!!!"  
       return  
-    print "^^^^ 2"  
     newContact = event.getParams()["contact"]
     self.confirmDialog = ocempgui.widgets.Box(300, 120)
     self.confirmDialog.set_position = [0, 0]
@@ -1134,10 +1131,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.confirmDialog)
     self.dropActionsItembuttons()
     self.activeContactDialog = event.getParams()['contact']
-    print "^^^^ 3"  
     
   def giveContactCard(self, contact):
-    print "***** giveContactCard"  
     contact.addContact(self.__player)
     self.__player.addContact(contact)
     self.dropContactDialog()
@@ -1150,11 +1145,8 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
     
   def newContactAdded(self, event):
-    print ">>>>>>>>>>>>>>>> newContactAdded A"  
-    #contact = event.getParams()['contact']
     self.privateChatWindow.updateContactList()
-    print ">>>>>>>>>>>>>>>> newContactAdded B"
-
+    
   def privateChatReceived(self, event):
     chat = event.getParams()['chat']
     player = event.getParams()['player']
