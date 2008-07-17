@@ -611,35 +611,60 @@ class AvatarEditor:
       return []
 
   def updateColorItem(self, item, color):
+    """ Updates an item color.
+    item: item to be updated.
+    color: new color.
+    """  
     self.avatarConfiguration[item] = color
     self.paintAvatarItem(item)
 
   def updateSkin(self,color):
+    """ Updates the avatar's skin color.
+    color: new skin color.
+    """  
     self.avatarConfiguration["skin"] = str(color)
     self.paintBody()
     self.paintHead()
   
   def updateHairColor(self,color):
+    """ Updates the avatar's hair color.
+    color: new hair color.
+    """  
     self.avatarConfiguration["hairColor"] = str(color)
     self.paintHair()
 
   def updateShirtColor(self,color):
+    """ Updates the avatar's shirt color.
+    color: new shirt color.
+    """  
     self.avatarConfiguration["shirt"] = str(color)
     self.paintShirt()
 
   def updateTrouserColor(self,color):
+    """ Updates the avatar's trousers color.
+    color: new trousers color.
+    """  
     self.avatarConfiguration["trousers"] = str(color)
     self.paintTrousers()
 
   def updateSkirtColor(self,color):
+    """ Updates the avatar's skirt color.
+    color: new skirt color.
+    """  
     self.avatarConfiguration["skirt"] = str(color)
     self.paintSkirt()
 
   def updateShoesColor(self,color):
+    """ Updates the avatar's shoes color.
+    color: new shoes color.
+    """  
     self.avatarConfiguration["shoes"] = str(color)
     self.paintShoes()
 
   def paintSizePalette(self, method):
+    """ Paints the avatar size palette.
+    method: method used to paint the palette.
+    """  
     baseX = 70
     baseY = 70
     sizeY = 150
@@ -653,6 +678,9 @@ class AvatarEditor:
       self.activeWidget.append(button)
 
   def updateSizeHead(self,size):
+    """ Updates the head size.
+    size: new head size.
+    """  
     self.avatarConfiguration["headSize"] = size
     self.paintHead()
     self.paintHair()
@@ -661,6 +689,9 @@ class AvatarEditor:
     self.paintMask()
 
   def updateSizeBody(self,size):
+    """ Updates the body size.
+    size: new body size.
+    """  
     self.avatarConfiguration["bodySize"] = size
     self.paintBody()
     self.paintShoes()
@@ -671,6 +702,8 @@ class AvatarEditor:
       self.paintSkirt()
 
   def paintButtons(self):
+    """ Paints the editor buttons.
+    """
     buttonOK = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"), self.buttonTooltips["ok"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonOK.topleft = [770, 30]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeConfiguration)
@@ -682,14 +715,21 @@ class AvatarEditor:
     self.window.add_child(buttonCancel)
 
   def changeConfiguration(self):
+    """ Closes the avatar editor and changes the avatar configuration.
+    """  
     self.finish = True
     self.parent.closeDresser(self.avatarConfiguration)
 
   def closeConfiguration(self):
+    """ Closes the avatar editor without saving the changes.
+    """
     self.finish = True
     self.parent.closeDresser()
     
   def showTooltip(self, label):
+    """ Shows tooltips for an ocempgui item.
+    label: tooltip's label.
+    """  
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8, y - 5
@@ -698,9 +738,9 @@ class AvatarEditor:
     self.window.add_child(self.tooltipWindow)
       
   def removeTooltip(self):
+    """ Removes the active tooltip from screen.
+    """  
     if self.tooltipWindow:
       self.window.remove_child(self.tooltipWindow)  
       self.tooltipWindow.destroy ()
       self.tooltipWindow = None
-
-
