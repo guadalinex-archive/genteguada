@@ -501,6 +501,12 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def getAgenda(self):
     return self.__agenda
     
+  def getAgendaNames(self):
+    list = []
+    for contact in self.__agenda:
+      list.append(contact.getPlayer().username)
+    return list  
+    
   def removeContact(self, contact):
       for item in self.__agenda:
         if item.getPlayer().username == contact.username:
@@ -523,8 +529,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
       return
     self.__agenda.append(GG.model.private_contact.PrivateContact(player))
-    self.newChatMessage("Tarjeta recibida: " + player.username, 1)
-    player.newChatMessage("Tarjeta entregada: ahora eres un contacto de " + player.username, 1)
+    #self.newChatMessage("Tarjeta recibida: " + player.username, 1)
+    #player.newChatMessage("Tarjeta entregada: ahora eres un contacto de " + player.username, 1)
     self.triggerEvent("contactAdded", contact=player)
     
   def checkContactOnAgenda(self, contact):

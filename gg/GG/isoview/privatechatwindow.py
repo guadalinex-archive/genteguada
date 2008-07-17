@@ -17,7 +17,6 @@ class PrivateChatWindow:
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
     self.player = player
-    #self.agenda = player.getAgenda()
     self.selected = None
     self.draw()
 
@@ -67,6 +66,9 @@ class PrivateChatWindow:
 
   def __selectionChange(self):
     name = self.contactsArea.getSelectedName()
+    if not name:
+      self.selected = None  
+      return
     if name.find(" ") > -1:
       name = name[0:name.find(" ")]
       self.contactsArea.restoreContactName()
@@ -99,13 +101,42 @@ class PrivateChatWindow:
       self.tooltipWindow = None
 
   def deleteContacts(self):
+    if not self.selected:
+      return    
     self.player.removeContact(self.selected.getPlayer())
     self.selected.getPlayer().removeContactRemote(self.player)
-    self.__agenda = self.player.getAgenda()  
     self.container.remove_child(self.contactsArea)
     self.selected = None
     self.__paintContactList()
     self.clearChatArea()
+    
+  def updateContactList(self):
+    self.contactsArea.setContacts(self.player.getAgendaNames())
+    #self.container.remove_child(self.contactsArea)
+    #self.container.add_child(self.contactsArea)
+    
+    """
+    list = self.contactsArea.get_selected()
+    if list:
+      self.contactsArea.deselect(list)    
+    
+    self.container.remove_child(self.contactsArea)
+    self.contactsArea.destroy()
+    self.selected = None
+    self.contactsArea = None
+    #del self.contactsArea
+    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.player.getAgenda())
+    
+    list = self.contactsArea.get_selected()
+    if list:
+      self.contactsArea.deselect(list)    
+    
+    self.contactsArea.topleft = 20, 40
+    self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
+    self.container.add_child(self.contactsArea)
+    self.clearChatArea()
+    #self.player.newChatMessage("Nuevo contacto en la agenda.", 1)
+    """
     
   def removeContactRemote(self, contact):
     self.player.removeContact(contact)
@@ -170,7 +201,7 @@ class PrivateChatWindow:
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
-    label = GG.utils.OcempLabel(string,300)
+    label = GG.utils.OcempLabelNotTransparent(string,300)
     hframe.add_child(label)
     return hframe
 

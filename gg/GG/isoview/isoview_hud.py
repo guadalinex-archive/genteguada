@@ -25,6 +25,7 @@ class IsoViewHud(isoview.IsoView):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
+    parent: session handler.
     fullscreen: sets the game as started on fullscreen or not.
     """
     isoview.IsoView.__init__(self, model, screen)
@@ -41,8 +42,6 @@ class IsoViewHud(isoview.IsoView):
     self.__bg.zOrder = -2
     
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
-    #self.widgetContainer = ocempgui.widgets.Renderer()
-    #self.widgetContainer.set_screen(screen)
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
@@ -139,22 +138,21 @@ class IsoViewHud(isoview.IsoView):
     self.ctrl = 0
   
   def processEvent(self, events):
+    """ Processes the input events.
+    events: events received.
+    """  
     for event in events:
       event_type = event.type
       if event_type == QUIT:
         GG.genteguada.GenteGuada.getInstance().finish()
-        
       elif event_type == KEYUP:
         if event.key == K_LCTRL or event.key == K_RCTRL:
           self.ctrl = 0
-          
       elif event_type == KEYDOWN:
         if self.ctrl:
-          #self.ctrl = 0
           if event.key in self.hotkeys.keys():
             if self.hotkeys[event.key] in self.__activeActions:
               self.hotkeys[event.key]()
-              # atajos de teclado
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
             self.ctrl = 1  
@@ -169,7 +167,6 @@ class IsoViewHud(isoview.IsoView):
             else:
               self.chatMessageEntered()
       elif event_type == MOUSEBUTTONDOWN:
-        #if not self.exchangeWindow:
         if not self.windowOpen():
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
@@ -179,6 +176,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.distribute_events(*events)
 
   def windowOpen(self):
+    """ Checks if there is an open window.
+    """  
     if self.activeExchageWindow:
       return True
     if self.activeQuizWindow:
@@ -186,11 +185,13 @@ class IsoViewHud(isoview.IsoView):
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
         return True
-    if self.activeContactDialog != None:
+    if self.activeContactDialog:
       return True
     return False
 
   def restoreActiveActionButtonsList(self):
+    """ Restore the active action button list.
+    """  
     self.__activeActions = []  
     self.__activeActions.append(self.finishGame)
     self.__activeActions.append(self.showFullScreen)
@@ -202,52 +203,82 @@ class IsoViewHud(isoview.IsoView):
     self.__activeActions.append(self.privateChatHandler)
     
   def compareSelectedItem(self, item):
+    """ Compares a given item with the selected item.
+    item: item to be compared.
+    """  
     if self.__selectedItem:  
       return self.__selectedItem.checkSimilarity(item)
     else:
       return False
 
   def setActiveQuizWindow(self, value):
+    """ Sets the active quiz window with a new value
+    """  
     self.activeQuizWindow = value
     
   def getActiveQuizWindow(self):
+    """ Returns the active quiz window.
+    """  
     return self.activeQuizWindow
 
   def addSprite(self, sprite):
+    """ Adds a new sprite to the sprite group.
+    sprite: new sprite. 
+    """  
     self.__allSprites.add(sprite)
 
   def removeSprite(self, sprite):
+    """ Removes a sprite from the sprite group.
+    sprite: sprite to be removed.
+    """  
     self.__allSprites.remove(sprite)
 
   def getPlayer(self):
+    """ Returns the active player.
+    """  
     return self.__player
   
   def getSelectedItem(self):
+    """ Returns the selected item.
+    """  
     return self.__selectedItem
 
   def getSound(self):
+    """ Returns the sound flag.
+    """  
     return self.__sound
 
   def findIVItem(self, item):
+    """ Returns the isometric view object that contains a given item.
+    item: given item.
+    """  
     for ivItem in self.__isoviewRoom.getIsoViewItems():
       if ivItem.getModel() == item:
         return ivItem
     return None
 
   def findIVInventoryItem(self, item):
+    """ Returns the inventory isometric view object that contains a given item.
+    item: given item.
+    """  
     for ivItem in self.__isoviewInventory:
       if ivItem.getModel() == item:
         return ivItem
     return None
   
   def inventoryRemoved(self, event):
+    """ Triggers after receiving an inventory removed item event.
+    event: event info.
+    """ 
     item = event.getParams()["item"]  
     ivInventItem = self.findIVInventoryItem(item)
-    #print "inventoryRemoved",ivInventItem
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
       
   def liftItem(self, event):
+    """ Triggers after receiving a lift item event.
+    event: event info.
+    """ 
     item = event.getParams()["item"]  
     pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
@@ -255,6 +286,9 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateScreenPositionsOn(pos)  
     
   def dropItem(self, event):
+    """ Triggers after receiving a drop item event.
+    event: event info.
+    """ 
     item = event.getParams()["item"]  
     pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
@@ -262,8 +296,9 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateScreenPositionsOn(pos)  
       
   def addItemToInventory(self, event):
-    """ Adds a new isoview inventory item.
-    """
+    """ Triggers after receiving an item added to inventory event.
+    event: event info.
+    """ 
     item = event.getParams()["item"]
     posOrigin = event.getParams()["position"]
     posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
@@ -271,7 +306,6 @@ class IsoViewHud(isoview.IsoView):
     pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
-    #print "@@@@",ivItem
     if ivItem != None:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
@@ -290,11 +324,10 @@ class IsoViewHud(isoview.IsoView):
     ivItem.setAnimation(positionAnim)
         
   def addItemToRoomFromInventory(self, ivItem):
-    """ Removes an item from the inventory item list and creates an animation to the room.
+    """ Removes an item from the inventory item list and creates an animation from the inventory to the room.
     event: event info.
     """
     item = ivItem.getModel()
-    #itemPos = item.getPosition()
     itemPos = ivItem.getPosition()
     ivInventItem = self.findIVInventoryItem(item)
     if ivItem:    
@@ -302,7 +335,6 @@ class IsoViewHud(isoview.IsoView):
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
-                            #pos, GG.utils.p3dToP2d(item.getPosition(), item.anchor), True)
                             pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       ivItem.setAnimation(positionAnim)
@@ -317,7 +349,6 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
-    #itemPos = item.getPosition()
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
@@ -342,22 +373,12 @@ class IsoViewHud(isoview.IsoView):
 
     self.hud.zOrder = 1
     self.addSprite(self.hud)
-    #print "hud ",self.hud.depth
     self.widgetContainer.add_widget(self.hud)
 
 
   def updateFrame(self, ellapsedTime):
-    """ Updates all sprites for a new frame.
+    """ Updates all sprites for a new timestamp.
     """
-    #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
-    #se vean sobre el HUD y no debajo como ahora.
-
-    #self.paintBackground()
-    #self.buttonBar.update()
-    #self.textArea.update()
-    #self.__textField.update()
-    #self.windowInventory.update()
-
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(ellapsedTime)
     
@@ -365,7 +386,6 @@ class IsoViewHud(isoview.IsoView):
     bg_image = self.__bg.image
     self.__allSprites.clear(screen, bg_image)
     self.__allSprites.draw(screen)
-    #print self.__img.zOrder, self.hud.zOrder
     
     pygame.display.update()
 
@@ -389,12 +409,11 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom = None
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
-      #self.buttonBar.update()
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       
   def getIsoviewRoom(self):
-    """ Returns the isometric view room.
+    """ Returns the room isometric view.
     """
     return self.__isoviewRoom
            
@@ -422,11 +441,6 @@ class IsoViewHud(isoview.IsoView):
     labelInventory = GG.utils.LabelTransparent("Inventario:", GG.utils.STYLES["hudLabel"])
     labelInventory.topleft = 819, 70
     self.hud.add_child(labelInventory)
-
-    #self.getScreen().blit(self.__img.image, [GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50])
-    #self.__img.zOrder = 0
-    #self.addSprite(self.__img)
-    #pygame.display.update()
 
   def paintChat(self):
     """ Paints the chat window on screen.
@@ -467,17 +481,12 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
-   # self.textArea.border = 1
-    #self.textArea.topleft = GG.utils.CHAT_OR[0], GG.utils.CHAT_OR[1] + 20
     self.textArea.topleft = GG.utils.CHAT_OR[0], 90
     self.__layoutTextArea= ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.textArea.child = self.__layoutTextArea
     self.hud.add_child(self.textArea)
-    #self.widgetContainer.add_widget(self.textArea)
-    #self.widgetContainer.update()
-    #print self.textArea.create_style()
   
   def paintTextBox(self):
     """ Paints the editable text box on screen.
@@ -485,11 +494,9 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = ocempgui.widgets.Entry()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
     self.__textField.border = 1
-    #self.__textField.topleft = 14, 732
     self.__textField.topleft = 14, 210
     self.__textField.set_minimum_size(490, 20)
     self.hud.add_child(self.__textField)
-    #self.widgetContainer.add_widget(self.__textField)
 
   def paintInventory(self):
     """ Paints the inventory box and its items on it.    
@@ -500,7 +507,6 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory.topleft = 819, 90
     self.windowInventory.set_depth(1)
     self.hud.add_child(self.windowInventory)
-    #self.widgetContainer.add_widget(self.windowInventory)
     self.paintItemsInventory()
 
   def paintItemsInventory(self):
@@ -516,17 +522,17 @@ class IsoViewHud(isoview.IsoView):
       self.paintItemOnInventory(inventoryitem, position)
       position += 1
 
-  def itemInventorySelected(self,invIsoItem):
+  def itemInventorySelected(self, invIsoItem):
     """ Selects an item from the player's inventory.
     invIsoItem: selected item.
     """
-    #print "item seleccionado"
     item = invIsoItem.getModel()
     self.__player.setSelectedItem(item)
 
   def itemOutInventory(self):
+    """ Attempts to move an item from the inventory to the active room.
+    """  
     if self.__selectedItem.inventoryOnly():
-      #self.__player.removeFromInventory(self.__selectedItem) 
       self.__player.newChatMessage("Mejor no. Creo que puede ser util mas adelante.", 2) 
       self.paintItemsInventory()
     else:   
@@ -534,9 +540,9 @@ class IsoViewHud(isoview.IsoView):
     self.__player.setUnselectedItem()
     
   def paintItemOnInventory(self, invItem, position):
-    """ Paints an item on the hud inventory.
-    spriteName: sprite name.
-    position: position in the inventory that the item will be painted into.
+    """ Paints an item on the inventory.
+    invItem: inventory item.
+    position: inventory position that the item will be painted into.
     """
     if position % GG.utils.INV_ITEM_COUNT[0] == 0:
       self.hframe =  ocempgui.widgets.HFrame()
@@ -547,18 +553,19 @@ class IsoViewHud(isoview.IsoView):
       self.hframe.add_child(invItem.draw(self.widgetContainer))
   
   def printChatMessage(self, chatMessage):
+    """ Puts a new chat message on screen.
+    """  
     self.__layoutTextArea.add_child(chatMessage.draw())
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
   
   def getStyleMessageChat(self):
     """ Returns the chat current style.
     """
-    #TODO entiendo que el color del chat depende de cada usuario 
     listStyle = ["chatEntryBlack","chatEntryRed","chatEntryGreen","chatEntryBlue"]
     return GG.utils.STYLES[listStyle[random.randint(0,len(listStyle)-1)]]
     
   def chatMessageEntered(self):
-    """ Prints a new message on chat window.
+    """ Prints a new message on the chat window.
     """
     if self.__textField.text == "":
       return
@@ -570,7 +577,6 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
-    #print "Fuente utilizada",messageChat
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()
 
@@ -595,26 +601,23 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a new quiz event.
     event: event info.
     """
-    #print "quizzzzzzzzzzzzzzz"
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
         
   def setMovementDestination(self, target):
-    #print "===>>> Ini"  
+    """ Adds a marker to the player's movement destination.
+    target: movement destination.
+    """  
     self.removeMovementDestination()
-    #print "setMovementDestination"
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
-    #print "<<<=== Fin"  
     
   def removeMovementDestination(self):
-    #print "removeMovementDestination"
-    #if self.__targetTile:
-    #if self.__allSprites.has(self.__targetTileImage):
-      #if self.__allSprites.has(self.__targetTileImage):
+    """ Removes the player's movement destination marker.
+    """  
     try:
       self.removeSprite(self.__targetTileImage)  
     except KeyError:
@@ -623,7 +626,6 @@ class IsoViewHud(isoview.IsoView):
       self.__targetTile = not self.__targetTile
       pass
     self.__targetTile = not self.__targetTile
-    #self.__targetTile = False
     
   def itemSelected(self,event):
     """ Triggers after receiving an item selected event.
@@ -641,9 +643,7 @@ class IsoViewHud(isoview.IsoView):
         self.addSprite(self.__selectedImage)        
     
     options = self.__selectedItem.getOptions()
-    
     self.buttonBarActions = ocempgui.widgets.Box(259,95)
-    #self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260,0]
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")
@@ -688,6 +688,9 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.buttonBarActions)
 
   def itemUnselected(self,event=None):
+    """ Triggers after receiving an item unselected event.
+    event: event info.
+    """
     if self.__selectedItem:
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
@@ -1098,11 +1101,25 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
     
   def newContactDialog(self, event):
+    print "^^^^ 1"  
     if self.activeContactDialog:
+      print "********************************* Salto!!!"  
       return  
+    print "^^^^ 2"  
     newContact = event.getParams()["contact"]
     self.confirmDialog = ocempgui.widgets.Box(300, 120)
     self.confirmDialog.set_position = [0, 0]
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/contactWindow.png")
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.confirmDialog.add_child(imgBackground)
+     
+    cad = "Intercambiar tarjetas con " + newContact.username 
+    questionLabel = GG.utils.OcempLabel(cad, 200, GG.utils.STYLES["dialogFont"])
+    questionLabel.topleft = 22, 20 
+    self.confirmDialog.add_child(questionLabel)
+     
     okButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png"))
     #okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.giveContactCard)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.giveContactCard, event.getParams()['contact'])
@@ -1117,23 +1134,26 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.confirmDialog)
     self.dropActionsItembuttons()
     self.activeContactDialog = event.getParams()['contact']
+    print "^^^^ 3"  
     
   def giveContactCard(self, contact):
-    #self.activeContactDialog.addContact(self.__player)
-    #self.__player.addContact(self.activeContactDialog)
+    print "***** giveContactCard"  
     contact.addContact(self.__player)
     self.__player.addContact(contact)
     self.dropContactDialog()
       
   def dropContactDialog(self):
-    self.widgetContainer.remove_widget(self.confirmDialog)
     self.removeSprite(self.confirmDialog)
+    self.widgetContainer.remove_widget(self.confirmDialog)
     self.activeContactDialog = None
     self.itemUnselected()
     self.dropActionsItembuttons()
     
   def newContactAdded(self, event):
-    contact = event.getParams()['contact']
+    print ">>>>>>>>>>>>>>>> newContactAdded A"  
+    #contact = event.getParams()['contact']
+    self.privateChatWindow.updateContactList()
+    print ">>>>>>>>>>>>>>>> newContactAdded B"
 
   def privateChatReceived(self, event):
     chat = event.getParams()['chat']
