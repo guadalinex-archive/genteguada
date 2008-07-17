@@ -2,8 +2,16 @@ import ocempgui.widgets
 import GG.utils
 
 class ExchangeWindow:
+  """ ExchangeWindow class.
+  Defines animation methods and atributes.
+  """
 
   def __init__(self, isohud, step, listIn):
+    """ Class constructor.
+    isohud: isoview hud handler.
+    step: exchange process step.
+    listIn: incoming item list.
+    """  
     self.window = ocempgui.widgets.DialogWindow("Ventana de intercambio")
     self.window.topleft = 200, 200
 
@@ -18,6 +26,8 @@ class ExchangeWindow:
     self.__isohud = isohud
 
   def draw(self):
+    """ Draws the exchange window on screen.
+    """  
     self.__paintBackground()
     self.__paintOutBox()
     self.__paintInBox()
@@ -27,12 +37,16 @@ class ExchangeWindow:
       self.__paintListItems()
 
   def __paintBackground(self):
+    """ Paints the exchangeWindow background.
+    """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/exchangeWindow.png")
     imgBackground = GG.utils.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.container.add_child(imgBackground)
 
   def __paintOutBox(self):
+    """ Paints the out box.
+    """  
     self.__outBox = ocempgui.widgets.ScrolledWindow(190, 163)
     self.__outBox.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.__outBox.border = 1
@@ -45,6 +59,8 @@ class ExchangeWindow:
     self.container.add_child(self.__outBox)
 
   def __paintInBox(self):
+    """ Paints the incoming items box
+    """  
     self.__inBox = ocempgui.widgets.ScrolledWindow(190, 163)
     self.__inBox.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
     self.__inBox.border = 1
@@ -57,6 +73,8 @@ class ExchangeWindow:
     self.container.add_child(self.__inBox)
 
   def __paintLabel(self):
+    """ Paints the exchangeWindow labels.
+    """  
     self.__labelExchange = GG.utils.LabelTransparent("Selecciona los objetos del inventario que quieres intercambiar.",GG.utils.STYLES["dialogFont"])
     self.__labelExchange.topleft = 20,20
     self.container.add_child(self.__labelExchange)
@@ -70,6 +88,8 @@ class ExchangeWindow:
     self.container.add_child(self.__labelExchange)
 
   def __paintButtons(self):
+    """ Paints the exchangeWindow buttons.
+    """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png")
     buttonOK = GG.utils.OcempImageButtonTransparent(filePath)
     buttonOK.topleft = 240,100
@@ -83,6 +103,8 @@ class ExchangeWindow:
     self.container.add_child(buttonCancel)
 
   def okExchange(self):
+    """ Accepts the proposed exchange and resolves it.
+    """  
     if self.__step == 1:
       if len(self.__listOut) == 0:
         self.__labelExchange.set_text("Deberia de seleccionar algun elemento del inventario")
@@ -103,25 +125,39 @@ class ExchangeWindow:
       self.__isohud.getPlayer().finishExchange(self.__listIn, self.__listOut)
 
   def koExchange(self):
+    """ Cancels the proposed exchange.
+    """  
     self.__isohud.getPlayer().cancelExchangeTo(self.__step)
 
   def __paintListItems(self):
+    """ Paints the items to be exchanged.
+    """  
     i = 0
     for item in self.__listIn:
       self.__hFrameInBox = self.__paintItemOnList(self.__hFrameInBox, self.__inBoxChild, item, i)
       i+=1
 
   def addItemOut(self, item):
+    """ Adds a anew item to the exchange out list.
+    """  
     self.__listOut.append(item)
     self.__hFrameOutBox = self.__paintItemOnList(self.__hFrameOutBox, self.__outBoxChild, item, len(self.__listIn) - 1)
 
   def addInList(self, list):
+    """ Adds a anew item to the exchange in list.
+    """  
     self.__listIn = list
     self.__paintListItems()
     self.__labelExchange.set_text("Acepte para finalizar el intercambio !!!")
     self.__step = 5
 
   def __paintItemOnList(self, hframe, boxChild, item, position):
+    """ Paints the incoming items list.
+    hframe: items container.
+    boxChild: hframe depenant container.
+    item: item to be painted on screen.
+    position: number of elements on the container.
+    """
     img = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(item.spriteInventory))
     img.border = 0
     if position % GG.utils.INV_ITEM_COUNT[0] == 0 or hframe is None:
