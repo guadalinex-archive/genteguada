@@ -514,7 +514,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
           return
         
   def removeContactRemote(self, contact):  
-    #self.newChatMessage(contact.username + " te ha eliminado de su lista de contactos.", 1)  
+    self.removeContact(contact)  
     self.triggerEvent("removeContactRemote", contact=contact)  
     
   def checkContact(self, player):
@@ -529,8 +529,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
       return
     self.__agenda.append(GG.model.private_contact.PrivateContact(player))
-    #self.newChatMessage("Tarjeta recibida: " + player.username, 1)
-    #player.newChatMessage("Tarjeta entregada: ahora eres un contacto de " + player.username, 1)
     self.triggerEvent("contactAdded", contact=player)
     
   def checkContactOnAgenda(self, contact):
