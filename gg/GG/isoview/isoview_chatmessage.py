@@ -15,6 +15,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     """ Class constructor.
     model: chat message model.
     screen: screen handler.
+    isohud: isometric hud handler.
     """
     self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
@@ -39,48 +40,43 @@ class IsoViewChatMessage(positioned_view.PositionedView):
       yCord = 0
           
     self.balloon.topleft = [xCord, yCord]    
-    #self.balloon.opacity = 200
     self.balloon.zOrder = 20000
     self.__isohud.addSprite(self.balloon)
     
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.TAIL[model.type])  
     self.tail = GG.utils.OcempImageMapTransparent(imgPath)
     self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
-    #self.tail.opacity = 200
     self.tail.zOrder = 20002
     self.__isohud.addSprite(self.tail)
-       
-    """   
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + "tail.png")  
-    self.tail = pygame.sprite.Sprite()
-    self.tail.image = pygame.image.load(imgPath).convert_alpha()
-    self.tail.rect = self.tail.image.get_rect()
-    pos = self.getModel().getPosition()
-    self.tail.rect.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
-    self.tail.opacity = 200
-    self.tail.zOrder = 20002
-    self.__isohud.addSprite(self.tail)
-    """
     
   def __del__(self):
+    """ Class destructor.
+    """  
     isoview.IsoView.__del__(self)
     
-  def updateZOrder(self):  
+  def updateZOrder(self):
+    """ Updates the zOrder value.
+    """    
     self.label.zOrder = 20000  
     
   def getImg(self):
-    #return self.label
+    """ Returns the chat balloon.
+    """  
     return self.balloon
   
   def getTail(self):
+    """ Returns the balloon tail.
+    """  
     return self.tail  
   
   def getScreenPosition(self):
+    """ Returns the balloon screen position.
+    """
     return self.balloon.topleft
-    #return self.label.topleft
     
   def setScreenPosition(self, pos):
-    #self.label.topleft = pos
+    """ Sets a new balloon screen position.
+    """  
     self.balloon.topleft = pos
   
   def getStyleMessageChat(self):
@@ -92,8 +88,9 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     return styles
   
   def drawBalloon(self, message):
-    
-    #label = GG.utils.OcempLabel(message,140,self.style["balloon"])
+    """ Draws a balloon containing a given message.
+    message: message to be included on the balloon. 
+    """  
     label = GG.utils.OcempLabelNotTransparent(message,140)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     label.padding = 5
@@ -168,9 +165,10 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     balloon.add_child(bottomRow)
     
     return balloon
-    #return middleRow
       
   def draw(self):
+    """ Draws a label containing a message.
+    """  
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
     hframe.set_align(ocempgui.widgets.Constants.ALIGN_TOP) 
@@ -179,11 +177,9 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image.buttom = 0
     hframe.add_child(image)
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    #label = GG.utils.OcempLabel(string,300,self.style["entry"])
     label = GG.utils.OcempLabelNotTransparent(string,300)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
-    #label = GG.utils.OcempLabel(self.getModel().getMessage(),300,self.style["entry"])
     label = GG.utils.OcempLabelNotTransparent(self.getModel().getMessage(),300)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)

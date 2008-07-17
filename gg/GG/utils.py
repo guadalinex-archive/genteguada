@@ -926,6 +926,14 @@ class OcempImageContactList(OcempImageFileList):
       items.append (OcempContactListItem (contact.getPlayer().username))
     self.set_items (items)
 
+  def setContacts(self, agenda):
+    self.contactList = agenda  
+    items = ocempgui.widgets.components.ListItemCollection ()
+    for contact in agenda:
+      items.append (OcempContactListItem (contact))
+    self.set_items (items)
+    #self.select(self.items[0])
+
   def getSelectedName(self):
     item = self.get_selected()
     if len(item):
