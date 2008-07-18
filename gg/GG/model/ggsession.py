@@ -1,6 +1,5 @@
 import dMVC.model
 import GG.utils
-import GG.isoview.isoview_hud
 import ggmodel
 
 class GGSession(ggmodel.GGModel):
@@ -46,6 +45,7 @@ class GGSession(ggmodel.GGModel):
     """ Esto deberia ser IsoViewSession.
     screen: screen handler.
     """
+    import GG.isoview.isoview_hud
     return GG.isoview.isoview_hud.IsoViewHud(self, screen, parent, fullscreen)
 
   def logout(self):

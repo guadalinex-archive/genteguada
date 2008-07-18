@@ -1,6 +1,5 @@
 # -*- coding: iso-8859-15 -*-
 import GG.model.room_item
-import GG.isoview.isoview_item
 import random
 import GG.model.giver_npc
 import GG.model.chat_message

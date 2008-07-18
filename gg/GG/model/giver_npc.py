@@ -2,8 +2,6 @@ import ggmodel
 import GG.utils
 import room_item
 import generated_inventory_item
-import GG.isoview.isoview_item
-import dMVC.model
 
 class GGGiverNpc(room_item.GGRoomItem):
   """GGGiverNpc class.

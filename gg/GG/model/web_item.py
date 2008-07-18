@@ -1,5 +1,4 @@
 import GG.model.room_item
-import GG.isoview.isoview_item
 
 class GGWebItem(GG.model.room_item.GGRoomItem):
   """ GGWebItem class.

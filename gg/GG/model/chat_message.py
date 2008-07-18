@@ -1,8 +1,6 @@
 import ggmodel
 import time
 import dMVC.model
-import GG.isoview.isoview_chatmessage
-import GG.isoview.isoview_quiz
 
 class ChatMessage(ggmodel.GGModel):
   """ ChatMessage class.
@@ -63,6 +61,7 @@ class ChatMessage(ggmodel.GGModel):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
     """
+    import GG.isoview.isoview_chatmessage
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
 
 #================================================================================
@@ -106,6 +105,7 @@ class ChatQuiz(ChatMessage):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
     """
+    import GG.isoview.isoview_quiz
     return GG.isoview.isoview_quiz.IsoViewQuiz(self, screen, isohud)
 
 #================================================================================
