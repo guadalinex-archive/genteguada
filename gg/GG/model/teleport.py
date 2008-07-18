@@ -188,7 +188,7 @@ class GGDoorRoom5b(GGTeleport):
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
     if not clicker.checkPointGiver("Penguin Quiz"):
-      self.newChatMessage('Antes de pasar, debes responder al acertijo de Andatuz.', 2)
+      self.newChatMessage('Antes de pasar, debes responder al acertijo de Andatuz.')
       return False
     self.transportTo(clicker)
 

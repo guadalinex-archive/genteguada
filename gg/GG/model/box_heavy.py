@@ -1,4 +1,5 @@
 import room_item
+import GG.utils
 
 class GGBoxHeavy(room_item.GGRoomItem):
   """ GGBoxHeavy class.
@@ -14,14 +15,14 @@ class GGBoxHeavy(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.label = label
-    self.points = 2
     self.__time = time*1000
     self.__startRoom = startRoom
     self.__startTime = 0
+    self.setPoints(2)
     
   def variablesToSerialize(self):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label', 'points']
+    return parentVars + ['label']
 
   def getOptions(self):
     tile = self.getTile()
@@ -52,7 +53,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()) \
         or (self.getPosition() == clicker.getPosition()):
       clicker.setSelectedItem(self)

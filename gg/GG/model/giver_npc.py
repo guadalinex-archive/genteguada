@@ -1,4 +1,3 @@
-import ggmodel
 import GG.utils
 import room_item
 import generated_inventory_item
@@ -21,7 +20,7 @@ class GGGiverNpc(room_item.GGRoomItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label', 'points']
+    return parentVars + ['label']
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -34,9 +33,6 @@ class GGGiverNpc(room_item.GGRoomItem):
   def getImageLabel(self):
     return self.spriteInventory
 
-  def setPoints(self, points):
-    self.points = points
-    
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
