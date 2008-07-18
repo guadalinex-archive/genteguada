@@ -1,7 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 import GG.model.room_item
 import random
-import GG.model.giver_npc
 import GG.model.chat_message
 
 class GGPenguin(GG.model.room_item.GGRoomItem):
@@ -115,7 +114,7 @@ class GGPenguinRoom3(GGPenguin):
     
 #================================================================================
 
-class GGPenguinRoom5(GG.model.room_item.GGRoomItem):
+class GGPenguinRoom5(GGPenguin):
   """ GGPenguinRoom5 class.
   Defines a giver npc object behaviour.
   """

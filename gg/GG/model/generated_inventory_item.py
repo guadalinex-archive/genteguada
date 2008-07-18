@@ -1,7 +1,4 @@
-import ggmodel
-import GG.utils
 import inventory_item
-import dMVC.model
 
 class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   """GGGeneratedInventoryItem class.
@@ -23,7 +20,7 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['label', 'points', 'spriteInventory']
+    return parentVars + ['label', 'points']
       
   def getOptions(self):
     """ Returns the item's available options.
@@ -41,15 +38,6 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
 
   def setPoints(self, points):
     self.points = points
-  
-  @dMVC.model.localMethod 
-  def defaultView(self, screen, room, parent):
-    """ Creates an isometric view object for the item.
-    screen: screen handler.
-    parent: isoview hud handler.
-    """
-    import GG.isoview.isoview_item
-    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
     
   def checkSimilarity(self, item):
     if inventory_item.GGInventoryItem.checkSimilarity(self, item):

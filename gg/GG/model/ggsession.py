@@ -1,5 +1,4 @@
 import dMVC.model
-import GG.utils
 import ggmodel
 
 class GGSession(ggmodel.GGModel):
