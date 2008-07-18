@@ -1,5 +1,4 @@
 import ggmodel
-import GG.isoview.isoview_item
 import dMVC.model
 
 class GGInventoryItem(ggmodel.GGModel):
@@ -42,6 +41,7 @@ class GGInventoryItem(ggmodel.GGModel):
     screen: screen handler.
     parent: isoview hud handler.
     """
+    import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
 
   def inventoryOnly(self):

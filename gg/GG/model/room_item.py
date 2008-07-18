@@ -1,7 +1,6 @@
 import ggmodel
 import GG.utils
 import inventory_item
-import GG.isoview.isoview_item
 import dMVC.model
 
 class GGRoomItem(inventory_item.GGInventoryItem):
@@ -113,6 +112,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     screen: screen handler.
     parent: isoview hud handler.
     """
+    import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
   def checkSimilarity(self, item):

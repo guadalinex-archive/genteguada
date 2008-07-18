@@ -1,6 +1,5 @@
 import GG.model.room_item
 import GG.utils
-import dMVC.model
 
 class GGItemWithInventory(GG.model.room_item.GGRoomItem):
   """ GGItemWithInventory class.

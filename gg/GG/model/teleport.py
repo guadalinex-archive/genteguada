@@ -1,5 +1,4 @@
 import GG.model.room_item
-import GG.isoview.isoview_item
 import dMVC.model
 
 class GGTeleport(GG.model.room_item.GGRoomItem):
@@ -74,6 +73,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     screen: screen handler.
     parent: isoview hud handler.
     """
+    import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
   def clickedBy(self, clicker):

@@ -7,7 +7,6 @@ import GG.model.ggmodel
 import GG.model.tile
 import GG.model.inventory_item
 import GG.model.chat_message
-import GG.isoview.isoview_room
 import dMVC.model
 import GG.model.player
 
@@ -152,6 +151,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     screen: screen handler.
     hud: isoview hud object.
     """
+    import GG.isoview.isoview_room
     return GG.isoview.isoview_room.IsoViewRoom(self, screen, hud)
 
   def getBlocked(self, pos):

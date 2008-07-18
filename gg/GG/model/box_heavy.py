@@ -1,5 +1,4 @@
 import room_item
-import GG.isoview.isoview_item
 
 class GGBoxHeavy(room_item.GGRoomItem):
   """ GGBoxHeavy class.

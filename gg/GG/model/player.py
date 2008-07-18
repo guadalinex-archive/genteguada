@@ -3,7 +3,6 @@
 import GG.model.item_with_inventory
 import GG.model.chat_message
 import GG.model.private_contact
-import GG.isoview.isoview_player
 import GG.utils
 import time
 import dMVC.model
@@ -211,6 +210,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     room: room view object.
     parent: hud or session view object.
     """
+    import GG.isoview.isoview_player
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
   def addToInventoryFromRoom(self, item):
