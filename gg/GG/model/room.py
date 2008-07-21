@@ -104,7 +104,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
   def addItemFromInventory(self, item, pos):
     print "add item from inventory",item,pos
     if not item in self.__items:
-      if not self.__tiles[pos[0]][pos[2]].stepOn(): 
+      if not self.__tiles[pos[0]][pos[2]].stepOn():
         return
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[2]])

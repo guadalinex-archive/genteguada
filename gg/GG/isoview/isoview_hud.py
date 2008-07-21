@@ -350,7 +350,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
-    #print item
+    print item
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
@@ -870,10 +870,10 @@ class IsoViewHud(isoview.IsoView):
     """ Enables or disables the sound effects.
     """
     if self.__sound:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/mute.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/mute.png")
       self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_HUD + "/sound.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/sound.png")
       self.__soundButton.picture = ocempgui.draw.Image.load_image(imgPath)
     self.hud.remove_child(self.__soundButton)
     self.hud.add_child(self.__soundButton)
