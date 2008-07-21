@@ -75,6 +75,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__player.subscribeEvent('points', self.pointsAdded)
+    self.__player.subscribeEvent('clock', self.clockAdded)
     self.__player.subscribeEvent('exp', self.expAdded)
     self.__player.subscribeEvent('initExchange', self.initExchange)
     self.__player.subscribeEvent('cancelExchange', self.cancelExchange)
@@ -349,6 +350,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
+    #print item
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
@@ -699,15 +701,29 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
 
   def pointsAdded(self, event):
-    """ Updates the points label after receivint a points added event.
+    """ Updates the points label after receiving a points added event.
+    """
+    self.__pointsLabel.label = "GuadaPuntos: " + str(event.getParams()["points"])
+    self.__pointsLabel.set_text("GuadaPuntos: " + str(event.getParams()["points"]))
+    self.hud.remove_child(self.__pointsLabel)
+    self.hud.add_child(self.__pointsLabel)
+    
+  def clockAdded(self, event):
+    """ Updates the exp label after receiving an exp added event.
     """  
-    self.__pointsLabel.set_text("Puntos: " + str(event.getParams()["points"]))
+    self.__labelOld.label = "ClockPuntos: " + str(event.getParams()["clock"])
+    self.__labelOld.set_text("ClockPuntos: " + str(event.getParams()["clock"]))
+    self.hud.remove_child(self.__labelOld)
+    self.hud.add_child(self.__labelOld)
     
   def expAdded(self, event):
-    """ Updates the exp label after receivint an exp added event.
+    """ Updates the exp label after receiving an exp added event.
     """  
-    self.__expLabel.set_text("Exp: " + str(event.getParams()["exp"]))
-  
+    self.__expLabel.label = "Experiencia: " + str(event.getParams()["exp"])
+    self.__expLabel.set_text("Experiencia: " + str(event.getParams()["exp"]))
+    self.hud.remove_child(self.__expLabel)
+    self.hud.add_child(self.__expLabel)
+
   def paintActionButtons(self):
     """ Paints the general action buttons.
     """
@@ -922,15 +938,15 @@ class IsoViewHud(isoview.IsoView):
     labelUserName.topleft = 620, 90
     self.hud.add_child(labelUserName)
     
-    self.__pointsLabel = GG.utils.LabelTransparent("GuadaPuntos: 0", GG.utils.STYLES["userName"])
+    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 140, GG.utils.STYLES["userName"])
     self.__pointsLabel.topleft = 630, 120
     self.hud.add_child(self.__pointsLabel)
 
-    self.__labelOld = GG.utils.LabelTransparent("ClockPuntos: 0", GG.utils.STYLES["userName"])
+    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 140, GG.utils.STYLES["userName"])
     self.__labelOld.topleft = 630, 140
     self.hud.add_child(self.__labelOld)
 
-    self.__expLabel = GG.utils.LabelTransparent("Experiencia: 0", GG.utils.STYLES["userName"])
+    self.__expLabel = GG.utils.OcempLabel("Experiencia: 1", 140, GG.utils.STYLES["userName"])
     self.__expLabel.topleft = 630, 160
     self.hud.add_child(self.__expLabel)
 

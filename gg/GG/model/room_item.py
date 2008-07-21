@@ -16,7 +16,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.anchor = anchor
-    #TODO: calcular la primera coordenada de topAnchor
     self.topAnchor = [topAnchor[0] , GG.utils.TILE_SZ[1] + anchor[1] + topAnchor[1]]
     self.__room = None
     self.__tile = None

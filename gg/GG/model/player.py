@@ -35,7 +35,9 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__points = 0
     self.__playedTime = 0
     self.__startPlayedTime = 0
-    self.startSessionTiming()    
+    self.startSessionTiming()
+    self.__exp = 0    
+    self.__expRooms = []
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
     self.__exchangeTo = None
     self.__agenda = []
@@ -73,7 +75,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     playedTime = v2 - v1
     self.__startPlayedTime = tmp  
     self.__playedTime += playedTime
-    self.triggerEvent('exp', exp=self.__playedTime)
+    self.triggerEvent('clock', clock=self.__playedTime)
+  
+  def updateExp(self, room):
+    if not room.label in self.__expRooms:
+      self.__expRooms.append(room.label)  
+      self.__exp += 1
+      self.triggerEvent('exp', exp=self.__exp)
   
   def __dictAvatarConfiguration(self):
     dict = {}
@@ -328,6 +336,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     room: new room.
     pos: starting position on the new room.
     """
+    self.updateExp(room)
     self.updateSessionTiming()
     GG.model.room_item.GGRoomItem.changeRoom(self, room, pos)
     
@@ -390,6 +399,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       self.newChatMessage("Ya tengo algo cogido. �No puedo aguantar m�s peso!", 1)  
       return
+    #self.addPoints(99, "Heavy Box") 
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
