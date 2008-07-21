@@ -439,11 +439,11 @@ class IsoViewHud(isoview.IsoView):
     labelChat.topleft = 17, 70
     self.hud.add_child(labelChat)
     
-    labelProfile = GG.utils.LabelTransparent("Mi perfil:", GG.utils.STYLES["hudLabel"])
+    labelProfile = GG.utils.LabelTransparent("Mi perfil: ", GG.utils.STYLES["hudLabel"])
     labelProfile.topleft = 555, 90
     self.hud.add_child(labelProfile)
     
-    labelInventory = GG.utils.LabelTransparent("Inventario:", GG.utils.STYLES["hudLabel"])
+    labelInventory = GG.utils.LabelTransparent("Inventario", GG.utils.STYLES["hudLabel"])
     labelInventory.topleft = 819, 70
     self.hud.add_child(labelInventory)
 
@@ -708,8 +708,11 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item unselected event.
     event: event info.
     """
+    if not self.__selectedItem:
+      return
     if not item.getName() == self.__selectedItem.getName():
       return
+    
     if self.__selectedItem:
       #print "B: ", self.__selectedItem  
       if self.__isoviewRoom:
@@ -955,19 +958,19 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(img)
 
     labelUserName = GG.utils.LabelTransparent(self.__player.username, GG.utils.STYLES["userName"])
-    labelUserName.topleft = 620, 90
+    labelUserName.topleft = 638, 90
     self.hud.add_child(labelUserName)
     
     self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 140, GG.utils.STYLES["userName"])
-    self.__pointsLabel.topleft = 630, 120
+    self.__pointsLabel.topleft = 627, 120
     self.hud.add_child(self.__pointsLabel)
 
     self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 140, GG.utils.STYLES["userName"])
-    self.__labelOld.topleft = 630, 140
+    self.__labelOld.topleft = 627, 140
     self.hud.add_child(self.__labelOld)
 
     self.__expLabel = GG.utils.OcempLabel("Experiencia: 1", 140, GG.utils.STYLES["userName"])
-    self.__expLabel.topleft = 630, 160
+    self.__expLabel.topleft = 627, 160
     self.hud.add_child(self.__expLabel)
 
   def jump(self):

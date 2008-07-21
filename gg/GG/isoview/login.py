@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import pygame
 import ocempgui.widgets
@@ -73,14 +75,14 @@ class Login:
     self.window.add_child(imgBackgroundRight)
 
   def __paintTextLabels(self):
-    self.__usernameLabel = GG.utils.OcempLabel("Usuario:", 80, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
-    self.__usernameLabel.topleft = 670,410
+    self.__usernameLabel = GG.utils.OcempLabel("Usuario: ", 80, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    self.__usernameLabel.topleft = 670,400
     self.__usernameLabel.border = 1
     self.__usernameLabel.set_minimum_size(230,40)
     self.window.add_child(self.__usernameLabel)
 
     self.__passwordLabel = GG.utils.OcempLabel("Password:", 80, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
-    self.__passwordLabel.topleft = 670,520
+    self.__passwordLabel.topleft = 670,510
     self.__passwordLabel.border = 1
     self.__passwordLabel.set_minimum_size(230,40)
     self.window.add_child(self.__passwordLabel)
