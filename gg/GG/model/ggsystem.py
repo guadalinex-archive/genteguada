@@ -9,6 +9,7 @@ import GG.model.box_heavy
 import GG.model.penguin
 import GG.model.teleport
 import GG.model.web_item
+import GG.model.pickable_item
 import thread
 import time
 import os
@@ -131,6 +132,9 @@ class GGSystem(dMVC.model.Model):
     myPenguin = GG.model.penguin.GGPenguinLobby(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz")
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
+    myMoney5 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_5, [14, -25], [0, -10], "Billete de 5", 5)
+    myMoney10 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_10, [14, -25], [0, -10], "Billete de 10", 10)
+    myMoney50 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_50, [14, -25], [0, -10], "Billete de 50", 50)
 
     fenceOffset = [25, -15]
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [0, 0, 0])
@@ -153,6 +157,9 @@ class GGSystem(dMVC.model.Model):
     #room1.addItemFromVoid(myBox2, [7, 0, 5])
     room1.addItemFromVoid(myBox, [6, 0, 6])
     room1.addItemFromVoid(myBox2, [7, 0, 6])
+    room1.addItemFromVoid(myMoney5, [3, 0, 6])
+    room1.addItemFromVoid(myMoney10, [4, 0, 4])
+    room1.addItemFromVoid(myMoney50, [4, 0, 2])
     
 
     # ROOM 2

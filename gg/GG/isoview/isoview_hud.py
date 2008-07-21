@@ -117,7 +117,8 @@ class IsoViewHud(isoview.IsoView):
         "open":{"image":"interface/hud/open.png", "action": self.itemToOpen, "tooltip":"Abrir (O)"},
         "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a (W)"},
         "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"},
-        "giveCard":{"image":"interface/hud/contact.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"}
+        "giveCard":{"image":"interface/hud/contact.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"},
+        "money":{"image":"interface/hud/movein.png", "action": self.moneyToInventory, "tooltip":"Recoger puntos (N)"}
     }
     
     self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
@@ -127,7 +128,8 @@ class IsoViewHud(isoview.IsoView):
                     K_y: self.itemToClone , K_k: self.itemToPush , K_p: self.itemToUp , \
                     K_t: self.itemToTalk , K_g: self.itemToTalkAndGet , K_h: self.privateChat , \
                     K_e: self.exchangeItemPlayer , K_o: self.itemToOpen , K_w: self.itemToUrl , \
-                    K_a: self.itemToExchange, K_v: self.itemToGiveCard, K_z: self.privateChatHandler}
+                    K_a: self.itemToExchange, K_v: self.itemToGiveCard, K_z: self.privateChatHandler, \
+                    K_n: self.moneyToInventory}
                           
     self.winWardrobe = None
     self.wardrobe = None
@@ -695,6 +697,21 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__selectedItem:
+      #print "B: ", self.__selectedItem  
+      if self.__isoviewRoom:
+        self.__isoviewRoom.itemUnselected(self.__selectedItem)
+        self.removeSprite(self.__selectedImage)
+        self.restoreActiveActionButtonsList()     
+    self.dropActionsItembuttons()
+
+  def itemUnselectedSoft(self, item):
+    """ Triggers after receiving an item unselected event.
+    event: event info.
+    """
+    if not item.getName() == self.__selectedItem.getName():
+      return
+    if self.__selectedItem:
+      #print "B: ", self.__selectedItem  
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.removeSprite(self.__selectedImage)
@@ -984,6 +1001,13 @@ class IsoViewHud(isoview.IsoView):
       return
     self.__player.addToInventoryFromRoom(self.__selectedItem)
     self.__player.setUnselectedItem()    
+
+  def moneyToInventory(self):
+    if self.__selectedItem == None:
+      return
+    self.__selectedItem.addPointsTo(self.__player)
+    self.__isoviewRoom.getModel().removeItem(self.__selectedItem)
+    self.__player.setUnselectedItem()
 
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.

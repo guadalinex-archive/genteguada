@@ -347,6 +347,9 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username, \
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), type))
 
+  def getSelected(self):
+    return self.__selected  
+  
   def setSelectedItem(self, item):
     """ Sets an item as selected.
     """

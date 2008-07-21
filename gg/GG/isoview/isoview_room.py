@@ -161,7 +161,9 @@ class IsoViewRoom(isoview.IsoView):
     """ Removes an isometric player viewer from the viewers list.
     ivPlayer: ivPlayer view to be removed.
     """
-    self.__parent.itemUnselected()
+    #print "A: ", ivPlayer.getModel()
+    #self.__parent.itemUnselected()
+    self.__parent.itemUnselectedSoft(ivPlayer.getModel())
     self.__parent.removeSprite((ivPlayer.getImg()))
     for image in self.__spritesDict:
       if self.__spritesDict[image] == ivPlayer:
