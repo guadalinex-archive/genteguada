@@ -75,7 +75,6 @@ ACTION_BUTTON_SZ = [80, 80]
 
 # Animation values
 TIME_BEFORE_RELAX = 5
-#TICK_DELAY = 0.5
 TICK_DELAY = 0.45
 ANIM_DELAY = TICK_DELAY/10.0
 ANIM_WALKING_COUNT = 10
@@ -103,7 +102,7 @@ HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
 CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
-#0: general; 1: privado; 2: npcs; 3: sistema)
+#0: general; 1: private; 2: npcs; 3: system)
 
 CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
 CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
