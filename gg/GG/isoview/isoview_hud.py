@@ -374,6 +374,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintUserActions()
 
     self.hud.zOrder = 1
+    #self.hud.depth = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
 
@@ -429,7 +430,7 @@ class IsoViewHud(isoview.IsoView):
 
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_lower.png")
     self.imgBackground = GG.utils.OcempImageMapTransparent(filePath)
-    self.imgBackground.topleft = 0,0
+    self.imgBackground.topleft = 1,1
     self.hud.add_child(self.imgBackground)
     
     labelChat = GG.utils.LabelTransparent("Chat", GG.utils.STYLES["hudLabel"])
@@ -824,9 +825,9 @@ class IsoViewHud(isoview.IsoView):
     """  
     self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
     self.winWardrobe = self.wardrobe.draw()
-    self.widgetContainer.add_widget(self.winWardrobe)
     self.addSprite(self.winWardrobe)
-    GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
+    self.widgetContainer.add_widget(self.winWardrobe)
+    #GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
     
   def closeDresser(self, configuration = None):
     """ Closes the avatar configuration window.
@@ -834,11 +835,13 @@ class IsoViewHud(isoview.IsoView):
     """  
     if configuration:
       self.setAvatarConfiguration(configuration)
-    GG.genteguada.GenteGuada.getInstance().activeScreen = self
+    #GG.genteguada.GenteGuada.getInstance().activeScreen = self
+
     self.widgetContainer.remove_widget(self.winWardrobe)  
+    self.winWardrobe.depth = 1
     self.removeSprite(self.winWardrobe)
     self.winWardrobe.destroy()
-    self.winWardrobe = None
+    #self.winWardrobe = None
     
   def setAvatarConfiguration(self, configuration):
     """ Sets a new avatar configuration.

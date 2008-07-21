@@ -111,6 +111,7 @@ class AvatarEditor:
     self.paintCustomizeZone()
     self.paintButtons()
     self.window.zOrder = 90000
+    self.window.depth = 2
     return self.window
     
   def paintScreen(self):
