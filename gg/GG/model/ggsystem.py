@@ -38,7 +38,7 @@ class GGSystem(dMVC.model.Model):
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
     """
-    return self.__rooms[4]
+    return self.__rooms[0]
       
   # self.__players
   
