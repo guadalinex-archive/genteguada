@@ -4,6 +4,7 @@ import pygame
 import ocempgui.widgets
 import stat
 import ocempgui.widgets.base
+import ocempgui.draw
 
 #cache
 if os.path.isdir("gg/GG/cache"):
@@ -126,7 +127,6 @@ INTERFACE_LOWER = "interface/hud/interface_lower.png"
 PATH_HUD = DATA_PATH + "/interface/hud"
 
 # Sprites: items
-OAK_SPRITE = "oak.png"
 PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
 PENGUIN_SPRITE_DOWN = "andatuz_down.png"
 PENGUIN_SPRITE_BOTTOMRIGHT = "andatuz_bottomright.png"
@@ -137,13 +137,7 @@ BOOK_SPRITE = "book.png"
 BOOK_SPRITE_INV = "book.png"
 KEY_SPRITE = "golden_key.png"
 BLUE_KEY = "blue_key.png"
-DOOR_DOWN_SPRITE = "door_down.png"
-TRASH_SPRITE = "trash.png"
-PUZZLECUBE_SPRITE = "puzzle_cube.png"
-PUZZLECUBEBLUE_SPRITE = "puzzle_cube_blue.png"
-BRICKCUBE_SPRITE = "brick_cube.png"
 
-BLUE_KEY = "blue_key.png"
 KEY_GOLDEN = "golden_key.png"
 GIFT = "gift.png"
 BOX_HEAVY = "heavy_box.png"
@@ -368,14 +362,14 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                               },
                             },   
-          "labelLogin" : { "font" : { "name" : "Bitstream", "size" : 52, "alias" : True },
+          "labelLogin" : { "font" : { "name" : "Bitstream", "size" : 36, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },   
-          "labelLoading" : { "font" : { "name" : "Bitstream", "size" : 72, "alias" : True },
+          "labelLoading" : { "font" : { "name" : "Bitstream", "size" : 40, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -471,7 +465,8 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },
-          "userName" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "userName" : {  "font" : { "name" : "Bitstream", "size" : 13, "alias" : True },
+         # "userName" : {  "font" : { "name" : "usr/share/fonts/truetype/thai/Purisa.ttf", "size" : 18, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
@@ -490,12 +485,19 @@ STYLES = {
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
                                             }
                             }, 
-          "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                            },
+                                """
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
                                             },
+                                """            
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (107, 177, 197),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (107, 177, 197),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (107, 177, 197),
@@ -798,7 +800,8 @@ class LabelTransparent(ocempgui.widgets.Label):
   
   def __init__(self,label, style):
     self.label = label
-    self.typeFont = style["font"]["name"] 
+    #self.typeFont = style["font"]["name"] 
+    self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
@@ -809,7 +812,7 @@ class LabelTransparent(ocempgui.widgets.Label):
 
   def draw(self):
     #ocempgui.widgets.Label.draw(self)
-    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
+    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
 
 class OcempLabel(LabelTransparent):
 #class OcempLabel(LabelTransparent):

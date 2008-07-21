@@ -96,12 +96,13 @@ class GenteGuada:
     self.window.add_child(imgBackgroundRight)
     
     loadingLabel = GG.utils.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLoading"]))
-    loadingLabel.topleft = 370,350
+    loadingLabel.topleft = 352,340
     loadingLabel.border = 1
     loadingLabel.set_minimum_size(230,40)
     self.window.add_child(loadingLabel)
     
     self.widgetContainer.add_widget(self.window)
+    #time.sleep(3)
     
     pygame.display.set_caption(GG.utils.VERSION)
 
@@ -124,11 +125,14 @@ class GenteGuada:
     #self.session = winLogin.draw()
     self.session = winLogin.draw(params.user, params.password)
 
+
+    """
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
     self.screen.blit(img, (0, 0))
     pygame.display.flip()
+    """
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 
       self.input(pygame.event.get())
