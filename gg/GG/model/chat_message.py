@@ -80,11 +80,12 @@ class ChatQuiz(ChatMessage):
   def loadQuestion(self, question):
     filePath = "gg/GG/data/questions/" + question
     f = open(filePath)
-    self.__msgQuestion = f.readline()
+    self.__msgQuestion = unicode(f.readline(), "utf-8")[:-1]
+    print self.__msgQuestion.__class__    
     self.__msgAnswers = []
-    self.__msgAnswers.append(f.readline())
-    self.__msgAnswers.append(f.readline())
-    self.__msgAnswers.append(f.readline())
+    self.__msgAnswers.append(unicode(f.readline())[:-1])
+    self.__msgAnswers.append(unicode(f.readline())[:-1])
+    self.__msgAnswers.append(unicode(f.readline())[:-1])
     answer = f.readline()
     if answer == "A":  self.__rightAnswer = 1
     elif answer == "B":  self.__rightAnswer = 2
