@@ -801,7 +801,8 @@ class LabelTransparent(ocempgui.widgets.Label):
   def __init__(self,label, style):
     self.label = label
     #self.typeFont = style["font"]["name"] 
-    self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
+    #self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
+    self.typeFont = DATA_PATH + "/fonts/Purisa.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
