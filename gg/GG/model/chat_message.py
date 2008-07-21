@@ -28,6 +28,11 @@ class ChatMessage(ggmodel.GGModel):
     """
     return ['imagePath', 'type']
     
+  def getName(self):
+    """ Returns the chat message.
+    """
+    return self.__message  
+    
   def getMessage(self):
     """ Returns the chat message.
     """

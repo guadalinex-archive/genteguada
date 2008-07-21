@@ -1,6 +1,6 @@
-import room_item
+import GG.model.room_item
 
-class GGPickableItem(room_item.GGRoomItem):
+class GGPickableItem(GG.model.room_item.GGRoomItem):
   """ GGPickableItem class.
   Defines a pickable item behaviour.
   """
@@ -13,7 +13,7 @@ class GGPickableItem(room_item.GGRoomItem):
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
+    GG.model.room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     
@@ -57,3 +57,30 @@ class GGPickableItem(room_item.GGRoomItem):
 
   def stepOn(self):
     return True
+
+#================================================================================
+
+class PaperMoney(GGPickableItem):
+
+  def __init__(self, spriteName, anchor, topAnchor, label, value):
+    """ Class builder.
+    spriteName: sprite used to paint the item on the screen game zone.
+    position: item position.
+    anchor: image anchor on screen.
+    spriteInventory: sprite used to paint the item on the screen inventory zone.
+    label: item's label
+    value: item's value
+    """
+    GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, label)
+    self.points = value
+    
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["money"]
+    
+  def addPointsTo(self, player):
+    player.addPoints(self.points, self.label)  
+    
+#================================================================================
+

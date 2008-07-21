@@ -122,7 +122,8 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """
     if item in self.__items:
       if isinstance(item, GG.model.player.GGPlayer):
-        self.__population -= 1    
+        self.__population -= 1
+            
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
       self.__items.remove(item)
