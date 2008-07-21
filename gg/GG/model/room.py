@@ -23,7 +23,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     GG.model.ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.size = size
-    self.label = label # Variable para realizar pruebas, sera eliminada
+    self.label = label
     self.maxUsers = maxUsers
     self.__tiles = []
     for i in range(0, self.size[0]):

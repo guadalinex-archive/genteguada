@@ -8,6 +8,7 @@ import time
 
 import dMVC.remoteclient
 
+import ocempgui.widgets
 import GG.isoview.login
 import GG.model.ggsystem
 import GG.utils
@@ -77,12 +78,31 @@ class GenteGuada:
     else:
       self.fs = 0    
     
+    """
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
     img = pygame.sprite.Sprite()
     img = pygame.image.load(imgPath).convert_alpha()
     self.screen.blit(img, (0, 0))
     pygame.display.flip()
+    """
 
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(self.screen)
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    
+    imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
+    imgBackgroundRight = GG.utils.OcempImageMapTransparent(imgPath)
+    imgBackgroundRight.topleft = 0,0
+    self.window.add_child(imgBackgroundRight)
+    
+    loadingLabel = GG.utils.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLoading"]))
+    loadingLabel.topleft = 370,350
+    loadingLabel.border = 1
+    loadingLabel.set_minimum_size(230,40)
+    self.window.add_child(loadingLabel)
+    
+    self.widgetContainer.add_widget(self.window)
+    
     pygame.display.set_caption(GG.utils.VERSION)
 
     #print pygame.display.Info()

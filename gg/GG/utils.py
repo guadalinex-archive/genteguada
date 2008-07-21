@@ -366,6 +366,21 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                               },
                             },   
+          "labelLogin" : { "font" : { "name" : "Bitstream", "size" : 52, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                          }
+                            },   
+          "labelLoading" : { "font" : { "name" : "Bitstream", "size" : 72, "alias" : True },
+                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
+                                          }
+                            },   
+
           "chatEntryWhite" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
