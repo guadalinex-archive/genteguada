@@ -86,6 +86,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent("privateChatReceived", self.privateChatReceived)
     self.__player.subscribeEvent("removeContactRemote", self.removeContactRemote)
     
+    self.__player.subscribeEvent('destination', self.destinationChanged)
+    
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
     self.__selectedImage = pygame.sprite.Sprite()
@@ -1251,3 +1253,9 @@ class IsoViewHud(isoview.IsoView):
     self.findIVItem(self.__player).unsubscribeAllEvents()
     isoview.IsoView.unsubscribeAllEvents(self) 
       
+  def destinationChanged(self, event):
+    """ Triggers after receiving a destination change event.
+    event: event info.
+    """
+    self.setMovementDestination(event.getParams()['destination'])
+  
