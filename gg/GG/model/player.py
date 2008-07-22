@@ -419,7 +419,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo mas", 1)
     else:
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
