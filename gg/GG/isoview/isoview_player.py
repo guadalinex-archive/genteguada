@@ -204,6 +204,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
     pos1 = event.getParams()['position']
     pos2 = event.getParams()['oldPosition']
+    posOver = [(pos1[0] + pos2[0])/2, pos1[1], (pos1[2] + pos2[2])/2]
     
     startPos = self.getScreenPosition()
     endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
@@ -216,13 +217,15 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
                             halfPos, endPos, True)
 
+    self.updateZOrderFor(posOver)
+    positionUp.setOnStop(self.updateZOrderFor, pos1)
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(positionUp)
     secAnim.addAnimation(positionDown)
     secAnim.setOnStop(self.stopMovieAnimation, None)
     secAnim.setOnStop(self.getParent().removeMovementDestination, None)
+    secAnim.setOnStop(self.updateZOrderFor, pos1)
     #secAnim.setOnStop(self.getIVRoom().updateScreenPositionsOn, pos1)
-    #secAnim.setOnStop(self.updateZOrder, None)
     self.setAnimation(secAnim)
     self.setMovieAnimation(movieAnim)
     
