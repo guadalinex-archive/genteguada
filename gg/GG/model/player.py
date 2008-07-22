@@ -61,8 +61,8 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return self.username
   
   def getImageLabel(self):
-    if os.path.isfile(os.path.join(GG.utils.DATA_PATH,"avatars/masks",self.username+".png")):
-      return "avatars/masks/"+self.username+".png"
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH,"avatars/masks",self.username)):
+      return "avatars/masks/"+self.username
     else:
       return "interface/editor/masko.png"
 
@@ -107,10 +107,10 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def getAvatarConfiguration(self):
     return self.__avatarConfiguration
 
-  def setAvatarConfiguration(self, avatarConfiguration, timestamp):
+  def setAvatarConfiguration(self, avatarConfiguration, timestamp=None):
     self.__avatarConfiguration = avatarConfiguration
-    self.setTimestamp(timestamp)
-    self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration)
+    #self.setTimestamp(timestamp)
+    self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -406,7 +406,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo mas", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
     else:
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)

@@ -447,11 +447,12 @@ class GGSystem(dMVC.model.Model):
       data = f.read()
       f.close()
       self.__avatarGeneratorHandler.copyImageMask(nameMask, data)
-      f = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"),"wb")
+      f = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username),"wb")
       f.write(data)
       f.close
+    player.setAvatarConfiguration(configuration, None)
     return 
-    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
+    #execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
       images = self.__avatarGeneratorHandler.getImages(player)
       timestamp = self.__copyImages(images, player)
