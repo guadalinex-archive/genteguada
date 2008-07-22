@@ -61,6 +61,7 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
+    self.isoHud.unsubscribeAllEvents()
     self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     pygame.mixer.music.stop()
     sys.exit(0)
