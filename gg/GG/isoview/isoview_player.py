@@ -24,6 +24,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
+    self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
     self.getModel().subscribeEvent('destination', self.destinationChanged)
@@ -182,16 +183,46 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a player jump event.
     event: event info.
     """  
+    screenPos = self.getScreenPosition()
     movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
     positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
-                            self.getScreenPosition(), [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], True)
+                            screenPos, [screenPos[0],  screenPos[1] - GG.utils.JUMP_DISTANCE], True)
     positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
-                            [self.getScreenPosition()[0],  self.getScreenPosition()[1] - GG.utils.JUMP_DISTANCE], self.getScreenPosition(), True)
+                            [screenPos[0],  screenPos[1] - GG.utils.JUMP_DISTANCE], screenPos, True)
 
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(positionUp)
     secAnim.addAnimation(positionDown)
     secAnim.setOnStop(self.stopMovieAnimation, None)
+    self.setAnimation(secAnim)
+    self.setMovieAnimation(movieAnim)
+
+  def onJumpOver(self, event):
+    """ Triggers after receiving a player jumpOver event.
+    event: event info.
+    """  
+    movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
+    pos1 = event.getParams()['position']
+    pos2 = event.getParams()['oldPosition']
+    
+    startPos = self.getScreenPosition()
+    endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
+    cordX = (startPos[0] + endPos[0])/2
+    cordY = (startPos[1] + endPos[1])/2 - GG.utils.JUMP_DISTANCE - 50
+    halfPos = [cordX, cordY]
+    
+    positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+                            startPos, halfPos, True)
+    positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+                            halfPos, endPos, True)
+
+    secAnim = animation.SecuenceAnimation()
+    secAnim.addAnimation(positionUp)
+    secAnim.addAnimation(positionDown)
+    secAnim.setOnStop(self.stopMovieAnimation, None)
+    secAnim.setOnStop(self.getParent().removeMovementDestination, None)
+    #secAnim.setOnStop(self.getIVRoom().updateScreenPositionsOn, pos1)
+    #secAnim.setOnStop(self.updateZOrder, None)
     self.setAnimation(secAnim)
     self.setMovieAnimation(movieAnim)
     

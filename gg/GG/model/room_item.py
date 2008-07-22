@@ -44,7 +44,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """
     return self.__tile.position
   
-  def setPosition(self, pos):
+  def setPosition(self, pos, jump=None):
     """ Sets a new position for the item.
     pos: new position.
     """
@@ -52,7 +52,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
-    self.triggerEvent('position', position=pos, oldPosition=old)
+    if not jump:
+      self.triggerEvent('position', position=pos, oldPosition=old)
+    else:
+      self.triggerEvent('jumpOver', position=pos, oldPosition=old)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.
