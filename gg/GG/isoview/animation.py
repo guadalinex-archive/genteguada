@@ -119,7 +119,6 @@ class Animation(object):
   def onHalf(self):
     """ Runs some methods at animation half.
     """
-    #print "onHalf"
     for method in self.__halfMethods:
       if method[1] == None:
         method[0]()

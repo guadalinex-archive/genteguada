@@ -67,7 +67,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return "interface/editor/masko.png"
 
   def startSessionTiming(self):
-    #print "**********************************"  
     tmp = time.localtime(time.time())
     self.__startPlayedTime = tmp
     
@@ -170,7 +169,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.triggerEvent('state', state=state, position=self.getPosition())
       
   def setCarrying(self):
-    #print "--> print setCarrying"
     if self.__state == GG.utils.STATE[1]:
       self.__state = GG.utils.STATE[3]   
       self.triggerEvent('state', state=self.__state)
@@ -179,7 +177,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.triggerEvent('state', state=self.__state)
 
   def setNotCarrying(self):
-    #print "--> print setNotCarrying"
     if self.__state == GG.utils.STATE[3]:
       self.__state = GG.utils.STATE[1]   
       self.triggerEvent('state', state=self.__state)
@@ -288,12 +285,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     end = self.getDestination()
     if GG.utils.checkNeighbour(ori, end):
       direction = GG.utils.getNextDirection(ori, end)
-      """
-      if self.getRoom().getTile(end).getDepth():
-        direction = GG.utils.HEADING[0]
-      else:
-        direction = GG.utils.getNextDirection(ori, end)
-      """     
     else:
       direction = self.getRoom().getNextDirection(self, ori, end)
       if direction == GG.utils.HEADING[0]:
@@ -310,7 +301,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.setState(GG.utils.STATE[2])
     elif self.__state == GG.utils.STATE[3]:
         self.setState(GG.utils.STATE[4])
-    #self.setState(GG.utils.STATE[2])
     self.setHeading(direction)
     if self.getHeading() == "up":
       next = [pos[0], pos[1], pos[2] - 1]
@@ -329,7 +319,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1], pos[2] - 1]
     self.__visited.append(pos)
-    #self.setPosition(next)
     
     items = self.getTile().getItemsFrom(self)
     for item in items:
@@ -357,7 +346,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def setSelectedItem(self, item):
     """ Sets an item as selected.
     """
-    #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=1)
@@ -365,7 +353,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't hightlights it.
     """
-    #print "Selected: ", item
     if self.__selected != item:
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=0)
@@ -431,12 +418,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.setDestination(itemToClimb.getPosition())
     else:
       self.newChatMessage("No puedo subirme ahí", 1)
-    """
-    items = self.getTile().getItemsFrom(self)
-    for item in items:
-      item.setPosition(itemToClimb.getPosition())
-    """
-    #self.setDestination(itemToClimb.getPosition())  
 
   def jump(self):
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
@@ -488,7 +469,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.triggerEvent('initExchange', list = list)
 
   def cancelExchangeTo(self, step):
-    #print "el paso es ", step
     if not step == 1:
       self.__exchangeTo.cancelExchangeTo(1)
     

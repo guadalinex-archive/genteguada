@@ -215,6 +215,9 @@ class IsoViewHud(isoview.IsoView):
     else:
       return False
 
+  def getIVRoom(self):
+    return self.__isoviewRoom
+
   def setActiveQuizWindow(self, value):
     """ Sets the active quiz window with a new value
     """  
@@ -399,31 +402,24 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a change room event.
     event: event info.
     """
-    print "I"
     if self.__isoviewRoom:
       self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
-      print "II"
       if self.__sound:
         GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
 
       list = self.__isoviewRoom.getSpritesDict()
-      print "III"
       for img in list.keys():
         self.removeSprite(img)
       list = self.__isoviewRoom.getBottomSpritesDict()
-      print "VI"
       for img in list.keys():
         self.removeSprite(img)
       
       self.__isoviewRoom = None
-      print "V"
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
-      print "VI"
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
-      print "VII"
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.
@@ -709,7 +705,6 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__selectedItem:
-      #print "B: ", self.__selectedItem  
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.removeSprite(self.__selectedImage)
@@ -726,7 +721,6 @@ class IsoViewHud(isoview.IsoView):
       return
     
     if self.__selectedItem:
-      #print "B: ", self.__selectedItem  
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.removeSprite(self.__selectedImage)
@@ -989,6 +983,7 @@ class IsoViewHud(isoview.IsoView):
   def jump(self):
     """ Makes the player jump.
     """  
+    self.__isoviewRoom.prueba()
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
 

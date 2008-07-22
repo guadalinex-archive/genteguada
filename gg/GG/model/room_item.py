@@ -95,11 +95,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Private method. Sets the item's room with a new value and triggers an event.
     room: new room.
     """
-    print "uno", self.__room, room
     self.__room = room
-    print "dos"
     self.triggerEvent('room', room=room)
-    print "tres"
 
   def changeRoom(self, room, pos):
     """ Changes the item's room.
