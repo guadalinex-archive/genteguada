@@ -239,7 +239,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1, -1]:
-      self.newChatMessage("No puedo soltarlo ahï¿½", 1)
+      self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
       GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
@@ -404,7 +404,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     item: item to lift.
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
-      self.newChatMessage("Ya tengo algo cogido. ï¿½No puedo aguantar mï¿½s peso!", 1)  
+      self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)  
       return
     #self.addPoints(99, "Heavy Box") 
     self.setState(GG.utils.STATE[3])
@@ -419,7 +419,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podrï¿½a aplastarlo", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
     else:
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
@@ -430,7 +430,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if tile.getDepth() <= GG.utils.MAX_DEPTH and tile.stepOn():
       self.setDestination(itemToClimb.getPosition())
     else:
-      self.newChatMessage("No puedo subirme ahi", 1)
+      self.newChatMessage("No puedo subirme ahí", 1)
     """
     items = self.getTile().getItemsFrom(self)
     for item in items:
@@ -448,7 +448,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
     dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
     if dest == None or self.getRoom().getTile(dest).getDepth():
-      self.newChatMessage("No puedo saltar alli", 1)
+      self.newChatMessage("No puedo saltar allí", 1)
       return
     self.setHeading(heading)
     self.setDestination(dest)

@@ -47,6 +47,12 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
     else:
       self.__img.zOrder = value
+  
+  def updateZOrderFor(self, pos):
+    """ Updates the zOrder value, used to properly order sprites for painting.
+    value: zOrder value.
+    """  
+    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
         
   def getZOrder(self):
     """ Returns the zOrder value of item's image.
