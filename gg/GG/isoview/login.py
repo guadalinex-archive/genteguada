@@ -149,8 +149,8 @@ class Login:
      buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
      self.container.add_child(buttonCancel)
      
-     labelAlert = GG.utils.LabelTransparent("Error: Usuario o password incorrectos.",GG.utils.STYLES["dialogFont"])
-     labelAlert.topleft = 180, 80
+     labelAlert = GG.utils.OcempLabel("Error: Usuario o password incorrectos.", 200, GG.utils.STYLES["dialogFont"])
+     labelAlert.topleft = 160, 80
      self.container.add_child(labelAlert)
 
      return self.dialog

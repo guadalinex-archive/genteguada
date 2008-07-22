@@ -443,15 +443,15 @@ class IsoViewHud(isoview.IsoView):
     self.imgBackground.topleft = 1,1
     self.hud.add_child(self.imgBackground)
     
-    labelChat = GG.utils.LabelTransparent("Chat", GG.utils.STYLES["hudLabel"])
+    labelChat = GG.utils.OcempLabel("Chat", 80, GG.utils.STYLES["hudLabel"])
     labelChat.topleft = 17, 70
     self.hud.add_child(labelChat)
     
-    labelProfile = GG.utils.LabelTransparent("Mi perfil: ", GG.utils.STYLES["hudLabel"])
+    labelProfile = GG.utils.OcempLabel("Mi perfil: ", 80, GG.utils.STYLES["hudLabel"])
     labelProfile.topleft = 555, 90
     self.hud.add_child(labelProfile)
     
-    labelInventory = GG.utils.LabelTransparent("Inventario", GG.utils.STYLES["hudLabel"])
+    labelInventory = GG.utils.OcempLabel("Inventario", 80, GG.utils.STYLES["hudLabel"])
     labelInventory.topleft = 819, 70
     self.hud.add_child(labelInventory)
 
@@ -970,7 +970,7 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 548,110
     self.hud.add_child(img)
 
-    labelUserName = GG.utils.LabelTransparent(self.__player.username, GG.utils.STYLES["userName"])
+    labelUserName = GG.utils.OcempLabel(self.__player.username, 140, GG.utils.STYLES["userName"])
     labelUserName.topleft = 638, 90
     self.hud.add_child(labelUserName)
     

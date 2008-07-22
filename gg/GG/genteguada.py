@@ -80,14 +80,6 @@ class GenteGuada:
       self.fs = params.fullscreen
     else:
       self.fs = 0    
-    
-    """
-    imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
-    img = pygame.sprite.Sprite()
-    img = pygame.image.load(imgPath).convert_alpha()
-    self.screen.blit(img, (0, 0))
-    pygame.display.flip()
-    """
 
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.screen)

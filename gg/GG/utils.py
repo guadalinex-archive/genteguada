@@ -45,8 +45,8 @@ FLOOR_SHIFT = [55, -30]
 TILE_TARGET_SHIFT = [18, 18]
 SELECTED_FLOOR_SHIFT = [55, -25]
 SCENE_SZ = [8, 8]
-GAMEZONE_SZ = [1024, 578]
-HUD_SZ = [1024, SCREEN_SZ[1] - GAMEZONE_SZ[1]]
+GAMEZONE_SZ = [SCREEN_SZ[0], 578]
+HUD_SZ = [SCREEN_SZ[0], SCREEN_SZ[1] - GAMEZONE_SZ[1]]
 HUD_OR = [0, GAMEZONE_SZ[1]]
 COLOR_SHIFT = 80
 TEXT_LINE_LENGTH = 40
@@ -285,9 +285,8 @@ SOUND_OPENDOOR = "open_door.ogg"
 SOUND_STEPS01 = "steps01.ogg"
 SOUND_STEPS02 = "steps02.ogg"
 
-# ======================= COLORS ===========================
+# ======================= STYLES ===========================
 
-# Text styles
 STYLES = {
           "inventoryArea" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
@@ -473,7 +472,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },   
-          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
+          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
@@ -559,6 +558,7 @@ STYLES = {
 # ===============================================================
 # =========================== METHODS ===========================
 # ===============================================================
+
 def getJumpDestination(pos, heading, size):
   length = 2
   if heading == HEADING[1]: #up
@@ -579,23 +579,23 @@ def getJumpDestination(pos, heading, size):
     dest = [pos[0] + length, pos[1], pos[2] - length]
   else:
     return None    
-      
   if 0 < dest[0] < size[0]:    
     if 0 < dest[2] < size[1]:
       return dest
-  
   return None    
+
+# ===============================================================
 
 def getSpriteName(state, heading, frame, timestamp):
   timestamp = str(timestamp)
   if timestamp == "":
     tail = ""
   else:
-    tail = "_"+timestamp
+    tail = "_" + timestamp
 
   maxFrames = 10
   if state == STATE[1] or state == STATE[3]:
-    return str(state + "_" + heading + "_0001"+tail)
+    return str(state + "_" + heading + "_0001" + tail)
   elif state == STATE[2] or state == STATE[4]:
     maxFrames = ANIM_WALKING_COUNT
   elif state == STATE[5]:
@@ -608,7 +608,9 @@ def getSpriteName(state, heading, frame, timestamp):
     fileName = state + "_" + heading + "_000" + str(frame)
   else:  
     fileName = state + "_" + heading + "_00" + str(frame)
-  return fileName+tail
+  return fileName + tail
+
+# ===============================================================
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
@@ -637,6 +639,8 @@ def getNextDirection(pos1, pos2):
       retVar = "up"
   return retVar
 
+# ===============================================================
+
 def checkNeighbour(pos1, pos2):
   """ Checks if 2 points are neighbours or not.
   pos1: point 1.
@@ -659,6 +663,8 @@ def checkNeighbour(pos1, pos2):
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] - 1]:
     return True
   return False  
+
+# ===============================================================
 
 def getFrontPosition(pos, heading):
   """ Returns the tile coords in front of the player.
@@ -684,6 +690,8 @@ def getFrontPosition(pos, heading):
     retVar = [pos[0] + 1, pos[1], pos[2] - 1]
   return retVar
     
+# ===============================================================
+
 def p2pDistance(point1, point2):
   """ Calculates the distance between 2 points.
   point1: starting point.
@@ -693,6 +701,8 @@ def p2pDistance(point1, point2):
     return 0
   return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
     
+# ===============================================================
+
 def p3dToP2d(cord3d, anchor):
   """ Returns the physical 2d coordinates of a 3d virtual point.
   cord3d: 3d virtual point.
@@ -710,6 +720,8 @@ def p3dToP2d(cord3d, anchor):
   cord2d = [x2d, y2d]
   return cord2d
     
+# ===============================================================
+
 def playSound(sound):
   sndPath = os.path.join(SOUND_PATH, sound)
   if not os.path.isfile(sndPath):
@@ -717,65 +729,6 @@ def playSound(sound):
   if not pygame.mixer.get_busy():
     pygame.mixer.music.load(sndPath)
     pygame.mixer.music.play()
-
-def getRGBColor(color):
-  rgb = [0,0,0]
-  if color == "COLOR_YELLOW":
-    rgb = [255, 255, 0]
-  elif color == "COLOR_ORANGE":
-    rgb = [255, 153, 0]
-  elif color == "COLOR_RED":
-    rgb = [255, 51, 0]
-  elif color == "COLOR_PINK":
-    rgb = [255, 0, 241]
-  elif color == "COLOR_BLUE":
-    rgb = [0, 0, 255]
-  elif color == "COLOR_PURPLE":
-    rgb = [153, 0, 204]
-  elif color == "COLOR_GREEN":
-    rgb = [0, 255, 102]
-  elif color == "COLOR_WHITE":
-    rgb = [255, 255, 255]
-  elif color == "COLOR_BLACK":
-    rgb = [0, 0, 0]
-  elif color == "COLOR_BLONDE":
-    rgb = [217, 224, 98]
-  elif color == "COLOR_BROWN":
-    rgb = [100, 79, 54]
-  elif color == "SKIN_1":
-    rgb = [254, 231, 215]
-  elif color == "SKIN_2":
-    rgb = [240, 205, 183]
-  elif color == "SKIN_3":
-    rgb = [255, 219, 183]
-  elif color == "SKIN_4":
-    rgb = [186, 147, 116]
-  elif color == "SKIN_5":
-    rgb = [192, 142, 107]
-  elif color == "SKIN_6":
-    rgb = [177, 115, 92]
-  elif color == "SKIN_7":
-    rgb = [139, 94, 61]
-  elif color == "SKIN_8":
-    rgb = [106, 66, 40]
-  elif color == "SKIN_9":
-    rgb = [67, 36, 18]
-  return rgb
-    
-def createBalloon(self, string):
-  """ Creates a balloon for a given string:
-  string: string to be included on the balloon.
-  """
-  pygame.transform.resize(img, [(len(string)+2)*BALOON_FONT_SZ+40, BALOON_FONT_SZ+40])
-  pass    
-    
-def distPoints(aPoint, anotherPoint):
-  deltaX = anotherPoint[0] - aPoint[0]
-  deltaY = anotherPoint[1] - aPoint[1]
-
-  dotProduct = deltaX*deltaX + deltaY*deltaY
-
-  return math.sqrt(dotProduct)
 
 # ===============================================================
 # =========================== CLASSES ===========================
@@ -809,23 +762,9 @@ class GroupSprite(pygame.sprite.Group):
       else:    
         raise "ERROR: sprite sin zOrder"
 
-class LabelTransparent(ocempgui.widgets.Label):
-  
-  def __init__(self,label, style):
-    self.label = label
-    self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
-    self.sizeFont = style["font"]["size"]
-    self.aliasFont = style["font"]["alias"]
-    self.colorFont = style["fgcolor"][0]
-    ocempgui.widgets.Label.__init__(self,label)
+# ===============================================================
 
-  def update(self):
-    self.draw()
-
-  def draw(self):
-    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
-
-class OcempLabel(LabelTransparent):
+class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, width, style):
     line = ""  
@@ -842,9 +781,23 @@ class OcempLabel(LabelTransparent):
         cad = cad[width:]  
     line = line + cad    
     
-    LabelTransparent.__init__(self,line, style)
+    self.label = line
+    self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
+    self.sizeFont = style["font"]["size"]
+    self.aliasFont = style["font"]["alias"]
+    self.colorFont = style["fgcolor"][0]
+    ocempgui.widgets.Label.__init__(self, line)
+    
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
+
+  def update(self):
+    self.draw()
+
+  def draw(self):
+    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
+
+# ===============================================================
 
 class OcempLabelNotTransparent(ocempgui.widgets.Label):
 
@@ -867,6 +820,7 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
+# ===============================================================
 
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
 
@@ -876,6 +830,7 @@ class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
   def draw (self):
     self._image = self.picture
       
+# ===============================================================
 
 class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
 
@@ -893,6 +848,25 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
   def update(self): 
     self.draw()
   
+# ===============================================================
+
+class OcempContactListItem(ocempgui.widgets.components.FileListItem):
+
+  def __init__(self, name, image):
+    ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+    path, file = os.path.split(filePath)
+    size = 46,31 
+    try:
+      img = Image.open(filePath)
+    except:
+      return 
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png"))
+    filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
+    self._icon = ocempgui.draw.Image.load_image(filePath)
+    
+# ===============================================================
 
 class OcempImageFileList(ocempgui.widgets.FileList):
   
@@ -936,23 +910,8 @@ class OcempImageFileList(ocempgui.widgets.FileList):
         return file
     return None
 
-class OcempContactListItem(ocempgui.widgets.components.FileListItem):
-
-  def __init__(self, name, image):
-    ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-    path, file = os.path.split(filePath)
-    size = 46,31 
-    try:
-      img = Image.open(filePath)
-    except:
-      return 
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png"))
-    filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
-    self._icon = ocempgui.draw.Image.load_image(filePath)
-    
-    
+# ===============================================================
+  
 class OcempImageContactList(OcempImageFileList):
   
   def __init__(self, width, height, contactList):

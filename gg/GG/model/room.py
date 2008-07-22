@@ -285,15 +285,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
         if not self.__tiles[corx][corz].getDepth():
           listCell.append([corx, 0, corz])
     return listCell        
-    """
-    listCell = []
-    for corx in range(self.size[0]):
-      for cory in range(self.size[1]):
-        point = [corx,0,cory]
-        if not self.getBlocked(point):
-          listCell.append(point)
-    return listCell
-    """
 
   def getNearestEmptyCell(self, pos):
     """ Returns the nearest empty cell to a position.
@@ -307,7 +298,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     dist = None 
     point = None
     for emptyPos in emptyCell:
-      newDist = GG.utils.distPoints([emptyPos[0], emptyPos[2]], [pos[0], pos[2]])
+      newDist = GG.utils.p2pDistance([emptyPos[0], emptyPos[2]], [pos[0], pos[2]])
       if dist is None or dist > newDist:
         dist = newDist
         point = emptyPos
@@ -315,12 +306,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
       
   def getItemOnPosition(self, pos):
     return self.__tiles[pos[0]][pos[2]].getTopItem()
-    """  
-    for item in self.__items:
-      if item.getPosition() == pos:
-        return item
-    return None
-    """
     
   def setUnselectedtFor(self, item):
     for player in self.__items:

@@ -75,15 +75,15 @@ class ExchangeWindow:
   def __paintLabel(self):
     """ Paints the exchangeWindow labels.
     """  
-    self.__labelExchange = GG.utils.LabelTransparent("Selecciona los objetos del inventario que quieres intercambiar.",GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = GG.utils.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", 300, GG.utils.STYLES["dialogFont"])
     self.__labelExchange.topleft = 20,20
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = GG.utils.LabelTransparent("Bandeja de salida",GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = GG.utils.OcempLabel("Bandeja de salida", 140, GG.utils.STYLES["dialogFont"])
     self.__labelExchange.topleft = 20,60
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = GG.utils.LabelTransparent("Bandeja de entrada",GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = GG.utils.OcempLabel("Bandeja de entrada", 120, GG.utils.STYLES["dialogFont"])
     self.__labelExchange.topleft = 370,60
     self.container.add_child(self.__labelExchange)
 
