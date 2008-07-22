@@ -21,6 +21,7 @@ class Animation(object):
     self.__endMethods = []
     self.__halfMethods = []
     self.__startMethods = []
+    self.__pastHalf = 0
     
   def getLinearProgress(self, now):
     """ Returns the animation linear progression for any given time.
@@ -83,7 +84,9 @@ class Animation(object):
     """ Progresses the animation one frame.
     time: elapsed time since the animation start.
     """
-    pass
+    if not self.__pastHalf:
+      self.onHalf()
+      self.__pastHalf = 1
   
   def stop(self):
     """ Stops the animation.
@@ -116,6 +119,7 @@ class Animation(object):
   def onHalf(self):
     """ Runs some methods at animation half.
     """
+    #print "onHalf"
     for method in self.__halfMethods:
       if method[1] == None:
         method[0]()
@@ -193,7 +197,8 @@ class ScreenPositionAnimation(Animation):
     """
     percent = self.getProgress(now)
     if percent > 0.5:
-      self.isoview.updateZOrder()
+      #self.isoview.updateZOrder()
+      super(self.__class__, self).step(now)
     self.isoview.setScreenPosition([self.__originX + int(self.__shiftX*percent),
                                     self.__originY + int(self.__shiftY*percent)])
       
@@ -218,7 +223,7 @@ class MovieAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     self.setFrames(frames)
-    self.isoview.updateZOrder()
+    #self.isoview.updateZOrder()
     
   def setFrames(self, frames):
     """ Sets a new frame set for the animation.
@@ -249,6 +254,7 @@ class MovieAnimation(Animation):
       time = self.time
       currentFrame = int((self.getEllapsedTime(now) % time) / time * len_sprites)
       self.isoview.setSprite(sprites[currentFrame])
+    super(self.__class__, self).step(now)  
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
@@ -318,6 +324,7 @@ class SecuenceAnimation(CompositionAnimation):
         currentAnimation.step(now)
     else:
       self.stop()
+    super(self.__class__, self).step(now)  
     
   def stop(self):
     """ Stops the animation.
@@ -379,6 +386,7 @@ class ParalelAnimation(CompositionAnimation):
     """
     for animation in self.__animations:
       animation.step(now)
+    super(self.__class__, self).step(now)  
     
   def stop(self):
     """ Stops the animation.

@@ -88,8 +88,8 @@ class GGSystem(dMVC.model.Model):
         return False, "El usuario tiene una sesion abierta"    
     for player in self.__players:
       if player.checkUser(username, password):# and player.getRoom() == None:
-        #player.changeRoom(self.getEntryRoom(), player.getPosition())
         player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 0, 1]))
+        #player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([5, 0, 5]))
         session = GG.model.ggsession.GGSession(player, self)
         self.__sessions.append(session)
         return True, session 
