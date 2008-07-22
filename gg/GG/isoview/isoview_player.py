@@ -208,7 +208,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     startPos = self.getScreenPosition()
     endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
     cordX = (startPos[0] + endPos[0])/2
-    cordY = (startPos[1] + endPos[1])/2 - GG.utils.JUMP_DISTANCE - 50
+    cordY = (startPos[1] + endPos[1])/2 - GG.utils.JUMP_OVER_DISTANCE
     halfPos = [cordX, cordY]
 
     movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))

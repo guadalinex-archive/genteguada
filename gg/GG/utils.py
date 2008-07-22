@@ -8,6 +8,8 @@ import ocempgui.draw
 import GG.genteguada
 from PIL import Image
 
+# ======================= GENERAL PATHS ===========================
+
 #cache
 if os.path.isdir("gg/GG/cache"):
   LOCAL_DATA_PATH = "gg/GG/cache"
@@ -18,16 +20,23 @@ CLEAR_CACHE_WEEKS = 4
 #resources
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
+  HUD_PATH = "interface/hud/"
   SOUND_PATH = "gg/GG/data/sound"
   NINO_PATH = "avatars/default_boy/"
   NINA_PATH = "avatars/default_girl/"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
+  HUD_PATH = "/usr/share/pixmaps/genteguada/data/interface/hud/"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/data/sound"
   NINO_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_boy/"
   NINA_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_girl/"
 
-VERSION = "GenteGuada 0.0.3.1"
+PATH_HUD = DATA_PATH + "/interface/hud"
+
+# ======================= CONSTANTS ===========================
+
+# Screen & General values
+VERSION = "GenteGuada 0.2.0-1"
 BG_FULL_OR = [0, 0]
 TILE_SZ = [120, 60]
 CHAR_SZ = [50, 50]
@@ -41,9 +50,9 @@ SCENE_SZ = [8, 8]
 GAMEZONE_SZ = [1024, 578]
 HUD_SZ = [1024, SCREEN_SZ[1] - GAMEZONE_SZ[1]]
 HUD_OR = [0, GAMEZONE_SZ[1]]
-
 COLOR_SHIFT = 80
 TEXT_LINE_LENGTH = 40
+MAX_DEPTH = 1
 
 # Login
 LOGIN_USERNAME_OR = [SCREEN_SZ[0]/2 + 10, SCREEN_SZ[1]/2 - 20]
@@ -62,7 +71,6 @@ INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
 INV_ITEM_SZ = [60, 60]
 INV_ITEM_COUNT = [3, 2]
 INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
-IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
 #Avatar editor
 TAG_POSITION = [288, 0]
@@ -87,37 +95,26 @@ ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
 ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME1 = 2000
 ANIM_CHAT_TIME2 = 1000
-
 JUMP_TIME = 800
 JUMP_ANIMATION_TIME = 100
 JUMP_DISTANCE = 70
+JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
 
-MAX_DEPTH = 1
 
 POINTS_LOCATION = [800, 30]
 EXP_LOCATION = [800, 50]
 
 TEXT_COLOR = {"black": 0, "blue": 1}
 
+# Directions for a player's heading.
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
 
+# Player states.
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
+# Message types --> 0: general; 1: private; 2: npcs; 3: system)
 CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
-#0: general; 1: private; 2: npcs; 3: system)
-
-CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
-CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
-CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
-CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
-
-BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
-BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
-BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
-BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
-
-TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
 
 # ======================= SPRITES ===========================
 
@@ -125,8 +122,8 @@ LOGIN_SCREEN = "login.png"
 BG_BLACK = "bg_black.png"
 TILE_STONE = "baldosaIsometricTile.tga"
 TILE_WATER = "aguaIsometricTile.tga"
-INTERFACE_LOWER = "interface/hud/interface_lower.png"
-PATH_HUD = DATA_PATH + "/interface/hud"
+INTERFACE_LOWER = "interface_lower.png"
+IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
 # Sprites: items
 PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
@@ -270,6 +267,17 @@ SKIN_COLORS = {1:"SKIN_1", 2:"SKIN_2", 3:"SKIN_3", 4:"SKIN_4", 5:"SKIN_5", 6:"SK
 
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
+# Chat balloon pieces.
+CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
+CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
+CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
+CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
+BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
+BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
+BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
+BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
+TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
+
 # ======================= SOUNDS ===========================
 
 SOUND_OCEAN = "ocean.ogg"
@@ -281,20 +289,7 @@ SOUND_STEPS02 = "steps02.ogg"
 
 # ======================= COLORS ===========================
 
-HUD_COLOR_BASE = [177, 174, 200]
-HUD_COLOR_BORDER1 = [104, 102, 119]
-HUD_COLOR_BORDER2 = [138, 136, 160]
-HUD_COLOR_BORDER3 = [202, 199, 231]
-CHAT_COLOR_BG = [61, 61, 91]
-CHAT_COLOR_FONT = [216, 216, 216]
-INV_COLOR_BG = [0, 0, 0]
-TEXT_BOX_COLOR_BG = [255, 255, 255]
-GUADALINEX_BLUE = [34, 133, 234]
-
-BALLOON_FON_SZ = 16
-
-#styles
-#TODO investigar un poco el tema de las fuentes y de los colores que no lo tengo muy claro
+# Text styles
 STYLES = {
           "inventoryArea" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                               "bordercolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
@@ -493,13 +488,6 @@ STYLES = {
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                             },
-                                """
-                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
-                                            },
-                                """            
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (107, 177, 197),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (107, 177, 197),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (107, 177, 197),
@@ -571,7 +559,7 @@ STYLES = {
 
          }
 # ===============================================================
-# ========================== FUNCTIONS ==========================
+# =========================== METHODS ===========================
 # ===============================================================
 def getJumpDestination(pos, heading, size):
   length = 2
@@ -601,7 +589,6 @@ def getJumpDestination(pos, heading, size):
   return None    
 
 def getSpriteName(state, heading, frame, timestamp):
-  #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
   timestamp = str(timestamp)
   if timestamp == "":
     tail = ""
@@ -828,8 +815,6 @@ class LabelTransparent(ocempgui.widgets.Label):
   
   def __init__(self,label, style):
     self.label = label
-    #self.typeFont = style["font"]["name"] 
-    #self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
     self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
@@ -840,11 +825,9 @@ class LabelTransparent(ocempgui.widgets.Label):
     self.draw()
 
   def draw(self):
-    #ocempgui.widgets.Label.draw(self)
     self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
 
 class OcempLabel(LabelTransparent):
-#class OcempLabel(LabelTransparent):
 
   def __init__(self, text, width, style):
     line = ""  
@@ -991,7 +974,6 @@ class OcempImageContactList(OcempImageFileList):
     for contact in agenda:
       items.append (OcempContactListItem (contact))
     self.set_items (items)
-    #self.select(self.items[0])
 
   def getSelectedName(self):
     item = self.get_selected()
