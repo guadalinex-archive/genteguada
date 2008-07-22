@@ -521,6 +521,7 @@ class AvatarEditor:
       img = ocempgui.draw.Image.load_image(imgPath)
       self.imgOptionsTab.picture = img 
       self.avatarConfiguration["mask"] = None
+      self.paintMask()
 
   def openFileDialog(self):
     """ Opens the OpenFile dialog.

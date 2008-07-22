@@ -866,7 +866,7 @@ class IsoViewHud(isoview.IsoView):
   def setAvatarConfiguration(self, configuration):
     """ Sets a new avatar configuration.
     configuration: new avatar configuration.
-    """  
+    """
     GG.genteguada.GenteGuada.getInstance().uploadAvatarConfiguration(configuration, self.__player)
     
   def turnRight(self):
@@ -947,7 +947,8 @@ class IsoViewHud(isoview.IsoView):
 
     from PIL import Image
     import os
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/masko.png")
+    image = self.__player.getImageLabel()
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     img = Image.open(filePath)
     size = 64,64
     img.thumbnail(size,Image.ANTIALIAS)

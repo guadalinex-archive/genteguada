@@ -6,6 +6,7 @@ import GG.model.private_contact
 import GG.utils
 import time
 import dMVC.model
+import os
 
 class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   """ Player class.
@@ -60,7 +61,10 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return self.username
   
   def getImageLabel(self):
-    return "interface/editor/masko.png"
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH,"avatars/masks",self.username+".png")):
+      return "avatars/masks/"+self.username+".png"
+    else:
+      return "interface/editor/masko.png"
 
   def startSessionTiming(self):
     #print "**********************************"  
