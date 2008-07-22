@@ -44,6 +44,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """  
     if value == None:
       pos = self.__position
+      #print "updateZOrder A ", pos
       self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
     else:
       self.__img.zOrder = value
@@ -52,6 +53,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the zOrder value, used to properly order sprites for painting.
     value: zOrder value.
     """  
+    #print "updateZOrderFor ", pos
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
         
   def getZOrder(self):
@@ -145,6 +147,9 @@ class IsoViewItem(positioned_view.PositionedView):
         if self.getImg().image.get_at((pos[0] - rect[0], pos[1] - rect[1]))[3] != 0:
           return 1
     return 0
+    
+  def setPosition(self, pos):
+    self.__position = pos  
     
   def positionChanged(self, event):
     """ Updates the item position and draws the room after receiving a position change event.
