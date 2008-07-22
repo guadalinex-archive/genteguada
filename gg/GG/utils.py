@@ -571,6 +571,32 @@ STYLES = {
 # ===============================================================
 # ========================== FUNCTIONS ==========================
 # ===============================================================
+def getJumpDestination(pos, heading, size):
+  length = 2
+  if heading == HEADING[1]: #up
+    dest = [pos[0], pos[1], pos[2] - length]
+  elif heading == HEADING[2]: #down
+    dest = [pos[0], pos[1], pos[2] + length]
+  elif heading == HEADING[3]: #left
+    dest = [pos[0] - length, pos[1], pos[2]]
+  elif heading == HEADING[4]: #right
+    dest = [pos[0] + length, pos[1], pos[2]]
+  elif heading == HEADING[5]: #topleft
+    dest = [pos[0] - length, pos[1], pos[2] - length]
+  elif heading == HEADING[6]: #bottomright
+    dest = [pos[0] + length, pos[1], pos[2] + length]
+  elif heading == HEADING[7]: #bottomleft
+    dest = [pos[0] - length, pos[1], pos[2] + length]
+  elif heading == HEADING[8]: #topright
+    dest = [pos[0] + length, pos[1], pos[2] - length]
+  else:
+    return None    
+      
+  if 0 < dest[0] < size[0]:    
+    if 0 < dest[2] < size[1]:
+      return dest
+  
+  return None    
 
 def getSpriteName(state, heading, frame, timestamp):
   #STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
@@ -802,7 +828,7 @@ class LabelTransparent(ocempgui.widgets.Label):
     self.label = label
     #self.typeFont = style["font"]["name"] 
     #self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
-    self.typeFont = DATA_PATH + "/fonts/Purisa.ttf"
+    self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
