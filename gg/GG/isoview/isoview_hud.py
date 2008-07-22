@@ -644,7 +644,11 @@ class IsoViewHud(isoview.IsoView):
           self.__isoviewRoom.itemSelected(self.__selectedItem)
         selImgPos = self.__selectedItem.getPosition()
         self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
-        self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
+        
+        #self.__selectedImage.rect.topleft = [self.__selectedImage.rect.topleft[0], self.__selectedImage.rect.topleft[1] + 5]
+        
+        #self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
+        self.__selectedImage.zOrder = 0
         self.addSprite(self.__selectedImage)        
     
     options = self.__selectedItem.getOptions()
