@@ -958,7 +958,6 @@ class OcempImageFileList(ocempgui.widgets.FileList):
 class OcempContactListItem(ocempgui.widgets.components.FileListItem):
 
   def __init__(self, name, image):
-    print image
     ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     path, file = os.path.split(filePath)
