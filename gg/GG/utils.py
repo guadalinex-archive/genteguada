@@ -31,8 +31,6 @@ else:
   NINO_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_boy/"
   NINA_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_girl/"
 
-PATH_HUD = DATA_PATH + "/interface/hud"
-
 # ======================= CONSTANTS ===========================
 
 # Screen & General values
