@@ -44,7 +44,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """  
     if value == None:
       pos = self.__position
-      #print "updateZOrder A ", pos
       self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
     else:
       self.__img.zOrder = value
@@ -53,7 +52,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the zOrder value, used to properly order sprites for painting.
     value: zOrder value.
     """  
-    #print "updateZOrderFor ", pos
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
         
   def getZOrder(self):

@@ -61,9 +61,7 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
-    print "finalizo de la muerte"
-    self.isoHud.unsubscribeAllEvents()
-    
+    self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     pygame.mixer.music.stop()
     sys.exit(0)
   
@@ -120,14 +118,6 @@ class GenteGuada:
     #self.session = winLogin.draw()
     self.session = winLogin.draw(params.user, params.password)
 
-
-    """
-    imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
-    img = pygame.sprite.Sprite()
-    img = pygame.image.load(imgPath).convert_alpha()
-    self.screen.blit(img, (0, 0))
-    pygame.display.flip()
-    """
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 
       self.input(pygame.event.get())

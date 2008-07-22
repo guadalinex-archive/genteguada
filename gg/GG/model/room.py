@@ -102,7 +102,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return False
   
   def addItemFromInventory(self, item, pos):
-    print "add item from inventory",item,pos
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[2]].stepOn():
         return
@@ -120,22 +119,28 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """ Removes an item from the room.
     item: player.
     """
-    print "A"
     if item in self.__items:
       if isinstance(item, GG.model.player.GGPlayer):
         self.__population -= 1
-      print "B"      
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
       self.__items.remove(item)
-      print "C"
       item.clearRoom()
-      print "D"
       self.triggerEvent('removeItem', item=item)
-      print "E"
       return
     raise Exception("Error: item no eliminado")
 
+  def exitPlayer(self, item):
+    """ Removes an item from the room.
+    item: player.
+    """
+    self.__population -= 1
+    pos = item.getPosition()
+    self.__tiles[pos[0]][pos[2]].unstackItem()
+    self.__items.remove(item)
+    item.clearRoom()
+    self.triggerEvent('removeItem', item=item)
+    
   def getSpecialTiles(self):
     return self.__specialTiles
 
@@ -183,7 +188,6 @@ class GGRoom(GG.model.ggmodel.GGModel):
         else:
           if not GG.utils.checkNeighbour(target, player.getPosition()) and self.getNextDirectionForAnItem(target, player.getPosition()) == "none":
             player.newChatMessage("No puedo llegar hasta ese lugar.", 2)
-            print "que no estoy saltando"
             return
           player.setDestination(target)
           
@@ -298,7 +302,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     dist = None 
     point = None
     for emptyPos in emptyCell:
-      newDist = GG.utils.p2pDistance([emptyPos[0], emptyPos[2]], [pos[0], pos[2]])
+      newDist = GG.utils.p2pDistance(emptyPos, pos)
       if dist is None or dist > newDist:
         dist = newDist
         point = emptyPos

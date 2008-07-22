@@ -61,17 +61,7 @@ class GGSession(ggmodel.GGModel):
   
 
   def logout(self):
-    print str(self) + ": logout!"
-    #self.__player.abandonRoom()
-    print "1"
-    #self.__player.getRoom().removeItem(self.__player)
-    #self.__player.changeRoom(None)
-    self.__player.clearRoom() 
-    print "2"
     self.__system.logout(self)
-    print "3"
     self.__player = None
-    print "4"
     self.__system = None
-    print "5"
     
