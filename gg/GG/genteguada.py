@@ -61,6 +61,9 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
+    print "finalizo de la muerte"
+    self.isoHud.unsubscribeAllEvents()
+    
     pygame.mixer.music.stop()
     sys.exit(0)
   

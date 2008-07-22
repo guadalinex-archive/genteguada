@@ -18,7 +18,7 @@ class GGPickableItem(GG.model.room_item.GGRoomItem):
     self.label = label
     
   def variablesToSerialize(self):
-    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
 
   def getOptions(self):

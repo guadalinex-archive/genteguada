@@ -46,11 +46,6 @@ class GGSession(ggmodel.GGModel):
     """
     import GG.isoview.isoview_hud
     return GG.isoview.isoview_hud.IsoViewHud(self, screen, parent, fullscreen)
-
-  def logout(self):
-    """ Ends an user session.
-    """
-    self.__player.abandonRoom()
     
   def chatAdded(self, event):
     """ Triggers after receiving a chat added event.
@@ -67,6 +62,16 @@ class GGSession(ggmodel.GGModel):
 
   def logout(self):
     print str(self) + ": logout!"
+    #self.__player.abandonRoom()
+    print "1"
+    #self.__player.getRoom().removeItem(self.__player)
+    #self.__player.changeRoom(None)
+    self.__player.clearRoom() 
+    print "2"
     self.__system.logout(self)
+    print "3"
     self.__player = None
+    print "4"
     self.__system = None
+    print "5"
+    

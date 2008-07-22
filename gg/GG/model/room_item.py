@@ -52,6 +52,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
+    self.__room.setUnselectedtFor(self)
     if not jump:
       self.triggerEvent('position', position=pos, oldPosition=old)
     else:
@@ -94,8 +95,11 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Private method. Sets the item's room with a new value and triggers an event.
     room: new room.
     """
+    print "uno", self.__room, room
     self.__room = room
+    print "dos"
     self.triggerEvent('room', room=room)
+    print "tres"
 
   def changeRoom(self, room, pos):
     """ Changes the item's room.

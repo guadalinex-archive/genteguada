@@ -59,7 +59,8 @@ class IsoViewHud(isoview.IsoView):
     self.__privateChatButton = None
     
     self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
+    #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 70
     self.__img.zOrder = -1
@@ -398,24 +399,31 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving a change room event.
     event: event info.
     """
+    print "I"
     if self.__isoviewRoom:
       self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
+      print "II"
       if self.__sound:
         GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
 
       list = self.__isoviewRoom.getSpritesDict()
+      print "III"
       for img in list.keys():
         self.removeSprite(img)
       list = self.__isoviewRoom.getBottomSpritesDict()
+      print "VI"
       for img in list.keys():
         self.removeSprite(img)
       
       self.__isoviewRoom = None
+      print "V"
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
+      print "VI"
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
+      print "VII"
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.
@@ -430,7 +438,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud = ocempgui.widgets.Box(1024,262)
     self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
 
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/interface_lower.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)
     self.imgBackground = GG.utils.OcempImageMapTransparent(filePath)
     self.imgBackground.topleft = 1,1
     self.hud.add_child(self.imgBackground)
@@ -1243,3 +1251,8 @@ class IsoViewHud(isoview.IsoView):
     """  
     contact = event.getParams()['contact']
     self.privateChatWindow.removeContactRemote(contact)      
+
+  def unsubscribeAllEvents(self):
+    self.findIVItem(self.__player).unsubscribeAllEvents()
+    isoview.IsoView.unsubscribeAllEvents(self) 
+      

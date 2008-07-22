@@ -96,6 +96,7 @@ class GGSystem(dMVC.model.Model):
     return False, "No se pudo autenticar el usuario"
 
   def logout(self, session):
+    #session.getPlayer().getRoom().removeItem(session.getPlayer())  
     self.__sessions.remove(session)
 
   def __loadData(self):
