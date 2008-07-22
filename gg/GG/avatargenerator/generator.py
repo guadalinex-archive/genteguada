@@ -7,25 +7,31 @@ class AvatarGenerator(dMVC.model.Model):
 
   def __init__(self):
     dMVC.model.Model.__init__(self)
+  
+  def copyImageMask(self, nameMask ,data):
+    f = open("/tmp/"+nameMask,"wb")
+    f.write(data)
+    f.close()
 
-  def executeCommand(self, configuration, player):
-    comando = self.__generateRenderCommand(player.username, configuration)
-    return True
+  def executeCommand(self, configuration, player, nameMask):
+    comando = self.__generateRenderCommand(player.username, configuration, nameMask)
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
       return False
     else:
       return True
 
-  def __generateRenderCommand(self, name, configuration):
+  def __generateRenderCommand(self, name, configuration, nameMask):
     #gender 
     if configuration["gender"] == "boy":
       configuration["gender"] = "male"
     else:
       configuration["gender"] = "female"
     #mask
-    if configuration["mask"] is None:
+    if nameMask is None:
       configuration["mask"] = "\"\""
+    else: 
+      configuration["mask"] = os.path.join("/tmp",nameMask)
     #hairStyle
     configuration["hairStyle"] = "0"+configuration["hairStyle"]
     #hairColour

@@ -247,4 +247,9 @@ class GenteGuada:
     return self.system.uploadFile([name,ext] ,dataFile)
 
   def uploadAvatarConfiguration(self, configuration, player):
-    self.system.changeAvatarConfiguration(configuration, player) 
+    if configuration["mask"]:
+      file = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
+      nameMask = self.uploadFile(file)
+    else:
+      nameMask = None
+    self.system.changeAvatarConfiguration(configuration, player, nameMask) 

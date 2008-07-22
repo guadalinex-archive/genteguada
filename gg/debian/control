@@ -5,10 +5,16 @@ Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
 Build-Depends: debhelper (>= 5)
 Standards-Version: 3.7.2
 
-Package: genteguada
+Package: genteguada-server
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4), dmvc
+Description: Juego colaborativo 3D
+ Juego colaborativo 3D a traves de Internet, en el que el objetivo sera 
+ colaborar con otros jugadores para conseguir premios.
+
+Package: genteguada-client
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4), dmvc, python-pygame, python-ocempgui
 Description: Juego colaborativo 3D
  Juego colaborativo 3D a traves de Internet, en el que el objetivo sera 
  colaborar con otros jugadores para conseguir premios.
-

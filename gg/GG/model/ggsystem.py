@@ -437,11 +437,20 @@ class GGSystem(dMVC.model.Model):
       return None
     return name
 
-  def changeAvatarConfiguration(self, configuration, player):
-    thread.start_new(self.__changeAvatarConfiguration, (configuration, player))
+  def changeAvatarConfiguration(self, configuration, player, nameMask):
+    thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
 
-  def __changeAvatarConfiguration(self, configuration, player):
-    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player)
+  def __changeAvatarConfiguration(self, configuration, player, nameMask):
+    if nameMask:
+      f = open(os.path.join(GG.utils.DATA_PATH, nameMask), "rb")
+      data = f.read()
+      f.close()
+      self.__avatarGeneratorHandler.copyImageMask(nameMask, data)
+      f = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"),"wb")
+      f.write(data)
+      f.close
+    return 
+    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
       images = self.__avatarGeneratorHandler.getImages(player)
       timestamp = self.__copyImages(images, player)

@@ -5,6 +5,8 @@ import ocempgui.widgets
 import stat
 import ocempgui.widgets.base
 import ocempgui.draw
+import GG.genteguada
+from PIL import Image
 
 #cache
 if os.path.isdir("gg/GG/cache"):
@@ -955,9 +957,19 @@ class OcempImageFileList(ocempgui.widgets.FileList):
 
 class OcempContactListItem(ocempgui.widgets.components.FileListItem):
 
-  def __init__(self, name):
+  def __init__(self, name, image):
+    print image
     ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
-    filePath = DATA_PATH+"/book.png"
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+    path, file = os.path.split(filePath)
+    size = 46,31 
+    try:
+      img = Image.open(filePath)
+    except:
+      return 
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png"))
+    filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
     self._icon = ocempgui.draw.Image.load_image(filePath)
     
     
@@ -970,7 +982,8 @@ class OcempImageContactList(OcempImageFileList):
   def _list_contents (self):
     items = ocempgui.widgets.components.ListItemCollection ()
     for contact in self.contactList:
-      items.append (OcempContactListItem (contact.getPlayer().username))
+      player = contact.getPlayer()
+      items.append (OcempContactListItem (player.username, player.getImageLabel()))
     self.set_items (items)
 
   def setContacts(self, agenda):
