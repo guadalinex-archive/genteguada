@@ -111,6 +111,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.__avatarConfiguration = avatarConfiguration
     #self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
+    for contact in self.__agenda:
+      contact.getPlayer().changeMaskContact(self.username, self.getImageLabel())
+    
+  def changeMaskContact(self, name, imageLabel):
+    self.triggerEvent('contactMask', playerName = name, imageLabel = imageLabel)
 
   def getOptions(self):
     """ Returns the item's available options.

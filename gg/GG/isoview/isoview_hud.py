@@ -91,6 +91,7 @@ class IsoViewHud(isoview.IsoView):
     
     self.__player.subscribeEvent('destination', self.destinationChanged)
     self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
+    self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
@@ -1276,8 +1277,8 @@ class IsoViewHud(isoview.IsoView):
     self.imgMask.picture = img
     self.hud.remove_child(self.imgMask)
     self.hud.add_child(self.imgMask)
-    """
-    self.imgMask = GG.utils.OcempImageButtonTransparent(imgPath)
-    self.imgMask.topleft = 548,110
-    self.hud.add_child(self.imgMask)
-    """
+
+  def contactMaskChanged(self, event):
+    contactName =  event.getParams()['playerName']
+    image = event.getParams()['imageLabel']
+    self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
