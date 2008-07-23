@@ -111,7 +111,7 @@ class PrivateChatWindow:
     self.clearChatArea()
     
   def updateContactList(self):
-    self.contactsArea.setContacts(self.player.getAgendaNames())
+    self.contactsArea.setContacts(self.player.getAgendaData())
     
   def removeContactRemote(self, contact):
     self.player.removeContact(contact)

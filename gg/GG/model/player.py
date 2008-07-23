@@ -508,11 +508,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def getAgenda(self):
     return self.__agenda
     
-  def getAgendaNames(self):
-    list = []
+  def getAgendaData(self):
+    data = {}
     for contact in self.__agenda:
-      list.append(contact.getPlayer().username)
-    return list  
+      data[contact.getPlayer().username] = contact.getPlayer().getImageLabel()
+    return data  
     
   def removeContact(self, contact):
       for item in self.__agenda:
