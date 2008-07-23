@@ -14,6 +14,9 @@ import exchangewindow
 import privatechatwindow
 
 from pygame.locals import * # faster name resolution
+from PIL import Image
+import os
+
 
 
 class IsoViewHud(isoview.IsoView): 
@@ -87,6 +90,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent("removeContactRemote", self.removeContactRemote)
     
     self.__player.subscribeEvent('destination', self.destinationChanged)
+    self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
@@ -953,8 +957,6 @@ class IsoViewHud(isoview.IsoView):
       if buttonData['action'] == self.privateChatHandler:
         self.__privateChatButton = button
 
-    from PIL import Image
-    import os
     image = self.__player.getImageLabel()
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     img = Image.open(filePath)
@@ -962,9 +964,9 @@ class IsoViewHud(isoview.IsoView):
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
-    img = GG.utils.OcempImageButtonTransparent(imgPath)
-    img.topleft = 548,110
-    self.hud.add_child(img)
+    self.imgMask = GG.utils.OcempImageButtonTransparent(imgPath)
+    self.imgMask.topleft = 548,110
+    self.hud.add_child(self.imgMask)
 
     labelUserName = GG.utils.OcempLabel(self.__player.username, 140, GG.utils.STYLES["userName"])
     labelUserName.topleft = 638, 90
@@ -1259,3 +1261,23 @@ class IsoViewHud(isoview.IsoView):
     """
     self.setMovementDestination(event.getParams()['destination'])
   
+  def playerConfigurationChanged(self, event):
+    """ Unfinished method.
+    event: event info.
+    """  
+    image = event.getParams()['imageLabel']
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+    img = Image.open(filePath)
+    size = 64,64
+    img.thumbnail(size,Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
+    img = ocempgui.draw.Image.load_image(imgPath)
+    self.imgMask.picture = img
+    self.hud.remove_child(self.imgMask)
+    self.hud.add_child(self.imgMask)
+    """
+    self.imgMask = GG.utils.OcempImageButtonTransparent(imgPath)
+    self.imgMask.topleft = 548,110
+    self.hud.add_child(self.imgMask)
+    """
