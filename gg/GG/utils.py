@@ -783,7 +783,9 @@ class OcempLabel(ocempgui.widgets.Label):
     line = line + cad    
     
     self.label = line
-    self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
+    #self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
+    #self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
+    self.typeFont = "Bitstream"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
