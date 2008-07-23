@@ -954,3 +954,25 @@ class OcempImageContactList(OcempImageFileList):
       cad = item[0].text
       cad = cad[0:cad.find(" ")]
       item[0].text = cad
+
+  def updateMaskPlayer(self, name, image):
+    print "voy a buscar a name"
+    for item in self.items:
+      print item.text
+      if item.text.find(name) > -1:
+        print "Lo encontre "+name
+        filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+        path, file = os.path.split(filePath)
+        size = 46,31 
+        try:
+          img = Image.open(filePath)
+        except:
+          return 
+        img.thumbnail(size, Image.ANTIALIAS)
+        img.save(os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png"))
+        filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
+        item._icon = ocempgui.draw.Image.load_image(filePath)
+        
+        
+
+
