@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+if False:
+  "http://pychecker.sourceforge.net/"
+  import os
+  os.environ['PYCHECKER'] = '--stdlib -100'
+  import pychecker.checker
+
+
 import sys
 from optparse import OptionParser
 import GG.genteguada
