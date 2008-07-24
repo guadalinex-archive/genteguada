@@ -200,4 +200,9 @@ class PrivateChatWindow:
         line = line + cad[0:width] + "\n"     
         cad = cad[width:]  
     line = line + cad
-    return line    
+    return line   
+
+  def updateMaskPlayer(self, name, image):
+    self.contactsArea.updateMaskPlayer(name, image)
+    self.container.remove_child(self.contactsArea)
+    self.__paintContactList()

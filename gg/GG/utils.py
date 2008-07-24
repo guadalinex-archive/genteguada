@@ -971,6 +971,5 @@ class OcempImageContactList(OcempImageFileList):
         filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
         item._icon = ocempgui.draw.Image.load_image(filePath)
         
-        
 
 
