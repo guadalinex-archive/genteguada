@@ -1281,4 +1281,6 @@ class IsoViewHud(isoview.IsoView):
   def contactMaskChanged(self, event):
     contactName =  event.getParams()['playerName']
     image = event.getParams()['imageLabel']
-    self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
+    self.privateChatWindow.updateMaskPlayer(contactName, image)
+    
+    
