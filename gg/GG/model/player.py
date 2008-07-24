@@ -13,7 +13,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, anchor, topAnchor, username, password, timestamp):
+  def __init__(self, spritePath, anchor, topAnchor, username, password, timestamp, admin):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
@@ -47,6 +47,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       self.imagePath = "avatars/"+self.username+"/"
     else:
       self.imagePath = spritePath
+    self.admin = admin  
 
   def getTimestamp(self):
     return self.__timestamp
@@ -142,7 +143,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['username']
+    return parentVars + ['username', 'admin']
   
     # self.__heading
 
@@ -414,8 +415,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
     if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo", 1)
+      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo.", 1)
     else:
+      if dropLocation == [-1, -1, -1]:
+        self.newChatMessage("No puedo soltarlo ahí.", 1)
+        return
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
       self.triggerEvent('dropItem', item=item, position=item.getPosition())
