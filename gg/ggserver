@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
-#import sys	
-#import models
+if True:
+  # see: http://pychecker.sourceforge.net/
+  import os
+  os.environ['PYCHECKER'] = '--stdlib -100'
+  import pychecker.checker
 
 
 import GG.model.ggsystem
