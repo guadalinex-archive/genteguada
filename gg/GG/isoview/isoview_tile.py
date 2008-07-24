@@ -1,6 +1,5 @@
 import GG.utils
 import isoview
-import os
 import pygame
 
 class IsoViewTile(isoview.IsoView):

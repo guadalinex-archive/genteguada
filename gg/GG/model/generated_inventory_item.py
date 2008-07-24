@@ -19,7 +19,8 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
+    #parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
+    parentVars = inventory_item.GGInventoryItem.variablesToSerialize(self)
     return parentVars + ['label', 'points']
       
   def getOptions(self):

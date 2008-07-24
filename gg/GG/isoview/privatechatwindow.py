@@ -3,7 +3,6 @@
 import pygame
 import ocempgui.widgets
 import GG.utils
-import os
 import copy
 
 class PrivateChatWindow:
@@ -58,7 +57,7 @@ class PrivateChatWindow:
   def __paintContactList(self):
     """ Paints the chat window on screen.
     """
-    from PIL import Image
+    #from PIL import Image
     self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.player.getAgenda())
     self.contactsArea.topleft = 20, 40
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
