@@ -61,7 +61,7 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
-    self.isoHud.unsubscribeAllEvents()
+    #self.isoHud.unsubscribeAllEvents()
     self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     pygame.mixer.music.stop()
     sys.exit(0)
@@ -90,7 +90,7 @@ class GenteGuada:
     self.window.add_child(imgBackgroundRight)
     
     loadingLabel = GG.utils.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLoading"]))
-    loadingLabel.topleft = 352,340
+    loadingLabel.topleft = 372,347
     loadingLabel.border = 1
     loadingLabel.set_minimum_size(230,40)
     self.window.add_child(loadingLabel)

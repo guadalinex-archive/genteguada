@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import math
 import os
 import pygame
@@ -327,7 +329,7 @@ STYLES = {
                                     "style" : 0 },
                            "shadow" : 0
             },
-          "textFieldChat" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "textFieldChat" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),
@@ -356,14 +358,14 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 255) 
                                               },
                             },   
-          "labelLogin" : { "font" : { "name" : "Bitstream", "size" : 36, "alias" : True },
+          "labelLogin" : { "font" : { "name" : "Bitstream", "size" : 48, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },   
-          "labelLoading" : { "font" : { "name" : "Bitstream", "size" : 40, "alias" : True },
+          "labelLoading" : { "font" : { "name" : "Bitstream", "size" : 72, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -371,35 +373,35 @@ STYLES = {
                                           }
                             },   
 
-          "chatEntryWhite" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatEntryWhite" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "chatEntryRed" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatEntryRed" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                              "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (120, 30, 30),
                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (120, 30, 30) 
                                          }
                             },
-          "chatEntryGreen" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatEntryGreen" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 120, 30),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 120, 30) 
                                           }
                             },
-          "chatEntryBlue" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatEntryBlue" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (30, 30, 120),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (30, 30, 120) 
                                           }
                             },
-          "chatBalloonWhite" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+          "chatBalloonWhite" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True }, 
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -411,7 +413,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "chatBalloonBlue" : {"font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+          "chatBalloonBlue" : {"font" : { "name" : "Bitstream", "size" : 20, "alias" : True }, 
                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ENTERED      : (200, 200, 255),
                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 200, 255),
@@ -423,7 +425,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "chatBalloonGreen" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatBalloonGreen" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                                  "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (200, 255, 200),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (200, 255, 200),
@@ -435,7 +437,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "chatBalloonRed" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "chatBalloonRed" : {  "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (255, 200, 200),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 200, 200),
@@ -447,20 +449,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 0, 0) 
                                           }
                             },
-          "points" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
-                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
-                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
-                                            },
-                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 246, 155),
-                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 246, 155),
-                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 246, 155),
-                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
-                                          }
-                            },
-          "userName" : {  "font" : { "name" : "Bitstream", "size" : 13, "alias" : True },
-         # "userName" : {  "font" : { "name" : "usr/share/fonts/truetype/thai/Purisa.ttf", "size" : 18, "alias" : True },
+          "userName" : {  "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
@@ -472,14 +461,14 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },   
-          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
+          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 22, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
                                             }
                             }, 
-          "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 14, "alias" : True },
+          "hudLabel" : {  "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -491,7 +480,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (107, 177, 197) 
                                           }
                             },                          
-            "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+            "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 22, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -503,7 +492,7 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (48, 122, 173) 
                                         }
                             },
-          "exchangeLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "exchangeLabel" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -515,14 +504,14 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (99, 172, 193) 
                                         }
                             },
-          "buttonBar" :     { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+          "buttonBar" :     { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True }, 
                              "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (97, 171, 193),
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                           }
                             },
-          "buttonTopBar" :     { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True }, 
+          "buttonTopBar" :     { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True }, 
                                 "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL    : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -541,7 +530,7 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (186, 216, 232) 
                                           }
                             },
-          "quizLabel" : { "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
+          "quizLabel" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -553,7 +542,6 @@ STYLES = {
                                           ocempgui.widgets.Constants.STATE_INSENSITIVE  : (254, 245, 155) 
                                         }
                             }
-
          }
 
 # ===============================================================
@@ -732,6 +720,17 @@ def playSound(sound):
     pygame.mixer.music.play()
 
 # ===============================================================
+
+def translate(string):
+  line = string
+  line = line.replace("\n","")
+  line = line.replace("Â¿","¿")
+  line = line.replace("Ã±","ñ")
+  line = line.replace("Ã","í")
+  
+  return line
+
+# ===============================================================
 # =========================== CLASSES ===========================
 # ===============================================================
 
@@ -783,8 +782,6 @@ class OcempLabel(ocempgui.widgets.Label):
     line = line + cad    
     
     self.label = line
-    #self.typeFont = LOCAL_DATA_PATH + "/fonts/Purisa.ttf"
-    #self.typeFont = "/usr/share/fonts/truetype/thai/Purisa.ttf"
     self.typeFont = "Bitstream"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
@@ -798,7 +795,8 @@ class OcempLabel(ocempgui.widgets.Label):
     self.draw()
 
   def draw(self):
-    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
+    #self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
+    self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
 
 # ===============================================================
 

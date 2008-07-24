@@ -183,6 +183,7 @@ class IsoViewHud(isoview.IsoView):
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
             if not dest == [-1, -1, -1]:
+              #self.__isoviewRoom.prueba()
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
@@ -583,7 +584,7 @@ class IsoViewHud(isoview.IsoView):
   def chatMessageEntered(self):
     """ Prints a new message on the chat window.
     """
-    if self.__textField.text == "":
+    if self.__textField.text == "" or self.__textField.text.isspace():
       return
     self.__player.getRoom().newChatMessage(self.__textField.text, self.__player, 0)
     self.__textField.text = ""
@@ -988,7 +989,6 @@ class IsoViewHud(isoview.IsoView):
   def jump(self):
     """ Makes the player jump.
     """  
-    self.__isoviewRoom.prueba()
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
 

@@ -201,10 +201,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     heading: movement direction.
     destination: movement destination.
     """
+    print "--->>> Entra"
     if not self.__destination == destination:
       self.__visited = []
       self.__destination = destination
+      print "--->>> Lanza"
       self.triggerEvent('destination', destination=destination)
+      print "--->>> Peta"
 
   def setStartDestination(self, destination):
     """ Sets a new destination for the player movement without calling for a 'destination' event.

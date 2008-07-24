@@ -239,7 +239,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
-    self.__destination = event.getParams()['destination']  
+    print "------>>>>>> Llega"
+    self.__destination = event.getParams()['destination']
+    print "------>>>>>> Vuelve"  
     
   def positionChanged(self, event):
     """ Triggers after receiving a position change event.
