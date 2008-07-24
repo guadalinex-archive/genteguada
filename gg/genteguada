@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-if True:
+if False:
   # see: http://pychecker.sourceforge.net/
   import os
   os.environ['PYCHECKER'] = '--stdlib -100'
