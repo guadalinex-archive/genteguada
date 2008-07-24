@@ -1,7 +1,5 @@
-import os
 import pygame
 import GG.utils
-import time
 
 class Animation(object):
   """ Animation class.
