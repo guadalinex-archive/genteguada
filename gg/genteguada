@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-if False:
-  "http://pychecker.sourceforge.net/"
+if True:
+  # see: http://pychecker.sourceforge.net/
   import os
   os.environ['PYCHECKER'] = '--stdlib -100'
   import pychecker.checker

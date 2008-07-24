@@ -1,6 +1,4 @@
 import animation
-import pygame
-import GG.utils
 
 class IsoView:
   """ IsoView Superclass.

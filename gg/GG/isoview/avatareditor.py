@@ -1,6 +1,4 @@
 import os
-import sys
-import time
 import GG.utils
 import pygame
 import pygame.transform
@@ -50,37 +48,37 @@ class AvatarEditor:
   def loadImagesAvatar(self):
     """ Loads the default avatar images.
     """  
-    dict = {}
-    dict["body"] = None
-    dict["shoes"] = None
-    dict["shirt"] = None
-    dict["trousers"] = None
-    dict["skirt"] = None
-    dict["head"] = None
-    dict["hair"] = None
-    dict["mask"] = None
-    return dict
+    dictionary = {}
+    dictionary["body"] = None
+    dictionary["shoes"] = None
+    dictionary["shirt"] = None
+    dictionary["trousers"] = None
+    dictionary["skirt"] = None
+    dictionary["head"] = None
+    dictionary["hair"] = None
+    dictionary["mask"] = None
+    return dictionary
 
   def loadImagesTag(self):
     """ Loads the editor images.
     """  
-    dict = {}
-    dict["gender"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png"))
-    dict["skin"] =  GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
-    dict["head"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png"))
-    dict["body"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png"))
-    dict["mask"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
-    dict["hair"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
+    dictionary = {}
+    dictionary["gender"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png"))
+    dictionary["skin"] =  GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
+    dictionary["head"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png"))
+    dictionary["body"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png"))
+    dictionary["mask"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
+    dictionary["hair"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
     if self.avatarConfiguration["gender"] == "boy":
-      dict["shirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
-      dict["trousers"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
-      dict["skirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
+      dictionary["shirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
+      dictionary["trousers"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
+      dictionary["skirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
     else:
-      dict["shirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
-      dict["trousers"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
-      dict["skirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
-    dict["shoes"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
-    return dict
+      dictionary["shirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
+      dictionary["trousers"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
+      dictionary["skirt"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
+    dictionary["shoes"] = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
+    return dictionary
 
   def processEvent(self,events):
     """ Handles the mouse and keyboard events.
@@ -566,7 +564,7 @@ class AvatarEditor:
     filePath: image path.
     """  
     from PIL import Image
-    path, file = os.path.split(filePath)
+    path, filename = os.path.split(filePath)
     size = 244,244 
     try:
       img = Image.open(filePath)
