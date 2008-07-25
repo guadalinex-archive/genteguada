@@ -139,7 +139,7 @@ class IsoViewHud(isoview.IsoView):
                     K_n: self.moneyToInventory}
                           
     self.winWardrobe = None
-    self.wardrobe = None
+    #self.wardrobe = None
     self.exchangeWindow = None
     self.activeExchageWindow = False
     self.activeQuizWindow = False
@@ -191,7 +191,7 @@ class IsoViewHud(isoview.IsoView):
   def windowOpen(self):
     """ Checks if there is an open window.
     """
-    if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.adminMenu:
+    if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe or self.adminMenu:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
@@ -367,11 +367,14 @@ class IsoViewHud(isoview.IsoView):
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             [endPos[0], 0], endPos, True)
-      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       ivItem.setAnimation(positionAnim)
+      if hasattr(item, "username"):
+        movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"))
+        ivItem.setMovieAnimation(movieAnim)
       if self.__sound:  
         GG.utils.playSound(GG.utils.SOUND_DROPITEM)
-  
+      positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
+      
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
@@ -942,7 +945,7 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe.depth = 1
     self.removeSprite(self.winWardrobe)
     self.winWardrobe.destroy()
-    #self.winWardrobe = None
+    self.winWardrobe = None
     
   def setAvatarConfiguration(self, configuration):
     """ Sets a new avatar configuration.
@@ -1088,10 +1091,14 @@ class IsoViewHud(isoview.IsoView):
   def moneyToInventory(self):
     if self.__selectedItem == None:
       return
-    self.__selectedItem.addPointsTo(self.__player)
-    self.__isoviewRoom.getModel().removeItem(self.__selectedItem)
-    self.__player.setUnselectedItem()
-
+    ivItem = self.findIVItem(self.__selectedItem)
+    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+                            ivItem.getScreenPosition(), [565, 90+568], True)
+    positionAnim.setOnStop(self.__player.setUnselectedItem, None)
+    positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)
+    positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
+    ivItem.setAnimation(positionAnim)
+    
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """

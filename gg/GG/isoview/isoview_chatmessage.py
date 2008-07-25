@@ -24,9 +24,9 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     self.label.padding = 5
     self.label.set_minimum_size(150,50)
-    self.label.opacity = 200
     
     self.balloon = self.drawBalloon(model.getMessage())
+    self.balloon.opacity = GG.utils.BALLOON_OPACITY
     
     pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
     aux = self.balloon.topleft[0] + self.balloon.size[0]
@@ -47,6 +47,13 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.tail = GG.utils.OcempImageMapTransparent(imgPath)
     self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
     self.tail.zOrder = 20002
+    for x in range(0, 40):
+      for y in range(0, 40):
+        color = self.tail.image.get_at((x,y))
+        if color[3] == 0:
+          self.tail.image.set_at((x,y),[color[0], color[1], color[2], 0])
+        else:  
+          self.tail.image.set_at((x,y),[color[0], color[1], color[2], GG.utils.BALLOON_OPACITY])
     self.__isohud.addSprite(self.tail)
     
   def __del__(self):

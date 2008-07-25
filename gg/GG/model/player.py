@@ -73,7 +73,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     
   def updateSessionTiming(self):
     tmp = time.localtime(time.time())
-    #print self.__startPlayedTime
     v1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
     v2 = (tmp[4]*60 + tmp[5])
     playedTime = v2 - v1
@@ -202,14 +201,11 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     heading: movement direction.
     destination: movement destination.
     """
-    print "--->>> Entra"
     if not self.__destination == destination:
       self.__visited = []
       self.__destination = destination
-      print "--->>> Lanza"
       self.triggerEvent('destination', destination=destination)
-      print "--->>> Peta"
-
+    
   def setStartDestination(self, destination):
     """ Sets a new destination for the player movement without calling for a 'destination' event.
     heading: movement direction.
@@ -338,8 +334,9 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     room: new room.
     pos: starting position on the new room.
     """
-    self.updateExp(room)
-    self.updateSessionTiming()
+    if room:
+      self.updateExp(room)
+      self.updateSessionTiming()
     GG.model.room_item.GGRoomItem.changeRoom(self, room, pos)
     
   def newChatMessage(self, message, type):

@@ -180,24 +180,16 @@ class GGRoom(GG.model.ggmodel.GGModel):
     player: active player.
     target: position the active player clicked on.
     """
-    print "--->>> ", player, target, item
     player.setUnselectedItem()
-    print "--->>> A"
     if item != None:
-      print "--->>> B"  
       item.clickedBy(player)
     else:
-      print "--->>> C"  
       if player.getPosition() != target:
-        print "--->>> D"  
         bottom = self.getTile(target).getBottomItem()
         if bottom:
-          print "--->>> E"  
           bottom.clickedBy(player)
         else:
-          print "--->>> F"  
           if not GG.utils.checkNeighbour(target, player.getPosition()) and self.getNextDirectionForAnItem(target, player.getPosition()) == "none":
-            print "--->>> G"  
             player.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
           player.setDestination(target)

@@ -220,7 +220,6 @@ class MovieAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     self.setFrames(frames)
-    #self.isoview.updateZOrder()
     
   def setFrames(self, frames):
     """ Sets a new frame set for the animation.
