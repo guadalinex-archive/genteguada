@@ -63,7 +63,7 @@ class Model(synchronized.Synchronized):
     subscriptionsCopy = copy.copy(self.__subscriptions)
     for typ, method, subscriptionID, sessionID in subscriptionsCopy:
       if typ == eventType:
-        event = events.Event(self, eventType, params)
+        event = events.Event(self, eventType, params) 
         try:
           method(event)
         except:

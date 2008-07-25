@@ -58,7 +58,10 @@ class GGSession(ggmodel.GGModel):
     event: event info.
     """
     self.triggerEvent('quizAdded', message=event.getParams()['message'])
-  
+
+  def unsubscribeEvents(self):
+    self.__player.getRoom().unsubscribeEventObserver(self)
+    self.__player.unsubscribeEventObserver(self)
 
   def logout(self):
     self.__system.logout(self)
