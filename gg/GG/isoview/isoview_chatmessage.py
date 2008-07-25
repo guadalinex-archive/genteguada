@@ -177,10 +177,10 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image.buttom = 0
     hframe.add_child(image)
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    label = GG.utils.OcempLabelNotTransparent(string,300)
+    label = GG.utils.OcempLabelNotTransparent(string,200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
-    label = GG.utils.OcempLabelNotTransparent(self.getModel().getMessage(),300)
+    label = GG.utils.OcempLabelNotTransparent(self.getModel().getMessage(),200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe

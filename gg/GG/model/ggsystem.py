@@ -138,10 +138,10 @@ class GGSystem(dMVC.model.Model):
     myMoney50 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_50, [14, -25], [0, -10], "Billete de 50", 50)
 
     fenceOffset = [25, -15]
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [0, 0, 0])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [6, 0, 3])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [2, 0, 4])
-    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, 0]), [6, 0, 7])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, -26]), [0, 0, 0])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, -26]), [6, 0, 3])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, -26]), [2, 0, 4])
+    room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.HEDGE, [55, 13], [0, -26]), [6, 0, 7])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [1, 0, 0])
     room1.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.FENCE_UP, fenceOffset, [0, 0]), [2, 0, 0])
     room1.addItemFromVoid(GG.model.web_item.GGWebPannel("furniture/" + GG.utils.ADVERTISEMENT_LEFT, [60, 140], [0, 0], "http://www.opensourceworldconference.com/", "Panel web"), [3, 0, 0])

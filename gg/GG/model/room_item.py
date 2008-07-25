@@ -27,6 +27,16 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     return parentVars + ['anchor', 'topAnchor', 'points']
 
+  def getAdminActions(self):
+    dic = {"Posicion": [self.__tile.position[0], self.__tile.position[2]]}
+    return dic  
+        
+  def getName(self):
+    return "No label"
+  
+  def getImageLabel(self):
+    return self.spriteName
+
   def setPoints(self, points):
     self.points = points
       
@@ -142,6 +152,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
         destination = GG.utils.getFrontPosition(self.__tile.position, direction)
         if destination != clickerPos and destination != [-1, -1, -1]:
           clicker.setDestination(destination)
+      if clicker.admin:
+        clicker.setSelectedItem(self)
     
   def tick(self, now):
     """ Call for an update on item.
