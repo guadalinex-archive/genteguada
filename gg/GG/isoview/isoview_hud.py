@@ -17,8 +17,6 @@ from pygame.locals import * # faster name resolution
 from PIL import Image
 import os
 
-
-
 class IsoViewHud(isoview.IsoView): 
   """ IsoViewHud class.
   Defines the HUD.
@@ -126,7 +124,8 @@ class IsoViewHud(isoview.IsoView):
         "url":{"image":"interface/hud/www.png", "action": self.itemToUrl, "tooltip":"Ir a (W)"},
         "toExchange":{"image":"interface/hud/exchange.png", "action": self.itemToExchange, "tooltip":"Intercambiar (A)"},
         "giveCard":{"image":"interface/hud/contact.png", "action": self.itemToGiveCard, "tooltip":"Dar tarjeta de visita (V)"},
-        "money":{"image":"interface/hud/movein.png", "action": self.moneyToInventory, "tooltip":"Recoger puntos (N)"}
+        "money":{"image":"interface/hud/movein.png", "action": self.moneyToInventory, "tooltip":"Recoger puntos (N)"},
+        
     }
     
     self.hotkeys = {K_x: self.finishGame, K_f: self.showFullScreen, K_s: self.showSoundControl, \
@@ -147,6 +146,8 @@ class IsoViewHud(isoview.IsoView):
     self.activeContactDialog = None
     self.tooltipWindow = None
     self.ctrl = 0
+    
+    self.adminMenu = False
   
   def processEvent(self, events):
     """ Processes the input events.
@@ -189,16 +190,12 @@ class IsoViewHud(isoview.IsoView):
 
   def windowOpen(self):
     """ Checks if there is an open window.
-    """  
-    if self.activeExchageWindow:
-      return True
-    if self.activeQuizWindow:
+    """
+    if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.adminMenu:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
         return True
-    if self.activeContactDialog:
-      return True
     return False
 
   def restoreActiveActionButtonsList(self):
@@ -575,12 +572,6 @@ class IsoViewHud(isoview.IsoView):
     self.__layoutTextArea.add_child(chatMessage.draw())
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
   
-  def getStyleMessageChat(self):
-    """ Returns the chat current style.
-    """
-    listStyle = ["chatEntryBlack","chatEntryRed","chatEntryGreen","chatEntryBlue"]
-    return GG.utils.STYLES[listStyle[random.randint(0,len(listStyle)-1)]]
-    
   def chatMessageEntered(self):
     """ Prints a new message on the chat window.
     """
@@ -656,13 +647,89 @@ class IsoViewHud(isoview.IsoView):
           self.__isoviewRoom.itemSelected(self.__selectedItem)
         selImgPos = self.__selectedItem.getPosition()
         self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
-        
-        #self.__selectedImage.rect.topleft = [self.__selectedImage.rect.topleft[0], self.__selectedImage.rect.topleft[1] + 5]
-        
-        #self.__selectedImage.zOrder = (pow(selImgPos[0], 2) + pow(selImgPos[2], 2))*10 - 1
         self.__selectedImage.zOrder = 0
         self.addSprite(self.__selectedImage)        
+    if self.__player.admin:
+      self.itemSelectedByAdmin()
+    else: 
+      self.itemSelectedByUser()
+  
+  def itemSelectedByAdmin(self):
+    actions = self.__selectedItem.getAdminActions()
+    self.buttonBarActions = ocempgui.widgets.Box(150,300)
+    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 150, 100]
     
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
+    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.buttonBarActions.add_child(imgBackground)
+    
+    img = self.__selectedItem.getImageLabel()
+        
+    from PIL import Image
+    import os
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
+    img = Image.open(filePath)
+    size = 23,23
+    img.thumbnail(size,Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
+    img = GG.utils.OcempImageButtonTransparent(imgPath)
+    img.topleft = 5,6
+    self.buttonBarActions.add_child(img)
+    
+    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290, GG.utils.STYLES["itemLabel"])
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+    itemLabel.topleft = 35,10
+    self.buttonBarActions.add_child(itemLabel)
+    
+    self.editableFields = {}
+    
+    iPos = 0
+    for key in actions.keys():
+      label = GG.utils.OcempLabel(key, 290, GG.utils.STYLES["itemLabel"])
+      label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+      label.topleft = 10, 40 + iPos*60
+      self.buttonBarActions.add_child(label)
+        
+      fCount = 0
+      fields = []
+      print actions[key]  
+      for field in actions[key]:
+        print field  
+        entryLabel = ocempgui.widgets.Entry()
+        entryLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
+        entryLabel.text = str(field)
+        entryLabel.border = 1
+        entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
+        entryLabel.set_minimum_size(60, 20)
+        self.buttonBarActions.add_child(entryLabel)
+        fields.append(entryLabel)
+        fCount += 1
+        
+      self.editableFields[key] = fields
+      iPos += 1
+      
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    okButton = GG.utils.OcempImageButtonTransparent(filePath, "Aplicar cambios", self.showTooltip, self.removeTooltip)
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyChanges)
+    okButton.topleft = 10, 262
+    self.buttonBarActions.add_child(okButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    cancelButton = GG.utils.OcempImageButtonTransparent(filePath, "Descartar cambios", self.showTooltip, self.removeTooltip)
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardChanges)
+    cancelButton.topleft = 80, 262
+    self.buttonBarActions.add_child(cancelButton)
+    
+    self.buttonBarActions.zOrder = 10000
+    self.addSprite(self.buttonBarActions)
+    self.widgetContainer.add_widget(self.buttonBarActions)
+    
+    self.adminMenu = True
+  
+  def itemSelectedByUser(self):
     options = self.__selectedItem.getOptions()
     self.buttonBarActions = ocempgui.widgets.Box(259,95)
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
@@ -1281,6 +1348,38 @@ class IsoViewHud(isoview.IsoView):
   def contactMaskChanged(self, event):
     contactName =  event.getParams()['playerName']
     image = event.getParams()['imageLabel']
-    self.privateChatWindow.updateMaskPlayer(contactName, image)
-    
+    self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
+
+  def applyChanges(self):
+    print "ADMIN: Apply changes"
+    if not self.__selectedItem:
+      self.itemUnselected()
+      self.dropActionsItembuttons()
+      return
+        
+    for key in self.editableFields.keys():
+        
+      if key == "Posicion":
+        try: posX = int(self.editableFields[key][0].text)    
+        except ValueError:
+          self.__player.newChatMessage("Introducido valor incorrecto", 1)
+          return
+        try: posY = int(self.editableFields[key][1].text)    
+        except ValueError:
+          self.__player.newChatMessage("Introducido valor incorrecto", 1)
+          return
+        size = self.__isoviewRoom.getModel().size
+        if 0 < posX < size[0]:
+          if 0 < posY < size[1]:
+            self.__selectedItem.setPosition([posX, 0, posY])  
+            
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+    self.adminMenu = False
+        
+  def discardChanges(self):
+    print "ADMIN: Discard changes"  
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+    self.adminMenu = False
     

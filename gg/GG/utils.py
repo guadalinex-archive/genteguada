@@ -720,17 +720,6 @@ def playSound(sound):
     pygame.mixer.music.play()
 
 # ===============================================================
-
-def translate(string):
-  line = string
-  line = line.replace("\n","")
-  line = line.replace("Â¿","¿")
-  line = line.replace("Ã±","ñ")
-  line = line.replace("Ã","í")
-  
-  return line
-
-# ===============================================================
 # =========================== CLASSES ===========================
 # ===============================================================
 
@@ -805,7 +794,7 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
   def __init__(self, text, width):
     line = ""  
     cad = text
-    width = width/5
+    width = width/4
     while len(cad) > width:
       cad2aux = cad[0:width]
       blankPos = cad2aux.rfind(" ")
