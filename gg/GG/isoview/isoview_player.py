@@ -29,6 +29,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
     self.getModel().subscribeEvent('destination', self.destinationChanged)
     self.__heading = self.getModel().getHeading()
+    self.__state = self.getModel().getState()
 
   def __del__(self):
     """ Class destructor.
@@ -140,11 +141,16 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))
       
+  def stopFallingAndRestore(self):    
+    self.setMovieAnimation(None)  
+    self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp))
+        
   def stateChanged(self, event):
     """ Triggers after receiving a new state change event.
     event: event info.
     """  
     st = event.getParams()["state"]
+    self.__state = st
     pos = event.getParams()["position"]
     if st == GG.utils.STATE[1]: # standing
       self.getParent().removeMovementDestination()
@@ -239,9 +245,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
-    print "------>>>>>> Llega"
     self.__destination = event.getParams()['destination']
-    print "------>>>>>> Vuelve"  
     
   def positionChanged(self, event):
     """ Triggers after receiving a position change event.
