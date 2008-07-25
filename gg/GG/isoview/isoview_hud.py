@@ -1320,7 +1320,8 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.removeContactRemote(contact)      
 
   def unsubscribeAllEvents(self):
-    self.findIVItem(self.__player).unsubscribeAllEvents()
+    self.__isoviewRoom.unsubscribeAllEvents()
+    self.__player.unsubscribeEventObserver(self)
     isoview.IsoView.unsubscribeAllEvents(self) 
       
   def destinationChanged(self, event):

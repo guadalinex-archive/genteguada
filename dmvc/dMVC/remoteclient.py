@@ -152,13 +152,14 @@ class RClient(synchronized.Synchronized):
   #}}}
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def unsubscribeEventObserver(self, observer, eventType): #{{{
+  def unsubscribeEventObserver(self, observer, eventType, classInstance): #{{{
     utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
       subscriptionEventType = value[0]
       subscriptionMethod = value[1]
-      if subscriptionMethod.im_self is observer:
+      subscriptionClass = value[2]
+      if subscriptionMethod.im_self is observer and subscriptionClass is classInstance:
         if eventType == None or eventType == subscriptionEventType: 
           toRemove.append(key)
     for key in toRemove:
@@ -167,17 +168,19 @@ class RClient(synchronized.Synchronized):
   #}}}
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def unsubscribeEventMethod(self, method, eventType): #{{{
+  def unsubscribeEventMethod(self, method, eventType, classInstance): #{{{
     utils.logger.debug("RClient.unsubscribeEventMethod method: "+str(method)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
       subscriptionMethod = value[1]
       subscriptionEventType = value[0]
-      if subscriptionMethod == method:
+      subscriptionClass = value[2]
+      if subscriptionMethod == method and subscriptionClass is classInstance:
         if eventType == None or eventType == subscriptionEventType: 
           toRemove.append(key)
     for key in toRemove:
       del self.__remoteSuscriptions[key]
+    return toRemove
   #}}}
 
 

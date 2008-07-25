@@ -251,4 +251,4 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
     isoview_item.IsoViewItem.positionChanged(self, event)    
-     
+
