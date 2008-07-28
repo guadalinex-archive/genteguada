@@ -27,8 +27,13 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     return parentVars + ['anchor', 'topAnchor', 'points']
 
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return []
+
   def getAdminActions(self):
-    dic = {"Posicion": [self.__tile.position[0], self.__tile.position[2]]}
+    dic = {"Position": [self.__tile.position[0], self.__tile.position[2]]}
     return dic  
         
   def getName(self):
