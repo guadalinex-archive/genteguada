@@ -630,12 +630,14 @@ class IsoViewHud(isoview.IsoView):
     """ Removes the player's movement destination marker.
     """  
     try:
+      #print "--->>> removeMovementDestination"  
       self.removeSprite(self.__targetTileImage)  
     except KeyError:
         # This can happen if a sprite is removed before
         # update() has had a chance to be called.
+      #print "------>>>>>> ERROR"  
       self.__targetTile = not self.__targetTile
-      pass
+      return
     self.__targetTile = not self.__targetTile
     
   def itemSelected(self,event):
@@ -1327,7 +1329,8 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.removeContactRemote(contact)      
 
   def unsubscribeAllEvents(self):
-    self.__isoviewRoom.unsubscribeAllEvents()
+    if self.__isoviewRoom:
+      self.__isoviewRoom.unsubscribeAllEvents()
     self.__player.unsubscribeEventObserver(self)
     isoview.IsoView.unsubscribeAllEvents(self) 
       
