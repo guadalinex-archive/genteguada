@@ -64,6 +64,7 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
+	dh_installdeb
 	dh_compress
 	dh_fixperms
 	dh_gencontrol
