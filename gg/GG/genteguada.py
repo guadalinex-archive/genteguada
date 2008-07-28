@@ -8,7 +8,10 @@ import time
 
 import dMVC.remoteclient
 
-import ocempgui.widgets
+try:
+  import ocempgui.widgets
+except:
+  pass
 import GG.isoview.login
 import GG.model.ggsystem
 import GG.utils
