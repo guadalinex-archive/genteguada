@@ -98,6 +98,12 @@ class GenteGuada:
     winLogin = GG.isoview.login.Login(self.screen, self)
     #self.session = winLogin.draw()
     self.session = winLogin.draw(params.user, params.password)
+    if self.session.getPlayer().admin:
+      value = winLogin.drawAccessMode()  
+      if value == 1:
+        self.session.getPlayer().setAccessMode(True)
+      else:  
+        self.session.getPlayer().setAccessMode(False)  
 
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 

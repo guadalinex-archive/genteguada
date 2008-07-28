@@ -495,6 +495,7 @@ class IsoViewHud(isoview.IsoView):
             "shadow" : 0
             })
     self.textArea = ocempgui.widgets.ScrolledWindow(490, 110)
+    self.textArea.set_scrolling(ocempgui.widgets.Constants.SCROLL_ALWAYS)
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
@@ -654,7 +655,7 @@ class IsoViewHud(isoview.IsoView):
         self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
         self.__selectedImage.zOrder = 0
         self.addSprite(self.__selectedImage)        
-    if self.__player.admin:
+    if self.__player.getAccessMode():
       self.itemSelectedByAdmin()
     else: 
       self.itemSelectedByUser()

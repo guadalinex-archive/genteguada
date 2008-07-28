@@ -48,6 +48,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     else:
       self.imagePath = spritePath
     self.admin = admin  
+    self.__accessMode = admin
+
+  def getAccessMode(self):
+    return self.__accessMode  
+
+  def setAccessMode(self, mode):
+    self.__accessMode = mode
 
   def getTimestamp(self):
     return self.__timestamp
