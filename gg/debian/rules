@@ -51,7 +51,7 @@ install: build
 	#genteguada server
 	$(PYTHON) setup-server.py build_py --no-compile --build-lib=$(PACKAGESERVERDIR)/usr/share/${PACKAGE}
 	$(PYTHON) setup-server.py build_scripts --build-dir=$(PACKAGESERVERDIR)/usr/bin/
-	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE) 
+	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE)/data 
 	#genteguada client
 	$(PYTHON) setup-client.py build_py --no-compile --build-lib=$(PACKAGECLIENTDIR)/usr/share/${PACKAGES}
 	$(PYTHON) setup-client.py build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/bin/
