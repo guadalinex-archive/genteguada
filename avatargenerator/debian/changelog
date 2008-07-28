@@ -1,3 +1,10 @@
+avatargenerator (0.0.4-1) unstable; urgency=low
+
+  * Eliminamos el directorio plugins del blender y solo tenemos el blender
+    compilado
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 28 Jul 2008 10:09:37 +0200
+
 avatargenerator (0.0.3-1) unstable; urgency=low
 
   * Solucionada la captura de parametros despues de las pruebas
