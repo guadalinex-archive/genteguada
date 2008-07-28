@@ -153,6 +153,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__state = st
     pos = event.getParams()["position"]
     if st == GG.utils.STATE[1]: # standing
+      #print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< FIN"  
       self.getParent().removeMovementDestination()
       self.setAnimation(None)
       self.setMovieAnimation(None)  
@@ -160,12 +161,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.getIVRoom().updateScreenPositionsOn(pos)
       
     elif st == GG.utils.STATE[2]: # walking
+      #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>> INICIO"  
       self.setAnimation(None)
       self.setMovieAnimation(None)  
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
 
     elif st == GG.utils.STATE[3]: # standing_carrying
+      #print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< FIN"  
       self.getParent().removeMovementDestination()
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
@@ -173,6 +176,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.getIVRoom().updateScreenPositionsOn(pos)
       
     elif st == GG.utils.STATE[4]: # walking_carrying
+      #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>> INICIO"  
       self.setAnimation(None)
       self.setMovieAnimation(None)  
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
