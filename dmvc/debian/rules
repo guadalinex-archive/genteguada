@@ -7,7 +7,6 @@
 export DH_COMPAT=5
 PYTHON = /usr/bin/python
 VERSION = $(shell pyversions -vd)
-VERSION = 2.4
 
 #nombre del paquete
 PACKAGE= dmvc
@@ -41,8 +40,8 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
-	$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/lib/python${VERSION}/site-packages/
-	dh_installdocs doc/*
+	$(PYTHON) setup build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/share/${PACKAGE}
+	#$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/lib/python${VERSION}/site-packages/
 	rm -f build-stamp configure-stamp
 
 binary-indep: build install
