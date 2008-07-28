@@ -12,29 +12,38 @@ class GGWebItem(GG.model.room_item.GGRoomItem):
     url:
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
-    self.url = url
+    self.__url = url
     self.label = label
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['url', 'label']
+    return parentVars + ['label']
   
   def getOptions(self):
     """ Returns the item's available options.
     """
     return ["url"]
       
+  def getAdminActions(self):
+    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Url": [self.__url]}
+    return dic  
+        
   def getName(self):
     return self.label
   
   def getImageLabel(self):
     return self.spriteName
+
+  def getUrl(self):
+    return self.__url  
   
+  def setUrl(self, url):
+    self.__url = url  
   def checkSimilarity(self, item):
     if GG.model.room_item.GGRoomItem.checkSimilarity(self, item):
-      if item.url == self.url:
+      if item.getUrl() == self.getUrl():
         return True
     return False   
 

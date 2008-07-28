@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: iso-8859-15 -*-
 
 import os
 import pygame
@@ -79,7 +79,7 @@ class Login:
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
     
-    notificationLabel = GG.utils.OcempLabel(unicode("Â¿Desea entrar como administrador?"), 200, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    notificationLabel = GG.utils.OcempLabel("¿Desea entrar como administrador?", 200, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
     notificationLabel.topleft = 225,300
     notificationLabel.border = 1
     notificationLabel.set_minimum_size(230,40)

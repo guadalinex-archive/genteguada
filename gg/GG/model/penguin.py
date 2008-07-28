@@ -17,7 +17,6 @@ class GGPenguin(GG.model.room_item.GGRoomItem):
     """
     GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
-    #self.__msg = "¡Bienvenido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y ábrela."
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -52,28 +51,28 @@ class GGPenguin(GG.model.room_item.GGRoomItem):
     else:
       return False    
 
-  """
-  def talkedBy(self, talker):
-    talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
-  """              
-    
 #================================================================================
 
-class GGPenguinLobby(GGPenguin):
-  """ GGPenguinLobby class.
-  Defines a giver npc object behaviour.
+class GGPenguinTalker(GGPenguin):
+  """ GGPenguinTalker class.
+  Defines a penguin talker object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label):
+  def __init__(self, sprite, anchor, topAnchor, label, message):
     """ Class builder.
-    sprite: sprite used to paint the npc.
+    sprite: sprite used to paint the penguin.
     position: penguin position.
     anchor: image anchor on screen.
     label: penguin's label
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__msg = "¡Bienvenido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y ábrela."
+    self.__msg = message
+
+  def getMessage(self):
+    return self.__msg
+
+  def setMessage(self, msg):
+    self.__msg = msg    
 
   def checkSimilarity(self, item):
     if GGPenguin.checkSimilarity(self, item):
@@ -81,60 +80,16 @@ class GGPenguinLobby(GGPenguin):
         return True
     return False   
 
+  def getAdminActions(self):
+    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Message": [self.__msg]}
+    return dic  
+  
   def talkedBy(self, talker):
     """ Method executed after being talked by a player.
     talker: player.
     """
     talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
-
-#================================================================================
-
-class GGPenguinRoom3(GGPenguin):
-  """ GGPenguinRoom3 class.
-  Defines a giver npc object behaviour.
-  """
- 
-  def __init__(self, sprite, anchor, topAnchor, label):
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__msg = "Para abrir el portón de madera deberás depositar algo pesado sobre ese resorte. Quizá puedas hallar cajas en el almacén, pero la puerta está cerrada. Me pregunto dónde estará la llave que abre la puerta..."
-        
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.__msg == self.__msg:
-        return True
-    return False   
-
-  def talkedBy(self, talker):
-    """ Method executed after being talked by a player.
-    talker: player.
-    """
-    talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    
-#================================================================================
-
-class GGPenguinRoom5(GGPenguin):
-  """ GGPenguinRoom5 class.
-  Defines a giver npc object behaviour.
-  """
-  
-  def __init__(self, sprite, anchor, topAnchor, label):
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__msg = "¡Enhorabuena! Has conseguido cruzar las 5 salas y completar el tutorial de GenteGuada. Ahora estás listo para entrar de lleno en el verdadero juego. Cruza el portal para comenzar."
-        
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.__msg == self.__msg:
-        return True
-    return False   
-  
-  def talkedBy(self, talker):
-    """ Method executed after being talked by a player.
-    talker: player.
-    """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
 #================================================================================
 
@@ -164,7 +119,6 @@ class GGPenguinRoom5Shirt(GGPenguin):
     """
     giftItem = talker.getItemFromInventory("Regalo")
     if giftItem:
-      print "tenemos regalo"
       talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       talker.removeFromInventory(giftItem)

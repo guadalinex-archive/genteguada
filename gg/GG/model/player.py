@@ -492,7 +492,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     self.triggerEvent('cancelExchange')
 
   def acceptExchangeTo(self, step, list):
-    print step
     if step == 1:
       self.__exchangeTo.initExchangeTo(self, list)
     elif step == 2:
@@ -562,7 +561,6 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
 
   def newChatForPlayer(self, string, player):
     for item in self.__agenda:
-      print player  
       if item.getPlayer().username == player.username:
         item.addChatLine(player, string)        
 

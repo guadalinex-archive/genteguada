@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import pygame
 import GG.utils
@@ -361,7 +361,6 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     item = ivItem.getModel()
-    print item
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
@@ -631,12 +630,10 @@ class IsoViewHud(isoview.IsoView):
     """ Removes the player's movement destination marker.
     """  
     try:
-      #print "--->>> removeMovementDestination"  
       self.removeSprite(self.__targetTileImage)  
     except KeyError:
         # This can happen if a sprite is removed before
         # update() has had a chance to be called.
-      #print "------>>>>>> ERROR"  
       self.__targetTile = not self.__targetTile
       return
     self.__targetTile = not self.__targetTile
@@ -657,19 +654,18 @@ class IsoViewHud(isoview.IsoView):
         self.addSprite(self.__selectedImage)        
     if self.__player.getAccessMode():
       self.itemSelectedByAdmin()
-    else: 
-      self.itemSelectedByUser()
-  
+    self.itemSelectedByUser()
+    
   def itemSelectedByAdmin(self):
     actions = self.__selectedItem.getAdminActions()
-    self.buttonBarActions = ocempgui.widgets.Box(150,300)
-    self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 150, 100]
+    self.buttonBarAdminActions = ocempgui.widgets.Box(150,300)
+    self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
-    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
+    self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
     imgBackground = GG.utils.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
-    self.buttonBarActions.add_child(imgBackground)
+    self.buttonBarAdminActions.add_child(imgBackground)
     
     img = self.__selectedItem.getImageLabel()
         
@@ -683,12 +679,12 @@ class IsoViewHud(isoview.IsoView):
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
     img = GG.utils.OcempImageButtonTransparent(imgPath)
     img.topleft = 5,6
-    self.buttonBarActions.add_child(img)
+    self.buttonBarAdminActions.add_child(img)
     
     itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290, GG.utils.STYLES["itemLabel"])
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
-    self.buttonBarActions.add_child(itemLabel)
+    self.buttonBarAdminActions.add_child(itemLabel)
     
     self.editableFields = {}
     
@@ -697,20 +693,21 @@ class IsoViewHud(isoview.IsoView):
       label = GG.utils.OcempLabel(key, 290, GG.utils.STYLES["itemLabel"])
       label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
       label.topleft = 10, 40 + iPos*60
-      self.buttonBarActions.add_child(label)
+      self.buttonBarAdminActions.add_child(label)
         
       fCount = 0
       fields = []
-      print actions[key]  
       for field in actions[key]:
-        print field  
         entryLabel = ocempgui.widgets.Entry()
         entryLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
         entryLabel.text = str(field)
         entryLabel.border = 1
         entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
-        entryLabel.set_minimum_size(60, 20)
-        self.buttonBarActions.add_child(entryLabel)
+        if len(actions[key]) == 1:
+          entryLabel.set_minimum_size(125, 20)
+        else:    
+          entryLabel.set_minimum_size(60, 20)
+        self.buttonBarAdminActions.add_child(entryLabel)
         fields.append(entryLabel)
         fCount += 1
         
@@ -721,17 +718,17 @@ class IsoViewHud(isoview.IsoView):
     okButton = GG.utils.OcempImageButtonTransparent(filePath, "Aplicar cambios", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyChanges)
     okButton.topleft = 10, 262
-    self.buttonBarActions.add_child(okButton)
+    self.buttonBarAdminActions.add_child(okButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
     cancelButton = GG.utils.OcempImageButtonTransparent(filePath, "Descartar cambios", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardChanges)
     cancelButton.topleft = 80, 262
-    self.buttonBarActions.add_child(cancelButton)
+    self.buttonBarAdminActions.add_child(cancelButton)
     
-    self.buttonBarActions.zOrder = 10000
-    self.addSprite(self.buttonBarActions)
-    self.widgetContainer.add_widget(self.buttonBarActions)
+    self.buttonBarAdminActions.zOrder = 10000
+    self.addSprite(self.buttonBarAdminActions)
+    self.widgetContainer.add_widget(self.buttonBarAdminActions)
     
     self.adminMenu = True
   
@@ -1083,6 +1080,17 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.buttonBarActions)
     self.buttonBarActions.destroy()
 
+    if not self.buttonBarAdminActions:
+      return
+  
+    children = copy.copy(self.buttonBarAdminActions.children)
+    for child in children:
+      self.buttonBarAdminActions.remove_child(child)
+      child.destroy()
+    self.widgetContainer.remove_widget(self.buttonBarAdminActions)
+    self.buttonBarAdminActions.destroy()
+    self.adminMenu = False
+
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
@@ -1169,7 +1177,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__fullScreen:
       self.__fullScreen = False
       pygame.display.toggle_fullscreen()
-    webbrowser.open(self.__selectedItem.url)
+    webbrowser.open(self.__selectedItem.getUrl())
     self.itemUnselected()
 
   def itemToLift(self):
@@ -1363,7 +1371,6 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
 
   def applyChanges(self):
-    print "ADMIN: Apply changes"
     if not self.__selectedItem:
       self.itemUnselected()
       self.dropActionsItembuttons()
@@ -1371,7 +1378,7 @@ class IsoViewHud(isoview.IsoView):
         
     for key in self.editableFields.keys():
         
-      if key == "Posicion":
+      if key == "Position":
         try: posX = int(self.editableFields[key][0].text)    
         except ValueError:
           self.__player.newChatMessage("Introducido valor incorrecto", 1)
@@ -1384,13 +1391,21 @@ class IsoViewHud(isoview.IsoView):
         if 0 < posX < size[0]:
           if 0 < posY < size[1]:
             self.__selectedItem.setPosition([posX, 0, posY])  
+      
+      if key == "Url":
+        url = self.editableFields[key][0].text
+        self.__selectedItem.setUrl(url)
+      
+      if key == "Message":
+        msg = self.editableFields[key][0].text    
+        self.__selectedItem.setMessage(msg)  
             
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
+    
         
   def discardChanges(self):
-    print "ADMIN: Discard changes"  
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
