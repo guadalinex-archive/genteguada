@@ -44,10 +44,21 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
+	#genteguada	
 	$(PYTHON) setup build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/share/${PACKAGE}
 	$(PYTHON) setup build_scripts --build-dir=$(PACKAGEDIR)/usr/bin/
+	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE)/data 
+	dh_install GG/cache/* /usr/share/pixmaps/$(PACKAGE)/cache 
+	#genteguada server
+	$(PYTHON) setup-server build_py --no-compile --build-lib=$(PACKAGESERVERDIR)/usr/share/${PACKAGE}
+	$(PYTHON) setup build_scripts --build-dir=$(PACKAGESERVERDIR)/usr/bin/
 	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE) 
-	dh_install gg.pth /usr/lib/python$(VERSION)/site-packages 
+	#genteguada client
+	$(PYTHON) setup-client build_py --no-compile --build-lib=$(PACKAGECLIENTDIR)/usr/share/${PACKAGES}
+	$(PYTHON) setup build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/bin/
+	$(PYTHON) copyData
+	dh_install GG/cache/* /usr/share/pixmaps/$(PACKAGE)/cache 
+	#finalizo
 	rm -f build-stamp configure-stamp
 
 binary-indep: build install
