@@ -31,6 +31,12 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     """
     return ["open"]    
       
+  def getAdminActions(self):
+    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], \
+           "DestinationRoom": [self.__destinationRoom.label], \
+           "ExitPosition": [self.__exitPosition[0], self.__exitPosition[2]]}
+    return dic  
+      
   def getName(self):
     return self.label
   
@@ -114,6 +120,7 @@ class GGDoorLobby(GGTeleport):
     """
     self.transportTo(clicker)
     
+#================================================================================
 
 class GGDoorRoom3B(GGTeleport):
 
@@ -134,6 +141,7 @@ class GGDoorRoom3B(GGTeleport):
       return False
     self.transportTo(clicker)
 
+#================================================================================
 
 class GGDoorRoom3C1(GGTeleport):
 
@@ -155,6 +163,8 @@ class GGDoorRoom3C1(GGTeleport):
       return False
     self.transportTo(clicker)
 
+#================================================================================
+
 class GGDoorRoom3C2(GGTeleport):
 
   def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
@@ -175,6 +185,8 @@ class GGDoorRoom3C2(GGTeleport):
       return False
     self.transportTo(clicker)
 
+#================================================================================
+
 class GGDoorRoom5b(GGTeleport):
 
   def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
@@ -191,6 +203,8 @@ class GGDoorRoom5b(GGTeleport):
       self.newChatMessage('Antes de pasar, debes responder al acertijo de Andatuz.')
       return False
     self.transportTo(clicker)
+
+#================================================================================
 
 class GGDoorSecretRoom(GGTeleport):
 

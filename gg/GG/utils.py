@@ -26,12 +26,14 @@ if os.path.isdir("gg/GG/data"):
   SOUND_PATH = "gg/GG/data/sound"
   NINO_PATH = "avatars/default_boy/"
   NINA_PATH = "avatars/default_girl/"
+  QUESTIONS_PATH = "gg/GG/data/questions"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
   HUD_PATH = "/usr/share/pixmaps/genteguada/data/interface/hud/"
   SOUND_PATH = "/usr/share/pixmaps/genteguada/data/sound"
   NINO_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_boy/"
   NINA_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_girl/"
+  QUESTIONS_PATH = "/usr/share/pixmaps/genteguada/data/questions"
 
 # ======================= CONSTANTS ===========================
 

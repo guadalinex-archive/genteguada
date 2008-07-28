@@ -225,3 +225,7 @@ class GenteGuada:
     else:
       nameMask = None
     self.system.changeAvatarConfiguration(configuration, player, nameMask) 
+
+  def getRoom(self, label):
+    return self.system.getRoom(label)  
+
