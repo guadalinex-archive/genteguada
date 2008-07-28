@@ -385,7 +385,8 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-
+    self.paintRoomOptions()
+    
     self.hud.zOrder = 1
     #self.hud.depth = 1
     self.addSprite(self.hud)
@@ -655,6 +656,19 @@ class IsoViewHud(isoview.IsoView):
     if self.__player.getAccessMode():
       self.itemSelectedByAdmin()
     self.itemSelectedByUser()
+    
+  def paintRoomOptions(self):
+    self.roomOptions = ocempgui.widgets.Box(260, 129)
+    self.roomOptions.topleft = [0, 397]
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/roomOptions.png")
+    self.roomOptions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
+    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.roomOptions.add_child(imgBackground)
+    self.roomOptions.zOrder = 10000
+    self.addSprite(self.roomOptions)
+    self.widgetContainer.add_widget(self.roomOptions)
     
   def itemSelectedByAdmin(self):
     actions = self.__selectedItem.getAdminActions()
