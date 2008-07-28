@@ -8,9 +8,9 @@ try:
   import ocempgui.widgets
   import ocempgui.widgets.base
   import ocempgui.draw
+  import GG.genteguada
 except:
   pass
-import GG.genteguada
 from PIL import Image
 
 # ======================= GENERAL PATHS ===========================
