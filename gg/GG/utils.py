@@ -3,9 +3,12 @@
 import math
 import os
 import pygame
-import ocempgui.widgets
 import stat
-import ocempgui.widgets.base
+try:
+  import ocempgui.widgets
+  import ocempgui.widgets.base
+except:
+  pass
 import ocempgui.draw
 import GG.genteguada
 from PIL import Image
