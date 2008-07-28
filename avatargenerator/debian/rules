@@ -5,8 +5,6 @@
 #export DH_VERBOSE=1
 
 export DH_COMPAT=5
-#PYTHON = /usr/bin/python
-#VERSION = $(shell pyversions -vd)
 
 #nombre del paquete
 PACKAGE= avatargenerator
@@ -42,7 +40,6 @@ install: build
 	dh_install avatarGenerator.py /usr/share/$(PACKAGE) 
 	dh_install blender /usr/share/$(PACKAGE) 
 	dh_install textures/* /usr/share/$(PACKAGE)/textures 
-	dh_install plugins/* /usr/share/$(PACKAGE)/plugins 
 	dh_install avatargenerator /usr/bin/ 
 	dh_installdirs /usr/share/$(PACKAGE)/imagesGenerated
 	rm -f build-stamp configure-stamp
