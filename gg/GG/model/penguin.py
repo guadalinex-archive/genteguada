@@ -1,6 +1,7 @@
 # -*- coding: iso-8859-15 -*-
-import GG.model.room_item
+import os
 import random
+import GG.model.room_item
 import GG.model.chat_message
 
 class GGPenguin(GG.model.room_item.GGRoomItem):
@@ -93,31 +94,50 @@ class GGPenguinTalker(GGPenguin):
 
 #================================================================================
 
-class GGPenguinRoom5Shirt(GGPenguin):
-  """ GGPenguinRoom5 class.
+class GGPenguinTrade(GGPenguin):
+  """ GGPenguinTrade class.
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label):
+  def __init__(self, sprite, anchor, topAnchor, label, message, gift):
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__msg = "Vaya, veo que me traes un regalo. Toma, déjame cambiártelo por esta nueva camiseta."
+    self.__msg = message
+    self.__giftLabel = gift
 
   def getOptions(self):
     """ Returns the item's available options.
     """
     return ["talkAndGet"]
 
+  def getAdminActions(self):
+    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Message": [self.__msg], \
+           "GiftLabel": [self.__giftLabel]}
+    return dic  
+  
   def checkSimilarity(self, item):
     if GGPenguin.checkSimilarity(self, item):
       if item.__msg == self.__msg:
-        return True
+        if item.__giftLabel == self.__giftLabel:  
+          return True
     return False   
-  
+
+  def getMessage(self):
+    return self.__msg
+
+  def setMessage(self, msg):
+    self.__msg = msg    
+
+  def getGiftLabel(self):
+    return self.__giftLabel
+
+  def setGiftLabel(self, giftLabel):
+    self.__giftLabel = giftLabel    
+
   def talkAndGet(self, talker):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    giftItem = talker.getItemFromInventory("Regalo")
+    giftItem = talker.getItemFromInventory(self.__giftLabel)
     if giftItem:
       talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
@@ -129,46 +149,21 @@ class GGPenguinRoom5Shirt(GGPenguin):
       return None
 
 #================================================================================
-        
-class GGPenguinGift(GGPenguin):
-  """ GGPenguinGift class.
-  Defines a giver npc object behaviour.
-  """
- 
-  def __init__(self, sprite, topAnchor, anchor, label):
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__msg1 = "Debes ser muy habil para haber llegado hasta aquí. Toma esto como premio a tu esfuerzo."
-    self.__msg2 = "¿Has vuelto? Ya no me quedan más cosas que darte" 
-
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.__msg1 == self.__msg1 and item.__msg2 == self.__msg2:
-        return True
-    return False   
-
-  def talkedBy(self, talker):
-    """ Method executed after being talked by a player.
-    talker: player.
-    """
-    gift = self.createGift()
-    if not talker.hasItemLabeledInInventory(gift.label):
-      talker.addToInventoryFromVoid(gift, self.getPosition())
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg1, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
-    else:
-      self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg2, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
-              
-#================================================================================
      
 class GGPenguinQuiz(GGPenguin):
   """ GGPenguinQuiz class.
   Defines a giver npc object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label, fileList):
+  def __init__(self, sprite, anchor, topAnchor, label, filePath):
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
-    self.__fileList = fileList
+    self.__fileList = os.listdir(filePath)
+    rmList = []
+    for item in self.__fileList:
+      if item.find(".") > -1 or item.find("~") > -1:
+        rmList.append(item)  
+    for item in rmList:
+      self.__fileList.remove(item)    
     self.__availableQuestions = {}
   
   def getOptions(self):

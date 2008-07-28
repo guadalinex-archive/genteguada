@@ -658,6 +658,8 @@ class IsoViewHud(isoview.IsoView):
     
   def itemSelectedByAdmin(self):
     actions = self.__selectedItem.getAdminActions()
+    if not actions:
+      return
     self.buttonBarAdminActions = ocempgui.widgets.Box(150,300)
     self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
@@ -1080,13 +1082,14 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.buttonBarActions)
     self.buttonBarActions.destroy()
 
-    if not self.buttonBarAdminActions:
+    if not self.adminMenu:
       return
   
     children = copy.copy(self.buttonBarAdminActions.children)
     for child in children:
       self.buttonBarAdminActions.remove_child(child)
       child.destroy()
+      
     self.widgetContainer.remove_widget(self.buttonBarAdminActions)
     self.buttonBarAdminActions.destroy()
     self.adminMenu = False
@@ -1381,11 +1384,11 @@ class IsoViewHud(isoview.IsoView):
       if key == "Position":
         try: posX = int(self.editableFields[key][0].text)    
         except ValueError:
-          self.__player.newChatMessage("Introducido valor incorrecto", 1)
+          self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
           return
         try: posY = int(self.editableFields[key][1].text)    
         except ValueError:
-          self.__player.newChatMessage("Introducido valor incorrecto", 1)
+          self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
           return
         size = self.__isoviewRoom.getModel().size
         if 0 < posX < size[0]:
@@ -1399,6 +1402,32 @@ class IsoViewHud(isoview.IsoView):
       if key == "Message":
         msg = self.editableFields[key][0].text    
         self.__selectedItem.setMessage(msg)  
+
+      if key == "GiftLabel":
+        giftLabel = self.editableFields[key][0].text    
+        self.__selectedItem.setGiftLabel(giftLabel)  
+
+      if key == "ExitPosition":
+        try: posX = int(self.editableFields[key][0].text)    
+        except ValueError:
+          self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
+          return
+        try: posY = int(self.editableFields[key][1].text)    
+        except ValueError:
+          self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
+          return
+        size = self.__selectedItem.getDestinationRoom().size
+        if 0 < posX < size[0]:
+          if 0 < posY < size[1]:
+            self.__selectedItem.setExitPosition([posX, 0, posY])
+              
+      if key == "DestinationRoom":
+        roomLabel = self.editableFields[key][0].text
+        room = GG.genteguada.GenteGuada.getInstance().getRoom(roomLabel)
+        if not room:
+          self.__player.newChatMessage("Valor \"DestinationRoom\" incorrecto", 1)
+          return  
+        self.__selectedItem.setDestinationRoom(room)  
             
     self.itemUnselected()
     self.dropActionsItembuttons()

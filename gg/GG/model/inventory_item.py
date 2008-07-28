@@ -22,6 +22,9 @@ class GGInventoryItem(ggmodel.GGModel):
     """
     return ['spriteName', 'imagePath', 'spriteInventory']
   
+  def getAdminActions(self):
+    return None
+  
   # self.__player
   
   def getPlayer(self):

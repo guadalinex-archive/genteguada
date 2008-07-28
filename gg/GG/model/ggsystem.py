@@ -114,7 +114,8 @@ class GGSystem(dMVC.model.Model):
     nino.addContactTEST(user0)
     
     penguinLobbyText = "¡Bienvenido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y ábrela."
-    penguinRoom3Text = "Para abrir el portón de madera deberás depositar algo pesado sobre ese resorte. Quizá puedas hallar cajas en el almacén, pero la puerta está cerrada. Me pregunto dónde estará la llave que abre la puerta..." 
+    penguinRoom3Text = "Para abrir el portón de madera deberás depositar algo pesado sobre ese resorte. Quizá puedas hallar cajas en el almacén, pero la puerta está cerrada. Me pregunto dónde estará la llave que abre la puerta..."
+    penguinTradeText = "Vaya, veo que me traes un regalo. Toma, déjame cambiártelo por esta nueva camiseta." 
     
     # ROOMS
     room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
@@ -169,7 +170,7 @@ class GGSystem(dMVC.model.Model):
     myDoor2A = GG.model.teleport.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [6, 0, 1], room1, "puerta room2b")
     myDoor2B = GG.model.teleport.GGDoorLobby("furniture/" + GG.utils.DOOR_WOODEN, [28, 23], [0, 0], [6, 0, 6], room3, "puerta room2a")
     myDoor2C = GG.model.teleport.GGDoorSecretRoom("furniture/" + GG.utils.WALL_LEFT, wallOffset2, [0, 0], [6, 0, 6], room6, "puerta room2c")
-    myPenguinShirt = GG.model.penguin.GGPenguinRoom5Shirt(GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt")
+    myPenguinShirt = GG.model.penguin.GGPenguinTrade(GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt", penguinTradeText, "Regalo")
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
     myGoldenKeyRoom2 = GG.model.giver_npc.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
@@ -276,7 +277,7 @@ class GGSystem(dMVC.model.Model):
     myDoor5A2 = GG.model.teleport.GGDoorLobby("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 1], room3, "puerta room5a")
     myDoor5B1 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 0, 7], room1, "puerta room5b")
     myDoor5B2 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 7], room1, "puerta room5b")
-    myPenguinQuiz = GG.model.penguin.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", ["q1", "q10"])
+    myPenguinQuiz = GG.model.penguin.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", GG.utils.QUESTIONS_PATH)
     columnOffset = [13, 15]
     for z in range(0, 8):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, z])
@@ -449,3 +450,9 @@ class GGSystem(dMVC.model.Model):
       f.write(images[image])
       f.close()
     return timestamp
+
+  def getRoom(self, label):
+    for room in self.__rooms:
+      if room.label == label:
+        return room
+    return None
