@@ -152,7 +152,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
         destination = GG.utils.getFrontPosition(self.__tile.position, direction)
         if destination != clickerPos and destination != [-1, -1, -1]:
           clicker.setDestination(destination)
-      if clicker.admin:
+      if clicker.getAccessMode():
         clicker.setSelectedItem(self)
     
   def tick(self, now):

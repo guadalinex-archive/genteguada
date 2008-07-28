@@ -27,6 +27,7 @@ class Login:
     self.__parent = parent
     self.__session = None
     self.dialog = None
+    self.__accessMode = None
   
   def draw(self, user=None, passw=None):
     if user and passw:
@@ -69,6 +70,62 @@ class Login:
       return self.__session
     self.cancelLogin()
 
+  def drawAccessMode(self):
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(self.__screen)
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    
+    imgBackgroundRight = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/TEMP_accessMode.png"))
+    imgBackgroundRight.topleft = 0,0
+    self.window.add_child(imgBackgroundRight)
+    
+    notificationLabel = GG.utils.OcempLabel(unicode("¿Desea entrar como administrador?"), 200, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    notificationLabel.topleft = 225,300
+    notificationLabel.border = 1
+    notificationLabel.set_minimum_size(230,40)
+    self.window.add_child(notificationLabel)
+    
+    imgPath = "interface/editor/ok_button.png"
+    buttonOK = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonOK.topleft = [370, 450]
+    buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeAdmin)
+    self.window.add_child(buttonOK)
+     
+    imgPath = "interface/editor/cancel_button.png"
+    buttonCancel = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonCancel.topleft = [550, 450]
+    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeNormal)
+    self.window.add_child(buttonCancel)
+    
+    self.widgetContainer.add_widget(self.window)
+    return self.__startAccessMode()
+  
+  def __startAccessMode(self):
+    while not self.__finish:
+      time.sleep(0.02)
+      events = pygame.event.get()
+      for event in events:
+        if event.type == QUIT:
+          sys.exit(0)
+        if event.type == KEYDOWN:
+          if event.key == K_ESCAPE:
+            sys.exit(0)
+          elif event.key == K_RETURN: 
+            self.accessModeAdmin()
+          
+      self.widgetContainer.distribute_events(*events)
+    if self.__accessMode:
+      return self.__accessMode
+    self.accesModeNormal()
+    
+  def accessModeAdmin(self):
+    self.__accessMode = 1
+    self.__finish = True
+    
+  def accessModeNormal(self):
+    self.__accessMode = 2
+    self.__finish = True
+    
   def __paintScreen(self):
     imgBackgroundRight = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
     imgBackgroundRight.topleft = 0,0
