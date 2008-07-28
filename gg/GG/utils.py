@@ -7,9 +7,9 @@ import stat
 try:
   import ocempgui.widgets
   import ocempgui.widgets.base
+  import ocempgui.draw
 except:
   pass
-import ocempgui.draw
 import GG.genteguada
 from PIL import Image
 
