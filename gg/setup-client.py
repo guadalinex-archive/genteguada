@@ -4,14 +4,14 @@ from distutils.core import setup
 import setuptools
 
 setup (  
-        name = "genteguada",
+        name = "genteguada-client",
         version = "0.1",
-        description = "Juego colaborativo isometrico",
+        description = "Cliente de Juego colaborativo Isomentrico",
         author = "Eduardo Alvarado",
         author_email = "ealvarado@igosoftware.es",
         license='(c) Igo Software.',
         platforms= ["UNIX"],
-        packages = ["GG","GG.isoview","GG.model"],
-        scripts = ["genteguada","ggserver"],
+        packages = ["GG","GG.isoview"],
+        scripts = ["genteguada"],
       )
 
