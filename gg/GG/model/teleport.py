@@ -109,7 +109,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
 
 #================================================================================
 
-class GGDoorLobby(GGTeleport):
+class GGDoor(GGTeleport):
 
   def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
@@ -122,10 +122,11 @@ class GGDoorLobby(GGTeleport):
     
 #================================================================================
 
-class GGDoorRoom3B(GGTeleport):
+class GGDoorWithKey(GGTeleport):
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
+  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, key):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    self.__key = key
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -136,17 +137,18 @@ class GGDoorRoom3B(GGTeleport):
       return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
-    if not clicker.hasItemLabeledInInventory('Llave Dorada'):
-      clicker.newChatMessage('Necesitas la llave dorada',2)  
+    if not clicker.hasItemLabeledInInventory(self.__key):
+      clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar',2)  
       return False
     self.transportTo(clicker)
 
 #================================================================================
 
-class GGDoorRoom3C1(GGTeleport):
+class GGDoorPressedTiles(GGTeleport):
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
+  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, pressedTiles):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    self.__pressedTiles = pressedTiles
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -158,31 +160,10 @@ class GGDoorRoom3C1(GGTeleport):
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
     pos = self.getPosition()
-    if not (self.getRoom().getBlocked([pos[0] - 1, pos[1], pos[2] + 1]) and self.getRoom().getBlocked([pos[0] + 2, pos[1], pos[2] + 1])):
-      clicker.newChatMessage('El resorte no esta activado.', 2)  
-      return False
-    self.transportTo(clicker)
-
-#================================================================================
-
-class GGDoorRoom3C2(GGTeleport):
-
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
-    GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
-
-  def openedBy(self, clicker):
-    """ Teleports a player to another location.
-    clicker: player to teleport.
-    """
-    if self.getDestinationRoom().isFull():
-      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
-      return
-    pos = self.getPosition()
-    if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      return False
-    if not (self.getRoom().getBlocked([pos[0] - 1, pos[1], pos[2] + 1]) and self.getRoom().getBlocked([pos[0] + 2, pos[1], pos[2] + 1])):
-      clicker.newChatMessage('El resorte no esta activado.', 2)  
-      return False
+    for tile in self.__pressedTiles:
+      if not self.getRoom().getBlocked(tile):
+        clicker.newChatMessage('El resorte no esta activado.', 2)  
+        return False
     self.transportTo(clicker)
 
 #================================================================================
@@ -205,14 +186,3 @@ class GGDoorRoom5b(GGTeleport):
     self.transportTo(clicker)
 
 #================================================================================
-
-class GGDoorSecretRoom(GGTeleport):
-
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
-    GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
-
-  def openedBy(self, clicker):
-    """ Teleports a player to another location.
-    clicker: player to teleport.
-    """
-    self.transportTo(clicker)

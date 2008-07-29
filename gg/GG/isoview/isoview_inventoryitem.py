@@ -2,6 +2,7 @@ import isoview
 import ocempgui.widgets
 import animation
 import pygame
+import GG
 
 class IsoViewInventoryItem(isoview.IsoView):
   """ IsoViewInventoryItem class.
