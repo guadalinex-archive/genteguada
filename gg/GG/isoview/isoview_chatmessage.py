@@ -5,6 +5,7 @@ import GG.utils
 import isoview
 import animation
 import positioned_view
+import guiobjects
 
 class IsoViewChatMessage(positioned_view.PositionedView):
   """ IsoViewChatMessage class.
