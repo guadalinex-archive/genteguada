@@ -90,3 +90,7 @@ class GGSession(ggmodel.GGModel):
     
     return objectsDict
     
+  def createObject(self, name, data):
+    print "*** Nuevo objeto: ", name
+    print "*** ", data
+    
