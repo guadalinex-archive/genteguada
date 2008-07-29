@@ -502,6 +502,25 @@ class OcempImageContactList(OcempImageFileList):
         filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
         item._icon = ocempgui.draw.Image.load_image(filePath)
         
+# ===============================================================
+  
+class OcempImageObjectList(OcempImageFileList):
+  
+  def __init__(self, width, height, objectLabelList):
+    self.objectLabelList = objectLabelList
+    OcempImageFileList.__init__(self, width, height)
+
+  def _list_contents (self):
+    items = ocempgui.widgets.components.ListItemCollection ()
+    for objectLabel in self.objectLabelList:
+      items.append (OcempContactListItem (objectLabel, "chatEntry.png"))
+    self.set_items (items)
+
+  def getSelectedName(self):
+    item = self.get_selected()
+    if len(item):
+      return item[0].text
+    return None
 
 # ===============================================================
 
