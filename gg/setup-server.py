@@ -11,7 +11,7 @@ setup (
         author_email = "ealvarado@igosoftware.es",
         license='(c) Igo Software.',
         platforms= ["UNIX"],
-        packages = ["GG","GG.model"],
+        packages = ["GG","GG.model","GG.avatargenerator"],
         scripts = ["ggserver"],
       )
 

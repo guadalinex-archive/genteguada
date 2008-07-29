@@ -2,7 +2,7 @@
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 export DH_COMPAT=5
 PYTHON = /usr/bin/python
@@ -49,12 +49,13 @@ install: build
 	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE)/data 
 	#genteguada client
 	$(PYTHON) setup-client.py build_py --no-compile --build-lib=$(PACKAGECLIENTDIR)/usr/share/${PACKAGECLIENT}
-	$(PYTHON) setup-client.py build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/game/
+	$(PYTHON) setup-client.py build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/games/
 	$(PYTHON) copyData
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/mask
+	rm -rf GG/cache/mask
 	cp GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
 	dh_testdir
 	#finalizo
