@@ -50,8 +50,8 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = None
     self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
     self.privateChatWindow.hide = True
-    self.createItemswindow = createitemswindow.CreateItemsWindow("Creacion de objetos", self.__player, self)
-    self.createItemswindow.hide = True
+    self.createItemsWindow = createitemswindow.CreateItemsWindow("Creacion de objetos", self.__player, self)
+    self.createItemsWindow.hide = True
     
     if fullscreen:
       self.__fullScreen = True
@@ -203,8 +203,8 @@ class IsoViewHud(isoview.IsoView):
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
         return True
-    if self.createItemswindow:
-      if not self.createItemswindow.hide:
+    if self.createItemsWindow:
+      if not self.createItemsWindow.hide:
         return True
     return False
 
@@ -906,7 +906,7 @@ class IsoViewHud(isoview.IsoView):
                 ]
     
     if self.__player.getAccessMode():
-      ACTIONS.append({"image":"interface/hud/4.png", "action": self.showCreateItems, "tooltip":"Panel de creacion de objetos"})
+      ACTIONS.append({"image":"interface/hud/4.png", "action": self.createItemstHandler, "tooltip":"Panel de creacion de objetos"})
     
     i = 0
     for buttonData in ACTIONS:
@@ -937,17 +937,10 @@ class IsoViewHud(isoview.IsoView):
   def showCreateItems(self):
     """ Shows the private chat window.
     """
-    pass
-    """  
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/privatechat.png")
-    self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
-    self.hud.remove_child(self.__privateChatButton)
-    self.hud.add_child(self.__privateChatButton)
-    
-    self.addSprite(self.privateChatWindow.window)
-    self.widgetContainer.add_widget(self.privateChatWindow.window)
-    x, y = self.privateChatWindow.getScreenPosition()
-    width, height = self.privateChatWindow.getSize()
+    self.addSprite(self.createItemsWindow.window)
+    self.widgetContainer.add_widget(self.createItemsWindow.window)
+    x, y = self.createItemsWindow.getScreenPosition()
+    width, height = self.createItemsWindow.getSize()
     cordX = x
     cordY = y
     if x < 0:
@@ -958,19 +951,15 @@ class IsoViewHud(isoview.IsoView):
       cordX = GG.utils.GAMEZONE_SZ[0] - width  
     if (y + height) > GG.utils.GAMEZONE_SZ[1]:
       cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
-    self.privateChatWindow.setScreenPosition(cordX, cordY)  
-    self.privateChatWindow.hide = False
-    """
+    self.createItemsWindow.setScreenPosition(cordX, cordY)  
+    self.createItemsWindow.hide = False
     
   def hideCreateItems(self):
     """ Hides the private chat window.
     """ 
-    pass
-    """ 
-    self.removeSprite(self.privateChatWindow.window)
-    self.widgetContainer.remove_widget(self.privateChatWindow.window)
-    self.privateChatWindow.hide = True
-    """      
+    self.removeSprite(self.createItemsWindow.window)
+    self.widgetContainer.remove_widget(self.createItemsWindow.window)
+    self.createItemsWindow.hide = True
       
   def privateChatHandler(self):
     """ Shows or hides the private chat window.

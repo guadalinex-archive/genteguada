@@ -68,3 +68,7 @@ class GGSession(ggmodel.GGModel):
     self.__player = None
     self.__system = None
     
+  def getObjectsData(self):
+    if not self.__player.getAccessMode():
+      return None  
+    pass
