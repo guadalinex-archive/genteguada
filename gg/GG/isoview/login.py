@@ -202,7 +202,7 @@ class Login:
      self.dialog.child = self.container
      self.widgetContainer.add_widget(self.dialog)
      
-     buttonCancel = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
+     buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")))
      buttonCancel.topleft = [400, 140]
      buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
      self.container.add_child(buttonCancel)
