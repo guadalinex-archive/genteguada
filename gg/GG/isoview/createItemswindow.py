@@ -7,7 +7,7 @@ import guiobjects
 
 class CreateItemsWindow:
 
-  def __init__(self, player, hud):
+  def __init__(self, title, player, hud):
     self.__player = player
     self.__hud = hud
     self.hide = False
