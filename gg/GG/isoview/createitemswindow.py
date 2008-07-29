@@ -63,12 +63,12 @@ class CreateItemsWindow:
    
   def __paintButtons(self):
     createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
-    createButton.topleft = 20, 315
+    createButton.topleft = 20, 325
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createObject)
     self.container.add_child(createButton)
 
     defaultButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png"), "Restaurar a valores por defecto", self.showTooltip, self.removeTooltip)
-    defaultButton.topleft = 90, 315
+    defaultButton.topleft = 90, 325
     defaultButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.restoreDeafultValues)
     self.container.add_child(defaultButton)
 
@@ -106,7 +106,7 @@ class CreateItemsWindow:
           entryLabel.set_minimum_size(50, 20)
         self.container.add_child(entryLabel)
         self.activeLabels.append(entryLabel)
-      
+        
         fields.append(entryLabel)
         fCount += 1
         
@@ -114,11 +114,21 @@ class CreateItemsWindow:
       iPos += 1
     
   def createObject(self):
-    pass
-
+    self.__hud.createItemstHandler()  
+    name = self.__objectsArea.getSelectedName()
+    data = []
+    keys = self.editableFields.keys()
+    for key in keys:
+      values = []
+      for field in self.editableFields[key]:
+        values.append(field.text)
+      data.append([key, values])
+    self.__session.createObject(name, data)  
+      
   def restoreDeafultValues(self):
-    pass    
-
+    if self.__objectsArea.getSelectedName(): 
+      self.__selectionChange()  
+    
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
