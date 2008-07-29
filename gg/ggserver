@@ -27,7 +27,7 @@ if __name__ == "__main__":
                   [GG.model.ggsystem.GGSystem, 'login', onLogin]
                 ]
 
-
+  print "Iniciado el servidor del juego Gente Guada"
   dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),
                             onDisconnection = onDisconnection,
                             onExecution = onExecution)

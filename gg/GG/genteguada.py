@@ -10,7 +10,6 @@ import dMVC.remoteclient
 
 import ocempgui.widgets
 import GG.isoview.login
-import GG.model.ggsystem
 import GG.utils
 import GG.isoview.guiobjects
 
@@ -120,6 +119,7 @@ class GenteGuada:
         self.finish()
       self.system = self.client.getRootModel()
     else:
+      import GG.model.ggsystem
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
@@ -167,7 +167,8 @@ class GenteGuada:
 
   def getDataPath(self, img):
     #return os.path.join(GG.utils.DATA_PATH, img)
-    if isinstance(self.system,GG.model.ggsystem.GGSystem):
+    #if isinstance(self.system,GG.model.ggsystem.GGSystem):
+    if os.path.isdir(GG.utils.DATA_PATH):
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
       newImgName = img.replace("/","-")
