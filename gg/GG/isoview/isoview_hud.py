@@ -727,8 +727,6 @@ class IsoViewHud(isoview.IsoView):
     
     img = self.__selectedItem.getImageLabel()
         
-    from PIL import Image
-    import os
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
     size = 23,23
@@ -810,8 +808,6 @@ class IsoViewHud(isoview.IsoView):
     
     img = self.__selectedItem.getImageLabel()
         
-    from PIL import Image
-    import os
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
     size = 23,23

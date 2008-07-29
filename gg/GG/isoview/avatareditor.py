@@ -8,6 +8,8 @@ from pygame.locals import * # faster name resolution
 import ocempgui.widgets
 import ocempgui.draw
 
+from PIL import Image
+
 class AvatarEditor:
   """ AvatarEditor class.
   Defines the Avatar Editor
@@ -63,21 +65,34 @@ class AvatarEditor:
     """ Loads the editor images.
     """  
     dictionary = {}
-    dictionary["gender"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png"))
-    dictionary["skin"] =  guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png"))
-    dictionary["head"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png"))
-    dictionary["body"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png"))
-    dictionary["mask"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png"))
-    dictionary["hair"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png"))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/gender_front.png")
+    dictionary["gender"] = guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/skin_back.png")
+    dictionary["skin"] =  guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/head_back.png")
+    dictionary["head"] = guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/body_back.png")
+    dictionary["body"] = guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/mask_back.png")
+    dictionary["mask"] = guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/hair_back.png")
+    dictionary["hair"] = guiobjects.OcempImageButtonTransparent(imgPath)
     if self.avatarConfiguration["gender"] == "boy":
-      dictionary["shirt"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
-      dictionary["trousers"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
-      dictionary["skirt"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/shirt_back.png")
+      dictionary["shirt"] = guiobjects.OcempImageButtonTransparent(imgPath)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/trousers_back.png")
+      dictionary["trousers"] = guiobjects.OcempImageButtonTransparent(imgPath)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/skirt_disabled.png")
+      dictionary["skirt"] = guiobjects.OcempImageButtonTransparent(imgPath)
     else:
-      dictionary["shirt"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
-      dictionary["trousers"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
-      dictionary["skirt"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
-    dictionary["shoes"] = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png"))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/shirt_disabled.png")
+      dictionary["shirt"] = guiobjects.OcempImageButtonTransparent(imgPath)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/trousers_disabled.png")
+      dictionary["trousers"] = guiobjects.OcempImageButtonTransparent(imgPath)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/skirt_back.png")
+      dictionary["skirt"] = guiobjects.OcempImageButtonTransparent(imgPath)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/shoes_back.png")
+    dictionary["shoes"] = guiobjects.OcempImageButtonTransparent(imgPath)
     return dictionary
 
   def processEvent(self,events):
@@ -115,9 +130,11 @@ class AvatarEditor:
   def paintScreen(self):
     """Paints the Avatar Editor background on screen.
     """
-    self.imgBackgroundLeft = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_left.png"))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/background_left.png")
+    self.imgBackgroundLeft = guiobjects.OcempImageMapTransparent(imgPath)
     self.window.add_child(self.imgBackgroundLeft)
-    imgBackgroundRight = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "background_right.png"))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/background_right.png")
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = 297,0
     self.window.add_child(imgBackgroundRight)
 
@@ -167,43 +184,43 @@ class AvatarEditor:
   def paintBody(self):
     """ Paints the avatar's body.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "skin", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "skin", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "body")
 
   def paintShoes(self):
     """ Paints the avatar's shoes.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "shoes", self.avatarConfiguration["shoes"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "shoes", self.avatarConfiguration["shoes"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "shoes")
 
   def paintShirt(self):
     """ Paints the avatar's shirt.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeShirt"]+"_shirt", self.avatarConfiguration["shirt"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeShirt"]+"_shirt", self.avatarConfiguration["shirt"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "shirt")
 
   def paintTrousers(self):
     """ Paints the avatar's trousers.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeTrousers"]+"_trousers", self.avatarConfiguration["trousers"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeTrousers"]+"_trousers", self.avatarConfiguration["trousers"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "trousers")
 
   def paintSkirt(self):
     """ Paints the avatar's skirt.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeSkirt"]+"_skirt", self.avatarConfiguration["skirt"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeSkirt"]+"_skirt", self.avatarConfiguration["skirt"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "skirt")
 
   def paintHead(self):
     """ Paints the avatar's head.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "head", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "head", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "head")
 
   def paintHair(self):
     """ Paints the avatar's hair.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "hair_"+self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"] + GG.utils.IMG_EXTENSION)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "hair_"+self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"] + GG.utils.IMG_EXTENSION))
     self.newAvatarImage(imgPath, "hair")
 
   def paintMask(self):
@@ -212,7 +229,7 @@ class AvatarEditor:
     if self.avatarConfiguration["mask"]:
       imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUploadMask.png")
     else:
-      imgPath = os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png"))
     self.newAvatarImage(imgPath, "mask")
 
   def paintTags(self):
@@ -230,16 +247,16 @@ class AvatarEditor:
     """ Changes the tab's image.
     idTag: new image id.
     """
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, self.activeOption+"_back.png"))
     self.imagesTag[self.activeOption].picture = ocempgui.draw.Image.load_image(imgPath)
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, idTag+"_front.png"))
     self.imagesTag[idTag].picture = ocempgui.draw.Image.load_image(imgPath)
 
   def changeBackgroundLeft(self, image):
     """ Changes the left background.
     image: new background.
     """  
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, image)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, image))
     self.imgBackgroundLeft.picture = ocempgui.draw.Image.load_image(imgPath)
 
   def paintCustomizeZone(self,idTag = None):
@@ -309,13 +326,13 @@ class AvatarEditor:
   def paintGenderFrame(self):
     """ Paints the gender frames on screen.
     """  
-    maleButton = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "boy_button.png"), self.buttonTooltips["boy"]['tooltip'], self.showTooltip, self.removeTooltip)
+    maleButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "boy_button.png")), self.buttonTooltips["boy"]['tooltip'], self.showTooltip, self.removeTooltip)
     maleButton.topleft = [73, 191]
     maleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "boy")
     self.window.add_child(maleButton)
     self.activeWidget.append(maleButton)
      
-    femaleButton = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "girl_button.png"), self.buttonTooltips["girl"]['tooltip'], self.showTooltip, self.removeTooltip)
+    femaleButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "girl_button.png")), self.buttonTooltips["girl"]['tooltip'], self.showTooltip, self.removeTooltip)
     femaleButton.topleft = [73, 441]
     femaleButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.updateGender, "girl")
     self.window.add_child(femaleButton)
@@ -330,16 +347,16 @@ class AvatarEditor:
       self.paintBody()
       self.paintShoes()
       if self.avatarConfiguration["gender"] == "boy":
-        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png"))
-        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png"))
-        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png"))
+        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_back.png")))
+        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_back.png")))
+        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png")))
         self.delAvatarImage("skirt")
         self.paintShirt()
         self.paintTrousers()
       else:
-        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png"))
-        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png"))
-        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png"))
+        self.imagesTag["shirt"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shirt_disabled.png")))
+        self.imagesTag["trousers"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "trousers_disabled.png")))
+        self.imagesTag["skirt"].picture = ocempgui.draw.Image.load_image(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png")))
         self.delAvatarImage("shirt")
         self.delAvatarImage("trousers")
         self.paintSkirt()
@@ -367,7 +384,7 @@ class AvatarEditor:
     buttons = self.getPaletteButtons(type)
     for i in range(len(buttons)):
       for j in range(len(buttons[0])):
-        button = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i][j]))
+        button = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i][j])))
         button.topleft = [baseX + sizeX * j + offset * j, baseY + sizeY * i + offset * i]
         button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, j + 1 + (i * 3))
         self.window.add_child(button)
@@ -408,12 +425,12 @@ class AvatarEditor:
     if len(options) > 1:
       img = options[int(self.avatarConfiguration[tag]) - 1]
 
-      buttonLeft = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png"), self.buttonTooltips["before"]['tooltip'], self.showTooltip, self.removeTooltip)
+      buttonLeft = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png")), self.buttonTooltips["before"]['tooltip'], self.showTooltip, self.removeTooltip)
       buttonLeft.topleft = 30,400
       buttonLeft.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveOptions, "left", options, tag)
       self.window.add_child(buttonLeft)
       self.activeWidget.append(buttonLeft)
-      buttonRight = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "right_button.png"), self.buttonTooltips["next"]['tooltip'], self.showTooltip, self.removeTooltip)
+      buttonRight = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "right_button.png")), self.buttonTooltips["next"]['tooltip'], self.showTooltip, self.removeTooltip)
       buttonRight.topleft = 200,400
       buttonRight.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveOptions, "right", options, tag)
       self.window.add_child(buttonRight)
@@ -424,7 +441,7 @@ class AvatarEditor:
     if tag == "mask" and self.avatarConfiguration["mask"]:
       self.imgOptionsTab = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUpload.png"))
     else:
-      self.imgOptionsTab = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
+      self.imgOptionsTab = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img)))
     self.imgOptionsTab.topleft = 30,150
     self.activeWidget.append(self.imgOptionsTab)
     self.window.add_child(self.imgOptionsTab)
@@ -445,7 +462,7 @@ class AvatarEditor:
       newImgIndex = int(self.avatarConfiguration[tag]) + 1
 
     self.avatarConfiguration[tag] = str(newImgIndex)
-    imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1])
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1]))
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgOptionsTab.picture = img
     self.updateAvatar(tag)
@@ -467,12 +484,12 @@ class AvatarEditor:
     """ Paints the winter mode for the selected tag items.
     tag: selected tag.
     """  
-    buttonWinter = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "winter_button.png"), self.buttonTooltips["winter"]['tooltip'], self.showTooltip, self.removeTooltip)
+    buttonWinter = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "winter_button.png")), self.buttonTooltips["winter"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonWinter.topleft = 20,20
     buttonWinter.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeCloth, "long", tag)
     self.window.add_child(buttonWinter)
     self.activeWidget.append(buttonWinter)
-    buttonSummer = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "summer_button.png"), self.buttonTooltips["summer"]['tooltip'], self.showTooltip, self.removeTooltip)
+    buttonSummer = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "summer_button.png")), self.buttonTooltips["summer"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonSummer.topleft = 150,20
     buttonSummer.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeCloth, "short", tag)
     self.window.add_child(buttonSummer)
@@ -489,12 +506,12 @@ class AvatarEditor:
   def paintMaskOptions(self):
     """ Paints the mask options on screen.
     """  
-    buttonMask = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "undo.png"), self.buttonTooltips["undo"]['tooltip'], self.showTooltip, self.removeTooltip)
+    buttonMask = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "undo.png")), self.buttonTooltips["undo"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonMask.topleft = 30,500
     buttonMask.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeMask, "mask")
     self.window.add_child(buttonMask)
     self.activeWidget.append(buttonMask)
-    buttonFileChooser = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "file_button.png"), self.buttonTooltips["file"]['tooltip'], self.showTooltip, self.removeTooltip)
+    buttonFileChooser = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "file_button.png")), self.buttonTooltips["file"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonFileChooser.topleft = 150,500
     buttonFileChooser.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeMask, "file")
     self.window.add_child(buttonFileChooser)
@@ -515,7 +532,7 @@ class AvatarEditor:
         img = "masko.png"
       else:
         img = "maska.png"
-      imgPath = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img))
       img = ocempgui.draw.Image.load_image(imgPath)
       self.imgOptionsTab.picture = img 
       self.avatarConfiguration["mask"] = None
@@ -527,19 +544,19 @@ class AvatarEditor:
     self.dialog = ocempgui.widgets.Box(373,372)
     self.dialog.topleft = 528, 205
 
-    background = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_EDITOR_BACKGROUNDS, "uploadWindow.png"))
+    background = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_BACKGROUNDS, "uploadWindow.png")))
     self.dialog.add_child(background)
     
     self.listDir = guiobjects.OcempImageFileList(310,239)
     self.listDir.topleft = 31,60
     self.dialog.add_child(self.listDir)
 
-    buttonOK = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"), self.buttonTooltips["ok"]['tooltip'], self.parent.showTooltip, self.parent.removeTooltip)
+    buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png")), self.buttonTooltips["ok"]['tooltip'], self.parent.showTooltip, self.parent.removeTooltip)
     buttonOK.topleft = [233, 308]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"OK")
     self.dialog.add_child(buttonOK)
      
-    buttonCancel = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"), self.buttonTooltips["cancel"]['tooltip'], self.parent.showTooltip, self.parent.removeTooltip)
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")), self.buttonTooltips["cancel"]['tooltip'], self.parent.showTooltip, self.parent.removeTooltip)
     buttonCancel.topleft = [122, 308]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeFileDialog,"KO")
     self.dialog.add_child(buttonCancel)
@@ -563,7 +580,6 @@ class AvatarEditor:
     """ Show a loaded image.
     filePath: image path.
     """  
-    from PIL import Image
     path, filename = os.path.split(filePath)
     size = 244,244 
     try:
@@ -581,10 +597,9 @@ class AvatarEditor:
     """ Generates a new mask from an image file.
     nameFile: image file name.
     """  
-    from PIL import Image
     imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, nameFile)
-    imgMask = Image.open(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "mask.png"))
-    imgTemplate = Image.open(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "template.png"))
+    imgMask = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "mask.png")))
+    imgTemplate = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"],self.avatarConfiguration["headSize"], "template.png")))
     imgUpload = Image.open(imgPath)
     size = GG.utils.MASK_SIZE[self.avatarConfiguration["headSize"]]
     imgUploadResized = imgUpload.resize(size, Image.ANTIALIAS)
@@ -671,7 +686,7 @@ class AvatarEditor:
     offset = 10
     buttons = ["s","m","l","xl"]
     for i in range(len(buttons)):
-      button = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i]+".png"), self.buttonTooltips[buttons[i]]['tooltip'], self.showTooltip, self.removeTooltip)
+      button = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, buttons[i]+".png")), self.buttonTooltips[buttons[i]]['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = [baseX , baseY + sizeY * i + offset * i]
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, method, buttons[i].upper())
       self.window.add_child(button)
@@ -704,12 +719,15 @@ class AvatarEditor:
   def paintButtons(self):
     """ Paints the editor buttons.
     """
-    buttonOK = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png"), self.buttonTooltips["ok"]['tooltip'], self.showTooltip, self.removeTooltip)
+
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/ok_button.png")
+    buttonOK = guiobjects.OcempImageButtonTransparent(imgPath, self.buttonTooltips["ok"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonOK.topleft = [770, 30]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.changeConfiguration)
     self.window.add_child(buttonOK)
-     
-    buttonCancel = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"), self.buttonTooltips["cancel"]['tooltip'], self.showTooltip, self.removeTooltip)
+
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/cancel_button.png")
+    buttonCancel = guiobjects.OcempImageButtonTransparent(imgPath, self.buttonTooltips["cancel"]['tooltip'], self.showTooltip, self.removeTooltip)
     buttonCancel.topleft = [890, 30]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.closeConfiguration)
     self.window.add_child(buttonCancel)

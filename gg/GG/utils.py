@@ -10,23 +10,20 @@ if os.path.isdir("gg/GG/cache"):
   LOCAL_DATA_PATH = "gg/GG/cache"
 else:
   LOCAL_DATA_PATH = "/usr/share/pixmaps/genteguada/cache"
+
 CLEAR_CACHE_WEEKS = 4
 
 #resources
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
-  HUD_PATH = "interface/hud/"
-  SOUND_PATH = "gg/GG/data/sound"
-  NINO_PATH = "avatars/default_boy/"
-  NINA_PATH = "avatars/default_girl/"
-  QUESTIONS_PATH = "gg/GG/data/questions"
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
-  HUD_PATH = "/usr/share/pixmaps/genteguada/data/interface/hud/"
-  SOUND_PATH = "/usr/share/pixmaps/genteguada/data/sound"
-  NINO_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_boy/"
-  NINA_PATH = "/usr/share/pixmaps/genteguada/data/avatars/default_girl/"
-  QUESTIONS_PATH = "/usr/share/pixmaps/genteguada/data/questions"
+
+HUD_PATH = "interface/hud/"
+SOUND_PATH = "sound"
+NINO_PATH = "avatars/default_boy/"
+NINA_PATH = "avatars/default_girl/"
+QUESTIONS_PATH = DATA_PATH+"/questions"
 
 # ======================= CONSTANTS ===========================
 
@@ -185,15 +182,15 @@ TILES_CASTLE1 = ["castle01.png"]
 TILES_CASTLE2 = ["castle02.png"]
 
 #Backgrounds
-PATH_EDITOR_BACKGROUNDS = DATA_PATH + "/interface/backgrounds"
+PATH_EDITOR_BACKGROUNDS = "interface/backgrounds"
 
 # Sprites: avatar design and buttons
 DUMMY = "dummy.png"
 GENDER_TAG = "genderTag.png"
 
 # Avatar editor
-PATH_EDITOR_IMG = DATA_PATH + "/editor"
-PATH_EDITOR_INTERFACE = DATA_PATH + "/interface/editor"
+PATH_EDITOR_IMG = "editor"
+PATH_EDITOR_INTERFACE = "interface/editor"
 IMG_EXTENSION = ".png"
 PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
 MASK_SIZE = {"S": [112,105],"M": [124,116],"L": [134,127],"XL": [146,137]}

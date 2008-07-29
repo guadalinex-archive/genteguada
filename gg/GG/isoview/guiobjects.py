@@ -525,7 +525,7 @@ class OcempImageObjectList(OcempImageFileList):
 # ===============================================================
 
 def playSound(sound):
-  sndPath = os.path.join(GG.utils.SOUND_PATH, sound)
+  sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
   if not os.path.isfile(sndPath):
     return False
   if not pygame.mixer.get_busy():
