@@ -20,7 +20,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud = isohud
     positioned_view.PositionedView.__init__(self, model, screen)
     self.style = self.getStyleMessageChat()
-    self.label = GG.utils.OcempLabelNotTransparent(model.getMessage(),140)
+    self.label = guiobjects.OcempLabelNotTransparent(model.getMessage(),140)
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     self.label.padding = 5
     self.label.set_minimum_size(150,50)
@@ -44,7 +44,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud.addSprite(self.balloon)
     
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.TAIL[model.type])  
-    self.tail = GG.utils.OcempImageMapTransparent(imgPath)
+    self.tail = guiobjects.OcempImageMapTransparent(imgPath)
     self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
     self.tail.zOrder = 20002
     """
@@ -92,15 +92,15 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     """ Returns the chat current style.
     """
     styles = {}
-    styles["balloon"] = GG.utils.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
-    styles["entry"] = GG.utils.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
+    styles["balloon"] = guiobjects.STYLES["chatBalloon" + GG.utils.CHAT_TYPE[self.getModel().type]]
+    styles["entry"] = guiobjects.STYLES["chatEntry" + GG.utils.CHAT_TYPE[self.getModel().type]]
     return styles
   
   def drawBalloon(self, message):
     """ Draws a balloon containing a given message.
     message: message to be included on the balloon. 
     """  
-    label = GG.utils.OcempLabelNotTransparent(message,140)
+    label = guiobjects.OcempLabelNotTransparent(message,140)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     label.padding = 5
     label.set_minimum_size(150,50)
@@ -121,13 +121,13 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     type = self.getModel().type
     topRow = ocempgui.widgets.HFrame()
     bottomRow = ocempgui.widgets.HFrame()  
-    topRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_TOPLEFT[type])))
-    bottomRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_BOTTOMLEFT[type])))
+    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_TOPLEFT[type])))
+    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_BOTTOMLEFT[type])))
     for i in range(0, num):
-      topRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_TOP[type])))
-      bottomRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_BOTTOM[type])))
-    topRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_TOPRIGHT[type])))
-    bottomRow.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_BOTTOMRIGHT[type])))
+      topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_TOP[type])))
+      bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_BOTTOM[type])))
+    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_TOPRIGHT[type])))
+    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.CORNER_BOTTOMRIGHT[type])))
     topRow.border = 0  
     topRow.padding = 0
     topRow.set_minimum_size((num+2)*20, 20)
@@ -145,8 +145,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     midVerticalColumn1 = ocempgui.widgets.VFrame()
     midVerticalColumn2 = ocempgui.widgets.VFrame()
     for i in range(0, num2):
-      midVerticalColumn1.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_LEFT[type])))
-      midVerticalColumn2.add_child(GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_RIGHT[type])))
+      midVerticalColumn1.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_LEFT[type])))
+      midVerticalColumn2.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/chat/" + GG.utils.BORDER_RIGHT[type])))
     midVerticalColumn1.border = 0  
     midVerticalColumn1.padding = 0
     midVerticalColumn1.set_minimum_size(20, (num2)*20)
@@ -186,10 +186,10 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image.buttom = 0
     hframe.add_child(image)
     string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    label = GG.utils.OcempLabelNotTransparent(string,200)
+    label = guiobjects.OcempLabelNotTransparent(string,200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
-    label = GG.utils.OcempLabelNotTransparent(self.getModel().getMessage(),200)
+    label = guiobjects.OcempLabelNotTransparent(self.getModel().getMessage(),200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe

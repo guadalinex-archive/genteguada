@@ -6,6 +6,7 @@ import ocempgui.widgets
 import GG.utils
 import sys
 import time
+import guiobjects
 
 from pygame.locals import * # faster name resolution
 
@@ -75,24 +76,24 @@ class Login:
     self.widgetContainer.set_screen(self.__screen)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     
-    imgBackgroundRight = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/TEMP_accessMode.png"))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/TEMP_accessMode.png"))
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
     
-    notificationLabel = GG.utils.OcempLabel("¿Desea entrar como administrador?", 200, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    notificationLabel = guiobjects.OcempLabel("¿Desea entrar como administrador?", 200, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     notificationLabel.topleft = 225,300
     notificationLabel.border = 1
     notificationLabel.set_minimum_size(230,40)
     self.window.add_child(notificationLabel)
     
     imgPath = "interface/editor/ok_button.png"
-    buttonOK = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [370, 450]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeAdmin)
     self.window.add_child(buttonOK)
      
     imgPath = "interface/editor/cancel_button.png"
-    buttonCancel = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonCancel.topleft = [550, 450]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeNormal)
     self.window.add_child(buttonCancel)
@@ -127,18 +128,18 @@ class Login:
     self.__finish = True
     
   def __paintScreen(self):
-    imgBackgroundRight = GG.utils.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
 
   def __paintTextLabels(self):
-    self.__usernameLabel = GG.utils.OcempLabel("Usuario: ", 80, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    self.__usernameLabel = guiobjects.OcempLabel("Usuario: ", 80, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     self.__usernameLabel.topleft = 670,408
     self.__usernameLabel.border = 1
     self.__usernameLabel.set_minimum_size(230,40)
     self.window.add_child(self.__usernameLabel)
 
-    self.__passwordLabel = GG.utils.OcempLabel("Password:", 80, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLogin"]))
+    self.__passwordLabel = guiobjects.OcempLabel("Password:", 80, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     self.__passwordLabel.topleft = 670,518
     self.__passwordLabel.border = 1
     self.__passwordLabel.set_minimum_size(230,40)
@@ -147,14 +148,14 @@ class Login:
   def __paintTextEntrys(self):
     self.__textFieldUsername = ocempgui.widgets.Entry("")
     self.__textFieldUsername.topleft = 700,460
-    self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldLogin"]))
     self.__textFieldUsername.border = 1
     self.__textFieldUsername.set_minimum_size(230,40)
     self.window.add_child(self.__textFieldUsername)
 
     self.__textFieldPassword = ocempgui.widgets.Entry("")
     self.__textFieldPassword.topleft = 700,570
-    self.__textFieldPassword.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldLogin"]))
+    self.__textFieldPassword.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldLogin"]))
     self.__textFieldPassword.border = 1
     self.__textFieldPassword.set_minimum_size(230,40)
     self.__textFieldPassword.set_password(True)
@@ -162,13 +163,13 @@ class Login:
 
   def __paintButtons(self):
     imgPath = "interface/editor/ok_button.png"
-    buttonOK = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [750, 690]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.acceptLogin)
     self.window.add_child(buttonOK)
      
     imgPath = "interface/editor/cancel_button.png"
-    buttonCancel = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonCancel.topleft = [870, 690]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
     self.window.add_child(buttonCancel)
@@ -192,7 +193,7 @@ class Login:
      self.container = ocempgui.widgets.Box(516,197)
 
      filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png")
-     imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
      imgBackground.topleft = 0,0
      self.container.add_child(imgBackground)
     
@@ -201,12 +202,12 @@ class Login:
      self.dialog.child = self.container
      self.widgetContainer.add_widget(self.dialog)
      
-     buttonCancel = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
+     buttonCancel = guiobjects.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png"))
      buttonCancel.topleft = [400, 140]
      buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
      self.container.add_child(buttonCancel)
      
-     labelAlert = GG.utils.OcempLabel("Error: Usuario o password incorrectos.", 200, GG.utils.STYLES["dialogFont"])
+     labelAlert = guiobjects.OcempLabel("Error: Usuario o password incorrectos.", 200, guiobjects.STYLES["dialogFont"])
      labelAlert.topleft = 160, 80
      self.container.add_child(labelAlert)
 

@@ -2,6 +2,7 @@ import pygame
 import GG.utils
 import animation
 import positioned_view
+import guiobjects
 
 class IsoViewItem(positioned_view.PositionedView):
   """ IsoViewItem class.
@@ -155,7 +156,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     self.__position = event.getParams()['position']
     if self.__parent.getSound():
-      GG.utils.playSound(GG.utils.SOUND_STEPS01)
+      guiobjects.playSound(GG.utils.SOUND_STEPS01)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
                   self.__ivroom.getFutureScreenPosition(self, event.getParams()['position']))
     positionAnim.setOnStop(self.__ivroom.updateScreenPositionsOn, event.getParams()['position'])

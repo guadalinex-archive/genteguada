@@ -1,6 +1,5 @@
 import isoview
 import ocempgui.widgets
-import GG.utils
 import animation
 import pygame
 

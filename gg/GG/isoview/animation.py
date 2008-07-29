@@ -1,5 +1,5 @@
 import pygame
-import GG.utils
+import GG
 
 class Animation(object):
   """ Animation class.

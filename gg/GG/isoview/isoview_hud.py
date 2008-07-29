@@ -12,6 +12,7 @@ import avatareditor
 import animation
 import exchangewindow
 import privatechatwindow
+import guiobjects
 
 from pygame.locals import * # faster name resolution
 from PIL import Image
@@ -33,7 +34,7 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     
-    self.__allSprites = GG.utils.GroupSprite()
+    self.__allSprites = guiobjects.GroupSprite()
     
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
@@ -354,7 +355,7 @@ class IsoViewHud(isoview.IsoView):
         self.__isoviewInventory.remove(ivInventItem)
         self.paintItemsInventory()
       if self.__sound:  
-        GG.utils.playSound(GG.utils.SOUND_DROPITEM)
+        guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       
   def addItemToRoomFromVoid(self, ivItem):
     """ Creates an animation from the top of the screen to the room.
@@ -371,7 +372,7 @@ class IsoViewHud(isoview.IsoView):
         movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"))
         ivItem.setMovieAnimation(movieAnim)
       if self.__sound:  
-        GG.utils.playSound(GG.utils.SOUND_DROPITEM)
+        guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
       
   def draw(self):
@@ -414,7 +415,7 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.stopAnimations()
       self.__isoviewRoom.unsubscribeAllEvents()
       if self.__sound:
-        GG.utils.playSound(GG.utils.SOUND_OPENDOOR)
+        guiobjects.playSound(GG.utils.SOUND_OPENDOOR)
 
       list = self.__isoviewRoom.getSpritesDict()
       for img in list.keys():
@@ -443,19 +444,19 @@ class IsoViewHud(isoview.IsoView):
     self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
 
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)
-    self.imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    self.imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     self.imgBackground.topleft = 1,1
     self.hud.add_child(self.imgBackground)
     
-    labelChat = GG.utils.OcempLabel("Chat", 80, GG.utils.STYLES["hudLabel"])
+    labelChat = guiobjects.OcempLabel("Chat", 80, guiobjects.STYLES["hudLabel"])
     labelChat.topleft = 17, 70
     self.hud.add_child(labelChat)
     
-    labelProfile = GG.utils.OcempLabel("Mi perfil: ", 80, GG.utils.STYLES["hudLabel"])
+    labelProfile = guiobjects.OcempLabel("Mi perfil: ", 80, guiobjects.STYLES["hudLabel"])
     labelProfile.topleft = 555, 90
     self.hud.add_child(labelProfile)
     
-    labelInventory = GG.utils.OcempLabel("Inventario", 80, GG.utils.STYLES["hudLabel"])
+    labelInventory = guiobjects.OcempLabel("Inventario", 80, guiobjects.STYLES["hudLabel"])
     labelInventory.topleft = 819, 70
     self.hud.add_child(labelInventory)
 
@@ -510,7 +511,7 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the editable text box on screen.
     """
     self.__textField = ocempgui.widgets.Entry()
-    self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
+    self.__textField.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.__textField.border = 1
     self.__textField.topleft = 14, 210
     self.__textField.set_minimum_size(490, 20)
@@ -520,7 +521,7 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the inventory box and its items on it.    
     """
     self.windowInventory = ocempgui.widgets.ScrolledWindow(186, 135)
-    self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
+    self.windowInventory.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["inventoryArea"]))
     self.windowInventory.border = ocempgui.widgets.Constants.BORDER_FLAT
     self.windowInventory.topleft = 819, 90
     self.windowInventory.set_depth(1)
@@ -662,8 +663,8 @@ class IsoViewHud(isoview.IsoView):
     self.roomOptions.topleft = [0, 397]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/roomOptions.png")
-    self.roomOptions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    self.roomOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.roomOptions.add_child(imgBackground)
     self.roomOptions.zOrder = 10000
@@ -678,8 +679,8 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
-    self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.buttonBarAdminActions.add_child(imgBackground)
     
@@ -693,12 +694,12 @@ class IsoViewHud(isoview.IsoView):
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
-    img = GG.utils.OcempImageButtonTransparent(imgPath)
+    img = guiobjects.OcempImageButtonTransparent(imgPath)
     img.topleft = 5,6
     self.buttonBarAdminActions.add_child(img)
     
-    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290, GG.utils.STYLES["itemLabel"])
-    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
     self.buttonBarAdminActions.add_child(itemLabel)
     
@@ -706,8 +707,8 @@ class IsoViewHud(isoview.IsoView):
     
     iPos = 0
     for key in actions.keys():
-      label = GG.utils.OcempLabel(key, 290, GG.utils.STYLES["itemLabel"])
-      label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+      label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
+      label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
       label.topleft = 10, 40 + iPos*60
       self.buttonBarAdminActions.add_child(label)
         
@@ -715,7 +716,7 @@ class IsoViewHud(isoview.IsoView):
       fields = []
       for field in actions[key]:
         entryLabel = ocempgui.widgets.Entry()
-        entryLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
+        entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
         entryLabel.text = str(field)
         entryLabel.border = 1
         entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
@@ -731,13 +732,13 @@ class IsoViewHud(isoview.IsoView):
       iPos += 1
       
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
-    okButton = GG.utils.OcempImageButtonTransparent(filePath, "Aplicar cambios", self.showTooltip, self.removeTooltip)
+    okButton = guiobjects.OcempImageButtonTransparent(filePath, "Aplicar cambios", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyChanges)
     okButton.topleft = 10, 262
     self.buttonBarAdminActions.add_child(okButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
-    cancelButton = GG.utils.OcempImageButtonTransparent(filePath, "Descartar cambios", self.showTooltip, self.removeTooltip)
+    cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Descartar cambios", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardChanges)
     cancelButton.topleft = 80, 262
     self.buttonBarAdminActions.add_child(cancelButton)
@@ -754,8 +755,8 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")
-    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["buttonTopBar"]))
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.buttonBarActions.add_child(imgBackground)
     
@@ -769,21 +770,21 @@ class IsoViewHud(isoview.IsoView):
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
-    img = GG.utils.OcempImageButtonTransparent(imgPath)
+    img = guiobjects.OcempImageButtonTransparent(imgPath)
     img.topleft = 5,6
     self.buttonBarActions.add_child(img)
     
-    itemLabel = GG.utils.OcempLabel(self.__selectedItem.getName(),290, GG.utils.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
     
-    itemLabel.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["itemLabel"]))
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
     itemLabel.topleft = 35,10
     self.buttonBarActions.add_child(itemLabel)
     i = 0
     self.restoreActiveActionButtonsList()
     for action in options:
-      #button = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
+      #button = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image']))
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.buttonActions[action]['image'])
-      button = GG.utils.OcempImageButtonTransparent(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
+      button = guiobjects.OcempImageButtonTransparent(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       self.__activeActions.append(self.buttonActions[action]['action'])
       button.topleft = 195 - i*60 ,40
@@ -864,7 +865,7 @@ class IsoViewHud(isoview.IsoView):
     i = 0
     for buttonData in ACTIONS:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
-      button = GG.utils.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button = guiobjects.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = 16 + i*60 ,10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       if buttonData['action'] == self.showFullScreen:
@@ -1037,7 +1038,7 @@ class IsoViewHud(isoview.IsoView):
     i = 0
     for buttonData in ACTIONS:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
-      button = GG.utils.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button = guiobjects.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
       button.topleft = 950 - i * 60 , 10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.hud.add_child(button)
@@ -1052,23 +1053,23 @@ class IsoViewHud(isoview.IsoView):
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
-    self.imgMask = GG.utils.OcempImageButtonTransparent(imgPath)
+    self.imgMask = guiobjects.OcempImageButtonTransparent(imgPath)
     self.imgMask.topleft = 548,110
     self.hud.add_child(self.imgMask)
 
-    labelUserName = GG.utils.OcempLabel(self.__player.username, 140, GG.utils.STYLES["userName"])
+    labelUserName = guiobjects.OcempLabel(self.__player.username, 140, guiobjects.STYLES["userName"])
     labelUserName.topleft = 638, 90
     self.hud.add_child(labelUserName)
     
-    self.__pointsLabel = GG.utils.OcempLabel("GuadaPuntos: 0", 140, GG.utils.STYLES["userName"])
+    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["userName"])
     self.__pointsLabel.topleft = 627, 120
     self.hud.add_child(self.__pointsLabel)
 
-    self.__labelOld = GG.utils.OcempLabel("ClockPuntos: 0", 140, GG.utils.STYLES["userName"])
+    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["userName"])
     self.__labelOld.topleft = 627, 140
     self.hud.add_child(self.__labelOld)
 
-    self.__expLabel = GG.utils.OcempLabel("Experiencia: 1", 140, GG.utils.STYLES["userName"])
+    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["userName"])
     self.__expLabel.topleft = 627, 160
     self.hud.add_child(self.__expLabel)
 
@@ -1288,19 +1289,19 @@ class IsoViewHud(isoview.IsoView):
     self.confirmDialog.set_position = [0, 0]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/contactWindow.png")
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.confirmDialog.add_child(imgBackground)
      
     cad = "Intercambiar tarjetas con " + newContact.username 
-    questionLabel = GG.utils.OcempLabel(cad, 200, GG.utils.STYLES["dialogFont"])
+    questionLabel = guiobjects.OcempLabel(cad, 200, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 22, 20 
     self.confirmDialog.add_child(questionLabel)
      
-    okButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png"))
+    okButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png"))
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.giveContactCard, event.getParams()['contact'])
     okButton.topleft = [20, 55]
-    cancelButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png"))
+    cancelButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png"))
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.dropContactDialog)
     cancelButton.topleft = [170, 55]
     self.confirmDialog.add_child(okButton)

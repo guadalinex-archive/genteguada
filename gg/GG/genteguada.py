@@ -8,13 +8,11 @@ import time
 
 import dMVC.remoteclient
 
-try:
-  import ocempgui.widgets
-except:
-  pass
+import ocempgui.widgets
 import GG.isoview.login
 import GG.model.ggsystem
 import GG.utils
+import GG.isoview.guiobjects
 
 
 class GenteGuada:
@@ -68,11 +66,11 @@ class GenteGuada:
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     
     imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
-    imgBackgroundRight = GG.utils.OcempImageMapTransparent(imgPath)
+    imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
     
-    loadingLabel = GG.utils.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.utils.STYLES["labelLoading"]))
+    loadingLabel = GG.isoview.guiobjects.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
     loadingLabel.topleft = 372,347
     loadingLabel.border = 1
     loadingLabel.set_minimum_size(230,40)
