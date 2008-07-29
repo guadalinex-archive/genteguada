@@ -40,7 +40,7 @@ class ExchangeWindow:
     """ Paints the exchangeWindow background.
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/exchangeWindow.png")
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.container.add_child(imgBackground)
 
@@ -48,7 +48,7 @@ class ExchangeWindow:
     """ Paints the out box.
     """  
     self.__outBox = ocempgui.widgets.ScrolledWindow(190, 163)
-    self.__outBox.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
+    self.__outBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["inventoryArea"]))
     self.__outBox.border = 1
     self.__outBox.topleft = 20, 80
     self.__outBoxChild = ocempgui.widgets.VFrame()
@@ -62,7 +62,7 @@ class ExchangeWindow:
     """ Paints the incoming items box
     """  
     self.__inBox = ocempgui.widgets.ScrolledWindow(190, 163)
-    self.__inBox.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["inventoryArea"]))
+    self.__inBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["inventoryArea"]))
     self.__inBox.border = 1
     self.__inBox.topleft = 370, 80
     self.__inBoxChild = ocempgui.widgets.VFrame()
@@ -75,15 +75,15 @@ class ExchangeWindow:
   def __paintLabel(self):
     """ Paints the exchangeWindow labels.
     """  
-    self.__labelExchange = GG.utils.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", 300, GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = guiobjects.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", 300, guiobjects.STYLES["dialogFont"])
     self.__labelExchange.topleft = 20,20
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = GG.utils.OcempLabel("Bandeja de salida", 140, GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = guiobjects.OcempLabel("Bandeja de salida", 140, guiobjects.STYLES["dialogFont"])
     self.__labelExchange.topleft = 20,60
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = GG.utils.OcempLabel("Bandeja de entrada", 120, GG.utils.STYLES["dialogFont"])
+    self.__labelExchange = guiobjects.OcempLabel("Bandeja de entrada", 120, guiobjects.STYLES["dialogFont"])
     self.__labelExchange.topleft = 370,60
     self.container.add_child(self.__labelExchange)
 
@@ -91,13 +91,13 @@ class ExchangeWindow:
     """ Paints the exchangeWindow buttons.
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png")
-    buttonOK = GG.utils.OcempImageButtonTransparent(filePath)
+    buttonOK = guiobjects.OcempImageButtonTransparent(filePath)
     buttonOK.topleft = 240,100
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.okExchange)
     self.container.add_child(buttonOK)
      
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png")
-    buttonCancel = GG.utils.OcempImageButtonTransparent(filePath)
+    buttonCancel = guiobjects.OcempImageButtonTransparent(filePath)
     buttonCancel.topleft = 240, 180
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.koExchange)
     self.container.add_child(buttonCancel)

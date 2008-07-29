@@ -7,6 +7,7 @@ import GG.utils
 import isoview
 import animation
 import positioned_view
+import guiobjects
 
 class IsoViewQuiz(positioned_view.PositionedView):
   """ IsoViewQuiz class.
@@ -25,29 +26,29 @@ class IsoViewQuiz(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.container = ocempgui.widgets.Box(358,258)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/trivialWindow.png")
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.container.add_child(imgBackground)
     
-    label = GG.utils.OcempLabel(model.getMessage() ,250, GG.utils.STYLES["quizLabel"])
-    label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["quizLabel"]))
+    label = guiobjects.OcempLabel(model.getMessage() ,250, guiobjects.STYLES["quizLabel"])
+    label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["quizLabel"]))
     label.topleft = 20, 40
     self.container.add_child(label)
     i = 0
     for answer in self.__answers:
-       label = GG.utils.OcempLabel(answer ,250, GG.utils.STYLES["quizLabel"])
-       label.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["quizLabel"]))
+       label = guiobjects.OcempLabel(answer ,250, guiobjects.STYLES["quizLabel"])
+       label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["quizLabel"]))
        label.topleft = 80, 85 + i *50
        self.container.add_child(label)
        i = i + 1
     
-    buttonA = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
+    buttonA = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
     buttonA.topleft = [22,70]
     buttonA.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)
-    buttonB = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerB.png"))
+    buttonB = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerB.png"))
     buttonB.topleft = [22,120]
     buttonB.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 2)
-    buttonC = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
+    buttonC = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
     buttonC.topleft = [22,170]
     buttonC.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
     self.container.add_child(buttonA)

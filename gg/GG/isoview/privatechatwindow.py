@@ -4,6 +4,7 @@ import pygame
 import ocempgui.widgets
 import GG.utils
 import copy
+import guiobjects
 
 class PrivateChatWindow:
   """ AvatarEditor class.
@@ -39,18 +40,18 @@ class PrivateChatWindow:
 
   def __paintBackground(self):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
-    imgBackground = GG.utils.OcempImageMapTransparent(filePath)
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-    labelChat = GG.utils.OcempLabel("Contactos", 280, GG.utils.STYLES["userName"])
-    labelChat.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    labelChat = guiobjects.OcempLabel("Contactos", 280, guiobjects.STYLES["userName"])
+    labelChat.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
     labelChat.topleft = 20, 20
     self.container.add_child(labelChat)
     
-    labelContacts = GG.utils.OcempLabel("Chat", 280, GG.utils.STYLES["userName"])
-    labelContacts.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["userName"]))
+    labelContacts = guiobjects.OcempLabel("Chat", 280, guiobjects.STYLES["userName"])
+    labelContacts.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
     labelContacts.topleft = 150, 20
     self.container.add_child(labelContacts)
     
@@ -58,7 +59,7 @@ class PrivateChatWindow:
     """ Paints the chat window on screen.
     """
     #from PIL import Image
-    self.contactsArea = GG.utils.OcempImageContactList(130, 270, self.player.getAgenda())
+    self.contactsArea = guiobjects.OcempImageContactList(130, 270, self.player.getAgenda())
     self.contactsArea.topleft = 20, 40
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.contactsArea)
@@ -81,7 +82,7 @@ class PrivateChatWindow:
 
   def __paintDeleteButton(self):
     #deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
-    deleteButton = GG.utils.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
+    deleteButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
     deleteButton.topleft = 20, 315
     deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
     self.container.add_child(deleteButton)
@@ -122,7 +123,7 @@ class PrivateChatWindow:
     
   def __paintChat(self):
     self.__textField = ocempgui.widgets.Entry()
-    self.__textField.set_style(ocempgui.widgets.WidgetStyle(GG.utils.STYLES["textFieldChat"]))
+    self.__textField.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.__textField.border = 1
     self.__textField.topleft = 150, 320
     self.__textField.set_minimum_size(203, 20)
@@ -175,7 +176,7 @@ class PrivateChatWindow:
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
-    label = GG.utils.OcempLabelNotTransparent(string,300)
+    label = guiobjects.OcempLabelNotTransparent(string,300)
     hframe.add_child(label)
     return hframe
 
