@@ -1,10 +1,11 @@
 # -*- coding: iso-8859-15 -*-
 import os
 import random
-import GG.model.room_item
-import GG.model.chat_message
+import room_item
+import chat_message
+import GG.utils
 
-class GGPenguin(GG.model.room_item.GGRoomItem):
+class GGPenguin(room_item.GGRoomItem):
   """ GGPenguin class.
   Defines a giver npc object behaviour.
   """
@@ -16,13 +17,13 @@ class GGPenguin(GG.model.room_item.GGRoomItem):
     anchor: image anchor on screen.
     label: penguin's label
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['label']
   
   def getOptions(self):
@@ -37,7 +38,7 @@ class GGPenguin(GG.model.room_item.GGRoomItem):
     return self.spriteName
   
   def checkSimilarity(self, item):
-    if GG.model.room_item.GGRoomItem.checkSimilarity(self, item):
+    if room_item.GGRoomItem.checkSimilarity(self, item):
       if item.label == self.label:
         return True
     return False   
@@ -46,7 +47,7 @@ class GGPenguin(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     else:
@@ -89,7 +90,7 @@ class GGPenguinTalker(GGPenguin):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+    talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
 
 #================================================================================
@@ -139,12 +140,12 @@ class GGPenguinTrade(GGPenguin):
     """
     giftItem = talker.getItemFromInventory(self.__giftLabel)
     if giftItem:
-      talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(self.__msg, \
+      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       talker.removeFromInventory(giftItem)
-      return GG.model.generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
+      return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
-      talker.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio...", \
+      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio...", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
 
@@ -198,7 +199,7 @@ class GGPenguinQuiz(GGPenguin):
       return  
     question = random.randint(0,len(self.__availableQuestions[name])-1)
     fileName = "questions/" + self.__availableQuestions[name][question]
-    talker.triggerEvent('quizAdded', message=GG.model.chat_message.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
+    talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))   
         
 #================================================================================

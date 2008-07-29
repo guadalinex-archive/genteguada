@@ -1,7 +1,7 @@
-import GG.model.room_item
+import room_item
 import GG.utils
 
-class GGItemWithInventory(GG.model.room_item.GGRoomItem):
+class GGItemWithInventory(room_item.GGRoomItem):
   """ GGItemWithInventory class.
   """
  
@@ -11,7 +11,7 @@ class GGItemWithInventory(GG.model.room_item.GGRoomItem):
     position: player position.
     anchor: image anchor on screen.
     """
-    GG.model.room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
     self.__inventory = []
     
   # self.__inventory

@@ -3,14 +3,14 @@
 import random
 import operator
 import GG.utils
-import GG.model.ggmodel
-import GG.model.tile
-import GG.model.inventory_item
-import GG.model.chat_message
+import ggmodel
+import tile
+import inventory_item
+import chat_message
 import dMVC.model
-import GG.model.player
+import player
 
-class GGRoom(GG.model.ggmodel.GGModel):
+class GGRoom(ggmodel.GGModel):
   """ Room class.
   Defines atributes and methods for a single room.
   """
@@ -20,7 +20,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     spriteFull: sprite used to paint the room floor on screen.
     label: room label.
     """
-    GG.model.ggmodel.GGModel.__init__(self)
+    ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
     self.size = size
     self.label = label
@@ -30,7 +30,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
       line = []  
       for j in range(0, self.size[1]):
         image = "tiles/" + self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
-        line.append(GG.model.tile.Tile([i, 0, j], image, [0, 0], self))
+        line.append(tile.Tile([i, 0, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []
     self.__specialTiles = []
@@ -81,7 +81,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     if not self.__items == items:
       self.__items = items
       for item in self.__items:
-        if isinstance(item, GG.model.player.GGPlayer):
+        if isinstance(item, player.GGPlayer):
           self.__population += 1    
         self.__tiles[item.getPosition()[0]][item.getPosition()[2]].stackItem(item)
       self.triggerEvent('items', items=items)
@@ -90,7 +90,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
 
   def addItemFromVoid(self, item, pos):
     if not item in self.__items:
-      if isinstance(item, GG.model.player.GGPlayer):
+      if isinstance(item, player.GGPlayer):
         self.__population += 1    
       self.__tiles[pos[0]][pos[2]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[2]])
@@ -120,7 +120,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     item: player.
     """
     if item in self.__items:
-      if isinstance(item, GG.model.player.GGPlayer):
+      if isinstance(item, player.GGPlayer):
         self.__population -= 1
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[2]].unstackItem()
@@ -275,14 +275,14 @@ class GGRoom(GG.model.ggmodel.GGModel):
     """
     result = []
     for item in self.__items:
-      if isinstance(item, GG.model.player.GGPlayer):
+      if isinstance(item, player.GGPlayer):
         result.append(item)
     return result
 
   def newChatMessage(self, message, player, type):
     """ Triggers a new avent after receiving a new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, player.username, \
+    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, \
                     GG.utils.TEXT_COLOR["black"], player.getPosition(), type))    
     
   def getEmptyCell(self):
@@ -315,7 +315,7 @@ class GGRoom(GG.model.ggmodel.GGModel):
     return self.__tiles[pos[0]][pos[2]].getTopItem()
     
   def setUnselectedtFor(self, item):
-    for player in self.__items:
-      if isinstance(player, GG.model.player.GGPlayer):
-        if player.getSelected() == item:
-          player.setUnselectedItem()  
+    for itemPlayer in self.__items:
+      if isinstance(itemPlayer, player.GGPlayer):
+        if itemPlayer.getSelected() == item:
+          itemPlayer.setUnselectedItem()  
