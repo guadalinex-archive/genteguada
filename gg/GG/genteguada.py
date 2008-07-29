@@ -64,7 +64,7 @@ class GenteGuada:
     self.widgetContainer.set_screen(self.screen)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
     
-    imgPath = os.path.join(GG.utils.DATA_PATH,"interface/backgrounds/loadingGG.png")
+    imgPath = self.getDataPath("interface/backgrounds/loadingGG.png")
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
