@@ -50,6 +50,8 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = None
     self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
     self.privateChatWindow.hide = True
+    self.createItemswindow = createitemswindow.CreateItemsWindow("Creacion de objetos", self.__player, self)
+    self.createItemswindow.hide = True
     
     if fullscreen:
       self.__fullScreen = True
@@ -60,6 +62,7 @@ class IsoViewHud(isoview.IsoView):
     self.__soundButton = None
     self.__fullscreenButton = None
     self.__privateChatButton = None
+    self.__createItemsButton = None
     
     self.__img = pygame.sprite.Sprite()
     #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
@@ -199,6 +202,9 @@ class IsoViewHud(isoview.IsoView):
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
+        return True
+    if self.createItemswindow:
+      if not self.createItemswindow.hide:
         return True
     return False
 
@@ -899,6 +905,9 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
                 ]
     
+    if self.__player.getAccessMode():
+      ACTIONS.append({"image":"interface/hud/4.png", "action": self.showCreateItems, "tooltip":"Panel de creacion de objetos"})
+    
     i = 0
     for buttonData in ACTIONS:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
@@ -909,8 +918,59 @@ class IsoViewHud(isoview.IsoView):
         self.__fullscreenButton = button
       elif  buttonData['action'] == self.showSoundControl:
         self.__soundButton = button
+      elif  buttonData['action'] == self.showCreateItems:
+        self.__createItemsButton = button
       i+=1
       self.hud.add_child(button)
+      
+  def createItemstHandler(self):
+    """ Shows or hides the create items window.
+    """  
+    if not self.createItemsWindow:
+      self.showCreateItems()
+    else:
+      if self.createItemsWindow.hide:
+        self.showCreateItems()
+      else:
+        self.hideCreateItems()
+        
+  def showCreateItems(self):
+    """ Shows the private chat window.
+    """
+    pass
+    """  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/privatechat.png")
+    self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
+    self.hud.remove_child(self.__privateChatButton)
+    self.hud.add_child(self.__privateChatButton)
+    
+    self.addSprite(self.privateChatWindow.window)
+    self.widgetContainer.add_widget(self.privateChatWindow.window)
+    x, y = self.privateChatWindow.getScreenPosition()
+    width, height = self.privateChatWindow.getSize()
+    cordX = x
+    cordY = y
+    if x < 0:
+      cordX = 0
+    if y < 0:
+      cordY = 0
+    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
+      cordX = GG.utils.GAMEZONE_SZ[0] - width  
+    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
+      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    self.privateChatWindow.setScreenPosition(cordX, cordY)  
+    self.privateChatWindow.hide = False
+    """
+    
+  def hideCreateItems(self):
+    """ Hides the private chat window.
+    """ 
+    pass
+    """ 
+    self.removeSprite(self.privateChatWindow.window)
+    self.widgetContainer.remove_widget(self.privateChatWindow.window)
+    self.privateChatWindow.hide = True
+    """      
       
   def privateChatHandler(self):
     """ Shows or hides the private chat window.
