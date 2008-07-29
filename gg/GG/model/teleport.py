@@ -1,7 +1,8 @@
-import GG.model.room_item
+import room_item
 import dMVC.model
+import GG.utils
 
-class GGTeleport(GG.model.room_item.GGRoomItem):
+class GGTeleport(room_item.GGRoomItem):
   """ GGDoorLobby class.
   Defines a teleporter object behaviour.
   """
@@ -14,7 +15,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     anchor: image anchor on screen.
     destinationRoom: room the teleporter will carry players to.
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
     self.points = 10
@@ -23,7 +24,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['label']    
     
   def getOptions(self):
@@ -86,7 +87,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the teleporter receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     else:
@@ -96,7 +97,7 @@ class GGTeleport(GG.model.room_item.GGRoomItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.getRoom().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
   def transportTo(self,clicker):
     if self.__destinationRoom.isFull():

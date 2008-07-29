@@ -1,10 +1,10 @@
 import room
-import GG.model.ggmodel
+import ggmodel
 
-class Tile(GG.model.ggmodel.GGModel):
+class Tile(ggmodel.GGModel):
 
   def __init__(self, position, spriteName, anchor, room):
-    GG.model.ggmodel.GGModel.__init__(self)
+    ggmodel.GGModel.__init__(self)
     self.__items = []
     self.__room = room
     self.position = position

@@ -1,6 +1,7 @@
-import GG.model.room_item
+import room_item
+import GG.utils
 
-class GGPickableItem(GG.model.room_item.GGRoomItem):
+class GGPickableItem(room_item.GGRoomItem):
   """ GGPickableItem class.
   Defines a pickable item behaviour.
   """
@@ -13,12 +14,12 @@ class GGPickableItem(GG.model.room_item.GGRoomItem):
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    GG.model.room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
     
   def variablesToSerialize(self):
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
 
   def getOptions(self):
@@ -48,7 +49,7 @@ class GGPickableItem(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     

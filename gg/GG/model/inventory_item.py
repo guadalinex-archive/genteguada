@@ -54,7 +54,6 @@ class GGInventoryItem(ggmodel.GGModel):
     """ Triggers an avent when the item receives a click by a player.
     clicker: player who clicks.
     """
-    #clicker.setHeading(GG.utils.getNextDirection(clicker.getPosition(), self.__position))
     pass
     
   def tick(self, now):

@@ -1,14 +1,15 @@
 # -*- coding: iso-8859-15 -*-
 
-import GG.model.item_with_inventory
-import GG.model.chat_message
-import GG.model.private_contact
+import item_with_inventory
+import room_item
+import chat_message
+import private_contact
 import GG.utils
 import time
 import dMVC.model
 import os
 
-class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
+class GGPlayer(item_with_inventory.GGItemWithInventory):
   """ Player class.
   Defines a player object behaviour.
   """
@@ -23,7 +24,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     #print username, password
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
-    GG.model.item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
+    item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
     self.username = username
     self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
@@ -148,7 +149,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['username', 'admin']
   
     # self.__heading
@@ -240,7 +241,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     itemList.reverse()
     for it in itemList:
       self.addPoints(it.points, it.label)
-      GG.model.item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, it)
+      item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, it)
     
   def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
@@ -250,7 +251,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1, -1]:
       self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
-      GG.model.item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
+      item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
   def checkUser(self, username, password):
     """ Searchs for an user by his user name and password.
@@ -273,7 +274,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """ Triggers an event when the player receives a click by another player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     #self.newChatMessage(clicker.username + ' ha pinchado en mi', 0)
@@ -283,7 +284,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     """
     if self.getRoom() == None:
       return
-    GG.model.item_with_inventory.GGItemWithInventory.tick(self, now) 
+    item_with_inventory.GGItemWithInventory.tick(self, now) 
     if self.getPosition() == self.__destination:
       if self.__state == GG.utils.STATE[2]:
         self.setState(GG.utils.STATE[1])
@@ -344,13 +345,13 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if room:
       self.updateExp(room)
       self.updateSessionTiming()
-    GG.model.room_item.GGRoomItem.changeRoom(self, room, pos)
+    room_item.GGRoomItem.changeRoom(self, room, pos)
     
   def newChatMessage(self, message, type):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, self.username, \
+    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.username, \
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), type))
 
   def getSelected(self):
@@ -379,7 +380,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     
   def setStartPosition(self, pos):
     self.__destination = pos
-    GG.model.room_item.GGRoomItem.setStartPosition(self, pos)
+    room_item.GGRoomItem.setStartPosition(self, pos)
     
   def talkTo(self, item):
     """ Talks to an item.
@@ -518,7 +519,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     return None
     
   def addContactTEST(self, player):  
-    self.__agenda.append(GG.model.private_contact.PrivateContact(player))
+    self.__agenda.append(private_contact.PrivateContact(player))
     
   def getAgenda(self):
     return self.__agenda
@@ -550,7 +551,7 @@ class GGPlayer(GG.model.item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
       return
-    self.__agenda.append(GG.model.private_contact.PrivateContact(player))
+    self.__agenda.append(private_contact.PrivateContact(player))
     self.triggerEvent("contactAdded", contact=player)
     
   def checkContactOnAgenda(self, contact):

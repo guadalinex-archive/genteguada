@@ -1,6 +1,7 @@
-import GG.model.room_item
+import room_item
+import GG.utils
 
-class GGWebItem(GG.model.room_item.GGRoomItem):
+class GGWebItem(room_item.GGRoomItem):
   """ GGWebItem class.
   """
  
@@ -11,14 +12,14 @@ class GGWebItem(GG.model.room_item.GGRoomItem):
     anchor: image anchor on screen.
     url:
     """
-    GG.model.room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.__url = url
     self.label = label
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['label']
   
   def getOptions(self):
@@ -42,7 +43,7 @@ class GGWebItem(GG.model.room_item.GGRoomItem):
   def setUrl(self, url):
     self.__url = url  
   def checkSimilarity(self, item):
-    if GG.model.room_item.GGRoomItem.checkSimilarity(self, item):
+    if room_item.GGRoomItem.checkSimilarity(self, item):
       if item.getUrl() == self.getUrl():
         return True
     return False   
@@ -51,7 +52,7 @@ class GGWebItem(GG.model.room_item.GGRoomItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
     else:
@@ -85,7 +86,7 @@ class GGWebPannel(GGWebItem):
     """ Triggers an event when the npc receives a click by a player.
     clicker: player who clicks.
     """
-    GG.model.room_item.GGRoomItem.clickedBy(self, clicker)
+    room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItemWithoutHighlight(self)
     else:
