@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: iso-8859-15 -*-
 
 import pygame
 import GG.utils
@@ -149,6 +149,7 @@ class IsoViewHud(isoview.IsoView):
     self.ctrl = 0
     
     self.adminMenu = False
+    self.deleteConfirmDialog = None
   
   def processEvent(self, events):
     """ Processes the input events.
@@ -192,7 +193,8 @@ class IsoViewHud(isoview.IsoView):
   def windowOpen(self):
     """ Checks if there is an open window.
     """
-    if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe or self.adminMenu:
+    if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe \
+      or self.adminMenu or self.deleteConfirmDialog:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
@@ -386,7 +388,8 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-    self.paintRoomOptions()
+    if self.__player.getAccessMode():
+      self.paintRoomOptions()
     
     self.hud.zOrder = 1
     #self.hud.depth = 1
@@ -669,6 +672,33 @@ class IsoViewHud(isoview.IsoView):
     self.roomOptions.add_child(imgBackground)
     self.roomOptions.zOrder = 10000
     self.addSprite(self.roomOptions)
+    
+    """
+    ori = [110, 40]
+    dist = 30
+    anchorTop = ocempgui.widgets.RadioButton()
+    anchorTop.topleft = [dist + ori[0], 0 + ori[1]]
+    anchorDown = ocempgui.widgets.RadioButton()
+    anchorDown.topleft = [dist + ori[0], dist*2 + ori[1]]
+    anchorLeft = ocempgui.widgets.RadioButton()
+    anchorLeft.topleft = [0 + ori[0], dist + ori[1]]
+    anchorRight = ocempgui.widgets.RadioButton()
+    anchorRight.topleft = [dist*2 + ori[0], dist + ori[1]]
+    anchorCenter = ocempgui.widgets.RadioButton()
+    anchorCenter.topleft = [dist + ori[0], dist + ori[1]]
+    
+    anchorTop.set_group(anchorDown)
+    anchorTop.add_button(anchorLeft)
+    anchorTop.add_button(anchorRight)
+    anchorTop.add_button(anchorCenter)
+    
+    self.roomOptions.add_child(anchorTop)
+    self.roomOptions.add_child(anchorDown)
+    self.roomOptions.add_child(anchorLeft)
+    self.roomOptions.add_child(anchorRight)
+    self.roomOptions.add_child(anchorCenter)
+    """
+    
     self.widgetContainer.add_widget(self.roomOptions)
     
   def itemSelectedByAdmin(self):
@@ -743,6 +773,12 @@ class IsoViewHud(isoview.IsoView):
     cancelButton.topleft = 80, 262
     self.buttonBarAdminActions.add_child(cancelButton)
     
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "TEMP_tiny_delete_button.png")
+    deleteButton = guiobjects.OcempImageButtonTransparent(filePath, "Eliminar objeto", self.showTooltip, self.removeTooltip)
+    deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.removeSelectedItemConfirmation)
+    deleteButton.topleft = 80, 227
+    self.buttonBarAdminActions.add_child(deleteButton)
+
     self.buttonBarAdminActions.zOrder = 10000
     self.addSprite(self.buttonBarAdminActions)
     self.widgetContainer.add_widget(self.buttonBarAdminActions)
@@ -1389,13 +1425,16 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
 
   def applyChanges(self):
+    """
     if not self.__selectedItem:
       self.itemUnselected()
       self.dropActionsItembuttons()
       return
-        
+    """    
     for key in self.editableFields.keys():
-        
+      
+      print key
+      
       if key == "Position":
         try: posX = int(self.editableFields[key][0].text)    
         except ValueError:
@@ -1412,7 +1451,7 @@ class IsoViewHud(isoview.IsoView):
       
       if key == "Url":
         url = self.editableFields[key][0].text
-        self.__selectedItem.setUrl(url)
+        self.__selectedItem.distributedSetUrl(url)
       
       if key == "Message":
         msg = self.editableFields[key][0].text    
@@ -1454,3 +1493,41 @@ class IsoViewHud(isoview.IsoView):
     self.dropActionsItembuttons()
     self.adminMenu = False
     
+  def removeSelectedItemConfirmation(self):
+    self.deleteConfirmDialog = ocempgui.widgets.Box(300, 120)
+    self.deleteConfirmDialog.set_position = [0, 0]
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/contactWindow.png")
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.deleteConfirmDialog.add_child(imgBackground)
+     
+    cad = unicode("Confirmar eliminacion") 
+    questionLabel = guiobjects.OcempLabel(cad, 200, guiobjects.STYLES["dialogFont"])
+    questionLabel.topleft = 68, 20 
+    self.deleteConfirmDialog.add_child(questionLabel)
+     
+    okButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png"))
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.removeSelectedItem)
+    okButton.topleft = [20, 55]
+    cancelButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png"))
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.dropRemoveSelectedDialog)
+    cancelButton.topleft = [170, 55]
+    self.deleteConfirmDialog.add_child(okButton)
+    self.deleteConfirmDialog.add_child(cancelButton)
+    self.deleteConfirmDialog.zOrder = 20000
+    self.addSprite(self.deleteConfirmDialog)
+    self.widgetContainer.add_widget(self.deleteConfirmDialog)
+    
+  def removeSelectedItem(self):
+    item = self.__selectedItem
+    self.dropRemoveSelectedDialog()
+    self.__isoviewRoom.getModel().removeItem(item)
+    
+  def dropRemoveSelectedDialog(self):
+    #item = self.__selectedItem
+    self.discardChanges()
+    self.removeSprite(self.deleteConfirmDialog)
+    self.widgetContainer.remove_widget(self.deleteConfirmDialog)
+    self.deleteConfirmDialog = None
+

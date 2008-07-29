@@ -65,6 +65,21 @@ class GGWebPannel(GGWebItem):
  
   def __init__(self, sprite, anchor, topAnchor, url, label):
     GGWebItem.__init__(self, sprite, anchor, topAnchor, url, label)
+    self.__pannels = []
+    #self.addPannels(self)
+    
+  def addPannels(self, *pannels):
+    for pannel in pannels:
+      self.__pannels.append(pannel)
+    
+  def removePannels(self, *pannels):
+    for pannel in pannels:
+      self.__pannels.remove(pannel)    
+
+  def distributedSetUrl(self, url):
+    self.setUrl(url)
+    for pannel in self.__pannels:
+      pannel.setUrl(url)  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the npc receives a click by a player.
@@ -75,5 +90,9 @@ class GGWebPannel(GGWebItem):
       clicker.setSelectedItemWithoutHighlight(self)
     else:
       return False    
+
+  def __del__(self):
+    for pannel in self.__pannels:
+      pannel.removePannels(self)    
 
 #================================================================================
