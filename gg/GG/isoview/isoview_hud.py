@@ -11,8 +11,9 @@ import random
 import avatareditor
 import animation
 import exchangewindow
-import privatechatwindow
 import guiobjects
+import privatechatwindow
+import createitemswindow
 
 from pygame.locals import * # faster name resolution
 from PIL import Image
