@@ -1,5 +1,6 @@
 import dMVC.model
 import ggmodel
+import GG.utils
 
 class GGSession(ggmodel.GGModel):
   """ GGSession class.
@@ -71,4 +72,21 @@ class GGSession(ggmodel.GGModel):
   def getObjectsData(self):
     if not self.__player.getAccessMode():
       return None  
-    pass
+    
+    objectsDict = {"Door": {"room": [self.__player.getRoom().label], 
+                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
+                            "destinationRoom": [""],
+                            "exitPosition": [0, 0, 0],
+                            "label": [""]                            
+                            },
+                   "DoorWithKey": {"room": [self.__player.getRoom().label], 
+                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
+                            "destinationRoom": [""],
+                            "exitPosition": [0, 0, 0],
+                            "label": [""],
+                            "key": [""]        
+                            }
+                   }
+    
+    return objectsDict
+    

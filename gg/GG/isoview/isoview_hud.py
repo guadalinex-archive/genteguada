@@ -50,8 +50,12 @@ class IsoViewHud(isoview.IsoView):
     self.windowInventory = None
     self.privateChatWindow = privatechatwindow.PrivateChatWindow("Chat Privado", self.__player)
     self.privateChatWindow.hide = True
-    self.createItemsWindow = createitemswindow.CreateItemsWindow("Creacion de objetos", self.__player, self)
-    self.createItemsWindow.hide = True
+    
+    if self.__player.getAccessMode():
+      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creacion de objetos", self.__player, self)
+      self.createItemsWindow.hide = True
+    else:
+      self.createItemsWindow = None  
     
     if fullscreen:
       self.__fullScreen = True
@@ -751,6 +755,7 @@ class IsoViewHud(isoview.IsoView):
         
       fCount = 0
       fields = []
+      print key, actions[key]
       for field in actions[key]:
         entryLabel = ocempgui.widgets.Entry()
         entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
