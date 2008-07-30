@@ -2,6 +2,7 @@ import ggmodel
 import time
 import GG.utils
 import dMVC.model
+import codecs
 
 class ChatMessage(ggmodel.GGModel):
   """ ChatMessage class.
@@ -82,13 +83,12 @@ class ChatQuiz(ChatMessage):
     self.__parent = parent
     self.question = question
     self.player = player
+    self.__msgQuestion = ""
+    self.__msgAnswers = []
+    self.__rightAnswer = 0
     
   def loadQuestion(self, question):
-    
-    import codecs
-      
     filePath = "gg/GG/data/questions/" + question
-    import codecs 
     f = codecs.open(filePath, "r", "utf-8" )
     self.__msgQuestion = f.readline()[:-1]
     self.__msgAnswers = []
@@ -96,9 +96,12 @@ class ChatQuiz(ChatMessage):
     self.__msgAnswers.append(f.readline()[:-1])
     self.__msgAnswers.append(f.readline()[:-1])
     answer = f.readline()
-    if answer.find("A") > -1:  self.__rightAnswer = 1
-    elif answer.find("B") > -1:  self.__rightAnswer = 2
-    else:  self.__rightAnswer = 3
+    if answer.find("A") > -1:  
+      self.__rightAnswer = 1
+    elif answer.find("B") > -1:  
+      self.__rightAnswer = 2
+    else:  
+      self.__rightAnswer = 3
     f.close()
   
   def removeRightAnsweredQuestion(self):  
