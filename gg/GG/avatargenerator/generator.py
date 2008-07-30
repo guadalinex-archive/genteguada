@@ -8,10 +8,10 @@ class AvatarGenerator(dMVC.model.Model):
   def __init__(self):
     dMVC.model.Model.__init__(self)
   
-  def copyImageMask(self, nameMask ,data):
-    f = open("/tmp/"+nameMask,"wb")
-    f.write(data)
-    f.close()
+  def copyImageMask(self, nameMask, data):
+    fileMask = open("/tmp/"+nameMask,"wb")
+    fileMask.write(data)
+    fileMask.close()
 
   def executeCommand(self, configuration, player, nameMask):
     comando = self.__generateRenderCommand(player.username, configuration, nameMask)
@@ -24,78 +24,81 @@ class AvatarGenerator(dMVC.model.Model):
       return True
 
   def __generateRenderCommand(self, name, configuration, nameMask):
+    command = "avatargenerator "+name
     #gender 
-    if configuration["gender"] == "boy":
-      configuration["gender"] = "male"
-    else:
-      configuration["gender"] = "female"
+    command += " " + self.__adaptGender(configuration["gender"])
+    #headSize
+    command += " " + configuration["headSize"]
     #mask
-    if nameMask is None:
-      configuration["mask"] = "\"\""
-    else: 
-      configuration["mask"] = os.path.join("/tmp",nameMask)
+    command += " " + self.__adaptMask(nameMask)
     #hairStyle
-    configuration["hairStyle"] = "0"+configuration["hairStyle"]
+    command += " 0" + configuration["hairStyle"]
     #hairColour
-    configuration["hairColor"] = "0"+configuration["hairColor"]+".tga"
+    command += " 0" + configuration["hairColor"] + ".tga"
     #skin
-    if configuration["skin"] in ["10","11"]:
-      configuration["skin"] = configuration["skin"]+".tga"
-    else:
-      configuration["skin"] = "0"+configuration["skin"]+".tga"
-    #sleeve
-    if configuration["gender"] == "male":
-      if configuration["typeShirt"] == "short":
-        configuration["typeShirt"] = "0"
-      else:
-        configuration["typeShirt"] = "1"
-    else:
-      if configuration["typeSkirt"] == "short": 
-        configuration["typeShirt"] = "0"
-      else:
-        configuration["typeShirt"] = "1"
+    command += " " + self.__adaptIntConfiguration(configuration["skin"])
+    #bodySize
+    command += " " + configuration["bodySize"]
+    #typeShirt
+    command += " " + self.__adaptSleeve(configuration)
     #shirt
-    if configuration["shirt"] in ["10","11","12"]:
-      configuration["shirt"] = configuration["shirt"]+".tga"
-    else:
-      configuration["shirt"] = "0"+configuration["shirt"]+".tga" 
+    command += " " + self.__adaptIntConfiguration(configuration["shirt"])
     #typeTrousers
-    if configuration["typeTrousers"] == "short":
-      configuration["typeTrousers"] = "0"
-    else:
-      configuration["typeTrousers"] = "1"
+    command += " " + self.__adaptWinterSummer(configuration["typeTrousers"])
     #trousers
-    if configuration["trousers"] in ["10","11","12"]:
-      configuration["trousers"] = configuration["trousers"]+".tga"
-    else:
-      configuration["trousers"] = "0"+configuration["trousers"]+".tga"
+    command += " " + self.__adaptIntConfiguration(configuration["trousers"])
     #skirt
-    if configuration["skirt"] in ["10","11","12"]:
-      configuration["skirt"] = configuration["skirt"]+".tga"
-    else:
-      configuration["skirt"] = "0"+configuration["skirt"]+".tga"
+    command += " " + self.__adaptIntConfiguration(configuration["skirt"])
     #shoes
-    if configuration["shoes"] in ["10","11"]:
-      configuration["shoes"] = configuration["shoes"]+".tga"
-    else:
-      configuration["shoes"] = "0"+configuration["shoes"]+".tga"
+    command += " " + self.__adaptIntConfiguration(configuration["shoes"])
 
-    command = "avatargenerator "+name+" "+configuration["gender"]+" "+configuration["headSize"]+" "+configuration["mask"]+" "+configuration["hairStyle"]+" "+configuration["hairColor"]+" "+configuration["skin"]+" "+configuration["bodySize"]+" "+configuration["typeShirt"]+" "+configuration["shirt"]+" "+configuration["typeTrousers"]+" "+configuration["trousers"]+" "+configuration["skirt"]+" "+configuration["shoes"]
     print command
     return command
 
+  def __adaptGender(self, gender):
+    if gender == "boy":
+      return "male"
+    else:
+      return "female"
+
+  def __adaptMask(self, nameMask):
+    if nameMask is None:
+      return "\"\""
+    else: 
+      return os.path.join("/tmp", nameMask)
+
+  def __adaptIntConfiguration(self, value):
+    if value in ["10", "11", "12"]:
+      return value + ".tga"
+    else:
+      return "0" + value +".tga"
+
+  def __adaptSleeve(self, configuration):
+    if configuration["gender"] == "boy":
+      return self.__adaptWinterSummer(configuration["typeShirt"])
+    else:
+      return self.__adaptWinterSummer(configuration["typeSKirt"])
+  
+  def __adaptWinterSummer(self, value):
+    if value == "short":
+      return "0"
+    else:
+      return "1"
+
+
+
   def getImages(self, player):
-    dir = "/usr/share/avatargenerator/imagesGenerated/"+player.username
+    dirPlayerImages = "/usr/share/avatargenerator/imagesGenerated/"+player.username
     files = {}
-    for file in os.listdir(dir):
-      f = open(os.path.join(dir,file),"rb")
-      files[file] = f.read()
-      f.close()
+    for playerImage in os.listdir(dirPlayerImages):
+      filePlayerImage = open(os.path.join(dirPlayerImages, playerImage), "rb")
+      files[playerImage] = filePlayerImage.read()
+      filePlayerImage.close()
     return files
 
   def deleteImages(self, player):
-    dir = "/usr/share/avatargenerator/imagesGenerated/"+player.username
-    for file in os.listdir(dir):
-      os.remove(os.path.join(dir,file))
-    os.rmdir(dir)
+    dirPlayerImages = "/usr/share/avatargenerator/imagesGenerated/"+player.username
+    for playerImage in os.listdir(dirPlayerImages):
+      os.remove(os.path.join(dirPlayerImages, playerImage))
+    os.rmdir(dirPlayerImages)
 
