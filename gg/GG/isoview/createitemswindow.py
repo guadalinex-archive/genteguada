@@ -23,7 +23,8 @@ class CreateItemsWindow:
     self.draw()
 
   def draw(self):
-    self.container = ocempgui.widgets.Box(373,372)
+    #self.container = ocempgui.widgets.Box(373,372)
+    self.container = ocempgui.widgets.Box(373,472)
     self.__paintBackground()
     self.__paintObjectsList()
     self.__paintButtons()
@@ -38,7 +39,7 @@ class CreateItemsWindow:
     return self.container.width, self.container.height     
 
   def __paintBackground(self):
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/createObjectWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
     self.container.add_child(imgBackground)
@@ -75,7 +76,7 @@ class CreateItemsWindow:
 
   def __selectionChange(self):
     labelShift = [150, 0]
-    spacing = 50
+    spacing = 45
     self.editableFields = []
     name = self.__objectsArea.getSelectedName()
     attrDict = self.__objectsDict[name]
@@ -90,32 +91,51 @@ class CreateItemsWindow:
     keys.sort()
     
     for key in keys:
+    
       label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
       label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
       label.topleft = 10 + labelShift[0], 40 + iPos*spacing + labelShift[1]
       self.container.add_child(label)
       self.activeLabels.append(label)
+      
+      if key == "images":
+        #height = len(attrDict[key])*20
+        height = 60
+        self.images = guiobjects.OcempImageList(180, height, attrDict[key])  
+        self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+        iPos += 1
+        self.container.add_child(self.images)  
+        self.activeLabels.append(self.images)
+        self.editableFields[key] = self.images
+      else:  
         
-      fCount = 0
-      fields = []
-      for field in attrDict[key]:
-        entryLabel = ocempgui.widgets.Entry()
-        entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-        entryLabel.text = str(field)
-        entryLabel.border = 1
-        entryLabel.topleft = 10 + fCount*65 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-        if len(attrDict[key]) == 1:
-          entryLabel.set_minimum_size(125, 20)
-        else:    
-          entryLabel.set_minimum_size(50, 20)
-        self.container.add_child(entryLabel)
-        self.activeLabels.append(entryLabel)
+        fCount = 0
+        fields = []
+        for field in attrDict[key]:
+          entryLabel = ocempgui.widgets.Entry()
+          entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+          entryLabel.text = str(field)
+          entryLabel.border = 1
+          entryLabel.topleft = 10 + fCount*65 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+          if len(attrDict[key]) == 1:
+            entryLabel.set_minimum_size(125, 20)
+          else:    
+            entryLabel.set_minimum_size(50, 20)
+          self.container.add_child(entryLabel)
+          self.activeLabels.append(entryLabel)
         
-        fields.append(entryLabel)
-        fCount += 1
-        
-      self.editableFields[key] = fields
+          fields.append(entryLabel)
+          fCount += 1
+        self.editableFields[key] = fields
       iPos += 1
+    
+  def paintImagesList(self):
+    objectsLabels = self.__objectsDict.keys()
+    objectsLabels.sort()
+    self.__objectsArea = guiobjects.OcempImageObjectList(130, 270, objectsLabels)
+    self.__objectsArea.topleft = 20, 40
+    self.__objectsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
+    self.container.add_child(self.__objectsArea)  
     
   def createObject(self):
     if not self.__objectsArea.getSelectedName():
@@ -124,13 +144,16 @@ class CreateItemsWindow:
     name = self.__objectsArea.getSelectedName()
     #data = []
     data = {}
-    keys = self.editableFields.keys().sort()
+    keys = self.editableFields.keys()
     for key in keys:
-      values = []
-      for field in self.editableFields[key]:
-        values.append(field.text)
-      #data.append([key, values])
-      data[key] = values
+      if key == "images":
+        data[key] = self.editableFields[key].getSelectedName()
+      else:      
+        values = []
+        for field in self.editableFields[key]:
+          values.append(field.text)
+        #data.append([key, values])
+        data[key] = values
     self.__session.createObject(name, data)  
       
   def restoreDeafultValues(self):

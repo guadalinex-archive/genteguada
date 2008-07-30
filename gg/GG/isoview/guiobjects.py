@@ -523,6 +523,26 @@ class OcempImageObjectList(OcempImageFileList):
     return None
 
 # ===============================================================
+  
+class OcempImageList(OcempImageFileList):
+  
+  def __init__(self, width, height, imagesList):
+    self.imagesList = imagesList
+    OcempImageFileList.__init__(self, width, height)
+
+  def _list_contents (self):
+    items = ocempgui.widgets.components.ListItemCollection ()
+    for image in self.imagesList:
+      items.append (OcempContactListItem (image, "furniture/" + image))
+    self.set_items (items)
+
+  def getSelectedName(self):
+    item = self.get_selected()
+    if len(item):
+      return item[0].text
+    return None
+    
+# ===============================================================
 
 def playSound(sound):
   sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
