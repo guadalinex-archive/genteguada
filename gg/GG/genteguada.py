@@ -96,8 +96,8 @@ class GenteGuada:
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    self.session = winLogin.draw()
-    #self.session = winLogin.draw(params.user, params.password)
+    #self.session = winLogin.draw()
+    self.session = winLogin.draw(params.user, params.password)
     if self.session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
       if value == 1:

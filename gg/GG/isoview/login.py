@@ -86,13 +86,13 @@ class Login:
     notificationLabel.set_minimum_size(230,40)
     self.window.add_child(notificationLabel)
     
-    imgPath = "interface/editor/ok_button.png"
+    imgPath = "interface/editor/admin_ok_button.png"
     buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [370, 450]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeAdmin)
     self.window.add_child(buttonOK)
      
-    imgPath = "interface/editor/cancel_button.png"
+    imgPath = "interface/editor/admin_cancel_button.png"
     buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonCancel.topleft = [550, 450]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeNormal)
