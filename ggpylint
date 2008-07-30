@@ -8,7 +8,7 @@ print "pylint "
 print  "-------"
 print ""
 
-dirs = ["gg/GG","gg/GG/model","gg/GG/isoview","dmvc/dMVC"]
+dirs = ["gg/GG","gg/GG/model","gg/GG/isoview","dmvc/dMVC","gg/GG/avatargenerator"]
 currentDir = os.getcwd()
 
 if os.path.isfile("pylint.txt"):
