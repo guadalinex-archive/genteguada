@@ -94,7 +94,7 @@ class GGSystem(dMVC.model.Model):
         session = GG.model.ggsession.GGSession(player, self)
         self.__sessions.append(session)
         return True, session 
-    return False, "No se pudo autenticar el usuario"
+    return False, "No se pudo autentificar el usuario"
 
   def logout(self, session):
     #session.getPlayer().getRoom().removeItem(session.getPlayer())  
@@ -132,8 +132,8 @@ class GGSystem(dMVC.model.Model):
     # ROOM 1
     myDoor1 = GG.model.teleport.GGDoor("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [6, 0, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin.GGPenguinTalker(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
-    myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada", 10, room1)
-    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2", 10, room1)
+    myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada")
+    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2")
     myMoney5 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_5, [14, -25], [0, -10], "Billete de 5", 5)
     myMoney10 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_10, [14, -25], [0, -10], "Billete de 10", 10)
     myMoney50 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_50, [14, -25], [0, -10], "Billete de 50", 50)
@@ -261,12 +261,12 @@ class GGSystem(dMVC.model.Model):
       image = "furniture/" + GG.utils.WAREHOUSE_UP[random.randint(0,len(GG.utils.WAREHOUSE_UP)-1)]
       room4.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [x, 0, 0])
     
-    myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 1", 10, room4)
-    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 2", 10, room4)
-    myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 3", 10, room4)
-    myBox4 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 4", 10, room4)
-    myBox5 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 5", 10, room4)
-    myBox6 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 6", 10, room4)
+    myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 1")
+    myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 2")
+    myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 3")
+    myBox4 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 4")
+    myBox5 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 5")
+    myBox6 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, 0], "Caja pesada 6")
     beamOffset = [57, 142]
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, beamOffset, [0, 0]), [1, 0, 1])
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.BEAM_WOODEN, beamOffset, [0, 0]), [1, 0, 6])
@@ -461,4 +461,10 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       if room.label == label:
         return room
+    return None
+
+  def existsRoom(self, name):
+    for room in self.__rooms:
+      if room.label == name:
+        return room  
     return None

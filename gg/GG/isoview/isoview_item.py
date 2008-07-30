@@ -169,3 +169,6 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__position = event.getParams()['position']
     self.setPositionAnimation(None)
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
+    
+  def stopFallingAndRestore(self):
+    pass  
