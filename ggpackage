@@ -1,0 +1,67 @@
+#!/usr/bin/python
+
+import commands
+import sys
+import os
+
+dirTempSVN = "/tmp/genteguada"
+dirActual = os.getcwd()
+
+def error(text):
+  print "  \033[1;31m[ERROR]\033[0m "+text
+  comando = "rm -rf "+dirTempSVN
+  output = commands.getstatusoutput(comando)
+  sys.exit(0)
+
+def info(text):
+  print "  \033[1;32m[OK]\033[0m "+text
+
+os.system("clear")
+print "Generando los paquetes del proyecto GenteGuada"
+comando = "rm -rf "+dirTempSVN
+output = commands.getstatusoutput(comando)
+print "Descargando el codigo del proyecto del svn..."
+comandoSVN = "svn export http://forja.guadalinex.org/genteguada "+dirTempSVN
+output = commands.getstatusoutput(comandoSVN)
+if not output[0] == 0:
+  error("Ocurrio un problema en la descarga del codigo")
+else:
+  info("El codigo se descargo correctamente")
+
+comandoDEB = "dpkg-buildpackage -rfakeroot -us -uc -i -b"
+
+print "Generando el paquete avatareditor...."
+os.chdir(dirTempSVN+"/avatargenerator")
+output = commands.getstatusoutput(comandoDEB)
+if not output[0] == 0:
+  error("No se pudo generar el paquete avatareditor")
+else:
+  info("se genero el paquete avatareditor")
+
+print "Generando el paquete dmvc...."
+os.chdir(dirTempSVN+"/dmvc")
+output = commands.getstatusoutput(comandoDEB)
+if not output[0] == 0:
+  error("No se pudo generar el paquete dmvc")
+else:
+  info("se genero el paquete dmvc")
+
+print "Generando el paquete genteguada...."
+os.chdir(dirTempSVN+"/gg")
+output = commands.getstatusoutput(comandoDEB)
+if not output[0] == 0:
+  error("No se pudo generar el paquete genteguada")
+else:
+  info("se genero el paquete genteguada")
+
+print "Copiamos los packetes en el directorio ggdeb"
+os.chdir(dirActual)
+comando = "rm -rf ggdeb"
+output = commands.getstatusoutput(comando)
+comando = "mkdir ggdeb"
+output = commands.getstatusoutput(comando)
+comando = "cp "+dirTempSVN+"/*.deb ggdeb/" 
+output = commands.getstatusoutput(comando)
+info("finalizo el proceso")
+comando = "rm -rf "+dirTempSVN
+output = commands.getstatusoutput(comando)
