@@ -258,5 +258,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     pos = event.getParams()['position']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
+    self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))  
     isoview_item.IsoViewItem.positionChanged(self, event)    
 
