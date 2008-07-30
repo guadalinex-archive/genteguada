@@ -115,9 +115,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def getAvatarConfiguration(self):
     return self.__avatarConfiguration
 
-  def setAvatarConfiguration(self, avatarConfiguration, timestamp=None):
+  def setAvatarConfiguration(self, avatarConfiguration, timestamp):
     self.__avatarConfiguration = avatarConfiguration
-    #self.setTimestamp(timestamp)
+    self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
     for contact in self.__agenda:
       contact.getPlayer().changeMaskContact(self.username, self.getImageLabel())

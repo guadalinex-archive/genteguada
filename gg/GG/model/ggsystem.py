@@ -435,7 +435,6 @@ class GGSystem(dMVC.model.Model):
     else:
       if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png")):
         os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"))
-    player.setAvatarConfiguration(configuration, None)
     execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
       images = self.__avatarGeneratorHandler.getImages(player)

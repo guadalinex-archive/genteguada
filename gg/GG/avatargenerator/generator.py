@@ -15,8 +15,8 @@ class AvatarGenerator(dMVC.model.Model):
 
   def executeCommand(self, configuration, player, nameMask):
     comando = self.__generateRenderCommand(player.username, configuration, nameMask)
-    print comando
-    return False
+    #print comando
+    #return False
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
       return False
