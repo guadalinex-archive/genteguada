@@ -56,6 +56,7 @@ class CreateItemsWindow:
   
   def __paintObjectsList(self):
     objectsLabels = self.__objectsDict.keys()
+    objectsLabels.sort()
     self.__objectsArea = guiobjects.OcempImageObjectList(130, 270, objectsLabels)
     self.__objectsArea.topleft = 20, 40
     self.__objectsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
@@ -85,7 +86,10 @@ class CreateItemsWindow:
     self.editableFields = {}
     
     iPos = 0
-    for key in attrDict.keys():
+    keys = attrDict.keys()
+    keys.sort()
+    
+    for key in keys:
       label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
       label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
       label.topleft = 10 + labelShift[0], 40 + iPos*spacing + labelShift[1]
@@ -114,15 +118,19 @@ class CreateItemsWindow:
       iPos += 1
     
   def createObject(self):
+    if not self.__objectsArea.getSelectedName():
+      return  
     self.__hud.createItemstHandler()  
     name = self.__objectsArea.getSelectedName()
-    data = []
-    keys = self.editableFields.keys()
+    #data = []
+    data = {}
+    keys = self.editableFields.keys().sort()
     for key in keys:
       values = []
       for field in self.editableFields[key]:
         values.append(field.text)
-      data.append([key, values])
+      #data.append([key, values])
+      data[key] = values
     self.__session.createObject(name, data)  
       
   def restoreDeafultValues(self):

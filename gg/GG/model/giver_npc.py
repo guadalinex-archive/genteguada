@@ -99,13 +99,13 @@ class GGPersistentKey(GGGiverNpc):
     GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
   
   def getCopyFor(self, player):
-    if player.hasItemLabeledInInventory("Llave Dorada"):
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu llave dorada", \
-                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    if player.hasItemLabeledInInventory(self.label):
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido " + self.label, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None, [-1, -1, -1]
     else:  
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes una llave dorada", \
-                'Llave Dorada', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, "Llave Dorada", self.anchor, self.getPosition()), self.getPosition()
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
     
 #================================================================================

@@ -1,5 +1,8 @@
+# -*- coding: iso-8859-15 -*-
+
 import dMVC.model
 import ggmodel
+import GG.model.teleport
 import GG.utils
 
 class GGSession(ggmodel.GGModel):
@@ -73,24 +76,70 @@ class GGSession(ggmodel.GGModel):
     if not self.__player.getAccessMode():
       return None  
     
-    objectsDict = {"Door": {"room": [self.__player.getRoom().label], 
+    objectsDict = {
+                   "BoxHeavy": {"room": [self.__player.getRoom().label], 
                             "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
-                            "destinationRoom": [""],
+                            "label": [""]                            
+                            },
+                   "Door": {"room": [self.__player.getRoom().label], 
+                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
+                            "destinationRoom": [self.__player.getRoom().label],
                             "exitPosition": [0, 0, 0],
                             "label": [""]                            
                             },
                    "DoorWithKey": {"room": [self.__player.getRoom().label], 
                             "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
-                            "destinationRoom": [""],
+                            "destinationRoom": [self.__player.getRoom().label],
                             "exitPosition": [0, 0, 0],
                             "label": [""],
                             "key": [""]        
                             }
-                   }
+                  }
     
     return objectsDict
     
   def createObject(self, name, data):
     print "*** Nuevo objeto: ", name
     print "*** ", data
+    
+    try: 
+      posX = int(data["position"][0])    
+      posY = int(data["position"][1])
+      posZ = int(data["position"][2])
+    except ValueError: 
+      self.__player.newChatMessage("Valor \"Position\" incorrecto", 1) 
+      return
+    
+    if name == "Door":
+      room = self.__system.existsRoom(data["room"][0])
+      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
+      if not room or not destinationRoom:
+        self.__player.newChatMessage("No existe esa habitación.", 1)
+        return
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+       
+      try: 
+        exPosX = int(data["exitPosition"][0])    
+        exPosY = int(data["exitPosition"][1])
+        exPosZ = int(data["exitPosition"][2])
+      except ValueError: 
+        self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
+        return
+        
+      door = GG.model.teleport.GGDoor("furniture/wooden_door.png", [28, 23], [0, 0], [exPosX, exPosY, exPosZ], destinationRoom, data["label"][0])
+      room.addItemFromVoid(door, [posX, posY, posZ])
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
