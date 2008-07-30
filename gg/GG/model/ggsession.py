@@ -3,6 +3,7 @@
 import dMVC.model
 import ggmodel
 import GG.model.teleport
+import GG.model.box_heavy
 import GG.utils
 
 class GGSession(ggmodel.GGModel):
@@ -40,7 +41,6 @@ class GGSession(ggmodel.GGModel):
     if newRoom: 
       newRoom.subscribeEvent('chatAdded', self.chatAdded)
       #self.__player.subscribeEvent('chatAdded', self.chatAdded)
-      
       #newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod
@@ -77,30 +77,35 @@ class GGSession(ggmodel.GGModel):
       return None  
     
     self.imagesDict = {}
+    self.imagesDict["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -10]]}
     self.imagesDict["Door"] = {}
-    self.imagesDict["Door"]["wooden_door.png"] = [28, 23]
-    self.imagesDict["Door"]["wooden_door_a.png"] = [24, 37]
-    self.imagesDict["Door"]["wooden_door_b.png"] = [24, 55]
+    self.imagesDict["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
+    self.imagesDict["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
+    self.imagesDict["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
+    self.imagesDict["DoorWithKey"] = self.imagesDict["Door"]
+    
+    pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
     self.objectsDict = {
-                   "BoxHeavy": {"room": [self.__player.getRoom().label], 
-                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
-                            "label": [""]                            
+                   "BoxHeavy": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "images": self.imagesDict["BoxHeavy"].keys() 
                             },
-                   "Door": {"room": [self.__player.getRoom().label], 
-                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
+                   "Door": {
+                            "position": [pos[0], pos[2]],
                             "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0, 0],
+                            "exitPosition": [0, 0],
                             "label": [""], 
                             "images": self.imagesDict["Door"].keys()                     
                             },
-                   "DoorWithKey": {"room": [self.__player.getRoom().label], 
-                            "position": self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition()),
+                   "DoorWithKey": {
+                            "position": [pos[0], pos[2]],
                             "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0, 0],
+                            "exitPosition": [0, 0],
                             "label": [""],
                             "key": [""],        
-                            "images": self.imagesDict["Door"].keys()                     
+                            "images": self.imagesDict["DoorWithKey"].keys()                     
                             }
                   }
     
@@ -112,14 +117,14 @@ class GGSession(ggmodel.GGModel):
     
     try: 
       posX = int(data["position"][0])    
-      posY = int(data["position"][1])
-      posZ = int(data["position"][2])
+      posZ = int(data["position"][1])
     except ValueError: 
       self.__player.newChatMessage("Valor \"Position\" incorrecto", 1) 
       return
     
     if name == "Door":
-      room = self.__system.existsRoom(data["room"][0])
+      #room = self.__system.existsRoom(data["room"][0])  
+      room = self.__player.getRoom()
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
         self.__player.newChatMessage("No existe esa habitación.", 1)
@@ -127,7 +132,33 @@ class GGSession(ggmodel.GGModel):
       if data["label"][0] == "":
         self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
         return
-       
+      try: 
+        exPosX = int(data["exitPosition"][0])    
+        exPosZ = int(data["exitPosition"][1])
+      except ValueError: 
+        self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
+        return
+      img = data["images"]
+      door = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
+                                      self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
+                                      data["label"][0])
+      room.addItemFromVoid(door, [posX, 0, posZ])
+
+    #-----------------------------------------------
+
+    if name == "DoorWithKey":
+      #room = self.__system.existsRoom(data["room"][0])
+      room = self.__player.getRoom()
+      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
+      if not room or not destinationRoom:
+        self.__player.newChatMessage("No existe esa habitación.", 1)
+        return
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+      if data["key"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
       try: 
         exPosX = int(data["exitPosition"][0])    
         exPosY = int(data["exitPosition"][1])
@@ -135,21 +166,22 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
-      
       img = data["images"]
+      door = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
+                                             self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
+                                             data["label"][0], data["key"][0])
+      room.addItemFromVoid(door, [posX, 0, posZ])
+
+    #-----------------------------------------------
     
-      door = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img], [0, 0], [exPosX, exPosY, exPosZ], destinationRoom, data["label"][0])
-      room.addItemFromVoid(door, [posX, posY, posZ])
-      
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    if name == "BoxHeavy":
+      room = self.__player.getRoom()
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+      img = data["images"]
+      box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0])
+      room.addItemFromVoid(box, [posX, 0, posZ])
+
     
     

@@ -399,11 +399,11 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-    if self.__player.getAccessMode():
-      self.paintRoomOptions()
+    
+    #if self.__player.getAccessMode():
+    #  self.paintRoomOptions()
     
     self.hud.zOrder = 1
-    #self.hud.depth = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
 
@@ -908,6 +908,7 @@ class IsoViewHud(isoview.IsoView):
     
     if self.__player.getAccessMode():
       ACTIONS.append({"image":"interface/hud/4.png", "action": self.createItemstHandler, "tooltip":"Panel de creacion de objetos"})
+      ACTIONS.append({"image":"interface/hud/teleport.png", "action": self.teleport, "tooltip":"Teleportacion"})
     
     i = 0
     for buttonData in ACTIONS:
@@ -923,6 +924,9 @@ class IsoViewHud(isoview.IsoView):
         self.__createItemsButton = button
       i+=1
       self.hud.add_child(button)
+      
+  def teleport(self):
+    self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)  
       
   def createItemstHandler(self):
     """ Shows or hides the create items window.
