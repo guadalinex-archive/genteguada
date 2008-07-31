@@ -131,7 +131,7 @@ class GGSystem(dMVC.model.Model):
 
     # ROOM 1
     myDoor1 = GG.model.teleport.GGDoor("furniture/" + GG.utils.DOOR_GARDEN, [25, 2], [0, 0], [6, 0, 6], room2, "puerta lobby")
-    myPenguin = GG.model.penguin.GGPenguinTalker(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
+    myPenguin = GG.model.penguin.GGPenguinTalker("furniture/" + GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada")
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -10], [0, -10], "Caja pesada 2")
     myMoney5 = GG.model.pickable_item.PaperMoney("furniture/" + GG.utils.PAPERMONEY_5, [14, -25], [0, -10], "Billete de 5", 5)
@@ -176,7 +176,7 @@ class GGSystem(dMVC.model.Model):
     myDoor2A = GG.model.teleport.GGDoor("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [6, 0, 1], room1, "puerta room2b")
     myDoor2B = GG.model.teleport.GGDoor("furniture/" + GG.utils.DOOR_WOODEN, [28, 23], [0, 0], [6, 0, 6], room3, "puerta room2a")
     myDoor2C = GG.model.teleport.GGDoor("furniture/" + GG.utils.WALL_LEFT, wallOffset2, [0, 0], [6, 0, 6], room6, "puerta room2c")
-    myPenguinShirt = GG.model.penguin.GGPenguinTrade(GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt", penguinTradeText, "Regalo")
+    myPenguinShirt = GG.model.penguin.GGPenguinTrade("furniture/" + GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt", penguinTradeText, "Regalo")
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
     myGoldenKeyRoom2 = GG.model.giver_npc.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
@@ -218,7 +218,7 @@ class GGSystem(dMVC.model.Model):
     myDoor3B = GG.model.teleport.GGDoorWithKey("furniture/" + GG.utils.DOOR_AMORED, [35, 25], [0, 0], [6, 0, 5], room4, "puerta room3b", "Llave Dorada")
     myDoor3C1 = GG.model.teleport.GGDoorPressedTiles("furniture/" + GG.utils.DOOR_WOODEN_A, [24, 37], [0, 0], [3, 0, 6], room5, "puerta room3c1", tiles)
     myDoor3C2 = GG.model.teleport.GGDoorPressedTiles("furniture/" + GG.utils.DOOR_WOODEN_B, [24, 55], [0, 0], [3, 0, 6], room5, "puerta room3c2", tiles)
-    myPenguinRoom3 = GG.model.penguin.GGPenguinTalker(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinRoom3Text)
+    myPenguinRoom3 = GG.model.penguin.GGPenguinTalker("furniture/" + GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinRoom3Text)
 
     wallOffset1 = [25, 50]
     room3.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.YARD_UP, wallOffset1, [0, 0]), [1, 0, 0])
@@ -284,7 +284,7 @@ class GGSystem(dMVC.model.Model):
     myDoor5A2 = GG.model.teleport.GGDoor("tiles/" + GG.utils.TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 1], room3, "puerta room5a")
     myDoor5B1 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 0, 7], room1, "puerta room5b")
     myDoor5B2 = GG.model.teleport.GGDoorRoom5b("tiles/" + GG.utils.TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 0, 7], room1, "puerta room5b")
-    myPenguinQuiz = GG.model.penguin.GGPenguinQuiz(GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", GG.utils.QUESTIONS_PATH)
+    myPenguinQuiz = GG.model.penguin.GGPenguinQuiz("furniture/" + GG.utils.PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", GG.utils.QUESTIONS_PATH)
     columnOffset = [13, 15]
     for z in range(0, 8):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, z])
