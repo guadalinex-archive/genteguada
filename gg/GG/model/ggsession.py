@@ -89,7 +89,25 @@ class GGSession(ggmodel.GGModel):
     self.imagesDict["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
     self.imagesDict["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
     self.imagesDict["DoorWithKey"] = self.imagesDict["Door"]
-    
+    self.imagesDict["RoomItem"] = {}
+    self.imagesDict["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
+    self.imagesDict["RoomItem"]["fence_up.png"] = [[55, 15], [0, 0]]
+    self.imagesDict["RoomItem"]["fence_left.png"] = [[55, 15], [0, 0]]
+    self.imagesDict["RoomItem"]["tree.png"] = [[100, 150], [0, -26]]
+    self.imagesDict["RoomItem"]["stone_column.png"] = [[13, 15], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_left.png"] = [[55, 0], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_up.png"] = [[25, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_left.png"] = [[25, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_lamp_up.png"] = [[25, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_lamp_left.png"] = [[25, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
     self.objectsDict = {
@@ -112,6 +130,11 @@ class GGSession(ggmodel.GGModel):
                             "label": [""],
                             "key": [""],        
                             "images": self.imagesDict["DoorWithKey"].keys()                     
+                            },
+                   "RoomItem": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "images": self.imagesDict["RoomItem"].keys()                     
                             }
                   }
     
