@@ -130,6 +130,10 @@ class GGSession(ggmodel.GGModel):
     
     self.imagesDict["PenguinQuiz"] = self.imagesDict["PenguinTalker"]
     
+    self.imagesDict["GiverNpc"] = {}
+    self.imagesDict["GiverNpc"]["gift.png"] = [[15, -30], [0, 0]]
+    self.imagesDict["GiverNpc"]["golden_key.png"] = [[15, -30], [0, 0]]
+    
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
     self.objectsDict = {
@@ -152,6 +156,11 @@ class GGSession(ggmodel.GGModel):
                             "label": [""],
                             "key": [""],        
                             "images": self.imagesDict["DoorWithKey"].keys()                     
+                            },
+                   "GiverNpc": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "images": self.imagesDict["GiverNpc"].keys()     
                             },
                    "PenguinQuiz": {
                             "position": [pos[0], pos[2]],
@@ -176,29 +185,32 @@ class GGSession(ggmodel.GGModel):
                             "images": self.imagesDict["RoomItem"].keys()                     
                             }
                   }
-    
     return self.objectsDict
     
   def createObject(self, name, data):
-    print "*** Nuevo objeto: ", name
-    print "*** ", data
-    
     try: 
       posX = int(data["position"][0])    
       posZ = int(data["position"][1])
     except ValueError: 
       self.__player.newChatMessage("Valor \"Position\" incorrecto", 1) 
       return
-    
-    if name == "Door":
-      #room = self.__system.existsRoom(data["room"][0])  
-      room = self.__player.getRoom()
+    if name != "RoomItem":
+      label = data["label"][0]  
+      if label == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+    img = data["images"]
+    room = self.__player.getRoom()
+                  
+    #===============================================
+    if name == "BoxHeavy":
+      box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], \
+                                          self.imagesDict[name][img][1], label)
+    #===============================================
+    elif name == "Door":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
         self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
@@ -206,23 +218,13 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
-      img = data["images"]
       door = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
-                                      self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
-                                      data["label"][0])
-      room.addItemFromVoid(door, [posX, 0, posZ])
-
-    #-----------------------------------------------
-
-    if name == "DoorWithKey":
-      #room = self.__system.existsRoom(data["room"][0])
-      room = self.__player.getRoom()
+                                      self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, label)
+    #===============================================
+    elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
         self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
         return
       if data["key"][0] == "":
         self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
@@ -234,72 +236,40 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
-      img = data["images"]
       door = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
                                              self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
-                                             data["label"][0], data["key"][0])
-      room.addItemFromVoid(door, [posX, 0, posZ])
-
-    #-----------------------------------------------
-    
-    if name == "BoxHeavy":
-      room = self.__player.getRoom()
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
-      img = data["images"]
-      box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0])
-      room.addItemFromVoid(box, [posX, 0, posZ])
-    
-    #-----------------------------------------------
-    
-    if name == "RoomItem":
-      room = self.__player.getRoom()
-      img = data["images"]
-      box = GG.model.room_item.GGRoomItem("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1])
-      room.addItemFromVoid(box, [posX, 0, posZ])
-    
-    #-----------------------------------------------
-    
-    if name == "PenguinTalker":
-      room = self.__player.getRoom()
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
+                                             label, data["key"][0])
+    #===============================================
+    elif name == "GiverNpc":
+      box = GG.model.giver_npc.GGGiverNpc("furniture/" + img, self.imagesDict[name][img][0], \
+                                          self.imagesDict[name][img][1], "furniture/" + img, label)
+    #===============================================
+    elif name == "RoomItem":
+      box = GG.model.room_item.GGRoomItem("furniture/" + img, self.imagesDict[name][img][0], \
+                                          self.imagesDict[name][img][1])
+    #===============================================
+    elif name == "PenguinTalker":
       if data["message"][0] == "":
         self.__player.newChatMessage("Debe introducir un mensaje.", 1)
         return
-      img = data["images"]
-      box = GG.model.penguin.GGPenguinTalker("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["message"][0])
-      room.addItemFromVoid(box, [posX, 0, posZ])
-    
-    #-----------------------------------------------
-    
-    if name == "PenguinTrade":
+      box = GG.model.penguin.GGPenguinTalker("furniture/" + img, self.imagesDict[name][img][0], \
+                                             self.imagesDict[name][img][1], label, data["message"][0])
+    #===============================================
+    elif name == "PenguinTrade":
       room = self.__player.getRoom()
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
       if data["gift"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
         return
-      img = data["images"]
-      box = GG.model.penguin.GGPenguinTrade("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["gift"][0])
-      room.addItemFromVoid(box, [posX, 0, posZ])
-
-    #-----------------------------------------------
-    
-    if name == "PenguinQuiz":
-      room = self.__player.getRoom()
-      if data["label"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
+      box = GG.model.penguin.GGPenguinTrade("furniture/" + img, self.imagesDict[name][img][0], \
+                                            self.imagesDict[name][img][1], label, data["gift"][0])
+    #===============================================
+    elif name == "PenguinQuiz":
       if data["filePath"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
         return
-      img = data["images"]
-      box = GG.model.penguin.GGPenguinQuiz("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["filePath"][0])
-      room.addItemFromVoid(box, [posX, 0, posZ])
-
+      box = GG.model.penguin.GGPenguinQuiz("furniture/" + img, self.imagesDict[name][img][0], \
+                                           self.imagesDict[name][img][1], label, data["filePath"][0])
+    #===============================================
+    room.addItemFromVoid(box, [posX, 0, posZ])
     
     
