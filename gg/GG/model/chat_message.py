@@ -78,17 +78,17 @@ class ChatQuiz(ChatMessage):
   """
      
   def __init__(self, parent, fileName, question, player, sender, color, position, type):
-    self.loadQuestion(question)
-    ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, type)
     self.__parent = parent
     self.question = question
     self.player = player
     self.__msgQuestion = ""
     self.__msgAnswers = []
     self.__rightAnswer = 0
+    self.loadQuestion()
+    ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, type)
     
-  def loadQuestion(self, question):
-    filePath = "gg/GG/data/questions/" + question
+  def loadQuestion(self):
+    filePath = "gg/GG/data/questions/" + self.question
     f = codecs.open(filePath, "r", "utf-8" )
     self.__msgQuestion = f.readline()[:-1]
     self.__msgAnswers = []

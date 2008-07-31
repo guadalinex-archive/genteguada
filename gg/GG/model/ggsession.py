@@ -83,13 +83,17 @@ class GGSession(ggmodel.GGModel):
       return None  
     
     self.imagesDict = {}
+    
     self.imagesDict["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -10]]}
+    
     self.imagesDict["Door"] = {}
     self.imagesDict["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
     self.imagesDict["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
     self.imagesDict["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
     self.imagesDict["Door"]["armored_door_left.png"] = [[17, 15], [0, 0]]
+    
     self.imagesDict["DoorWithKey"] = self.imagesDict["Door"]
+    
     self.imagesDict["RoomItem"] = {}
     self.imagesDict["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
     self.imagesDict["RoomItem"]["fence_up.png"] = [[55, 15], [0, 0]]
@@ -104,13 +108,11 @@ class GGSession(ggmodel.GGModel):
     self.imagesDict["RoomItem"]["yard_lamp_up.png"] = [[25, 50], [0, 0]]
     self.imagesDict["RoomItem"]["yard_lamp_left.png"] = [[45, 50], [0, 0]]
     self.imagesDict["RoomItem"]["yard_corner.png"] = [[55, 45], [0, 0]]
-    
     self.imagesDict["RoomItem"]["warehouseWallUp01.png"] = [[35, 33], [0, 0]]
     self.imagesDict["RoomItem"]["warehouseWallUp02.png"] = [[35, 33], [0, 0]]
     self.imagesDict["RoomItem"]["warehouseWallLeft01.png"] = [[35, 33], [0, 0]]
     self.imagesDict["RoomItem"]["warehouseWallLeft02.png"] = [[35, 33], [0, 0]]
     self.imagesDict["RoomItem"]["warehouseWallCorner.png"] = [[35, 33], [0, 0]]
-
     self.imagesDict["RoomItem"]["skylineWallUp01.png"] = [[35, 40], [0, 0]]
     self.imagesDict["RoomItem"]["skylineWallUp02.png"] = [[35, 40], [0, 0]]
     self.imagesDict["RoomItem"]["skylineWallUp03.png"] = [[35, 40], [0, 0]]
@@ -118,7 +120,16 @@ class GGSession(ggmodel.GGModel):
     self.imagesDict["RoomItem"]["skylineWallLeft01.png"] = [[35, 40], [0, 0]]
     self.imagesDict["RoomItem"]["skylineWallLeft02.png"] = [[35, 40], [0, 0]]
     self.imagesDict["RoomItem"]["skylineCorner.png"] = [[35, 40], [0, 0]]
+    
+    self.imagesDict["PenguinTalker"] = {}
+    self.imagesDict["PenguinTalker"]["andatuz_right.png"] = [[30, 0], [0, 0]]
+    self.imagesDict["PenguinTalker"]["andatuz_down.png"] = [[30, 0], [0, 0]]
+    self.imagesDict["PenguinTalker"]["andatuz_bottomright.png"] = [[30, 0], [0, 0]]
 
+    self.imagesDict["PenguinTrade"] = self.imagesDict["PenguinTalker"]
+    
+    self.imagesDict["PenguinQuiz"] = self.imagesDict["PenguinTalker"]
+    
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
     self.objectsDict = {
@@ -141,6 +152,24 @@ class GGSession(ggmodel.GGModel):
                             "label": [""],
                             "key": [""],        
                             "images": self.imagesDict["DoorWithKey"].keys()                     
+                            },
+                   "PenguinQuiz": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "filePath": [GG.utils.QUESTIONS_PATH],        
+                            "images": self.imagesDict["PenguinTalker"].keys()                     
+                            },
+                   "PenguinTalker": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "message": [""],        
+                            "images": self.imagesDict["PenguinTalker"].keys()                     
+                            },
+                   "PenguinTrade": {
+                            "position": [pos[0], pos[2]],
+                            "label": [""],
+                            "gift": [""],        
+                            "images": self.imagesDict["PenguinTrade"].keys()                     
                             },
                    "RoomItem": {
                             "position": [pos[0], pos[2]],
@@ -228,6 +257,48 @@ class GGSession(ggmodel.GGModel):
       room = self.__player.getRoom()
       img = data["images"]
       box = GG.model.room_item.GGRoomItem("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1])
+      room.addItemFromVoid(box, [posX, 0, posZ])
+    
+    #-----------------------------------------------
+    
+    if name == "PenguinTalker":
+      room = self.__player.getRoom()
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+      if data["message"][0] == "":
+        self.__player.newChatMessage("Debe introducir un mensaje.", 1)
+        return
+      img = data["images"]
+      box = GG.model.penguin.GGPenguinTalker("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["message"][0])
+      room.addItemFromVoid(box, [posX, 0, posZ])
+    
+    #-----------------------------------------------
+    
+    if name == "PenguinTrade":
+      room = self.__player.getRoom()
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+      if data["gift"][0] == "":
+        self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
+        return
+      img = data["images"]
+      box = GG.model.penguin.GGPenguinTrade("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["gift"][0])
+      room.addItemFromVoid(box, [posX, 0, posZ])
+
+    #-----------------------------------------------
+    
+    if name == "PenguinQuiz":
+      room = self.__player.getRoom()
+      if data["label"][0] == "":
+        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+        return
+      if data["filePath"][0] == "":
+        self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
+        return
+      img = data["images"]
+      box = GG.model.penguin.GGPenguinQuiz("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0], data["filePath"][0])
       room.addItemFromVoid(box, [posX, 0, posZ])
 
     
