@@ -72,6 +72,12 @@ class GGSession(ggmodel.GGModel):
     self.__player = None
     self.__system = None
     
+  def getRoomLabels(self):
+    return self.__system.getRoomLabels()  
+
+  def getRoom(self, roomLabel):
+    return self.__system.existsRoom(roomLabel)  
+    
   def getObjectsData(self):
     if not self.__player.getAccessMode():
       return None  
