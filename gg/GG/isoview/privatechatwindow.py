@@ -47,12 +47,14 @@ class PrivateChatWindow:
     
     labelChat = guiobjects.OcempLabel("Contactos", 280, guiobjects.STYLES["userName"])
     labelChat.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    labelChat.topleft = 20, 20
+    #labelChat.topleft = 20, 20
+    labelChat.topleft = 20, 10
     self.container.add_child(labelChat)
     
     labelContacts = guiobjects.OcempLabel("Chat", 280, guiobjects.STYLES["userName"])
     labelContacts.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    labelContacts.topleft = 150, 20
+    #labelContacts.topleft = 150, 20
+    labelContacts.topleft = 160, 10
     self.container.add_child(labelContacts)
     
   def __paintContactList(self):

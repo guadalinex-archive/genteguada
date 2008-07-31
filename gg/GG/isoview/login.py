@@ -72,6 +72,7 @@ class Login:
     self.cancelLogin()
 
   def drawAccessMode(self):
+    self.__finish = False
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.__screen)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
@@ -81,7 +82,8 @@ class Login:
     self.window.add_child(imgBackgroundRight)
     
     notificationLabel = guiobjects.OcempLabel("¿Desea entrar como administrador?", 200, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
-    notificationLabel.topleft = 225,300
+    #notificationLabel.topleft = 225,300
+    notificationLabel.topleft = 100,300
     notificationLabel.border = 1
     notificationLabel.set_minimum_size(230,40)
     self.window.add_child(notificationLabel)
@@ -117,7 +119,7 @@ class Login:
       self.widgetContainer.distribute_events(*events)
     if self.__accessMode:
       return self.__accessMode
-    self.accesModeNormal()
+    self.accessModeNormal()
     
   def accessModeAdmin(self):
     self.__accessMode = 1
@@ -134,13 +136,15 @@ class Login:
 
   def __paintTextLabels(self):
     self.__usernameLabel = guiobjects.OcempLabel("Usuario: ", 80, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
-    self.__usernameLabel.topleft = 670,408
+    #self.__usernameLabel.topleft = 670,408
+    self.__usernameLabel.topleft = 670,390
     self.__usernameLabel.border = 1
     self.__usernameLabel.set_minimum_size(230,40)
     self.window.add_child(self.__usernameLabel)
 
     self.__passwordLabel = guiobjects.OcempLabel("Password:", 80, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
-    self.__passwordLabel.topleft = 670,518
+    #self.__passwordLabel.topleft = 670,518
+    self.__passwordLabel.topleft = 670,500
     self.__passwordLabel.border = 1
     self.__passwordLabel.set_minimum_size(230,40)
     self.window.add_child(self.__passwordLabel)
@@ -178,7 +182,6 @@ class Login:
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
     loginData = self.__parent.system.login(user,passw)
-    print loginData
     if loginData[0] == True:
       self.__session = loginData[1]
       self.finishLogin()
@@ -207,7 +210,7 @@ class Login:
      buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
      self.container.add_child(buttonCancel)
      
-     labelAlert = guiobjects.OcempLabel("Error: Usuario o password incorrectos.", 200, guiobjects.STYLES["dialogFont"])
+     labelAlert = guiobjects.OcempLabel("Error: Usuario o password incorrectos.", 50, guiobjects.STYLES["dialogFont"])
      labelAlert.topleft = 160, 80
      self.container.add_child(labelAlert)
 

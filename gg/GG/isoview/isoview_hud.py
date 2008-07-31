@@ -465,15 +465,18 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.imgBackground)
     
     labelChat = guiobjects.OcempLabel("Chat", 80, guiobjects.STYLES["hudLabel"])
-    labelChat.topleft = 17, 70
+    #labelChat.topleft = 17, 70
+    labelChat.topleft = 17, 58
     self.hud.add_child(labelChat)
     
     labelProfile = guiobjects.OcempLabel("Mi perfil: ", 80, guiobjects.STYLES["hudLabel"])
-    labelProfile.topleft = 555, 90
+    #labelProfile.topleft = 555, 90
+    labelProfile.topleft = 555, 70
     self.hud.add_child(labelProfile)
     
     labelInventory = guiobjects.OcempLabel("Inventario", 80, guiobjects.STYLES["hudLabel"])
-    labelInventory.topleft = 819, 70
+    #labelInventory.topleft = 819, 70
+    labelInventory.topleft = 819, 58
     self.hud.add_child(labelInventory)
 
   def paintChat(self):
@@ -739,18 +742,22 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 5,6
     self.buttonBarAdminActions.add_child(img)
     
-    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
-    itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
-    itemLabel.topleft = 35,10
+    #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["teleportLabel"])
+    #itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    #itemLabel.topleft = 35,10
+    itemLabel.topleft = 35,0
     self.buttonBarAdminActions.add_child(itemLabel)
     
     self.editableFields = {}
     
     iPos = 0
     for key in actions.keys():
-      label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
-      label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
-      label.topleft = 10, 40 + iPos*60
+      #label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
+      label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["teleportLabel"])
+      #label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+      #label.topleft = 10, 40 + iPos*60
+      label.topleft = 10, 30 + iPos*60
       self.buttonBarAdminActions.add_child(label)
         
       fCount = 0
@@ -823,7 +830,8 @@ class IsoViewHud(isoview.IsoView):
     itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
     
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
-    itemLabel.topleft = 35,10
+    #itemLabel.topleft = 35,10
+    itemLabel.topleft = 35,0
     self.buttonBarActions.add_child(itemLabel)
     i = 0
     self.restoreActiveActionButtonsList()
@@ -949,9 +957,11 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0,0
     self.teleportBox.add_child(imgBackground)
     
-    titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["itemLabel"])
-    titleLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
-    titleLabel.topleft = 22,10
+    #titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["itemLabel"])
+    titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["teleportLabel"])
+    #titleLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    #titleLabel.topleft = 22,10
+    titleLabel.topleft = 22,0
     self.teleportBox.add_child(titleLabel)
     
     rooms = self.getModel().getRoomLabels()
@@ -1230,18 +1240,22 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.imgMask)
 
     labelUserName = guiobjects.OcempLabel(self.__player.username, 140, guiobjects.STYLES["userName"])
-    labelUserName.topleft = 638, 90
+    #labelUserName.topleft = 638, 90
+    labelUserName.topleft = 650, 70
     self.hud.add_child(labelUserName)
     
-    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["userName"])
+    #self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["userName"])
+    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["pointLabel"])
     self.__pointsLabel.topleft = 627, 120
     self.hud.add_child(self.__pointsLabel)
 
-    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["userName"])
+    #self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["userName"])
+    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["pointLabel"])
     self.__labelOld.topleft = 627, 140
     self.hud.add_child(self.__labelOld)
 
-    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["userName"])
+    #self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["userName"])
+    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["pointLabel"])
     self.__expLabel.topleft = 627, 160
     self.hud.add_child(self.__expLabel)
 

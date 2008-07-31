@@ -45,14 +45,18 @@ class CreateItemsWindow:
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-    itemsLabel = guiobjects.OcempLabel("Objetos", 280, guiobjects.STYLES["userName"])
-    itemsLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    itemsLabel.topleft = 20, 20
+    #itemsLabel = guiobjects.OcempLabel("Objetos", 280, guiobjects.STYLES["userName"])
+    itemsLabel = guiobjects.OcempLabel("Objetos", 280, guiobjects.STYLES["pointLabel"])
+    #itemsLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
+    #itemsLabel.topleft = 20, 20
+    itemsLabel.topleft = 20, 10
     self.container.add_child(itemsLabel)
     
-    itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", 280, guiobjects.STYLES["userName"])
-    itemsPropertiesLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    itemsPropertiesLabel.topleft = 150, 20
+    #itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", 280, guiobjects.STYLES["userName"])
+    itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", 280, guiobjects.STYLES["pointLabel"])
+    #itemsPropertiesLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
+    #itemsPropertiesLabel.topleft = 150, 20
+    itemsPropertiesLabel.topleft = 150, 10
     self.container.add_child(itemsPropertiesLabel)
   
   def __paintObjectsList(self):
@@ -92,9 +96,11 @@ class CreateItemsWindow:
     
     for key in keys:
     
+      #label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
       label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
-      label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
-      label.topleft = 10 + labelShift[0], 40 + iPos*spacing + labelShift[1]
+      #label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+      #label.topleft = 10 + labelShift[0], 40 + iPos*spacing + labelShift[1]
+      label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
       self.container.add_child(label)
       self.activeLabels.append(label)
       

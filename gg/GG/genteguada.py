@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import datetime
 import os
 import pygame
@@ -70,7 +72,8 @@ class GenteGuada:
     self.window.add_child(imgBackgroundRight)
     
     loadingLabel = GG.isoview.guiobjects.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
-    loadingLabel.topleft = 372,347
+    #loadingLabel.topleft = 372,347
+    loadingLabel.topleft = 350,300
     loadingLabel.border = 1
     loadingLabel.set_minimum_size(230,40)
     self.window.add_child(loadingLabel)
