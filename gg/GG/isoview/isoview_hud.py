@@ -955,7 +955,7 @@ class IsoViewHud(isoview.IsoView):
     self.teleportBox.add_child(titleLabel)
     
     rooms = self.getModel().getRoomLabels()
-    rooms.sort()
+    #rooms.sort()
     self.roomLabels = guiobjects.OcempImageObjectList(110, 205, rooms)
     self.roomLabels.topleft = 20, 40
     self.teleportBox.add_child(self.roomLabels) 
@@ -1640,7 +1640,7 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0,0
     self.deleteConfirmDialog.add_child(imgBackground)
      
-    cad = unicode("Confirmar eliminacion") 
+    cad = "Confirmar eliminación" 
     questionLabel = guiobjects.OcempLabel(cad, 200, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 68, 20 
     self.deleteConfirmDialog.add_child(questionLabel)

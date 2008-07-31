@@ -50,7 +50,14 @@ class GGGiverNpc(room_item.GGRoomItem):
     return False   
 
   def getCopyFor(self, player):
-    raise "ERROR: undefined method"
+    if player.hasItemLabeledInInventory(self.label):
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido " + self.label, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return None, [-1, -1, -1]
+    else:  
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
   
   def inventoryOnly(self):
     return False
@@ -64,48 +71,4 @@ class GGGiverNpc(room_item.GGRoomItem):
   def isStackable(self):
     return False
 
-#================================================================================
-
-class GGGift(GGGiverNpc):
-  """GGGiverNpc class.
-  Defines item attributes and methods.
-  """
-  
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
-    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
-
-  def getCopyFor(self, player):
-    if player.hasItemLabeledInInventory("Regalo"):
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido tu regalo", \
-                'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None, [-1, -1, -1]
-    else:  
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes un regalo", \
-                'Regalo', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    
-      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, "Regalo", self.anchor, self.getPosition()), self.getPosition()
-
-#================================================================================
-
-class GGPersistentKey(GGGiverNpc):
-  """GGPersistentKey class.
-  Defines item attributes and methods.
-  """
-  
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
-    """ Class constructor.
-    spriteName: image name.
-    """
-    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
-  
-  def getCopyFor(self, player):
-    if player.hasItemLabeledInInventory(self.label):
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido " + self.label, \
-                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None, [-1, -1, -1]
-    else:  
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
-                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
-    
 #================================================================================

@@ -179,7 +179,7 @@ class GGSystem(dMVC.model.Model):
     myPenguinShirt = GG.model.penguin.GGPenguinTrade("furniture/" + GG.utils.PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt", penguinTradeText, "Regalo")
     room2.addItemFromVoid(myPenguinShirt, [1, 0, 1])
 
-    myGoldenKeyRoom2 = GG.model.giver_npc.GGPersistentKey("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
+    myGoldenKeyRoom2 = GG.model.giver_npc.GGGiverNpc("furniture/" + GG.utils.KEY_GOLDEN, [15, -30], [0, 0], "furniture/" + GG.utils.KEY_GOLDEN, "Llave Dorada")
     
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [0, 0, 0])
     room2.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, columnOffset, [0, 0]), [5, 0, 0])
@@ -300,7 +300,7 @@ class GGSystem(dMVC.model.Model):
     
     # ROOM 6
     myDoor6A = GG.model.teleport.GGDoor("tiles/" + GG.utils.TILES_ARROWS[3], GG.utils.FLOOR_SHIFT, [0, 0], [1, 0, 6], room2, "puerta room6a")
-    myGift1 = GG.model.giver_npc.GGGift("furniture/" + GG.utils.GIFT, [15, -30], [0, 0], "furniture/" + GG.utils.GIFT, "Regalo")
+    myGift1 = GG.model.giver_npc.GGGiverNpc("furniture/" + GG.utils.GIFT, [15, -30], [0, 0], "furniture/" + GG.utils.GIFT, "Regalo")
     
     wallOffset = [35, 40]
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.SKYLINE_CORNER, wallOffset, [0, 0]), [0, 0, 0])
