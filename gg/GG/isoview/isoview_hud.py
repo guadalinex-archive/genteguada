@@ -156,6 +156,7 @@ class IsoViewHud(isoview.IsoView):
     self.tooltipWindow = None
     self.ctrl = 0
     
+    self.teleportBox = None
     self.teleportMenu = False
     self.adminMenu = False
     self.deleteConfirmDialog = None
