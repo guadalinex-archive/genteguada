@@ -182,7 +182,20 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
                                           }
                             },   
-          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 22, "alias" : True },
+          "pointLabel" : {  "font" : { "name" : "Bitstream", "size" : 16, "alias" : True },
+                                "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
+                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (0, 74, 153) 
+                                            },
+                                "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ENTERED      : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 246, 155),
+                                            ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 246, 155) 
+                                          }
+                            },
+          #antes del cambio de tipo de letra el size era 22
+          "dialogFont" : {  "font" : { "name" : "Bitstream", "size" : 18, "alias" : True },
                                 "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ENTERED      : (0, 74, 153),
                                              ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 74, 153),
@@ -202,6 +215,18 @@ STYLES = {
                                           }
                             },                          
             "itemLabel" : { "font" : { "name" : "Bitstream", "size" : 22, "alias" : True },
+                            "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (255, 255, 255) 
+                                        },
+                            "bgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (48, 122, 173),
+                                          ocempgui.widgets.Constants.STATE_ENTERED      : (48, 122, 173),
+                                          ocempgui.widgets.Constants.STATE_ACTIVE       : (48, 122, 173),
+                                          ocempgui.widgets.Constants.STATE_INSENSITIVE  : (48, 122, 173) 
+                                        }
+                            },
+          "teleportLabel" : { "font" : { "name" : "Bitstream", "size" : 16, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (255, 255, 255),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (255, 255, 255),
@@ -251,7 +276,8 @@ STYLES = {
                                             ocempgui.widgets.Constants.STATE_INSENSITIVE  : (186, 216, 232) 
                                           }
                             },
-          "quizLabel" : { "font" : { "name" : "Bitstream", "size" : 20, "alias" : True },
+          #antes del cambio de tipo de fuente era el size 20
+          "quizLabel" : { "font" : { "name" : "Bitstream", "size" : 16, "alias" : True },
                             "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 0),
                                           ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 0),
@@ -298,6 +324,7 @@ class GroupSprite(pygame.sprite.Group):
 class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, width, style):
+    """
     line = ""  
     cad = text
     width = width/5
@@ -311,13 +338,14 @@ class OcempLabel(ocempgui.widgets.Label):
         line = line + cad[0:width] + "\n"     
         cad = cad[width:]  
     line = line + cad    
-    
-    self.label = line
-    self.typeFont = "Bitstream"
+    """
+    self.label = text
+    #self.typeFont = "Bitstream"
+    self.typeFont = GG.utils.LOCAL_DATA_PATH+"/font/Domestic_Manners.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
-    ocempgui.widgets.Label.__init__(self, line)
+    ocempgui.widgets.Label.__init__(self, self.label)
     
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
