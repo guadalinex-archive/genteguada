@@ -948,6 +948,11 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0,0
     self.teleportBox.add_child(imgBackground)
     
+    titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["itemLabel"])
+    titleLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    titleLabel.topleft = 22,10
+    self.teleportBox.add_child(titleLabel)
+    
     rooms = self.getModel().getRoomLabels()
     rooms.sort()
     self.roomLabels = guiobjects.OcempImageObjectList(110, 205, rooms)
@@ -998,6 +1003,10 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.teleportBox)
     self.teleportBox = None
     self.teleportMenu = False
+    self.removeTooltip()
+    if not self.adminMenu:
+      self.itemUnselected()
+      self.dropActionsItembuttons()
       
   def createItemstHandler(self):
     """ Shows or hides the create items window.
@@ -1097,7 +1106,7 @@ class IsoViewHud(isoview.IsoView):
       
   def removeTooltip(self):
     """ Removes the active tooltip.
-    """  
+    """
     if self.tooltipWindow:
       self.removeSprite(self.tooltipWindow)  
       self.tooltipWindow.destroy ()
@@ -1612,12 +1621,14 @@ class IsoViewHud(isoview.IsoView):
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
-    
         
   def discardChanges(self):
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
+    if self.teleportBox:
+      x, y = self.teleportBox.topleft
+      self.teleportBox.topleft = x + 151, y
     
   def removeSelectedItemConfirmation(self):
     self.deleteConfirmDialog = ocempgui.widgets.Box(300, 120)
