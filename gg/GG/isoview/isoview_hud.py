@@ -156,6 +156,7 @@ class IsoViewHud(isoview.IsoView):
     self.tooltipWindow = None
     self.ctrl = 0
     
+    self.teleportMenu = False
     self.adminMenu = False
     self.deleteConfirmDialog = None
   
@@ -202,7 +203,7 @@ class IsoViewHud(isoview.IsoView):
     """ Checks if there is an open window.
     """
     if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe \
-      or self.adminMenu or self.deleteConfirmDialog:
+      or self.adminMenu or self.teleportMenu or self.deleteConfirmDialog:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
@@ -908,7 +909,7 @@ class IsoViewHud(isoview.IsoView):
     
     if self.__player.getAccessMode():
       ACTIONS.append({"image":"interface/hud/4.png", "action": self.createItemstHandler, "tooltip":"Panel de creacion de objetos"})
-      ACTIONS.append({"image":"interface/hud/teleport.png", "action": self.teleport, "tooltip":"Teleportacion"})
+      ACTIONS.append({"image":"interface/hud/teleport.png", "action": self.teleportHandler, "tooltip":"Teleportacion"})
     
     i = 0
     for buttonData in ACTIONS:
@@ -925,8 +926,78 @@ class IsoViewHud(isoview.IsoView):
       i+=1
       self.hud.add_child(button)
       
+  def teleportHandler(self):
+    if not self.teleportMenu:
+      self.teleport()
+    else:
+      self.discardTeleport()
+      
   def teleport(self):
-    self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)  
+    if not self.createItemsWindow.hide:
+      self.hideCreateItems()
+    
+    self.teleportBox = ocempgui.widgets.Box(150,300)
+    if self.adminMenu:
+      self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 302, 129]
+    else:  
+      self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
+    self.teleportBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0,0
+    self.teleportBox.add_child(imgBackground)
+    
+    rooms = self.getModel().getRoomLabels()
+    rooms.sort()
+    self.roomLabels = guiobjects.OcempImageObjectList(110, 205, rooms)
+    self.roomLabels.topleft = 20, 40
+    self.teleportBox.add_child(self.roomLabels) 
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyTeleport)
+    okButton.topleft = 10, 262
+    self.teleportBox.add_child(okButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardTeleport)
+    cancelButton.topleft = 80, 262
+    self.teleportBox.add_child(cancelButton)
+    
+    self.teleportBox.zOrder = 10000
+    self.addSprite(self.teleportBox)
+    self.widgetContainer.add_widget(self.teleportBox)
+    
+    self.teleportMenu = True
+    
+  def applyTeleport(self):
+    roomLabel = self.roomLabels.getSelectedName()
+    if not roomLabel:
+      self.__player.newChatMessage("Escoja un destino para el teletransporte", 1)
+      return  
+    room = self.getModel().getRoom(roomLabel)
+    pos = self.__player.getPosition()
+    pos = room.getNearestEmptyCell(pos)
+    
+    self.discardTeleport()
+    
+    if room.isFull():
+      self.__player.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      return
+    itemList = self.__player.getTile().getItemsFrom(self.__player)
+    for item in itemList:
+      item.changeRoom(room, pos)
+    
+    self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)
+    self.teleportMenu = False  
+      
+  def discardTeleport(self):
+    self.removeSprite(self.teleportBox)
+    self.widgetContainer.remove_widget(self.teleportBox)
+    self.teleportBox = None
+    self.teleportMenu = False
       
   def createItemstHandler(self):
     """ Shows or hides the create items window.

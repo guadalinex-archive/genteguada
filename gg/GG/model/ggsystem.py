@@ -468,3 +468,10 @@ class GGSystem(dMVC.model.Model):
       if room.label == name:
         return room  
     return None
+
+  def getRoomLabels(self):
+    list = []
+    for room in self.__rooms:
+      list.append(room.label)
+    return list  
+    
