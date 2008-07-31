@@ -101,7 +101,7 @@ class CreateItemsWindow:
       if key == "images":
         #height = len(attrDict[key])*20
         height = 60
-        self.images = guiobjects.OcempImageList(180, height, attrDict[key])  
+        self.images = guiobjects.OcempImageList(190, height, attrDict[key])  
         self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
         iPos += 1
         self.container.add_child(self.images)  

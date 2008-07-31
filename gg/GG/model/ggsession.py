@@ -88,6 +88,7 @@ class GGSession(ggmodel.GGModel):
     self.imagesDict["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
     self.imagesDict["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
     self.imagesDict["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
+    self.imagesDict["Door"]["armored_door_left.png"] = [[17, 15], [0, 0]]
     self.imagesDict["DoorWithKey"] = self.imagesDict["Door"]
     self.imagesDict["RoomItem"] = {}
     self.imagesDict["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
@@ -95,18 +96,28 @@ class GGSession(ggmodel.GGModel):
     self.imagesDict["RoomItem"]["fence_left.png"] = [[55, 15], [0, 0]]
     self.imagesDict["RoomItem"]["tree.png"] = [[100, 150], [0, -26]]
     self.imagesDict["RoomItem"]["stone_column.png"] = [[13, 15], [0, 0]]
+    self.imagesDict["RoomItem"]["wooden_beam.png"] = [[57, 142], [0, 0]]
     self.imagesDict["RoomItem"]["wall_left.png"] = [[55, 0], [0, 0]]
     self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
     self.imagesDict["RoomItem"]["yard_up.png"] = [[25, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_left.png"] = [[25, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_left.png"] = [[45, 50], [0, 0]]
     self.imagesDict["RoomItem"]["yard_lamp_up.png"] = [[25, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_lamp_left.png"] = [[25, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_lamp_left.png"] = [[45, 50], [0, 0]]
+    self.imagesDict["RoomItem"]["yard_corner.png"] = [[55, 45], [0, 0]]
+    
+    self.imagesDict["RoomItem"]["warehouseWallUp01.png"] = [[35, 33], [0, 0]]
+    self.imagesDict["RoomItem"]["warehouseWallUp02.png"] = [[35, 33], [0, 0]]
+    self.imagesDict["RoomItem"]["warehouseWallLeft01.png"] = [[35, 33], [0, 0]]
+    self.imagesDict["RoomItem"]["warehouseWallLeft02.png"] = [[35, 33], [0, 0]]
+    self.imagesDict["RoomItem"]["warehouseWallCorner.png"] = [[35, 33], [0, 0]]
+
+    self.imagesDict["RoomItem"]["skylineWallUp01.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineWallUp02.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineWallUp03.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineWallUp04.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineWallLeft01.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineWallLeft02.png"] = [[35, 40], [0, 0]]
+    self.imagesDict["RoomItem"]["skylineCorner.png"] = [[35, 40], [0, 0]]
 
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
@@ -133,7 +144,6 @@ class GGSession(ggmodel.GGModel):
                             },
                    "RoomItem": {
                             "position": [pos[0], pos[2]],
-                            "label": [""],
                             "images": self.imagesDict["RoomItem"].keys()                     
                             }
                   }
@@ -210,6 +220,14 @@ class GGSession(ggmodel.GGModel):
         return
       img = data["images"]
       box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1], data["label"][0])
+      room.addItemFromVoid(box, [posX, 0, posZ])
+    
+    #-----------------------------------------------
+    
+    if name == "RoomItem":
+      room = self.__player.getRoom()
+      img = data["images"]
+      box = GG.model.room_item.GGRoomItem("furniture/" + img, self.imagesDict[name][img][0], self.imagesDict[name][img][1])
       room.addItemFromVoid(box, [posX, 0, posZ])
 
     
