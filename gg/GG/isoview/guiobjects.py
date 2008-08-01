@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import ocempgui.widgets
 import ocempgui.widgets.base
 import ocempgui.draw
