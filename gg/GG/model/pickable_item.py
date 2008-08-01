@@ -39,12 +39,6 @@ class GGPickableItem(room_item.GGRoomItem):
   def getImageLabel(self):
     return self.spriteInventory
 
-  def setPlayer(self, player):
-    self.__player = player
-    
-  def getPlayer(self):
-    return self.__player  
-  
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.

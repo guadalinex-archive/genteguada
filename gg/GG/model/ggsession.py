@@ -44,12 +44,12 @@ class GGSession(ggmodel.GGModel):
       #newRoom.subscribeEvent('quizAdded', self.quizAdded)
     
   @dMVC.model.localMethod
-  def defaultView(self, screen, parent, fullscreen):
+  def defaultView(self, screen, fullscreen):
     """ Esto deberia ser IsoViewSession.
     screen: screen handler.
     """
     import GG.isoview.isoview_hud
-    return GG.isoview.isoview_hud.IsoViewHud(self, screen, parent, fullscreen)
+    return GG.isoview.isoview_hud.IsoViewHud(self, screen, fullscreen)
     
   def chatAdded(self, event):
     """ Triggers after receiving a chat added event.
@@ -218,7 +218,7 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
-      door = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
+      box = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
                                       self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, label)
     #===============================================
     elif name == "DoorWithKey":
@@ -231,12 +231,11 @@ class GGSession(ggmodel.GGModel):
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
         exPosZ = int(data["exitPosition"][2])
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
-      door = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
                                              self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
                                              label, data["key"][0])
     #===============================================

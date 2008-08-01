@@ -37,7 +37,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__points = 0
     self.__playedTime = 0
     self.__startPlayedTime = 0
-    self.startSessionTiming()
     self.__exp = 0    
     self.__expRooms = []
     self.__avatarConfiguration = self.__dictAvatarConfiguration()
@@ -50,6 +49,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.imagePath = spritePath
     self.admin = admin  
     self.__accessMode = admin
+    self.startSessionTiming()
 
   def getAccessMode(self):
     return self.__accessMode  
@@ -70,7 +70,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     return self.username
   
   def getImageLabel(self):
-    if os.path.isfile(os.path.join(GG.utils.DATA_PATH,"avatars/masks",self.username+".png")):
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.username+".png")):
       return "avatars/masks/"+self.username+".png"
     else:
       return "interface/editor/masko.png"
@@ -81,9 +81,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     
   def updateSessionTiming(self):
     tmp = time.localtime(time.time())
-    v1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
-    v2 = (tmp[4]*60 + tmp[5])
-    playedTime = v2 - v1
+    var1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
+    var2 = (tmp[4]*60 + tmp[5])
+    playedTime = var2 - var1
     self.__startPlayedTime = tmp  
     self.__playedTime += playedTime
     self.triggerEvent('clock', clock=self.__playedTime)
@@ -95,22 +95,22 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent('exp', exp=self.__exp)
   
   def __dictAvatarConfiguration(self):
-    dict = {}
-    dict["gender"] = "boy"
-    dict["headSize"] = "S"
-    dict["mask"] = None
-    dict["hairStyle"] = "1"
-    dict["hairColor"] = "1"
-    dict["skin"] = "1"
-    dict["bodySize"] = "S"
-    dict["typeShirt"] = "short"
-    dict["shirt"] = "3"
-    dict["typeTrousers"] = "short"
-    dict["trousers"] = "5"
-    dict["typeSkirt"] = "short"
-    dict["skirt"] = "3"
-    dict["shoes"] = "9"
-    return dict
+    avatarDict = {}
+    avatarDict["gender"] = "boy"
+    avatarDict["headSize"] = "S"
+    avatarDict["mask"] = None
+    avatarDict["hairStyle"] = "1"
+    avatarDict["hairColor"] = "1"
+    avatarDict["skin"] = "1"
+    avatarDict["bodySize"] = "S"
+    avatarDict["typeShirt"] = "short"
+    avatarDict["shirt"] = "3"
+    avatarDict["typeTrousers"] = "short"
+    avatarDict["trousers"] = "5"
+    avatarDict["typeSkirt"] = "short"
+    avatarDict["skirt"] = "3"
+    avatarDict["shoes"] = "9"
+    return avatarDict
 
   def getAvatarConfiguration(self):
     return self.__avatarConfiguration
@@ -239,9 +239,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     tile = item.getTile()
     itemList = tile.getItemsFrom(item)
     itemList.reverse()
-    for it in itemList:
-      self.addPoints(it.points, it.label)
-      item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, it)
+    for itemToInv in itemList:
+      self.addPoints(itemToInv.points, itemToInv.label)
+      item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, itemToInv)
     
   def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
@@ -313,7 +313,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.__state == GG.utils.STATE[1]:
       self.setState(GG.utils.STATE[2])
     elif self.__state == GG.utils.STATE[3]:
-        self.setState(GG.utils.STATE[4])
+      self.setState(GG.utils.STATE[4])
     self.setHeading(direction)
     if self.getHeading() == "up":
       next = [pos[0], pos[1], pos[2] - 1]
@@ -347,12 +347,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.updateSessionTiming()
     room_item.GGRoomItem.changeRoom(self, room, pos)
     
-  def newChatMessage(self, message, type):
+  def newChatMessage(self, message, msgType):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
     self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.username, \
-                    GG.utils.TEXT_COLOR["black"], self.getPosition(), type))
+                    GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType))
 
   def getSelected(self):
     return self.__selected  
@@ -485,11 +485,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def isExchange(self):
     return self.__exchangeTo
 
-  def initExchangeTo(self,player, list = []):
+  def initExchangeTo(self, player, itemList = []):
     self.setUnselectedItem()
     if not self.__exchangeTo:
       self.__exchangeTo = player
-      self.triggerEvent('initExchange', list = list)
+      self.triggerEvent('initExchange', itemList = itemList)
 
   def cancelExchangeTo(self, step):
     if not step == 1:
@@ -498,11 +498,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__exchangeTo = None
     self.triggerEvent('cancelExchange')
 
-  def acceptExchangeTo(self, step, list):
+  def acceptExchangeTo(self, step, itemList):
     if step == 1:
-      self.__exchangeTo.initExchangeTo(self, list)
+      self.__exchangeTo.initExchangeTo(self, itemList)
     elif step == 2:
-      self.__exchangeTo.triggerEvent("listExchange", list = list)
+      self.__exchangeTo.triggerEvent("listExchange", list = itemList)
 
   def finishExchange(self, listIn, listOut):
 
@@ -537,10 +537,13 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     return data  
     
   def removeContact(self, contact):
-      for item in self.__agenda:
-        if item.getPlayer().username == contact.username:
-          self.__agenda.remove(item)
-          return
+    contact = None
+    for item in self.__agenda:
+      if item.getPlayer().username == contact.username:
+        contact = item
+        break
+    if contact:
+      self.__agenda.remove(contact)
         
   def removeContactRemote(self, contact):  
     self.removeContact(contact)  

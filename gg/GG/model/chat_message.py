@@ -9,7 +9,7 @@ class ChatMessage(ggmodel.GGModel):
   Defines a chat message behaviour.
   """
      
-  def __init__(self, message, sender, color, position, type):
+  def __init__(self, message, sender, color, position, chatType):
     """ Class constructor.
     message: chat message.
     sender: player who sends the message.
@@ -22,7 +22,7 @@ class ChatMessage(ggmodel.GGModel):
     self.__hour = time.time()
     self.__color = color
     self.__position = position
-    self.type = type
+    self.type = chatType
     self.imagePath = ""
     
   def variablesToSerialize(self):
@@ -77,7 +77,7 @@ class ChatQuiz(ChatMessage):
   """ ChatQuiz class.
   """
      
-  def __init__(self, parent, fileName, question, player, sender, color, position, type):
+  def __init__(self, parent, question, player, sender, color, position, chatType):
     self.__parent = parent
     self.question = question
     self.player = player
@@ -85,24 +85,24 @@ class ChatQuiz(ChatMessage):
     self.__msgAnswers = []
     self.__rightAnswer = 0
     self.loadQuestion()
-    ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, type)
+    ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, chatType)
     
   def loadQuestion(self):
     filePath = "gg/GG/data/questions/" + self.question
-    f = codecs.open(filePath, "r", "utf-8" )
-    self.__msgQuestion = f.readline()[:-1]
+    quizFile = codecs.open(filePath, "r", "utf-8" )
+    self.__msgQuestion = quizFile.readline()[:-1]
     self.__msgAnswers = []
-    self.__msgAnswers.append(f.readline()[:-1])
-    self.__msgAnswers.append(f.readline()[:-1])
-    self.__msgAnswers.append(f.readline()[:-1])
-    answer = f.readline()
+    self.__msgAnswers.append(quizFile.readline()[:-1])
+    self.__msgAnswers.append(quizFile.readline()[:-1])
+    self.__msgAnswers.append(quizFile.readline()[:-1])
+    answer = quizFile.readline()
     if answer.find("A") > -1:  
       self.__rightAnswer = 1
     elif answer.find("B") > -1:  
       self.__rightAnswer = 2
     else:  
       self.__rightAnswer = 3
-    f.close()
+    quizFile.close()
   
   def removeRightAnsweredQuestion(self):  
     self.__parent.removeRightQuestionForPlayer(self.question, self.player)  

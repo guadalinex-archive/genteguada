@@ -1,9 +1,7 @@
 import pygame
-import random
 import GG.utils
 import isoview
 import isoview_tile
-#import GG.model.player
 import isoview_player
 
 class IsoViewRoom(isoview.IsoView):
@@ -97,11 +95,11 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the 3d tile coords that match a 2d point.
     pos: 2d coords.
     """
-    def cmp(x, y):
+    def compare(x, y):
       return y.zOrder - x.zOrder
 
     images = self.__spritesDict.keys()
-    images.sort(cmp)  
+    images.sort(compare)  
     
     for image in images:
       if self.__spritesDict[image].checkClickPosition(pos):
@@ -183,8 +181,6 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     i = 0
-    if len(itemList):
-      fixedScPos = GG.utils.p3dToP2d(pos, itemList[0].anchor)
     for item in itemList:
       scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
@@ -224,6 +220,8 @@ class IsoViewRoom(isoview.IsoView):
     """ Triggers after receiving a new special tile added event.
     event: event info.
     """  
+    pass
+    """
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
     tile = self.__tileList[pos[0]][pos[2]].getImg()
@@ -232,6 +230,7 @@ class IsoViewRoom(isoview.IsoView):
         img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
         self.__tileList[pos[0]][pos[2]].setImg(imageName)
         return
+    """    
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands all its children from all events.
@@ -240,14 +239,14 @@ class IsoViewRoom(isoview.IsoView):
       item.unsubscribeAllEvents()
     isoview.IsoView.unsubscribeAllEvents(self)
 
-  def itemSelected(self,item):
+  def itemSelected(self, item):
     """ Sets an item on the room as selected.
     """
     ivItem = self.findIVItem(item)
     if ivItem:
       ivItem.selected()
     
-  def itemUnselected(self,item):
+  def itemUnselected(self, item):
     """ Sets an item on the room as unselected.
     """
     cosa = self.findIVItem(item)
@@ -272,8 +271,3 @@ class IsoViewRoom(isoview.IsoView):
       if ivItem.getModel() == item:
         return ivItem
     return None  
-
-  def prueba(self):
-    for item in self.__isoViewItems:
-      if isinstance(item, GG.isoview.isoview_player.IsoViewPlayer):
-        print item.getPosition(), item    

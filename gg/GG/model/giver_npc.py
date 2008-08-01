@@ -57,7 +57,7 @@ class GGGiverNpc(room_item.GGRoomItem):
     else:  
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return GG.model.generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
+      return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
   
   def inventoryOnly(self):
     return False

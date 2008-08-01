@@ -21,7 +21,7 @@ class PrivateChatWindow:
     self.draw()
 
   def draw(self):
-    self.container = ocempgui.widgets.Box(373,372)
+    self.container = ocempgui.widgets.Box(373, 372)
     self.__paintBackground()
     self.__paintContactList()
     self.__paintDeleteButton()
@@ -45,13 +45,13 @@ class PrivateChatWindow:
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-    labelChat = guiobjects.OcempLabel("Contactos", 280, guiobjects.STYLES["userName"])
+    labelChat = guiobjects.OcempLabel("Contactos", guiobjects.STYLES["userName"])
     labelChat.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
     #labelChat.topleft = 20, 20
     labelChat.topleft = 20, 10
     self.container.add_child(labelChat)
     
-    labelContacts = guiobjects.OcempLabel("Chat", 280, guiobjects.STYLES["userName"])
+    labelContacts = guiobjects.OcempLabel("Chat", guiobjects.STYLES["userName"])
     labelContacts.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
     #labelContacts.topleft = 150, 20
     labelContacts.topleft = 160, 10
@@ -148,7 +148,7 @@ class PrivateChatWindow:
     self.textArea = ocempgui.widgets.ScrolledWindow(203, 270)
     self.textArea.set_scrolling(1)
     self.textArea.topleft = 150, 40
-    self.__layoutTextArea= ocempgui.widgets.VFrame()
+    self.__layoutTextArea = ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.textArea.child = self.__layoutTextArea
@@ -178,7 +178,7 @@ class PrivateChatWindow:
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
-    label = guiobjects.OcempLabelNotTransparent(string,300)
+    label = guiobjects.OcempLabelNotTransparent(string, 300)
     hframe.add_child(label)
     return hframe
 

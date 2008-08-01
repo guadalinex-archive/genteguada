@@ -185,7 +185,7 @@ class ScreenPositionAnimation(Animation):
   def start(self):
     """ Starts the animation.
     """
-    super(self.__class__, self).start()
+    Animation.start(self)
     self.isoview.setScreenPosition([self.__originX, self.__originY])
     
   def step(self, now):
@@ -194,8 +194,7 @@ class ScreenPositionAnimation(Animation):
     """
     percent = self.getProgress(now)
     if percent > 0.5:
-      #self.isoview.updateZOrder()
-      super(self.__class__, self).step(now)
+      Animation.step(self, now)
     self.isoview.setScreenPosition([self.__originX + int(self.__shiftX*percent),
                                     self.__originY + int(self.__shiftY*percent)])
       
@@ -203,7 +202,7 @@ class ScreenPositionAnimation(Animation):
     """ Stops the animation.
     """
     self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
-    super(self.__class__, self).stop()
+    Animation.stop(self)
   
 #*****************************************************************************
     
@@ -219,6 +218,8 @@ class MovieAnimation(Animation):
     frames: frames used on the animation.
     """
     Animation.__init__(self, time, isoview)
+    self.__frames = None
+    self.__sprites = []
     self.setFrames(frames)
     
   def setFrames(self, frames):
@@ -250,7 +251,7 @@ class MovieAnimation(Animation):
       time = self.time
       currentFrame = int((self.getEllapsedTime(now) % time) / time * len_sprites)
       self.isoview.setSprite(sprites[currentFrame])
-    super(self.__class__, self).step(now)  
+    Animation.step(self, now)
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
@@ -301,7 +302,7 @@ class SecuenceAnimation(CompositionAnimation):
   def start(self):
     """ Starts the animation.
     """
-    super(self.__class__, self).start()
+    CompositionAnimation.start(self)
     if len(self.__animations):
       self.__animations[0].start()
     
@@ -320,7 +321,7 @@ class SecuenceAnimation(CompositionAnimation):
         currentAnimation.step(now)
     else:
       self.stop()
-    super(self.__class__, self).step(now)  
+    CompositionAnimation.step(self, now)  
     
   def stop(self):
     """ Stops the animation.
@@ -331,7 +332,7 @@ class SecuenceAnimation(CompositionAnimation):
       animation.start()
       animation.stop()
       self.__animations.remove(animation)
-    super(self.__class__, self).stop()
+    CompositionAnimation.stop(self)
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
@@ -355,6 +356,7 @@ class ParalelAnimation(CompositionAnimation):
   def __init__(self):
     """ Class constructor.
     """
+    CompositionAnimation.__init__(self, 0, None)
     self.__animations = []
     
   def addAnimation(self, animation):
@@ -382,7 +384,7 @@ class ParalelAnimation(CompositionAnimation):
     """
     for animation in self.__animations:
       animation.step(now)
-    super(self.__class__, self).step(now)  
+    CompositionAnimation.step(self, now)  
     
   def stop(self):
     """ Stops the animation.

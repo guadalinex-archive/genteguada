@@ -25,9 +25,12 @@ class GenteGuada:
     self.session = None
     self.client = None
     GenteGuada.instance = self
-    self.clearCache()
     self.activeScreen = None
-
+    self.fs = None
+    self.window = None
+    self.widgetContainer = None
+    self.clearCache()
+    
   @staticmethod
   def getInstance():
     return GenteGuada.instance
@@ -64,18 +67,19 @@ class GenteGuada:
 
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.screen)
-    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0],GG.utils.SCREEN_SZ[1])
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
     
     imgPath = self.getDataPath("interface/backgrounds/loadingGG.png")
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
-    imgBackgroundRight.topleft = 0,0
+    imgBackgroundRight.topleft = 0, 0
     self.window.add_child(imgBackgroundRight)
     
-    loadingLabel = GG.isoview.guiobjects.OcempLabel("Cargando...", 120, ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
+    loadingLabel = GG.isoview.guiobjects.OcempLabel("Cargando...", \
+                            ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
     #loadingLabel.topleft = 372,347
-    loadingLabel.topleft = 350,300
+    loadingLabel.topleft = 350, 300
     loadingLabel.border = 1
-    loadingLabel.set_minimum_size(230,40)
+    loadingLabel.set_minimum_size(230, 40)
     self.window.add_child(loadingLabel)
     
     self.widgetContainer.add_widget(self.window)
@@ -126,8 +130,8 @@ class GenteGuada:
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
-    self.isoHud = self.session.defaultView(self.screen,self,self.fs)
-    self.screen.fill([0,0,0])
+    self.isoHud = self.session.defaultView(self.screen, self.fs)
+    self.screen.fill([0, 0, 0])
     self.isoHud.draw()
     self.activeScreen = self.isoHud
 
@@ -201,32 +205,33 @@ class GenteGuada:
     limitDate = now - datetime.timedelta(weeks=GG.utils.CLEAR_CACHE_WEEKS)
     limitTime = time.mktime(limitDate.timetuple())
     toRemove = []
-    for file in os.listdir(GG.utils.LOCAL_DATA_PATH):
-      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
+    for fileName in os.listdir(GG.utils.LOCAL_DATA_PATH):
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
       if os.path.isfile(pathFile):
         accessTime = os.stat(pathFile)[stat.ST_ATIME]
         if accessTime < limitTime:
-          toRemove.append(file)
-    for file in toRemove:
-      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, file) 
+          toRemove.append(fileName)
+    for fileName in toRemove:
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
       os.remove(pathFile)
 
   def uploadFile(self, file):
     if not os.path.isfile(file):
       return None
-    filepath , fileName = os.path.split(file)
+    filepath, fileName = os.path.split(file)
     name, ext = os.path.splitext(fileName)
     try:
-      f = open(file , "rb")
-      dataFile = f.read()
+      uploadedFile = open(file , "rb")
+      dataFile = uploadedFile.read()
+      uploadedFile.close()
     except:
       return None
-    return self.system.uploadFile([name,ext] ,dataFile)
+    return self.system.uploadFile([name, ext], dataFile)
 
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
-      file = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
-      nameMask = self.uploadFile(file)
+      fileName = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
+      nameMask = self.uploadFile(fileName)
     else:
       nameMask = None
     self.system.changeAvatarConfiguration(configuration, player, nameMask) 

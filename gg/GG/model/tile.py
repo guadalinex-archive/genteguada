@@ -1,4 +1,3 @@
-import room
 import ggmodel
 
 class Tile(ggmodel.GGModel):
@@ -36,8 +35,7 @@ class Tile(ggmodel.GGModel):
     self.__items.append(item)
     
   def unstackItem(self):
-    aux = self.__items.pop()
-    aux = None
+    self.__items.pop()
     
   def getTopItem(self):
     if len(self.__items) == 0:
@@ -60,32 +58,32 @@ class Tile(ggmodel.GGModel):
   def getItemsFrom(self, item):
     items = []
     k = 0
-    for it in self.__items:
-      if it == item:
-        items.append(it)
+    for itFrom in self.__items:
+      if itFrom == item:
+        items.append(itFrom)
         k = 1
       elif k == 1:  
-        items.append(it)
+        items.append(itFrom)
     return items
 
   def getItemsAndRemoveFrom(self, item):
     items = []
     k = 0
-    for it in self.__items:
-      if it == item:
-        items.append(it)
-        self.__items.remove(it)
+    for itFrom in self.__items:
+      if itFrom == item:
+        items.append(itFrom)
+        self.__items.remove(itFrom)
         k = 1
       elif k:  
-        items.append(it)
-        self.__items.remove(it)
+        items.append(itFrom)
+        self.__items.remove(itFrom)
     return items
 
   def stepOn(self):
-    x = len(self.__items)-1
-    while x >= 0:
-      if self.__items[x].stepOn():
-        x -= 1
+    xValue = len(self.__items)-1
+    while xValue >= 0:
+      if self.__items[xValue].stepOn():
+        xValue -= 1
       else:
         return False
     return True  

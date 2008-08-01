@@ -325,38 +325,20 @@ class GroupSprite(pygame.sprite.Group):
 
 class OcempLabel(ocempgui.widgets.Label):
 
-  def __init__(self, text, width, style):
-    """
-    line = ""  
-    cad = text
-    width = width/5
-    while len(cad) > width:
-      cad2aux = cad[0:width]
-      blankPos = cad2aux.rfind(" ")
-      if blankPos > 0:
-        line = line + cad[0:blankPos] + "\n"     
-        cad = cad[blankPos+1:]
-      else:  
-        line = line + cad[0:width] + "\n"     
-        cad = cad[width:]  
-    line = line + cad    
-    """
+  def __init__(self, text, style):
     self.label = text
-    #self.typeFont = "Bitstream"
     self.typeFont = GG.utils.LOCAL_DATA_PATH+"/font/Domestic_Manners.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
     ocempgui.widgets.Label.__init__(self, self.label)
     
-    self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
   def update(self):
     self.draw()
 
   def draw(self):
-    #self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont, ocempgui.draw.Constants.FONT_STYLE_BOLD)
     self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
 
 # ===============================================================
@@ -378,7 +360,7 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
         cad = cad[width:]  
     line = line + cad    
     
-    ocempgui.widgets.Label.__init__(self,line)
+    ocempgui.widgets.Label.__init__(self, line)
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
@@ -417,15 +399,14 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
   def __init__(self, name, image):
     ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-    path, file = os.path.split(filePath)
     size = 46,31 
     try:
       img = Image.open(filePath)
     except:
       return 
     img.thumbnail(size, Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imageLabel"+name+".png"))
-    filePath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imageLabel"+name+".png")
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
+    filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
     self._icon = ocempgui.draw.Image.load_image(filePath)
     
 # ===============================================================
@@ -452,8 +433,8 @@ class OcempImageFileList(ocempgui.widgets.FileList):
         if isdir (pjoin (self._directory, filename)):
           dappend (filename)
         else:
-          file, ext = os.path.splitext(filename)
-          if ext in [".jpg",".JPG",".png",".PNG"]: 
+          fileNameSegment, ext = os.path.splitext(filename)
+          if ext in [".jpg", ".JPG", ".png", ".PNG"]: 
             fappend (filename)
     dirs.sort ()
     files.sort ()
@@ -467,9 +448,9 @@ class OcempImageFileList(ocempgui.widgets.FileList):
   def getFileName(self):
     item = self.get_selected()
     if len(item):
-      file = os.path.join (self.directory, item[0].text)
-      if os.path.isfile(file):
-        return file
+      fileName = os.path.join (self.directory, item[0].text)
+      if os.path.isfile(fileName):
+        return fileName
     return None
 
 # ===============================================================
@@ -521,15 +502,14 @@ class OcempImageContactList(OcempImageFileList):
       if item.text.find(name) > -1:
         print "Lo encontre "+name
         filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-        path, file = os.path.split(filePath)
-        size = 46,31 
+        size = 46, 31 
         try:
           img = Image.open(filePath)
         except:
           return 
         img.thumbnail(size, Image.ANTIALIAS)
-        img.save(os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png"))
-        filePath = os.path.join(LOCAL_DATA_PATH,"imageLabel"+name+".png")
+        img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
+        filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
         item._icon = ocempgui.draw.Image.load_image(filePath)
         
 # ===============================================================

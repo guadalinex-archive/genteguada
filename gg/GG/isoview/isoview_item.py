@@ -20,6 +20,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__ivroom = room
     self.__parent = parent
     self.__position = model.getPosition()
+    self.__img = None
     self.loadImage()
     self.getModel().subscribeEvent('position', self.positionChanged)
         
@@ -101,15 +102,18 @@ class IsoViewItem(positioned_view.PositionedView):
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
-        color = self.__img.image.get_at((x,y))
+        color = self.__img.image.get_at((x, y))
         if color[3] != 0:
           color2[0] = color[0] + GG.utils.COLOR_SHIFT
-          if color2[0] > 255: color2[0] = 255
+          if color2[0] > 255: 
+            color2[0] = 255
           color2[1] = color[1] + GG.utils.COLOR_SHIFT
-          if color2[1] > 255: color2[1] = 255
+          if color2[1] > 255: 
+            color2[1] = 255
           color2[2] = color[2] + GG.utils.COLOR_SHIFT
-          if color2[2] > 255: color2[2] = 255
-          self.__img.image.set_at((x,y), color2)
+          if color2[2] > 255: 
+            color2[2] = 255
+          self.__img.image.set_at((x, y), color2)
     pygame.display.update()
 
   def unselected(self):

@@ -26,7 +26,6 @@ class GGBoxHeavy(room_item.GGRoomItem):
     depth = tile.getDepth()
     selfDepth = tile.getItemDepth(self)
     if (selfDepth + 1) != depth:
-      # Hay elementos por encima de el
       return ["climb"]
     else:
       if selfDepth:  
@@ -39,12 +38,6 @@ class GGBoxHeavy(room_item.GGRoomItem):
   
   def getImageLabel(self):
     return self.spriteName
-  
-  def setPlayer(self, player):
-    self.__player = player
-    
-  def getPlayer(self):
-    return self.__player  
   
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.

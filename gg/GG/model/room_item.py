@@ -1,4 +1,3 @@
-import ggmodel
 import GG.utils
 import inventory_item
 import dMVC.model
