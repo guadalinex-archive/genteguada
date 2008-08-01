@@ -80,8 +80,9 @@ class Login:
     imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/TEMP_accessMode.png"))
     imgBackgroundRight.topleft = 0,0
     self.window.add_child(imgBackgroundRight)
-    
-    notificationLabel = guiobjects.OcempLabel("¿Desea entrar como administrador?", 200, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
+   
+    cad = "¿Desea entrar como administrador?"
+    notificationLabel = guiobjects.OcempLabel(cad, 200, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     #notificationLabel.topleft = 225,300
     notificationLabel.topleft = 100,300
     notificationLabel.border = 1

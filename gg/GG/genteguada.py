@@ -160,7 +160,7 @@ class GenteGuada:
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
-        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
+        #print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
 
         frameCounter = 0
         last = now
