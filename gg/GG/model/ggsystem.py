@@ -15,11 +15,9 @@ import thread
 import time
 import os
 import stat
-import commands
 import random
 
 import GG.avatargenerator.generator
-import time
 
 class GGSystem(dMVC.model.Model):
   """ GGSystem class.
@@ -209,7 +207,7 @@ class GGSystem(dMVC.model.Model):
         
     room2.addItemFromVoid(myDoor2A, [6, 0, 7])
     room2.addItemFromVoid(myDoor2B, [6, 0, 0])
-    room2.addItemFromVoid(myDoor2C,[0, 0, 6])
+    room2.addItemFromVoid(myDoor2C, [0, 0, 6])
     room2.addItemFromVoid(myGoldenKeyRoom2, [4, 0, 6])
     
     # ROOM 3
@@ -255,10 +253,10 @@ class GGSystem(dMVC.model.Model):
     wallOffset = [35, 33]
     room4.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.WAREHOUSE_CORNER, wallOffset, [0, 0]), [0, 0, 0])
     for z in range(1, 8):
-      image = "furniture/" + GG.utils.WAREHOUSE_LEFT[random.randint(0,len(GG.utils.WAREHOUSE_LEFT)-1)]
+      image = "furniture/" + GG.utils.WAREHOUSE_LEFT[random.randint(0, len(GG.utils.WAREHOUSE_LEFT)-1)]
       room4.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [0, 0, z])
     for x in range(1, 8):
-      image = "furniture/" + GG.utils.WAREHOUSE_UP[random.randint(0,len(GG.utils.WAREHOUSE_UP)-1)]
+      image = "furniture/" + GG.utils.WAREHOUSE_UP[random.randint(0, len(GG.utils.WAREHOUSE_UP)-1)]
       room4.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [x, 0, 0])
     
     myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + GG.utils.BOX_HEAVY, [26, -12], [0, -10], "Caja pesada 1")
@@ -305,10 +303,10 @@ class GGSystem(dMVC.model.Model):
     wallOffset = [35, 40]
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.SKYLINE_CORNER, wallOffset, [0, 0]), [0, 0, 0])
     for z in range(1, 8):
-      image = "furniture/" + GG.utils.SKYLINES_LEFT[random.randint(0,len(GG.utils.SKYLINES_LEFT)-1)]
+      image = "furniture/" + GG.utils.SKYLINES_LEFT[random.randint(0, len(GG.utils.SKYLINES_LEFT)-1)]
       room6.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [0, 0, z])
     for x in range(1, 8):
-      image = "furniture/" + GG.utils.SKYLINES_UP[random.randint(0,len(GG.utils.SKYLINES_LEFT)-1)]
+      image = "furniture/" + GG.utils.SKYLINES_UP[random.randint(0, len(GG.utils.SKYLINES_LEFT)-1)]
       room6.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [x, 0, 0])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [13, 15], [0, 0]), [2, 0, 3])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + GG.utils.COLUMN_STONE, [13, 15], [0, 0]), [5, 0, 2])
@@ -376,11 +374,11 @@ class GGSystem(dMVC.model.Model):
     time_sleep = time.sleep
     delay = GG.utils.TICK_DELAY
     try:
-        while True:
-            time_sleep(delay)
-            self.__tick(time_time()*1000)
+      while True:
+        time_sleep(delay)
+        self.__tick(time_time()*1000)
     except:
-        dMVC.utils.logger.exception('Exception in __start')
+      dMVC.utils.logger.exception('Exception in __start')
     
   def __tick(self, now):
     """ Calls for a time tick on all rooms.
@@ -444,12 +442,12 @@ class GGSystem(dMVC.model.Model):
 
   def __copyImages(self,images, player):
     #dir = "/home/jmariscal/proyectos/genteguada/src/gg/GG/data/avatars"
-    dir = GG.utils.DATA_PATH+"/avatars/"+player.username
-    if os.path.isdir(dir):
-      for file in os.listdir(dir):
-        os.remove(os.path.join(dir,file))
+    dirImage = GG.utils.DATA_PATH + "/avatars/"+player.username
+    if os.path.isdir(dirImage):
+      for fileName in os.listdir(dirImage):
+        os.remove(os.path.join(dir, fileName))
     else:
-      os.mkdir(dir)
+      os.mkdir(dirImage)
     timestamp = int(time.time())
     for image in images.keys():
       f = open(os.path.join(dir,image+"_"+str(timestamp)),"wb")
@@ -470,8 +468,8 @@ class GGSystem(dMVC.model.Model):
     return None
 
   def getRoomLabels(self):
-    list = []
+    listLabels = []
     for room in self.__rooms:
-      list.append(room.label)
-    return list  
+      listLabels.append(room.label)
+    return listLabels  
     

@@ -1,5 +1,6 @@
 import ocempgui.widgets
 import GG.utils
+import guiobjects
 
 class ExchangeWindow:
   """ ExchangeWindow class.
@@ -15,7 +16,7 @@ class ExchangeWindow:
     self.window = ocempgui.widgets.DialogWindow("Ventana de intercambio")
     self.window.topleft = 200, 200
 
-    self.container = ocempgui.widgets.Box(585,258)
+    self.container = ocempgui.widgets.Box(585, 258)
     self.window.zOrder = 10000
     
     self.window.child = self.container
@@ -24,6 +25,13 @@ class ExchangeWindow:
     self.__listOut = []
     self.__step = step
     self.__isohud = isohud
+    self.__outBoxChild = None
+    self.__outBox = None
+    self.__hFrameInBox = None
+    self.__hFrameOutBox = None
+    self.__inBoxChild = None
+    self.__labelExchange = None
+    self.__inBox = None
 
   def draw(self):
     """ Draws the exchange window on screen.
@@ -41,7 +49,7 @@ class ExchangeWindow:
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/exchangeWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
 
   def __paintOutBox(self):
@@ -75,16 +83,16 @@ class ExchangeWindow:
   def __paintLabel(self):
     """ Paints the exchangeWindow labels.
     """  
-    self.__labelExchange = guiobjects.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", 300, guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 20,20
+    self.__labelExchange = guiobjects.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", guiobjects.STYLES["dialogFont"])
+    self.__labelExchange.topleft = 20, 20
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = guiobjects.OcempLabel("Bandeja de salida", 140, guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 20,60
+    self.__labelExchange = guiobjects.OcempLabel("Bandeja de salida", guiobjects.STYLES["dialogFont"])
+    self.__labelExchange.topleft = 20, 60
     self.container.add_child(self.__labelExchange)
     
-    self.__labelExchange = guiobjects.OcempLabel("Bandeja de entrada", 120, guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 370,60
+    self.__labelExchange = guiobjects.OcempLabel("Bandeja de entrada", guiobjects.STYLES["dialogFont"])
+    self.__labelExchange.topleft = 370, 60
     self.container.add_child(self.__labelExchange)
 
   def __paintButtons(self):
@@ -92,7 +100,7 @@ class ExchangeWindow:
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png")
     buttonOK = guiobjects.OcempImageButtonTransparent(filePath)
-    buttonOK.topleft = 240,100
+    buttonOK.topleft = 240, 100
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.okExchange)
     self.container.add_child(buttonOK)
      
@@ -135,7 +143,7 @@ class ExchangeWindow:
     i = 0
     for item in self.__listIn:
       self.__hFrameInBox = self.__paintItemOnList(self.__hFrameInBox, self.__inBoxChild, item, i)
-      i+=1
+      i += 1
 
   def addItemOut(self, item):
     """ Adds a anew item to the exchange out list.

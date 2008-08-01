@@ -193,8 +193,8 @@ PATH_EDITOR_IMG = "editor"
 PATH_EDITOR_INTERFACE = "interface/editor"
 IMG_EXTENSION = ".png"
 PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
-MASK_SIZE = {"S": [112,105],"M": [124,116],"L": [134,127],"XL": [146,137]}
-MASK_COORD = {"S": (91,114),"M": (86,111), "L": (80,105),"XL": (74,100)}
+MASK_SIZE = {"S":[112, 105], "M":[124, 116], "L":[134, 127], "XL":[146, 137]}
+MASK_COORD = {"S":(91, 114), "M":(86, 111), "L":(80, 105), "XL":(74, 100)}
 
 BACKGROUND_LEFT = "background_left.png"
 BACKGROUND_RIGHT = "background_right.png"
@@ -331,7 +331,6 @@ def getSpriteName(state, heading, frame, timestamp):
   if frame == 0:
     fileName = state + "_" + heading + "_00" + str(maxFrames)
   elif frame < 10:
-    rgb= [0, 0, 0]
     fileName = state + "_" + heading + "_000" + str(frame)
   else:  
     fileName = state + "_" + heading + "_00" + str(frame)
@@ -373,23 +372,24 @@ def checkNeighbour(pos1, pos2):
   pos1: point 1.
   pos2: point 2.
   """
+  kValue = False
   if [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] - 1]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] + 1]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2]]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2]]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] - 1]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] + 1]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] + 1]:
-    return True
+    kValue = True
   elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] - 1]:
-    return True
-  return False  
+    kValue = True
+  return kValue  
 
 # ===============================================================
 

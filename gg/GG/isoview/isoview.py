@@ -50,15 +50,15 @@ class IsoView:
     """
     return self.__animation != None
     
-  def setAnimation(self, animation=None):
+  def setAnimation(self, anim=None):
     """ Creates a new position animation.
     animation: new position animation.
     """
     if self.__animation:
       self.__animation.stop()
-    self.__animation = animation
-    if animation != None:
-      animation.start()
+    self.__animation = anim
+    if anim != None:
+      anim.start()
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view's model from all events.

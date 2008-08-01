@@ -24,11 +24,10 @@ class IsoViewHud(isoview.IsoView):
   Defines the HUD.
   """
   
-  def __init__(self, model, screen, parent, fullscreen):
+  def __init__(self, model, screen, fullscreen):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
-    parent: session handler.
     fullscreen: sets the game as started on fullscreen or not.
     """
     isoview.IsoView.__init__(self, model, screen)
@@ -72,7 +71,7 @@ class IsoViewHud(isoview.IsoView):
     #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = GG.utils.HUD_OR[0],GG.utils.HUD_OR[1] - 70
+    self.__img.rect.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1] - 70
     self.__img.zOrder = -1
     
     model.subscribeEvent('chatAdded', self.chatAdded)
@@ -196,7 +195,6 @@ class IsoViewHud(isoview.IsoView):
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
             if not dest == [-1, -1, -1]:
-              #self.__isoviewRoom.prueba()
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
@@ -433,11 +431,11 @@ class IsoViewHud(isoview.IsoView):
       if self.__sound:
         guiobjects.playSound(GG.utils.SOUND_OPENDOOR)
 
-      list = self.__isoviewRoom.getSpritesDict()
-      for img in list.keys():
+      spriteList = self.__isoviewRoom.getSpritesDict()
+      for img in spriteList.keys():
         self.removeSprite(img)
-      list = self.__isoviewRoom.getBottomSpritesDict()
-      for img in list.keys():
+      spriteList = self.__isoviewRoom.getBottomSpritesDict()
+      for img in spriteList.keys():
         self.removeSprite(img)
       
       self.__isoviewRoom = None
@@ -456,25 +454,25 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    self.hud = ocempgui.widgets.Box(1024,262)
+    self.hud = ocempgui.widgets.Box(1024, 262)
     self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
 
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)
     self.imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    self.imgBackground.topleft = 1,1
+    self.imgBackground.topleft = 1, 1
     self.hud.add_child(self.imgBackground)
     
-    labelChat = guiobjects.OcempLabel("Chat", 80, guiobjects.STYLES["hudLabel"])
+    labelChat = guiobjects.OcempLabel("Chat", guiobjects.STYLES["hudLabel"])
     #labelChat.topleft = 17, 70
     labelChat.topleft = 17, 58
     self.hud.add_child(labelChat)
     
-    labelProfile = guiobjects.OcempLabel("Mi perfil: ", 80, guiobjects.STYLES["hudLabel"])
+    labelProfile = guiobjects.OcempLabel("Mi perfil: ", guiobjects.STYLES["hudLabel"])
     #labelProfile.topleft = 555, 90
     labelProfile.topleft = 555, 70
     self.hud.add_child(labelProfile)
     
-    labelInventory = guiobjects.OcempLabel("Inventario", 80, guiobjects.STYLES["hudLabel"])
+    labelInventory = guiobjects.OcempLabel("Inventario", guiobjects.STYLES["hudLabel"])
     #labelInventory.topleft = 819, 70
     labelInventory.topleft = 819, 58
     self.hud.add_child(labelInventory)
@@ -520,7 +518,7 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.update()
     self.textArea.set_scrolling(1)
     self.textArea.topleft = GG.utils.CHAT_OR[0], 90
-    self.__layoutTextArea= ocempgui.widgets.VFrame()
+    self.__layoutTextArea = ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     self.textArea.child = self.__layoutTextArea
@@ -610,8 +608,7 @@ class IsoViewHud(isoview.IsoView):
     """
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
-    cad = messageChat.getHour() + " [" + messageChat.getSender() + "]: " + messageChat.getMessage()
-
+   
     animTime = (len(messageChat.getMessage()) / 12) * 1000
     if animTime < 2000:
       animTime = 2000 
@@ -659,7 +656,7 @@ class IsoViewHud(isoview.IsoView):
       return
     self.__targetTile = not self.__targetTile
     
-  def itemSelected(self,event):
+  def itemSelected(self, event):
     """ Triggers after receiving an item selected event.
     event: event info.
     """
@@ -684,77 +681,49 @@ class IsoViewHud(isoview.IsoView):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/roomOptions.png")
     self.roomOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.roomOptions.add_child(imgBackground)
     self.roomOptions.zOrder = 10000
     self.addSprite(self.roomOptions)
-    
-    """
-    ori = [110, 40]
-    dist = 30
-    anchorTop = ocempgui.widgets.RadioButton()
-    anchorTop.topleft = [dist + ori[0], 0 + ori[1]]
-    anchorDown = ocempgui.widgets.RadioButton()
-    anchorDown.topleft = [dist + ori[0], dist*2 + ori[1]]
-    anchorLeft = ocempgui.widgets.RadioButton()
-    anchorLeft.topleft = [0 + ori[0], dist + ori[1]]
-    anchorRight = ocempgui.widgets.RadioButton()
-    anchorRight.topleft = [dist*2 + ori[0], dist + ori[1]]
-    anchorCenter = ocempgui.widgets.RadioButton()
-    anchorCenter.topleft = [dist + ori[0], dist + ori[1]]
-    
-    anchorTop.set_group(anchorDown)
-    anchorTop.add_button(anchorLeft)
-    anchorTop.add_button(anchorRight)
-    anchorTop.add_button(anchorCenter)
-    
-    self.roomOptions.add_child(anchorTop)
-    self.roomOptions.add_child(anchorDown)
-    self.roomOptions.add_child(anchorLeft)
-    self.roomOptions.add_child(anchorRight)
-    self.roomOptions.add_child(anchorCenter)
-    """
-    
     self.widgetContainer.add_widget(self.roomOptions)
     
   def itemSelectedByAdmin(self):
     actions = self.__selectedItem.getAdminActions()
     if not actions:
       return
-    self.buttonBarAdminActions = ocempgui.widgets.Box(150,300)
+    self.buttonBarAdminActions = ocempgui.widgets.Box(150, 300)
     self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
     self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.buttonBarAdminActions.add_child(imgBackground)
     
     img = self.__selectedItem.getImageLabel()
         
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
-    size = 23,23
-    img.thumbnail(size,Image.ANTIALIAS)
+    size = 23, 23
+    img.thumbnail(size, Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
     img = guiobjects.OcempImageButtonTransparent(imgPath)
-    img.topleft = 5,6
+    img.topleft = 5, 6
     self.buttonBarAdminActions.add_child(img)
     
-    #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
-    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["teleportLabel"])
-    #itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["teleportLabel"])
     #itemLabel.topleft = 35,10
-    itemLabel.topleft = 35,0
+    itemLabel.topleft = 35, 0
     self.buttonBarAdminActions.add_child(itemLabel)
     
     self.editableFields = {}
     
     iPos = 0
     for key in actions.keys():
-      #label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
-      label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["teleportLabel"])
+      #label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
+      label = guiobjects.OcempLabel(key, guiobjects.STYLES["teleportLabel"])
       #label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
       #label.topleft = 10, 40 + iPos*60
       label.topleft = 10, 30 + iPos*60
@@ -806,32 +775,32 @@ class IsoViewHud(isoview.IsoView):
   
   def itemSelectedByUser(self):
     options = self.__selectedItem.getOptions()
-    self.buttonBarActions = ocempgui.widgets.Box(259,95)
+    self.buttonBarActions = ocempgui.widgets.Box(259, 95)
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/actionsNotification.png")
     self.buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.buttonBarActions.add_child(imgBackground)
     
     img = self.__selectedItem.getImageLabel()
         
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
-    size = 23,23
+    size = 23, 23
     img.thumbnail(size,Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
     img = guiobjects.OcempImageButtonTransparent(imgPath)
-    img.topleft = 5,6
+    img.topleft = 5, 6
     self.buttonBarActions.add_child(img)
     
-    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(),290, guiobjects.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["itemLabel"])
     
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
     #itemLabel.topleft = 35,10
-    itemLabel.topleft = 35,0
+    itemLabel.topleft = 35, 0
     self.buttonBarActions.add_child(itemLabel)
     i = 0
     self.restoreActiveActionButtonsList()
@@ -841,15 +810,15 @@ class IsoViewHud(isoview.IsoView):
       button = guiobjects.OcempImageButtonTransparent(filePath, self.buttonActions[action]['tooltip'], self.showTooltip, self.removeTooltip)
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.buttonActions[action]['action'])
       self.__activeActions.append(self.buttonActions[action]['action'])
-      button.topleft = 195 - i*60 ,40
+      button.topleft = 195 - i*60, 40
       self.buttonBarActions.add_child(button)
-      i+=1
+      i += 1
       
     self.buttonBarActions.zOrder = 10000
     self.addSprite(self.buttonBarActions)
     self.widgetContainer.add_widget(self.buttonBarActions)
 
-  def itemUnselected(self,event=None):
+  def itemUnselected(self, event=None):
     """ Triggers after receiving an item unselected event.
     event: event info.
     """
@@ -924,7 +893,7 @@ class IsoViewHud(isoview.IsoView):
     for buttonData in ACTIONS:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
       button = guiobjects.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
-      button.topleft = 16 + i*60 ,10
+      button.topleft = 16 + i*60, 10
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       if buttonData['action'] == self.showFullScreen:
         self.__fullscreenButton = button
@@ -945,7 +914,7 @@ class IsoViewHud(isoview.IsoView):
     if not self.createItemsWindow.hide:
       self.hideCreateItems()
     
-    self.teleportBox = ocempgui.widgets.Box(150,300)
+    self.teleportBox = ocempgui.widgets.Box(150, 300)
     if self.adminMenu:
       self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 302, 129]
     else:  
@@ -954,14 +923,13 @@ class IsoViewHud(isoview.IsoView):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
     self.teleportBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.teleportBox.add_child(imgBackground)
     
-    #titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["itemLabel"])
-    titleLabel = guiobjects.OcempLabel("Escoja destino",290, guiobjects.STYLES["teleportLabel"])
-    #titleLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
+    titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["teleportLabel"])
     #titleLabel.topleft = 22,10
-    titleLabel.topleft = 22,0
+    titleLabel.topleft = 22, 0
     self.teleportBox.add_child(titleLabel)
     
     rooms = self.getModel().getRoomLabels()
@@ -1231,31 +1199,31 @@ class IsoViewHud(isoview.IsoView):
     image = self.__player.getImageLabel()
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     img = Image.open(filePath)
-    size = 64,64
-    img.thumbnail(size,Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
-    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
+    size = 64, 64
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imgMaskUser.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imgMaskUser.png")
     self.imgMask = guiobjects.OcempImageButtonTransparent(imgPath)
-    self.imgMask.topleft = 548,110
+    self.imgMask.topleft = 548, 110
     self.hud.add_child(self.imgMask)
 
-    labelUserName = guiobjects.OcempLabel(self.__player.username, 140, guiobjects.STYLES["userName"])
+    labelUserName = guiobjects.OcempLabel(self.__player.username, guiobjects.STYLES["userName"])
     #labelUserName.topleft = 638, 90
     labelUserName.topleft = 650, 70
     self.hud.add_child(labelUserName)
     
-    #self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["userName"])
-    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", 140, guiobjects.STYLES["pointLabel"])
+    #self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", guiobjects.STYLES["userName"])
+    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", guiobjects.STYLES["pointLabel"])
     self.__pointsLabel.topleft = 627, 120
     self.hud.add_child(self.__pointsLabel)
 
-    #self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["userName"])
-    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", 140, guiobjects.STYLES["pointLabel"])
+    #self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", guiobjects.STYLES["userName"])
+    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", guiobjects.STYLES["pointLabel"])
     self.__labelOld.topleft = 627, 140
     self.hud.add_child(self.__labelOld)
 
-    #self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["userName"])
-    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", 140, guiobjects.STYLES["pointLabel"])
+    #self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", guiobjects.STYLES["userName"])
+    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", guiobjects.STYLES["pointLabel"])
     self.__expLabel.topleft = 627, 160
     self.hud.add_child(self.__expLabel)
 
@@ -1408,7 +1376,7 @@ class IsoViewHud(isoview.IsoView):
         self.__selectedItem = None
     self.dropActionsItembuttons()
 
-  def initExchange(self,event):
+  def initExchange(self, event):
     """ Starts the exchange project after receiving an exchange event.
     event: event info.
     """  
@@ -1429,7 +1397,7 @@ class IsoViewHud(isoview.IsoView):
     self.exchangeWindow.addItemOut(self.__selectedItem)
     self.__player.setUnselectedItem()
 
-  def cancelExchange(self,event):
+  def cancelExchange(self, event):
     """ Cancels the exchange process after receiving a cancel exchange event.
     event: event info.
     """  
@@ -1476,11 +1444,11 @@ class IsoViewHud(isoview.IsoView):
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/contactWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.confirmDialog.add_child(imgBackground)
      
     cad = "Intercambiar tarjetas con " + newContact.username 
-    questionLabel = guiobjects.OcempLabel(cad, 200, guiobjects.STYLES["dialogFont"])
+    questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 22, 20 
     self.confirmDialog.add_child(questionLabel)
      
@@ -1560,10 +1528,10 @@ class IsoViewHud(isoview.IsoView):
     image = event.getParams()['imageLabel']
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     img = Image.open(filePath)
-    size = 64,64
-    img.thumbnail(size,Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png"))
-    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
+    size = 64, 64
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imgMaskUser.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imgMaskUser.png")
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgMask.picture = img
     self.hud.remove_child(self.imgMask)
@@ -1586,11 +1554,13 @@ class IsoViewHud(isoview.IsoView):
       print key
       
       if key == "Position":
-        try: posX = int(self.editableFields[key][0].text)    
+        try: 
+          posX = int(self.editableFields[key][0].text)    
         except ValueError:
           self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
           return
-        try: posY = int(self.editableFields[key][1].text)    
+        try: 
+          posY = int(self.editableFields[key][1].text)    
         except ValueError:
           self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
           return
@@ -1651,11 +1621,11 @@ class IsoViewHud(isoview.IsoView):
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/contactWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.deleteConfirmDialog.add_child(imgBackground)
      
     cad = "Confirmar eliminación" 
-    questionLabel = guiobjects.OcempLabel(cad, 200, guiobjects.STYLES["dialogFont"])
+    questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 68, 20 
     self.deleteConfirmDialog.add_child(questionLabel)
      

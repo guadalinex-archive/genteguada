@@ -4,6 +4,7 @@ import random
 import room_item
 import chat_message
 import GG.utils
+import generated_inventory_item
 
 class GGPenguin(room_item.GGRoomItem):
   """ GGPenguin class.
@@ -78,7 +79,7 @@ class GGPenguinTalker(GGPenguin):
 
   def checkSimilarity(self, item):
     if GGPenguin.checkSimilarity(self, item):
-      if item.__msg == self.__msg:
+      if item.getMessage() == self.__msg:
         return True
     return False   
 
@@ -117,8 +118,8 @@ class GGPenguinTrade(GGPenguin):
   
   def checkSimilarity(self, item):
     if GGPenguin.checkSimilarity(self, item):
-      if item.__msg == self.__msg:
-        if item.__giftLabel == self.__giftLabel:  
+      if item.getMessage() == self.__msg:
+        if item.getGiftLabel() == self.__giftLabel:  
           return True
     return False   
 
@@ -171,13 +172,13 @@ class GGPenguinQuiz(GGPenguin):
     """ Returns the item's available options.
     """
     return ["talk"]
-      
-  def getRightAnswer(self):
-    return sefl.__rightAnswer
+  
+  def getFileList(self):
+    return self.__fileList  
   
   def checkSimilarity(self, item):
     if GGPenguin.checkSimilarity(self, item):
-      if item.__fileList == self.__fileList:
+      if item.getFileList() == self.__fileList:
         return True
     return False 
   
@@ -197,9 +198,8 @@ class GGPenguinQuiz(GGPenguin):
     if len(self.__availableQuestions[name]) == 0:
       talker.newChatMessage("Ya no tengo preguntas que hacerte", 2)
       return  
-    question = random.randint(0,len(self.__availableQuestions[name])-1)
-    fileName = "questions/" + self.__availableQuestions[name][question]
-    talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, fileName, self.__availableQuestions[name][question], talker, 'Andatuz',  
+    question = random.randint(0, len(self.__availableQuestions[name])-1)
+    talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))   
         
 #================================================================================

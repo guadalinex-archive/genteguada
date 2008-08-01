@@ -2,7 +2,6 @@ import isoview_item
 import isoview
 import GG.utils
 import animation
-import pygame
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
   """ IsoViewPlayer class.
@@ -61,8 +60,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       frames = self.createFrameSet()
       self.__movieAnimation.setFrames(frames)
     else:
-      str = GG.utils.getSpriteName(event.getParams()["state"], event.getParams()["heading"], 0, self.__timestamp)
-      self.setImg(str)
+      cad = GG.utils.getSpriteName(event.getParams()["state"], event.getParams()["heading"], 0, self.__timestamp)
+      self.setImg(cad)
     
   def inventoryAdded(self, event):
     """ Triggers after receiving an inventory added event.
@@ -81,15 +80,15 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     return self.__movieAnimation != None
       
-  def setMovieAnimation(self, animation=None):
+  def setMovieAnimation(self, anim=None):
     """ Creates a new movie animation.
     animation: new movie animation.
     """
     if self.__movieAnimation:
       self.__movieAnimation.stop()
-    self.__movieAnimation = animation
-    if animation != None:
-      animation.start()
+    self.__movieAnimation = anim
+    if anim != None:
+      anim.start()
     
   def setMovieFrames(self, frames):
     """ Sets a new frame set for a movie animation.
@@ -97,7 +96,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.__movieAnimation.setFrames(frames)
         
-  def createFrameSet(self,dataState = None):
+  def createFrameSet(self, dataState = None):
     """ Creates a new frame set.
     state: player's state.
     """
@@ -107,7 +106,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     else:
       state = self.getModel().getState()
     if state == GG.utils.STATE[1] or state == GG.utils.STATE[3] or state == GG.utils.STATE[5]:
-      string = GG.utils.getSpriteName(state, self.__heading, 0,self.__timestamp)
+      string = GG.utils.getSpriteName(state, self.__heading, 0, self.__timestamp)
       frames.append(string)        
     else:
       for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
@@ -134,7 +133,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def restoreImageFrame(self):
     """ Restores the player image according to his state, heading and timestamp.
     """  
-    self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0,self.__timestamp))
+    self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0, self.__timestamp))
   
   def restoreImagePosition(self):  
     """ Restores the image position.
@@ -213,8 +212,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     pos1 = event.getParams()['position']
     pos2 = event.getParams()['oldPosition']
-    posOver = [(pos1[0] + pos2[0])/2, pos1[1], (pos1[2] + pos2[2])/2]
-    #print pos1, posOver, pos2
     startPos = self.getScreenPosition()
     endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
     cordX = (startPos[0] + endPos[0])/2

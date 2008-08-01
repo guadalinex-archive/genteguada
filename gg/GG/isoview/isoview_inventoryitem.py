@@ -1,6 +1,5 @@
 import isoview
 import ocempgui.widgets
-import animation
 import pygame
 import GG
 
@@ -74,7 +73,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
     imgInventory.border = 0
     imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.selected)
-    render.get_managers()[0].add_high_priority_object(imgInventory,ocempgui.widgets.Constants.SIG_MOUSEDOWN)
+    render.get_managers()[0].add_high_priority_object(imgInventory, ocempgui.widgets.Constants.SIG_MOUSEDOWN)
     return imgInventory
 
   def selected(self): 

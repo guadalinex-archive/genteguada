@@ -1,6 +1,7 @@
 import room_item
 import dMVC.model
 import GG.utils
+import chat_message
 
 class GGTeleport(room_item.GGRoomItem):
   """ GGDoorLobby class.
@@ -99,7 +100,7 @@ class GGTeleport(room_item.GGRoomItem):
     """
     self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
-  def transportTo(self,clicker):
+  def transportTo(self, clicker):
     if self.__destinationRoom.isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
@@ -139,7 +140,7 @@ class GGDoorWithKey(GGTeleport):
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
     if not clicker.hasItemLabeledInInventory(self.__key):
-      clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar',2)  
+      clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar', 2)  
       return False
     self.transportTo(clicker)
 
@@ -160,7 +161,6 @@ class GGDoorPressedTiles(GGTeleport):
       return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
-    pos = self.getPosition()
     for tile in self.__pressedTiles:
       if not self.getRoom().getBlocked(tile):
         clicker.newChatMessage('El resorte no esta activado.', 2)  

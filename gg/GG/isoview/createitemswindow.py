@@ -20,17 +20,21 @@ class CreateItemsWindow:
     self.selected = None
     self.editableFields = {}
     self.activeLabels = []
+    self.__objectsArea = None
+    self.tooltipWindow = None
+    self.container = None
+    self.images = None
     self.draw()
 
   def draw(self):
     #self.container = ocempgui.widgets.Box(373,372)
-    self.container = ocempgui.widgets.Box(373,472)
+    self.container = ocempgui.widgets.Box(373, 472)
     self.__paintBackground()
     self.__paintObjectsList()
     self.__paintButtons()
     
-  def setScreenPosition(self, x, y):
-    self.window.topleft = x, y  
+  def setScreenPosition(self, posX, posY):
+    self.window.topleft = posX, posY  
 
   def getScreenPosition(self):
     return self.window.topleft
@@ -41,20 +45,18 @@ class CreateItemsWindow:
   def __paintBackground(self):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/createObjectWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
     self.window.child = self.container
     
-    #itemsLabel = guiobjects.OcempLabel("Objetos", 280, guiobjects.STYLES["userName"])
-    itemsLabel = guiobjects.OcempLabel("Objetos", 280, guiobjects.STYLES["pointLabel"])
-    #itemsLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
+    #itemsLabel = guiobjects.OcempLabel("Objetos", guiobjects.STYLES["userName"])
+    itemsLabel = guiobjects.OcempLabel("Objetos", guiobjects.STYLES["pointLabel"])
     #itemsLabel.topleft = 20, 20
     itemsLabel.topleft = 20, 10
     self.container.add_child(itemsLabel)
     
-    #itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", 280, guiobjects.STYLES["userName"])
-    itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", 280, guiobjects.STYLES["pointLabel"])
-    #itemsPropertiesLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
+    #itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", guiobjects.STYLES["userName"])
+    itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", guiobjects.STYLES["pointLabel"])
     #itemsPropertiesLabel.topleft = 150, 20
     itemsPropertiesLabel.topleft = 150, 10
     self.container.add_child(itemsPropertiesLabel)
@@ -96,9 +98,8 @@ class CreateItemsWindow:
     
     for key in keys:
     
-      #label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
-      label = guiobjects.OcempLabel(key, 290, guiobjects.STYLES["itemLabel"])
-      #label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+      #label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
+      label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
       #label.topleft = 10 + labelShift[0], 40 + iPos*spacing + labelShift[1]
       label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
       self.container.add_child(label)
@@ -168,8 +169,8 @@ class CreateItemsWindow:
     
   def showTooltip(self, label):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
-    x, y = pygame.mouse.get_pos ()
-    self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
+    xPos, yPos = pygame.mouse.get_pos ()
+    self.tooltipWindow.topleft = xPos + 8 - self.window.topleft[0], yPos - 5 - self.window.topleft[1]
     self.tooltipWindow.depth = 99
     self.tooltipWindow.zOrder = 30000
     self.container.add_child(self.tooltipWindow)
