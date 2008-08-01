@@ -419,8 +419,14 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if not (self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]):
       return
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    if self.getRoom().getTile(dropLocation).getDepth():
-      self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo.", 1)
+    tile = self.getRoom().getTile(dropLocation)
+    if tile.getDepth():
+      if not tile.getTopItem().stepOn():  
+        self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo.", 1)
+      else:
+        self.setState(GG.utils.STATE[1])
+        item.setPosition(dropLocation)
+        self.triggerEvent('dropItem', item=item, position=item.getPosition())
     else:
       if dropLocation == [-1, -1, -1]:
         self.newChatMessage("No puedo soltarlo ahí.", 1)

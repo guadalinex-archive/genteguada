@@ -84,7 +84,7 @@ class GGSession(ggmodel.GGModel):
     
     self.imagesDict = {}
     
-    self.imagesDict["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -10]]}
+    self.imagesDict["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -12]]}
     
     self.imagesDict["Door"] = {}
     self.imagesDict["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
