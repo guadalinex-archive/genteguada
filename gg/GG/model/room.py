@@ -135,14 +135,6 @@ class GGRoom(ggmodel.GGModel):
     item: player.
     """
     self.removeItem(item)
-    """
-    self.__population -= 1
-    pos = item.getPosition()
-    self.__tiles[pos[0]][pos[2]].unstackItem()
-    self.__items.remove(item)
-    item.clearRoom()
-    self.triggerEvent('removeItem', item=item)
-    """
     
   def getSpecialTiles(self):
     return self.__specialTiles
