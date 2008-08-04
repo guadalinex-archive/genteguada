@@ -25,13 +25,20 @@ class GGBoxHeavy(room_item.GGRoomItem):
     tile = self.getTile()
     depth = tile.getDepth()
     selfDepth = tile.getItemDepth(self)
+    selecter = self.getRoom().getSelecter(self)
     if (selfDepth + 1) != depth:
       return ["climb"]
     else:
-      if selfDepth:  
-        return ["lift", "drop", "climb"]
-      else: 
-        return ["lift", "climb"]
+      if selecter.getPosition() == self.getPosition():  
+        if selfDepth:  
+          return ["drop", "climb"]
+        else: 
+          return ["climb"]
+      else:
+        if selfDepth:  
+          return ["lift", "drop", "climb"]
+        else: 
+          return ["lift", "climb"]
     
   def getName(self):
     return self.label

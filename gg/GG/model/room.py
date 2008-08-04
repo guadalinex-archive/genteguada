@@ -311,3 +311,11 @@ class GGRoom(ggmodel.GGModel):
       if isinstance(itemPlayer, player.GGPlayer):
         if itemPlayer.getSelected() == item:
           itemPlayer.setUnselectedItem()  
+
+  def getSelecter(self, selectee):
+    selec = None
+    for item in self.__items:
+      if isinstance(item, player.GGPlayer):
+        selec = item.getSelected()
+        if selec == selectee:
+          return item  
