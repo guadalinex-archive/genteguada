@@ -116,12 +116,12 @@ class GGSystem(dMVC.model.Model):
     penguinTradeText = "Vaya, veo que me traes un regalo. Toma, déjame cambiártelo por esta nueva camiseta." 
     
     # ROOMS
-    room1 = self.__createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
-    room2 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8)
-    room3 = self.__createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8)
-    room4 = self.__createRoom(GG.utils.TILES_SMALLSTONES, "habitacion 4", [8, 8], 8)
-    room5 = self.__createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8], 8)
-    room6 = self.__createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8)
+    room1 = self.createRoom(GG.utils.TILES_GRASS, "habitacion 1", [8, 8], 12)
+    room2 = self.createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8)
+    room3 = self.createRoom(GG.utils.TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8)
+    room4 = self.createRoom(GG.utils.TILES_SMALLSTONES, "habitacion 4", [8, 8], 8)
+    room5 = self.createRoom(GG.utils.TILES_CASTLE1, "habitacion 5", [8, 8], 8)
+    room6 = self.createRoom(GG.utils.TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8)
     room3.setSpecialTile([2, 0, 1], "tiles/pressed.png")
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
     
@@ -326,11 +326,12 @@ class GGSystem(dMVC.model.Model):
       demoPlayer = GG.model.player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user"+str(i), "user"+str(i), "", False)
       self.__createPlayer(demoPlayer)
     
-
-  def __createRoom(self, spriteFull, label, size, maxUsers):
+  def createRoom(self, spriteFull, label, size, maxUsers):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     """
+    if self.getRoom(label):
+      return None  
     newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers)
     self.__rooms.append(newRoom)
     return newRoom
