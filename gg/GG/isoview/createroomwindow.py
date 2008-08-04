@@ -50,14 +50,13 @@ class CreateRoomWindow:
      
   def __paintButtons(self):
     createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
-    createButton.topleft = 20, 220
+    createButton.topleft = 150, 220
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoom)
     self.container.add_child(createButton)
 
   def __paintAttributes(self):
     labelShift = [10, -15]
     spacing = 50
-    tiles = ["grass01.png", "pavingStone01.png", "pavingStoneWithGrass01.png"]
     iPos = 0
     
     label = guiobjects.OcempLabel("Etiqueta", guiobjects.STYLES["itemLabel"])
