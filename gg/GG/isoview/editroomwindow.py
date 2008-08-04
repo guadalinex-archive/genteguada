@@ -5,7 +5,7 @@ import ocempgui.widgets
 import GG.utils
 import guiobjects
 
-class CreateItemsWindow:
+class EditRoomWindow:
 
   def __init__(self, session, title, player, hud):
     self.__session = session
@@ -27,7 +27,7 @@ class CreateItemsWindow:
     self.draw()
 
   def draw(self):
-    self.container = ocempgui.widgets.Box(373, 390)
+    self.container = ocempgui.widgets.Box(358, 258)
     self.__paintBackground()
     self.__paintObjectsList()
     self.__paintButtons()
@@ -42,7 +42,7 @@ class CreateItemsWindow:
     return self.container.width, self.container.height     
 
   def __paintBackground(self):
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/createObjectWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/editRoomWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)

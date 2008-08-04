@@ -14,6 +14,7 @@ import exchangewindow
 import guiobjects
 import privatechatwindow
 import createitemswindow
+import createroomwindow
 
 from pygame.locals import * # faster name resolution
 from PIL import Image
@@ -53,8 +54,11 @@ class IsoViewHud(isoview.IsoView):
     if self.__player.getAccessMode():
       self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creacion de objetos", self.__player, self)
       self.createItemsWindow.hide = True
+      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creacion de habitaciones", self.__player, self)
+      self.createRoomWindow.hide = True
     else:
       self.createItemsWindow = None  
+      self.createRoomWindow = None  
     
     if fullscreen:
       self.__fullScreen = True
@@ -209,6 +213,9 @@ class IsoViewHud(isoview.IsoView):
         return True
     if self.createItemsWindow:
       if not self.createItemsWindow.hide:
+        return True
+    if self.createRoomWindow:
+      if not self.createRoomWindow.hide:
         return True
     return False
 
@@ -706,19 +713,19 @@ class IsoViewHud(isoview.IsoView):
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "4.png")
     createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Panel de creacion de objetos", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemsHandler)
     createObjectButton.topleft = 74, 40
     self.adminOptions.add_child(createObjectButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "substraction.png")
     createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Edicion de habitacion", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemsHandler)
     createObjectButton.topleft = 136, 40
     self.adminOptions.add_child(createObjectButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "addition.png")
     createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Creacion de habitacion", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoomHandler)
     createObjectButton.topleft = 198, 40
     self.adminOptions.add_child(createObjectButton)
     
@@ -1022,7 +1029,7 @@ class IsoViewHud(isoview.IsoView):
       self.itemUnselected()
       self.dropActionsItembuttons()
       
-  def createItemstHandler(self):
+  def createItemsHandler(self):
     """ Shows or hides the create items window.
     """  
     if not self.createItemsWindow:
@@ -1059,7 +1066,55 @@ class IsoViewHud(isoview.IsoView):
     self.removeSprite(self.createItemsWindow.window)
     self.widgetContainer.remove_widget(self.createItemsWindow.window)
     self.createItemsWindow.hide = True
-      
+  
+  def createRoomHandler(self):
+    """ Shows or hides the create items window.
+    """  
+    if not self.createRoomWindow:
+      self.showCreateRoom()
+    else:
+      if self.createRoomWindow.hide:
+        self.showCreateRoom()
+      else:
+        self.hideCreateRoom()
+        
+  def showCreateRoom(self):
+    """ Shows the create room window.
+    """
+    self.addSprite(self.createRoomWindow.window)
+    self.widgetContainer.add_widget(self.createRoomWindow.window)
+    x, y = self.createRoomWindow.getScreenPosition()
+    width, height = self.createRoomWindow.getSize()
+    cordX = x
+    cordY = y
+    if x < 0:
+      cordX = 0
+    if y < 0:
+      cordY = 0
+    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
+      cordX = GG.utils.GAMEZONE_SZ[0] - width  
+    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
+      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    self.createRoomWindow.setScreenPosition(cordX, cordY)  
+    self.createRoomWindow.hide = False
+    
+  def hideCreateRoom(self):
+    """ Hides the create room window.
+    """ 
+    self.removeSprite(self.createRoomWindow.window)
+    self.widgetContainer.remove_widget(self.createRoomWindow.window)
+    self.createRoomWindow.hide = True
+    
+  def createRoom(self, label, size, img, maxUsers):
+    self.hideCreateRoom()
+    room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers)
+    if not room:
+      self.__player.newChatMessage("La etiqueta de habitacion ya existe.", 1)
+    pos = room.getNearestEmptyCell(self.__player.getPosition())
+    itemList = self.__player.getTile().getItemsFrom(self.__player)
+    for item in itemList:
+      item.changeRoom(room, pos)
+        
   def privateChatHandler(self):
     """ Shows or hides the private chat window.
     """  

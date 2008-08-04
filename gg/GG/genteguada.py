@@ -35,7 +35,6 @@ class GenteGuada:
   def getInstance():
     return GenteGuada.instance
   
-  
   def input(self, events):
     for event in events:
       if event.type == pygame.locals.QUIT:
@@ -238,4 +237,8 @@ class GenteGuada:
 
   def getRoom(self, label):
     return self.system.getRoom(label)  
+
+  def createRoom(self, label, size, image, maxUsers):
+    print label, size, image
+    return self.system.createRoom(image, label, size, maxUsers)
 

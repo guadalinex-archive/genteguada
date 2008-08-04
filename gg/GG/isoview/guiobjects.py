@@ -536,14 +536,15 @@ class OcempImageObjectList(OcempImageFileList):
   
 class OcempImageList(OcempImageFileList):
   
-  def __init__(self, width, height, imagesList):
+  def __init__(self, width, height, imagesList, relativePath):
     self.imagesList = imagesList
+    self.relativePath = relativePath
     OcempImageFileList.__init__(self, width, height)
 
   def _list_contents (self):
     items = ocempgui.widgets.components.ListItemCollection ()
     for image in self.imagesList:
-      items.append (OcempContactListItem (image, "furniture/" + image))
+      items.append (OcempContactListItem (image, self.relativePath + image))
     self.set_items (items)
 
   def getSelectedName(self):

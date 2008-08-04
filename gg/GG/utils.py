@@ -393,27 +393,28 @@ def checkNeighbour(pos1, pos2):
 
 # ===============================================================
 
-def getFrontPosition(pos, heading):
+def getFrontPosition(pos, heading, size):
   """ Returns the tile coords in front of the player.
   pos: player's position.
   heading: direction that the player is heading to.
+  size: room's size
   """
   retVar = [-1, -1]
   if heading == "up" and not pos[1] == 0:
     retVar = [pos[0], pos[1] - 1]
-  elif heading == "down" and not pos[1] == (SCENE_SZ[1] - 1):
+  elif heading == "down" and not pos[1] == (size[1] - 1):
     retVar = [pos[0], pos[1] + 1]
   elif heading == "left" and not pos[0] == 0:
     retVar = [pos[0] - 1, pos[1]]
-  elif heading == "right" and not pos[0] == (SCENE_SZ[0] - 1):
+  elif heading == "right" and not pos[0] == (size[0] - 1):
     retVar = [pos[0] + 1, pos[1]]
   elif heading == "topleft" and not pos[0] == 0 and not pos[1] == 0:
     retVar = [pos[0] - 1, pos[1] - 1]
-  elif heading == "bottomright" and not pos[0] == (SCENE_SZ[0] - 1) and not pos[1] == (SCENE_SZ[1] - 1):
+  elif heading == "bottomright" and not pos[0] == (size[0] - 1) and not pos[1] == (size[1] - 1):
     retVar = [pos[0] + 1, pos[1] + 1]
-  elif heading == "bottomleft" and not pos[0] == 0 and not pos[1] == (SCENE_SZ[1] - 1):
+  elif heading == "bottomleft" and not pos[0] == 0 and not pos[1] == (size[1] - 1):
     retVar = [pos[0] - 1, pos[1] + 1]
-  elif heading == "topright" and not pos[1] == 0 and not pos[0] == (SCENE_SZ[0] - 1):
+  elif heading == "topright" and not pos[1] == 0 and not pos[0] == (size[0] - 1):
     retVar = [pos[0] + 1, pos[1] - 1]
   return retVar
     

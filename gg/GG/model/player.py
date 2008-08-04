@@ -246,7 +246,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Removes an item from the inventory and drops it in front of the player.
     item: item to drop.
     """
-    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading, self.getRoom().size)
     if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1]:
       self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
@@ -417,7 +417,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if not (self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]):
       return
-    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading, self.getRoom().size)
     tile = self.getRoom().getTile(dropLocation)
     if tile.getDepth():
       if not tile.getTopItem().stepOn():  
