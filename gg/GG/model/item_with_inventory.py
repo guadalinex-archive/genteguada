@@ -59,7 +59,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     dropLocation: item's drop location.
     """
     itemOnPosition = self.getRoom().getItemOnPosition(dropLocation)
-    if dropLocation == [-1, -1, -1]: 
+    if dropLocation == [-1, -1]: 
       return False
     if itemOnPosition != None:
       if not itemOnPosition.isStackable():
@@ -85,7 +85,3 @@ class GGItemWithInventory(room_item.GGRoomItem):
       if item.label == label:
         return item 
     return None
-
-    
-  
-      

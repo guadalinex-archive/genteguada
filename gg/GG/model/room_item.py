@@ -32,7 +32,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return []
 
   def getAdminActions(self):
-    dic = {"Position": [self.__tile.position[0], self.__tile.position[2]]}
+    dic = {"Position": self.__tile.position}
     return dic  
         
   def getName(self):
@@ -151,10 +151,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     if clickerPos != selfPos:
       clicker.setHeading(GG.utils.getNextDirection(clickerPos, selfPos))
       if not GG.utils.checkNeighbour(clickerPos, self.__tile.position):
-        #direction = self.__room.getNextDirection(clicker, self.__tile.position, clickerPos)
         direction = self.__room.getNextDirectionForAnItem(self.__tile.position, clickerPos)
         destination = GG.utils.getFrontPosition(self.__tile.position, direction)
-        if destination != clickerPos and destination != [-1, -1, -1]:
+        if destination != clickerPos and destination != [-1, -1]:
           clicker.setDestination(destination)
       if clicker.getAccessMode():
         clicker.setSelectedItem(self)

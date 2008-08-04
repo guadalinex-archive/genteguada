@@ -22,7 +22,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     username: user name.
     password: user password.
     """
-    #print username, password
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
     item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
     self.username = username
@@ -248,7 +247,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: item to drop.
     """
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading)
-    if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1, -1]:
+    if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1]:
       self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
       item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
@@ -316,21 +315,21 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setState(GG.utils.STATE[4])
     self.setHeading(direction)
     if self.getHeading() == "up":
-      next = [pos[0], pos[1], pos[2] - 1]
+      next = [pos[0], pos[1] - 1]
     if self.getHeading() == "down":
-      next = [pos[0], pos[1], pos[2] + 1]
+      next = [pos[0], pos[1] + 1]
     if self.getHeading() == "left":
-      next = [pos[0] - 1, pos[1], pos[2]]
+      next = [pos[0] - 1, pos[1]]
     if self.getHeading() == "right":
-      next = [pos[0] + 1, pos[1], pos[2]]
+      next = [pos[0] + 1, pos[1]]
     if self.getHeading() == "topleft":
-      next = [pos[0] - 1, pos[1], pos[2] - 1]
+      next = [pos[0] - 1, pos[1] - 1]
     if self.getHeading() == "bottomright": 
-      next = [pos[0] + 1, pos[1], pos[2] + 1]
+      next = [pos[0] + 1, pos[1] + 1]
     if self.getHeading() == "bottomleft":
-      next = [pos[0] - 1, pos[1], pos[2] + 1]
+      next = [pos[0] - 1, pos[1] + 1]
     if self.getHeading() == "topright":
-      next = [pos[0] + 1, pos[1], pos[2] - 1]
+      next = [pos[0] + 1, pos[1] - 1]
     self.__visited.append(pos)
     
     items = self.getTile().getItemsFrom(self)
@@ -428,7 +427,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         item.setPosition(dropLocation)
         self.triggerEvent('dropItem', item=item, position=item.getPosition())
     else:
-      if dropLocation == [-1, -1, -1]:
+      if dropLocation == [-1, -1]:
         self.newChatMessage("No puedo soltarlo ahí.", 1)
         return
       self.setState(GG.utils.STATE[1])

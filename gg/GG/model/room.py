@@ -30,7 +30,7 @@ class GGRoom(ggmodel.GGModel):
       line = []  
       for j in range(0, self.size[1]):
         image = "tiles/" + self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
-        line.append(tile.Tile([i, 0, j], image, [0, 0], self))
+        line.append(tile.Tile([i, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []
     self.__specialTiles = []
@@ -51,7 +51,7 @@ class GGRoom(ggmodel.GGModel):
       return False    
 
   def getTile(self, pos):
-    return self.__tiles[pos[0]][pos[2]]  
+    return self.__tiles[pos[0]][pos[1]]  
 
   def getTiles(self):
     return self.__tiles
@@ -59,13 +59,13 @@ class GGRoom(ggmodel.GGModel):
   def getItemTile(self, item):
     if item in self.__items:
       pos = item.getPosition()
-      return self.__tiles[pos[0]][pos[2]]
+      return self.__tiles[pos[0]][pos[1]]
     return None                        
   
   def moveItem(self, pos1, pos2, item):
-    self.__tiles[pos1[0]][pos1[2]].unstackItem()
-    self.__tiles[pos2[0]][pos2[2]].stackItem(item)
-    item.setTile(self.__tiles[pos2[0]][pos2[2]])
+    self.__tiles[pos1[0]][pos1[1]].unstackItem()
+    self.__tiles[pos2[0]][pos2[1]].stackItem(item)
+    item.setTile(self.__tiles[pos2[0]][pos2[1]])
     
   # self.__items
 
@@ -83,7 +83,7 @@ class GGRoom(ggmodel.GGModel):
       for item in self.__items:
         if isinstance(item, player.GGPlayer):
           self.__population += 1    
-        self.__tiles[item.getPosition()[0]][item.getPosition()[2]].stackItem(item)
+        self.__tiles[item.getPosition()[0]][item.getPosition()[1]].stackItem(item)
       self.triggerEvent('items', items=items)
       return True
     return False
@@ -92,8 +92,8 @@ class GGRoom(ggmodel.GGModel):
     if not item in self.__items:
       if isinstance(item, player.GGPlayer):
         self.__population += 1    
-      self.__tiles[pos[0]][pos[2]].stackItem(item)
-      item.setTile(self.__tiles[pos[0]][pos[2]])
+      self.__tiles[pos[0]][pos[1]].stackItem(item)
+      item.setTile(self.__tiles[pos[0]][pos[1]])
       item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
@@ -103,10 +103,10 @@ class GGRoom(ggmodel.GGModel):
   
   def addItemFromInventory(self, item, pos):
     if not item in self.__items:
-      if not self.__tiles[pos[0]][pos[2]].stepOn():
+      if not self.__tiles[pos[0]][pos[1]].stepOn():
         return
-      self.__tiles[pos[0]][pos[2]].stackItem(item)
-      item.setTile(self.__tiles[pos[0]][pos[2]])
+      self.__tiles[pos[0]][pos[1]].stackItem(item)
+      item.setTile(self.__tiles[pos[0]][pos[1]])
       item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
@@ -123,7 +123,7 @@ class GGRoom(ggmodel.GGModel):
       if isinstance(item, player.GGPlayer):
         self.__population -= 1
       pos = item.getPosition()
-      self.__tiles[pos[0]][pos[2]].unstackItem()
+      self.__tiles[pos[0]][pos[1]].unstackItem()
       self.__items.remove(item)
       item.clearRoom()
       self.triggerEvent('removeItem', item=item)
@@ -163,7 +163,7 @@ class GGRoom(ggmodel.GGModel):
     """ Checks if a tile is blocked or not.
     pos: tile position.
     """
-    if self.__tiles[pos[0]][pos[2]].getDepth() != 0:
+    if self.__tiles[pos[0]][pos[1]].getDepth() != 0:
       return True
     return False
     
@@ -195,14 +195,14 @@ class GGRoom(ggmodel.GGModel):
     startingDistance = GG.utils.p2pDistance(pos1, pos2)
     
     direction = []
-    direction.append([pos1[0], pos1[1], pos1[2] - 1]) #up
-    direction.append([pos1[0], pos1[1], pos1[2] + 1]) #down
-    direction.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
-    direction.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
-    direction.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
-    direction.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
-    direction.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
-    direction.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
+    direction.append([pos1[0], pos1[1] - 1]) #up
+    direction.append([pos1[0], pos1[1] + 1]) #down
+    direction.append([pos1[0] - 1, pos1[1]]) #left
+    direction.append([pos1[0] + 1, pos1[1]]) #right
+    direction.append([pos1[0] - 1, pos1[1] - 1]) #topleft
+    direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
+    direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
+    direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
     
     for i in range(0, len(direction)):
       if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
@@ -215,7 +215,7 @@ class GGRoom(ggmodel.GGModel):
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
+      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][1] < GG.utils.SCENE_SZ[1]):
         if self.getBlocked(first[2]) == 0:
           if not player.hasBeenVisited(first[2]):
             if first[1] < startingDistance:
@@ -230,14 +230,14 @@ class GGRoom(ggmodel.GGModel):
     startingDistance = GG.utils.p2pDistance(pos1, pos2)
     
     direction = []
-    direction.append([pos1[0], pos1[1], pos1[2] - 1]) #up
-    direction.append([pos1[0], pos1[1], pos1[2] + 1]) #down
-    direction.append([pos1[0] - 1, pos1[1], pos1[2]]) #left
-    direction.append([pos1[0] + 1, pos1[1], pos1[2]]) #right
-    direction.append([pos1[0] - 1, pos1[1], pos1[2] - 1]) #topleft
-    direction.append([pos1[0] + 1, pos1[1], pos1[2] + 1]) #bottomright
-    direction.append([pos1[0] - 1, pos1[1], pos1[2] + 1]) #bottomleft
-    direction.append([pos1[0] + 1, pos1[1], pos1[2] - 1]) #topright
+    direction.append([pos1[0], pos1[1] - 1]) #up
+    direction.append([pos1[0], pos1[1] + 1]) #down
+    direction.append([pos1[0] - 1, pos1[1]]) #left
+    direction.append([pos1[0] + 1, pos1[1]]) #right
+    direction.append([pos1[0] - 1, pos1[1] - 1]) #topleft
+    direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
+    direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
+    direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
     
     for i in range(0, len(direction)):
       if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
@@ -250,7 +250,7 @@ class GGRoom(ggmodel.GGModel):
     dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
     while len(dist) > 0:
       first = dist.pop()
-      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][2] < GG.utils.SCENE_SZ[1]):
+      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][1] < GG.utils.SCENE_SZ[1]):
         if self.getBlocked(first[2]) == 0:
           if first[1] < startingDistance:
             return first[0]
@@ -282,7 +282,7 @@ class GGRoom(ggmodel.GGModel):
     for corx in range(self.size[0]):
       for corz in range(self.size[1]):
         if not self.__tiles[corx][corz].getDepth():
-          listCell.append([corx, 0, corz])
+          listCell.append([corx, corz])
     return listCell        
 
   def getNearestEmptyCell(self, pos):
@@ -304,7 +304,7 @@ class GGRoom(ggmodel.GGModel):
     return point
       
   def getItemOnPosition(self, pos):
-    return self.__tiles[pos[0]][pos[2]].getTopItem()
+    return self.__tiles[pos[0]][pos[1]].getTopItem()
     
   def setUnselectedtFor(self, item):
     for itemPlayer in self.__items:

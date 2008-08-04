@@ -138,19 +138,19 @@ class GGSession(ggmodel.GGModel):
     
     self.objectsDict = {
                    "BoxHeavy": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "label": [""],
                             "images": self.imagesDict["BoxHeavy"].keys() 
                             },
                    "Door": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "destinationRoom": [self.__player.getRoom().label],
                             "exitPosition": [0, 0],
                             "label": [""], 
                             "images": self.imagesDict["Door"].keys()                     
                             },
                    "DoorWithKey": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "destinationRoom": [self.__player.getRoom().label],
                             "exitPosition": [0, 0],
                             "label": [""],
@@ -158,30 +158,30 @@ class GGSession(ggmodel.GGModel):
                             "images": self.imagesDict["DoorWithKey"].keys()                     
                             },
                    "GiverNpc": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "label": [""],
                             "images": self.imagesDict["GiverNpc"].keys()     
                             },
                    "PenguinQuiz": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "label": [""],
                             "filePath": [GG.utils.QUESTIONS_PATH],        
                             "images": self.imagesDict["PenguinTalker"].keys()                     
                             },
                    "PenguinTalker": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "label": [""],
                             "message": [""],        
                             "images": self.imagesDict["PenguinTalker"].keys()                     
                             },
                    "PenguinTrade": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "label": [""],
                             "gift": [""],        
                             "images": self.imagesDict["PenguinTrade"].keys()                     
                             },
                    "RoomItem": {
-                            "position": [pos[0], pos[2]],
+                            "position": pos,
                             "images": self.imagesDict["RoomItem"].keys()                     
                             }
                   }
@@ -190,7 +190,7 @@ class GGSession(ggmodel.GGModel):
   def createObject(self, name, data):
     try: 
       posX = int(data["position"][0])    
-      posZ = int(data["position"][1])
+      posY = int(data["position"][1])
     except ValueError: 
       self.__player.newChatMessage("Valor \"Position\" incorrecto", 1) 
       return
@@ -214,12 +214,12 @@ class GGSession(ggmodel.GGModel):
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
-        exPosZ = int(data["exitPosition"][1])
+        exPosY = int(data["exitPosition"][1])
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
       box = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
-                                      self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, label)
+                                      self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, label)
     #===============================================
     elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -231,12 +231,12 @@ class GGSession(ggmodel.GGModel):
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
-        exPosZ = int(data["exitPosition"][2])
+        exPosY = int(data["exitPosition"][2])
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
       box = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
-                                             self.imagesDict[name][img][1], [exPosX, 0, exPosZ], destinationRoom, 
+                                             self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, 
                                              label, data["key"][0])
     #===============================================
     elif name == "GiverNpc":
@@ -269,6 +269,6 @@ class GGSession(ggmodel.GGModel):
       box = GG.model.penguin.GGPenguinQuiz("furniture/" + img, self.imagesDict[name][img][0], \
                                            self.imagesDict[name][img][1], label, data["filePath"][0])
     #===============================================
-    room.addItemFromVoid(box, [posX, 0, posZ])
+    room.addItemFromVoid(box, [posX, posY])
     
     
