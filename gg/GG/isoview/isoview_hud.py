@@ -473,7 +473,7 @@ class IsoViewHud(isoview.IsoView):
     
     labelProfile = guiobjects.OcempLabel("Mi perfil: ", guiobjects.STYLES["hudLabel"])
     #labelProfile.topleft = 555, 90
-    labelProfile.topleft = 555, 70
+    labelProfile.topleft = 555, 75
     self.hud.add_child(labelProfile)
     
     labelInventory = guiobjects.OcempLabel("Inventario", guiobjects.STYLES["hudLabel"])
@@ -687,22 +687,10 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.adminOptions.add_child(imgBackground)
     
-    """
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("chatEntry.png")
-    img = Image.open(filePath)
-    size = 23, 23
-    img.thumbnail(size,Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgAdminToolbar.png"))
-    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgAdminToolbar.png")
-    img = guiobjects.OcempImageButtonTransparent(imgPath)
-    img.topleft = 5, 6
-    self.adminOptions.add_child(img)
-    """
-    
-    itemLabel = guiobjects.OcempLabel("Admin options", guiobjects.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel("Opciones avanzadas", guiobjects.STYLES["itemLabel"])
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
     #itemLabel.topleft = 35,10
-    itemLabel.topleft = 35, 0
+    itemLabel.topleft = 26, -4
     self.adminOptions.add_child(itemLabel)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "teleport.png")
@@ -777,7 +765,6 @@ class IsoViewHud(isoview.IsoView):
         
       fCount = 0
       fields = []
-      print key, actions[key]
       for field in actions[key]:
         entryLabel = ocempgui.widgets.Entry()
         entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
@@ -1110,6 +1097,7 @@ class IsoViewHud(isoview.IsoView):
     room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers)
     if not room:
       self.__player.newChatMessage("La etiqueta de habitacion ya existe.", 1)
+      return
     pos = room.getNearestEmptyCell(self.__player.getPosition())
     itemList = self.__player.getTile().getItemsFrom(self.__player)
     for item in itemList:
@@ -1299,17 +1287,17 @@ class IsoViewHud(isoview.IsoView):
 
     labelUserName = guiobjects.OcempLabel(self.__player.username, guiobjects.STYLES["userName"])
     #labelUserName.topleft = 638, 90
-    labelUserName.topleft = 650, 70
+    labelUserName.topleft = 655, 75
     self.hud.add_child(labelUserName)
     
     #self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", guiobjects.STYLES["userName"])
     self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", guiobjects.STYLES["pointLabel"])
-    self.__pointsLabel.topleft = 627, 120
+    self.__pointsLabel.topleft = 627, 110
     self.hud.add_child(self.__pointsLabel)
 
     #self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", guiobjects.STYLES["userName"])
     self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", guiobjects.STYLES["pointLabel"])
-    self.__labelOld.topleft = 627, 140
+    self.__labelOld.topleft = 627, 135
     self.hud.add_child(self.__labelOld)
 
     #self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", guiobjects.STYLES["userName"])
@@ -1633,12 +1621,7 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
 
   def applyChanges(self):
-    """
-    if not self.__selectedItem:
-      self.itemUnselected()
-      self.dropActionsItembuttons()
-      return
-    """    
+    selectedItem = self.__selectedItem
     for key in self.editableFields.keys():
       
       if key == "Position":
@@ -1655,19 +1638,22 @@ class IsoViewHud(isoview.IsoView):
         size = self.__isoviewRoom.getModel().size
         if 0 < posX < size[0]:
           if 0 < posY < size[1]:
-            self.__selectedItem.setPosition([posX, 0, posY])  
+            itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
+            for singleItem in itemsList:
+              singleItem.setPosition([posX, posY])  
+            #selectedItem.setPosition([posX, posY])  
       
       if key == "Url":
         url = self.editableFields[key][0].text
-        self.__selectedItem.distributedSetUrl(url)
+        selectedItem.distributedSetUrl(url)
       
       if key == "Message":
         msg = self.editableFields[key][0].text    
-        self.__selectedItem.setMessage(msg)  
+        selectedItem.setMessage(msg)  
 
       if key == "GiftLabel":
         giftLabel = self.editableFields[key][0].text    
-        self.__selectedItem.setGiftLabel(giftLabel)  
+        selectedItem.setGiftLabel(giftLabel)  
 
       if key == "ExitPosition":
         try: posX = int(self.editableFields[key][0].text)    
@@ -1681,7 +1667,7 @@ class IsoViewHud(isoview.IsoView):
         size = self.__selectedItem.getDestinationRoom().size
         if 0 < posX < size[0]:
           if 0 < posY < size[1]:
-            self.__selectedItem.setExitPosition([posX, 0, posY])
+            selectedItem.setExitPosition([posX, posY])
               
       if key == "DestinationRoom":
         roomLabel = self.editableFields[key][0].text
@@ -1689,7 +1675,7 @@ class IsoViewHud(isoview.IsoView):
         if not room:
           self.__player.newChatMessage("Valor \"DestinationRoom\" incorrecto", 1)
           return  
-        self.__selectedItem.setDestinationRoom(room)  
+        selectedItem.setDestinationRoom(room)  
             
     self.itemUnselected()
     self.dropActionsItembuttons()

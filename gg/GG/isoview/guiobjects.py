@@ -496,11 +496,11 @@ class OcempImageContactList(OcempImageFileList):
       item[0].text = cad
 
   def updateMaskPlayer(self, name, image):
-    print "voy a buscar a name"
+    #print "voy a buscar a name"
     for item in self.items:
-      print item.text
+      #print item.text
       if item.text.find(name) > -1:
-        print "Lo encontre "+name
+        #print "Lo encontre "+name
         filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
         size = 46, 31 
         try:

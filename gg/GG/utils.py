@@ -271,6 +271,11 @@ BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "bord
 BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
 TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
 
+TILES = ["grass01.png", "grass02.png", "grass03.png", "pavingStone01.png", "pavingStone02.png", \
+         "pavingStone03.png", "pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", \
+         "pavingStoneWithGrass03.png", "castle01.png", "castle02.png", "upArrow.png", "downArrow.png", 
+         "leftArrow.png", "rightArrow.png", "smallStones01.png", "smallStones02.png", "smallStones03.png"]
+
 # ======================= SOUNDS ===========================
 
 SOUND_OCEAN = "ocean.ogg"

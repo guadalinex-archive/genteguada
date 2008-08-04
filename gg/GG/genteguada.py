@@ -239,6 +239,4 @@ class GenteGuada:
     return self.system.getRoom(label)  
 
   def createRoom(self, label, size, image, maxUsers):
-    print label, size, image
     return self.system.createRoom(image, label, size, maxUsers)
-

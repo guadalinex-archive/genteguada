@@ -111,7 +111,7 @@ class CreateRoomWindow:
     self.container.add_child(label)
     
     height = 60
-    self.images = guiobjects.OcempImageList(240, height, tiles, "tiles/")  
+    self.images = guiobjects.OcempImageList(240, height, GG.utils.TILES, "tiles/")  
     self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     iPos += 1
     self.container.add_child(self.images)  
