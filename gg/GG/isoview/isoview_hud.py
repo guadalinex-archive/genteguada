@@ -399,8 +399,8 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-    #if self.__player.getAccessMode():
-    #  self.paintRoomOptions()
+    if self.__player.getAccessMode():
+      self.paintAdminOptions()
     self.hud.zOrder = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
@@ -671,18 +671,60 @@ class IsoViewHud(isoview.IsoView):
       self.itemSelectedByAdmin()
     self.itemSelectedByUser()
     
-  def paintRoomOptions(self):
-    self.roomOptions = ocempgui.widgets.Box(260, 129)
-    self.roomOptions.topleft = [0, 397]
-    
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/roomOptions.png")
-    self.roomOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+  def paintAdminOptions(self):
+    self.adminOptions = ocempgui.widgets.Box(259, 95)
+    self.adminOptions.topleft = [0, 431]
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions.png")
+    self.adminOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
-    self.roomOptions.add_child(imgBackground)
-    self.roomOptions.zOrder = 10000
-    self.addSprite(self.roomOptions)
-    self.widgetContainer.add_widget(self.roomOptions)
+    self.adminOptions.add_child(imgBackground)
+    
+    """
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("chatEntry.png")
+    img = Image.open(filePath)
+    size = 23, 23
+    img.thumbnail(size,Image.ANTIALIAS)
+    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgAdminToolbar.png"))
+    imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgAdminToolbar.png")
+    img = guiobjects.OcempImageButtonTransparent(imgPath)
+    img.topleft = 5, 6
+    self.adminOptions.add_child(img)
+    """
+    
+    itemLabel = guiobjects.OcempLabel("Admin options", guiobjects.STYLES["itemLabel"])
+    itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
+    #itemLabel.topleft = 35,10
+    itemLabel.topleft = 35, 0
+    self.adminOptions.add_child(itemLabel)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "teleport.png")
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportacion", self.showTooltip, self.removeTooltip)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.teleportHandler)
+    createObjectButton.topleft = 12, 40
+    self.adminOptions.add_child(createObjectButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "4.png")
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Panel de creacion de objetos", self.showTooltip, self.removeTooltip)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.topleft = 74, 40
+    self.adminOptions.add_child(createObjectButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "substraction.png")
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Edicion de habitacion", self.showTooltip, self.removeTooltip)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.topleft = 136, 40
+    self.adminOptions.add_child(createObjectButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "addition.png")
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Creacion de habitacion", self.showTooltip, self.removeTooltip)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemstHandler)
+    createObjectButton.topleft = 198, 40
+    self.adminOptions.add_child(createObjectButton)
+    
+    self.adminOptions.zOrder = 10000
+    self.addSprite(self.adminOptions)
+    self.widgetContainer.add_widget(self.adminOptions)
     
   def itemSelectedByAdmin(self):
     actions = self.__selectedItem.getAdminActions()
@@ -881,10 +923,6 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/minimize.png", "action": self.showFullScreen, "tooltip":"Maximizar o minimizar pantalla (F)"},
                 {"image":"interface/hud/sound.png", "action": self.showSoundControl, "tooltip":"Controles de sonido (S)"},
                 ]
-    
-    if self.__player.getAccessMode():
-      ACTIONS.append({"image":"interface/hud/4.png", "action": self.createItemstHandler, "tooltip":"Panel de creacion de objetos"})
-      ACTIONS.append({"image":"interface/hud/teleport.png", "action": self.teleportHandler, "tooltip":"Teleportacion"})
     
     i = 0
     for buttonData in ACTIONS:
@@ -1547,8 +1585,6 @@ class IsoViewHud(isoview.IsoView):
       return
     """    
     for key in self.editableFields.keys():
-      
-      print key
       
       if key == "Position":
         try: 
