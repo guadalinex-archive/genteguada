@@ -300,7 +300,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     else:
       direction = self.getRoom().getNextDirection(self, ori, end)
       if direction == GG.utils.HEADING[0]:
-        #print self.getPosition(), self.__destination  
         self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
         self.setDestination(self.getPosition())
         return

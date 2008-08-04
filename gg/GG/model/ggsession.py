@@ -202,6 +202,11 @@ class GGSession(ggmodel.GGModel):
     img = data["images"]
     room = self.__player.getRoom()
                   
+    roomSz = self.__player.getRoom().size
+    if not (0 <= posX <= roomSz[0] and 0 <= posY <= roomSz[1]):
+      self.__player.newChatMessage("Las coordenadas del objeto no son correctas.", 1)
+      return
+                      
     #===============================================
     if name == "BoxHeavy":
       box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], \
@@ -218,6 +223,12 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
+    
+      roomSz = destinationRoom.size
+      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
+        return
+    
       box = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
                                       self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, label)
     #===============================================
@@ -235,6 +246,12 @@ class GGSession(ggmodel.GGModel):
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
+    
+      roomSz = destinationRoom.size
+      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
+        return
+    
       box = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
                                              self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, 
                                              label, data["key"][0])
