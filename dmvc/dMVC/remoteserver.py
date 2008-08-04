@@ -5,6 +5,8 @@ import thread
 import pickle
 import struct
 import synchronized
+import Queue
+import remotecommand
 
 class RServer(synchronized.Synchronized):
 
@@ -69,6 +71,7 @@ class RServer(synchronized.Synchronized):
 
 class RServerHandler(SocketServer.BaseRequestHandler):
 
+
   def __sendInitialData(self): #{{{
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
 
@@ -83,7 +86,11 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     utils.logger.debug("Conect client "+str(self.client_address))
 
     self.__sessionID = utils.nextID()
+
+    self.fragmentCommand = {}
+
     self.__sendInitialData()
+    self.__asyncQueue = Queue.Queue()
 
     handler = dMVC.getRServer()._onConnection
     if handler:
@@ -131,8 +138,50 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       self.__sendObject(answer,command)
 
   def __processFragment(self, fragment, size):
-    pass
+    if not fragment.groupID in self.fragmentCommand.keys():
+      self.fragmentCommand[fragment.groupID] = fragment.data
+    else:
+      self.fragmentCommand[fragment.groupID] += fragment.data
+    if fragment.total == fragment.sequence:
+      command = pickle.loads(self.fragmentCommand[fragment.groupID])
+      del self.fragmentCommand[fragment.groupID]
+      command.setServerHandler(self)
+      answer = command.do()
+      if answer:
+        self.__sendAsyncObject(answer,command)
 
+    
+  def __sendAsyncObject(self, obj, command=None): #{{{
+    toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
+    serialized = pickle.dumps(toSerialize)
+    sizeSerialized = len(serialized)
+    total = sizeSerialized / 10
+    if not sizeSerialized % 10 == 0:
+      total += 1
+    lenProcess = 0
+    sequence = 0
+    asyncCommandID = utils.nextID()
+    while lenProcess < sizeSerialized:
+      sequence += 1
+      fragmentCommand = serialized[lenProcess : lenProcess + 10]
+      fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand)
+      self.__asyncQueue.put(fragment)
+      lenProcess += 10
+
+
+
+    try:
+      size = struct.pack("i", sizeSerialized)
+      utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
+      self.request.send(size)
+      self.request.send(serialized)
+      #if command:
+        #print "Enviado ",sizeSerialized , command
+      return True
+    except:
+      utils.logger.exception("Can''t send an object, probable conexion lost")
+      return False
+  #}}}
 
   def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())

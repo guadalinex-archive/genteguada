@@ -34,6 +34,7 @@ class RClient(synchronized.Synchronized):
     self.__connect()
 
     self.__commandQueue = Queue.Queue()
+    self.__asyncCommandQueue = Queue.Queue()
 
     self.__autoEvents = autoEvents
     if self.__autoEvents:
@@ -53,8 +54,7 @@ class RClient(synchronized.Synchronized):
         except:
           utils.logger.exception('exception in process_command')
     except Queue.Empty:
-      pass
-      # manda un paquete asincronico
+      self.__sendAsyncFragment()
 
   def processCommandQueue(self):
     while True:
@@ -65,13 +65,13 @@ class RClient(synchronized.Synchronized):
         except:
           utils.logger.exception('exception in process_command')
       except Queue.Empty:
-        pass
-        # manda un paquete asincronico
+        self.__sendAsyncFragment()
 
   def __connect(self): #{{{
     utils.logger.debug("connecting to server")
     self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.__socket.connect((self.__serverIP, self.__serverPort))
+    #self.__socket.setblocking(0)
     utils.logger.debug("connected to server")
   #}}}
 
@@ -109,6 +109,32 @@ class RClient(synchronized.Synchronized):
     self.__initialDataSemaphore.release()   
     return result
   #}}}
+
+  def sendAsyncCommand(self, command, callback):
+    serializedCommand = pickle.dumps(command)
+    sizeCommand = len(serializedCommand)
+    total = sizeCommand / 10 
+    if not sizeCommand % 10 == 0:
+      total += 1
+    lenProcess = 0
+    sequence = 0
+    asyncCommandID = utils.nextID()
+    while lenProcess < sizeCommand:
+      sequence += 1
+      fragmentCommand = serializedCommand[lenProcess : lenProcess + 10]
+      fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand)
+      self.__asyncCommandQueue.put(fragment)
+      lenProcess += 10
+
+  def __sendAsyncFragment(self):
+    try:
+      fragmentCommand = self.__asyncCommandQueue.get_nowait()
+      self.sendCommand(fragmentCommand)
+      print fragmentCommand
+    except Queue.Empty:
+      pass
+ 
+    
 
 
   def sendCommand(self, command): #{{{
