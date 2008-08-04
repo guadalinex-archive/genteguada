@@ -942,6 +942,7 @@ class IsoViewHud(isoview.IsoView):
   def teleport(self):
     if not self.createItemsWindow.hide:
       self.hideCreateItems()
+      self.hideCreateRoom()
     
     self.teleportBox = ocempgui.widgets.Box(150, 300)
     if self.adminMenu:
@@ -1005,6 +1006,8 @@ class IsoViewHud(isoview.IsoView):
     
     self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)
     self.teleportMenu = False  
+    self.itemUnselected()
+    self.dropActionsItembuttons()
       
   def discardTeleport(self):
     self.removeSprite(self.teleportBox)
@@ -1355,10 +1358,11 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.findIVItem(self.__selectedItem)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             ivItem.getScreenPosition(), [565, 90+568], True)
-    positionAnim.setOnStop(self.__player.setUnselectedItem, None)
+    #positionAnim.setOnStop(self.__player.setUnselectedItem, None)
     positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)
     positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
     ivItem.setAnimation(positionAnim)
+    self.__player.setUnselectedItem()
     
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
@@ -1648,7 +1652,9 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.distributedSetUrl(url)
       
       if key == "Message":
-        msg = self.editableFields[key][0].text    
+        msg = self.editableFields[key][0].text
+        print dir(self.editableFields[key][0].text.__class__)  
+        print "-------->>>>>>>>_", msg    
         selectedItem.setMessage(msg)  
 
       if key == "GiftLabel":

@@ -57,30 +57,30 @@ class CreateItemsWindow:
     #itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", guiobjects.STYLES["userName"])
     itemsPropertiesLabel = guiobjects.OcempLabel("Propiedades del objeto", guiobjects.STYLES["pointLabel"])
     #itemsPropertiesLabel.topleft = 150, 20
-    itemsPropertiesLabel.topleft = 150, 10
+    itemsPropertiesLabel.topleft = 160, 10
     self.container.add_child(itemsPropertiesLabel)
   
   def __paintObjectsList(self):
     objectsLabels = self.__objectsDict.keys()
     objectsLabels.sort()
     self.__objectsArea = guiobjects.OcempImageObjectList(130, 270, objectsLabels)
-    self.__objectsArea.topleft = 20, 40
+    self.__objectsArea.topleft = 20, 50
     self.__objectsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
     self.container.add_child(self.__objectsArea)  
    
   def __paintButtons(self):
     createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
-    createButton.topleft = 20, 325
+    createButton.topleft = 20, 340
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createObject)
     self.container.add_child(createButton)
 
     defaultButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png"), "Restaurar a valores por defecto", self.showTooltip, self.removeTooltip)
-    defaultButton.topleft = 90, 325
+    defaultButton.topleft = 90, 340
     defaultButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.restoreDeafultValues)
     self.container.add_child(defaultButton)
 
   def __selectionChange(self):
-    labelShift = [150, 0]
+    labelShift = [153, 10]
     spacing = 45
     self.editableFields = []
     name = self.__objectsArea.getSelectedName()
