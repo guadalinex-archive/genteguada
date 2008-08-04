@@ -102,9 +102,12 @@ class GenteGuada:
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    #self.session = winLogin.draw()
-    self.session = winLogin.draw(params.user, params.password)
+    self.session = winLogin.draw()
+    #self.session = winLogin.draw(params.user, params.password)
     if self.session.getPlayer().admin:
+      #print "probando el tema asincronico"
+      #self.session.async(self.session.getRoom, "casa", self.start)
+      #print "finaliza la prueba"
       value = winLogin.drawAccessMode()  
       if value == 1:
         self.session.getPlayer().setAccessMode(True)

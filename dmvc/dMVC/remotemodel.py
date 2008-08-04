@@ -137,6 +137,11 @@ class RemoteModel: #{{{
     self.__transplantMethods(self.__findModelClass())
     return self
 
+  def async(self, method, args, callback):
+    asyncMethod = remotecommand.RExecuterCommand(method._modelID, method._methodName, args)
+    rClient = dMVC.getRClient()
+    rClient.sendAsyncCommand(asyncMethod, callback)
+
 #}}}
 
 
@@ -162,7 +167,7 @@ class RemoteMethod: #{{{
     utils.statClient.stopClientCount(initTime, (self._className, self._modelID, self._methodName))
     return result
 
-  #}}}
+  #}}}rClient
 
 #}}}
 
