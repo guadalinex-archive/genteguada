@@ -239,3 +239,12 @@ class REventTriggerer(RCommand):
   def __str__(self):
     return RCommand.__str__(self) + 'suscriptionID=' + str(self._suscriptionID) + ', event=' + str(self._event)
 
+
+
+class RFragment:
+  def __init__(self, groupID, sequence, total, data):
+    self.groupID  = groupID
+    self.sequence = sequence
+    self.total    = total
+    self.data     = data
+

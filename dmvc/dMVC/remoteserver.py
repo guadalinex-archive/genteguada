@@ -100,25 +100,39 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       size = self.request.recv(sizeInt)
       if len(size):
         size = struct.unpack("i", size)[0]
-        commandData = ""
-        while len(commandData) < size:
-          commandData += self.request.recv(size - len(commandData))
-        command = pickle.loads(commandData)
-        utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
-        print "el cliente nos pide ",command
-        command.setServerHandler(self)
-        #Estadisticas de lo que recibe el servidor y tarda en procesarlas
-        initTime = command.initStat(size)
-        #command.stat(size)
-        answer = command.do()
-        command.stopStat(size, initTime)
-        utils.logger.debug("Run the command " + str(command) + " from the client " + \
-                             str(self.client_address)+ " and the result is "+str(answer))
-        if answer:
-          self.__sendObject(answer,command)
+        data = ""
+        while len(data) < size:
+          data += self.request.recv(size - len(data))
+
+        commandOrFragment = pickle.loads(data)
+        if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
+          self.__processCommand(commandOrFragment, size)
+        elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
+          self.__processFragment(commandOrFragment, size)
+        else:
+          raise "Not valid reading from socket: " + str(commandOrFragment)
       else:
+        # The conection is lost
         break
   #}}}
+
+
+  def __processCommand(self, command, size):
+    utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
+    command.setServerHandler(self)
+    #Estadisticas de lo que recibe el servidor y tarda en procesarlas
+    initTime = command.initStat(size)
+    #command.stat(size)
+    answer = command.do()
+    command.stopStat(size, initTime)
+    utils.logger.debug("Run the command " + str(command) + " from the client " + \
+                         str(self.client_address)+ " and the result is "+str(answer))
+    if answer:
+      self.__sendObject(answer,command)
+
+  def __processFragment(self, fragment, size):
+    pass
+
 
   def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
