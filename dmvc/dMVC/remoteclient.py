@@ -54,14 +54,19 @@ class RClient(synchronized.Synchronized):
           utils.logger.exception('exception in process_command')
     except Queue.Empty:
       pass
+      # manda un paquete asincronico
 
   def processCommandQueue(self):
     while True:
-      command = self.__commandQueue.get()
       try:
-        command.do()
-      except:
-        utils.logger.exception('exception in process_command')
+        command = self.__commandQueue.get_nowait()
+        try:
+          command.do()
+        except:
+          utils.logger.exception('exception in process_command')
+      except Queue.Empty:
+        pass
+        # manda un paquete asincronico
 
   def __connect(self): #{{{
     utils.logger.debug("connecting to server")
