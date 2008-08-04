@@ -28,7 +28,7 @@ class GGWebItem(room_item.GGRoomItem):
     return ["url"]
       
   def getAdminActions(self):
-    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Url": [self.__url]}
+    dic = {"Position": self.getTile().position, "Url": [self.__url]}
     return dic  
         
   def getName(self):

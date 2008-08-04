@@ -33,7 +33,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.rect = self.__img.image.get_rect()
     pos = self.__position
     self.__img.rect.topleft = GG.utils.p3dToP2d(pos, self.getModel().anchor)
-    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
+    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
             
   def getPosition(self):
     """ Returns the item's position on the room.
@@ -46,7 +46,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """  
     if value == None:
       pos = self.__position
-      self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
+      self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
     else:
       self.__img.zOrder = value
   
@@ -54,7 +54,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the zOrder value, used to properly order sprites for painting.
     value: zOrder value.
     """  
-    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[2], 2))*10
+    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
         
   def getZOrder(self):
     """ Returns the zOrder value of item's image.

@@ -28,18 +28,18 @@ class IsoViewRoom(isoview.IsoView):
     for corx in range(model.size[0]):
       listTile = []
       for corz in range(model.size[1]):
-        varPos = GG.utils.p3dToP2d([corx, 0, corz], GG.utils.FLOOR_SHIFT)
+        varPos = GG.utils.p3dToP2d([corx, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
         k = 0
         
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
             isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
-                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], specTile[1], self.__parent)
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], specTile[1], self.__parent)
             k = 1
         if k == 0:
           isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
-                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, 0, corz], \
+                    [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], \
                     tiles[corx][corz].spriteName, self.__parent)
         
         self.__parent.addSprite(isotile.getImg())
@@ -110,7 +110,7 @@ class IsoViewRoom(isoview.IsoView):
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
         return self.__bottomSpritesDict[image].getModel().position, None
 
-    return [-1, -1, -1], None
+    return [-1, -1], None
   
   def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.
@@ -176,7 +176,7 @@ class IsoViewRoom(isoview.IsoView):
   def updateScreenPositionsOn(self, pos):
     """ Updates the creen position of all items on a room position.
     """  
-    tile = self.__tileList[pos[0]][pos[2]].getModel()
+    tile = self.__tileList[pos[0]][pos[1]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
@@ -198,7 +198,7 @@ class IsoViewRoom(isoview.IsoView):
   def getFutureScreenPosition(self, ivItem, pos):
     """ Returns the future screen position for an item moving towards a room position.
     """  
-    tile = self.__tileList[pos[0]][pos[2]].getModel()
+    tile = self.__tileList[pos[0]][pos[1]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
@@ -224,11 +224,11 @@ class IsoViewRoom(isoview.IsoView):
     """
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
-    tile = self.__tileList[pos[0]][pos[2]].getImg()
+    tile = self.__tileList[pos[0]][pos[1]].getImg()
     for img in self.__allPlayers:
       if img == tile:
         img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-        self.__tileList[pos[0]][pos[2]].setImg(imageName)
+        self.__tileList[pos[0]][pos[1]].setImg(imageName)
         return
     """    
     

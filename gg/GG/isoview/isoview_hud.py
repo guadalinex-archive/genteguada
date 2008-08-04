@@ -194,7 +194,7 @@ class IsoViewHud(isoview.IsoView):
           cordX, cordY = pygame.mouse.get_pos()
           if 0 <= cordY <= GG.utils.HUD_OR[1]:
             dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
-            if not dest == [-1, -1, -1]:
+            if not dest == [-1, -1]:
               self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
     self.widgetContainer.distribute_events(*events)
 
@@ -399,14 +399,11 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-    
     #if self.__player.getAccessMode():
     #  self.paintRoomOptions()
-    
     self.hud.zOrder = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
-
 
   def updateFrame(self, ellapsedTime):
     """ Updates all sprites for a new timestamp.
@@ -640,7 +637,7 @@ class IsoViewHud(isoview.IsoView):
     """  
     self.removeMovementDestination()
     self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
-    self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[2], 2))*10 - 1
+    self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[1], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
     

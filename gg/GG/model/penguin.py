@@ -84,7 +84,7 @@ class GGPenguinTalker(GGPenguin):
     return False   
 
   def getAdminActions(self):
-    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Message": [self.__msg]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg]}
     return dic  
   
   def talkedBy(self, talker):
@@ -112,8 +112,7 @@ class GGPenguinTrade(GGPenguin):
     return ["talkAndGet"]
 
   def getAdminActions(self):
-    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], "Message": [self.__msg], \
-           "GiftLabel": [self.__giftLabel]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel]}
     return dic  
   
   def checkSimilarity(self, item):

@@ -34,9 +34,8 @@ class GGTeleport(room_item.GGRoomItem):
     return ["open"]    
       
   def getAdminActions(self):
-    dic = {"Position": [self.getTile().position[0], self.getTile().position[2]], \
-           "DestinationRoom": [self.__destinationRoom.label], \
-           "ExitPosition": [self.__exitPosition[0], self.__exitPosition[2]]}
+    dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom.label], \
+           "ExitPosition": self.__exitPosition}
     return dic  
       
   def getName(self):

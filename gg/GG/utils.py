@@ -289,25 +289,25 @@ SOUND_STEPS02 = "steps02.ogg"
 def getJumpDestination(pos, heading, size):
   length = 2
   if heading == HEADING[1]: #up
-    dest = [pos[0], pos[1], pos[2] - length]
+    dest = [pos[0], pos[1] - length]
   elif heading == HEADING[2]: #down
-    dest = [pos[0], pos[1], pos[2] + length]
+    dest = [pos[0], pos[1] + length]
   elif heading == HEADING[3]: #left
-    dest = [pos[0] - length, pos[1], pos[2]]
+    dest = [pos[0] - length, pos[1]]
   elif heading == HEADING[4]: #right
-    dest = [pos[0] + length, pos[1], pos[2]]
+    dest = [pos[0] + length, pos[1]]
   elif heading == HEADING[5]: #topleft
-    dest = [pos[0] - length, pos[1], pos[2] - length]
+    dest = [pos[0] - length, pos[1] - length]
   elif heading == HEADING[6]: #bottomright
-    dest = [pos[0] + length, pos[1], pos[2] + length]
+    dest = [pos[0] + length, pos[1] + length]
   elif heading == HEADING[7]: #bottomleft
-    dest = [pos[0] - length, pos[1], pos[2] + length]
+    dest = [pos[0] - length, pos[1] + length]
   elif heading == HEADING[8]: #topright
-    dest = [pos[0] + length, pos[1], pos[2] - length]
+    dest = [pos[0] + length, pos[1] - length]
   else:
     return None    
   if 0 < dest[0] < size[0]:    
-    if 0 < dest[2] < size[1]:
+    if 0 < dest[1] < size[1]:
       return dest
   return None    
 
@@ -345,23 +345,23 @@ def getNextDirection(pos1, pos2):
   """
   retVar = "down"
   if pos1[0] < pos2[0]:
-    if pos1[2] < pos2[2]:
+    if pos1[1] < pos2[1]:
       retVar = "bottomright"
-    elif pos1[2] > pos2[2]:
+    elif pos1[1] > pos2[1]:
       retVar = "topright"
     else:
       retVar = "right"
   elif pos1[0] > pos2[0]:
-    if pos1[2] < pos2[2]:
+    if pos1[1] < pos2[1]:
       retVar = "bottomleft"
-    elif pos1[2] > pos2[2]:
+    elif pos1[1] > pos2[1]:
       retVar = "topleft"
     else:
       retVar = "left"
   elif pos1[0] == pos2[0]:
-    if pos1[2] < pos2[2]:
+    if pos1[1] < pos2[1]:
       retVar = "down" 
-    elif pos1[2] > pos2[2]:
+    elif pos1[1] > pos2[1]:
       retVar = "up"
   return retVar
 
@@ -373,21 +373,21 @@ def checkNeighbour(pos1, pos2):
   pos2: point 2.
   """
   kValue = False
-  if [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] - 1]:
+  if pos1 == [pos2[0], pos2[1] - 1]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0], pos2[1], pos2[2] + 1]:
+  elif pos1 == [pos2[0], pos2[1] + 1]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2]]:
+  elif pos1 == [pos2[0] - 1, pos2[1]]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2]]:
+  elif pos1 == [pos2[0] + 1, pos2[1]]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] - 1]:
+  elif pos1 == [pos2[0] - 1, pos2[1] - 1]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] + 1]:
+  elif pos1 == [pos2[0] + 1, pos2[1] + 1]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] - 1, pos2[1], pos2[2] + 1]:
+  elif pos1 == [pos2[0] - 1, pos2[1] + 1]:
     kValue = True
-  elif [pos1[0], pos1[1], pos1[2]] == [pos2[0] + 1, pos2[1], pos2[2] - 1]:
+  elif pos1 == [pos2[0] + 1, pos2[1] - 1]:
     kValue = True
   return kValue  
 
@@ -398,23 +398,23 @@ def getFrontPosition(pos, heading):
   pos: player's position.
   heading: direction that the player is heading to.
   """
-  retVar = [-1, -1, -1]
-  if heading == "up" and not pos[2] == 0:
-    retVar = [pos[0], pos[1], pos[2] - 1]
-  elif heading == "down" and not pos[2] == (SCENE_SZ[1] - 1):
-    retVar = [pos[0], pos[1], pos[2] + 1]
+  retVar = [-1, -1]
+  if heading == "up" and not pos[1] == 0:
+    retVar = [pos[0], pos[1] - 1]
+  elif heading == "down" and not pos[1] == (SCENE_SZ[1] - 1):
+    retVar = [pos[0], pos[1] + 1]
   elif heading == "left" and not pos[0] == 0:
-    retVar = [pos[0] - 1, pos[1], pos[2]]
+    retVar = [pos[0] - 1, pos[1]]
   elif heading == "right" and not pos[0] == (SCENE_SZ[0] - 1):
-    retVar = [pos[0] + 1, pos[1], pos[2]]
-  elif heading == "topleft" and not pos[0] == 0 and not pos[2] == 0:
-    retVar = [pos[0] - 1, pos[1], pos[2] - 1]
-  elif heading == "bottomright" and not pos[0] == (SCENE_SZ[0] - 1) and not pos[2] == (SCENE_SZ[1] - 1):
-    retVar = [pos[0] + 1, pos[1], pos[2] + 1]
-  elif heading == "bottomleft" and not pos[0] == 0 and not pos[2] == (SCENE_SZ[1] - 1):
-    retVar = [pos[0] - 1, pos[1], pos[2] + 1]
-  elif heading == "topright" and not pos[2] == 0 and not pos[0] == (SCENE_SZ[0] - 1):
-    retVar = [pos[0] + 1, pos[1], pos[2] - 1]
+    retVar = [pos[0] + 1, pos[1]]
+  elif heading == "topleft" and not pos[0] == 0 and not pos[1] == 0:
+    retVar = [pos[0] - 1, pos[1] - 1]
+  elif heading == "bottomright" and not pos[0] == (SCENE_SZ[0] - 1) and not pos[1] == (SCENE_SZ[1] - 1):
+    retVar = [pos[0] + 1, pos[1] + 1]
+  elif heading == "bottomleft" and not pos[0] == 0 and not pos[1] == (SCENE_SZ[1] - 1):
+    retVar = [pos[0] - 1, pos[1] + 1]
+  elif heading == "topright" and not pos[1] == 0 and not pos[0] == (SCENE_SZ[0] - 1):
+    retVar = [pos[0] + 1, pos[1] - 1]
   return retVar
     
 # ===============================================================
@@ -426,7 +426,7 @@ def p2pDistance(point1, point2):
   """
   if point1 == point2: 
     return 0
-  return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[2] - point1[2]), 2))
+  return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[1] - point1[1]), 2))
     
 # ===============================================================
 
@@ -437,12 +437,10 @@ def p3dToP2d(cord3d, anchor):
   """
   x2d = SCREEN_OR[0]
   y2d = SCREEN_OR[1]
-  x2d = x2d + (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[2]*(TILE_SZ[1])) 
-  y2d = y2d + (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[2]*(TILE_SZ[1]/2)) 
+  x2d = x2d + (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[1]*(TILE_SZ[1])) 
+  y2d = y2d + (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[1]*(TILE_SZ[1]/2)) 
   x2d = x2d - (anchor[0])
   y2d = y2d - (anchor[1])
-    
-  y2d = y2d - (cord3d[1]*TILE_SZ[1]) 
     
   cord2d = [x2d, y2d]
   return cord2d
