@@ -80,7 +80,7 @@ class Animation(object):
   
   def step(self, now):
     """ Progresses the animation one frame.
-    time: elapsed time since the animation start.
+    now: elapsed time since the animation start.
     """
     if not self.__pastHalf:
       self.onHalf()
@@ -190,7 +190,7 @@ class ScreenPositionAnimation(Animation):
     
   def step(self, now):
     """ Progresses the animation.
-    time: elapsed time since the animation start.
+    now: elapsed time since the animation start.
     """
     percent = self.getProgress(now)
     if percent > 0.5:
@@ -240,7 +240,7 @@ class MovieAnimation(Animation):
     
   def step(self, now):
     """ Progresses the animation.
-    time: elapsed time since the animation start.
+    now: elapsed time since the animation start.
     """
     sprites = self.__sprites
     len_sprites = len(sprites)
@@ -308,7 +308,7 @@ class SecuenceAnimation(CompositionAnimation):
     
   def step(self, now):
     """ Progresses the animation.
-    time: elapsed time since the animation start.
+    now: elapsed time since the animation start.
     """
     if self.__animations:
       currentAnimation = self.__animations[0]
@@ -380,7 +380,7 @@ class ParalelAnimation(CompositionAnimation):
     
   def step(self, now):
     """ Progresses the animation.
-    time: elapsed time since the animation start.
+    now: elapsed time since the animation start.
     """
     for animation in self.__animations:
       animation.step(now)

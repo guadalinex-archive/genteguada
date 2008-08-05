@@ -4,7 +4,7 @@ import guiobjects
 
 class ExchangeWindow:
   """ ExchangeWindow class.
-  Defines animation methods and atributes.
+  Defines the item exchange window.
   """
 
   def __init__(self, isohud, step, listIn):
@@ -45,7 +45,7 @@ class ExchangeWindow:
       self.__paintListItems()
 
   def __paintBackground(self):
-    """ Paints the exchangeWindow background.
+    """ Paints the exchange window background.
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/exchangeWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)

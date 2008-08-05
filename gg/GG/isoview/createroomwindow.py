@@ -6,8 +6,17 @@ import GG.utils
 import guiobjects
 
 class CreateRoomWindow:
+  """ CreateRoomWindow class.
+  Defines the create room window.
+  """
 
   def __init__(self, session, title, player, hud):
+    """ Class constructor.
+    session: ggsession model.
+    title: window title.
+    player: active user.
+    hud: hud object.
+    """
     self.__session = session
     self.__objectsDict = session.getObjectsData()
     self.__player = player
@@ -27,21 +36,33 @@ class CreateRoomWindow:
     self.draw()
     
   def draw(self):
+    """ Draws the window components.
+    """    
     self.container = ocempgui.widgets.Box(358, 258)
     self.__paintBackground()
     self.__paintAttributes()
     self.__paintButtons()
     
   def setScreenPosition(self, posX, posY):
+    """ Sets a new screen position.
+    posX: x-axis position component.
+    posY: y-axis position component.
+    """    
     self.window.topleft = posX, posY  
 
   def getScreenPosition(self):
+    """ Returns the window's screen position.
+    """  
     return self.window.topleft
 
   def getSize(self):
+    """ Returns the window's size.
+    """  
     return self.container.width, self.container.height     
 
   def __paintBackground(self):
+    """ Paints the background image.
+    """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/editRoomWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
@@ -49,12 +70,16 @@ class CreateRoomWindow:
     self.window.child = self.container
      
   def __paintButtons(self):
+    """ Paints the control buttons on screen.
+    """  
     createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
     createButton.topleft = 150, 220
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoom)
     self.container.add_child(createButton)
 
   def __paintAttributes(self):
+    """ Paints the room attribute values.
+    """
     labelShift = [10, -15]
     spacing = 50
     iPos = 0
@@ -117,6 +142,8 @@ class CreateRoomWindow:
     self.activeLabels.append(self.images)
   
   def createRoom(self):
+    """ Chechs the attribute values and creates a new room.
+    """  
     if not self.images.getSelectedName():
       return  
     label = self.label.text
@@ -139,6 +166,8 @@ class CreateRoomWindow:
     self.__hud.createRoom(label, [posX, posY], [image], maxUsers)  
      
   def showTooltip(self, label):
+    """ Shows the button tooltips.
+    """  
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     xPos, yPos = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = xPos + 8 - self.window.topleft[0], yPos - 5 - self.window.topleft[1]
@@ -147,6 +176,8 @@ class CreateRoomWindow:
     self.container.add_child(self.tooltipWindow)
       
   def removeTooltip(self): 
+    """ Removes a button tooltip.
+    """  
     if self.tooltipWindow:
       self.container.remove_child(self.tooltipWindow)  
       self.tooltipWindow.destroy ()

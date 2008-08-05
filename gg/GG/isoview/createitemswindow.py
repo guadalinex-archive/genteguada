@@ -6,8 +6,17 @@ import GG.utils
 import guiobjects
 
 class CreateItemsWindow:
+  """ CreateItemsWindow class.
+  Defines the create item window.
+  """
 
   def __init__(self, session, title, player, hud):
+    """ Class constructor.
+    session: ggsession model.
+    title: window title.
+    player: active user.
+    hud: hud object.
+    """
     self.__session = session
     self.__objectsDict = session.getObjectsData()
     self.__player = player
@@ -27,21 +36,33 @@ class CreateItemsWindow:
     self.draw()
 
   def draw(self):
+    """ Draws the window components.
+    """  
     self.container = ocempgui.widgets.Box(373, 390)
     self.__paintBackground()
     self.__paintObjectsList()
     self.__paintButtons()
     
   def setScreenPosition(self, posX, posY):
+    """ Sets a new screen position.
+    posX: x-axis position component.
+    posY: y-axis position component.
+    """  
     self.window.topleft = posX, posY  
 
   def getScreenPosition(self):
+    """ Returns the window's screen position.
+    """  
     return self.window.topleft
 
   def getSize(self):
+    """ Returns the window's size.
+    """  
     return self.container.width, self.container.height     
 
   def __paintBackground(self):
+    """ Paints the background image.
+    """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/createObjectWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
@@ -61,6 +82,8 @@ class CreateItemsWindow:
     self.container.add_child(itemsPropertiesLabel)
   
   def __paintObjectsList(self):
+    """ Paints the item list.
+    """  
     objectsLabels = self.__objectsDict.keys()
     objectsLabels.sort()
     self.__objectsArea = guiobjects.OcempImageObjectList(130, 270, objectsLabels)
@@ -69,6 +92,8 @@ class CreateItemsWindow:
     self.container.add_child(self.__objectsArea)  
    
   def __paintButtons(self):
+    """ Paints the control buttons on screen.
+    """  
     createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
     createButton.topleft = 20, 340
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createObject)
@@ -80,6 +105,8 @@ class CreateItemsWindow:
     self.container.add_child(defaultButton)
 
   def __selectionChange(self):
+    """ Updates the selected item info ater a selection change.
+    """  
     labelShift = [153, 10]
     spacing = 45
     self.editableFields = []
@@ -136,6 +163,8 @@ class CreateItemsWindow:
       iPos += 1
     
   def paintImagesList(self):
+    """ Paints the image list.
+    """  
     objectsLabels = self.__objectsDict.keys()
     objectsLabels.sort()
     self.__objectsArea = guiobjects.OcempImageObjectList(130, 270, objectsLabels)
@@ -144,11 +173,12 @@ class CreateItemsWindow:
     self.container.add_child(self.__objectsArea)  
     
   def createObject(self):
+    """ Gathers the item attribute values and returns them.
+    """  
     if not self.__objectsArea.getSelectedName():
       return  
     self.__hud.createItemsHandler()  
     name = self.__objectsArea.getSelectedName()
-    #data = []
     data = {}
     keys = self.editableFields.keys()
     for key in keys:
@@ -163,10 +193,14 @@ class CreateItemsWindow:
     self.__session.createObject(name, data)  
       
   def restoreDeafultValues(self):
+    """ Restores the item attribute values.
+    """  
     if self.__objectsArea.getSelectedName(): 
       self.__selectionChange()  
     
   def showTooltip(self, label):
+    """ Shows the button tooltips.
+    """  
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     xPos, yPos = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = xPos + 8 - self.window.topleft[0], yPos - 5 - self.window.topleft[1]
@@ -175,6 +209,8 @@ class CreateItemsWindow:
     self.container.add_child(self.tooltipWindow)
       
   def removeTooltip(self): 
+    """ Removes a button tooltip.
+    """  
     if self.tooltipWindow:
       self.container.remove_child(self.tooltipWindow)  
       self.tooltipWindow.destroy ()
