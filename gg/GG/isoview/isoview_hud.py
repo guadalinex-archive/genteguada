@@ -538,13 +538,11 @@ class IsoViewHud(isoview.IsoView):
   def paintTextBox(self):
     """ Paints the editable text box on screen.
     """
-    #self.__textField = ocempgui.widgets.Entry()
     self.__textField = guiobjects.OcempEditLine()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.__textField.border = 1
     self.__textField.topleft = 14, 210
     self.__textField.set_minimum_size(490, 20)
-    #self.__textField.text =" Joseba melón"
     self.hud.add_child(self.__textField)
 
   def paintInventory(self):
@@ -787,7 +785,8 @@ class IsoViewHud(isoview.IsoView):
         fCount = 0
         fields = []
         for field in actions[key]:
-          entryLabel = ocempgui.widgets.Entry()
+          #entryLabel = ocempgui.widgets.Entry()
+          entryLabel = guiobjects.OcempEditLine()
           entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
           try:
             #print "-->> TRY: ", field
