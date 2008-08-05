@@ -137,7 +137,7 @@ class RemoteModel: #{{{
     self.__transplantMethods(self.__findModelClass())
     return self
 
-  def async(self, method, args, callback):
+  def async(self, method, callback, *args):
     asyncMethod = remotecommand.RExecuterCommand(method._modelID, method._methodName, args)
     rClient = dMVC.getRClient()
     rClient.sendAsyncCommand(asyncMethod, callback)
