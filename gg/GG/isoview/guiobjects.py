@@ -64,7 +64,7 @@ STYLES = {
                                                 ocempgui.widgets.Constants.STATE_INSENSITIVE  : (97, 171, 193) 
                                               },
                             },
-          "textFieldLogin" : { "font" : { "name" : "Bitstream", "size" : 25, "alias" : True },
+          "textFieldLogin" : { "font" : { "name" : "Bitstream", "size" : 36, "alias" : True },
                               "fgcolor" : { ocempgui.widgets.Constants.STATE_NORMAL       : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ENTERED      : (0, 0, 255),
                                             ocempgui.widgets.Constants.STATE_ACTIVE       : (0, 0, 255),

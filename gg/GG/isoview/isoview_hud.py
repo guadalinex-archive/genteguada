@@ -684,7 +684,7 @@ class IsoViewHud(isoview.IsoView):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions.png")
     self.adminOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
+    imgBackground.topleft = 1, 1
     self.adminOptions.add_child(imgBackground)
     
     itemLabel = guiobjects.OcempLabel("Opciones avanzadas", guiobjects.STYLES["itemLabel"])
@@ -768,7 +768,12 @@ class IsoViewHud(isoview.IsoView):
       for field in actions[key]:
         entryLabel = ocempgui.widgets.Entry()
         entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-        entryLabel.text = str(field)
+        try:
+          #print "-->> TRY: ", field
+          entryLabel.text = field  
+        except:
+          #print "-->> EXCEPT: ", field  
+          entryLabel.text = str(field)
         entryLabel.border = 1
         entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
         if len(actions[key]) == 1:
@@ -1356,6 +1361,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     ivItem = self.findIVItem(self.__selectedItem)
+    ivItem.updateZOrder(40000)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
                             ivItem.getScreenPosition(), [565, 90+568], True)
     #positionAnim.setOnStop(self.__player.setUnselectedItem, None)

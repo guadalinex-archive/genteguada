@@ -25,7 +25,7 @@ class CreateRoomWindow:
     self.container = None
     self.images = None
     self.draw()
-
+    
   def draw(self):
     self.container = ocempgui.widgets.Box(358, 258)
     self.__paintBackground()
@@ -59,7 +59,7 @@ class CreateRoomWindow:
     spacing = 50
     iPos = 0
     
-    label = guiobjects.OcempLabel("Etiqueta", guiobjects.STYLES["itemLabel"])
+    label = guiobjects.OcempLabel("label", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
@@ -72,7 +72,7 @@ class CreateRoomWindow:
     self.container.add_child(self.label)
     iPos += 1
     
-    label = guiobjects.OcempLabel("Dimensiones", guiobjects.STYLES["itemLabel"])
+    label = guiobjects.OcempLabel("size", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
@@ -92,7 +92,7 @@ class CreateRoomWindow:
     self.sizeY.set_minimum_size(50, 20)
     self.container.add_child(self.sizeY)
     
-    label = guiobjects.OcempLabel("Capacidad", guiobjects.STYLES["itemLabel"])
+    label = guiobjects.OcempLabel("maxUsers", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + 190 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
@@ -105,7 +105,7 @@ class CreateRoomWindow:
     self.container.add_child(self.maxUsers)
     iPos += 1
     
-    label = guiobjects.OcempLabel("Images", guiobjects.STYLES["itemLabel"])
+    label = guiobjects.OcempLabel("images", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
