@@ -185,6 +185,11 @@ class GGRoom(ggmodel.GGModel):
             player.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
           player.setDestination(target)
+  
+  def clickedTileByAdmin(self, player, target):
+    player.setUnselectedItem()
+    player.setSelectedItemWithoutHighlight(self.__tiles[target[0]][target[1]])
+    #player.setDestination(target)
           
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
