@@ -152,6 +152,8 @@ class IsoViewItem(positioned_view.PositionedView):
     return 0
     
   def setPosition(self, pos):
+    """ Stores a local copy for item's position.
+    """  
     self.__position = pos  
     
   def positionChanged(self, event):
@@ -175,4 +177,4 @@ class IsoViewItem(positioned_view.PositionedView):
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
     
   def stopFallingAndRestore(self):
-    pass  
+    pass # Do NOT delete  

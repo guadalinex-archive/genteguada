@@ -31,6 +31,8 @@ class Login:
     self.__accessMode = None
   
   def draw(self, user=None, passw=None):
+    """ Draws the login screen.
+    """  
     if user and passw:
       return self.autoLogin(user, passw)
 
@@ -46,6 +48,8 @@ class Login:
     return self.__start()
   
   def __start(self):
+    """ Starts the keyboard input event capture.
+    """  
     while not self.__finish:
       #time.sleep(GG.utils.TICK_DELAY)
       time.sleep(0.02)
@@ -72,6 +76,8 @@ class Login:
     self.cancelLogin()
 
   def drawAccessMode(self):
+    """ Draws the admin access screen.
+    """  
     self.__finish = False
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.__screen)
@@ -105,6 +111,8 @@ class Login:
     return self.__startAccessMode()
   
   def __startAccessMode(self):
+    """ Starts the keyboard input event capture for an admin user.
+    """  
     while not self.__finish:
       time.sleep(0.02)
       events = pygame.event.get()
@@ -123,19 +131,27 @@ class Login:
     self.accessModeNormal()
     
   def accessModeAdmin(self):
+    """ Sets the access mode as admin.
+    """  
     self.__accessMode = 1
     self.__finish = True
     
   def accessModeNormal(self):
+    """ Sets the access mode as user.
+    """  
     self.__accessMode = 2
     self.__finish = True
     
   def __paintScreen(self):
+    """ Paints the screen background. 
+    """  
     imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
     imgBackgroundRight.topleft = 0, 0
     self.window.add_child(imgBackgroundRight)
 
   def __paintTextLabels(self):
+    """ Paints text labels on screen.
+    """  
     self.__usernameLabel = guiobjects.OcempLabel("Usuario: ", ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     #self.__usernameLabel.topleft = 670,408
     self.__usernameLabel.topleft = 670, 390
@@ -151,6 +167,8 @@ class Login:
     self.window.add_child(self.__passwordLabel)
 
   def __paintTextEntrys(self):
+    """ Paints text entry boxes on screen.
+    """  
     self.__textFieldUsername = ocempgui.widgets.Entry("")
     self.__textFieldUsername.topleft = 700, 460
     self.__textFieldUsername.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldLogin"]))
@@ -167,6 +185,8 @@ class Login:
     self.window.add_child(self.__textFieldPassword)
 
   def __paintButtons(self):
+    """ Paints accept and cancel buttons on screen.
+    """  
     imgPath = "interface/editor/ok_button.png"
     buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [750, 690]
@@ -180,6 +200,8 @@ class Login:
     self.window.add_child(buttonCancel)
 
   def acceptLogin(self):
+    """ Accepts the login user info.
+    """  
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
     loginData = self.__parent.system.login(user,passw)
@@ -190,7 +212,8 @@ class Login:
       self.__showErrorDialog()
 
   def __showErrorDialog (self):
-
+    """ Shows an error dialog.  
+    """
     if self.dialog:
       return
    
@@ -218,6 +241,8 @@ class Login:
     return self.dialog
 
   def __closeDialog (self):
+    """ Closes the error dialog.
+    """  
     self.widgetContainer.remove_widget(self.dialog)
     self.dialog.destroy ()
     self.dialog = None
@@ -225,13 +250,19 @@ class Login:
     self.__textFieldPassword.text = ""
 
   def cancelLogin(self):
+    """ Cancels the login dialog.
+    """  
     sys.exit(0)
 
   def finishLogin(self):
+    """ Finishes the login process.
+    """  
     self.__screen.fill((0, 0, 0))
     self.__finish = True
   
   def autoLogin(self, user, passw):
+    """ Logs an user automatically.
+    """  
     loginData = self.__parent.system.login(user, passw)
     if loginData[0] == True:
       return loginData[1]

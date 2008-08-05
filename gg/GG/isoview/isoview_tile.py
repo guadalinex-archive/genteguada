@@ -62,6 +62,8 @@ class IsoViewTile(isoview.IsoView):
   def contained(self, pos, depth, items):
     """ Checks if a point is contained on a tile.
     pos: point.
+    depth: number of items on the tile.
+    items: items on the tile.
     """
     if self.__bottomRight[0] > pos[0] > self.__topLeft[0]:
       if self.__bottomRight[1] > pos[1] > self.__topLeft[1]:
@@ -77,5 +79,8 @@ class IsoViewTile(isoview.IsoView):
     return 0
     
   def imageChanged(self, event):
+    """ Triggers after receiving an image change event.
+    event: event info.
+    """  
     img = event.getParams()['image']
     self.setImg(img)
