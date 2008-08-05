@@ -34,8 +34,12 @@ class GGTeleport(room_item.GGRoomItem):
     return ["open"]    
       
   def getAdminActions(self):
-    dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom.label], \
+    if self.__destinationRoom:  
+      dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom.label], \
            "ExitPosition": self.__exitPosition}
+    else:
+      dic = {"Position": self.getTile().position, "DestinationRoom": [""], \
+           "ExitPosition": self.__exitPosition}    
     return dic  
       
   def getName(self):
@@ -100,6 +104,9 @@ class GGTeleport(room_item.GGRoomItem):
     self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
   def transportTo(self, clicker):
+    if not self.__destinationRoom:
+      clicker.newChatMessage("La habitacion de destino no existe", 1)
+      return
     if self.__destinationRoom.isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
