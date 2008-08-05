@@ -111,6 +111,22 @@ class IsoViewRoom(isoview.IsoView):
         return self.__bottomSpritesDict[image].getModel().position, None
 
     return [-1, -1], None
+
+  def findTileOnly(self, pos):
+    """ Gets the 3d tile coords that match a 2d point.
+    pos: 2d coords.
+    """
+    def compare(x, y):
+      return y.zOrder - x.zOrder
+
+    images = self.__spritesDict.keys()
+    images.sort(compare)  
+    
+    for image in self.__bottomSpritesDict:
+      if self.__bottomSpritesDict[image].checkClickPosition(pos):
+        return self.__bottomSpritesDict[image].getModel().position
+
+    return [-1, -1]
   
   def itemAddedFromVoid(self, event):
     """ Updates the room view when an item add event happens.

@@ -61,3 +61,6 @@ class GGInventoryItem(ggmodel.GGModel):
     Not used at the moment.
     """
     pass
+
+  def isTile(self):
+    return False  

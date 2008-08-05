@@ -1,4 +1,5 @@
 import ggmodel
+import GG.utils
 
 class Tile(ggmodel.GGModel):
 
@@ -15,6 +16,25 @@ class Tile(ggmodel.GGModel):
     """
     return ['position', 'spriteName', 'anchor']
 
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return []    
+      
+  def getName(self):
+    cad = "Tile [" + str(self.position[0]) + "," + str(self.position[1]) + "]"
+    return cad
+  
+  def getImageLabel(self):
+    return self.spriteName
+
+  def getPosition(self):
+    return self.position  
+      
+  def getAdminActions(self):
+    dic = {"image": GG.utils.TILES}
+    return dic  
+    
   def getDepth(self):
     return len(self.__items)
 
@@ -87,3 +107,14 @@ class Tile(ggmodel.GGModel):
       else:
         return False
     return True  
+
+  def inventoryOnly(self):
+    return False  
+
+  def isTile(self):
+    return True  
+
+  def setImage(self, image):
+    self.spriteName = image
+    self.triggerEvent('image', image=image)  
+    
