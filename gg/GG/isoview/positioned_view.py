@@ -6,6 +6,7 @@ class PositionedView(isoview.IsoView):
   
   def __init__(self, model, screen):
     """ Class constructor.
+    model: view model.
     screen: screen handler.
     """
     isoview.IsoView.__init__(self, model, screen)

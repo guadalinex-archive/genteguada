@@ -92,8 +92,8 @@ class IsoViewRoom(isoview.IsoView):
     return self.__isoViewItems
     
   def findTile(self, pos):
-    """ Gets the 3d tile coords that match a 2d point.
-    pos: 2d coords.
+    """ Gets the game coords that match a screen point.
+    pos: screen coords.
     """
     def compare(x, y):
       return y.zOrder - x.zOrder
@@ -113,8 +113,8 @@ class IsoViewRoom(isoview.IsoView):
     return [-1, -1], None
 
   def findTileOnly(self, pos):
-    """ Gets the 3d tile coords that match a 2d point.
-    pos: 2d coords.
+    """ Gets the game coords that match a screen point.
+    pos: screen coords.
     """
     def compare(x, y):
       return y.zOrder - x.zOrder
@@ -145,7 +145,6 @@ class IsoViewRoom(isoview.IsoView):
     event: even info.
     """
     for ivitem in self.__isoViewItems:
-      #if isinstance(ivitem.getModel(), GG.model.player.GGPlayer) and isinstance(event.getParams()['item'], GG.model.player.GGPlayer):
       if isinstance(ivitem, isoview_player.IsoViewPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
@@ -190,7 +189,8 @@ class IsoViewRoom(isoview.IsoView):
     ivPlayer.unsubscribeAllEvents()
     
   def updateScreenPositionsOn(self, pos):
-    """ Updates the creen position of all items on a room position.
+    """ Updates the screen cords of all items on a room position.
+    pos: room position.
     """  
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     itemList = tile.getItems()
@@ -212,7 +212,9 @@ class IsoViewRoom(isoview.IsoView):
         accHeight += item.topAnchor[1]
           
   def getFutureScreenPosition(self, ivItem, pos):
-    """ Returns the future screen position for an item moving towards a room position.
+    """ Returns the future screen cords for an item moving towards a room position.
+    ivItem: item.
+    pos: room position.
     """  
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     itemList = tile.getItems()
@@ -228,6 +230,7 @@ class IsoViewRoom(isoview.IsoView):
           
   def addIsoViewChatItem(self, ivChatItem):
     """ Adds a new isometric view chat item.
+    ivChatItem: isometric view chat item.
     """  
     self.__isoViewItems.append(ivChatItem)
     self.__parent.addSprite(ivChatItem.getImg())
@@ -236,7 +239,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Triggers after receiving a new special tile added event.
     event: event info.
     """  
-    pass
+    pass # Do NOT delete
     """
     pos = event.getParams()['position']
     imageName = event.getParams()['imageName']
@@ -257,6 +260,7 @@ class IsoViewRoom(isoview.IsoView):
 
   def itemSelected(self, item):
     """ Sets an item on the room as selected.
+    item: selected item.
     """
     ivItem = self.findIVItem(item)
     if ivItem:
@@ -264,6 +268,7 @@ class IsoViewRoom(isoview.IsoView):
     
   def itemUnselected(self, item):
     """ Sets an item on the room as unselected.
+    item: unselected item.
     """
     cosa = self.findIVItem(item)
     if cosa:

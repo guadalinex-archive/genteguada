@@ -131,7 +131,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation.step(ellapsedTime)  
         
   def restoreImageFrame(self):
-    """ Restores the player image according to his state, heading and timestamp.
+    """ Restores the player's image according to its state, heading and timestamp.
     """  
     self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0, self.__timestamp))
   
@@ -141,6 +141,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))
       
   def stopFallingAndRestore(self):    
+    """ Stops the falling movie animation and restores player's image frame.
+    """  
     self.setMovieAnimation(None)  
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp))
         

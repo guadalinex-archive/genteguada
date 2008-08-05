@@ -1378,11 +1378,6 @@ class IsoViewHud(isoview.IsoView):
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.turnLeft()
     
-  def showTools(self):
-    """ Shows the tools window.
-    """  
-    pass
-
   def showSoundControl(self):
     """ Enables or disables the sound effects.
     """
@@ -1396,11 +1391,6 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.__soundButton)
     self.__sound = not self.__sound
     
-  def showHelp(self):
-    """ Shows the help menu.
-    """
-    pass
-
   def finishGame(self):
     """ Finishes the game.
     """  
@@ -1479,7 +1469,7 @@ class IsoViewHud(isoview.IsoView):
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
 
-  #definicion de las acciones y botones en funcion del item seleccionado
+  # Item actions
   
   def dropActionsItembuttons(self):
     """ Removes the action buttons from the screen.
@@ -1520,6 +1510,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player.setUnselectedItem()    
 
   def moneyToInventory(self):
+    """ Picks up money from the room and deletes the money object.
+    """  
     if self.__selectedItem == None:
       return
     ivItem = self.findIVItem(self.__selectedItem)
@@ -1760,6 +1752,8 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.removeContactRemote(contact)      
 
   def unsubscribeAllEvents(self):
+    """ Unsubscribes the active room and the isoview hud object from all events.
+    """  
     if self.__isoviewRoom:
       self.__isoviewRoom.unsubscribeAllEvents()
     self.__player.unsubscribeEventObserver(self)
@@ -1772,7 +1766,7 @@ class IsoViewHud(isoview.IsoView):
     self.setMovementDestination(event.getParams()['destination'])
   
   def playerConfigurationChanged(self, event):
-    """ Unfinished method.
+    """ Triggers after receiving a player avatar configuration change event.
     event: event info.
     """  
     image = event.getParams()['imageLabel']
@@ -1788,11 +1782,16 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.imgMask)
 
   def contactMaskChanged(self, event):
+    """ Triggers after receiving a contact mask change event.
+    event: event info.
+    """  
     contactName =  event.getParams()['playerName']
     image = event.getParams()['imageLabel']
     self.privateChatWindow.contactsArea.updateMaskPlayer(contactName, image)
 
   def applyChanges(self):
+    """ Applies the changes to the selected item attributes.
+    """  
     selectedItem = self.__selectedItem
     keys = self.editableFields.keys()
     keys.sort()
@@ -1824,7 +1823,6 @@ class IsoViewHud(isoview.IsoView):
       if key == "Message":
         msg = self.editableFields[key][0].text
         print dir(self.editableFields[key][0].text.__class__)  
-        print "-------->>>>>>>>_", msg    
         selectedItem.setMessage(msg)  
 
       if key == "GiftLabel":
@@ -1866,6 +1864,8 @@ class IsoViewHud(isoview.IsoView):
     self.adminMenu = False
         
   def discardChanges(self):
+    """ Discards the changes to the selected item attributes.
+    """  
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
@@ -1900,12 +1900,15 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.deleteConfirmDialog)
     
   def removeSelectedItem(self):
+    """ Removes selected item from the game.
+    """  
     item = self.__selectedItem
     self.dropRemoveSelectedDialog()
     self.__isoviewRoom.getModel().removeItem(item)
     
   def dropRemoveSelectedDialog(self):
-    #item = self.__selectedItem
+    """ Closes the remove item dialog.
+    """  
     self.discardChanges()
     self.removeSprite(self.deleteConfirmDialog)
     self.widgetContainer.remove_widget(self.deleteConfirmDialog)

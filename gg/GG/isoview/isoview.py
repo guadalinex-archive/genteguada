@@ -2,12 +2,12 @@ import animation
 
 class IsoView:
   """ IsoView Superclass.
-  It defines attributes and methods for a generic view.
+  Defines attributes and methods for a generic view.
   """
   
   def __init__(self, model, screen):
     """ Class constructor.
-    name: view name.
+    model: view model.
     screen: screen handler.
     """  
     self.__model = model
@@ -21,7 +21,7 @@ class IsoView:
       self.__animation.stop()
     
   def getModel(self):
-    """ Returns the list of observed models.
+    """ Returns the view model.
     """
     return self.__model
   
@@ -31,12 +31,13 @@ class IsoView:
     return self.__screen
 
   def getAnimation(self):
-    """ Returns the animation.
+    """ Returns the current animation.
     """
     return self.__animation
 
   def updateFrame(self, ellapsedTime):
     """ Paints a new item frame on screen.
+    ellapsedTime: time since the animation beginning.
     """
     ani = self.__animation
     if ani:
@@ -52,7 +53,7 @@ class IsoView:
     
   def setAnimation(self, anim=None):
     """ Creates a new position animation.
-    animation: new position animation.
+    anim: new position animation.
     """
     if self.__animation:
       self.__animation.stop()
@@ -70,4 +71,3 @@ class IsoView:
     """  
     if self.__animation:
       self.__animation.stop()
-  
