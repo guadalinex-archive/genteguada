@@ -9,6 +9,7 @@ from PIL import Image
 import stat
 import os
 import GG.utils
+import pygame.locals
 
 # ======================= STYLES ===========================
 
@@ -562,4 +563,77 @@ def playSound(sound):
   if not pygame.mixer.get_busy():
     pygame.mixer.music.load(sndPath)
     pygame.mixer.music.play()
+
+
+class OcempEditLine(ocempgui.widgets.Entry):
+
+  def __init__(self, text = ""):
+    ocempgui.widgets.Entry.__init__(self, text)
+
+  def _input (self, event):
+    handled = False
+    if event.key == pygame.locals.K_ESCAPE:
+      if self.editable:
+        self._text = self._temp # Undo text input.
+        self.run_signal_handlers (ocempgui.widgets.Constants.SIG_INPUT)
+      handled = True
+
+    elif event.key in (pygame.locals.K_RETURN, pygame.locals.K_KP_ENTER):
+      if self.editable:
+        self._temp = self.text
+        self.run_signal_handlers (ocempgui.widgets.Constants.SIG_INPUT)
+      handled = True
+            
+    # Move caret right and left on the corresponding key press.
+    elif event.key == pygame.locals.K_RIGHT:
+      if self._caret < len (self._text):
+        self._caret += 1
+      handled = True
+
+    elif event.key == pygame.locals.K_LEFT:
+      if self._caret > 0:
+        self._caret -= 1
+      handled = True
+
+    # Go the start (home) of the text.
+    elif event.key == pygame.locals.K_HOME:
+      self._caret = 0
+      handled = True
+
+    # Go to the end (end) of the text.
+    elif event.key == pygame.locals.K_END:
+      self._caret = len (self._text)
+      handled = True
+
+    # The next statements directly influence the text, thus we have
+    # to check, if it is editable or not.
+    elif self.editable:
+      # Delete at the position (delete).
+      if event.key == pygame.locals.K_DELETE:
+        if self._caret < len (self._text):
+          self._text = self._text[:self._caret] + self._text[self._caret + 1:]
+        handled = True
+
+      # Delete backwards (backspace).
+      elif event.key == pygame.locals.K_BACKSPACE:
+        if self._caret > 0:
+          self._text = self._text[:self._caret - 1] + self._text[self._caret:]
+          self._caret -= 1
+        handled = True
+
+      # Non-printable characters or maximum exceeded.
+      elif (len (event.unicode) == 0) or (ord (event.unicode) < 32):
+        # Any unicode character smaller than 0x0020 (32, SPC) is
+        # ignored as those are control sequences.
+        return False
+
+      # Any other case is okay, so show it.
+      else:
+        self._text = self._text[:self._caret] + event.unicode.encode("iso-8859-15") + self._text[self._caret:]
+        self._caret += 1
+      handled = True
+
+    self.dirty = True
+    return handled
+
 
