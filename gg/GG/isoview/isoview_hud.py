@@ -161,6 +161,8 @@ class IsoViewHud(isoview.IsoView):
     
     self.teleportBox = None
     self.teleportMenu = False
+    self.deleteRoomBox = None
+    self.deleteRoomMenu = False
     self.adminMenu = False
     self.deleteConfirmDialog = None
   
@@ -206,7 +208,7 @@ class IsoViewHud(isoview.IsoView):
     """ Checks if there is an open window.
     """
     if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe \
-      or self.adminMenu or self.teleportMenu or self.deleteConfirmDialog:
+      or self.adminMenu or self.teleportMenu or self.deleteRoomMenu or self.deleteConfirmDialog:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
@@ -706,13 +708,13 @@ class IsoViewHud(isoview.IsoView):
     self.adminOptions.add_child(createObjectButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "substraction.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Edicion de habitacion", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemsHandler)
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Eliminar habitaci贸n", self.showTooltip, self.removeTooltip)
+    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteRoomHandler)
     createObjectButton.topleft = 136, 40
     self.adminOptions.add_child(createObjectButton)
     
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "addition.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Creacion de habitacion", self.showTooltip, self.removeTooltip)
+    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Crear habitaci贸n", self.showTooltip, self.removeTooltip)
     createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoomHandler)
     createObjectButton.topleft = 198, 40
     self.adminOptions.add_child(createObjectButton)
@@ -938,6 +940,8 @@ class IsoViewHud(isoview.IsoView):
       i+=1
       self.hud.add_child(button)
       
+  #************************************************************************    
+      
   def teleportHandler(self):
     if not self.teleportMenu:
       self.teleport()
@@ -954,6 +958,10 @@ class IsoViewHud(isoview.IsoView):
       self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 302, 129]
     else:  
       self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
+    
+    if self.deleteRoomMenu:
+      topleft = self.deleteRoomBox.topleft
+      self.deleteRoomBox.topleft = [topleft[0] - 151, topleft[1]]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
     self.teleportBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
@@ -1024,6 +1032,100 @@ class IsoViewHud(isoview.IsoView):
       self.itemUnselected()
       self.dropActionsItembuttons()
       
+  #************************************************************************    
+      
+  def deleteRoomHandler(self):
+    if not self.deleteRoomMenu:
+      self.deleteRoom()
+    else:
+      self.discardDeleteRoom()
+  
+  def deleteRoom(self):
+    if not self.createItemsWindow.hide:
+      self.hideCreateItems()
+      self.hideCreateRoom()
+    if self.teleportMenu:
+      self.discardTeleport()  
+    
+    self.deleteRoomBox = ocempgui.widgets.Box(150, 300)
+    basePos = [GG.utils.SCREEN_SZ[0] - 151, 129]
+    if self.adminMenu:
+      basePos[0] -= 151
+    if self.teleportMenu:
+      basePos[0] -= 151
+    self.deleteRoomBox.topleft = basePos
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
+    self.deleteRoomBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0, 0
+    self.deleteRoomBox.add_child(imgBackground)
+    
+    #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
+    titleLabel = guiobjects.OcempLabel("Eliminar habitacion", guiobjects.STYLES["teleportLabel"])
+    #titleLabel.topleft = 22,10
+    titleLabel.topleft = 22, 0
+    self.deleteRoomBox.add_child(titleLabel)
+    
+    rooms = self.getModel().getRoomLabels()
+    #rooms.sort()
+    self.deleteRoomLabels = guiobjects.OcempImageObjectList(110, 205, rooms)
+    self.deleteRoomLabels.topleft = 20, 40
+    self.deleteRoomBox.add_child(self.deleteRoomLabels) 
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyDeleteRoom)
+    okButton.topleft = 10, 262
+    self.deleteRoomBox.add_child(okButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardDeleteRoom)
+    cancelButton.topleft = 80, 262
+    self.deleteRoomBox.add_child(cancelButton)
+    
+    self.deleteRoomBox.zOrder = 10000
+    self.addSprite(self.deleteRoomBox)
+    self.widgetContainer.add_widget(self.deleteRoomBox)
+    
+    self.deleteRoomMenu = True
+    
+  def applyDeleteRoom(self):
+    roomLabel = self.deleteRoomLabels.getSelectedName()
+    if not roomLabel:
+      self.__player.newChatMessage("Escoja una habitaci贸n para eliminar", 1)
+      return  
+    room = self.getModel().getRoom(roomLabel)
+    pos = self.__player.getPosition()
+    pos = room.getNearestEmptyCell(pos)
+    
+    self.discardDeleteRoom()
+    
+    players = room.getPlayers()
+    if players != []:
+      self.__player.newChatMessage("Error: la habitaci髇 seleccionada contiene jugadores", 1)
+      return
+    if GG.genteguada.GenteGuada.getInstance().deleteRoom(roomLabel):
+      self.__player.newChatMessage("Habitaci髇 eliminada con 閤ito", 1)
+    else:
+      self.__player.newChatMessage("Error: habitacion no encontrada", 1)  
+    self.deleteRoomMenu = False  
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+      
+  def discardDeleteRoom(self):
+    self.removeSprite(self.deleteRoomBox)
+    self.widgetContainer.remove_widget(self.deleteRoomBox)
+    self.deleteRoomBox = None
+    self.deleteRoomMenu = False
+    self.removeTooltip()
+    if not self.adminMenu:
+      self.itemUnselected()
+      self.dropActionsItembuttons()
+        
+  #************************************************************************      
+        
   def createItemsHandler(self):
     """ Shows or hides the create items window.
     """  
@@ -1034,7 +1136,7 @@ class IsoViewHud(isoview.IsoView):
         self.showCreateItems()
       else:
         self.hideCreateItems()
-        
+         
   def showCreateItems(self):
     """ Shows the private chat window.
     """
@@ -1061,6 +1163,8 @@ class IsoViewHud(isoview.IsoView):
     self.removeSprite(self.createItemsWindow.window)
     self.widgetContainer.remove_widget(self.createItemsWindow.window)
     self.createItemsWindow.hide = True
+  
+  #************************************************************************
   
   def createRoomHandler(self):
     """ Shows or hides the create items window.
@@ -1111,6 +1215,8 @@ class IsoViewHud(isoview.IsoView):
     for item in itemList:
       item.changeRoom(room, pos)
         
+  #************************************************************************      
+        
   def privateChatHandler(self):
     """ Shows or hides the private chat window.
     """  
@@ -1153,6 +1259,8 @@ class IsoViewHud(isoview.IsoView):
     self.removeSprite(self.privateChatWindow.window)
     self.widgetContainer.remove_widget(self.privateChatWindow.window)
     self.privateChatWindow.hide = True
+    
+  #************************************************************************  
   
   def showTooltip(self, label):
     """ Shows the selected button tooltip.
@@ -1632,7 +1740,9 @@ class IsoViewHud(isoview.IsoView):
 
   def applyChanges(self):
     selectedItem = self.__selectedItem
-    for key in self.editableFields.keys():
+    keys = self.editableFields.keys()
+    keys.sort()
+    for key in keys:
       
       if key == "Position":
         try: 
@@ -1667,6 +1777,16 @@ class IsoViewHud(isoview.IsoView):
         giftLabel = self.editableFields[key][0].text    
         selectedItem.setGiftLabel(giftLabel)  
 
+      if key == "DestinationRoom":
+        roomLabel = self.editableFields[key][0].text
+        room = GG.genteguada.GenteGuada.getInstance().getRoom(roomLabel)
+        if not room:
+          print "ZZZZZZZZZZZZZZZZZZZZ"  
+          self.__player.newChatMessage("Valor \"DestinationRoom\" incorrecto", 1)
+          return  
+        print "AAAAAAAAAAAAAAAAA"     
+        selectedItem.setDestinationRoom(room)  
+      
       if key == "ExitPosition":
         try: posX = int(self.editableFields[key][0].text)    
         except ValueError:
@@ -1676,18 +1796,11 @@ class IsoViewHud(isoview.IsoView):
         except ValueError:
           self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
           return
+        print "BBBBBBBBBBBBBBBBBBB"     
         size = self.__selectedItem.getDestinationRoom().size
         if 0 < posX < size[0]:
           if 0 < posY < size[1]:
             selectedItem.setExitPosition([posX, posY])
-              
-      if key == "DestinationRoom":
-        roomLabel = self.editableFields[key][0].text
-        room = GG.genteguada.GenteGuada.getInstance().getRoom(roomLabel)
-        if not room:
-          self.__player.newChatMessage("Valor \"DestinationRoom\" incorrecto", 1)
-          return  
-        selectedItem.setDestinationRoom(room)  
             
     self.itemUnselected()
     self.dropActionsItembuttons()
@@ -1710,7 +1823,7 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.deleteConfirmDialog.add_child(imgBackground)
      
-    cad = "Confirmar eliminaci髇" 
+    cad = "Confirmar eliminaci贸n" 
     questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 68, 20 
     self.deleteConfirmDialog.add_child(questionLabel)

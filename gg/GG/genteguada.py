@@ -102,8 +102,8 @@ class GenteGuada:
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
-    self.session = winLogin.draw()
-    #self.session = winLogin.draw(params.user, params.password)
+    #self.session = winLogin.draw()
+    self.session = winLogin.draw(params.user, params.password)
     if self.session.getPlayer().admin:
       #print "probando el tema asincronico"
       #self.session.async(self.session.getRoom, "casa", self.start)
@@ -243,3 +243,6 @@ class GenteGuada:
 
   def createRoom(self, label, size, image, maxUsers):
     return self.system.createRoom(image, label, size, maxUsers)
+
+  def deleteRoom(self, label):
+    return self.system.deleteRoom(label)  

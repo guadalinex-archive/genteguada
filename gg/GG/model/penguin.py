@@ -70,7 +70,7 @@ class GGPenguinTalker(GGPenguin):
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
-
+    
   def getMessage(self):
     return self.__msg
 

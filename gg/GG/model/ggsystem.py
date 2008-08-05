@@ -335,6 +335,21 @@ class GGSystem(dMVC.model.Model):
     newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers)
     self.__rooms.append(newRoom)
     return newRoom
+
+  def deleteRoom(self, label):
+    for room in self.__rooms:
+      if room.label == label:
+        chosenRoom = room
+      else:
+        itemsList = room.getItems()
+        for item in itemsList:
+          if isinstance(item, GG.model.teleport.GGTeleport):
+            if item.getDestinationRoom().label == label: 
+              item.setDestinationRoom(None)
+    self.__rooms.remove(chosenRoom)
+    del chosenRoom
+    chosenRoom = None
+    return True
       
   def __createPlayer(self, player):
     """ Creates a new player.
