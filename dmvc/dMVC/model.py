@@ -105,7 +105,13 @@ class Model(synchronized.Synchronized):
       self.__subscriptions.remove(subscription)
   #}}}
 
-
+  def async(self, method, arg, callback):
+    try:
+      returnValue = method(arg)
+      callback(returnValue)
+    except:
+      Exception("Error executing async method")
+      
 
   def __eq__(self, comparand): #{{{
     return self is comparand

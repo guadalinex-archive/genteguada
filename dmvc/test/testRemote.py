@@ -48,6 +48,10 @@ class TestRemoteObject(unittest.TestCase):
     result = model.foo()
     assert result == "foo"
 
+    print prefix + "Ejecutamos el metodo foo sin argumentos"
+    result = model.foo()
+    assert result == "foo"
+
     print prefix + "Ejecutamos el metodo bar sin argumentos"
     result = model.bar()
     assert result == "bar"
@@ -91,7 +95,8 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "ejecutamos un metodo que nos devuelve una lista"
     result = model.listPlayers()
-    assert result.__class__ == list
+    #assert result.__class__ == list
+    assert result.__class__ == tuple
     for i in range(len(result)):
       name = result[i].name()
       assert name == "maradona"
