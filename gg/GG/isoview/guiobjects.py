@@ -313,6 +313,8 @@ class GroupSprite(pygame.sprite.Group):
     return keys
   
   def add(self, *sprites):
+    """ Adds new sprites to the group.
+    """  
     for sprite in sprites:
       if hasattr(sprite, "zOrder"):
         if sprite.zOrder != None:
