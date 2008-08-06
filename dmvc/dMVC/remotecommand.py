@@ -242,9 +242,10 @@ class REventTriggerer(RCommand):
 
 
 class RFragment:
-  def __init__(self, groupID, sequence, total, data):
+  def __init__(self, groupID, sequence, total, data, commandID = None):
     self.groupID  = groupID
     self.sequence = sequence
     self.total    = total
     self.data     = data
+    self.commandID = commandID
 

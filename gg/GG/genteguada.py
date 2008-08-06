@@ -108,6 +108,8 @@ class GenteGuada:
       #print "probando el tema asincronico"
       #self.session.async(self.session.getRoom, "casa", self.start)
       #print "finaliza la prueba"
+      #fileImages = self.uploadFile("/home/jmariscal/Vestidor.zip")
+      #print fileImages
       value = winLogin.drawAccessMode()  
       if value == 1:
         self.session.getPlayer().setAccessMode(True)
@@ -228,7 +230,15 @@ class GenteGuada:
       uploadedFile.close()
     except:
       return None
-    return self.system.uploadFile([name, ext], dataFile)
+    #fileName = self.system.uploadFile([name, ext], dataFile)
+    self.system.async(self.system.uploadFile, self.finalLlamadaAsincrona, [name, ext], dataFile)
+    return "casa"
+    #return fileName 
+
+  def finalLlamadaAsincrona(self, resultado):
+    print "LLamamos al final"
+    print resultado
+    self.finish()
 
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:

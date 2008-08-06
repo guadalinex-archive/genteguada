@@ -5,6 +5,7 @@ import remotecommand
 import utils
 import new
 
+import thread
 
 class RemoteModel: #{{{
 
@@ -140,7 +141,8 @@ class RemoteModel: #{{{
   def async(self, method, callback, *args):
     asyncMethod = remotecommand.RExecuterCommand(method._modelID, method._methodName, args)
     rClient = dMVC.getRClient()
-    rClient.sendAsyncCommand(asyncMethod, callback)
+    #rClient.sendAsyncCommand(asyncMethod, callback)
+    thread.start_new(rClient.sendAsyncCommand, (asyncMethod, callback))
 
 #}}}
 
