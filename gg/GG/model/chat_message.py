@@ -15,6 +15,7 @@ class ChatMessage(ggmodel.GGModel):
     sender: player who sends the message.
     color: text color.
     position: on-screen chat message starting position.
+    chatType: message type.
     """
     ggmodel.GGModel.__init__(self)
     self.__message = message
@@ -26,8 +27,8 @@ class ChatMessage(ggmodel.GGModel):
     self.imagePath = ""
     
   def variablesToSerialize(self):
-    """ Sets some vars to be used as locals.
-    """
+    """ Sets some class attributes as public access.
+    """  
     return ['imagePath', 'type']
     
   def getName(self):
@@ -61,12 +62,15 @@ class ChatMessage(ggmodel.GGModel):
     return self.__position
 
   def getType(self):
+    """ Returns the chat message type.
+    """  
     return self.type
 
   @dMVC.model.localMethod 
   def chatView(self, screen, isohud):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
+    isohud: isohud handler.
     """
     import GG.isoview.isoview_chatmessage
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
@@ -75,9 +79,19 @@ class ChatMessage(ggmodel.GGModel):
 
 class ChatQuiz(ChatMessage):
   """ ChatQuiz class.
+  Defines a quiz message.
   """
      
   def __init__(self, parent, question, player, sender, color, position, chatType):
+    """ Class constructor.
+    parent: isohud handler.
+    question: quiz question.
+    player: asked player.
+    sender: player who sends the message.
+    color: text color.
+    position: on-screen chat message starting position.
+    chatType: message type.
+    """
     self.__parent = parent
     self.question = question
     self.player = player
@@ -88,6 +102,8 @@ class ChatQuiz(ChatMessage):
     ChatMessage.__init__(self, self.__msgQuestion, sender, color, position, chatType)
     
   def loadQuestion(self):
+    """ Loads a quiz question from a file.
+    """  
     filePath = "gg/GG/data/questions/" + self.question
     quizFile = codecs.open(filePath, "r", "utf-8" )
     self.__msgQuestion = quizFile.readline()[:-1]
@@ -105,18 +121,25 @@ class ChatQuiz(ChatMessage):
     quizFile.close()
   
   def removeRightAnsweredQuestion(self):  
+    """ Removes a question from the questions list.
+    """
     self.__parent.removeRightQuestionForPlayer(self.question, self.player)  
     
   def getAnswers(self):
+    """ Returns the quiz answers.
+    """  
     return self.__msgAnswers
 
   def getRightAnswer(self):
+    """ Returns the quiz right answer.
+    """  
     return self.__rightAnswer
     
   @dMVC.model.localMethod 
   def chatView(self, screen, isohud):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
+    isohud: isohud handler.
     """
     import GG.isoview.isoview_quiz
     return GG.isoview.isoview_quiz.IsoViewQuiz(self, screen, isohud)

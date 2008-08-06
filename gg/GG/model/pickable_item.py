@@ -19,6 +19,8 @@ class GGPickableItem(room_item.GGRoomItem):
     self.label = label
     
   def variablesToSerialize(self):
+    """ Sets some vars to be used as locals.
+    """
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['spriteInventory', 'label']
 
@@ -34,9 +36,13 @@ class GGPickableItem(room_item.GGRoomItem):
         return ["removeInventory"]
 
   def getName(self):
+    """ Returns the item's label.
+    """  
     return self.label
   
   def getImageLabel(self):
+    """ Returns the item's image filename.
+    """  
     return self.spriteInventory
 
   def clickedBy(self, clicker):
@@ -48,9 +54,13 @@ class GGPickableItem(room_item.GGRoomItem):
       clicker.setSelectedItem(self)
     
   def isStackable(self):
+    """ Checks if this item is stackable or not.
+    """  
     return True
 
   def stepOn(self):
+    """ Checks if other items can be placed on top of this one.
+    """  
     return True
 
 #================================================================================
@@ -60,9 +70,8 @@ class PaperMoney(GGPickableItem):
   def __init__(self, spriteName, anchor, topAnchor, label, value):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
-    position: item position.
     anchor: image anchor on screen.
-    spriteInventory: sprite used to paint the item on the screen inventory zone.
+    topAnchor: image top anchor on screen.
     label: item's label
     value: item's value
     """
@@ -75,6 +84,9 @@ class PaperMoney(GGPickableItem):
     return ["money"]
     
   def addPointsTo(self, player):
+    """ Gives points to a player.
+    player: player to give points to.
+    """  
     player.addPoints(self.points, self.label)  
     
 #================================================================================

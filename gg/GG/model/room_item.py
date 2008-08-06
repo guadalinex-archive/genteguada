@@ -9,9 +9,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   
   def __init__(self, spriteName, anchor, topAnchor):
     """ Class constructor.
-    sprite: image name.
-    position: position on screen for the item.
-    anchor: anchor for that position.
+    spriteName: image name.
+    anchor: image offset on screen.
+    topAnchor: image top offset on screen.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.anchor = anchor
@@ -32,27 +32,40 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return []
 
   def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
     dic = {"Position": self.__tile.position}
     return dic  
         
   def getName(self):
+    """ Returns the item's name.
+    """  
     return "No label"
   
   def getImageLabel(self):
+    """ Returns the item image sprite name.
+    """  
     return self.spriteName
 
   def setPoints(self, points):
+    """ Sets a new points value for this item.
+    points: new points value.
+    """  
     self.points = points
       
   # self.__tile
   
   def getTile(self):
+    """ Returns the tile that this item is located in.
+    """  
     return self.__tile
   
   def setTile(self, tile):
+    """ Sets a new tile for this item.
+    tile: new item's tile.
+    """  
     self.__tile = tile
-    #self.setPosition(tile.position)
-  
+    
   def getPosition(self):
     """ Returns the item position.
     """
@@ -61,12 +74,13 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def setPosition(self, pos, jump=None):
     """ Sets a new position for the item.
     pos: new position.
+    jump: enables the player to jump to the new position.
     """
     if pos == self.__tile.position:
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
-    self.__room.setUnselectedtFor(self)
+    self.__room.setUnselectedFor(self)
     if not jump:
       self.triggerEvent('position', position=pos, oldPosition=old)
     else:
@@ -127,19 +141,15 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.
     screen: screen handler.
+    room: item's room.
     parent: isoview hud handler.
     """
     import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
   
-  def checkSimilarity(self, item):
-    if inventory_item.GGInventoryItem.checkSimilarity(self, item):
-      if item.anchor == self.anchor:
-        if item.getPosition() == self.getPosition():  
-          return True
-    return False   
-  
   def inventoryOnly(self):
+    """ checks if this is an inventory only item.
+    """  
     return False
   
   def clickedBy(self, clicker):
@@ -170,7 +180,11 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room.removeItem(self)
     
   def isStackable(self):
+    """ Checks if this is an stackable item or not.
+    """  
     return False
 
   def stepOn(self):
+    """ Checks if other items can be placed on top of this one.
+    """  
     return False

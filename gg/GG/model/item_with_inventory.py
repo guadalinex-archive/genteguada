@@ -3,13 +3,14 @@ import GG.utils
 
 class GGItemWithInventory(room_item.GGRoomItem):
   """ GGItemWithInventory class.
+  Defines an item with inventory.
   """
  
   def __init__(self, spritePath, anchor, topAnchor):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
-    anchor: image anchor on screen.
+    topAnchor: image anchor on screen.
     """
     room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
     self.__inventory = []
@@ -27,17 +28,26 @@ class GGItemWithInventory(room_item.GGRoomItem):
     return False
   
   def hasItemLabeledInInventory(self, label):
+    """ Checks if there is an item on the inventory.
+    label: item inventory.
+    """  
     for item in self.__inventory:
       if item.label == label:
         return True  
     return False    
       
   def addToInventoryFromRoom(self, item):
+    """ Adds a new item to inventory from room.
+    item: new item.
+    """  
     self.__inventory.append(item)
     item.setPlayer(self)
     self.triggerEvent('addToInventory', item=item, position=item.getPosition())
     
   def addToInventoryFromVoid(self, item, position):
+    """ Adds a new item to inventory from nowhere.
+    item: new item.
+    """  
     self.__inventory.append(item)
     item.setPlayer(self)
     self.triggerEvent('addToInventory', item=item, position=position)
@@ -48,7 +58,6 @@ class GGItemWithInventory(room_item.GGRoomItem):
     """
     if item in self.__inventory:
       self.__inventory.remove(item)
-      #item.setPlayer(None)
       self.triggerEvent('removeFromInventory', item=item)
       return True
     return False
@@ -70,17 +79,17 @@ class GGItemWithInventory(room_item.GGRoomItem):
     item.setPlayer(None)
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
-  def checkItemOnInventory(self, item):
-    for it in self.__inventory:
-      if it.checkSimilarity(item):
-        return True
-    return False      
- 
   def tick(self, now):
+    """ Call for an update on item.
+    now: ellapsedTime.
+    """
     for item in self.__inventory:
       item.tick(now)
 
   def getItemFromInventory(self, label):
+    """ Gets an item from the inventory.
+    label: item's label.
+    """  
     for item in self.__inventory:
       if item.label == label:
         return item 

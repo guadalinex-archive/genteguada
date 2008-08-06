@@ -9,7 +9,6 @@ class GGInventoryItem(ggmodel.GGModel):
   def __init__(self, spriteName):
     """ Class constructor.
     spriteName: image name.
-    anchor: anchor for that position.
     """
     ggmodel.GGModel.__init__(self)
     self.__player = None
@@ -23,31 +22,35 @@ class GGInventoryItem(ggmodel.GGModel):
     return ['spriteName', 'imagePath', 'spriteInventory']
   
   def getAdminActions(self):
+    """ Returns all possible admin actions for this item.
+    """  
     return None
   
   # self.__player
   
   def getPlayer(self):
+    """ Returns this item's owner.
+    """  
     return self.__player
 
   def setPlayer(self, player):
+    """ Sets a new player as owner of this item.
+    """  
     self.__player = player  
 
-  def checkSimilarity(self, item):
-    if item.spriteName == self.spriteName:
-      return True
-    return False   
-    
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.
     screen: screen handler.
+    room: item's room.
     parent: isoview hud handler.
     """
     import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
 
   def inventoryOnly(self):
+    """ Checks if this is an inventory item or not.
+    """  
     return True
   
   def clickedBy(self, clicker):

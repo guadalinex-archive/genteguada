@@ -2,6 +2,7 @@ import isoview
 
 class PositionedView(isoview.IsoView):
   """ PositionedView class.
+  Defines a positioned view object.
   """
   
   def __init__(self, model, screen):

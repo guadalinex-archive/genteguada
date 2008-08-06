@@ -19,6 +19,8 @@ class GGRoom(ggmodel.GGModel):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     label: room label.
+    size: room size.
+    maxUsers: maximum users number on this room.
     """
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
@@ -42,27 +44,44 @@ class GGRoom(ggmodel.GGModel):
     return ['spriteFull', 'size', 'label', 'maxUsers']
 
   def getPopulation(self):
+    """ Returns the current population of this room.
+    """  
     return self.__population
 
   def isFull(self):
+    """ Checks if this room is already full or not.
+    """  
     if self.__population >= self.maxUsers:
       return True
     else:
       return False    
 
   def getTile(self, pos):
+    """ Returns an specific tile.
+    pos: tile position.
+    """  
     return self.__tiles[pos[0]][pos[1]]  
 
   def getTiles(self):
+    """ Returns the tile mesh.
+    """  
     return self.__tiles
 
   def getItemTile(self, item):
+    """ Returns the tile where a given item is.
+    item: given item.
+    """  
     if item in self.__items:
       pos = item.getPosition()
       return self.__tiles[pos[0]][pos[1]]
     return None                        
   
   def moveItem(self, pos1, pos2, item):
+    """ Moves an item from one position to another.
+    pos1: starting position.
+    pos2: ending position.
+    item: item to be moved.
+    """  
     self.__tiles[pos1[0]][pos1[1]].unstackItem()
     self.__tiles[pos2[0]][pos2[1]].stackItem(item)
     item.setTile(self.__tiles[pos2[0]][pos2[1]])
@@ -89,6 +108,10 @@ class GGRoom(ggmodel.GGModel):
     return False
 
   def addItemFromVoid(self, item, pos):
+    """ Adds a new item to the room from nowhere.
+    item: new item.
+    pos: item's position.
+    """  
     if not item in self.__items:
       if isinstance(item, player.GGPlayer):
         self.__population += 1    
@@ -102,6 +125,10 @@ class GGRoom(ggmodel.GGModel):
     return False
   
   def addItemFromInventory(self, item, pos):
+    """ Adds a new item to the room from player's inventory.
+    item: new item.
+    pos: item's position.
+    """  
     if not item in self.__items:
       if not self.__tiles[pos[0]][pos[1]].stepOn():
         return
@@ -117,7 +144,7 @@ class GGRoom(ggmodel.GGModel):
     
   def removeItem(self, item):
     """ Removes an item from the room.
-    item: player.
+    item: item to be removed.
     """
     if item in self.__items:
       if isinstance(item, player.GGPlayer):
@@ -131,15 +158,21 @@ class GGRoom(ggmodel.GGModel):
     raise Exception("Error: item no eliminado")
 
   def exitPlayer(self, item):
-    """ Removes an item from the room.
+    """ Exits a player from the game.
     item: player.
     """
     self.removeItem(item)
     
   def getSpecialTiles(self):
+    """ Return the special tiles list.
+    """  
     return self.__specialTiles
 
   def setSpecialTile(self, position, imageName):
+    """ Changes a tile's image.
+    position: tile position.
+    imageName: image file name.
+    """  
     k = 0
     for tile in self.__specialTiles:
       if tile[0] == position:
@@ -168,9 +201,10 @@ class GGRoom(ggmodel.GGModel):
     return False
     
   def clickedByPlayer(self, player, target, item):
-    """ Indicates players inside that a player has made click on another one.
+    """ Applies a player's click over an item.
     player: active player.
     target: position the active player clicked on.
+    item: item that the player clicked on.
     """
     player.setUnselectedItem()
     if item != None:
@@ -187,13 +221,16 @@ class GGRoom(ggmodel.GGModel):
           player.setDestination(target)
   
   def clickedTileByAdmin(self, player, target):
+    """ Applies an admin's click over an item.
+    player: admin.
+    target: position the admin clicked on.
+    """
     player.setUnselectedItem()
     player.setSelectedItemWithoutHighlight(self.__tiles[target[0]][target[1]])
-    #player.setDestination(target)
           
   def getNextDirection(self, player, pos1, pos2):
     """ Gets the direction of a player's movement between 2 points.
-    player:
+    player: moving player.
     pos1: starting point.
     pos2: ending point.
     """
@@ -278,11 +315,16 @@ class GGRoom(ggmodel.GGModel):
 
   def newChatMessage(self, message, player, type):
     """ Triggers a new avent after receiving a new chat message.
+    message: new chat message.
+    player: message emitter.
+    type: message type.
     """
     self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, \
                     GG.utils.TEXT_COLOR["black"], player.getPosition(), type))    
     
   def getEmptyCell(self):
+    """ Returns a list with the room's empty cells.
+    """  
     listCell = []
     for corx in range(self.size[0]):
       for corz in range(self.size[1]):
@@ -309,15 +351,24 @@ class GGRoom(ggmodel.GGModel):
     return point
       
   def getItemOnPosition(self, pos):
+    """ Returns the top item on a room's position.
+    pos: room's position.
+    """  
     return self.__tiles[pos[0]][pos[1]].getTopItem()
     
-  def setUnselectedtFor(self, item):
+  def setUnselectedFor(self, item):
+    """ Sets an item as unselected.
+    item: unselected item.  
+    """  
     for itemPlayer in self.__items:
       if isinstance(itemPlayer, player.GGPlayer):
         if itemPlayer.getSelected() == item:
           itemPlayer.setUnselectedItem()  
 
   def getSelecter(self, selectee):
+    """ Returns the selecter of a selectee.
+    selectee: selected item.
+    """  
     selec = None
     for item in self.__items:
       if isinstance(item, player.GGPlayer):

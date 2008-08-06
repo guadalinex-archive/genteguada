@@ -17,10 +17,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def __init__(self, spritePath, anchor, topAnchor, username, password, timestamp, admin):
     """ Class builder.
     spriteList: sprite list used to paint the player.
-    position: player position.
     anchor: image anchor on screen.
+    topAnchor: image top anchor on screen.
     username: user name.
     password: user password.
+    timestamp: last update on avatar configuration.
+    admin: sets the player as game administrator.
     """
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
     item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
@@ -51,34 +53,51 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.startSessionTiming()
 
   def getAccessMode(self):
+    """ Returns the access mode.
+    """  
     return self.__accessMode  
 
   def setAccessMode(self, mode):
+    """ Sets a new access mode.
+    """  
     self.__accessMode = mode
 
   def getTimestamp(self):
+    """ Returns the player's timestamp.
+    """  
     return self.__timestamp
 
   def setTimestamp(self, timestamp):
+    """ Sets a new timestamp.
+    timestamp: new timestamp.
+    """  
     timestamp = str(timestamp)
     self.__timestamp = timestamp
     self.imgPath = "avatars/"+self.username+"/"
     self.triggerEvent('timestamp', timestamp=timestamp, imgPath = self.imgPath)
       
   def getName(self):
+    """ returns the player's username.
+    """  
     return self.username
   
   def getImageLabel(self):
+    """ Returns the player's mask filename.
+    """  
     if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.username+".png")):
       return "avatars/masks/"+self.username+".png"
     else:
       return "interface/editor/masko.png"
 
   def startSessionTiming(self):
+    """ Saves the current time.
+    """  
     tmp = time.localtime(time.time())
     self.__startPlayedTime = tmp
     
   def updateSessionTiming(self):
+    """ Updates the session playing time.
+    """  
     tmp = time.localtime(time.time())
     var1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
     var2 = (tmp[4]*60 + tmp[5])
@@ -88,12 +107,17 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent('clock', clock=self.__playedTime)
   
   def updateExp(self, room):
+    """ Updates the player's experience after entering on a new room.
+    room: new room.
+    """ 
     if not room.label in self.__expRooms:
       self.__expRooms.append(room.label)  
       self.__exp += 1
       self.triggerEvent('exp', exp=self.__exp)
   
   def __dictAvatarConfiguration(self):
+    """ Creates the avatar configuration.
+    """  
     avatarDict = {}
     avatarDict["gender"] = "boy"
     avatarDict["headSize"] = "S"
@@ -112,9 +136,15 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     return avatarDict
 
   def getAvatarConfiguration(self):
+    """ Returns the avatar configuration.
+    """  
     return self.__avatarConfiguration
 
   def setAvatarConfiguration(self, avatarConfiguration, timestamp):
+    """ Sets a new configuration for the avatar.
+    avatarConfiguration: new avatar configuration.
+    timestamp: current timestamp.
+    """
     self.__avatarConfiguration = avatarConfiguration
     self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
@@ -122,17 +152,25 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       contact.getPlayer().changeMaskContact(self.username, self.getImageLabel())
     
   def changeMaskContact(self, name, imageLabel):
+    """ Changes a contact's mask.
+    """  
     self.triggerEvent('contactMask', playerName = name, imageLabel = imageLabel)
 
   def getOptions(self):
-    """ Returns the item's available options.
+    """ Returns player's available options.
     """
     return ["privateChat", "exchange", "giveCard"]
         
   def getPoints(self):
+    """ Returns player's points.
+    """  
     return self.__points
 
   def addPoints(self, points, giverLabel):
+    """ Adds points to the player's point pool.
+    points: points added.
+    giverLabel: points giver.
+    """  
     if giverLabel in self.__pointGivers:
       return
     self.__points += points
@@ -141,6 +179,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent('points', points=self.__points)
     
   def checkPointGiver(self, pointGiver):
+    """ Checks if a given item has already given points to the player,
+    pointsGiver: item to check.
+    """  
     if pointGiver in self.__pointGivers:
       return True
     return False
@@ -151,7 +192,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['username', 'admin']
   
-    # self.__heading
+  # self.__heading
 
   def getHeading(self):
     """ Returns the direction the player is heading to.
@@ -160,6 +201,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   
   def setHeading(self, heading):
     """ Sets a new heading direction for the item.
+    heading: new heading direction.
     """
     if self.__heading != heading:
       self.__heading = heading
@@ -179,23 +221,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if not self.__state == state:
       self.__state = state
       self.triggerEvent('state', state=state, position=self.getPosition())
-      
-  def setCarrying(self):
-    if self.__state == GG.utils.STATE[1]:
-      self.__state = GG.utils.STATE[3]   
-      self.triggerEvent('state', state=self.__state)
-    if self.__state == GG.utils.STATE[2]:
-      self.__state = GG.utils.STATE[4]   
-      self.triggerEvent('state', state=self.__state)
-
-  def setNotCarrying(self):
-    if self.__state == GG.utils.STATE[3]:
-      self.__state = GG.utils.STATE[1]   
-      self.triggerEvent('state', state=self.__state)
-    if self.__state == GG.utils.STATE[4]:
-      self.__state = GG.utils.STATE[2]   
-      self.triggerEvent('state', state=self.__state)
-
+  
   # self.__destination
   
   def getDestination(self):
@@ -205,7 +231,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   
   def setDestination(self, destination):
     """ Sets a new destination for the player movement.
-    heading: movement direction.
     destination: movement destination.
     """
     if not self.__destination == destination:
@@ -215,7 +240,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     
   def setStartDestination(self, destination):
     """ Sets a new destination for the player movement without calling for a 'destination' event.
-    heading: movement direction.
     destination: movement destination.
     """
     if self.__destination != destination:
@@ -235,6 +259,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
   
   def addToInventoryFromRoom(self, item):
+    """ Adds a new item from room to the inventory.
+    item: new item.
+    """ 
     tile = item.getTile()
     itemList = tile.getItemsFrom(item)
     itemList.reverse()
@@ -253,7 +280,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
   def checkUser(self, username, password):
-    """ Searchs for an user by his user name and password.
+    """ Searches for an user by his user name and password.
     username: user name.
     password: user password.
     """
@@ -276,10 +303,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     room_item.GGRoomItem.clickedBy(self, clicker)
     if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       clicker.setSelectedItem(self)
-    #self.newChatMessage(clicker.username + ' ha pinchado en mi', 0)
-
+    
   def tick(self, now):
     """ Calls for an update on player's position an movement direction.
+    now: current timestamp.
     """
     if self.getRoom() == None:
       return
@@ -353,10 +380,13 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType))
 
   def getSelected(self):
+    """ Returns player's selected item.
+    """  
     return self.__selected  
   
   def setSelectedItem(self, item):
     """ Sets an item as selected.
+    item: selected item.
     """
     if self.__selected != item:
       self.__selected = item
@@ -364,6 +394,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't hightlights it.
+    item: selected item.
     """
     if self.__selected != item:
       self.__selected = item
@@ -377,6 +408,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent('unselectedItem')
     
   def setStartPosition(self, pos):
+    """ Sets a new position for the player.
+    pos: new position.
+    """  
     self.__destination = pos
     room_item.GGRoomItem.setStartPosition(self, pos)
     
@@ -405,7 +439,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)  
       return
-    #self.addPoints(99, "Heavy Box") 
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
@@ -434,6 +467,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent('dropItem', item=item, position=item.getPosition())
   
   def climb(self, itemToClimb):
+    """ Climbs over an item.
+    itemToClimb: item to climb.
+    """  
     tile = itemToClimb.getTile()  
     if tile.getDepth() <= GG.utils.MAX_DEPTH and tile.stepOn():
       self.setDestination(itemToClimb.getPosition())
@@ -441,6 +477,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.newChatMessage("No puedo subirme ahí", 1)
 
   def jump(self):
+    """ Jumps over an item or the current position.
+    """  
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       self.newChatMessage("No puedo saltar con tanto peso", 1)
       return
@@ -457,6 +495,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.setPosition(dest, 1)
 
   def turnRight(self):
+    """ Turns the player to the right.
+    """  
     heading = {1: "topleft", 2: "up", 3: "topright", 4: "right",
            5: "bottomright", 6: "down", 7: "bottomleft", 8: "left"}
     for i in range(1, 9):
@@ -469,6 +509,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
           return
 
   def turnLeft(self):
+    """ Turns the player to the left.
+    """  
     heading = {1: "topleft", 2: "up", 3: "topright", 4: "right",
            5: "bottomright", 6: "down", 7: "bottomleft", 8: "left"}
     for i in range(1, 9):
@@ -481,29 +523,44 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
           return
 
   def isExchange(self):
+    """ Returns the current exchange partner.
+    """  
     return self.__exchangeTo
 
   def initExchangeTo(self, player, itemList = []):
+    """ Starts the exchange process with another player.
+    player: player to exchange items with.
+    itemList: items to exchange.
+    """  
     self.setUnselectedItem()
     if not self.__exchangeTo:
       self.__exchangeTo = player
       self.triggerEvent('initExchange', itemList = itemList)
 
   def cancelExchangeTo(self, step):
+    """ Cancels the exchange process.
+    step: current exchange process step.
+    """  
     if not step == 1:
       self.__exchangeTo.cancelExchangeTo(1)
-    
     self.__exchangeTo = None
     self.triggerEvent('cancelExchange')
 
   def acceptExchangeTo(self, step, itemList):
+    """ Agrees to exchange items with another player.
+    step: current exchange process step.
+    itemList: items to exchange.
+    """  
     if step == 1:
       self.__exchangeTo.initExchangeTo(self, itemList)
     elif step == 2:
       self.__exchangeTo.triggerEvent("listExchange", list = itemList)
 
   def finishExchange(self, listIn, listOut):
-
+    """ Finishes the exchange process.
+    listIn: items received.
+    listOut: items given.
+    """
     for item in listOut:
       self.removeFromInventory(item)
       self.__exchangeTo.addToInventoryFromVoid(item, self.getPosition())
@@ -517,24 +574,36 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   # contacts, private chat & agenda  
   
   def getContact(self, name):
+    """ Returns a contact from the player's agenda.
+    name: contact's name.
+    """  
     for contact in self.__agenda:
       if contact.getPlayer().username == name:
         return contact
     return None
     
-  def addContactTEST(self, player):  
+  def addContactTEST(self, player):
+    """ Adds a new contact. TEST PURPOSES ONLY.
+    """  
     self.__agenda.append(private_contact.PrivateContact(player))
     
   def getAgenda(self):
+    """ Returns the player's agenda.
+    """  
     return self.__agenda
     
   def getAgendaData(self):
+    """ Returns the agenda data.
+    """  
     data = {}
     for contact in self.__agenda:
       data[contact.getPlayer().username] = contact.getPlayer().getImageLabel()
     return data  
     
   def removeContact(self, contact):
+    """ Removes a contact from the agenda.
+    contact: contact to be removed.
+    """  
     contact = None
     for item in self.__agenda:
       if item.getPlayer().username == contact.username:
@@ -543,11 +612,17 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if contact:
       self.__agenda.remove(contact)
         
-  def removeContactRemote(self, contact):  
+  def removeContactRemote(self, contact):
+    """ Removes a contact from the agenda. This method is called from another player's agenda.
+    contact: contact to be removed.
+    """  
     self.removeContact(contact)  
     self.triggerEvent("removeContactRemote", contact=contact)  
     
   def checkContact(self, player):
+    """ Checks if a contact already exists on the agenda.
+    player: new contact.
+    """  
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
     else:
@@ -555,6 +630,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent("contactDialog", contact=player)
     
   def addContact(self, player):
+    """ Adds a new contact to the agenda.
+    player: new contact.
+    """  
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
       return
@@ -562,17 +640,28 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent("contactAdded", contact=player)
     
   def checkContactOnAgenda(self, contact):
+    """ Checks if a contact already exists on the agenda.
+    player: new contact.
+    """  
     for cont in self.__agenda:
       if cont.getPlayer().username == contact.username:
         return True
     return False  
 
   def newChatForPlayer(self, string, player):
+    """ Adds a new message from a contact.
+    string: new message.
+    player: message emitter.
+    """
     for item in self.__agenda:
       if item.getPlayer().username == player.username:
         item.addChatLine(player, string)        
 
   def newPrivateChatReceived(self, line, player):
+    """ Triggers an event after receiving a new chat message.
+    line: new chat line.
+    player: message emitter.
+    """  
     self.triggerEvent("privateChatReceived", chat=line, player=player)
     
   

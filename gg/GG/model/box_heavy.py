@@ -3,14 +3,14 @@ import GG.utils
 
 class GGBoxHeavy(room_item.GGRoomItem):
   """ GGBoxHeavy class.
-  Defines a pickable item behaviour.
+  Defines a heavy box item behaviour.
   """
  
   def __init__(self, spriteName, anchor, topAnchor, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
-    position: item position.
     anchor: image anchor on screen.
+    topAnchor: image top anchor on screen.
     label: item's label
     """
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
@@ -18,10 +18,14 @@ class GGBoxHeavy(room_item.GGRoomItem):
     self.setPoints(2)
     
   def variablesToSerialize(self):
+    """ Sets some class attributes as public access.
+    """  
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
     return parentVars + ['label']
 
   def getOptions(self):
+    """ Returns the item options.
+    """  
     tile = self.getTile()
     depth = tile.getDepth()
     selfDepth = tile.getItemDepth(self)
@@ -41,9 +45,13 @@ class GGBoxHeavy(room_item.GGRoomItem):
           return ["lift", "climb"]
     
   def getName(self):
+    """ Returns the item's label.
+    """  
     return self.label
   
   def getImageLabel(self):
+    """ Returns the item's image filename.
+    """  
     return self.spriteName
   
   def clickedBy(self, clicker):
@@ -56,7 +64,11 @@ class GGBoxHeavy(room_item.GGRoomItem):
       clicker.setSelectedItem(self)
     
   def isStackable(self):
+    """ Checks if this item is stackable or not.
+    """  
     return True
 
   def stepOn(self):
+    """ Checks if other items can be placed on top of this one.
+    """  
     return True
