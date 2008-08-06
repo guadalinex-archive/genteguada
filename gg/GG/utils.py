@@ -27,64 +27,56 @@ QUESTIONS_PATH = DATA_PATH+"/questions"
 
 # ======================= CONSTANTS ===========================
 
-# Screen & General values
+
+# ======================= GENTEGUADA ===========================
 VERSION = "GenteGuada 0.2.0-1"
+
+# ======================= ISO_HUD ===========================
 BG_FULL_OR = [0, 0]
+TILE_TARGET_SHIFT = [18, 18]
+SELECTED_FLOOR_SHIFT = [55, -25]
+
+GAMEZONE_SZ = [SCREEN_SZ[0], 578]
+HUD_OR = [0, GAMEZONE_SZ[1]]
+
+CHAT_SZ = [753, 118]
+CHAT_OR = [14, GAMEZONE_SZ[1]+14]
+TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
+
+INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
+INV_ITEM_SZ = [60, 60]
+INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
+
+
+# ======================= ISO_ITEM ===========================
+COLOR_SHIFT = 80
+
+# ======================= ISO_CHATMESSAGE ===========================
+BALLOON_OPACITY = 210
+
+
+# ======================= PLAYER ===========================
+MAX_DEPTH = 1
+
+# ======================= CONSTANTS ===========================
+
+# Screen & General values
 TILE_SZ = [120, 60]
 CHAR_SZ = [50, 50]
-CHAR_POS = [0, 0, 0]
 SCREEN_SZ = [1024, 768]
 SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
 FLOOR_SHIFT = [55, -30]
-TILE_TARGET_SHIFT = [18, 18]
-SELECTED_FLOOR_SHIFT = [55, -25]
-SCENE_SZ = [8, 8]
-GAMEZONE_SZ = [SCREEN_SZ[0], 578]
-HUD_SZ = [SCREEN_SZ[0], SCREEN_SZ[1] - GAMEZONE_SZ[1]]
-HUD_OR = [0, GAMEZONE_SZ[1]]
-COLOR_SHIFT = 80
-TEXT_LINE_LENGTH = 40
-MAX_DEPTH = 1
-
-# Login
-LOGIN_USERNAME_OR = [SCREEN_SZ[0]/2 + 10, SCREEN_SZ[1]/2 - 20]
-LOGIN_USERNAME_SZ = [100, 20]
-LOGIN_PASSWORD_OR = [SCREEN_SZ[0]/2 + 10, SCREEN_SZ[1]/2 + 20]
-LOGIN_PASSWORD_SZ = [100, 20]
-LOGIN_OKBUTTON_OR = [SCREEN_SZ[0]/2 - 60, SCREEN_SZ[1]/2 + 80]
-LOGIN_CANCELBUTTON_OR = [SCREEN_SZ[0]/2 + 60, SCREEN_SZ[1]/2 + 80]
 
 # Chat & iventory
-CHAT_SZ = [753, 118]
-CHAT_OR = [14, GAMEZONE_SZ[1]+14]
-TEXT_BOX_SZ = [CHAT_SZ[0], 32]
-TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
-INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
-INV_ITEM_SZ = [60, 60]
 INV_ITEM_COUNT = [3, 2]
-INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
-BALLOON_OPACITY = 210
 
-#Avatar editor
-TAG_POSITION = [288, 0]
-TAG_OFFSET = 76
 
-# Upper pannel
-UPPERPANNEL_COUNT = 8
-UPPERPANNEL_ITEM_SPACING = 8
-UPPERPANNEL_ITEM_SZ = [65, 65]
-UPPERPANNEL_SZ = [(UPPERPANNEL_ITEM_SZ[0] + UPPERPANNEL_ITEM_SPACING)*UPPERPANNEL_COUNT, UPPERPANNEL_ITEM_SZ[1] + UPPERPANNEL_ITEM_SPACING]
-UPPERPANNEL_OR = [(SCREEN_SZ[0]/2) - (UPPERPANNEL_SZ[0]/2), 0]
-ACTION_BUTTON_SZ = [80, 80]
 
 # Animation values
-TIME_BEFORE_RELAX = 5
 TICK_DELAY = 0.45
-ANIM_DELAY = TICK_DELAY/10.0
 ANIM_WALKING_COUNT = 10
-ANIM_RELAX_COUNT = 40
+
 ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
-ANIM_RELAX_TIME = int(TICK_DELAY*ANIM_RELAX_COUNT*100)
 ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME1 = 2000
 ANIM_CHAT_TIME2 = 1000
@@ -330,8 +322,6 @@ def getSpriteName(state, heading, frame, timestamp):
     return str(state + "_" + heading + "_0001" + tail)
   elif state == STATE[2] or state == STATE[4]:
     maxFrames = ANIM_WALKING_COUNT
-  elif state == STATE[5]:
-    maxFrames = ANIM_RELAX_COUNT  
     
   if frame == 0:
     fileName = state + "_" + heading + "_00" + str(maxFrames)
