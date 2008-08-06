@@ -9,6 +9,10 @@ import time
 import dMVC.model
 import os
 
+# ======================= CONSTANTS ===========================
+MAX_DEPTH = 1
+# =============================================================
+
 class GGPlayer(item_with_inventory.GGItemWithInventory):
   """ Player class.
   Defines a player object behaviour.
@@ -471,7 +475,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     itemToClimb: item to climb.
     """  
     tile = itemToClimb.getTile()  
-    if tile.getDepth() <= GG.utils.MAX_DEPTH and tile.stepOn():
+    if tile.getDepth() <= MAX_DEPTH and tile.stepOn():
       self.setDestination(itemToClimb.getPosition())
     else:
       self.newChatMessage("No puedo subirme ahí", 1)

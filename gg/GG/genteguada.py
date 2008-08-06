@@ -15,6 +15,9 @@ import GG.isoview.login
 import GG.utils
 import GG.isoview.guiobjects
 
+# ======================= GENTEGUADA ===========================
+VERSION = "GenteGuada 0.2.0-1"
+# ==============================================================
 
 class GenteGuada:
 
@@ -84,7 +87,7 @@ class GenteGuada:
     self.widgetContainer.add_widget(self.window)
     #time.sleep(3)
     
-    pygame.display.set_caption(GG.utils.VERSION)
+    pygame.display.set_caption(VERSION)
 
     #print pygame.display.Info()
 

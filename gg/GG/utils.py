@@ -32,136 +32,21 @@ CHAR_SZ = [50, 50]
 SCREEN_SZ = [1024, 768]
 SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
 FLOOR_SHIFT = [55, -30]
+
 # Chat & iventory
 INV_ITEM_COUNT = [3, 2]
+
 # Animation values
 TICK_DELAY = 0.45
 ANIM_WALKING_COUNT = 10
 ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
 TEXT_COLOR = {"black": 0, "blue": 1}
-# Directions for a player's heading.
+
+# Player headings.
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
 # Player states.
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
-
-# ======================= GENTEGUADA ===========================
-VERSION = "GenteGuada 0.2.0-1"
-
-
-
-
-# ======================= GGSYSTEM ===========================
-PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
-PENGUIN_SPRITE_DOWN = "andatuz_down.png"
-PENGUIN_SPRITE_BOTTOMRIGHT = "andatuz_bottomright.png"
-ADVERTISEMENT_LEFT = "advertisementLeft.png"
-ADVERTISEMENT_MIDDLE = "advertisementMiddle.png"
-ADVERTISEMENT_RIGHT = "advertisementRight.png"
-KEY_GOLDEN = "golden_key.png"
-GIFT = "gift.png"
-BOX_HEAVY = "heavy_box.png"
-BEAM_WOODEN = "wooden_beam.png"
-PAPERMONEY_5 = "5Guadapuntos.png"
-PAPERMONEY_10 = "10Guadapuntos.png"
-PAPERMONEY_50 = "50Guadapuntos.png"
-TREE = "tree.png"
-COLUMN_STONE = "stone_column.png"
-BEAM_WOODEN = "wooden_beam.png"
-FENCE_UP = "fence_up.png"
-FENCE_LEFT = "fence_left.png"
-WALL_UP = "wall_up.png"
-WALL_LEFT = "wall_left.png"
-WALL_UP_GRAFFITI = "wall_up_graffiti.png"
-YARD_LAMP_UP = "yard_lamp_up.png"
-YARD_LAMP_LEFT = "yard_lamp_left.png"
-YARD_UP = "yard_up.png"
-YARD_LEFT = "yard_left.png"
-YARD_CORNER = "yard_corner.png"
-HEDGE = "hedge.png"
-DOOR_GARDEN = "garden_door.png"
-DOOR_WOODEN = "wooden_door.png"
-DOOR_WOODEN_A = "wooden_door_a.png"
-DOOR_WOODEN_B = "wooden_door_b.png"
-DOOR_AMORED = "armored_door_left.png"
-
-WAREHOUSE_UP = ["warehouseWallUp01.png", "warehouseWallUp02.png"]
-WAREHOUSE_LEFT = ["warehouseWallLeft01.png", "warehouseWallLeft02.png"]
-WAREHOUSE_CORNER = "warehouseWallCorner.png"
-
-SKYLINES_UP = ["skylineWallUp01.png", "skylineWallUp02.png", "skylineWallUp03.png", "skylineWallUp04.png"]
-SKYLINES_LEFT = ["skylineWallLeft01.png", "skylineWallLeft02.png"]
-SKYLINE_CORNER = "skylineCorner.png"
-
-TILE_TARGET = "target.png"
-TILE_SELECTED = "selected.png"
-TILE_MYSTCYRCLE = "mystCircle.png"
-TILE_MYSTCYRCLE_CASTLE01 = "mystCircleCastle01.png"
-TILES_GRASS = ["grass01.png", "grass02.png", "grass03.png", "grass04.png"]
-TILES_PAVINGSTONE = ["pavingStone01.png", "pavingStone02.png", "pavingStone03.png"]
-TILES_PAVINGSTONEWITHGRASS = ["pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", "pavingStoneWithGrass03.png"]
-TILES_SMALLSTONES = ["smallStones01.png", "smallStones02.png", "smallStones03.png"]
-TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png"]
-TILES_CASTLE1 = ["castle01.png"]
-TILES_CASTLE2 = ["castle02.png"]
-
-
-# ======================= ISO_ITEM ===========================
-COLOR_SHIFT = 80
-
-# ======================= ISO_CHATMESSAGE ===========================
-BALLOON_OPACITY = 210
-# Message types --> 0: general; 1: private; 2: npcs; 3: system)
-CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
-# Chat balloon pieces.
-CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
-CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
-CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
-CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
-BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
-BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
-BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
-BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
-TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
-
-
-# ======================= AVATAREDITOR ===========================
-PATH_EDITOR_BACKGROUNDS = "interface/backgrounds"
-PATH_EDITOR_IMG = "editor"
-IMG_EXTENSION = ".png"
-MASK_SIZE = {"S":[112, 105], "M":[124, 116], "L":[134, 127], "XL":[146, 137]}
-MASK_COORD = {"S":(91, 114), "M":(86, 111), "L":(80, 105), "XL":(74, 100)}
-COLOR_YELLOW = "yellow.png"
-COLOR_ORANGE = "orange.png"
-COLOR_RED = "red.png"
-COLOR_PINK = "pink.png"
-COLOR_BLUE = "blue.png"
-COLOR_PURPLE = "purple.png"
-COLOR_GREEN = "green.png"
-COLOR_WHITE = "white.png"
-COLOR_BLACK = "black.png"
-COLOR_BLONDE = "blonde.png"
-COLOR_BROWN = "brown.png"
-SKIN_1 = "skin_1.png"
-SKIN_2 = "skin_2.png"
-SKIN_3 = "skin_3.png"
-SKIN_4 = "skin_4.png"
-SKIN_5 = "skin_5.png"
-SKIN_6 = "skin_6.png"
-SKIN_7 = "skin_7.png"
-SKIN_8 = "skin_8.png"
-SKIN_9 = "skin_9.png"
-
-# ======================= ISO_PLAYER ===========================
-JUMP_TIME = 800
-JUMP_ANIMATION_TIME = 100
-JUMP_DISTANCE = 70
-JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
-
-# ======================= PLAYER ===========================
-MAX_DEPTH = 1
-
-
 
 # ======================= SPRITES ===========================
 IMAGE_CHAT_MESSAGE = "chatEntry.png"

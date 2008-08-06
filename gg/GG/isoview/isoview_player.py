@@ -3,6 +3,13 @@ import isoview
 import GG.utils
 import animation
 
+# ======================= CONSTANTS ===========================
+JUMP_TIME = 800
+JUMP_ANIMATION_TIME = 100
+JUMP_DISTANCE = 70
+JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
+# =============================================================
+
 class IsoViewPlayer(isoview_item.IsoViewItem):
   """ IsoViewPlayer class.
   Defines a player view.
@@ -184,11 +191,11 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     screenPos = self.getScreenPosition()
-    movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
-    positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
-                            screenPos, [screenPos[0],  screenPos[1] - GG.utils.JUMP_DISTANCE], True)
-    positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
-                            [screenPos[0],  screenPos[1] - GG.utils.JUMP_DISTANCE], screenPos, True)
+    movieAnim = animation.MovieAnimation(JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
+    positionUp = animation.ScreenPositionAnimation(JUMP_TIME, self, \
+                            screenPos, [screenPos[0],  screenPos[1] - JUMP_DISTANCE], True)
+    positionDown = animation.ScreenPositionAnimation(JUMP_TIME, self, \
+                            [screenPos[0],  screenPos[1] - JUMP_DISTANCE], screenPos, True)
 
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(positionUp)
@@ -206,13 +213,13 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     startPos = self.getScreenPosition()
     endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
     cordX = (startPos[0] + endPos[0])/2
-    cordY = (startPos[1] + endPos[1])/2 - GG.utils.JUMP_OVER_DISTANCE
+    cordY = (startPos[1] + endPos[1])/2 - JUMP_OVER_DISTANCE
     halfPos = [cordX, cordY]
 
-    movieAnim = animation.MovieAnimation(GG.utils.JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
-    positionUp = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+    movieAnim = animation.MovieAnimation(JUMP_ANIMATION_TIME, self, self.createFrameSet("walking"))
+    positionUp = animation.ScreenPositionAnimation(JUMP_TIME, self, \
                             startPos, halfPos, True)
-    positionDown = animation.ScreenPositionAnimation(GG.utils.JUMP_TIME, self, \
+    positionDown = animation.ScreenPositionAnimation(JUMP_TIME, self, \
                             halfPos, endPos, True)
     
     positionUp.setOnStop(self.setPosition, pos1)
