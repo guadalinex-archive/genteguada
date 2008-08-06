@@ -145,7 +145,7 @@ class CreateItemsWindow:
         fCount = 0
         fields = []
         for field in attrDict[key]:
-          entryLabel = ocempgui.widgets.Entry()
+          entryLabel = guiobjects.OcempEditLine()
           entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
           entryLabel.text = str(field)
           entryLabel.border = 1

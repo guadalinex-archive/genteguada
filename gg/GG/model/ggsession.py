@@ -14,13 +14,13 @@ class GGSession(ggmodel.GGModel):
   def __init__(self, player, system):
     """ Initializes session attributes.
     player: session user.
+    system: system object
     """
     ggmodel.GGModel.__init__(self)
     self.__player = player
     self.__system = system
     player.subscribeEvent('chatAdded', self.chatAdded)
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
-    #player.getRoom().subscribeEvent('quizAdded', self.quizAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
       
   # self.__player
@@ -40,9 +40,7 @@ class GGSession(ggmodel.GGModel):
     newRoom = self.__player.getRoom()
     if newRoom: 
       newRoom.subscribeEvent('chatAdded', self.chatAdded)
-      #self.__player.subscribeEvent('chatAdded', self.chatAdded)
-      #newRoom.subscribeEvent('quizAdded', self.quizAdded)
-    
+      
   @dMVC.model.localMethod
   def defaultView(self, screen, fullscreen):
     """ Esto deberia ser IsoViewSession.
@@ -64,21 +62,32 @@ class GGSession(ggmodel.GGModel):
     self.triggerEvent('quizAdded', message=event.getParams()['message'])
 
   def unsubscribeEvents(self):
+    """ Unsubscribes itself from all events.
+    """
     self.__player.getRoom().unsubscribeEventObserver(self)
     self.__player.unsubscribeEventObserver(self)
 
   def logout(self):
+    """ Logs out and ends session.
+    """  
     self.__system.logout(self)
     self.__player = None
     self.__system = None
     
   def getRoomLabels(self):
+    """ Returns rooms labels.
+    """  
     return self.__system.getRoomLabels()  
 
   def getRoom(self, roomLabel):
+    """ Returns one specific room.
+    roomLabel: room label.
+    """  
     return self.__system.existsRoom(roomLabel)  
     
   def getObjectsData(self):
+    """ Returns the objects data.
+    """  
     if not self.__player.getAccessMode():
       return None  
     
@@ -188,6 +197,10 @@ class GGSession(ggmodel.GGModel):
     return self.objectsDict
     
   def createObject(self, name, data):
+    """ Creates a new object.
+    name: object type.
+    data: object data.
+    """  
     try: 
       posX = int(data["position"][0])    
       posY = int(data["position"][1])

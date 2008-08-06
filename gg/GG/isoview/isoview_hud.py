@@ -238,15 +238,6 @@ class IsoViewHud(isoview.IsoView):
     self.__activeActions.append(self.turnLeft)
     self.__activeActions.append(self.privateChatHandler)
     
-  def compareSelectedItem(self, item):
-    """ Compares a given item with the selected item.
-    item: item to be compared.
-    """  
-    if self.__selectedItem:  
-      return self.__selectedItem.checkSimilarity(item)
-    else:
-      return False
-
   def getIVRoom(self):
     return self.__isoviewRoom
 
@@ -1530,7 +1521,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem == None:
       return
     item, pos = self.__selectedItem.getCopyFor(self.__player)
-    if item != None:
+    if item:
       self.__player.addToInventoryFromVoid(item, pos)
     self.__player.setUnselectedItem()
  

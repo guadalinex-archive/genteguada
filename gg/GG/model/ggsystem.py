@@ -88,13 +88,15 @@ class GGSystem(dMVC.model.Model):
     for player in self.__players:
       if player.checkUser(username, password) and player.getRoom() == None:
         player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
-        #player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([5, 5]))
         session = GG.model.ggsession.GGSession(player, self)
         self.__sessions.append(session)
         return True, session 
     return False, "No se pudo autentificar el usuario"
 
   def logout(self, session):
+    """ Logs out a player and ends his session.
+    session: player's session.
+    """  
     #session.getPlayer().getRoom().removeItem(session.getPlayer())  
     self.__sessions.remove(session)
 
@@ -329,6 +331,9 @@ class GGSystem(dMVC.model.Model):
   def createRoom(self, spriteFull, label, size, maxUsers):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
+    label: room label.
+    size: room size.
+    maxUsers: max users per room.
     """
     if self.getRoom(label):
       return None  
@@ -337,6 +342,9 @@ class GGSystem(dMVC.model.Model):
     return newRoom
 
   def deleteRoom(self, label):
+    """ Deletes a room.
+    label: room label.
+    """  
     for room in self.__rooms:
       if room.label == label:
         chosenRoom = room
@@ -364,7 +372,7 @@ class GGSystem(dMVC.model.Model):
     """ Inserts a new item into a room.
     item: new item.
     room: existing room.
-    player: flag used to check it the item is a player or not.
+    isPlayer: flag used to check it the item is a player or not.
     """
     if room.addItem(item):
       if isPlayer:
@@ -375,7 +383,7 @@ class GGSystem(dMVC.model.Model):
   def removeItem(self, item, isPlayer):
     """ Removes an item.
     item: existing item.
-    player: flag used to check it the item is a player or not.
+    isPlayer: flag used to check it the item is a player or not.
     """
     if item.getRoom():
       item.getRoom().removeItem(item)    
@@ -397,6 +405,7 @@ class GGSystem(dMVC.model.Model):
     
   def __tick(self, now):
     """ Calls for a time tick on all rooms.
+    now: timestamp.
     """
     for room in self.__rooms:
       room.tick(now)    
@@ -423,6 +432,8 @@ class GGSystem(dMVC.model.Model):
       return None
 
   def uploadFile(self, fileName, fileData):
+    """ Uploads a new file to the system.
+    """  
     name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
     try:
       f = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
@@ -433,9 +444,19 @@ class GGSystem(dMVC.model.Model):
     return name
 
   def changeAvatarConfiguration(self, configuration, player, nameMask):
+    """ Changes the avatar configuration.
+    configuration: new config.
+    player: player to change the configuration for.
+    nameMask: mask filename.
+    """  
     thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
 
   def __changeAvatarConfiguration(self, configuration, player, nameMask):
+    """ Changes the avatar configuration.
+    configuration: new config.
+    player: player to change the configuration for.
+    nameMask: mask filename.
+    """  
     if nameMask:
       f = open(os.path.join(GG.utils.DATA_PATH, nameMask), "rb")
       data = f.read()
@@ -456,6 +477,10 @@ class GGSystem(dMVC.model.Model):
       player.setAvatarConfiguration(configuration, timestamp)
 
   def __copyImages(self,images, player):
+    """ Copies images for a given player.
+    images: images to copy.
+    player: given player.
+    """  
     #dir = "/home/jmariscal/proyectos/genteguada/src/gg/GG/data/avatars"
     dirImage = GG.utils.DATA_PATH + "/avatars/"+player.username
     if os.path.isdir(dirImage):
@@ -471,18 +496,26 @@ class GGSystem(dMVC.model.Model):
     return timestamp
 
   def getRoom(self, label):
+    """ Returns a selected room.
+    label: room's label.
+    """  
     for room in self.__rooms:
       if room.label == label:
         return room
     return None
 
   def existsRoom(self, name):
+    """ Checks if a room exists.
+    name: room label.
+    """  
     for room in self.__rooms:
       if room.label == name:
         return room  
     return None
 
   def getRoomLabels(self):
+    """ Returns a list containing all room labels.
+    """  
     listLabels = []
     for room in self.__rooms:
       listLabels.append(room.label)

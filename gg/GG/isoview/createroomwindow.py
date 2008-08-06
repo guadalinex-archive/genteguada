@@ -88,7 +88,7 @@ class CreateRoomWindow:
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
-    self.label = ocempgui.widgets.Entry()
+    self.label = guiobjects.OcempEditLine()
     self.label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.label.text = "habitacion 42"
     self.label.border = 1
@@ -101,7 +101,7 @@ class CreateRoomWindow:
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
-    self.sizeX = ocempgui.widgets.Entry()
+    self.sizeX = guiobjects.OcempEditLine()
     self.sizeX.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.sizeX.text = "8"
     self.sizeX.border = 1
@@ -109,7 +109,7 @@ class CreateRoomWindow:
     self.sizeX.set_minimum_size(50, 20)
     self.container.add_child(self.sizeX)
     
-    self.sizeY = ocempgui.widgets.Entry()
+    self.sizeY = guiobjects.OcempEditLine()
     self.sizeY.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.sizeY.text = "8"
     self.sizeY.border = 1
@@ -121,7 +121,7 @@ class CreateRoomWindow:
     label.topleft = 10 + 190 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
-    self.maxUsers = ocempgui.widgets.Entry()
+    self.maxUsers = guiobjects.OcempEditLine()
     self.maxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.maxUsers.text = "10"
     self.maxUsers.border = 1

@@ -9,15 +9,15 @@ import generated_inventory_item
 
 class GGPenguin(room_item.GGRoomItem):
   """ GGPenguin class.
-  Defines a giver npc object behaviour.
+  Defines a penguin object behaviour.
   """
  
   def __init__(self, sprite, anchor, topAnchor, label):
     """ Class builder.
-    sprite: sprite used to paint the npc.
-    position: penguin position.
+    sprite: sprite used to paint the penguin.
     anchor: image anchor on screen.
-    label: penguin's label
+    topAnchor: image top anchor on screen.
+    label: penguin's label.
     """
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
@@ -34,19 +34,17 @@ class GGPenguin(room_item.GGRoomItem):
     return ["talk"]
       
   def getName(self):
+    """ Returns the item's label.
+    """  
     return self.label
   
   def getImageLabel(self):
+    """ Returns the item's image filename.
+    """  
     return self.spriteName
-  
-  def checkSimilarity(self, item):
-    if room_item.GGRoomItem.checkSimilarity(self, item):
-      if item.label == self.label:
-        return True
-    return False   
-  
+
   def clickedBy(self, clicker):
-    """ Triggers an event when the npc receives a click by a player.
+    """ Triggers an event when the penguin receives a click by a player.
     clicker: player who clicks.
     """
     room_item.GGRoomItem.clickedBy(self, clicker)
@@ -59,32 +57,33 @@ class GGPenguin(room_item.GGRoomItem):
 
 class GGPenguinTalker(GGPenguin):
   """ GGPenguinTalker class.
-  Defines a penguin talker object behaviour.
+  Defines a talker penguin object behaviour.
   """
  
   def __init__(self, sprite, anchor, topAnchor, label, message):
     """ Class builder.
     sprite: sprite used to paint the penguin.
-    position: penguin position.
     anchor: image anchor on screen.
-    label: penguin's label
+    topAnchor: image top anchor on screen.
+    label: penguin's label.
+    message: penguin's message.
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
     
   def getMessage(self):
+    """ Returns the penguin's message.
+    """  
     return self.__msg
 
   def setMessage(self, msg):
+    """ Sets a new penguin message.
+    """  
     self.__msg = msg    
 
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.getMessage() == self.__msg:
-        return True
-    return False   
-
   def getAdminActions(self):
+    """ Returns the possible admin actions on this item.
+    """  
     dic = {"Position": self.getTile().position, "Message": [self.__msg]}
     return dic  
   
@@ -99,10 +98,18 @@ class GGPenguinTalker(GGPenguin):
 
 class GGPenguinTrade(GGPenguin):
   """ GGPenguinTrade class.
-  Defines a giver npc object behaviour.
+  Defines a trade penguin behaviour.
   """
  
   def __init__(self, sprite, anchor, topAnchor, label, message, gift):
+    """ Class builder.
+    sprite: sprite used to paint the penguin.
+    anchor: image anchor on screen.
+    topAnchor: image top anchor on screen.
+    label: penguin's label
+    message: penguin's message.
+    gift: item the penguin will ask the player for.
+    """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
     self.__giftLabel = gift
@@ -113,26 +120,30 @@ class GGPenguinTrade(GGPenguin):
     return ["talkAndGet"]
 
   def getAdminActions(self):
+    """ Returns the possible admin actions on this item.
+    """  
     dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel]}
     return dic  
-  
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.getMessage() == self.__msg:
-        if item.getGiftLabel() == self.__giftLabel:  
-          return True
-    return False   
 
   def getMessage(self):
+    """ Returns the message.
+    """  
     return self.__msg
 
   def setMessage(self, msg):
+    """ Sets a new message.
+    msg: new message.
+    """  
     self.__msg = msg    
 
   def getGiftLabel(self):
+    """ Returns the gift's label.
+    """  
     return self.__giftLabel
 
   def setGiftLabel(self, giftLabel):
+    """ Sets a new gift's label.
+    """  
     self.__giftLabel = giftLabel    
 
   def talkAndGet(self, talker):
@@ -154,10 +165,17 @@ class GGPenguinTrade(GGPenguin):
      
 class GGPenguinQuiz(GGPenguin):
   """ GGPenguinQuiz class.
-  Defines a giver npc object behaviour.
+  Defines a quiz penguin object behaviour.
   """
  
   def __init__(self, sprite, anchor, topAnchor, label, filePath):
+    """ Class builder.
+    sprite: sprite used to paint the penguin.
+    anchor: image anchor on screen.
+    topAnchor: image top anchor on screen.
+    label: penguin's label.
+    filePath: folder where quiz questions are.
+    """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__fileList = os.listdir(filePath)
     rmList = []
@@ -174,15 +192,15 @@ class GGPenguinQuiz(GGPenguin):
     return ["talk"]
   
   def getFileList(self):
+    """ Returns the questions list.
+    """  
     return self.__fileList  
   
-  def checkSimilarity(self, item):
-    if GGPenguin.checkSimilarity(self, item):
-      if item.getFileList() == self.__fileList:
-        return True
-    return False 
-  
   def removeRightQuestionForPlayer(self, question, player):
+    """ Removes a correctly answered question from the question list for a given player.
+    question: question to be removed.
+    player: given player.
+    """  
     name = player.getName()
     self.__availableQuestions[name].remove(question)
     if len(self.__availableQuestions[name]) == 0:

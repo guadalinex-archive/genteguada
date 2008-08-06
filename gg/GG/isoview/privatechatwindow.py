@@ -12,6 +12,10 @@ class PrivateChatWindow:
   """
 
   def __init__(self, title, player):
+    """ Class constructor.
+    title: private chat window title.
+    player: private chat window owner.
+    """
     self.hide = False
     self.window = ocempgui.widgets.Window(title)
     self.window.topleft = 0, 0
@@ -21,6 +25,8 @@ class PrivateChatWindow:
     self.draw()
 
   def draw(self):
+    """ Draws window components on screen.
+    """  
     self.container = ocempgui.widgets.Box(373, 372)
     self.__paintBackground()
     self.__paintContactList()
@@ -30,15 +36,23 @@ class PrivateChatWindow:
     return self.window
 
   def setScreenPosition(self, x, y):
+    """ Sets a new screen position for the chat window.
+    """  
     self.window.topleft = x, y  
 
   def getScreenPosition(self):
+    """ Returns the window screen position.
+    """  
     return self.window.topleft
 
   def getSize(self):
+    """ Returns the window size
+    """  
     return self.container.width, self.container.height     
 
   def __paintBackground(self):
+    """ Paints the window background.
+    """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0,0
@@ -67,6 +81,8 @@ class PrivateChatWindow:
     self.container.add_child(self.contactsArea)
 
   def __selectionChange(self):
+    """ Changes the active chat area after a contact selection change.
+    """  
     name = self.contactsArea.getSelectedName()
     if not name:
       self.selected = None  
@@ -83,6 +99,8 @@ class PrivateChatWindow:
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def __paintDeleteButton(self):
+    """ Paints the delete button.
+    """  
     #deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
     deleteButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
     deleteButton.topleft = 20, 315
@@ -90,6 +108,9 @@ class PrivateChatWindow:
     self.container.add_child(deleteButton)
 
   def showTooltip(self, label):
+    """ Show a button's tooltip.
+    label: tooltip label.
+    """  
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
@@ -97,13 +118,17 @@ class PrivateChatWindow:
     self.tooltipWindow.zOrder = 30000
     self.container.add_child(self.tooltipWindow)
       
-  def removeTooltip(self): 
+  def removeTooltip(self):
+    """ Removes the tooltip from screen.
+    """   
     if self.tooltipWindow:
       self.container.remove_child(self.tooltipWindow)  
       self.tooltipWindow.destroy ()
       self.tooltipWindow = None
 
   def deleteContacts(self):
+    """ Deletes a contact from the contact list.
+    """  
     if not self.selected:
       return    
     self.player.removeContact(self.selected.getPlayer())
@@ -113,9 +138,14 @@ class PrivateChatWindow:
     self.clearChatArea()
     
   def updateContactList(self):
+    """ Updates the contact list.
+    """  
     self.contactsArea.setContacts(self.player.getAgendaData())
     
   def removeContactRemote(self, contact):
+    """ Receives an order to remove a contact from the contact list.
+    contact: contact to be removed.
+    """  
     self.player.removeContact(contact)
     self.__agenda = self.player.getAgenda()
     self.container.remove_child(self.contactsArea)
@@ -124,7 +154,9 @@ class PrivateChatWindow:
     self.clearChatArea()
     
   def __paintChat(self):
-    self.__textField = ocempgui.widgets.Entry()
+    """ Paints the chat area.
+    """  
+    self.__textField = guiobjects.OcempEditLine()
     self.__textField.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.__textField.border = 1
     self.__textField.topleft = 150, 320
@@ -132,6 +164,8 @@ class PrivateChatWindow:
     self.container.add_child(self.__textField)
 
   def chatMessageEntered(self):
+    """ Adds a new message to the chat area.
+    """  
     if self.selected:
       text = self.selected.getPlayer().username + ": " + self.__textField.text
       self.selected.addChatLine(self.player, text)
@@ -145,6 +179,8 @@ class PrivateChatWindow:
       self.__textField.text = ""
   
   def __paintChatArea(self):
+    """ Paints the chat area.
+    """  
     self.textArea = ocempgui.widgets.ScrolledWindow(203, 270)
     self.textArea.set_scrolling(1)
     self.textArea.topleft = 150, 40
@@ -155,12 +191,19 @@ class PrivateChatWindow:
     self.container.add_child(self.textArea)
     
   def writeChatMessage(self, string):
+    """ Writes a new chat message on the chat area.
+    string: chat message.
+    """  
     line = self.sliceLine(string)  
     self.selected.getPlayer().newPrivateChatReceived(line, self.player)
     self.__layoutTextArea.add_child(self.createChatMessage(line))
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
   def incomingChatMessage(self, string, player):
+    """ Receives a new chat message from another player.
+    string: chat message.
+    player: message sender.
+    """  
     self.player.newChatForPlayer(string, player)
     if self.selected == None:
       self.contactsArea.addMessageHintForContact(player)
@@ -171,6 +214,9 @@ class PrivateChatWindow:
       self.contactsArea.addMessageHintForContact(player)
 
   def createChatMessage(self, string):
+    """ Creates a new chat message.
+    string: new chat message.
+    """  
     hframe = ocempgui.widgets.HFrame()
     hframe.border = 0
     hframe.set_align(ocempgui.widgets.Constants.ALIGN_TOP) 
@@ -183,12 +229,17 @@ class PrivateChatWindow:
     return hframe
 
   def clearChatArea(self):
+    """ Clears the chat area.
+    """  
     children = copy.copy(self.__layoutTextArea.children)
     for child in children:
       self.__layoutTextArea.remove_child(child)
       child.destroy()
 
   def sliceLine(self, string):
+    """ Divides a string to fit into the chat area.
+    string: new string. 
+    """  
     width = 20
     line = ""  
     cad = string
@@ -205,6 +256,10 @@ class PrivateChatWindow:
     return line   
 
   def updateMaskPlayer(self, name, image):
+    """ Updates a player's mask.
+    name: player name.
+    image: mask filename.
+    """  
     self.contactsArea.updateMaskPlayer(name, image)
     self.container.remove_child(self.contactsArea)
     self.__paintContactList()

@@ -8,6 +8,9 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   def __init__(self, spriteName, label, anchor, parentPosition):
     """ Class constructor.
     spriteName: image name.
+    label: item's label.
+    anchor: on-screen sprite offset.
+    parentPosition: origin position.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName)
     self.spriteInventory = spriteName
@@ -29,25 +32,29 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     return ["removeInventory"]  
 
   def getName(self):
+    """ Returns the item's label.
+    """  
     return self.label
   
   def getImageLabel(self):
+    """ Returns the item's image filename.
+    """  
     return self.spriteInventory
 
   def getPosition(self):
+    """ Returns item's position.
+    """  
     return self.__position
 
   def setPoints(self, points):
+    """ Sets a new item point value.
+    points: new points value.
+    """  
     self.points = points
-    
-  def checkSimilarity(self, item):
-    if inventory_item.GGInventoryItem.checkSimilarity(self, item):
-      if item.label == self.label:
-        if item.points == self.points:
-          return True
-    return False   
   
   def inventoryOnly(self):
+    """ Checks if this is an inventory only item.
+    """  
     return True
   
   def tick(self, now):
@@ -57,5 +64,7 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     pass
   
   def isStackable(self):
+    """ Checks if this item is stackable.
+    """  
     return False
 
