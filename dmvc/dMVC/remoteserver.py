@@ -148,40 +148,33 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       command.setServerHandler(self)
       answer = command.do()
       if answer:
-        self.__sendAsyncObject(answer,command)
+        self.__sendAsyncObject(answer, fragment.groupID)
 
     
-  def __sendAsyncObject(self, obj, command=None): #{{{
+  def __sendAsyncObject(self, obj, commandID): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     sizeSerialized = len(serialized)
-    total = sizeSerialized / 10
-    if not sizeSerialized % 10 == 0:
+    total = sizeSerialized / 10000
+    if not sizeSerialized % 10000 == 0:
       total += 1
     lenProcess = 0
     sequence = 0
     asyncCommandID = utils.nextID()
+    asyncQueue = []
     while lenProcess < sizeSerialized:
       sequence += 1
-      fragmentCommand = serialized[lenProcess : lenProcess + 10]
-      fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand)
-      self.__asyncQueue.put(fragment)
-      lenProcess += 10
-
-
-
-    try:
-      size = struct.pack("i", sizeSerialized)
-      utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
-      self.request.send(size)
-      self.request.send(serialized)
-      #if command:
-        #print "Enviado ",sizeSerialized , command
-      return True
-    except:
-      utils.logger.exception("Can''t send an object, probable conexion lost")
-      return False
+      fragmentCommand = serialized[lenProcess : lenProcess + 10000]
+      fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand, commandID)
+      asyncQueue.append(fragment)
+      #self.__asyncQueue.put(fragment)
+      lenProcess += 10000
+    thread.start_new(self.__sendAsyncQueue, (asyncQueue,))
   #}}}
+
+  def __sendAsyncQueue(self, queue):
+    for fragment in queue:
+      self.__sendObject(fragment)
 
   def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())

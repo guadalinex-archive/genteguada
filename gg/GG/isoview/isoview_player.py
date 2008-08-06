@@ -56,7 +56,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """
     self.__heading = event.getParams()["heading"]
-    if self.__movieAnimation != None:
+    if self.__movieAnimation:
       frames = self.createFrameSet()
       self.__movieAnimation.setFrames(frames)
     else:

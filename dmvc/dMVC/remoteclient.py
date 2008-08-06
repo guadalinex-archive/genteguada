@@ -35,6 +35,8 @@ class RClient(synchronized.Synchronized):
 
     self.__commandQueue = Queue.Queue()
     self.__asyncCommandQueue = Queue.Queue()
+    self.__asyncCallback = {}
+    self.__fragmentAnswer = {}
 
     self.__autoEvents = autoEvents
     if self.__autoEvents:
@@ -113,24 +115,26 @@ class RClient(synchronized.Synchronized):
   def sendAsyncCommand(self, command, callback):
     serializedCommand = pickle.dumps(command)
     sizeCommand = len(serializedCommand)
-    total = sizeCommand / 10 
-    if not sizeCommand % 10 == 0:
+    total = sizeCommand / 10000 
+    if not sizeCommand % 10000 == 0:
       total += 1
     lenProcess = 0
     sequence = 0
     asyncCommandID = utils.nextID()
+    self.__asyncCallback[asyncCommandID] = callback
     while lenProcess < sizeCommand:
       sequence += 1
-      fragmentCommand = serializedCommand[lenProcess : lenProcess + 10]
+      fragmentCommand = serializedCommand[lenProcess : lenProcess + 10000]
       fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand)
+      print "Apilando ",fragment," ",sequence,"/",total
       self.__asyncCommandQueue.put(fragment)
-      lenProcess += 10
+      lenProcess += 10000
 
   def __sendAsyncFragment(self):
     try:
       fragmentCommand = self.__asyncCommandQueue.get_nowait()
       self.sendCommand(fragmentCommand)
-      print fragmentCommand
+      print "Enviando ",fragmentCommand," ",fragmentCommand.sequence,"/",fragmentCommand.total
     except Queue.Empty:
       pass
  
@@ -259,6 +263,8 @@ class RClient(synchronized.Synchronized):
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RExecutionAnswerer):
             self.__addAnswererCommand(command)
+          elif isinstance(command, remotecommand.RFragment):
+            self.__processFragment(command)
           else:
             self.__commandQueue.put(command)
         else:
@@ -266,3 +272,16 @@ class RClient(synchronized.Synchronized):
     except:
       utils.logger.exception('exception in __start')
   #}}}
+
+  def __processFragment(self, fragment):
+    if not fragment.groupID in self.__fragmentAnswer.keys():
+      self.__fragmentAnswer[fragment.groupID] = fragment.data
+    else:
+      self.__fragmentAnswer[fragment.groupID] += fragment.data
+    if fragment.total == fragment.sequence:
+      answer = pickle.loads(self.__fragmentAnswer[fragment.groupID])
+      del self.__fragmentAnswer[fragment.groupID]
+      callback = self.__asyncCallback[fragment.commandID]
+      del self.__asyncCallback[fragment.commandID]
+      callback(answer.do())
+
