@@ -4,6 +4,11 @@ import animation
 import positioned_view
 import guiobjects
 
+# ======================= CONSTANTS ===========================
+COLOR_SHIFT = 80
+# =============================================================
+
+
 class IsoViewItem(positioned_view.PositionedView):
   """ IsoViewItem class.
   Defines an item view.
@@ -104,13 +109,13 @@ class IsoViewItem(positioned_view.PositionedView):
       for y in range(0, size[3]):
         color = self.__img.image.get_at((x, y))
         if color[3] != 0:
-          color2[0] = color[0] + GG.utils.COLOR_SHIFT
+          color2[0] = color[0] + COLOR_SHIFT
           if color2[0] > 255: 
             color2[0] = 255
-          color2[1] = color[1] + GG.utils.COLOR_SHIFT
+          color2[1] = color[1] + COLOR_SHIFT
           if color2[1] > 255: 
             color2[1] = 255
-          color2[2] = color[2] + GG.utils.COLOR_SHIFT
+          color2[2] = color[2] + COLOR_SHIFT
           if color2[2] > 255: 
             color2[2] = 255
           self.__img.image.set_at((x, y), color2)

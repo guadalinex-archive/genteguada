@@ -10,6 +10,34 @@ import ocempgui.draw
 
 from PIL import Image
 
+# ======================= CONSTANTS ===========================
+PATH_EDITOR_BACKGROUNDS = "interface/backgrounds"
+PATH_EDITOR_IMG = "editor"
+IMG_EXTENSION = ".png"
+MASK_SIZE = {"S":[112, 105], "M":[124, 116], "L":[134, 127], "XL":[146, 137]}
+MASK_COORD = {"S":(91, 114), "M":(86, 111), "L":(80, 105), "XL":(74, 100)}
+COLOR_YELLOW = "yellow.png"
+COLOR_ORANGE = "orange.png"
+COLOR_RED = "red.png"
+COLOR_PINK = "pink.png"
+COLOR_BLUE = "blue.png"
+COLOR_PURPLE = "purple.png"
+COLOR_GREEN = "green.png"
+COLOR_WHITE = "white.png"
+COLOR_BLACK = "black.png"
+COLOR_BLONDE = "blonde.png"
+COLOR_BROWN = "brown.png"
+SKIN_1 = "skin_1.png"
+SKIN_2 = "skin_2.png"
+SKIN_3 = "skin_3.png"
+SKIN_4 = "skin_4.png"
+SKIN_5 = "skin_5.png"
+SKIN_6 = "skin_6.png"
+SKIN_7 = "skin_7.png"
+SKIN_8 = "skin_8.png"
+SKIN_9 = "skin_9.png"
+# =============================================================
+
 class AvatarEditor:
   """ AvatarEditor class.
   Defines the Avatar Editor
@@ -190,43 +218,43 @@ class AvatarEditor:
   def paintBody(self):
     """ Paints the avatar's body.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "skin", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "skin", self.avatarConfiguration["skin"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "body")
 
   def paintShoes(self):
     """ Paints the avatar's shoes.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "shoes", self.avatarConfiguration["shoes"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], "shoes", self.avatarConfiguration["shoes"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "shoes")
 
   def paintShirt(self):
     """ Paints the avatar's shirt.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeShirt"]+"_shirt", self.avatarConfiguration["shirt"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeShirt"]+"_shirt", self.avatarConfiguration["shirt"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "shirt")
 
   def paintTrousers(self):
     """ Paints the avatar's trousers.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeTrousers"]+"_trousers", self.avatarConfiguration["trousers"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeTrousers"]+"_trousers", self.avatarConfiguration["trousers"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "trousers")
 
   def paintSkirt(self):
     """ Paints the avatar's skirt.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeSkirt"]+"_skirt", self.avatarConfiguration["skirt"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["bodySize"], self.avatarConfiguration["typeSkirt"]+"_skirt", self.avatarConfiguration["skirt"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "skirt")
 
   def paintHead(self):
     """ Paints the avatar's head.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "head", self.avatarConfiguration["skin"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "head", self.avatarConfiguration["skin"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "head")
 
   def paintHair(self):
     """ Paints the avatar's hair.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "hair_"+self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"] + GG.utils.IMG_EXTENSION))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "hair_"+self.avatarConfiguration["hairStyle"], self.avatarConfiguration["hairColor"] + IMG_EXTENSION))
     self.newAvatarImage(imgPath, "hair")
 
   def paintMask(self):
@@ -235,7 +263,7 @@ class AvatarEditor:
     if self.avatarConfiguration["mask"]:
       imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUploadMask.png")
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png"))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png"))
     self.newAvatarImage(imgPath, "mask")
 
   def paintTags(self):
@@ -550,7 +578,7 @@ class AvatarEditor:
     self.dialog = ocempgui.widgets.Box(373, 372)
     self.dialog.topleft = 528, 205
 
-    background = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_BACKGROUNDS, "uploadWindow.png")))
+    background = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_BACKGROUNDS, "uploadWindow.png")))
     self.dialog.add_child(background)
     
     self.listDir = guiobjects.OcempImageFileList(310, 239)
@@ -603,12 +631,12 @@ class AvatarEditor:
     nameFile: image file name.
     """  
     imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK, nameFile)
-    imgMask = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")))
-    imgTemplate = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "template.png")))
+    imgMask = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png")))
+    imgTemplate = Image.open(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "template.png")))
     imgUpload = Image.open(imgPath)
-    size = GG.utils.MASK_SIZE[self.avatarConfiguration["headSize"]]
+    size = MASK_SIZE[self.avatarConfiguration["headSize"]]
     imgUploadResized = imgUpload.resize(size, Image.ANTIALIAS)
-    imgMask.paste(imgUploadResized,GG.utils.MASK_COORD[self.avatarConfiguration["headSize"]], imgTemplate)
+    imgMask.paste(imgUploadResized,MASK_COORD[self.avatarConfiguration["headSize"]], imgTemplate)
     imgMask.save(os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUploadMask.png"))
     self.avatarConfiguration["mask"] = "imgUploadMask.png"
     self.paintMask()
@@ -618,15 +646,15 @@ class AvatarEditor:
     paletteType: selected palette.
     """  
     if paletteType == "cloth":
-      return [ [GG.utils.COLOR_YELLOW, GG.utils.COLOR_ORANGE, GG.utils.COLOR_RED], 
-               [GG.utils.COLOR_PINK, GG.utils.COLOR_BLUE, GG.utils.COLOR_PURPLE], 
-               [GG.utils.COLOR_GREEN, GG.utils.COLOR_WHITE, GG.utils.COLOR_BLACK] ] 
+      return [ [COLOR_YELLOW, COLOR_ORANGE, COLOR_RED], 
+               [COLOR_PINK, COLOR_BLUE, COLOR_PURPLE], 
+               [COLOR_GREEN, COLOR_WHITE, COLOR_BLACK] ] 
     elif paletteType == "hair":
-      return [ [GG.utils.COLOR_BLONDE, GG.utils.COLOR_BROWN, GG.utils.COLOR_BLACK] ]
+      return [ [COLOR_BLONDE, COLOR_BROWN, COLOR_BLACK] ]
     elif paletteType == "skin":
-      return [ [GG.utils.SKIN_1, GG.utils.SKIN_2, GG.utils.SKIN_3], 
-               [GG.utils.SKIN_4, GG.utils.SKIN_5, GG.utils.SKIN_6], 
-               [GG.utils.SKIN_7, GG.utils.SKIN_8, GG.utils.SKIN_9]]
+      return [ [SKIN_1, SKIN_2, SKIN_3], 
+               [SKIN_4, SKIN_5, SKIN_6], 
+               [SKIN_7, SKIN_8, SKIN_9]]
     else:
       return []
 

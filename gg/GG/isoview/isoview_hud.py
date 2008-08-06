@@ -26,17 +26,23 @@ TILE_TARGET_SHIFT = [18, 18]
 SELECTED_FLOOR_SHIFT = [55, -25]
 GAMEZONE_SZ = [GG.utils.SCREEN_SZ[0], 578]
 HUD_OR = [0, GAMEZONE_SZ[1]]
+
 CHAT_SZ = [753, 118]
 CHAT_OR = [14, GAMEZONE_SZ[1]+14]
 TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
+
 INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
 INV_ITEM_SZ = [60, 60]
 INV_SZ = [INV_ITEM_SZ[0] * GG.utils.INV_ITEM_COUNT[0] + 10, 
           INV_ITEM_SZ[1] * GG.utils.INV_ITEM_COUNT[1] + 15]
+
 ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME2 = 1000
+
 BG_BLACK = "bg_black.png"
 INTERFACE_LOWER = "interface_lower.png"
+TILE_SELECTED = "selected.png"
+TILE_TARGET = "target.png"
 # =============================================================
 
 class IsoViewHud(isoview.IsoView): 
@@ -123,12 +129,12 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
     
     self.__selectedItem = None
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_SELECTED)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + TILE_SELECTED)  
     self.__selectedImage = pygame.sprite.Sprite()
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
     
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + GG.utils.TILE_TARGET)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + TILE_TARGET)  
     self.__targetTile = None
     self.__targetTileImage = pygame.sprite.Sprite()
     self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
