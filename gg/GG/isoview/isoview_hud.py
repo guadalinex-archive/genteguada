@@ -1385,8 +1385,8 @@ class IsoViewHud(isoview.IsoView):
   def finishGame(self):
     """ Finishes the game.
     """  
-    GG.genteguada.GenteGuada.getInstance().uploadFile("/home/jmariscal/imagesGenerated.zip")
-    #GG.genteguada.GenteGuada.getInstance().finish()
+    #GG.genteguada.GenteGuada.getInstance().uploadFile("/home/jmariscal/imagesGenerated.zip")
+    GG.genteguada.GenteGuada.getInstance().finish()
     
   def showFullScreen(self):
     """ Toggles the fullscreen mode.

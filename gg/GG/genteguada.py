@@ -238,7 +238,6 @@ class GenteGuada:
   def finalLlamadaAsincrona(self, resultado):
     print "LLamamos al final"
     print resultado
-    self.finish()
 
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
