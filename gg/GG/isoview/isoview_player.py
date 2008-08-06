@@ -105,7 +105,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       state = dataState
     else:
       state = self.getModel().getState()
-    if state == GG.utils.STATE[1] or state == GG.utils.STATE[3] or state == GG.utils.STATE[5]:
+    if state == GG.utils.STATE[1] or state == GG.utils.STATE[3]:
       string = GG.utils.getSpriteName(state, self.__heading, 0, self.__timestamp)
       frames.append(string)        
     else:
@@ -178,13 +178,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setMovieAnimation(None)  
       movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(st))
       self.setMovieAnimation(movieAnim)
-
-    elif st == GG.utils.STATE[5]: # standing_sleeping
-      self.getParent().removeMovementDestination()
-      self.setAnimation(None)   
-      self.setMovieAnimation(None)  
-      self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0, self.__timestamp))
-      self.getIVRoom().updateScreenPositionsOn(pos)
       
   def onJump(self, event):
     """ Triggers after receiving a player jump event.
