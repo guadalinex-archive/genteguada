@@ -26,112 +26,45 @@ NINA_PATH = "avatars/default_girl/"
 QUESTIONS_PATH = DATA_PATH+"/questions"
 
 # ======================= CONSTANTS ===========================
-
-
-# ======================= GENTEGUADA ===========================
-VERSION = "GenteGuada 0.2.0-1"
-
-# ======================= ISO_HUD ===========================
-BG_FULL_OR = [0, 0]
-TILE_TARGET_SHIFT = [18, 18]
-SELECTED_FLOOR_SHIFT = [55, -25]
-
-GAMEZONE_SZ = [SCREEN_SZ[0], 578]
-HUD_OR = [0, GAMEZONE_SZ[1]]
-
-CHAT_SZ = [753, 118]
-CHAT_OR = [14, GAMEZONE_SZ[1]+14]
-TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
-
-INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
-INV_ITEM_SZ = [60, 60]
-INV_SZ = [INV_ITEM_SZ[0]*INV_ITEM_COUNT[0] + 10, INV_ITEM_SZ[1]*INV_ITEM_COUNT[1] + 15]
-
-
-# ======================= ISO_ITEM ===========================
-COLOR_SHIFT = 80
-
-# ======================= ISO_CHATMESSAGE ===========================
-BALLOON_OPACITY = 210
-
-
-# ======================= PLAYER ===========================
-MAX_DEPTH = 1
-
-# ======================= CONSTANTS ===========================
-
 # Screen & General values
 TILE_SZ = [120, 60]
 CHAR_SZ = [50, 50]
 SCREEN_SZ = [1024, 768]
 SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
 FLOOR_SHIFT = [55, -30]
-
 # Chat & iventory
 INV_ITEM_COUNT = [3, 2]
-
-
-
 # Animation values
 TICK_DELAY = 0.45
 ANIM_WALKING_COUNT = 10
-
 ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
-ANIM_INVENTORY_TIME = 1000
-ANIM_CHAT_TIME1 = 2000
-ANIM_CHAT_TIME2 = 1000
-JUMP_TIME = 800
-JUMP_ANIMATION_TIME = 100
-JUMP_DISTANCE = 70
-JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
-
-
-POINTS_LOCATION = [800, 30]
-EXP_LOCATION = [800, 50]
-
 TEXT_COLOR = {"black": 0, "blue": 1}
-
 # Directions for a player's heading.
 HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
            5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
-
 # Player states.
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
-# Message types --> 0: general; 1: private; 2: npcs; 3: system)
-CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
+# ======================= GENTEGUADA ===========================
+VERSION = "GenteGuada 0.2.0-1"
 
-# ======================= SPRITES ===========================
 
-LOGIN_SCREEN = "login.png"
-BG_BLACK = "bg_black.png"
-TILE_STONE = "baldosaIsometricTile.tga"
-TILE_WATER = "aguaIsometricTile.tga"
-INTERFACE_LOWER = "interface_lower.png"
-IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
-# Sprites: items
+
+# ======================= GGSYSTEM ===========================
 PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
 PENGUIN_SPRITE_DOWN = "andatuz_down.png"
 PENGUIN_SPRITE_BOTTOMRIGHT = "andatuz_bottomright.png"
 ADVERTISEMENT_LEFT = "advertisementLeft.png"
 ADVERTISEMENT_MIDDLE = "advertisementMiddle.png"
 ADVERTISEMENT_RIGHT = "advertisementRight.png"
-BOOK_SPRITE = "book.png"
-BOOK_SPRITE_INV = "book.png"
-KEY_SPRITE = "golden_key.png"
-BLUE_KEY = "blue_key.png"
-
 KEY_GOLDEN = "golden_key.png"
 GIFT = "gift.png"
 BOX_HEAVY = "heavy_box.png"
-KILOGRAMME = "kilogramme.png"
-KILOGRAMME_INV = "kilogramme_inv.png"
 BEAM_WOODEN = "wooden_beam.png"
 PAPERMONEY_5 = "5Guadapuntos.png"
 PAPERMONEY_10 = "10Guadapuntos.png"
 PAPERMONEY_50 = "50Guadapuntos.png"
-
 TREE = "tree.png"
 COLUMN_STONE = "stone_column.png"
 BEAM_WOODEN = "wooden_beam.png"
@@ -145,7 +78,6 @@ YARD_LAMP_LEFT = "yard_lamp_left.png"
 YARD_UP = "yard_up.png"
 YARD_LEFT = "yard_left.png"
 YARD_CORNER = "yard_corner.png"
-
 HEDGE = "hedge.png"
 DOOR_GARDEN = "garden_door.png"
 DOOR_WOODEN = "wooden_door.png"
@@ -173,59 +105,32 @@ TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png
 TILES_CASTLE1 = ["castle01.png"]
 TILES_CASTLE2 = ["castle02.png"]
 
-#Backgrounds
+
+# ======================= ISO_ITEM ===========================
+COLOR_SHIFT = 80
+
+# ======================= ISO_CHATMESSAGE ===========================
+BALLOON_OPACITY = 210
+# Message types --> 0: general; 1: private; 2: npcs; 3: system)
+CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
+# Chat balloon pieces.
+CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
+CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
+CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
+CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
+BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
+BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
+BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
+BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
+TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
+
+
+# ======================= AVATAREDITOR ===========================
 PATH_EDITOR_BACKGROUNDS = "interface/backgrounds"
-
-# Sprites: avatar design and buttons
-DUMMY = "dummy.png"
-GENDER_TAG = "genderTag.png"
-
-# Avatar editor
 PATH_EDITOR_IMG = "editor"
-PATH_EDITOR_INTERFACE = "interface/editor"
 IMG_EXTENSION = ".png"
-PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
 MASK_SIZE = {"S":[112, 105], "M":[124, 116], "L":[134, 127], "XL":[146, 137]}
 MASK_COORD = {"S":(91, 114), "M":(86, 111), "L":(80, 105), "XL":(74, 100)}
-
-BACKGROUND_LEFT = "background_left.png"
-BACKGROUND_RIGHT = "background_right.png"
-BACKGROUND_MIDDLE = "background_middle.png"
-MALE_DUMMY = "male_dummy.png"
-FEMALE_DUMMY = "female_dummy.png"
-GENDER_TAG = "gender_tag.png"
-SKIN_TAG = "skin_tag.png"
-HEAD_TAG = "head_size_tag.png"
-BODY_TAG = "body_size_tag.png"
-MASK_TAG = "mask_tag.png"
-HAIR_TAG = "hair_tag.png"
-SHIRT_TAG = "shirt_tag.png"
-SHORT_TAG = "shorts_tag.png"
-SKIRT_TAG = "skirt_tag.png"
-SHOES_TAG = "shoes_tag.png"
-
-MALE_BTN = "male_button.png"
-MALE_HEAD = "/boy/head"
-MALE_MASK = "/boy/"
-MALE_SKIN = "/boy/skin/"
-MALE_SHORT_SHIRT = "/boy/short_shirt/"
-MALE_LONG_SHIRT = "/boy/long_shirt/"
-MALE_LONG_TROUSERS = "/boy/long_trousers/"
-MALE_SHORT_TROUSERS = "/boy/short_trousers/"
-MALE_SHOES = "/boy/shoes/"
-MALE_HAIR_1 = "/boy/hair1"
-MALE_HAIR_2 = "/boy/hair2"
-MALE_HAIR_3 = "/boy/hair3"
-
-FEMALE_BTN = "female_button.png"
-FEMALE_MASK = "female_mask.png"
-FEMALE_SKIN = "female_skin.png"
-FEMALE_SKIRT = "female_skirt.png"
-FEMALE_SLEEVE = "female_sleeve.png"
-FEMALE_SHOES = "female_shoes.png"
-FEMALE_HAIR_1 = "female_hair_1.png"
-FEMALE_HAIR_2 = "female_hair_2.png"
-FEMALE_HAIR_3 = "female_hair_3.png"
 COLOR_YELLOW = "yellow.png"
 COLOR_ORANGE = "orange.png"
 COLOR_RED = "red.png"
@@ -246,22 +151,37 @@ SKIN_6 = "skin_6.png"
 SKIN_7 = "skin_7.png"
 SKIN_8 = "skin_8.png"
 SKIN_9 = "skin_9.png"
-COLORS = {1:"COLOR_YELLOW", 2:"COLOR_ORANGE", 3:"COLOR_RED", 4:"COLOR_PINK", 5:"COLOR_BLUE", 6:"COLOR_PURPLE", 7:"COLOR_GREEN", 8:"COLOR_WHITE", 9:"COLOR_BLACK"}
-HAIR_COLORS = {1:"COLOR_BLONDE", 2:"COLOR_BROWN", 3:"COLOR_BLACK"}
-SKIN_COLORS = {1:"SKIN_1", 2:"SKIN_2", 3:"SKIN_3", 4:"SKIN_4", 5:"SKIN_5", 6:"SKIN_6", 7:"SKIN_7", 8:"SKIN_8", 9:"SKIN_9"}
+
+# ======================= ISO_PLAYER ===========================
+JUMP_TIME = 800
+JUMP_ANIMATION_TIME = 100
+JUMP_DISTANCE = 70
+JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
+
+# ======================= PLAYER ===========================
+MAX_DEPTH = 1
+
+
+
+# ======================= SPRITES ===========================
+IMAGE_CHAT_MESSAGE = "chatEntry.png"
+
+# Avatar editor
+PATH_EDITOR_INTERFACE = "interface/editor"
+PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
+
+GENDER_TAG = "gender_tag.png"
+SKIN_TAG = "skin_tag.png"
+HEAD_TAG = "head_size_tag.png"
+BODY_TAG = "body_size_tag.png"
+MASK_TAG = "mask_tag.png"
+HAIR_TAG = "hair_tag.png"
+SHIRT_TAG = "shirt_tag.png"
+SHORT_TAG = "shorts_tag.png"
+SKIRT_TAG = "skirt_tag.png"
+SHOES_TAG = "shoes_tag.png"
 
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
-
-# Chat balloon pieces.
-CORNER_TOPLEFT = {0: "corner_topleft_white.png", 1: "corner_topleft_red.png", 2: "corner_topleft_green.png", 3: "corner_topleft_blue.png"}
-CORNER_TOPRIGHT = {0: "corner_topright_white.png", 1: "corner_topright_red.png", 2: "corner_topright_green.png", 3: "corner_topright_blue.png"}
-CORNER_BOTTOMLEFT = {0: "corner_bottomleft_white.png", 1: "corner_bottomleft_red.png", 2: "corner_bottomleft_green.png", 3: "corner_bottomleft_blue.png"}
-CORNER_BOTTOMRIGHT = {0: "corner_bottomright_white.png", 1: "corner_bottomright_red.png", 2: "corner_bottomright_green.png", 3: "corner_bottomright_blue.png"}
-BORDER_TOP = {0: "border_top_white.png", 1: "border_top_red.png", 2: "border_top_green.png", 3: "border_top_blue.png"}
-BORDER_LEFT = {0: "border_left_white.png", 1: "border_left_red.png", 2: "border_left_green.png", 3: "border_left_blue.png"}
-BORDER_RIGHT = {0: "border_right_white.png", 1: "border_right_red.png", 2: "border_right_green.png", 3: "border_right_blue.png"}
-BORDER_BOTTOM = {0: "border_bottom_white.png", 1: "border_bottom_red.png", 2: "border_bottom_green.png", 3: "border_bottom_blue.png"}
-TAIL = {0: "tail_white.png", 1: "tail_red.png", 2: "tail_green.png", 3: "tail_blue.png"}
 
 TILES = ["grass01.png", "grass02.png", "grass03.png", "pavingStone01.png", "pavingStone02.png", \
          "pavingStone03.png", "pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", \
@@ -276,8 +196,6 @@ SOUND_KEYS = "keys.ogg"
 SOUND_OPENDOOR = "open_door.ogg"
 SOUND_STEPS01 = "steps01.ogg"
 SOUND_STEPS02 = "steps02.ogg"
-
-
 
 # ===============================================================
 # =========================== METHODS ===========================

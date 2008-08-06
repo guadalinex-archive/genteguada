@@ -20,6 +20,25 @@ from pygame.locals import * # faster name resolution
 from PIL import Image
 import os
 
+# ======================= CONSTANTS ===========================
+BG_FULL_OR = [0, 0]
+TILE_TARGET_SHIFT = [18, 18]
+SELECTED_FLOOR_SHIFT = [55, -25]
+GAMEZONE_SZ = [GG.utils.SCREEN_SZ[0], 578]
+HUD_OR = [0, GAMEZONE_SZ[1]]
+CHAT_SZ = [753, 118]
+CHAT_OR = [14, GAMEZONE_SZ[1]+14]
+TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
+INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
+INV_ITEM_SZ = [60, 60]
+INV_SZ = [INV_ITEM_SZ[0] * GG.utils.INV_ITEM_COUNT[0] + 10, 
+          INV_ITEM_SZ[1] * GG.utils.INV_ITEM_COUNT[1] + 15]
+ANIM_INVENTORY_TIME = 1000
+ANIM_CHAT_TIME2 = 1000
+BG_BLACK = "bg_black.png"
+INTERFACE_LOWER = "interface_lower.png"
+# =============================================================
+
 class IsoViewHud(isoview.IsoView): 
   """ IsoViewHud class.
   Defines the HUD.
@@ -37,11 +56,11 @@ class IsoViewHud(isoview.IsoView):
     
     self.__allSprites = guiobjects.GroupSprite()
     
-    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.BG_BLACK)
+    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
-    self.__bg.rect.topleft = GG.utils.BG_FULL_OR
+    self.__bg.rect.topleft = BG_FULL_OR
     self.__bg.zOrder = -2
     
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
@@ -73,9 +92,9 @@ class IsoViewHud(isoview.IsoView):
     
     self.__img = pygame.sprite.Sprite()
     #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
-    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)).convert_alpha()
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + INTERFACE_LOWER)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1] - 70
+    self.__img.rect.topleft = HUD_OR[0], HUD_OR[1] - 70
     self.__img.zOrder = -1
     
     model.subscribeEvent('chatAdded', self.chatAdded)
@@ -197,7 +216,7 @@ class IsoViewHud(isoview.IsoView):
       elif event_type == MOUSEBUTTONDOWN:
         if not self.windowOpen():
           cordX, cordY = pygame.mouse.get_pos()
-          if 0 <= cordY <= GG.utils.HUD_OR[1]:
+          if 0 <= cordY <= HUD_OR[1]:
             if self.ctrl and self.__player.getAccessMode():
               dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
               if not dest == [-1, -1]:
@@ -337,14 +356,14 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
     if ivItem != None:
-      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
       positionAnim.setOnStop(item.getRoom().removeItem, item)
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
       self.__isoviewRoom.addIsoViewItem(ivItem)  
-      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
@@ -364,7 +383,7 @@ class IsoViewHud(isoview.IsoView):
       posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
-      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       ivItem.setAnimation(positionAnim)
@@ -382,7 +401,7 @@ class IsoViewHud(isoview.IsoView):
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
     if ivItem:
-      positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             [endPos[0], 0], endPos, True)
       ivItem.setAnimation(positionAnim)
       if hasattr(item, "username"):
@@ -441,7 +460,7 @@ class IsoViewHud(isoview.IsoView):
         self.removeSprite(img)
       
       self.__isoviewRoom = None
-      rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
+      rect = pygame.Rect(0, 0, GAMEZONE_SZ[0], GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
@@ -457,9 +476,9 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the HUD background on screen.
     """
     self.hud = ocempgui.widgets.Box(1024, 262)
-    self.hud.topleft = GG.utils.HUD_OR[0], GG.utils.HUD_OR[1]- 50
+    self.hud.topleft = HUD_OR[0], HUD_OR[1]- 50
 
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + GG.utils.INTERFACE_LOWER)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + INTERFACE_LOWER)
     self.imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     self.imgBackground.topleft = 1, 1
     self.hud.add_child(self.imgBackground)
@@ -519,7 +538,7 @@ class IsoViewHud(isoview.IsoView):
     self.textArea.set_style(myOwnStyle)
     self.textArea.update()
     self.textArea.set_scrolling(1)
-    self.textArea.topleft = GG.utils.CHAT_OR[0], 90
+    self.textArea.topleft = CHAT_OR[0], 90
     self.__layoutTextArea = ocempgui.widgets.VFrame()
     self.__layoutTextArea.border = 0
     self.__layoutTextArea.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
@@ -616,8 +635,8 @@ class IsoViewHud(isoview.IsoView):
       animTime = 2000 
     
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
-    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_CHAT_TIME2, ivMessageChat, \
-                            ivMessageChat.getScreenPosition(), GG.utils.TEXT_BOX_OR, True)
+    positionAnim = animation.ScreenPositionAnimation(ANIM_CHAT_TIME2, ivMessageChat, \
+                            ivMessageChat.getScreenPosition(), TEXT_BOX_OR, True)
     idleAnim.setOnStop(self.removeSprite, ivMessageChat.getTail())
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(idleAnim)
@@ -641,7 +660,7 @@ class IsoViewHud(isoview.IsoView):
     target: movement destination.
     """  
     self.removeMovementDestination()
-    self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, GG.utils.TILE_TARGET_SHIFT)
+    self.__targetTileImage.rect.topleft = GG.utils.p3dToP2d(target, TILE_TARGET_SHIFT)
     self.__targetTileImage.zOrder = (pow(target[0], 2) + pow(target[1], 2))*10 - 1
     self.addSprite(self.__targetTileImage)        
     self.__targetTile = True  
@@ -669,7 +688,7 @@ class IsoViewHud(isoview.IsoView):
         if highlight:  
           self.__isoviewRoom.itemSelected(self.__selectedItem)
         selImgPos = self.__selectedItem.getPosition()
-        self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, GG.utils.SELECTED_FLOOR_SHIFT)
+        self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
         self.__selectedImage.zOrder = 0
         self.addSprite(self.__selectedImage)        
     if self.__player.getAccessMode():
@@ -1188,10 +1207,10 @@ class IsoViewHud(isoview.IsoView):
       cordX = 0
     if y < 0:
       cordY = 0
-    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
-      cordX = GG.utils.GAMEZONE_SZ[0] - width  
-    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
-      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    if (x + width) > GAMEZONE_SZ[0]:
+      cordX = GAMEZONE_SZ[0] - width  
+    if (y + height) > GAMEZONE_SZ[1]:
+      cordY = GAMEZONE_SZ[1] - height - 75
     self.createItemsWindow.setScreenPosition(cordX, cordY)  
     self.createItemsWindow.hide = False
     
@@ -1228,10 +1247,10 @@ class IsoViewHud(isoview.IsoView):
       cordX = 0
     if y < 0:
       cordY = 0
-    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
-      cordX = GG.utils.GAMEZONE_SZ[0] - width  
-    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
-      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    if (x + width) > GAMEZONE_SZ[0]:
+      cordX = GAMEZONE_SZ[0] - width  
+    if (y + height) > GAMEZONE_SZ[1]:
+      cordY = GAMEZONE_SZ[1] - height - 75
     self.createRoomWindow.setScreenPosition(cordX, cordY)  
     self.createRoomWindow.hide = False
     
@@ -1290,10 +1309,10 @@ class IsoViewHud(isoview.IsoView):
       cordX = 0
     if y < 0:
       cordY = 0
-    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
-      cordX = GG.utils.GAMEZONE_SZ[0] - width  
-    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
-      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
+    if (x + width) > GAMEZONE_SZ[0]:
+      cordX = GAMEZONE_SZ[0] - width  
+    if (y + height) > GAMEZONE_SZ[1]:
+      cordY = GAMEZONE_SZ[1] - height - 75
     self.privateChatWindow.setScreenPosition(cordX, cordY)  
     self.privateChatWindow.hide = False
     
@@ -1313,8 +1332,8 @@ class IsoViewHud(isoview.IsoView):
     self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
     szX, szY = self.tooltipWindow.size
-    if (x + 8 + szX) > GG.utils.GAMEZONE_SZ[0]:
-      self.tooltipWindow.topleft = GG.utils.GAMEZONE_SZ[0] - szX, y - 5
+    if (x + 8 + szX) > GAMEZONE_SZ[0]:
+      self.tooltipWindow.topleft = GAMEZONE_SZ[0] - szX, y - 5
     else:
       self.tooltipWindow.topleft = x + 8, y - 5
     self.tooltipWindow.depth = 99 # Make it the topmost widget.
@@ -1508,7 +1527,7 @@ class IsoViewHud(isoview.IsoView):
       return
     ivItem = self.findIVItem(self.__selectedItem)
     ivItem.updateZOrder(40000)
-    positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_INVENTORY_TIME, ivItem, \
+    positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             ivItem.getScreenPosition(), [565, 90+568], True)
     #positionAnim.setOnStop(self.__player.setUnselectedItem, None)
     positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)

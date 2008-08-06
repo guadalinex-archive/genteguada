@@ -511,8 +511,8 @@ class OcempImageContactList(OcempImageFileList):
         except:
           return 
         img.thumbnail(size, Image.ANTIALIAS)
-        img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
-        filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
+        img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, name))
+        filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, name)
         item._icon = ocempgui.draw.Image.load_image(filePath)
         
 # ===============================================================
