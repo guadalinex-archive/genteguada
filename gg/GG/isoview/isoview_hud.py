@@ -77,9 +77,9 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.hide = True
     
     if self.__player.getAccessMode():
-      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creacion de objetos", self.__player, self)
+      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, unicode("Creación de objetos"), self.__player, self)
       self.createItemsWindow.hide = True
-      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creacion de habitaciones", self.__player, self)
+      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, unicode("Creación de habitaciones"), self.__player, self)
       self.createRoomWindow.hide = True
     else:
       self.createItemsWindow = None  
@@ -190,11 +190,8 @@ class IsoViewHud(isoview.IsoView):
     self.deleteRoomMenu = False
     self.kickPlayerBox = None
     self.kickPlayerMenu = False
-    
     self.adminMenu = False
     self.deleteConfirmDialog = None
-    
-  
   
   def processEvent(self, events):
     """ Processes the input events.
@@ -728,8 +725,8 @@ class IsoViewHud(isoview.IsoView):
     self.adminOptions.add_child(itemLabel)
     
     ACTIONS = [
-              {"image":"interface/hud/teleport.png", "action": self.teleportHandler, "tooltip":"Teleportacion"},
-              {"image":"interface/hud/4.png", "action": self.createItemsHandler, "tooltip":"Panel de creacion de objetos"},
+              {"image":"interface/hud/teleport.png", "action": self.teleportHandler, "tooltip":"Teleportación"},
+              {"image":"interface/hud/4.png", "action": self.createItemsHandler, "tooltip":"Panel de creación de objetos"},
               {"image":"interface/hud/substraction.png", "action": self.deleteRoomHandler, "tooltip":"Eliminar habitación"},
               {"image":"interface/hud/addition.png", "action": self.createRoomHandler, "tooltip":"Crear habitación"},
               {"image":"interface/hud/jump.png", "action": self.kickPlayerHandler, "tooltip":"Expulsar jugador"},
@@ -751,7 +748,7 @@ class IsoViewHud(isoview.IsoView):
   # *********************************************************************************
   
   def kickPlayerHandler(self):
-    """ Handles the teleport button.
+    """ Handles the kick player button.
     """  
     if not self.kickPlayerMenu:
       self.kickPlayer()
@@ -759,7 +756,7 @@ class IsoViewHud(isoview.IsoView):
       self.discardKickPlayer()
       
   def kickPlayer(self):
-    """ Creates and shows the admin teleport menu. 
+    """ Creates and shows the kick player menu. 
     """  
     if not self.createItemsWindow.hide:
       self.hideCreateItems()
@@ -784,10 +781,9 @@ class IsoViewHud(isoview.IsoView):
     titleLabel.topleft = 22, 0
     self.kickPlayerBox.add_child(titleLabel)
     
-    #rooms = self.getModel().getRoomLabels()
     players = self.getModel().getPlayersList()
     
-    #rooms.sort()
+    players.sort()
     self.playerLabels = guiobjects.OcempImageObjectList(110, 205, players)
     self.playerLabels.topleft = 20, 40
     self.kickPlayerBox.add_child(self.playerLabels) 
@@ -836,10 +832,8 @@ class IsoViewHud(isoview.IsoView):
   def discardKickPlayer(self):
     """ Closes the admin teleport window.
     """  
-    #print "********************", self.kickPlayerMenu
     if not self.kickPlayerMenu:
       return
-  
     self.removeSprite(self.kickPlayerBox)
     self.widgetContainer.remove_widget(self.kickPlayerBox)
     self.kickPlayerBox = None
@@ -850,8 +844,6 @@ class IsoViewHud(isoview.IsoView):
       self.dropActionsItembuttons()
     
   # *********************************************************************************  
-    
-    
     
   def itemSelectedByAdmin(self):
     """ Paints the selected item actions admin pannel.
@@ -1167,7 +1159,7 @@ class IsoViewHud(isoview.IsoView):
       return  
     room = self.getModel().getRoom(roomLabel)
     if not room:
-      self.__player.newChatMessage("La habitacion seleccionada no existe", 1)
+      self.__player.newChatMessage("La habitación seleccionada no existe", 1)
       return  
     pos = self.__player.getPosition()
     pos = room.getNearestEmptyCell(pos)
@@ -1175,7 +1167,7 @@ class IsoViewHud(isoview.IsoView):
     self.discardTeleport()
     
     if room.isFull():
-      self.__player.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      self.__player.newChatMessage("La habitación esta completa. Volvere a intentarlo mas tarde", 1)
       return
     itemList = self.__player.getTile().getItemsFrom(self.__player)
     for item in itemList:
@@ -1265,7 +1257,7 @@ class IsoViewHud(isoview.IsoView):
     """  
     roomLabel = self.deleteRoomLabels.getSelectedName()
     if not roomLabel:
-      self.__player.newChatMessage("Escoja una habitaciÃ³n para eliminar", 1)
+      self.__player.newChatMessage("Escoja una habitación para eliminar", 1)
       return  
     room = self.getModel().getRoom(roomLabel)
     pos = self.__player.getPosition()
@@ -1280,7 +1272,7 @@ class IsoViewHud(isoview.IsoView):
     if GG.genteguada.GenteGuada.getInstance().deleteRoom(roomLabel):
       self.__player.newChatMessage("Habitación eliminada con éxito", 1)
     else:
-      self.__player.newChatMessage("Error: habitacion no encontrada", 1)  
+      self.__player.newChatMessage("Error: habitación no encontrada", 1)  
     self.deleteRoomMenu = False  
     self.itemUnselected()
     self.dropActionsItembuttons()
@@ -1389,7 +1381,7 @@ class IsoViewHud(isoview.IsoView):
     self.hideCreateRoom()
     room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers)
     if not room:
-      self.__player.newChatMessage("La etiqueta de habitacion ya existe.", 1)
+      self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return
     pos = room.getNearestEmptyCell(self.__player.getPosition())
     itemList = self.__player.getTile().getItemsFrom(self.__player)
@@ -1447,7 +1439,7 @@ class IsoViewHud(isoview.IsoView):
     """ Shows the selected button tooltip.
     label: tooltip label.
     """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (unicode(label))
     x, y = pygame.mouse.get_pos ()
     szX, szY = self.tooltipWindow.size
     if (x + 8 + szX) > GAMEZONE_SZ[0]:
@@ -1473,7 +1465,6 @@ class IsoViewHud(isoview.IsoView):
     self.winWardrobe = self.wardrobe.draw()
     self.addSprite(self.winWardrobe)
     self.widgetContainer.add_widget(self.winWardrobe)
-    #GG.genteguada.GenteGuada.getInstance().activeScreen = self.wardrobe
     
   def closeDresser(self, configuration = None):
     """ Closes the avatar configuration window.
@@ -1522,7 +1513,6 @@ class IsoViewHud(isoview.IsoView):
   def finishGame(self):
     """ Finishes the game.
     """  
-    #GG.genteguada.GenteGuada.getInstance().uploadFile("/home/jmariscal/imagesGenerated.zip")
     GG.genteguada.GenteGuada.getInstance().finish()
     
   def showFullScreen(self):
@@ -1548,7 +1538,7 @@ class IsoViewHud(isoview.IsoView):
                 {"image":"interface/hud/spinright.png", "action": self.turnRight, "tooltip":"Rotar derecha (R)"},
                 {"image":"interface/hud/spinleft.png", "action": self.turnLeft, "tooltip":"Rotar izquierda (L)"},
                 {"image":"interface/hud/jump.png", "action": self.jump, "tooltip":"Saltar (J)"},
-                {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuracion avatar (D)"},
+                {"image":"interface/hud/dresser.png", "action": self.showDresser, "tooltip":"Cambiar configuración avatar (D)"},
               ]
     i = 0
     for buttonData in ACTIONS:

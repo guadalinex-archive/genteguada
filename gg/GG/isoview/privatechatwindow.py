@@ -111,7 +111,7 @@ class PrivateChatWindow:
     """ Show a button's tooltip.
     label: tooltip label.
     """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (unicode(label))
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
     self.tooltipWindow.depth = 99

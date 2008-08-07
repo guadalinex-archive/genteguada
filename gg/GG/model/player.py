@@ -380,7 +380,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.username, \
+    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(unicode(message), self.username, \
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType))
 
   def getSelected(self):
@@ -672,4 +672,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent("privateChatReceived", chat=line, player=player)
     
   def kick(self):
+    """ Kicks this player from the game.
+    """  
     self.triggerEvent("finish")
