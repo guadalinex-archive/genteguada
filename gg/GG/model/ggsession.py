@@ -83,7 +83,13 @@ class GGSession(ggmodel.GGModel):
     """ Returns one specific room.
     roomLabel: room label.
     """  
-    return self.__system.existsRoom(roomLabel)  
+    return self.__system.existsRoom(roomLabel)
+
+  def getPlayersList(self):
+    return self.__system.getPlayersList()    
+
+  def getSpecificPlayer(self, name):
+    return self.__system.getSpecificPlayer(name)  
     
   def getObjectsData(self):
     """ Returns the objects data.

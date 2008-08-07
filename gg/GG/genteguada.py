@@ -32,6 +32,7 @@ class GenteGuada:
     self.fs = None
     self.window = None
     self.widgetContainer = None
+    self.exitCondition = False
     self.clearCache()
     
   @staticmethod
@@ -53,7 +54,8 @@ class GenteGuada:
     self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     self.isoHud.unsubscribeAllEvents()
     pygame.mixer.music.stop()
-    sys.exit(0)
+    #sys.exit(0)
+    self.exitCondition = True
   
   def start(self, params):
     pygame.init()
@@ -157,7 +159,7 @@ class GenteGuada:
       client_processEvents = lambda : None  # Do nothing!
 
     last = get_ticks()
-    while True:
+    while not self.exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
       theClock_tick(intentedFPS)
 

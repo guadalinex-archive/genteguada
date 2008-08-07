@@ -127,6 +127,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('destination', self.destinationChanged)
     self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
     self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
+    self.__player.subscribeEvent('finish', self.finish)
     
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + TILE_SELECTED)  
@@ -187,8 +188,13 @@ class IsoViewHud(isoview.IsoView):
     self.teleportMenu = False
     self.deleteRoomBox = None
     self.deleteRoomMenu = False
+    self.kickPlayerBox = None
+    self.kickPlayerMenu = False
+    
     self.adminMenu = False
     self.deleteConfirmDialog = None
+    
+  
   
   def processEvent(self, events):
     """ Processes the input events.
@@ -237,7 +243,8 @@ class IsoViewHud(isoview.IsoView):
     """ Checks if there is an open window.
     """
     if self.activeExchageWindow or self.activeQuizWindow or self.activeContactDialog or self.winWardrobe \
-      or self.adminMenu or self.teleportMenu or self.deleteRoomMenu or self.deleteConfirmDialog:
+      or self.adminMenu or self.teleportMenu or self.deleteRoomMenu or self.kickPlayerMenu \
+      or self.deleteConfirmDialog:
       return True
     if self.privateChatWindow:
       if not self.privateChatWindow.hide:
@@ -705,9 +712,10 @@ class IsoViewHud(isoview.IsoView):
   def paintAdminOptions(self):
     """ Paints the admin action buttons on screen.
     """  
-    self.adminOptions = ocempgui.widgets.Box(259, 95)
+    #self.adminOptions = ocempgui.widgets.Box(259, 95)
+    self.adminOptions = ocempgui.widgets.Box(317, 95)
     self.adminOptions.topleft = [0, 431]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions2.png")
     self.adminOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 1, 1
@@ -719,33 +727,131 @@ class IsoViewHud(isoview.IsoView):
     itemLabel.topleft = 26, -4
     self.adminOptions.add_child(itemLabel)
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "teleport.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportacion", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.teleportHandler)
-    createObjectButton.topleft = 12, 40
-    self.adminOptions.add_child(createObjectButton)
+    ACTIONS = [
+              {"image":"interface/hud/teleport.png", "action": self.teleportHandler, "tooltip":"Teleportacion"},
+              {"image":"interface/hud/4.png", "action": self.createItemsHandler, "tooltip":"Panel de creacion de objetos"},
+              {"image":"interface/hud/substraction.png", "action": self.deleteRoomHandler, "tooltip":"Eliminar habitación"},
+              {"image":"interface/hud/addition.png", "action": self.createRoomHandler, "tooltip":"Crear habitación"},
+              {"image":"interface/hud/jump.png", "action": self.kickPlayerHandler, "tooltip":"Expulsar jugador"},
+              ]
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "4.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Panel de creacion de objetos", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createItemsHandler)
-    createObjectButton.topleft = 74, 40
-    self.adminOptions.add_child(createObjectButton)
-    
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "substraction.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Eliminar habitación", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteRoomHandler)
-    createObjectButton.topleft = 136, 40
-    self.adminOptions.add_child(createObjectButton)
-    
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "addition.png")
-    createObjectButton = guiobjects.OcempImageButtonTransparent(filePath, "Crear habitación", self.showTooltip, self.removeTooltip)
-    createObjectButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoomHandler)
-    createObjectButton.topleft = 198, 40
-    self.adminOptions.add_child(createObjectButton)
+    i = 0
+    for buttonData in ACTIONS:
+      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
+      button = guiobjects.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
+      button.topleft = 12 + i*61, 40
+      button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
+      self.adminOptions.add_child(button)
+      i += 1
     
     self.adminOptions.zOrder = 10000
     self.addSprite(self.adminOptions)
     self.widgetContainer.add_widget(self.adminOptions)
+    
+  # *********************************************************************************
+  
+  def kickPlayerHandler(self):
+    """ Handles the teleport button.
+    """  
+    if not self.kickPlayerMenu:
+      self.kickPlayer()
+    else:
+      self.discardKickPlayer()
+      
+  def kickPlayer(self):
+    """ Creates and shows the admin teleport menu. 
+    """  
+    if not self.createItemsWindow.hide:
+      self.hideCreateItems()
+      self.hideCreateRoom()
+    
+    self.discardChanges()
+    self.discardTeleport()
+    self.discardDeleteRoom()
+    
+    self.kickPlayerBox = ocempgui.widgets.Box(150, 300)
+    self.kickPlayerBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
+    
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
+    self.kickPlayerBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0, 0
+    self.kickPlayerBox.add_child(imgBackground)
+    
+    #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
+    titleLabel = guiobjects.OcempLabel("Escoja jugador", guiobjects.STYLES["teleportLabel"])
+    #titleLabel.topleft = 22,10
+    titleLabel.topleft = 22, 0
+    self.kickPlayerBox.add_child(titleLabel)
+    
+    #rooms = self.getModel().getRoomLabels()
+    players = self.getModel().getPlayersList()
+    
+    #rooms.sort()
+    self.playerLabels = guiobjects.OcempImageObjectList(110, 205, players)
+    self.playerLabels.topleft = 20, 40
+    self.kickPlayerBox.add_child(self.playerLabels) 
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
+    okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyKickPlayer)
+    okButton.topleft = 10, 262
+    self.kickPlayerBox.add_child(okButton)
+    
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
+    cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardKickPlayer)
+    cancelButton.topleft = 80, 262
+    self.kickPlayerBox.add_child(cancelButton)
+    
+    self.kickPlayerBox.zOrder = 10000
+    self.addSprite(self.kickPlayerBox)
+    self.widgetContainer.add_widget(self.kickPlayerBox)
+    
+    self.kickPlayerMenu = True
+    
+  def applyKickPlayer(self):
+    """ Teleports the player to another room.
+    """  
+    playerLabel = self.playerLabels.getSelectedName()
+    if not playerLabel:
+      self.__player.newChatMessage("Escoja un jugador para expulsar", 1)
+      return  
+    player = self.getModel().getSpecificPlayer(playerLabel)
+    if not player:
+      self.__player.newChatMessage("Jugador no encontrado", 1)
+      return  
+    if player.username == self.__player.username:
+      self.__player.newChatMessage("No puedes expulsarte a ti mismo", 1)
+      return
+    
+    self.discardKickPlayer()
+    
+    player.kick()
+    
+    self.kickPlayerMenu = False  
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+      
+  def discardKickPlayer(self):
+    """ Closes the admin teleport window.
+    """  
+    #print "********************", self.kickPlayerMenu
+    if not self.kickPlayerMenu:
+      return
+  
+    self.removeSprite(self.kickPlayerBox)
+    self.widgetContainer.remove_widget(self.kickPlayerBox)
+    self.kickPlayerBox = None
+    self.kickPlayerMenu = False
+    self.removeTooltip()
+    if not self.adminMenu:
+      self.itemUnselected()
+      self.dropActionsItembuttons()
+    
+  # *********************************************************************************  
+    
+    
     
   def itemSelectedByAdmin(self):
     """ Paints the selected item actions admin pannel.
@@ -753,6 +859,11 @@ class IsoViewHud(isoview.IsoView):
     actions = self.__selectedItem.getAdminActions()
     if not actions:
       return
+  
+    self.discardTeleport()
+    self.discardDeleteRoom()
+    self.discardKickPlayer()    
+    
     self.buttonBarAdminActions = ocempgui.widgets.Box(150, 300)
     self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
@@ -1003,16 +1114,13 @@ class IsoViewHud(isoview.IsoView):
     if not self.createItemsWindow.hide:
       self.hideCreateItems()
       self.hideCreateRoom()
+      
+    self.discardChanges()
+    self.discardKickPlayer()
+    self.discardDeleteRoom()
     
     self.teleportBox = ocempgui.widgets.Box(150, 300)
-    if self.adminMenu:
-      self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 302, 129]
-    else:  
-      self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
-    
-    if self.deleteRoomMenu:
-      topleft = self.deleteRoomBox.topleft
-      self.deleteRoomBox.topleft = [topleft[0] - 151, topleft[1]]
+    self.teleportBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
     self.teleportBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
@@ -1058,6 +1166,9 @@ class IsoViewHud(isoview.IsoView):
       self.__player.newChatMessage("Escoja un destino para el teletransporte", 1)
       return  
     room = self.getModel().getRoom(roomLabel)
+    if not room:
+      self.__player.newChatMessage("La habitacion seleccionada no existe", 1)
+      return  
     pos = self.__player.getPosition()
     pos = room.getNearestEmptyCell(pos)
     
@@ -1077,7 +1188,9 @@ class IsoViewHud(isoview.IsoView):
       
   def discardTeleport(self):
     """ Closes the admin teleport window.
-    """  
+    """
+    if not self.teleportMenu:
+      return
     self.removeSprite(self.teleportBox)
     self.widgetContainer.remove_widget(self.teleportBox)
     self.teleportBox = None
@@ -1103,16 +1216,13 @@ class IsoViewHud(isoview.IsoView):
     if not self.createItemsWindow.hide:
       self.hideCreateItems()
       self.hideCreateRoom()
-    if self.teleportMenu:
-      self.discardTeleport()  
+    
+    self.discardChanges()
+    self.discardTeleport()
+    self.discardKickPlayer()
     
     self.deleteRoomBox = ocempgui.widgets.Box(150, 300)
-    basePos = [GG.utils.SCREEN_SZ[0] - 151, 129]
-    if self.adminMenu:
-      basePos[0] -= 151
-    if self.teleportMenu:
-      basePos[0] -= 151
-    self.deleteRoomBox.topleft = basePos
+    self.deleteRoomBox.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminActions.png")
     self.deleteRoomBox.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
@@ -1121,9 +1231,9 @@ class IsoViewHud(isoview.IsoView):
     self.deleteRoomBox.add_child(imgBackground)
     
     #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
-    titleLabel = guiobjects.OcempLabel("Eliminar habitacion", guiobjects.STYLES["teleportLabel"])
+    titleLabel = guiobjects.OcempLabel(unicode("Eliminar habitación"), guiobjects.STYLES["teleportLabel"])
     #titleLabel.topleft = 22,10
-    titleLabel.topleft = 22, 0
+    titleLabel.topleft = 4, 0
     self.deleteRoomBox.add_child(titleLabel)
     
     rooms = self.getModel().getRoomLabels()
@@ -1178,6 +1288,8 @@ class IsoViewHud(isoview.IsoView):
   def discardDeleteRoom(self):
     """ Closes the delete room window.
     """  
+    if not self.deleteRoomMenu:
+      return    
     self.removeSprite(self.deleteRoomBox)
     self.widgetContainer.remove_widget(self.deleteRoomBox)
     self.deleteRoomBox = None
@@ -1883,12 +1995,11 @@ class IsoViewHud(isoview.IsoView):
   def discardChanges(self):
     """ Discards the changes to the selected item attributes.
     """  
+    if not self.adminMenu:
+      return
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.adminMenu = False
-    if self.teleportBox:
-      x, y = self.teleportBox.topleft
-      self.teleportBox.topleft = x + 151, y
     
   def removeSelectedItemConfirmation(self):
     self.deleteConfirmDialog = ocempgui.widgets.Box(300, 120)
@@ -1931,3 +2042,6 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.deleteConfirmDialog)
     self.deleteConfirmDialog = None
 
+  def finish(self, event):
+    #GG.genteguada.GenteGuada.getInstance().finish()
+    self.finishGame()
