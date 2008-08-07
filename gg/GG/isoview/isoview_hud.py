@@ -15,6 +15,7 @@ import guiobjects
 import privatechatwindow
 import createitemswindow
 import createroomwindow
+import broadcastwindow
 
 from pygame.locals import * # faster name resolution
 from PIL import Image
@@ -81,6 +82,8 @@ class IsoViewHud(isoview.IsoView):
       self.createItemsWindow.hide = True
       self.createRoomWindow = createroomwindow.CreateRoomWindow(model, unicode("Creación de habitaciones"), self.__player, self)
       self.createRoomWindow.hide = True
+      self.broadcastWindow = broadcastwindow.BroadcastWindow(unicode("Mensajes de sistema"), self.__player, self)
+      self.broadcastWindow.hide = True
     else:
       self.createItemsWindow = None  
       self.createRoomWindow = None  
@@ -248,6 +251,9 @@ class IsoViewHud(isoview.IsoView):
         return True
     if self.createItemsWindow:
       if not self.createItemsWindow.hide:
+        return True
+    if self.broadcastWindow:
+      if not self.broadcastWindow.hide:
         return True
     if self.createRoomWindow:
       if not self.createRoomWindow.hide:
@@ -710,9 +716,10 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the admin action buttons on screen.
     """  
     #self.adminOptions = ocempgui.widgets.Box(259, 95)
-    self.adminOptions = ocempgui.widgets.Box(317, 95)
+    #self.adminOptions = ocempgui.widgets.Box(317, 95)
+    self.adminOptions = ocempgui.widgets.Box(379, 95)
     self.adminOptions.topleft = [0, 431]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions2.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/adminOptions.png")
     self.adminOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 1, 1
@@ -737,7 +744,7 @@ class IsoViewHud(isoview.IsoView):
     for buttonData in ACTIONS:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(buttonData['image'])
       button = guiobjects.OcempImageButtonTransparent(filePath, buttonData['tooltip'], self.showTooltip, self.removeTooltip)
-      button.topleft = 12 + i*61, 40
+      button.topleft = 13 + i*61, 40
       button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, buttonData['action'])
       self.adminOptions.add_child(button)
       i += 1
@@ -747,9 +754,6 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.adminOptions)
     
   # *********************************************************************************
-  
-  def broadcastHandler(self):
-    pass  
   
   def kickPlayerHandler(self):
     """ Handles the kick player button.
@@ -1334,6 +1338,46 @@ class IsoViewHud(isoview.IsoView):
     self.removeSprite(self.createItemsWindow.window)
     self.widgetContainer.remove_widget(self.createItemsWindow.window)
     self.createItemsWindow.hide = True
+  
+  # *********************************************************************************
+  
+  def broadcastHandler(self):
+    """ Shows or hides the broadcast window.
+    """  
+    if not self.broadcastWindow:
+      self.showBroadcast()
+    else:
+      if self.broadcastWindow.hide:
+        self.showBroadcast()
+      else:
+        self.hideBroadcast()
+         
+  def showBroadcast(self):
+    """ Shows the broadcast window.
+    """
+    self.addSprite(self.broadcastWindow.window)
+    self.widgetContainer.add_widget(self.broadcastWindow.window)
+    x, y = self.broadcastWindow.getScreenPosition()
+    width, height = self.broadcastWindow.getSize()
+    cordX = x
+    cordY = y
+    if x < 0:
+      cordX = 0
+    if y < 0:
+      cordY = 0
+    if (x + width) > GAMEZONE_SZ[0]:
+      cordX = GAMEZONE_SZ[0] - width  
+    if (y + height) > GAMEZONE_SZ[1]:
+      cordY = GAMEZONE_SZ[1] - height - 75
+    self.broadcastWindow.setScreenPosition(cordX, cordY)  
+    self.broadcastWindow.hide = False
+    
+  def hideBroadcast(self):
+    """ Hides the broadcast window.
+    """ 
+    self.removeSprite(self.broadcastWindow.window)
+    self.widgetContainer.remove_widget(self.broadcastWindow.window)
+    self.broadcastWindow.hide = True
   
   #************************************************************************
   
