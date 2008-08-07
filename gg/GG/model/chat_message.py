@@ -104,7 +104,7 @@ class ChatQuiz(ChatMessage):
   def loadQuestion(self):
     """ Loads a quiz question from a file.
     """  
-    filePath = "gg/GG/data/questions/" + self.question
+    filePath = os.path.join("gg/GG/data/questions/", self.question)
     quizFile = codecs.open(filePath, "r", "utf-8" )
     self.__msgQuestion = quizFile.readline()[:-1]
     self.__msgAnswers = []

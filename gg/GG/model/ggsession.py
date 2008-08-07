@@ -233,7 +233,7 @@ class GGSession(ggmodel.GGModel):
                       
     #===============================================
     if name == "BoxHeavy":
-      box = GG.model.box_heavy.GGBoxHeavy("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                           self.imagesDict[name][img][1], label)
     #===============================================
     elif name == "Door":
@@ -253,7 +253,7 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
     
-      box = GG.model.teleport.GGDoor("furniture/" + img, self.imagesDict[name][img][0], 
+      box = GG.model.teleport.GGDoor(os.path.join("furniture/", img), self.imagesDict[name][img][0], 
                                       self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, label)
     #===============================================
     elif name == "DoorWithKey":
@@ -276,23 +276,23 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
     
-      box = GG.model.teleport.GGDoorWithKey("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                              self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, 
                                              label, data["key"][0])
     #===============================================
     elif name == "GiverNpc":
-      box = GG.model.giver_npc.GGGiverNpc("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                           self.imagesDict[name][img][1], "furniture/" + img, label)
     #===============================================
     elif name == "RoomItem":
-      box = GG.model.room_item.GGRoomItem("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.room_item.GGRoomItem(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                           self.imagesDict[name][img][1])
     #===============================================
     elif name == "PenguinTalker":
       if data["message"][0] == "":
         self.__player.newChatMessage("Debe introducir un mensaje.", 1)
         return
-      box = GG.model.penguin.GGPenguinTalker("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                              self.imagesDict[name][img][1], label, data["message"][0])
     #===============================================
     elif name == "PenguinTrade":
@@ -300,14 +300,14 @@ class GGSession(ggmodel.GGModel):
       if data["gift"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
         return
-      box = GG.model.penguin.GGPenguinTrade("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                             self.imagesDict[name][img][1], label, data["gift"][0])
     #===============================================
     elif name == "PenguinQuiz":
       if data["filePath"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
         return
-      box = GG.model.penguin.GGPenguinQuiz("furniture/" + img, self.imagesDict[name][img][0], \
+      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
                                            self.imagesDict[name][img][1], label, data["filePath"][0])
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
