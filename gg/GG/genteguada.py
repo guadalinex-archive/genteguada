@@ -181,7 +181,7 @@ class GenteGuada:
 
   def getDataPath(self, img):
     #return os.path.join(GG.utils.DATA_PATH, img)
-    #if isinstance(self.system,GG.model.ggsystem.GGSystem):
+    #if isinstance(self.system,GG.model.ggsystem.GGSyste):
     if os.path.isdir(GG.utils.DATA_PATH):
       return os.path.join(GG.utils.DATA_PATH, img)
     else:

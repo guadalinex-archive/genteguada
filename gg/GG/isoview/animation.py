@@ -211,7 +211,7 @@ class MovieAnimation(Animation):
   Defines movie animation methods and atributes.
   """
   
-  def __init__(self, time, isoview, frames):
+  def __init__(self, time, isoview, frames, path = None):
     """ Class constructor.
     time: animation length.
     isoview: isoview used on the animation.
@@ -220,21 +220,23 @@ class MovieAnimation(Animation):
     Animation.__init__(self, time, isoview)
     self.__frames = None
     self.__sprites = []
-    self.setFrames(frames)
+    self.setFrames(frames, path)
     
-  def setFrames(self, frames):
+  def setFrames(self, frames, path):
     """ Sets a new frame set for the animation.
     frames: new frame set
     """
     self.__frames = frames
-    self.loadSprites()  
+    self.loadSprites(path)  
     
-  def loadSprites(self):
+  def loadSprites(self, path):
     """ Loads a new sprite set using a previously provided frame list.    
     """
     self.__sprites = []
+    if path is None:
+      path = self.isoview.getModel().imagePath
     for frame in self.__frames:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.isoview.getModel().imagePath + frame)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(path + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
       
     
