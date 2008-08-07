@@ -1,5 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 
+import os
 import random
 import operator
 import GG.utils
@@ -31,7 +32,7 @@ class GGRoom(ggmodel.GGModel):
     for i in range(0, self.size[0]):
       line = []  
       for j in range(0, self.size[1]):
-        image = "tiles/" + self.spriteFull[random.randint(0,len(self.spriteFull)-1)]  
+        image = os.path.join("tiles/", self.spriteFull[random.randint(0,len(self.spriteFull)-1)])  
         line.append(tile.Tile([i, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []

@@ -130,12 +130,12 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('finish', self.finish)
     
     self.__selectedItem = None
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + TILE_SELECTED)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("tiles/", TILE_SELECTED))  
     self.__selectedImage = pygame.sprite.Sprite()
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
     
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath("tiles/" + TILE_TARGET)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("tiles/", TILE_TARGET))  
     self.__targetTile = None
     self.__targetTileImage = pygame.sprite.Sprite()
     self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
@@ -1975,7 +1975,7 @@ class IsoViewHud(isoview.IsoView):
         if not label:
           self.__player.newChatMessage("Debe seleccionar una imagen", 1)
           return  
-        self.__selectedItem.setImage("tiles/" + label)
+        self.__selectedItem.setImage(os.path.join("tiles/", label))
         
             
     self.itemUnselected()
