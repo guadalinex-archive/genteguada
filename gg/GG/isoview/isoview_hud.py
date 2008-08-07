@@ -730,6 +730,7 @@ class IsoViewHud(isoview.IsoView):
               {"image":"interface/hud/substraction.png", "action": self.deleteRoomHandler, "tooltip":"Eliminar habitación"},
               {"image":"interface/hud/addition.png", "action": self.createRoomHandler, "tooltip":"Crear habitación"},
               {"image":"interface/hud/jump.png", "action": self.kickPlayerHandler, "tooltip":"Expulsar jugador"},
+              {"image":"interface/hud/chat.png", "action": self.broadcastHandler, "tooltip":"Mensaje general"},
               ]
     
     i = 0
@@ -746,6 +747,9 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.adminOptions)
     
   # *********************************************************************************
+  
+  def broadcastHandler(self):
+    pass  
   
   def kickPlayerHandler(self):
     """ Handles the kick player button.
