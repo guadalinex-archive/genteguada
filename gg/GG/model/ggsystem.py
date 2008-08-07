@@ -585,12 +585,17 @@ class GGSystem(dMVC.model.Model):
     return files
     
   def getPlayersList(self):
+    """ Returns the active players list.
+    """  
     pList = []  
     for session in self.__sessions:
       pList.append(session.getPlayer().username)
     return pList
 
   def getSpecificPlayer(self, name):
+    """ Returns a specific player.
+    name: player name.
+    """  
     for player in self.__players:
       if player.getName() == name:
         return player

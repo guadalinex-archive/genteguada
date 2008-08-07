@@ -86,9 +86,14 @@ class GGSession(ggmodel.GGModel):
     return self.__system.existsRoom(roomLabel)
 
   def getPlayersList(self):
+    """ Returns the player's list.
+    """  
     return self.__system.getPlayersList()    
 
   def getSpecificPlayer(self, name):
+    """ Returns a specific player.
+    name: player name.
+    """  
     return self.__system.getSpecificPlayer(name)  
     
   def getObjectsData(self):
