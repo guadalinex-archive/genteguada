@@ -112,7 +112,7 @@ class GenteGuada:
     self.session = winLogin.draw(params.user, params.password)
     if self.session.getPlayer().admin:
       #print "probando el tema asincronico"
-      #self.session.async(self.session.getRoom, "casa", self.start)
+      #self.session.async(self.session.getRoom, self.start, "casa")
       #print "finaliza la prueba"
       #fileImages = self.uploadFile("/home/jmariscal/Vestidor.zip")
       #print fileImages

@@ -7,6 +7,7 @@ import struct
 import synchronized
 import Queue
 import remotecommand
+import time
 
 class RServer(synchronized.Synchronized):
 
@@ -90,12 +91,38 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     self.fragmentCommand = {}
 
     self.__sendInitialData()
-    self.__asyncQueue = Queue.Queue()
+    #prueba
+    self.__commandsQueue = Queue.Queue()
+    self.__asyncCommandQueue = Queue.Queue()
+    thread.start_new(self.__sendCommandQueue, ())
 
     handler = dMVC.getRServer()._onConnection
     if handler:
       handler(self)
   #}}}
+
+  def __sendCommandQueue(self):
+    #prueba
+    while True:
+      time.sleep(0.1)
+      try:
+        command = self.__commandsQueue.get_nowait()
+        self.__sendObject(command)
+      except Queue.Empty:
+        self.__sendAsyncFragment()
+
+  def __sendAsyncFragment(self):
+    #prueba
+    try:
+      fragmentCommand = self.__asyncCommandQueue.get_nowait()
+      self.__sendObject(fragmentCommand)
+      print "Enviando ",fragmentCommand," ",fragmentCommand.sequence,"/",fragmentCommand.total
+    except Queue.Empty:
+      pass
+ 
+
+
+    
 
   def getSessionID(self):
     return self.__sessionID
@@ -136,6 +163,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
                          str(self.client_address)+ " and the result is "+str(answer))
     if answer:
       self.__sendObject(answer,command)
+      #self.sendCommand(answer)
 
   def __processFragment(self, fragment, size):
     if not fragment.groupID in self.fragmentCommand.keys():
@@ -152,8 +180,9 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
     
   def __sendAsyncObject(self, obj, commandID): #{{{
-    toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
-    serialized = pickle.dumps(toSerialize)
+    #toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
+    #serialized = pickle.dumps(toSerialize)
+    serialized = pickle.dumps(obj)
     sizeSerialized = len(serialized)
     total = sizeSerialized / 10000
     if not sizeSerialized % 10000 == 0:
@@ -161,20 +190,24 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     lenProcess = 0
     sequence = 0
     asyncCommandID = utils.nextID()
-    asyncQueue = []
+    #asyncQueue = []
     while lenProcess < sizeSerialized:
       sequence += 1
       fragmentCommand = serialized[lenProcess : lenProcess + 10000]
       fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand, commandID)
-      asyncQueue.append(fragment)
-      #self.__asyncQueue.put(fragment)
+      #asyncQueue.append(fragment)
+      self.__asyncCommandQueue.put(fragment)
       lenProcess += 10000
-    thread.start_new(self.__sendAsyncQueue, (asyncQueue,))
+    #prueba
+    #thread.start_new(self.__sendAsyncQueue, (asyncQueue,))
   #}}}
 
   def __sendAsyncQueue(self, queue):
+    #prueba
+    import time
     for fragment in queue:
-      self.__sendObject(fragment)
+      time.sleep(0.1)
+      self.sendCommand(fragment)
 
   def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
@@ -194,6 +227,8 @@ class RServerHandler(SocketServer.BaseRequestHandler):
   #}}}
 
   def sendCommand(self, command): #{{{
+    #self.__commandsQueue.put(command)
+    #prueba
     return self.__sendObject(command)
   #}}}
 
