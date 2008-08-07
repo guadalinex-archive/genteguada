@@ -574,3 +574,14 @@ class GGSystem(dMVC.model.Model):
       listLabels.append(room.label)
     return listLabels  
     
+  def getPlayersList(self):
+    pList = []  
+    for session in self.__sessions:
+      pList.append(session.getPlayer().username)
+    return pList
+
+  def getSpecificPlayer(self, name):
+    for player in self.__players:
+      if player.getName() == name:
+        return player
+    return None  
