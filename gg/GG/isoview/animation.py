@@ -211,7 +211,7 @@ class MovieAnimation(Animation):
   Defines movie animation methods and atributes.
   """
   
-  def __init__(self, time, isoview, frames, path = None):
+  def __init__(self, time, isoview, frames, path):
     """ Class constructor.
     time: animation length.
     isoview: isoview used on the animation.
