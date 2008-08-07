@@ -50,7 +50,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     else:
       imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001_"+self.__timestamp
     if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH,imageAvatar)):
-      print "No tengo las imagenes, hay que pedirlas de forma asincrona y mostrar las imagenes fantasmas"
       self.__path = "avatars/ghost/"
       
   def __del__(self):
@@ -65,6 +64,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     pass
+
+  def getPath(self):
+    return self.__path
 
   def timestampChanged(self, event):
     """ Triggers after receiving a timestamp changed method.

@@ -411,7 +411,7 @@ class IsoViewHud(isoview.IsoView):
                             [endPos[0], 0], endPos, True)
       ivItem.setAnimation(positionAnim)
       if hasattr(item, "username"):
-        movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"))
+        movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"), ivItem.getPath())
         ivItem.setMovieAnimation(movieAnim)
       if self.__sound:  
         guiobjects.playSound(GG.utils.SOUND_DROPITEM)
