@@ -573,6 +573,16 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       listLabels.append(room.label)
     return listLabels  
+
+  def getAvatarImages(self, avatar):
+    dirPlayerImages = os.path.join(GG.utils.DATA_PATH,avatar.imagePath)
+    files = {}
+    for playerImage in os.listdir(dirPlayerImages):
+      if os.path.isfile(os.path.join(dirPlayerImages, playerImage)):
+        filePlayerImage = open(os.path.join(dirPlayerImages, playerImage), "rb")
+        files[playerImage] = filePlayerImage.read()
+        filePlayerImage.close()
+    return files
     
   def getPlayersList(self):
     pList = []  
