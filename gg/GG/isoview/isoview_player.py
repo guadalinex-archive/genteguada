@@ -51,6 +51,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001_"+self.__timestamp
     if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH,imageAvatar)):
       self.__path = "avatars/ghost/"
+      GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
   def __del__(self):
     """ Class destructor.

@@ -32,6 +32,7 @@ class GenteGuada:
     self.fs = None
     self.window = None
     self.widgetContainer = None
+    self.__avatarDownloadImages = []
     self.exitCondition = False
     self.clearCache()
     
@@ -235,15 +236,8 @@ class GenteGuada:
       uploadedFile.close()
     except:
       return None
-    #fileName = self.system.uploadFile([name, ext], dataFile)
-    self.system.async(self.system.uploadFile, self.finalLlamadaAsincrona, [name, ext], dataFile)
-    return "casa"
-    #return fileName 
-
-  def finalLlamadaAsincrona(self, resultado):
-    print "LLamamos al final"
-    print resultado
-
+    return self.system.uploadFile([name, ext], dataFile)
+  
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
       fileName = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
@@ -260,3 +254,14 @@ class GenteGuada:
 
   def deleteRoom(self, label):
     return self.system.deleteRoom(label)  
+
+  def getAvatarImages(self, avatar):
+    if not avatar in self.__avatarDownloadImages:
+      self.__avatarDownloadImages.append(avatar)
+      print "pidiendo las imagenes asincronamente"
+      #self.system.async(self.system.getAvatarImages, self.getAvatarImagesFinish, avatar)
+
+  def getAvatarImagesFinish(self, resultado):
+    print "LLamamos al final"
+    print resultado.keys()
+
