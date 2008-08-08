@@ -600,3 +600,7 @@ class GGSystem(dMVC.model.Model):
       if player.getName() == name:
         return player
     return None  
+
+  def newBroadcastMessage(self, line, player):
+    for room in self.__rooms:
+      room.newChatMessage(line, player, 3)    

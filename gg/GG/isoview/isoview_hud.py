@@ -78,15 +78,16 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.hide = True
     
     if self.__player.getAccessMode():
-      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creación de objetos", self.__player, self)
+      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creaciï¿½n de objetos", self.__player, self)
       self.createItemsWindow.hide = True
-      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creación de habitaciones", self.__player, self)
+      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creaciï¿½n de habitaciones", self.__player, self)
       self.createRoomWindow.hide = True
       self.broadcastWindow = broadcastwindow.BroadcastWindow("Mensajes de sistema", self.__player, self)
       self.broadcastWindow.hide = True
     else:
       self.createItemsWindow = None  
-      self.createRoomWindow = None  
+      self.createRoomWindow = None
+      self.broadcastWindow = None  
     
     if fullscreen:
       self.__fullScreen = True
@@ -644,8 +645,8 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
+    
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
-   
     animTime = (len(messageChat.getMessage()) / 12) * 1000
     if animTime < 2000:
       animTime = 2000 
@@ -653,13 +654,15 @@ class IsoViewHud(isoview.IsoView):
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), TEXT_BOX_OR, True)
-    idleAnim.setOnStop(self.removeSprite, ivMessageChat.getTail())
+    if messageChat.type != 3:
+      idleAnim.setOnStop(self.removeSprite, ivMessageChat.getTail())
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(idleAnim)
     secAnim.addAnimation(positionAnim)
     secAnim.setOnStop(self.printChatMessage, ivMessageChat)
     secAnim.setOnStop(self.__isoviewRoom.removeIsoViewItem, ivMessageChat)
     secAnim.setOnStop(self.removeSprite, ivMessageChat.getImg())
+          
     ivMessageChat.setAnimation(secAnim)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
 
@@ -791,7 +794,6 @@ class IsoViewHud(isoview.IsoView):
     
     players = self.getModel().getPlayersList()
     
-    players.sort()
     self.playerLabels = guiobjects.OcempImageObjectList(110, 205, players)
     self.playerLabels.topleft = 20, 40
     self.kickPlayerBox.add_child(self.playerLabels) 
@@ -1231,7 +1233,7 @@ class IsoViewHud(isoview.IsoView):
     self.deleteRoomBox.add_child(imgBackground)
     
     #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
-    titleLabel = guiobjects.OcempLabel("Eliminar habitació", guiobjects.STYLES["teleportLabel"])
+    titleLabel = guiobjects.OcempLabel("Eliminar habitaciï¿½", guiobjects.STYLES["teleportLabel"])
     #titleLabel.topleft = 22,10
     titleLabel.topleft = 4, 0
     self.deleteRoomBox.add_child(titleLabel)
@@ -1378,6 +1380,12 @@ class IsoViewHud(isoview.IsoView):
     self.removeSprite(self.broadcastWindow.window)
     self.widgetContainer.remove_widget(self.broadcastWindow.window)
     self.broadcastWindow.hide = True
+    
+  def newBroadcastMessage(self, line):
+    """ Sends a new broadcast message.
+    line: new message.
+    """  
+    self.getModel().newBroadcastMessage(line)
   
   #************************************************************************
   
