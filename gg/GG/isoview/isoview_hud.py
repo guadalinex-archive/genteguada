@@ -1495,7 +1495,7 @@ class IsoViewHud(isoview.IsoView):
     """ Shows the selected button tooltip.
     label: tooltip label.
     """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label.decode("utf-8"))
     x, y = pygame.mouse.get_pos ()
     szX, szY = self.tooltipWindow.size
     if (x + 8 + szX) > GAMEZONE_SZ[0]:
