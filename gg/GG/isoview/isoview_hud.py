@@ -78,11 +78,11 @@ class IsoViewHud(isoview.IsoView):
     self.privateChatWindow.hide = True
     
     if self.__player.getAccessMode():
-      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creaci�n de objetos", self.__player, self)
+      self.createItemsWindow = createitemswindow.CreateItemsWindow(model, "Creación de objetos".decode("utf-8"), self.__player, self)
       self.createItemsWindow.hide = True
-      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creaci�n de habitaciones", self.__player, self)
+      self.createRoomWindow = createroomwindow.CreateRoomWindow(model, "Creación de habitaciones".decode("utf-8"), self.__player, self)
       self.createRoomWindow.hide = True
-      self.broadcastWindow = broadcastwindow.BroadcastWindow("Mensajes de sistema", self.__player, self)
+      self.broadcastWindow = broadcastwindow.BroadcastWindow("Mensajes de sistema".decode("utf-8"), self.__player, self)
       self.broadcastWindow.hide = True
     else:
       self.createItemsWindow = None  
@@ -1233,7 +1233,7 @@ class IsoViewHud(isoview.IsoView):
     self.deleteRoomBox.add_child(imgBackground)
     
     #titleLabel = guiobjects.OcempLabel("Escoja destino", guiobjects.STYLES["itemLabel"])
-    titleLabel = guiobjects.OcempLabel("Eliminar habitaci�", guiobjects.STYLES["teleportLabel"])
+    titleLabel = guiobjects.OcempLabel("Eliminar habitación", guiobjects.STYLES["teleportLabel"])
     #titleLabel.topleft = 22,10
     titleLabel.topleft = 4, 0
     self.deleteRoomBox.add_child(titleLabel)
