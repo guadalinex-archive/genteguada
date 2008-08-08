@@ -6,9 +6,7 @@ import pygame
 import pygame.locals
 import stat
 import time
-
 import dMVC.remoteclient
-
 import ocempgui.widgets
 import GG.isoview.login
 import GG.utils
@@ -26,13 +24,13 @@ class GenteGuada:
     self.isoHud = None
     self.session = None
     self.client = None
-    GenteGuada.instance = self
     self.activeScreen = None
-    self.fs = None
+    self.fullscreen = None
     self.window = None
     self.widgetContainer = None
     self.__avatarDownloadImages = []
     self.exitCondition = False
+    GenteGuada.instance = self
     self.clearCache()
     
   @staticmethod
@@ -54,20 +52,14 @@ class GenteGuada:
     self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     self.isoHud.unsubscribeAllEvents()
     pygame.mixer.music.stop()
-    #sys.exit(0)
     self.exitCondition = True
   
   def start(self, params):
     pygame.init()
-    #print pygame.display.list_modes()
-    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ,
-                                          pygame.HWSURFACE | pygame.DOUBLEBUF,
-                                          0)
+    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:
       pygame.display.toggle_fullscreen()
-      self.fullScreen = params.fullscreen
-    else:
-      self.fullScreen = 0    
+    self.fullScreen = params.fullscreen
 
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.screen)
