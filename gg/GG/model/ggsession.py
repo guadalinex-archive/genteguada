@@ -96,6 +96,9 @@ class GGSession(ggmodel.GGModel):
     """  
     return self.__system.getSpecificPlayer(name)  
     
+  def newBroadcastMessage(self, line):
+    self.__system.newBroadcastMessage(line, self.__player)  
+    
   def getObjectsData(self):
     """ Returns the objects data.
     """  

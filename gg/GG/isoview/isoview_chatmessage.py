@@ -1,3 +1,4 @@
+import os
 import ocempgui
 import GG.utils
 import isoview
@@ -42,26 +43,29 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.balloon = self.drawBalloon(model.getMessage())
     #self.balloon.opacity = BALLOON_OPACITY
     
-    pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
-    if (pos[0] + 10 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
-      xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
-    else:
-      xCord = pos[0] + 10
-    if (pos[1] - 30 - (self.label.height)) > 0:
-      yCord = pos[1] - 30 - (self.balloon.height)  
-    else:  
-      yCord = 0
-          
-    self.balloon.topleft = [xCord, yCord]    
+    if model.type != 3:
+      pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
+      if (pos[0] + 10 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
+        xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
+      else:
+        xCord = pos[0] + 10
+      if (pos[1] - 30 - (self.label.height)) > 0:
+        yCord = pos[1] - 30 - (self.balloon.height)  
+      else:  
+        yCord = 0
+      self.balloon.topleft = [xCord, yCord]
+    else:      
+      self.balloon.topleft = [GG.utils.SCREEN_SZ[0]/2 - (self.balloon.size[0]/2), \
+                              GG.utils.SCREEN_SZ[1]/3]  
     self.balloon.zOrder = 20000
     self.__isohud.addSprite(self.balloon)
     
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", TAIL[model.type]))  
-    self.tail = guiobjects.OcempImageMapTransparent(imgPath)
-    self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
-    self.tail.zOrder = 20002
-    
-    self.__isohud.addSprite(self.tail)
+    if model.type != 3:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", TAIL[model.type]))  
+      self.tail = guiobjects.OcempImageMapTransparent(imgPath)
+      self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
+      self.tail.zOrder = 20002
+      self.__isohud.addSprite(self.tail)
     
   def __del__(self):
     """ Class destructor.

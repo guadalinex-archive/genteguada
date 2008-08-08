@@ -315,7 +315,7 @@ class GGRoom(ggmodel.GGModel):
     return result
 
   def newChatMessage(self, message, player, type):
-    """ Triggers a new avent after receiving a new chat message.
+    """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     player: message emitter.
     type: message type.
