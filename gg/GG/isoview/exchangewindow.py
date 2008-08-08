@@ -151,10 +151,10 @@ class ExchangeWindow:
     self.__listOut.append(item)
     self.__hFrameOutBox = self.__paintItemOnList(self.__hFrameOutBox, self.__outBoxChild, item, len(self.__listIn) - 1)
 
-  def addInList(self, list):
+  def addInList(self, itemList):
     """ Adds a anew item to the exchange in list.
     """  
-    self.__listIn = list
+    self.__listIn = itemList
     self.__paintListItems()
     self.__labelExchange.set_text("Acepte para finalizar el intercambio !!!")
     self.__step = 5

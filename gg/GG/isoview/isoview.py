@@ -1,5 +1,3 @@
-import animation
-
 class IsoView:
   """ IsoView Superclass.
   Defines attributes and methods for a generic view.

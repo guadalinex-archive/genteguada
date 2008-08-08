@@ -1,5 +1,4 @@
 import room_item
-import GG.utils
 
 class GGItemWithInventory(room_item.GGRoomItem):
   """ GGItemWithInventory class.

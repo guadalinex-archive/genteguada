@@ -402,7 +402,7 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
   def __init__(self, name, image):
     ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-    size = 46,31 
+    size = 46, 31 
     try:
       img = Image.open(filePath)
     except:

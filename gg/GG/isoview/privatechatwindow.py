@@ -55,7 +55,7 @@ class PrivateChatWindow:
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
     self.window.child = self.container
     

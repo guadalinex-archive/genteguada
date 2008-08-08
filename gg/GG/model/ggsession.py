@@ -1,11 +1,60 @@
 # -*- coding: iso-8859-15 -*-
 
+import os
 import dMVC.model
 import ggmodel
 import GG.model.teleport
 import GG.model.box_heavy
 import GG.utils
 
+    
+# ======================= CONSTANTS ===========================    
+    
+IMAGES_DICT = {}
+IMAGES_DICT["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -12]]}
+IMAGES_DICT["Door"] = {}
+IMAGES_DICT["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
+IMAGES_DICT["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
+IMAGES_DICT["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
+IMAGES_DICT["Door"]["armored_door_left.png"] = [[17, 15], [0, 0]]
+IMAGES_DICT["DoorWithKey"] = IMAGES_DICT["Door"]
+IMAGES_DICT["RoomItem"] = {}
+IMAGES_DICT["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
+IMAGES_DICT["RoomItem"]["fence_up.png"] = [[55, 15], [0, 0]]
+IMAGES_DICT["RoomItem"]["fence_left.png"] = [[55, 15], [0, 0]]
+IMAGES_DICT["RoomItem"]["tree.png"] = [[100, 150], [0, -26]]
+IMAGES_DICT["RoomItem"]["stone_column.png"] = [[13, 15], [0, 0]]
+IMAGES_DICT["RoomItem"]["wooden_beam.png"] = [[57, 142], [0, 0]]
+IMAGES_DICT["RoomItem"]["wall_left.png"] = [[55, 0], [0, 0]]
+IMAGES_DICT["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
+IMAGES_DICT["RoomItem"]["yard_up.png"] = [[25, 50], [0, 0]]
+IMAGES_DICT["RoomItem"]["yard_left.png"] = [[45, 50], [0, 0]]
+IMAGES_DICT["RoomItem"]["yard_lamp_up.png"] = [[25, 50], [0, 0]]
+IMAGES_DICT["RoomItem"]["yard_lamp_left.png"] = [[45, 50], [0, 0]]
+IMAGES_DICT["RoomItem"]["yard_corner.png"] = [[55, 45], [0, 0]]
+IMAGES_DICT["RoomItem"]["warehouseWallUp01.png"] = [[35, 33], [0, 0]]
+IMAGES_DICT["RoomItem"]["warehouseWallUp02.png"] = [[35, 33], [0, 0]]
+IMAGES_DICT["RoomItem"]["warehouseWallLeft01.png"] = [[35, 33], [0, 0]]
+IMAGES_DICT["RoomItem"]["warehouseWallLeft02.png"] = [[35, 33], [0, 0]]
+IMAGES_DICT["RoomItem"]["warehouseWallCorner.png"] = [[35, 33], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallUp01.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallUp02.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallUp03.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallUp04.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallLeft01.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineWallLeft02.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["RoomItem"]["skylineCorner.png"] = [[35, 40], [0, 0]]
+IMAGES_DICT["PenguinTalker"] = {}
+IMAGES_DICT["PenguinTalker"]["andatuz_right.png"] = [[30, 0], [0, 0]]
+IMAGES_DICT["PenguinTalker"]["andatuz_down.png"] = [[30, 0], [0, 0]]
+IMAGES_DICT["PenguinTalker"]["andatuz_bottomright.png"] = [[30, 0], [0, 0]]
+IMAGES_DICT["PenguinTrade"] = IMAGES_DICT["PenguinTalker"]
+IMAGES_DICT["PenguinQuiz"] = IMAGES_DICT["PenguinTalker"]
+IMAGES_DICT["GiverNpc"] = {}
+IMAGES_DICT["GiverNpc"]["gift.png"] = [[15, -30], [0, 0]]
+IMAGES_DICT["GiverNpc"]["golden_key.png"] = [[15, -30], [0, 0]]
+
+# ====================================================================
 class GGSession(ggmodel.GGModel):
   """ GGSession class.
   Includes room and player objects, and some procedures to manage data.
@@ -105,72 +154,20 @@ class GGSession(ggmodel.GGModel):
     if not self.__player.getAccessMode():
       return None  
     
-    self.imagesDict = {}
-    
-    self.imagesDict["BoxHeavy"] = {"heavy_box.png": [[26, -10], [0, -12]]}
-    
-    self.imagesDict["Door"] = {}
-    self.imagesDict["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
-    self.imagesDict["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
-    self.imagesDict["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
-    self.imagesDict["Door"]["armored_door_left.png"] = [[17, 15], [0, 0]]
-    
-    self.imagesDict["DoorWithKey"] = self.imagesDict["Door"]
-    
-    self.imagesDict["RoomItem"] = {}
-    self.imagesDict["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
-    self.imagesDict["RoomItem"]["fence_up.png"] = [[55, 15], [0, 0]]
-    self.imagesDict["RoomItem"]["fence_left.png"] = [[55, 15], [0, 0]]
-    self.imagesDict["RoomItem"]["tree.png"] = [[100, 150], [0, -26]]
-    self.imagesDict["RoomItem"]["stone_column.png"] = [[13, 15], [0, 0]]
-    self.imagesDict["RoomItem"]["wooden_beam.png"] = [[57, 142], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_left.png"] = [[55, 0], [0, 0]]
-    self.imagesDict["RoomItem"]["wall_up.png"] = [[35, 10], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_up.png"] = [[25, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_left.png"] = [[45, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_lamp_up.png"] = [[25, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_lamp_left.png"] = [[45, 50], [0, 0]]
-    self.imagesDict["RoomItem"]["yard_corner.png"] = [[55, 45], [0, 0]]
-    self.imagesDict["RoomItem"]["warehouseWallUp01.png"] = [[35, 33], [0, 0]]
-    self.imagesDict["RoomItem"]["warehouseWallUp02.png"] = [[35, 33], [0, 0]]
-    self.imagesDict["RoomItem"]["warehouseWallLeft01.png"] = [[35, 33], [0, 0]]
-    self.imagesDict["RoomItem"]["warehouseWallLeft02.png"] = [[35, 33], [0, 0]]
-    self.imagesDict["RoomItem"]["warehouseWallCorner.png"] = [[35, 33], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallUp01.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallUp02.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallUp03.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallUp04.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallLeft01.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineWallLeft02.png"] = [[35, 40], [0, 0]]
-    self.imagesDict["RoomItem"]["skylineCorner.png"] = [[35, 40], [0, 0]]
-    
-    self.imagesDict["PenguinTalker"] = {}
-    self.imagesDict["PenguinTalker"]["andatuz_right.png"] = [[30, 0], [0, 0]]
-    self.imagesDict["PenguinTalker"]["andatuz_down.png"] = [[30, 0], [0, 0]]
-    self.imagesDict["PenguinTalker"]["andatuz_bottomright.png"] = [[30, 0], [0, 0]]
-
-    self.imagesDict["PenguinTrade"] = self.imagesDict["PenguinTalker"]
-    
-    self.imagesDict["PenguinQuiz"] = self.imagesDict["PenguinTalker"]
-    
-    self.imagesDict["GiverNpc"] = {}
-    self.imagesDict["GiverNpc"]["gift.png"] = [[15, -30], [0, 0]]
-    self.imagesDict["GiverNpc"]["golden_key.png"] = [[15, -30], [0, 0]]
-    
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
     
     self.objectsDict = {
                    "BoxHeavy": {
                             "position": pos,
                             "label": [""],
-                            "images": self.imagesDict["BoxHeavy"].keys() 
+                            "images": IMAGES_DICT["BoxHeavy"].keys() 
                             },
                    "Door": {
                             "position": pos,
                             "destinationRoom": [self.__player.getRoom().label],
                             "exitPosition": [0, 0],
                             "label": [""], 
-                            "images": self.imagesDict["Door"].keys()                     
+                            "images": IMAGES_DICT["Door"].keys()                     
                             },
                    "DoorWithKey": {
                             "position": pos,
@@ -178,34 +175,34 @@ class GGSession(ggmodel.GGModel):
                             "exitPosition": [0, 0],
                             "label": [""],
                             "key": [""],        
-                            "images": self.imagesDict["DoorWithKey"].keys()                     
+                            "images": IMAGES_DICT["DoorWithKey"].keys()                     
                             },
                    "GiverNpc": {
                             "position": pos,
                             "label": [""],
-                            "images": self.imagesDict["GiverNpc"].keys()     
+                            "images": IMAGES_DICT["GiverNpc"].keys()     
                             },
                    "PenguinQuiz": {
                             "position": pos,
                             "label": [""],
                             "filePath": [GG.utils.QUESTIONS_PATH],        
-                            "images": self.imagesDict["PenguinTalker"].keys()                     
+                            "images": IMAGES_DICT["PenguinTalker"].keys()                     
                             },
                    "PenguinTalker": {
                             "position": pos,
                             "label": [""],
                             "message": [""],        
-                            "images": self.imagesDict["PenguinTalker"].keys()                     
+                            "images": IMAGES_DICT["PenguinTalker"].keys()                     
                             },
                    "PenguinTrade": {
                             "position": pos,
                             "label": [""],
                             "gift": [""],        
-                            "images": self.imagesDict["PenguinTrade"].keys()                     
+                            "images": IMAGES_DICT["PenguinTrade"].keys()                     
                             },
                    "RoomItem": {
                             "position": pos,
-                            "images": self.imagesDict["RoomItem"].keys()                     
+                            "images": IMAGES_DICT["RoomItem"].keys()                     
                             }
                   }
     return self.objectsDict
@@ -236,8 +233,8 @@ class GGSession(ggmodel.GGModel):
                       
     #===============================================
     if name == "BoxHeavy":
-      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                          self.imagesDict[name][img][1], label)
+      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                          IMAGES_DICT[name][img][1], label)
     #===============================================
     elif name == "Door":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -256,8 +253,8 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
     
-      box = GG.model.teleport.GGDoor(os.path.join("furniture/", img), self.imagesDict[name][img][0], 
-                                      self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, label)
+      box = GG.model.teleport.GGDoor(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], 
+                                      IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label)
     #===============================================
     elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -269,7 +266,7 @@ class GGSession(ggmodel.GGModel):
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][2])
+        exPosY = int(data["exitPosition"][1])
       except ValueError: 
         self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
         return
@@ -279,39 +276,39 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
     
-      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                             self.imagesDict[name][img][1], [exPosX, exPosY], destinationRoom, 
+      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                             IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, 
                                              label, data["key"][0])
     #===============================================
     elif name == "GiverNpc":
-      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                          self.imagesDict[name][img][1], "furniture/" + img, label)
+      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                          IMAGES_DICT[name][img][1], "furniture/" + img, label)
     #===============================================
     elif name == "RoomItem":
-      box = GG.model.room_item.GGRoomItem(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                          self.imagesDict[name][img][1])
+      box = GG.model.room_item.GGRoomItem(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                          IMAGES_DICT[name][img][1])
     #===============================================
     elif name == "PenguinTalker":
       if data["message"][0] == "":
         self.__player.newChatMessage("Debe introducir un mensaje.", 1)
         return
-      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                             self.imagesDict[name][img][1], label, data["message"][0])
+      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                             IMAGES_DICT[name][img][1], label, data["message"][0])
     #===============================================
     elif name == "PenguinTrade":
       room = self.__player.getRoom()
       if data["gift"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
         return
-      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                            self.imagesDict[name][img][1], label, data["gift"][0])
+      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                            IMAGES_DICT[name][img][1], label, data["gift"][0])
     #===============================================
     elif name == "PenguinQuiz":
       if data["filePath"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
         return
-      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture/", img), self.imagesDict[name][img][0], \
-                                           self.imagesDict[name][img][1], label, data["filePath"][0])
+      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
+                                           IMAGES_DICT[name][img][1], label, data["filePath"][0])
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     

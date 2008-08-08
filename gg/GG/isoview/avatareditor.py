@@ -636,7 +636,7 @@ class AvatarEditor:
     imgUpload = Image.open(imgPath)
     size = MASK_SIZE[self.avatarConfiguration["headSize"]]
     imgUploadResized = imgUpload.resize(size, Image.ANTIALIAS)
-    imgMask.paste(imgUploadResized,MASK_COORD[self.avatarConfiguration["headSize"]], imgTemplate)
+    imgMask.paste(imgUploadResized, MASK_COORD[self.avatarConfiguration["headSize"]], imgTemplate)
     imgMask.save(os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUploadMask.png"))
     self.avatarConfiguration["mask"] = "imgUploadMask.png"
     self.paintMask()

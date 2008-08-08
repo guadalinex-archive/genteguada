@@ -983,7 +983,7 @@ class IsoViewHud(isoview.IsoView):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
     size = 23, 23
-    img.thumbnail(size,Image.ANTIALIAS)
+    img.thumbnail(size, Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png"))
     imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
     img = guiobjects.OcempImageButtonTransparent(imgPath)
@@ -1097,7 +1097,7 @@ class IsoViewHud(isoview.IsoView):
         self.__soundButton = button
       elif  buttonData['action'] == self.showCreateItems:
         self.__createItemsButton = button
-      i+=1
+      i += 1
       self.hud.add_child(button)
       
   #************************************************************************    
@@ -2013,11 +2013,13 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.setDestinationRoom(room)  
       
       if key == "ExitPosition":
-        try: posX = int(self.editableFields[key][0].text)
+        try: 
+          posX = int(self.editableFields[key][0].text)
         except ValueError:
           self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
           return
-        try: posY = int(self.editableFields[key][1].text)    
+        try: 
+          posY = int(self.editableFields[key][1].text)    
         except ValueError:
           self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
           return

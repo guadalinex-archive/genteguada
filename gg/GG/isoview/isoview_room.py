@@ -1,4 +1,3 @@
-import pygame
 import GG.utils
 import isoview
 import isoview_tile
@@ -240,16 +239,6 @@ class IsoViewRoom(isoview.IsoView):
     event: event info.
     """  
     pass # Do NOT delete
-    """
-    pos = event.getParams()['position']
-    imageName = event.getParams()['imageName']
-    tile = self.__tileList[pos[0]][pos[1]].getImg()
-    for img in self.__allPlayers:
-      if img == tile:
-        img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-        self.__tileList[pos[0]][pos[1]].setImg(imageName)
-        return
-    """    
     
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands all its children from all events.

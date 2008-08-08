@@ -6,7 +6,6 @@ import operator
 import GG.utils
 import ggmodel
 import tile
-import inventory_item
 import chat_message
 import dMVC.model
 import player
@@ -32,7 +31,7 @@ class GGRoom(ggmodel.GGModel):
     for i in range(0, self.size[0]):
       line = []  
       for j in range(0, self.size[1]):
-        image = os.path.join("tiles/", self.spriteFull[random.randint(0,len(self.spriteFull)-1)])  
+        image = os.path.join("tiles/", self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
         line.append(tile.Tile([i, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []
@@ -175,10 +174,10 @@ class GGRoom(ggmodel.GGModel):
     imageName: image file name.
     """  
     k = 0
-    for tile in self.__specialTiles:
-      if tile[0] == position:
+    for checkedTile in self.__specialTiles:
+      if checkedTile[0] == position:
         k = 1
-        tile[1] = imagename
+        checkedTile[1] = imageName
         #self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
     if k == 0:
       self.__specialTiles.append([position, imageName])
@@ -201,25 +200,25 @@ class GGRoom(ggmodel.GGModel):
       return True
     return False
     
-  def clickedByPlayer(self, player, target, item):
+  def clickedByPlayer(self, clickerPlayer, target, item):
     """ Applies a player's click over an item.
-    player: active player.
+    clickerPlayer: active player.
     target: position the active player clicked on.
     item: item that the player clicked on.
     """
-    player.setUnselectedItem()
+    clickerPlayer.setUnselectedItem()
     if item != None:
-      item.clickedBy(player)
+      item.clickedBy(clickerPlayer)
     else:
-      if player.getPosition() != target:
+      if clickerPlayer.getPosition() != target:
         bottom = self.getTile(target).getBottomItem()
         if bottom:
-          bottom.clickedBy(player)
+          bottom.clickedBy(clickerPlayer)
         else:
-          if not GG.utils.checkNeighbour(target, player.getPosition()) and self.getNextDirectionForAnItem(target, player.getPosition()) == "none":
-            player.newChatMessage("No puedo llegar hasta ese lugar.", 2)
+          if not GG.utils.checkNeighbour(target, clickerPlayer.getPosition()) and self.getNextDirectionForAnItem(target, clickerPlayer.getPosition()) == "none":
+            clickerPlayer.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
-          player.setDestination(target)
+          clickerPlayer.setDestination(target)
   
   def clickedTileByAdmin(self, player, target):
     """ Applies an admin's click over an item.
@@ -314,14 +313,14 @@ class GGRoom(ggmodel.GGModel):
         result.append(item)
     return result
 
-  def newChatMessage(self, message, player, type):
+  def newChatMessage(self, message, player, msgType):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     player: message emitter.
-    type: message type.
+    msgType: message type.
     """
     self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, \
-                    GG.utils.TEXT_COLOR["black"], player.getPosition(), type))    
+                    GG.utils.TEXT_COLOR["black"], player.getPosition(), msgType))    
     
   def getEmptyCell(self):
     """ Returns a list with the room's empty cells.

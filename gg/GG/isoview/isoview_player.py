@@ -3,7 +3,6 @@ import isoview
 import GG.utils
 import animation
 import os
-import pygame
 
 # ======================= CONSTANTS ===========================
 JUMP_TIME = 800
@@ -48,8 +47,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if self.__timestamp == "":
       imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001"
     else:
-      imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001_"+self.__timestamp
-    if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH,imageAvatar)):
+      imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001_" + self.__timestamp
+    if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
       self.__path = "avatars/ghost/"
       GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
@@ -136,7 +135,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       frames.append(string)        
     else:
       for i in range(1, GG.utils.ANIM_WALKING_COUNT+1):
-        string = GG.utils.getSpriteName(state, self.__heading, i,self.__timestamp)  
+        string = GG.utils.getSpriteName(state, self.__heading, i, self.__timestamp)  
         frames.append(string)        
     return frames
     
@@ -228,7 +227,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     pos1 = event.getParams()['position']
-    pos2 = event.getParams()['oldPosition']
     startPos = self.getScreenPosition()
     endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
     cordX = (startPos[0] + endPos[0])/2
