@@ -33,6 +33,10 @@ class CreateRoomWindow:
     self.tooltipWindow = None
     self.container = None
     self.images = None
+    self.sizeX = None
+    self.sizeY = None
+    self.maxUsers = None
+    self.label = None
     self.draw()
     
   def draw(self):

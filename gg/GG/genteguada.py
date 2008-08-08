@@ -5,7 +5,6 @@ import os
 import pygame
 import pygame.locals
 import stat
-import sys
 import time
 
 import dMVC.remoteclient
@@ -66,9 +65,9 @@ class GenteGuada:
                                           0)
     if params.fullscreen:
       pygame.display.toggle_fullscreen()
-      self.fs = params.fullscreen
+      self.fullScreen = params.fullscreen
     else:
-      self.fs = 0    
+      self.fullScreen = 0    
 
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.screen)
@@ -93,18 +92,6 @@ class GenteGuada:
     pygame.display.set_caption(VERSION)
 
     #print pygame.display.Info()
-
-    """
-    if self.screen.get_flags() & pygame.DOUBLEBUF:
-        print "Using Double Buffering!"
-    else:
-        print "*NOT* Using Double Buffering!"
-    if self.screen.get_flags() & pygame.HWSURFACE:
-        print "Using Hardware Surface!"
-    else:
-        print "*NOT* Using Hardware Surface!"
-    print
-    """
 
     self.__getSystem(params.ip) 
     winLogin = GG.isoview.login.Login(self.screen, self)
@@ -140,7 +127,7 @@ class GenteGuada:
       self.system = GG.model.ggsystem.GGSystem()
 
   def initGame(self):
-    self.isoHud = self.session.defaultView(self.screen, self.fs)
+    self.isoHud = self.session.defaultView(self.screen, self.fullScreen)
     self.screen.fill([0, 0, 0])
     self.isoHud.draw()
     self.activeScreen = self.isoHud
@@ -225,10 +212,10 @@ class GenteGuada:
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
       os.remove(pathFile)
 
-  def uploadFile(self, file):
-    if not os.path.isfile(file):
+  def uploadFile(self, upFile):
+    if not os.path.isfile(upFile):
       return None
-    filepath, fileName = os.path.split(file)
+    filepath, fileName = os.path.split(upFile)
     name, ext = os.path.splitext(fileName)
     try:
       uploadedFile = open(file , "rb")

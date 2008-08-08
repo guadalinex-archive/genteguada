@@ -56,7 +56,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
       self.balloon.topleft = [xCord, yCord]
     else:      
       self.balloon.topleft = [GG.utils.SCREEN_SZ[0]/2 - (self.balloon.size[0]/2), \
-                              GG.utils.SCREEN_SZ[1]/3]  
+                              GG.utils.SCREEN_SZ[1]/3]
     self.balloon.zOrder = 20000
     self.__isohud.addSprite(self.balloon)
     

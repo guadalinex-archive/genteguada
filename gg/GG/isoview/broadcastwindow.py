@@ -4,7 +4,6 @@ import os
 import pygame
 import ocempgui.widgets
 import GG.utils
-import copy
 import guiobjects
 
 class BroadcastWindow:
@@ -24,8 +23,10 @@ class BroadcastWindow:
     self.player = player
     self.hud = hud
     self.selected = None
+    self.__textField = None
+    self.tooltipWindow = None
     self.draw()
-
+    
   def draw(self):
     """ Draws window components on screen.
     """  
@@ -55,7 +56,7 @@ class BroadcastWindow:
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/broadcastWIndow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0,0
+    imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
     self.window.child = self.container
     

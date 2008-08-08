@@ -489,9 +489,9 @@ class GGSystem(dMVC.model.Model):
     """  
     name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
     try:
-      f = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
-      f.write(fileData)
-      f.close()
+      upFile = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
+      upFile.write(fileData)
+      upFile.close()
     except:
       return None
     return name
@@ -511,13 +511,13 @@ class GGSystem(dMVC.model.Model):
     nameMask: mask filename.
     """  
     if nameMask:
-      f = open(os.path.join(GG.utils.DATA_PATH, nameMask), "rb")
-      data = f.read()
-      f.close()
+      maskFile = open(os.path.join(GG.utils.DATA_PATH, nameMask), "rb")
+      data = maskFile.read()
+      maskFile.close()
       self.__avatarGeneratorHandler.copyImageMask(nameMask, data)
-      f = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"),"wb")
-      f.write(data)
-      f.close()
+      maskFile = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"),"wb")
+      maskFile.write(data)
+      maskFile.close()
       os.remove(os.path.join(GG.utils.DATA_PATH, nameMask))
     else:
       if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png")):
@@ -529,7 +529,7 @@ class GGSystem(dMVC.model.Model):
       self.__avatarGeneratorHandler.deleteImages(player)
       player.setAvatarConfiguration(configuration, timestamp)
 
-  def __copyImages(self,images, player):
+  def __copyImages(self, images, player):
     """ Copies images for a given player.
     images: images to copy.
     player: given player.
@@ -543,7 +543,7 @@ class GGSystem(dMVC.model.Model):
       os.mkdir(dirImage)
     timestamp = int(time.time())
     for image in images.keys():
-      f = open(os.path.join(dir,image+"_"+str(timestamp)),"wb")
+      f = open(os.path.join(dir, image + "_" + str(timestamp)), "wb")
       f.write(images[image])
       f.close()
     return timestamp
@@ -575,7 +575,7 @@ class GGSystem(dMVC.model.Model):
     return listLabels  
 
   def getAvatarImages(self, avatar):
-    dirPlayerImages = os.path.join(GG.utils.DATA_PATH,avatar.imagePath)
+    dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.imagePath)
     files = {}
     for playerImage in os.listdir(dirPlayerImages):
       if os.path.isfile(os.path.join(dirPlayerImages, playerImage)):
