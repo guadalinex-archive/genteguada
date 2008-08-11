@@ -139,6 +139,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
           data += self.request.recv(size - len(data))
 
         commandOrFragment = pickle.loads(data)
+        print commandOrFragment
         if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
           self.__processCommand(commandOrFragment, size)
         elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
