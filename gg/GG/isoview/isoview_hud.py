@@ -431,6 +431,7 @@ class IsoViewHud(isoview.IsoView):
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
     """
+    pygame.event.clear()
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.getScreen())
     self.paintBackground()
