@@ -87,7 +87,7 @@ def clientMaterialize(obj, rClient): #{{{
     return obj.clientMaterialize(rClient)
 
   elif isinstance(obj, list): 
-    return list(map(lambda each: clientMaterialize(each, rClient), obj)) # Serialized lists becomes inmutable in client-side
+    return tuple(map(lambda each: clientMaterialize(each, rClient), obj)) # Serialized lists becomes inmutable in client-side
 
   elif isinstance(obj, tuple):
     return tuple(map(lambda each: clientMaterialize(each, rClient), obj))
