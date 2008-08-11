@@ -318,6 +318,8 @@ class IsoViewHud(isoview.IsoView):
     """ Returns the isometric view object that contains a given item.
     item: given item.
     """  
+    if not self.__isoviewRoom:
+      return None  
     for ivItem in self.__isoviewRoom.getIsoViewItems():
       if ivItem.getModel() == item:
         return ivItem
@@ -651,7 +653,8 @@ class IsoViewHud(isoview.IsoView):
     animTime = (len(messageChat.getMessage()) / 12) * 1000
     if animTime < 2000:
       animTime = 2000 
-    
+    if messageChat == 3:
+      animTime = animTime * animTime   
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(ANIM_CHAT_TIME2, ivMessageChat, \
                             ivMessageChat.getScreenPosition(), TEXT_BOX_OR, True)

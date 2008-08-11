@@ -216,7 +216,7 @@ class IsoViewRoom(isoview.IsoView):
         accHeight += item.topAnchor[1]
           
   def getFutureScreenPosition(self, ivItem, pos):
-    """ Returns the future screen cords for an item moving towards a room position.
+    """ Returns the future screen cords for an item moving to a room position.
     ivItem: item.
     pos: room position.
     """  
@@ -226,8 +226,12 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     itemModel = ivItem.getModel()
+    print "--->>>", ivItem
+    print itemList
+    #itemList.reverse()
     listaAux = itemList[:len(itemList)-1]
     for item in listaAux:
+      print item  
       accWidth += item.topAnchor[0] 
       accHeight += item.topAnchor[1]
     scPos = GG.utils.p3dToP2d(pos, itemModel.anchor)

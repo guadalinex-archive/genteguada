@@ -92,7 +92,7 @@ class GGPenguinTalker(GGPenguin):
     talker: player.
     """
     talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
 #================================================================================
 
@@ -218,6 +218,6 @@ class GGPenguinQuiz(GGPenguin):
       return  
     question = random.randint(0, len(self.__availableQuestions[name])-1)
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
-                                        GG.utils.TEXT_COLOR["black"], self.getPosition(), 3))   
+                                        GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))   
         
 #================================================================================
