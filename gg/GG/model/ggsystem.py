@@ -18,6 +18,7 @@ import stat
 import random
 
 import GG.avatargenerator.generator
+import Queue
 
 # ======================= GGSYSTEM ===========================
 PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
@@ -86,6 +87,7 @@ class GGSystem(dMVC.model.Model):
     self.__sessions = [] # Variable privada solo para uso interno.
     self.__loadData()
     self.__avatarGeneratorHandler = GG.avatargenerator.generator.AvatarGenerator()
+    self.__avatarGeneratorProcessQueue = Queue.Queue()
     thread.start_new(self.__start, ())
      
   def getEntryRoom(self):
@@ -502,7 +504,18 @@ class GGSystem(dMVC.model.Model):
     player: player to change the configuration for.
     nameMask: mask filename.
     """  
-    thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
+    self.__avatarGeneratorProcessQueue.put([configuration, player, nameMask])
+    self.__throwAvatarGeneratorCommand()
+    #thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
+
+  def __throwAvatarGeneratorCommand(self):
+    if not self.__avatarGeneratorHandler.isFullProcess():
+      try:
+        processOptions = self.__throwAvatarGeneratorCommand.get_nowait()
+        thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
+      except Queue.Empty:
+        pass
+
 
   def __changeAvatarConfiguration(self, configuration, player, nameMask):
     """ Changes the avatar configuration.
@@ -510,6 +523,7 @@ class GGSystem(dMVC.model.Model):
     player: player to change the configuration for.
     nameMask: mask filename.
     """  
+    self.__avatarGeneratorHandler.incNumProcess()
     if nameMask:
       maskFile = open(os.path.join(GG.utils.DATA_PATH, nameMask), "rb")
       data = maskFile.read()
@@ -528,6 +542,8 @@ class GGSystem(dMVC.model.Model):
       timestamp = self.__copyImages(images, player)
       self.__avatarGeneratorHandler.deleteImages(player)
       player.setAvatarConfiguration(configuration, timestamp)
+    self.__avatarGeneratorHandler.decNumProcess()
+    self.__avatarGeneratorHandler()
 
   def __copyImages(self, images, player):
     """ Copies images for a given player.

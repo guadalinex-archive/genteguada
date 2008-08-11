@@ -3,10 +3,24 @@ import dMVC.model
 import commands
 import os
 
+MAX_PROCESS = 10
+
 class AvatarGenerator(dMVC.model.Model):
 
   def __init__(self):
     dMVC.model.Model.__init__(self)
+    self.__numProcess = 0
+
+  def isFullProcess(self):
+    if self.__numProcess < MAX_PROCESS: 
+      return False
+    return True
+
+  def incNumProcess(self):
+    self.__numProcess += 1
+
+  def decNumProcess(self):
+    self.__numProcess -= 1
   
   def copyImageMask(self, nameMask, data):
     fileMask = open("/tmp/"+nameMask,"wb")
