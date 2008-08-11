@@ -29,7 +29,7 @@ class GenteGuada:
     self.window = None
     self.widgetContainer = None
     self.__avatarDownloadImages = []
-    self.exitCondition = False
+    self.exitCondition = None
     GenteGuada.instance = self
     self.clearCache()
     
@@ -37,7 +37,7 @@ class GenteGuada:
   def getInstance():
     return GenteGuada.instance
   
-  def input(self, events):
+  def __input(self, events):
     for event in events:
       if event.type == pygame.locals.QUIT:
         self.finish()
@@ -48,6 +48,8 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
+    if self.exitCondition is None:
+      sys.exit(0)
     self.isoHud.getModel().unsubscribeEvents()
     self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
     self.isoHud.unsubscribeAllEvents()
@@ -90,11 +92,6 @@ class GenteGuada:
     #self.session = winLogin.draw()
     self.session = winLogin.draw(params.user, params.password)
     if self.session.getPlayer().admin:
-      #print "probando el tema asincronico"
-      #self.session.async(self.session.getRoom, self.start, "casa")
-      #print "finaliza la prueba"
-      #fileImages = self.uploadFile("/home/jmariscal/Vestidor.zip")
-      #print fileImages
       value = winLogin.drawAccessMode()  
       if value == 1:
         self.session.getPlayer().setAccessMode(True)
@@ -103,8 +100,8 @@ class GenteGuada:
 
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 
-      self.input(pygame.event.get())
-    self.initGame()
+      self.__input(pygame.event.get())
+    self.__initGame()
 
   def __getSystem(self, ipAddress):
     if ipAddress:
@@ -118,7 +115,7 @@ class GenteGuada:
       import GG.model.ggsystem
       self.system = GG.model.ggsystem.GGSystem()
 
-  def initGame(self):
+  def __initGame(self):
     self.isoHud = self.session.defaultView(self.screen, self.fullScreen)
     self.screen.fill([0, 0, 0])
     self.isoHud.draw()
@@ -139,6 +136,7 @@ class GenteGuada:
       client_processEvents = lambda : None  # Do nothing!
 
     last = get_ticks()
+    self.exitCondition = False
     while not self.exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
       theClock_tick(intentedFPS)
@@ -238,9 +236,15 @@ class GenteGuada:
     if not avatar in self.__avatarDownloadImages:
       self.__avatarDownloadImages.append(avatar)
       print "pidiendo las imagenes asincronamente"
-      #self.system.async(self.system.getAvatarImages, self.getAvatarImagesFinish, avatar)
+      self.system.async(self.system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
-    print "LLamamos al final"
-    print resultado.keys()
+    path = resultado["path"].replace("/", "-")
+    for key in resultado.keys():
+      if not key in ["path", "avatar"]:
+        fileName = path + key
+        avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
+        avatarImage.write(resultado[key])
+        avatarImage.close()
+    self.isoHud.changeAvatarImages(resultado["avatar"])
 

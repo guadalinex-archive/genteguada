@@ -283,3 +283,8 @@ class IsoViewRoom(isoview.IsoView):
       if ivItem.getModel() == item:
         return ivItem
     return None  
+
+  def changeAvatarImages(self, avatar):
+    isoAvatar = self.findIVItem(avatar)
+    if isoAvatar:
+      isoAvatar.changeAvatarImages(avatar.imagePath) 

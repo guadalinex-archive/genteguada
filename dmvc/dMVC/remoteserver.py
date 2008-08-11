@@ -8,6 +8,7 @@ import synchronized
 import Queue
 import remotecommand
 import time
+import select
 
 class RServer(synchronized.Synchronized):
 
@@ -131,24 +132,29 @@ class RServerHandler(SocketServer.BaseRequestHandler):
     utils.logger.debug("RServerHandler.handle client:  "+str(self.client_address))
     sizeInt = struct.calcsize("i")
     while True:
-      size = self.request.recv(sizeInt)
-      if len(size):
-        size = struct.unpack("i", size)[0]
-        data = ""
-        while len(data) < size:
-          data += self.request.recv(size - len(data))
+      read, write, error = select.select ([self.request],[self.request],[self.request],0.1)
+      if self.request in read:
+        size = self.request.recv(sizeInt)
+        if len(size):
+          size = struct.unpack("i", size)[0]
+          data = ""
+          while len(data) < size:
+            data += self.request.recv(size - len(data))
 
-        commandOrFragment = pickle.loads(data)
-        print commandOrFragment
-        if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
-          self.__processCommand(commandOrFragment, size)
-        elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
-          self.__processFragment(commandOrFragment, size)
+          commandOrFragment = pickle.loads(data)
+          if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
+            self.__processCommand(commandOrFragment, size)
+          elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
+            self.__processFragment(commandOrFragment, size)
+          else:
+            raise "Not valid reading from socket: " + str(commandOrFragment)
         else:
-          raise "Not valid reading from socket: " + str(commandOrFragment)
+          # The conection is lost
+          break
       else:
-        # The conection is lost
-        break
+        if not self.request in write:
+          self.__sendAsyncFragment()
+          
   #}}}
 
 
@@ -181,9 +187,9 @@ class RServerHandler(SocketServer.BaseRequestHandler):
 
     
   def __sendAsyncObject(self, obj, commandID): #{{{
-    #toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
-    #serialized = pickle.dumps(toSerialize)
-    serialized = pickle.dumps(obj)
+    toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
+    serialized = pickle.dumps(toSerialize)
+    #serialized = pickle.dumps(obj)
     sizeSerialized = len(serialized)
     total = sizeSerialized / 10000
     if not sizeSerialized % 10000 == 0:
