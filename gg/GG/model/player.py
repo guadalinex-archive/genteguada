@@ -380,7 +380,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(unicode(message), self.username, \
+    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.username, \
                     GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType))
 
   def getSelected(self):
@@ -397,7 +397,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=1)
   
   def setSelectedItemWithoutHighlight(self, item):
-    """ Sets an item as selected, but it doesn't hightlights it.
+    """ Sets an item as selected, but it doesn't highlights it.
     item: selected item.
     """
     if self.__selected != item:
@@ -441,7 +441,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: item to lift.
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
-      self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)  
+      self.newChatMessage("Ya tengo algo cogido. ¡No puedo aguantar más peso!", 1)
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())

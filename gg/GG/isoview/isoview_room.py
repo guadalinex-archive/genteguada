@@ -56,6 +56,7 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
+    self.getModel().subscribeEvent('updateScreenPos', self.updateScreenPos)
   
   def getSpritesDict(self):
     """ Returns the sprites dictionary.
@@ -186,6 +187,9 @@ class IsoViewRoom(isoview.IsoView):
       del self.__spritesDict[aux]
     self.__isoViewItems.remove(ivPlayer)
     ivPlayer.unsubscribeAllEvents()
+    
+  def updateScreenPos(self, event):    
+    self.updateScreenPositionsOn(event.getParams()['position'])
     
   def updateScreenPositionsOn(self, pos):
     """ Updates the screen cords of all items on a room position.

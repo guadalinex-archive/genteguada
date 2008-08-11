@@ -161,7 +161,18 @@ class GGRoom(ggmodel.GGModel):
     """ Exits a player from the game.
     item: player.
     """
-    self.removeItem(item)
+    self.__population -= 1
+    pos = item.getPosition()
+    itemList = self.__tiles[pos[0]][pos[1]].getItemsAndRemoveFrom(item)
+    itemList.remove(item)
+    for upItem in itemList:
+      self.__tiles[pos[0]][pos[1]].stackItem(upItem)  
+    self.triggerEvent('updateScreenPos', position=pos)
+    self.__items.remove(item)
+    item.clearRoom()
+    item.setState(GG.utils.STATE[1])
+    self.triggerEvent('removeItem', item=item)
+    #self.removeItem(item)    
     
   def getSpecialTiles(self):
     """ Return the special tiles list.

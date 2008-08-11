@@ -172,8 +172,8 @@ class IsoViewItem(positioned_view.PositionedView):
     if self.__parent.getSound():
       guiobjects.playSound(GG.utils.SOUND_STEPS01)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
-                  self.__ivroom.getFutureScreenPosition(self, self.__position))
-    positionAnim.setOnStop(self.__ivroom.updateScreenPositionsOn, self.__position)
+                  self.__ivroom.getFutureScreenPosition(self, event.getParams()['position']))
+    #positionAnim.setOnStop(self.__ivroom.updateScreenPositionsOn, event.getParams()['position'])
     self.setAnimation(positionAnim)
       
   def startPositionChanged(self, event):

@@ -781,7 +781,7 @@ class AvatarEditor:
     """ Shows tooltips for an ocempgui item.
     label: tooltip's label.
     """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (unicode(label))
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     x, y = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = x + 8, y - 5
     self.tooltipWindow.depth = 99 # Make it the topmost widget.

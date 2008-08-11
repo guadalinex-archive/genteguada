@@ -271,9 +271,11 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     event: event info.
     """  
     pos = event.getParams()['position']
+    oldPos = event.getParams()['oldPosition']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-    self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))  
+    #self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))  
+    self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
     isoview_item.IsoViewItem.positionChanged(self, event)    
 
   def changeAvatarImages(self, path):
