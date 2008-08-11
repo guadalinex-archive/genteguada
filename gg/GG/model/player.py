@@ -365,7 +365,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     items = self.getTile().getItemsFrom(self)
     for item in items:
       item.setPosition(next)
-
+      
   def changeRoom(self, room, pos):
     """ Changes the player's room.
     room: new room.

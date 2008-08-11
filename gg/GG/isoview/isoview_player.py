@@ -276,9 +276,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.getParent().removeMovementDestination()
     #self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))  
     self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
-    isoview_item.IsoViewItem.positionChanged(self, event)    
-
+    isoview_item.IsoViewItem.positionChanged(self, event)
+    
   def changeAvatarImages(self, path):
+    """ Changes the avatar image path.
+    path: new image set path.
+    """  
     self.__path = path
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
 
