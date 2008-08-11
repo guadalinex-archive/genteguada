@@ -201,7 +201,7 @@ class CreateItemsWindow:
   def showTooltip(self, label):
     """ Shows the button tooltips.
     """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (unicode(label))
+    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
     xPos, yPos = pygame.mouse.get_pos ()
     self.tooltipWindow.topleft = xPos + 8 - self.window.topleft[0], yPos - 5 - self.window.topleft[1]
     self.tooltipWindow.depth = 99
