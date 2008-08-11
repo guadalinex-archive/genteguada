@@ -2093,3 +2093,6 @@ class IsoViewHud(isoview.IsoView):
   def finish(self, event):
     #GG.genteguada.GenteGuada.getInstance().finish()
     self.finishGame()
+
+  def changeAvatarImages(self, avatar):
+    self.__isoviewRoom.changeAvatarImages(avatar) 
