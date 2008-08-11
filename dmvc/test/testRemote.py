@@ -95,8 +95,8 @@ class TestRemoteObject(unittest.TestCase):
 
     print prefix + "ejecutamos un metodo que nos devuelve una lista"
     result = model.listPlayers()
-    #assert result.__class__ == list
-    assert result.__class__ == tuple
+    assert result.__class__ == list
+    #assert result.__class__ == tuple
     for i in range(len(result)):
       name = result[i].name()
       assert name == "maradona"
