@@ -129,7 +129,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if dataState:
       state = dataState
     else:
-      state = self.getModel().getState()
+      #state = self.getModel().getState()
+      state = self.__state
     if state == GG.utils.STATE[1] or state == GG.utils.STATE[3]:
       string = GG.utils.getSpriteName(state, self.__heading, 0, self.__timestamp)
       frames.append(string)        
