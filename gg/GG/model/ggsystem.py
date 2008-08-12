@@ -20,6 +20,10 @@ import random
 import GG.avatargenerator.generator
 import Queue
 
+
+import urllib2
+import urllib
+
 # ======================= GGSYSTEM ===========================
 PENGUIN_SPRITE_RIGHT = "andatuz_right.png"
 PENGUIN_SPRITE_DOWN = "andatuz_down.png"
@@ -140,6 +144,10 @@ class GGSystem(dMVC.model.Model):
     for sess in self.__sessions:
       if sess.getPlayer().checkUser(username, password):
         return False, "El usuario tiene una sesion abierta"    
+
+    if not self.__loginGuadalinex(username, password):
+      return False, "No se ha podido autenticar en guadalinex"
+
     for player in self.__players:
       if player.checkUser(username, password) and player.getRoom() == None:
         player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
@@ -147,6 +155,18 @@ class GGSystem(dMVC.model.Model):
         self.__sessions.append(session)
         return True, session 
     return False, "No se pudo autentificar el usuario"
+
+  def __loginGuadalinex(self, user, passwd):
+    return True
+    params = urllib.urlencode({"usuario": user, "password": passwd})  
+    #params = urllib.urlencode({"usuario": "josebamariscal", "password": "t5kgkG"})  
+    guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
+    result = guadalinexLogin.read()  
+    guadalinexLogin.close()  
+    data = result.split(";")
+    if not len(data) == 3:
+      return False
+    return True
 
   def logout(self, session):
     """ Logs out a player and ends his session.

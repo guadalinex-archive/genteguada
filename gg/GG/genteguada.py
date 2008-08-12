@@ -76,7 +76,7 @@ class GenteGuada:
                             ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
     #loadingLabel.topleft = 372,347
     loadingLabel.topleft = 350, 300
-    loadingLabel.border = 1
+    #loadingLabel.border = 1
     loadingLabel.set_minimum_size(230, 40)
     self.window.add_child(loadingLabel)
     
