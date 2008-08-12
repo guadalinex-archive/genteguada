@@ -124,8 +124,7 @@ class IsoViewItem(positioned_view.PositionedView):
           if color2[2] > 255: 
             color2[2] = 255
           self.__img.image.set_at((x, y), color2)
-    pygame.display.update()
-
+    
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """

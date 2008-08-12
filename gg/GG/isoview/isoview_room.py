@@ -79,12 +79,12 @@ class IsoViewRoom(isoview.IsoView):
     """
     return self.__isoViewItems
   
-  def updateFrame(self, ellapsedTime):
+  def updateFrame(self, elapsedTime):
     """ Paints floor, players and items on the room.
-    screen: screen handler.
+    elapsedTime: elapsed time since the game start.
     """
     for isoitem in self.__isoViewItems:
-      isoitem.updateFrame(ellapsedTime)
+      isoitem.updateFrame(elapsedTime)
     
   def getIsoviewPlayers(self):
     """ Returns the isometric view players list.

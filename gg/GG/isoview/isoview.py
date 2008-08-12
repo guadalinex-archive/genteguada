@@ -33,16 +33,16 @@ class IsoView:
     """
     return self.__animation
 
-  def updateFrame(self, ellapsedTime):
+  def updateFrame(self, elapsedTime):
     """ Paints a new item frame on screen.
-    ellapsedTime: time since the animation beginning.
+    elapsedTime: time since the animation beginning.
     """
     ani = self.__animation
     if ani:
-      if ani.isFinished(ellapsedTime):
+      if ani.isFinished(elapsedTime):
         self.setAnimation(None)
       else:  
-        ani.step(ellapsedTime)
+        ani.step(elapsedTime)
   
   def hasAnimation(self):
     """ Checks if there is an active animation.

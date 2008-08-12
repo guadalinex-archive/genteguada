@@ -84,15 +84,15 @@ class ExchangeWindow:
     """ Paints the exchangeWindow labels.
     """  
     self.__labelExchange = guiobjects.OcempLabel("Selecciona los objetos del inventario que quieres intercambiar.", guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 20, 20
+    self.__labelExchange.topleft = 20, 15
     self.container.add_child(self.__labelExchange)
     
     self.__labelExchange = guiobjects.OcempLabel("Bandeja de salida", guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 20, 60
+    self.__labelExchange.topleft = 20, 44
     self.container.add_child(self.__labelExchange)
     
     self.__labelExchange = guiobjects.OcempLabel("Bandeja de entrada", guiobjects.STYLES["dialogFont"])
-    self.__labelExchange.topleft = 370, 60
+    self.__labelExchange.topleft = 370, 44
     self.container.add_child(self.__labelExchange)
 
   def __paintButtons(self):
