@@ -140,27 +140,33 @@ class GenteGuada:
     self.exitCondition = False
     while not self.exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
-      theClock_tick(intentedFPS)
+      theClock.tick(30)
+      #theClock_tick(intentedFPS)
       #time_sleep(0.005)
 
       client_processEvents()
-
+      
+      """
+      self.activeScreen.processEvent(pygame.event.get())
+      self.activeScreen.updateFrame(pygame.time.get_ticks())
+      """
       activeScreen = self.activeScreen
       activeScreen.processEvent(pygame_event_get())
       now = get_ticks()
       activeScreen.updateFrame(now)
-
+                
+      """      
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
-        #print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
+        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
 
         frameCounter = 0
         last = now
       else:
         frameCounter += 1
-
-
+      """  
+      
   def getDataPath(self, img):
     #return os.path.join(GG.utils.DATA_PATH, img)
     #if isinstance(self.system,GG.model.ggsystem.GGSyste):
