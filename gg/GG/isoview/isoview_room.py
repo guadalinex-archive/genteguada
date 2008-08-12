@@ -202,8 +202,9 @@ class IsoViewRoom(isoview.IsoView):
     accWidth = tile.anchor[1]
     i = 0
     for item in itemList:
-      scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
       ivIt = self.__parent.findIVItem(item)
+      #scPos = GG.utils.p3dToP2d(item.getPosition(), item.anchor)  
+      scPos = GG.utils.p3dToP2d(ivIt.getPosition(), item.anchor)
       if ivIt != None:  
         if i == 0:
           zOrder = ivIt.getZOrder()

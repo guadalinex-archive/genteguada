@@ -170,7 +170,6 @@ class Tile(ggmodel.GGModel):
     image: new image.
     """  
     self.spriteName = image
-    self.triggerEvent('image', image=image)  
     
   def getAccAnchor(self, itemName):
     """ Returns the accumulated anchor for an item.

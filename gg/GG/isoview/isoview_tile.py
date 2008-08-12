@@ -26,7 +26,6 @@ class IsoViewTile(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     self.__img.zOrder = -1
-    self.getModel().subscribeEvent('image', self.imageChanged)
     
   def getImg(self):
     """ Returns the tile image.
@@ -77,10 +76,3 @@ class IsoViewTile(isoview.IsoView):
       if self.__hud.findIVItem(item).checkClickPosition(pos):
         return 1
     return 0
-    
-  def imageChanged(self, event):
-    """ Triggers after receiving an image change event.
-    event: event info.
-    """  
-    img = event.getParams()['image']
-    self.setImg(img)
