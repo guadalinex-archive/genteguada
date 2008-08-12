@@ -143,6 +143,8 @@ class Animation(object):
     """ Checks if the animation is finished.
     now: elapsed time since the animation start.
     """
+    #if not self:
+    #  return True
     return (now - self.__startedTime) >= self.time
     
 #*****************************************************************************

@@ -371,7 +371,7 @@ class IsoViewHud(isoview.IsoView):
     posOrigin = event.getParams()["position"]
     posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
     posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
-    pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
+    pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
     if ivItem != None:
@@ -401,9 +401,9 @@ class IsoViewHud(isoview.IsoView):
     if ivItem:    
       posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
-      pos = [GG.utils.INV_OR[0] + (posX * GG.utils.INV_ITEM_SZ[0]), GG.utils.INV_OR[1] + (posY * GG.utils.INV_ITEM_SZ[1])]
+      pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
-                            pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos), True)
+                            pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems()), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       ivItem.setAnimation(positionAnim)
       if ivInventItem != None:
@@ -418,7 +418,7 @@ class IsoViewHud(isoview.IsoView):
     """
     item = ivItem.getModel()
     itemPos = ivItem.getPosition()
-    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos)
+    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems())
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, \
                             [endPos[0], 0], endPos, True)

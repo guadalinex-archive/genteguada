@@ -232,7 +232,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     pos1 = event.getParams()['position']
     startPos = self.getScreenPosition()
-    endPos = self.getIVRoom().getFutureScreenPosition(self, pos1)
+    endPos = self.getIVRoom().getFutureScreenPosition(self, pos1, event.getParams()['itemList'])
     cordX = (startPos[0] + endPos[0])/2
     cordY = (startPos[1] + endPos[1])/2 - JUMP_OVER_DISTANCE
     halfPos = [cordX, cordY]
@@ -269,12 +269,11 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def positionChanged(self, event):
     """ Triggers after receiving a position change event.
     event: event info.
-    """  
+    """
     pos = event.getParams()['position']
     oldPos = event.getParams()['oldPosition']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-    #self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))  
     self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
     isoview_item.IsoViewItem.positionChanged(self, event)
     

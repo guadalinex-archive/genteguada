@@ -82,9 +82,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room.moveItem(self.__tile.position, pos, self)
     self.__room.setUnselectedFor(self)
     if not jump:
-      self.triggerEvent('position', position=pos, oldPosition=old)
+      self.triggerEvent('position', position=pos, oldPosition=old, itemList=self.__tile.getItems())
     else:
-      self.triggerEvent('jumpOver', position=pos, oldPosition=old)
+      self.triggerEvent('jumpOver', position=pos, oldPosition=old, itemList=self.__tile.getItems())
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.

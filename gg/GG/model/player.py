@@ -364,6 +364,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     
     items = self.getTile().getItemsFrom(self)
     for item in items:
+      #print ">>>", item  
       item.setPosition(next)
       
   def changeRoom(self, room, pos):
