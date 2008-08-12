@@ -94,7 +94,6 @@ class IsoViewHud(isoview.IsoView):
     else:
       self.__fullScreen = False
     self.__sound = True
-    
     self.__soundButton = None
     self.__fullscreenButton = None
     self.__privateChatButton = None
@@ -260,7 +259,7 @@ class IsoViewHud(isoview.IsoView):
       if not self.createRoomWindow.hide:
         return True
     return False
-
+    
   def restoreActiveActionButtonsList(self):
     """ Restores the active action button list.
     """  
@@ -448,16 +447,15 @@ class IsoViewHud(isoview.IsoView):
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
 
-  def updateFrame(self, ellapsedTime):
+  def updateFrame(self, elapsedTime):
     """ Updates all sprites for a new timestamp.
-    ellapsedTime: ellapsedTime
+    elapsedTime: elapsedTime
     """
     if self.__isoviewRoom:
-      self.__isoviewRoom.updateFrame(ellapsedTime)
+      self.__isoviewRoom.updateFrame(elapsedTime)
     
     screen = self.getScreen()
-    bg_image = self.__bg.image
-    self.__allSprites.clear(screen, bg_image)
+    self.__allSprites.clear(screen, self.__bg.image)
     self.__allSprites.draw(screen)
     
     pygame.display.update()
@@ -1765,6 +1763,7 @@ class IsoViewHud(isoview.IsoView):
   def exchangeItemPlayer(self):
     """ Shows the trade window.
     """
+    #self.activeExchageWindow = True
     self.__player.initExchangeTo(self.__selectedItem)
     
   def itemToOpen(self):
@@ -1820,7 +1819,7 @@ class IsoViewHud(isoview.IsoView):
     self.exchangeWindow.draw()
     self.addSprite(self.exchangeWindow.window)
     self.widgetContainer.add_widget(self.exchangeWindow.window)
-    self.activeWindow = True
+    self.activeExchageWindow = True
     
   def itemToExchange(self):
     """ Attempts to exchange an item with another player.
@@ -1835,7 +1834,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.exchangeWindow.window)
     self.removeSprite(self.exchangeWindow.window)
     self.exchangeWindow = None
-    self.activeWindow = False
+    self.activeExchageWindow = False
 
   def addListExchange(self, event):
     """ Adds an item to the exchange list after receiving an event.

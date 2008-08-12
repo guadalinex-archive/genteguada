@@ -151,13 +151,13 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, self, self.createFrameSet(), self.__path)
     self.setMovieAnimation(movieAnim)
     
-  def updateFrame(self, ellapsedTime):
+  def updateFrame(self, elapsedTime):
     """ Paints a new item frame on screen.
-    ellapsedTime: ellapsed time since the game start.
+    elapsedTime: elapsed time since the game start.
     """
-    isoview_item.IsoViewItem.updateFrame(self, ellapsedTime)
-    if self.__movieAnimation != None:
-      self.__movieAnimation.step(ellapsedTime)  
+    isoview_item.IsoViewItem.updateFrame(self, elapsedTime)
+    if self.__movieAnimation:
+      self.__movieAnimation.step(elapsedTime)  
         
   def restoreImageFrame(self):
     """ Restores the player's image according to its state, heading and timestamp.

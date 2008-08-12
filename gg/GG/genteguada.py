@@ -1,5 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 
+import sys
 import datetime
 import os
 import pygame
@@ -140,6 +141,7 @@ class GenteGuada:
     while not self.exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
       theClock_tick(intentedFPS)
+      #time_sleep(0.005)
 
       client_processEvents()
 
