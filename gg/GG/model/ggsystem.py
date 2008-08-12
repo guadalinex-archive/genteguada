@@ -148,18 +148,27 @@ class GGSystem(dMVC.model.Model):
     if not self.__loginGuadalinex(username, password):
       return False, "No se ha podido autenticar en guadalinex"
 
-    for player in self.__players:
-      if player.checkUser(username, password) and player.getRoom() == None:
-        player.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
-        session = GG.model.ggsession.GGSession(player, self)
-        self.__sessions.append(session)
-        return True, session 
+    user = self.__existPlayer(username, password)
+    if not user:
+      user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
+      self.__createPlayer(user)
+    
+    if not user.getRoom(): 
+      user.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
+      session = GG.model.ggsession.GGSession(user, self)
+      self.__sessions.append(session)
+      return True, session 
     return False, "No se pudo autentificar el usuario"
+
+  def __existPlayer(self, user, passwd):
+    for player in self.__players:
+      if player.checkUser(user, passwd):
+        return player
+    return None
 
   def __loginGuadalinex(self, user, passwd):
     return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
-    #params = urllib.urlencode({"usuario": "josebamariscal", "password": "t5kgkG"})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
     result = guadalinexLogin.read()  
     guadalinexLogin.close()  
