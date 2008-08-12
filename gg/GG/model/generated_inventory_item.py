@@ -24,7 +24,7 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """
     #parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     parentVars = inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['label', 'points']
+    return parentVars + ['label', 'points', 'anchor']
       
   def getOptions(self):
     """ Returns the item's available options.
