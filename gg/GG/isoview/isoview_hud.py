@@ -1197,7 +1197,7 @@ class IsoViewHud(isoview.IsoView):
     for item in itemList:
       item.changeRoom(room, pos)
     
-    self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)
+    #self.__player.newChatMessage("Scotty, teletransporte!       UAOOOOOOOAOAOAOAOOOOooo...", 1)
     self.teleportMenu = False  
     self.itemUnselected()
     self.dropActionsItembuttons()
@@ -1411,7 +1411,7 @@ class IsoViewHud(isoview.IsoView):
     else:
       if self.createRoomWindow.hide:
         self.showCreateRoom()
-      else:
+      else: 
         self.hideCreateRoom()
         
   def showCreateRoom(self):
@@ -1811,7 +1811,7 @@ class IsoViewHud(isoview.IsoView):
     """ Starts the exchange project after receiving an exchange event.
     event: event info.
     """  
-    itemList = event.getParams()["list"]
+    itemList = event.getParams()["itemList"]
     if len(itemList):
       step = 2
     else:
