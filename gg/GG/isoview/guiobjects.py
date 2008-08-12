@@ -295,6 +295,7 @@ STYLES = {
          }
 
 class GroupSprite(pygame.sprite.Group):
+
   """ GroupSprite class.
   Redefines an OrderedUpdates sprite group class.
   """
@@ -410,7 +411,7 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
     img.thumbnail(size, Image.ANTIALIAS)
     img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
     filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
-    self._icon = ocempgui.draw.Image.load_image(filePath)
+    self._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
     
 # ===============================================================
 
@@ -513,7 +514,7 @@ class OcempImageContactList(OcempImageFileList):
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, name))
         filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, name)
-        item._icon = ocempgui.draw.Image.load_image(filePath)
+        item._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
         
 # ===============================================================
   

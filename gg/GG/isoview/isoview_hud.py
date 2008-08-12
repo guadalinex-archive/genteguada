@@ -40,7 +40,7 @@ INV_SZ = [INV_ITEM_SZ[0] * GG.utils.INV_ITEM_COUNT[0] + 10,
 ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME2 = 1000
 
-BG_BLACK = "bg_black.png"
+BG_BLACK = "bg_black2.png"
 INTERFACE_LOWER = "interface_lower.png"
 TILE_SELECTED = "selected.png"
 TILE_TARGET = "target.png"
@@ -195,6 +195,8 @@ class IsoViewHud(isoview.IsoView):
     self.kickPlayerMenu = False
     self.adminMenu = False
     self.deleteConfirmDialog = None
+  
+    self.aux = 1
   
   def processEvent(self, events):
     """ Processes the input events.
@@ -454,12 +456,11 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
     
-    screen = self.getScreen()
-    self.__allSprites.clear(screen, self.__bg.image)
-    self.__allSprites.draw(screen)
-    
+    #screen = self.getScreen()
+    #self.__allSprites.clear(screen, self.__bg.image)
+    self.__allSprites.draw(self.getScreen())
     pygame.display.update()
-
+    
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
     event: event info.
