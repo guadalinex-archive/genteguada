@@ -13,9 +13,15 @@ import GG.isoview.login
 import GG.utils
 import GG.isoview.guiobjects
 
-# ======================= GENTEGUADA ===========================
+#Constants
 VERSION = "GenteGuada 0.2.0-1"
-# ==============================================================
+CLEAR_CACHE_WEEKS = 4
+LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
+LOADING_BACKGROUND_POSITION = [0, 0]
+LOADING_LABEL = "Cargando..."
+LOADING_LABEL_POSITION = [350, 300]
+ERROR_CONNECTION = "No hay conexion con el servidor"
+FPS = 30
 
 class GenteGuada:
 
@@ -25,14 +31,11 @@ class GenteGuada:
     self.isoHud = None
     self.session = None
     self.client = None
-    self.activeScreen = None
-    self.fullscreen = None
-    self.window = None
-    self.widgetContainer = None
+    self.fullScreen = None
     self.__avatarDownloadImages = []
     self.exitCondition = None
+    self.__clearCache()
     GenteGuada.instance = self
-    self.clearCache()
     
   @staticmethod
   def getInstance():
@@ -64,44 +67,37 @@ class GenteGuada:
       pygame.display.toggle_fullscreen()
     self.fullScreen = params.fullscreen
 
-    self.widgetContainer = ocempgui.widgets.Renderer()
-    self.widgetContainer.set_screen(self.screen)
-    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
+    widgetContainer = ocempgui.widgets.Renderer()
+    widgetContainer.set_screen(self.screen)
+    window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
     
-    imgPath = self.getDataPath("interface/backgrounds/loadingGG.png")
+    imgPath = self.getDataPath(LOADING_BACKGROUND)
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
-    imgBackgroundRight.topleft = 0, 0
-    self.window.add_child(imgBackgroundRight)
+    imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
+    window.add_child(imgBackgroundRight)
     
-    loadingLabel = GG.isoview.guiobjects.OcempLabel("Cargando...", \
-                            ocempgui.widgets.WidgetStyle(GG.isoview.guiobjects.STYLES["labelLoading"]))
-    #loadingLabel.topleft = 372,347
-    loadingLabel.topleft = 350, 300
-    #loadingLabel.border = 1
-    loadingLabel.set_minimum_size(230, 40)
-    self.window.add_child(loadingLabel)
+    loadingLabel = GG.isoview.guiobjects.OcempLabel(LOADING_LABEL, GG.isoview.guiobjects.STYLES["labelLoading"])
+    loadingLabel.topleft = LOADING_LABEL_POSITION
+    window.add_child(loadingLabel)
     
-    self.widgetContainer.add_widget(self.window)
-    #time.sleep(3)
-    
+    widgetContainer.add_widget(window)
+
     pygame.display.set_caption(VERSION)
 
-    #print pygame.display.Info()
-
     self.__getSystem(params.ip) 
+    
     winLogin = GG.isoview.login.Login(self.screen, self)
     #self.session = winLogin.draw()
     self.session = winLogin.draw(params.user, params.password)
+    
     if self.session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
-      if value == 1:
-        self.session.getPlayer().setAccessMode(True)
-      else:  
-        self.session.getPlayer().setAccessMode(False)  
+      self.session.getPlayer().setAccessMode(value)
 
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 
       self.__input(pygame.event.get())
+    
     self.__initGame()
 
   def __getSystem(self, ipAddress):
@@ -109,7 +105,7 @@ class GenteGuada:
       try:
         self.client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
       except Exception, excep:
-        print excep, "No hay conexion con el servidor"
+        print excep, ERROR_CONNECTION
         self.finish()
       self.system = self.client.getRootModel()
     else:
@@ -120,7 +116,7 @@ class GenteGuada:
     self.isoHud = self.session.defaultView(self.screen, self.fullScreen)
     self.screen.fill([0, 0, 0])
     self.isoHud.draw()
-    self.activeScreen = self.isoHud
+    isohud = self.isoHud
 
     intentedFPS = 30
     frameCounter = 0
@@ -131,6 +127,7 @@ class GenteGuada:
     get_ticks = pygame.time.get_ticks
     pygame_event_get = pygame.event.get
     time_sleep = time.sleep
+
     if self.client:
       client_processEvents = self.client.processEvents
     else:
@@ -140,20 +137,11 @@ class GenteGuada:
     self.exitCondition = False
     while not self.exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
-      theClock.tick(30)
+      theClock.tick(FPS)
       #theClock_tick(intentedFPS)
-      #time_sleep(0.005)
-
       client_processEvents()
-      
-      """
-      self.activeScreen.processEvent(pygame.event.get())
-      self.activeScreen.updateFrame(pygame.time.get_ticks())
-      """
-      activeScreen = self.activeScreen
-      activeScreen.processEvent(pygame_event_get())
       now = get_ticks()
-      activeScreen.updateFrame(now)
+      isohud.updateFrame(pygame_event_get(), now)
                 
       """      
       # FPS statistics
@@ -168,22 +156,13 @@ class GenteGuada:
       """  
       
   def getDataPath(self, img):
-    #return os.path.join(GG.utils.DATA_PATH, img)
-    #if isinstance(self.system,GG.model.ggsystem.GGSyste):
     if os.path.isdir(GG.utils.DATA_PATH):
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
       newImgName = img.replace("/","-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
-      #if os.path.isfile(pathFile):
-      #  dateFile = os.stat(pathFile)[stat.ST_MTIME]
-      #else:
-      #  dateFile = None
-      if os.path.isfile(pathFile):
-        return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
-
-      imgData = self.system.getResource(img, None)#dateFile) 
-      if imgData:
+      if not os.path.isfile(pathFile):
+        imgData = self.system.getResource(img) 
         imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
         imgFile.write(imgData)
         imgFile.close()
@@ -195,9 +174,9 @@ class GenteGuada:
       result.append(self.getDataPath(imgName))
     return result
   
-  def clearCache(self):
+  def __clearCache(self):
     now = datetime.datetime.today()
-    limitDate = now - datetime.timedelta(weeks=GG.utils.CLEAR_CACHE_WEEKS)
+    limitDate = now - datetime.timedelta(weeks=CLEAR_CACHE_WEEKS)
     limitTime = time.mktime(limitDate.timetuple())
     toRemove = []
     for fileName in os.listdir(GG.utils.LOCAL_DATA_PATH):

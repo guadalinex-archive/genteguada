@@ -11,8 +11,6 @@ if os.path.isdir("gg/GG/cache"):
 else:
   LOCAL_DATA_PATH = "/usr/share/pixmaps/genteguada/cache"
 
-CLEAR_CACHE_WEEKS = 4
-
 #resources
 if os.path.isdir("gg/GG/data"):
   DATA_PATH = "gg/GG/data"
@@ -24,6 +22,8 @@ SOUND_PATH = "sound"
 NINO_PATH = "avatars/default_boy/"
 NINA_PATH = "avatars/default_girl/"
 QUESTIONS_PATH = DATA_PATH+"/questions"
+
+BACKGROUNDS = os.path.join("interface","backgrounds")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values

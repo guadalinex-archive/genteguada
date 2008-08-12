@@ -133,13 +133,13 @@ class Login:
   def accessModeAdmin(self):
     """ Sets the access mode as admin.
     """  
-    self.__accessMode = 1
+    self.__accessMode = True
     self.__finish = True
     
   def accessModeNormal(self):
     """ Sets the access mode as user.
     """  
-    self.__accessMode = 2
+    self.__accessMode = False
     self.__finish = True
     
   def __paintScreen(self):

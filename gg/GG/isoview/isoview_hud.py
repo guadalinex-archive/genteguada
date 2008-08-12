@@ -449,10 +449,11 @@ class IsoViewHud(isoview.IsoView):
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
 
-  def updateFrame(self, elapsedTime):
+  def updateFrame(self, events ,elapsedTime):
     """ Updates all sprites for a new timestamp.
     elapsedTime: elapsedTime
     """
+    self.processEvent(events)
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
     
