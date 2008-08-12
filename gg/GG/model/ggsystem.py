@@ -494,26 +494,15 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       room.tick(now)    
 
-  def getResource(self, img, date):
+  def getResource(self, img):
     """ Returns a resource path.
     img: resource path.
     date: current date.
     """
-    sendFile = False
-    if not date:
-      sendFile = True
-    else:
-      pathFile = os.path.join(GG.utils.DATA_PATH, img)
-      dateFile = os.stat(pathFile)[stat.ST_MTIME]
-      if dateFile > date:
-        sendFile = True
-    if sendFile:
-      imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
-      imgData = imgFile.read()
-      imgFile.close()
-      return imgData
-    else:
-      return None
+    imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
+    imgData = imgFile.read()
+    imgFile.close()
+    return imgData
 
   def uploadFile(self, fileName, fileData):
     """ Uploads a new file to the system.

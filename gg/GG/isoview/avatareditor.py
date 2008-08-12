@@ -129,7 +129,7 @@ class AvatarEditor:
     dictionary["shoes"] = guiobjects.OcempImageButtonTransparent(imgPath)
     return dictionary
 
-  def processEvent(self, events):
+  def processEvent2(self, events):
     """ Handles the mouse and keyboard events.
     """  
     for event in events:
@@ -140,7 +140,7 @@ class AvatarEditor:
           GG.genteguada.GenteGuada.getInstance().finish()
     self.render.distribute_events(*events)
 
-  def updateFrame(self, ellapsedTime):
+  def updateFrame2(self, ellapsedTime):
     """ Updates all sprites for a new frame.
     """
     #hay que dibujar la habitacion DESPUES del hud, para que las animaciones de los items 
