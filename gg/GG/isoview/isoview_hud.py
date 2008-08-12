@@ -705,19 +705,25 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item']
+    isTile = self.__selectedItem.isTile()
+    itemName = self.__selectedItem.getName()
+    itemImageLabel = self.__selectedItem.getImageLabel()
     highlight = event.getParams()['highlight']
     if not self.__selectedItem.inventoryOnly():
-      if self.__selectedItem.getRoom():
-        if highlight:  
-          self.__isoviewRoom.itemSelected(self.__selectedItem)
+      #if self.__selectedItem.getRoom():
+      if highlight:  
+        self.__isoviewRoom.itemSelected(self.__selectedItem)
+      if isTile:
         selImgPos = self.__selectedItem.getPosition()
-        self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
-        self.__selectedImage.zOrder = 0
-        self.addSprite(self.__selectedImage)        
+      else:
+        selImgPos = self.findIVItem(self.__selectedItem).getPosition()
+      self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
+      self.__selectedImage.zOrder = 0
+      self.addSprite(self.__selectedImage)        
     if self.__player.getAccessMode():
-      self.itemSelectedByAdmin()
-    if not self.__selectedItem.isTile():
-      self.itemSelectedByUser()
+      self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
+    if not isTile:
+      self.itemSelectedByUser(itemName, itemImageLabel)
     
   def paintAdminOptions(self):
     """ Paints the admin action buttons on screen.
@@ -859,7 +865,7 @@ class IsoViewHud(isoview.IsoView):
     
   # *********************************************************************************  
     
-  def itemSelectedByAdmin(self):
+  def itemSelectedByAdmin(self, itemName, itemImageLabel, isTile):
     """ Paints the selected item actions admin pannel.
     """  
     actions = self.__selectedItem.getAdminActions()
@@ -879,7 +885,8 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.buttonBarAdminActions.add_child(imgBackground)
     
-    img = self.__selectedItem.getImageLabel()
+    #img = self.__selectedItem.getImageLabel()
+    img = itemImageLabel
         
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
@@ -892,7 +899,8 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarAdminActions.add_child(img)
     
     #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["itemLabel"])
-    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["teleportLabel"])
+    #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["teleportLabel"])
+    itemLabel = guiobjects.OcempLabel(itemName, guiobjects.STYLES["teleportLabel"])
     #itemLabel.topleft = 35,10
     itemLabel.topleft = 35, 0
     self.buttonBarAdminActions.add_child(itemLabel)
@@ -956,7 +964,7 @@ class IsoViewHud(isoview.IsoView):
     cancelButton.topleft = 80, 262
     self.buttonBarAdminActions.add_child(cancelButton)
     
-    if not self.__selectedItem.isTile():
+    if not isTile:
       filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "TEMP_tiny_delete_button.png")
       deleteButton = guiobjects.OcempImageButtonTransparent(filePath, "Eliminar objeto", self.showTooltip, self.removeTooltip)
       deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.removeSelectedItemConfirmation)
@@ -969,7 +977,7 @@ class IsoViewHud(isoview.IsoView):
     
     self.adminMenu = True
   
-  def itemSelectedByUser(self):
+  def itemSelectedByUser(self, itemName, itemImageLabel):
     """ Paints the user action buttons.
     """  
     options = self.__selectedItem.getOptions()
@@ -982,7 +990,8 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.buttonBarActions.add_child(imgBackground)
     
-    img = self.__selectedItem.getImageLabel()
+    #img = self.__selectedItem.getImageLabel()
+    img = itemImageLabel
         
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(img)
     img = Image.open(filePath)
@@ -994,7 +1003,8 @@ class IsoViewHud(isoview.IsoView):
     img.topleft = 5, 6
     self.buttonBarActions.add_child(img)
     
-    itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["itemLabel"])
+    #itemLabel = guiobjects.OcempLabel(self.__selectedItem.getName(), guiobjects.STYLES["itemLabel"])
+    itemLabel = guiobjects.OcempLabel(itemName, guiobjects.STYLES["itemLabel"])
     
     itemLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["itemLabel"]))
     #itemLabel.topleft = 35,10
