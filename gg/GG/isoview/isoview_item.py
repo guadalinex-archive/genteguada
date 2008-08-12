@@ -107,6 +107,8 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Changes the item's color and sets it as selected.
     """
     size = self.__img.rect
+    #self.__img.image.set_alpha(128)
+    #self.__img.update()
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
@@ -133,6 +135,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def getScreenPosition(self):
     """ Returns the item's screen position.
     """  
+    #print "*** screenPos ", self
     return self.__img.rect.topleft
     
   def setScreenPosition(self, pos):
@@ -170,9 +173,8 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     self.__position = event.getParams()['position']
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
-                  self.__ivroom.getFutureScreenPosition(self, event.getParams()['position']))
-                  #GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
-    #positionAnim.setOnStop(self.__ivroom.updateScreenPositionsOn, event.getParams()['position'])
+                  self.__ivroom.getFutureScreenPosition(self, self.__position, event.getParams()['itemList']))
+                  #self.__ivroom.getFutureScreenPosition(self, event.getParams()['position'], event.getParams()['itemList']))
     if self.__parent.getSound():
       guiobjects.playSound(GG.utils.SOUND_STEPS01)
     self.setAnimation(positionAnim)
