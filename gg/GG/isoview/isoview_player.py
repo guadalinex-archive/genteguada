@@ -3,6 +3,7 @@ import isoview
 import GG.utils
 import animation
 import os
+import GG
 
 # ======================= CONSTANTS ===========================
 JUMP_TIME = 800
@@ -283,5 +284,3 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     self.__path = path
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
-
-

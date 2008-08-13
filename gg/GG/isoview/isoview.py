@@ -1,4 +1,5 @@
 import dMVC.synchronized
+import GG
 
 class IsoView(dMVC.synchronized.Synchronized):
   """ IsoView Superclass.
@@ -73,3 +74,6 @@ class IsoView(dMVC.synchronized.Synchronized):
     """  
     if self.__animation:
       self.__animation.stop()
+
+    
+  

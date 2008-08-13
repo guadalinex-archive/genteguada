@@ -462,11 +462,15 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
     
-    #screen = self.getScreen()
     self.__allSprites.clear(self.getScreen(), self.__bg.image)
     self.__allSprites.draw(self.getScreen())
-    #print dirtyRects
     pygame.display.update()
+        
+  def addIsoAnimation(self, isoviewAnim):
+    self.__isoviewAnim.append(isoviewAnim)    
+  
+  def removeIsoAnimation(self, isoviewAnim):
+    self.__isoviewAnim.remove(isoviewAnim)
     
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
