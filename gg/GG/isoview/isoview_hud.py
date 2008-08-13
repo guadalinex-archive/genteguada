@@ -40,7 +40,7 @@ INV_SZ = [INV_ITEM_SZ[0] * GG.utils.INV_ITEM_COUNT[0] + 10,
 ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME2 = 1000
 
-BG_BLACK = "bg_black2.png"
+BG_BLACK = "bg_black.png"
 INTERFACE_LOWER = "interface_lower.png"
 TILE_SELECTED = "selected.png"
 TILE_TARGET = "target.png"
@@ -61,14 +61,16 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     
-    self.__allSprites = guiobjects.GroupSprite()
+    #self.__allSprites = guiobjects.GroupSprite()
+    self.__allSprites = guiobjects.LayeredDirty()    
     
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = BG_FULL_OR
-    self.__bg.zOrder = -2
+    self.__bg.zOrder = -200
+    self.__allSprites.add(self.__bg)
     
     self.textArea = None
     self.__textField = None
@@ -97,6 +99,7 @@ class IsoViewHud(isoview.IsoView):
     self.__fullscreenButton = None
     self.__privateChatButton = None
     self.__createItemsButton = None
+    self.buttonBarActions = None
     
     self.__img = pygame.sprite.Sprite()
     #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
@@ -300,6 +303,7 @@ class IsoViewHud(isoview.IsoView):
     sprite: sprite to be removed.
     """  
     self.__allSprites.remove(sprite)
+    #pygame.display.update()
 
   def getPlayer(self):
     """ Returns the active player.
@@ -459,9 +463,10 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateFrame(elapsedTime)
     
     #screen = self.getScreen()
-    #self.__allSprites.clear(screen, self.__bg.image)
-    self.__allSprites.draw(self.getScreen())
-    pygame.display.update()
+    #self.__allSprites.clear(self.getScreen(), self.__bg.image)
+    dirtyRects = self.__allSprites.draw(self.getScreen())
+    #print dirtyRects
+    pygame.display.update(dirtyRects)
     
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
@@ -982,6 +987,9 @@ class IsoViewHud(isoview.IsoView):
     """ Paints the user action buttons.
     """  
     options = self.__selectedItem.getOptions()
+    if not len(options):
+      return
+  
     self.buttonBarActions = ocempgui.widgets.Box(259, 95)
     self.buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
     
@@ -1671,14 +1679,17 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedItem = None
     self.removeSprite(self.__selectedImage)        
     
-    if not toBeRemovedItem.isTile():
+    if not toBeRemovedItem.isTile() and self.buttonBarActions:
       children = copy.copy(self.buttonBarActions.children)
       for child in children:
         self.buttonBarActions.remove_child(child)
         child.destroy()
-      self.widgetContainer.remove_widget(self.buttonBarActions)
-      self.buttonBarActions.destroy()
-
+      try:  
+        self.widgetContainer.remove_widget(self.buttonBarActions)
+        self.buttonBarActions.destroy()
+      except:
+        pass    
+      
     if not self.adminMenu:
       return
   
@@ -2112,3 +2123,7 @@ class IsoViewHud(isoview.IsoView):
 
   def changeAvatarImages(self, avatar):
     self.__isoviewRoom.changeAvatarImages(avatar) 
+
+  def reloadImage(self, img):
+    self.removeSprite(img)
+    self.addSprite(img)  
