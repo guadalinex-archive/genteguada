@@ -61,8 +61,8 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     
-    #self.__allSprites = guiobjects.GroupSprite()
-    self.__allSprites = guiobjects.LayeredDirty()    
+    self.__allSprites = guiobjects.GroupSprite()
+    #self.__allSprites = guiobjects.LayeredDirty()    
     
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
@@ -463,10 +463,10 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.updateFrame(elapsedTime)
     
     #screen = self.getScreen()
-    #self.__allSprites.clear(self.getScreen(), self.__bg.image)
-    dirtyRects = self.__allSprites.draw(self.getScreen())
+    self.__allSprites.clear(self.getScreen(), self.__bg.image)
+    self.__allSprites.draw(self.getScreen())
     #print dirtyRects
-    pygame.display.update(dirtyRects)
+    pygame.display.update()
     
   def roomChanged(self, event):
     """ Triggers after receiving a change room event.
