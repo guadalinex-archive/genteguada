@@ -28,12 +28,12 @@ class GenteGuada:
   def __init__(self):
     self.screen = None
     self.system = None
-    self.isoHud = None
-    self.session = None
-    self.client = None
-    self.fullScreen = None
+    self.__isoHud = None
+    self.__session = None
+    self.__client = None
+    self.__fullScreen = None
     self.__avatarDownloadImages = []
-    self.exitCondition = None
+    self.__exitCondition = None
     self.__clearCache()
     GenteGuada.instance = self
     
@@ -52,20 +52,20 @@ class GenteGuada:
   def finish(self):
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
-    if self.exitCondition is None:
+    if self.__exitCondition is None:
       sys.exit(0)
-    self.isoHud.getModel().unsubscribeEvents()
-    self.isoHud.getIVRoom().getModel().exitPlayer(self.isoHud.getPlayer())
-    self.isoHud.unsubscribeAllEvents()
+    self.__isoHud.getModel().unsubscribeEvents()
+    self.__isoHud.getIVRoom().getModel().exitPlayer(self.__isoHud.getPlayer())
+    self.__isoHud.unsubscribeAllEvents()
     pygame.mixer.music.stop()
-    self.exitCondition = True
+    self.__exitCondition = True
   
   def start(self, params):
     pygame.init()
     self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:
       pygame.display.toggle_fullscreen()
-    self.fullScreen = params.fullscreen
+    self.__fullScreen = params.fullscreen
 
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.screen)
@@ -87,12 +87,12 @@ class GenteGuada:
     self.__getSystem(params.ip) 
     
     winLogin = GG.isoview.login.Login(self.screen, self)
-    #self.session = winLogin.draw()
-    self.session = winLogin.draw(params.user, params.password)
+    #self.__session = winLogin.draw()
+    self.__session = winLogin.draw(params.user, params.password)
     
-    if self.session.getPlayer().admin:
+    if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
-      self.session.getPlayer().setAccessMode(value)
+      self.__session.getPlayer().setAccessMode(value)
 
     while self.system.getEntryRoom().isFull():
       time.sleep(2) 
@@ -103,20 +103,20 @@ class GenteGuada:
   def __getSystem(self, ipAddress):
     if ipAddress:
       try:
-        self.client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
+        self.__client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
       except Exception, excep:
         print excep, ERROR_CONNECTION
         self.finish()
-      self.system = self.client.getRootModel()
+      self.system = self.__client.getRootModel()
     else:
       import GG.model.ggsystem
       self.system = GG.model.ggsystem.GGSystem()
 
   def __initGame(self):
-    self.isoHud = self.session.defaultView(self.screen, self.fullScreen)
+    self.__isoHud = self.__session.defaultView(self.screen, self.__fullScreen)
     self.screen.fill([0, 0, 0])
-    self.isoHud.draw()
-    isohud = self.isoHud
+    self.__isoHud.draw()
+    isohud = self.__isoHud
 
     intentedFPS = 30
     frameCounter = 0
@@ -128,14 +128,14 @@ class GenteGuada:
     pygame_event_get = pygame.event.get
     time_sleep = time.sleep
 
-    if self.client:
-      client_processEvents = self.client.processEvents
+    if self.__client:
+      client_processEvents = self.__client.processEvents
     else:
       client_processEvents = lambda : None  # Do nothing!
 
     last = get_ticks()
-    self.exitCondition = False
-    while not self.exitCondition:
+    self.__exitCondition = False
+    while not self.__exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
       theClock.tick(FPS)
       #theClock_tick(intentedFPS)
@@ -198,7 +198,7 @@ class GenteGuada:
       uploadedFile.close()
     except:
       return None
-    return self.system.uploadFile([name, ext], dataFile)
+    return self.__system.uploadFile([name, ext], dataFile)
   
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
@@ -206,22 +206,22 @@ class GenteGuada:
       nameMask = self.uploadFile(fileName)
     else:
       nameMask = None
-    self.system.changeAvatarConfiguration(configuration, player, nameMask) 
+    self.__system.changeAvatarConfiguration(configuration, player, nameMask) 
 
   def getRoom(self, label):
-    return self.system.getRoom(label)  
+    return self.__system.getRoom(label)  
 
   def createRoom(self, label, size, image, maxUsers):
-    return self.system.createRoom(image, label, size, maxUsers)
+    return self.__system.createRoom(image, label, size, maxUsers)
 
   def deleteRoom(self, label):
-    return self.system.deleteRoom(label)  
+    return self.__system.deleteRoom(label)  
 
   def getAvatarImages(self, avatar):
     if not avatar in self.__avatarDownloadImages:
       self.__avatarDownloadImages.append(avatar)
       print "pidiendo las imagenes asincronamente"
-      self.system.async(self.system.getAvatarImages, self.getAvatarImagesFinish, avatar)
+      self.__system.async(self.__system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
     path = resultado["path"].replace("/", "-")
@@ -231,4 +231,4 @@ class GenteGuada:
         avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
-    self.isoHud.changeAvatarImages(resultado["avatar"])
+    self.__isoHud.changeAvatarImages(resultado["avatar"])

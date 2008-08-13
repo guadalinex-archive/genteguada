@@ -133,7 +133,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     utils.logger.debug("RServerHandler.handle client:  "+str(self.client_address))
     sizeInt = struct.calcsize("i")
     while True:
-      read, write, error = select.select ([self.request],[self.request],[self.request],0.1)
+      time.sleep(0.01)
+      read, write, error = select.select ([self.request],[self.request],[self.request],0)
       if self.request in read:
         size = self.request.recv(sizeInt)
         if len(size):
