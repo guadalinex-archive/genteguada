@@ -204,7 +204,7 @@ class Login:
     """  
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
-    loginData = self.__parent.system.login(user, passw)
+    loginData = self.__parent.getSystem().login(user, passw)
     if loginData[0] == True:
       self.__session = loginData[1]
       self.finishLogin()
@@ -263,7 +263,7 @@ class Login:
   def autoLogin(self, user, passw):
     """ Logs an user automatically.
     """  
-    loginData = self.__parent.system.login(user, passw)
+    loginData = self.__parent.getSystem().login(user, passw)
     if loginData[0] == True:
       return loginData[1]
     else:
