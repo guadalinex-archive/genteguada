@@ -453,7 +453,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud.zOrder = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
-
+    
   def updateFrame(self, events ,elapsedTime):
     """ Updates all sprites for a new timestamp.
     elapsedTime: elapsedTime
@@ -462,7 +462,13 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
     
-    self.__allSprites.clear(self.getScreen(), self.__bg.image)
+    #self.__allSprites.clear(self.getScreen(), self.__bg.image)
+    
+    #self.__allSprites.update()
+    
+    #for image in self.__allSprites:
+    #  image.update()  
+    
     self.__allSprites.draw(self.getScreen())
     pygame.display.update()
         
