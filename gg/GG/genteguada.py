@@ -26,8 +26,8 @@ FPS = 30
 class GenteGuada:
 
   def __init__(self):
-    self.screen = None
-    self.system = None
+    self.__screen = None
+    self.__system = None
     self.__isoHud = None
     self.__session = None
     self.__client = None
@@ -62,13 +62,13 @@ class GenteGuada:
   
   def start(self, params):
     pygame.init()
-    self.screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
+    self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:
       pygame.display.toggle_fullscreen()
     self.__fullScreen = params.fullscreen
 
     widgetContainer = ocempgui.widgets.Renderer()
-    widgetContainer.set_screen(self.screen)
+    widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
     
     imgPath = self.getDataPath(LOADING_BACKGROUND)
@@ -84,9 +84,9 @@ class GenteGuada:
 
     pygame.display.set_caption(VERSION)
 
-    self.__getSystem(params.ip) 
+    self.__setSystem(params.ip) 
     
-    winLogin = GG.isoview.login.Login(self.screen, self)
+    winLogin = GG.isoview.login.Login(self.__screen, self)
     #self.__session = winLogin.draw()
     self.__session = winLogin.draw(params.user, params.password)
     
@@ -94,27 +94,30 @@ class GenteGuada:
       value = winLogin.drawAccessMode()  
       self.__session.getPlayer().setAccessMode(value)
 
-    while self.system.getEntryRoom().isFull():
+    while self.__system.getEntryRoom().isFull():
       time.sleep(2) 
       self.__input(pygame.event.get())
     
     self.__initGame()
 
-  def __getSystem(self, ipAddress):
+  def getSystem(self):
+    return self.__system
+
+  def __setSystem(self, ipAddress):
     if ipAddress:
       try:
         self.__client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
       except Exception, excep:
         print excep, ERROR_CONNECTION
         self.finish()
-      self.system = self.__client.getRootModel()
+      self.__system = self.__client.getRootModel()
     else:
       import GG.model.ggsystem
-      self.system = GG.model.ggsystem.GGSystem()
+      self.__system = GG.model.ggsystem.GGSystem()
 
   def __initGame(self):
-    self.__isoHud = self.__session.defaultView(self.screen, self.__fullScreen)
-    self.screen.fill([0, 0, 0])
+    self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen)
+    self.__screen.fill([0, 0, 0])
     self.__isoHud.draw()
     isohud = self.__isoHud
 
@@ -163,7 +166,7 @@ class GenteGuada:
       newImgName = img.replace("/","-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
       if not os.path.isfile(pathFile):
-        imgData = self.system.getResource(img) 
+        imgData = self.__system.getResource(img) 
         imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
         imgFile.write(imgData)
         imgFile.close()
