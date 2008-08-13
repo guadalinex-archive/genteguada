@@ -70,7 +70,6 @@ class IsoViewHud(isoview.IsoView):
     self.__bg.rect.topleft = BG_FULL_OR
     self.__bg.zOrder = -2
     
-    self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.textArea = None
     self.__textField = None
     self.windowInventory = None
@@ -197,6 +196,8 @@ class IsoViewHud(isoview.IsoView):
     self.deleteConfirmDialog = None
   
     self.aux = 1
+
+    self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
   
   def processEvent(self, events):
     """ Processes the input events.
