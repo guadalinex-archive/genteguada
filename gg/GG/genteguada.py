@@ -137,12 +137,15 @@ class GenteGuada:
     self.__exitCondition = False
     while not self.__exitCondition:
       time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
-      theClock.tick(FPS)
+      
+      theClock_tick(FPS)
+      
       #theClock_tick(intentedFPS)
       client_processEvents()
       now = get_ticks()
+      
       isohud.updateFrame(pygame_event_get(), now)
-                
+            
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
@@ -232,3 +235,4 @@ class GenteGuada:
         avatarImage.write(resultado[key])
         avatarImage.close()
     self.__isoHud.changeAvatarImages(resultado["avatar"])
+    
