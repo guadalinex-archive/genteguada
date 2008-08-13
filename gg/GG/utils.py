@@ -21,7 +21,7 @@ HUD_PATH = "interface/hud/"
 SOUND_PATH = "sound"
 NINO_PATH = "avatars/default_boy/"
 NINA_PATH = "avatars/default_girl/"
-QUESTIONS_PATH = DATA_PATH+"/questions"
+QUESTIONS_PATH = DATA_PATH + "/questions"
 
 BACKGROUNDS = os.path.join("interface","backgrounds")
 

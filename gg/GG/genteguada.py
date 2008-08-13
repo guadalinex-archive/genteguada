@@ -143,7 +143,6 @@ class GenteGuada:
       now = get_ticks()
       isohud.updateFrame(pygame_event_get(), now)
                 
-      """      
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
@@ -153,7 +152,6 @@ class GenteGuada:
         last = now
       else:
         frameCounter += 1
-      """  
       
   def getDataPath(self, img):
     if os.path.isdir(GG.utils.DATA_PATH):
@@ -234,4 +232,3 @@ class GenteGuada:
         avatarImage.write(resultado[key])
         avatarImage.close()
     self.isoHud.changeAvatarImages(resultado["avatar"])
-

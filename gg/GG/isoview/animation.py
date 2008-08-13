@@ -143,8 +143,6 @@ class Animation(object):
     """ Checks if the animation is finished.
     now: elapsed time since the animation start.
     """
-    #if not self:
-    #  return True
     return (now - self.__startedTime) >= self.time
     
 #*****************************************************************************
@@ -240,8 +238,7 @@ class MovieAnimation(Animation):
     for frame in self.__frames:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(path + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
-      
-    
+          
   def step(self, now):
     """ Progresses the animation.
     now: elapsed time since the animation start.

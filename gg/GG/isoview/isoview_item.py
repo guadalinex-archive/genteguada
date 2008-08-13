@@ -96,19 +96,25 @@ class IsoViewItem(positioned_view.PositionedView):
     else:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__img.dirty = 1
     
   def setSprite(self, sprite):
     """ Sets a new sprite for the item
     sprite: new sprite.
     """
     self.__img.image = sprite
+    self.__img.dirty = 1
    
   def selected(self):
     """ Changes the item's color and sets it as selected.
     """
-    size = self.__img.rect
     #self.__img.image.set_alpha(128)
     #self.__img.update()
+    
+    size = self.__img.rect
+    #size = self.__img.image.get_rect()
+    print self.__img.rect
+    print self.__img.image.get_rect()
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
@@ -124,12 +130,14 @@ class IsoViewItem(positioned_view.PositionedView):
           if color2[2] > 255: 
             color2[2] = 255
           self.__img.image.set_at((x, y), color2)
+    self.__parent.reloadImage(self.__img)      
     
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__parent.reloadImage(self.__img)      
     
   def getScreenPosition(self):
     """ Returns the item's screen position.

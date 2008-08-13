@@ -40,12 +40,12 @@ class IsoView(dMVC.synchronized.Synchronized):
     """ Paints a new item frame on screen.
     elapsedTime: time since the animation beginning.
     """
-    ani = self.__animation
-    if ani:
-      if ani.isFinished(elapsedTime):
+    #ani = self.__animation
+    if self.__animation:
+      if self.__animation.isFinished(elapsedTime):
         self.setAnimation(None)
       else:  
-        ani.step(elapsedTime)
+        self.__animation.step(elapsedTime)
   
   def hasAnimation(self):
     """ Checks if there is an active animation.
