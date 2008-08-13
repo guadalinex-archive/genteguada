@@ -1,4 +1,6 @@
-class IsoView:
+import dMVC.synchronized
+
+class IsoView(dMVC.synchronized.Synchronized):
   """ IsoView Superclass.
   Defines attributes and methods for a generic view.
   """
@@ -11,6 +13,7 @@ class IsoView:
     self.__model = model
     self.__screen = screen
     self.__animation = None
+    dMVC.synchronized.Synchronized.__init__(self)
     
   def __del__(self):
     """ Class destructor.
@@ -48,7 +51,8 @@ class IsoView:
     """ Checks if there is an active animation.
     """
     return self.__animation != None
-    
+  
+  @dMVC.synchronized.synchronized(lockName='animation')
   def setAnimation(self, anim=None):
     """ Creates a new position animation.
     anim: new position animation.
