@@ -17,13 +17,17 @@ if os.path.isdir("gg/GG/data"):
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
 
-HUD_PATH = "interface/hud/"
-SOUND_PATH = "sound"
-NINO_PATH = "avatars/default_boy/"
-NINA_PATH = "avatars/default_girl/"
-QUESTIONS_PATH = DATA_PATH + "/questions"
 
-BACKGROUNDS = os.path.join("interface","backgrounds")
+INTERFACE_PATH = "interface"
+SOUND_PATH = "sound"
+INTERFACE_AVATARS = "avatars"
+
+HUD_PATH = os.path.join(INTERFACE_PATH, "hud/")
+NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy/")
+NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl/")
+QUESTIONS_PATH = os.path.join(DATA_PATH, "questions/")
+
+BACKGROUNDS = os.path.join(INTERFACE_PATH,"backgrounds")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values
@@ -52,8 +56,8 @@ STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carryi
 IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
 # Avatar editor
-PATH_EDITOR_INTERFACE = "interface/editor"
-PATH_PHOTO_MASK = LOCAL_DATA_PATH + "/mask" 
+PATH_EDITOR_INTERFACE = os.path.join(INTERFACE_PATH,"editor")
+PATH_PHOTO_MASK = os.path.join(LOCAL_DATA_PATH, "mask") 
 
 GENDER_TAG = "gender_tag.png"
 SKIN_TAG = "skin_tag.png"
@@ -234,14 +238,11 @@ def p3dToP2d(cord3d, anchor):
   cord3d: 3d virtual point.
   anchor: point's anchor on screen.
   """
-  x2d = SCREEN_OR[0]
-  y2d = SCREEN_OR[1]
-  x2d = x2d + (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[1]*(TILE_SZ[1])) 
-  y2d = y2d + (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[1]*(TILE_SZ[1]/2)) 
-  x2d = x2d - (anchor[0])
-  y2d = y2d - (anchor[1])
-    
-  cord2d = [x2d, y2d]
-  return cord2d
-    
+  corX2d = SCREEN_OR[0]
+  corY2d = SCREEN_OR[1]
+  corX2d += (cord3d[0]*(TILE_SZ[0]/2)) - (cord3d[1]*(TILE_SZ[1])) 
+  corY2d += (cord3d[0]*(TILE_SZ[0]/4)) + (cord3d[1]*(TILE_SZ[1]/2)) 
+  corX2d -= anchor[0]
+  corY2d -= anchor[1]
+  return corX2d, corY2d
 
