@@ -71,12 +71,13 @@ class RServer(synchronized.Synchronized):
   #}}}
 
 
-class RServerHandler(SocketServer.BaseRequestHandler):
+class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
 
 
   def __sendInitialData(self): #{{{
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
 
+    synchronized.Synchronized.__init__(self)
     initialData = {}
     initialData['rootModel'] = dMVC.getRServer().getRootModel()
     initialData['sessionID'] = self.__sessionID
@@ -217,6 +218,7 @@ class RServerHandler(SocketServer.BaseRequestHandler):
       time.sleep(0.1)
       self.sendCommand(fragment)
 
+  @synchronized.synchronized(lockName='sendObject')
   def __sendObject(self, obj, command=None): #{{{
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
