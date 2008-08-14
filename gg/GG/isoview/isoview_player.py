@@ -27,6 +27,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
     self.__movieAnimation = None
     self.__destination = None
+    self.__tempTimestamp = None
     self.__timestamp = model.getTimestamp()
     self.__heading = model.getHeading()
     self.__state = model.getState()
@@ -76,12 +77,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a timestamp changed method.
     event: event info.
     """  
-    timestamp = event.getParams()["timestamp"]
-    self.__timestamp = timestamp
-    self.getModel().setImagePath(event.getParams()["imgPath"])
-    print "====================================>>> LLAMADA"
-    self.__getAvatarImages()
-    
+    self.__tempTimestamp = event.getParams()["timestamp"]
+    self.__path = "avatars/ghost/"
+    GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
+        
   def headingChanged(self, event):
     """ Changes the player's sprite heading.
     event: event info.
@@ -285,4 +284,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     path: new image set path.
     """  
     self.__path = path
+    if self.__tempTimestamp:
+      self.__timestamp =  self.__tempTimestamp
+      self.__tempTimestamp = None
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
+    
