@@ -234,7 +234,7 @@ class MovieAnimation(Animation):
     """
     self.__sprites = []
     if path is None:
-      path = self.isoview.getModel().imagePath
+      path = self.isoview.getModel().getImagePath()
     for frame in self.__frames:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(path + frame)
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())

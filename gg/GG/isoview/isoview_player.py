@@ -30,7 +30,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__timestamp = model.getTimestamp()
     self.__heading = model.getHeading()
     self.__state = model.getState()
-    self.__path = model.imagePath
+    self.__path = model.getImagePath()
     self.__getAvatarImages()
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     #self.setImg(GG.utils.getSpriteName(model.getState(), model.getHeading(), 0, self.__timestamp))
@@ -78,8 +78,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     timestamp = event.getParams()["timestamp"]
     self.__timestamp = timestamp
-    self.getModel().imagePath = event.getParams()["imgPath"]
-
+    self.getModel().setImagePath(event.getParams()["imgPath"])
+    print "====================================>>> LLAMADA"
+    self.__getAvatarImages()
+    
   def headingChanged(self, event):
     """ Changes the player's sprite heading.
     event: event info.

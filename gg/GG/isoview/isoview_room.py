@@ -290,7 +290,7 @@ class IsoViewRoom(isoview.IsoView):
   def changeAvatarImages(self, avatar):
     isoAvatar = self.findIVItem(avatar)
     if isoAvatar:
-      isoAvatar.changeAvatarImages(avatar.imagePath) 
+      isoAvatar.changeAvatarImages(avatar.getImagePath()) 
       
   def updateScreenPositions(self):
     itemPositions = {}  
