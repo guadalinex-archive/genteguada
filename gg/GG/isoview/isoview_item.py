@@ -1,3 +1,4 @@
+import os
 import pygame
 import GG.utils
 import animation
@@ -92,9 +93,9 @@ class IsoViewItem(positioned_view.PositionedView):
     img: image name.
     """
     if path:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(path + img)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(path, img))
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + img)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), img))
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.dirty = 1
     
@@ -113,8 +114,6 @@ class IsoViewItem(positioned_view.PositionedView):
     
     size = self.__img.rect
     #size = self.__img.image.get_rect()
-    print self.__img.rect
-    print self.__img.image.get_rect()
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):

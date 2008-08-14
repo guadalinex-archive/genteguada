@@ -61,6 +61,7 @@ class GenteGuada:
     self.__exitCondition = True
   
   def start(self, params):
+    self.__setSystem(params.ip)
     pygame.init()
     self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:
@@ -84,11 +85,11 @@ class GenteGuada:
 
     pygame.display.set_caption(VERSION)
 
-    self.__setSystem(params.ip) 
+     
     
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    self.__session = winLogin.draw()
-    #self.__session = winLogin.draw(params.user, params.password)
+    #self.__session = winLogin.draw()
+    self.__session = winLogin.draw(params.user, params.password)
     
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
@@ -139,7 +140,7 @@ class GenteGuada:
     last = get_ticks()
     self.__exitCondition = False
     while not self.__exitCondition:
-      time_sleep(0.01) # Minor sleep to give oportunity to other thread to execute
+      time_sleep(0.01) # Minor sleep to give opportunity to another thread to execute
       
       theClock_tick(FPS)
       
@@ -226,7 +227,6 @@ class GenteGuada:
   def getAvatarImages(self, avatar):
     if not avatar in self.__avatarDownloadImages:
       self.__avatarDownloadImages.append(avatar)
-      print "pidiendo las imagenes asincronamente"
       self.__system.async(self.__system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
@@ -237,5 +237,5 @@ class GenteGuada:
         avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
-    self.__isoHud.changeAvatarImages(resultado["avatar"])
+    self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
     

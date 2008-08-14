@@ -195,7 +195,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the screen cords of all items on a room position.
     pos: room position.
     """  
-    #print "updateScreenPosition for ", pos
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     itemList = tile.getItems()
     accHeight = tile.anchor[0]
@@ -287,10 +286,10 @@ class IsoViewRoom(isoview.IsoView):
         return ivItem
     return None  
 
-  def changeAvatarImages(self, avatar):
+  def changeAvatarImages(self, avatar, path):
     isoAvatar = self.findIVItem(avatar)
     if isoAvatar:
-      isoAvatar.changeAvatarImages(avatar.getImagePath()) 
+      isoAvatar.changeAvatarImages(path) 
       
   def updateScreenPositions(self):
     itemPositions = {}  

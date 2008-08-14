@@ -2037,7 +2037,6 @@ class IsoViewHud(isoview.IsoView):
       
       if key == "Message":
         msg = self.editableFields[key][0].text
-        print dir(self.editableFields[key][0].text.__class__)  
         selectedItem.setMessage(msg)  
 
       if key == "GiftLabel":
@@ -2134,8 +2133,8 @@ class IsoViewHud(isoview.IsoView):
     #GG.genteguada.GenteGuada.getInstance().finish()
     self.finishGame()
 
-  def changeAvatarImages(self, avatar):
-    self.__isoviewRoom.changeAvatarImages(avatar) 
+  def changeAvatarImages(self, avatar, path):
+    self.__isoviewRoom.changeAvatarImages(avatar, path) 
 
   def reloadImage(self, img):
     self.removeSprite(img)
