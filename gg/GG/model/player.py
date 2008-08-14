@@ -149,6 +149,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     avatarConfiguration: new avatar configuration.
     timestamp: current timestamp.
     """
+    self.setImagePath("avatars/"+self.username+"/")
     self.__avatarConfiguration = avatarConfiguration
     self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
