@@ -609,9 +609,9 @@ class GGSystem(dMVC.model.Model):
     return listLabels  
 
   def getAvatarImages(self, avatar):
-    dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.imagePath)
+    dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.getImagePath())
     files = {}
-    files["path"] = avatar.imagePath
+    files["path"] = avatar.getImagePath()
     files["avatar"] = avatar
     for playerImage in os.listdir(dirPlayerImages):
       if os.path.isfile(os.path.join(dirPlayerImages, playerImage)):

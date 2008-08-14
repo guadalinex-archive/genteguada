@@ -49,9 +49,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__agenda = []
     self.__timestamp = timestamp
     if not self.__timestamp == "":
-      self.imagePath = "avatars/"+self.username+"/"
+      self.setImagePath("avatars/"+self.username+"/")
     else:
-      self.imagePath = spritePath
+      self.setImagePath(spritePath)
     self.admin = admin  
     self.__accessMode = admin
     self.startSessionTiming()

@@ -14,17 +14,23 @@ class GGInventoryItem(ggmodel.GGModel):
     self.__player = None
     self.spriteName = spriteName
     self.spriteInventory = None
-    self.imagePath = ""
+    self.setImagePath("")
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'imagePath', 'spriteInventory']
+    return ['spriteName', 'spriteInventory']
   
   def getAdminActions(self):
     """ Returns all possible admin actions for this item.
     """  
     return None
+  
+  def getImagePath(self):
+    return self.__imagePath  
+  
+  def setImagePath(self, imagePath):
+    self.__imagePath = imagePath 
   
   # self.__player
   

@@ -32,7 +32,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def loadImage(self):
     """ Loads the item's image.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + self.getModel().spriteName)  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -94,7 +94,7 @@ class IsoViewItem(positioned_view.PositionedView):
     if path:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(path + img)
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + img)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + img)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.dirty = 1
     
@@ -135,7 +135,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().imagePath + self.getModel().spriteName)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     #self.__parent.reloadImage(self.__img)      
     
