@@ -87,8 +87,8 @@ class GenteGuada:
     self.__setSystem(params.ip) 
     
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    #self.__session = winLogin.draw()
-    self.__session = winLogin.draw(params.user, params.password)
+    self.__session = winLogin.draw()
+    #self.__session = winLogin.draw(params.user, params.password)
     
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
@@ -148,7 +148,7 @@ class GenteGuada:
       now = get_ticks()
       
       isohud.updateFrame(pygame_event_get(), now)
-            
+      """ 
       # FPS statistics
       if (frameCounter == intentedFPS):
         averageTimePerFrame = float(now - last) / frameCounter
@@ -158,7 +158,7 @@ class GenteGuada:
         last = now
       else:
         frameCounter += 1
-      
+      """
   def getDataPath(self, img):
     if os.path.isdir(GG.utils.DATA_PATH):
       return os.path.join(GG.utils.DATA_PATH, img)
