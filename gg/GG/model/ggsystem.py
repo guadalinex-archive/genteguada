@@ -555,18 +555,12 @@ class GGSystem(dMVC.model.Model):
     else:
       if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png")):
         os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"))
-    #execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
-    execCommand = True
+    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
-      print "me da las imagenes"
       images = self.__avatarGeneratorHandler.getImages(player)
-      print "he copiado las imagenes"
       timestamp = self.__copyImages(images, player)
-      print "tengo el timestamp"
-      #self.__avatarGeneratorHandler.deleteImages(player)
-      print "despues del borrado"
+      self.__avatarGeneratorHandler.deleteImages(player)
       player.setAvatarConfiguration(configuration, timestamp)
-      print "poniendo el evento"
     self.__avatarGeneratorHandler.decNumProcess()
 
   def __copyImages(self, images, player):
