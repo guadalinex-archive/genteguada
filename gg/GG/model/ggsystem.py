@@ -529,8 +529,9 @@ class GGSystem(dMVC.model.Model):
   def __throwAvatarGeneratorCommand(self):
     if not self.__avatarGeneratorHandler.isFullProcess():
       try:
-        processOptions = self.__throwAvatarGeneratorCommand.get_nowait()
-        thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
+        processOptions = self.__avatarGeneratorProcessQueue.get_nowait()
+        #thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
+        self.__changeAvatarConfiguration(processOptions[0], processOptions[1], processOptions[2])
       except Queue.Empty:
         pass
 
@@ -554,14 +555,19 @@ class GGSystem(dMVC.model.Model):
     else:
       if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png")):
         os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"))
-    execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
+    #execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
+    execCommand = True
     if execCommand:
+      print "me da las imagenes"
       images = self.__avatarGeneratorHandler.getImages(player)
+      print "he copiado las imagenes"
       timestamp = self.__copyImages(images, player)
-      self.__avatarGeneratorHandler.deleteImages(player)
+      print "tengo el timestamp"
+      #self.__avatarGeneratorHandler.deleteImages(player)
+      print "despues del borrado"
       player.setAvatarConfiguration(configuration, timestamp)
+      print "poniendo el evento"
     self.__avatarGeneratorHandler.decNumProcess()
-    self.__avatarGeneratorHandler()
 
   def __copyImages(self, images, player):
     """ Copies images for a given player.
@@ -572,12 +578,12 @@ class GGSystem(dMVC.model.Model):
     dirImage = GG.utils.DATA_PATH + "/avatars/"+player.username
     if os.path.isdir(dirImage):
       for fileName in os.listdir(dirImage):
-        os.remove(os.path.join(dir, fileName))
+        os.remove(os.path.join(dirImage, fileName))
     else:
       os.mkdir(dirImage)
     timestamp = int(time.time())
     for image in images.keys():
-      f = open(os.path.join(dir, image + "_" + str(timestamp)), "wb")
+      f = open(os.path.join(dirImage, image + "_" + str(timestamp)), "wb")
       f.write(images[image])
       f.close()
     return timestamp
