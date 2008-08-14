@@ -201,7 +201,8 @@ class IsoViewHud(isoview.IsoView):
     self.aux = 1
 
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
-  
+    self.__isoviewRoom.updateScreenPositions()
+      
   def processEvent(self, events):
     """ Processes the input events.
     events: events received.
@@ -500,6 +501,8 @@ class IsoViewHud(isoview.IsoView):
       self.getScreen().fill((0, 0, 0), rect)
     if not event.getParams()["room"] is None:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
+    if self.__isoviewRoom:
+      self.__isoviewRoom.updateScreenPositions()
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.
