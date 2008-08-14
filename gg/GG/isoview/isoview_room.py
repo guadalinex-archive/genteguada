@@ -293,5 +293,18 @@ class IsoViewRoom(isoview.IsoView):
       isoAvatar.changeAvatarImages(avatar.imagePath) 
       
   def updateScreenPositions(self):
+    itemPositions = {}  
     for ivItem in self.__isoViewItems:
-      self.updateScreenPositionsOn(ivItem.getPosition())      
+      #pos = ivItem.getPosition()
+      if ivItem in itemPositions.keys():
+        itemPositions[ivItem] = 1
+      else:  
+        itemPositions[ivItem] = 0
+    
+    keys = itemPositions.keys()
+    for key in keys:
+      if itemPositions[key] == 1:
+        self.updateScreenPositionsOn(key.getPosition())  
+    
+    #for ivItem in self.__isoViewItems:
+    #  self.updateScreenPositionsOn(ivItem.getPosition())      
