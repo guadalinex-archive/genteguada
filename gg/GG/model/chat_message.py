@@ -24,7 +24,7 @@ class ChatMessage(ggmodel.GGModel):
     self.__color = color
     self.__position = position
     self.type = chatType
-    self.setImagePath("")
+    #self.setImagePath("")
     
   def variablesToSerialize(self):
     """ Sets some class attributes as public access.

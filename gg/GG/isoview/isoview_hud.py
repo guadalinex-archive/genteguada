@@ -103,7 +103,8 @@ class IsoViewHud(isoview.IsoView):
     
     self.__img = pygame.sprite.Sprite()
     #self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.INTERFACE_LOWER)).convert_alpha()
-    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + INTERFACE_LOWER)).convert_alpha()
+    imgPath = os.path.join(GG.utils.HUD_PATH , INTERFACE_LOWER)
+    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath)).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = HUD_OR[0], HUD_OR[1] - 70
     self.__img.zOrder = -1
@@ -517,7 +518,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud = ocempgui.widgets.Box(1024, 262)
     self.hud.topleft = HUD_OR[0], HUD_OR[1]- 50
 
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + INTERFACE_LOWER)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, INTERFACE_LOWER))
     self.imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     self.imgBackground.topleft = 1, 1
     self.hud.add_child(self.imgBackground)
@@ -827,13 +828,13 @@ class IsoViewHud(isoview.IsoView):
     self.playerLabels.topleft = 20, 40
     self.kickPlayerBox.add_child(self.playerLabels) 
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png"))
     okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyKickPlayer)
     okButton.topleft = 10, 262
     self.kickPlayerBox.add_child(okButton)
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png"))
     cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardKickPlayer)
     cancelButton.topleft = 80, 262
@@ -971,20 +972,20 @@ class IsoViewHud(isoview.IsoView):
         self.editableFields[key] = fields
         iPos += 1
       
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png"))
     okButton = guiobjects.OcempImageButtonTransparent(filePath, "Aplicar cambios", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyChanges)
     okButton.topleft = 10, 262
     self.buttonBarAdminActions.add_child(okButton)
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png"))
     cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Descartar cambios", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardChanges)
     cancelButton.topleft = 80, 262
     self.buttonBarAdminActions.add_child(cancelButton)
     
     if not isTile:
-      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "TEMP_tiny_delete_button.png")
+      filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png"))
       deleteButton = guiobjects.OcempImageButtonTransparent(filePath, "Eliminar objeto", self.showTooltip, self.removeTooltip)
       deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.removeSelectedItemConfirmation)
       deleteButton.topleft = 80, 227
@@ -1178,13 +1179,13 @@ class IsoViewHud(isoview.IsoView):
     self.roomLabels.topleft = 20, 40
     self.teleportBox.add_child(self.roomLabels) 
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png"))
     okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyTeleport)
     okButton.topleft = 10, 262
     self.teleportBox.add_child(okButton)
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png"))
     cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardTeleport)
     cancelButton.topleft = 80, 262
@@ -1280,13 +1281,13 @@ class IsoViewHud(isoview.IsoView):
     self.deleteRoomLabels.topleft = 20, 40
     self.deleteRoomBox.add_child(self.deleteRoomLabels) 
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png"))
     okButton = guiobjects.OcempImageButtonTransparent(filePath, "Teleportar", self.showTooltip, self.removeTooltip)
     okButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.applyDeleteRoom)
     okButton.topleft = 10, 262
     self.deleteRoomBox.add_child(okButton)
     
-    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png")
+    filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png"))
     cancelButton = guiobjects.OcempImageButtonTransparent(filePath, "Cerrar menu", self.showTooltip, self.removeTooltip)
     cancelButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.discardDeleteRoom)
     cancelButton.topleft = 80, 262

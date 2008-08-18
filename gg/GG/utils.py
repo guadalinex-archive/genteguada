@@ -22,10 +22,10 @@ INTERFACE_PATH = "interface"
 SOUND_PATH = "sound"
 INTERFACE_AVATARS = "avatars"
 
-HUD_PATH = os.path.join(INTERFACE_PATH, "hud/")
-NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy/")
-NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl/")
-QUESTIONS_PATH = os.path.join(DATA_PATH, "questions/")
+HUD_PATH = os.path.join(INTERFACE_PATH, "hud")
+NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy")
+NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl")
+QUESTIONS_PATH = os.path.join(DATA_PATH, "questions")
 
 BACKGROUNDS = os.path.join(INTERFACE_PATH,"backgrounds")
 
