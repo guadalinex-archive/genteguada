@@ -88,8 +88,8 @@ class GenteGuada:
      
     
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    #self.__session = winLogin.draw()
-    self.__session = winLogin.draw(params.user, params.password)
+    self.__session = winLogin.draw()
+    #self.__session = winLogin.draw(params.user, params.password)
     
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
