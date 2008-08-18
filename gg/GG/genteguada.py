@@ -59,46 +59,38 @@ class GenteGuada:
     self.__isoHud.unsubscribeAllEvents()
     pygame.mixer.music.stop()
     self.__exitCondition = True
-  
-  def start(self, params):
-    self.__setSystem(params.ip)
-    pygame.init()
-    self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
-    if params.fullscreen:
-      pygame.display.toggle_fullscreen()
-    self.__fullScreen = params.fullscreen
 
+  def __loadingScreen(self):
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
-    
     imgPath = self.getDataPath(LOADING_BACKGROUND)
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
     window.add_child(imgBackgroundRight)
-    
     loadingLabel = GG.isoview.guiobjects.OcempLabel(LOADING_LABEL, GG.isoview.guiobjects.STYLES["labelLoading"])
     loadingLabel.topleft = LOADING_LABEL_POSITION
     window.add_child(loadingLabel)
-    
     widgetContainer.add_widget(window)
-
+  
+  def start(self, params):
+    self.__setSystem(params.ip)
+    pygame.init()
     pygame.display.set_caption(VERSION)
-
-     
-    
+    self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
+    if params.fullscreen:
+      pygame.display.toggle_fullscreen()
+    self.__fullScreen = params.fullscreen
+    self.__loadingScreen()
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    self.__session = winLogin.draw()
-    #self.__session = winLogin.draw(params.user, params.password)
-    
+    #self.__session = winLogin.draw()
+    self.__session = winLogin.draw(params.user, params.password)
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
       self.__session.getPlayer().setAccessMode(value)
-
     while self.__system.getEntryRoom().isFull():
       time.sleep(2) 
       self.__input(pygame.event.get())
-    
     self.__initGame()
 
   def getSystem(self):

@@ -5,6 +5,7 @@ import ocempgui.widgets
 import GG.utils
 import copy
 import guiobjects
+import os
 
 class PrivateChatWindow:
   """ AvatarEditor class.
@@ -102,7 +103,8 @@ class PrivateChatWindow:
     """ Paints the delete button.
     """  
     #deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
-    deleteButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
+    imgPath = os.path.join(GG.utils.HUD_PATH, "delcontact.png")
+    deleteButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath), "Eliminar contacto", self.showTooltip, self.removeTooltip)
     deleteButton.topleft = 20, 315
     deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
     self.container.add_child(deleteButton)

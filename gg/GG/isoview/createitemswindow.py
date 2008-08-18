@@ -4,6 +4,7 @@ import pygame
 import ocempgui.widgets
 import GG.utils
 import guiobjects
+import os
 
 class CreateItemsWindow:
   """ CreateItemsWindow class.
@@ -94,12 +95,14 @@ class CreateItemsWindow:
   def __paintButtons(self):
     """ Paints the control buttons on screen.
     """  
-    createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
+    imgPath = os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png")
+    createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
     createButton.topleft = 20, 340
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createObject)
     self.container.add_child(createButton)
 
-    defaultButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_cancel_button.png"), "Restaurar a valores por defecto", self.showTooltip, self.removeTooltip)
+    imgPath = os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png")
+    defaultButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath), "Restaurar a valores por defecto", self.showTooltip, self.removeTooltip)
     defaultButton.topleft = 90, 340
     defaultButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.restoreDeafultValues)
     self.container.add_child(defaultButton)

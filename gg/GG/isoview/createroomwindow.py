@@ -4,6 +4,7 @@ import pygame
 import ocempgui.widgets
 import GG.utils
 import guiobjects
+import os
 
 class CreateRoomWindow:
   """ CreateRoomWindow class.
@@ -76,7 +77,8 @@ class CreateRoomWindow:
   def __paintButtons(self):
     """ Paints the control buttons on screen.
     """  
-    createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.HUD_PATH + "tiny_ok_button.png"), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
+    imgPath = os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png")
+    createButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath), "Crear objeto contacto", self.showTooltip, self.removeTooltip)
     createButton.topleft = 150, 220
     createButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.createRoom)
     self.container.add_child(createButton)
