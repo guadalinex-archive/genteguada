@@ -489,6 +489,7 @@ class IsoViewHud(isoview.IsoView):
     self.processEvent(events)
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
+
     self.__allSprites.draw(self.getScreen())
     pygame.display.update()
         
