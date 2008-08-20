@@ -28,6 +28,7 @@ NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl")
 QUESTIONS_PATH = os.path.join(DATA_PATH, "questions")
 
 BACKGROUNDS = os.path.join(INTERFACE_PATH,"backgrounds")
+EDITOR = os.path.join(INTERFACE_PATH,"editor")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values
@@ -245,4 +246,4 @@ def p3dToP2d(cord3d, anchor):
   corX2d -= anchor[0]
   corY2d -= anchor[1]
   return corX2d, corY2d
-
+  

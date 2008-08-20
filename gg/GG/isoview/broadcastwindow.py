@@ -11,16 +11,13 @@ class BroadcastWindow:
   Defines the broadcast window.
   """
 
-  def __init__(self, title, player, hud):
+  def __init__(self, hud):
     """ Class constructor.
-    title: private chat window title.
-    player: private chat window owner.
     """
-    self.hide = False
-    self.window = ocempgui.widgets.Window(title)
+    self.hide = True
+    self.window = ocempgui.widgets.Window("Mensajes de sistema".decode("utf-8"))
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
-    self.player = player
     self.hud = hud
     self.selected = None
     self.__textField = None

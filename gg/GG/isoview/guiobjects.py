@@ -1203,4 +1203,15 @@ class OcempEditLine(ocempgui.widgets.Entry):
     self.dirty = True
     return handled
 
+def createButton(imgPath, topleft, tooltip, action, *params):
+  imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath)
+  if tooltip:
+    button = OcempImageButtonTransparent(imgPath, tooltip[0], tooltip[1], tooltip[2])
+  else:
+    button = OcempImageButtonTransparent(imgPath)
+  button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, action, *params)
+  button.topleft = topleft
+  return button
+
+
 

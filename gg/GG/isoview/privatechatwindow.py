@@ -12,13 +12,13 @@ class PrivateChatWindow:
   Defines the Avatar Editor
   """
 
-  def __init__(self, title, player):
+  def __init__(self, player):
     """ Class constructor.
     title: private chat window title.
     player: private chat window owner.
     """
-    self.hide = False
-    self.window = ocempgui.widgets.Window(title)
+    self.hide = True
+    self.window = ocempgui.widgets.Window("Chat Privado")
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
     self.player = player

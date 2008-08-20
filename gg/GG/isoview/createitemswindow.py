@@ -11,7 +11,7 @@ class CreateItemsWindow:
   Defines the create item window.
   """
 
-  def __init__(self, session, title, player, hud):
+  def __init__(self, session, hud):
     """ Class constructor.
     session: ggsession model.
     title: window title.
@@ -20,13 +20,11 @@ class CreateItemsWindow:
     """
     self.__session = session
     self.__objectsDict = session.getObjectsData()
-    self.__player = player
     self.__hud = hud
-    self.hide = False
-    self.window = ocempgui.widgets.Window(title)
+    self.hide = True
+    self.window = ocempgui.widgets.Window("Creación de objetos".decode("utf-8"))
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
-    self.player = player
     self.selected = None
     self.editableFields = {}
     self.activeLabels = []
