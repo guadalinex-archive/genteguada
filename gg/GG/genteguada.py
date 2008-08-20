@@ -53,6 +53,7 @@ class GenteGuada:
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
     if self.__exitCondition is None:
+      #pygame.quit()
       sys.exit(0)
     self.__isoHud.getModel().unsubscribeEvents()
     self.__isoHud.getIVRoom().getModel().exitPlayer(self.__isoHud.getPlayer())
@@ -152,6 +153,8 @@ class GenteGuada:
       else:
         frameCounter += 1
       """
+    pygame.quit()
+
   def getDataPath(self, img):
     if os.path.isdir(GG.utils.DATA_PATH):
       return os.path.join(GG.utils.DATA_PATH, img)
