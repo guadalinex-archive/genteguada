@@ -6,24 +6,26 @@ import GG.utils
 import copy
 import guiobjects
 import os
+import auxwindows
 
-class PrivateChatWindow:
+
+PRIVATE_CHAT_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "privateChatWindow.png")
+DELETE_CONTACT_IMAGE = os.path.join(GG.utils.HUD_PATH, "delcontact.png")
+PRIVATE_CHAT_IMAGE = os.path.join(GG.utils.HUD_PATH, "privatechat.png")
+
+class PrivateChatWindow(auxwindows.AuxWindow):
   """ AvatarEditor class.
   Defines the Avatar Editor
   """
 
-  def __init__(self, player):
+  def __init__(self, hud, player):
     """ Class constructor.
     title: private chat window title.
     player: private chat window owner.
     """
-    self.hide = True
-    self.window = ocempgui.widgets.Window("Chat Privado")
-    self.window.topleft = 0, 0
-    self.window.zOrder = 10000
     self.player = player
     self.selected = None
-    self.draw()
+    auxwindows.AuxWindow.__init__(self, hud, "Chat privado", [0,0])
 
   def draw(self):
     """ Draws window components on screen.
@@ -34,48 +36,25 @@ class PrivateChatWindow:
     self.__paintDeleteButton()
     self.__paintChat()
     self.__paintChatArea()
-    return self.window
-
-  def setScreenPosition(self, x, y):
-    """ Sets a new screen position for the chat window.
-    """  
-    self.window.topleft = x, y  
-
-  def getScreenPosition(self):
-    """ Returns the window screen position.
-    """  
-    return self.window.topleft
-
-  def getSize(self):
-    """ Returns the window size
-    """  
-    return self.container.width, self.container.height     
 
   def __paintBackground(self):
     """ Paints the window background.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/privateChatWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(PRIVATE_CHAT_BACKGROUND)
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
     self.window.child = self.container
-    
     labelChat = guiobjects.OcempLabel("Contactos", guiobjects.STYLES["userName"])
-    labelChat.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    #labelChat.topleft = 20, 20
     labelChat.topleft = 20, 10
     self.container.add_child(labelChat)
-    
     labelContacts = guiobjects.OcempLabel("Chat", guiobjects.STYLES["userName"])
-    labelContacts.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["userName"]))
-    #labelContacts.topleft = 150, 20
     labelContacts.topleft = 160, 10
     self.container.add_child(labelContacts)
     
   def __paintContactList(self):
     """ Paints the chat window on screen.
     """
-    #from PIL import Image
     self.contactsArea = guiobjects.OcempImageContactList(130, 270, self.player.getAgenda())
     self.contactsArea.topleft = 20, 40
     self.contactsArea.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
@@ -91,7 +70,6 @@ class PrivateChatWindow:
     if name.find(" ") > -1:
       name = name[0:name.find(" ")]
       self.contactsArea.restoreContactName()
-    
     self.selected = self.player.getContact(name)
     self.clearChatArea()
     chat = self.selected.getChat()
@@ -102,33 +80,10 @@ class PrivateChatWindow:
   def __paintDeleteButton(self):
     """ Paints the delete button.
     """  
-    #deleteButton = GG.utils.OcempImageButtonTransparent(os.path.join(GG.utils.PATH_HUD, "delcontact.png"), "Eliminar contacto", self.showTooltip, self.removeTooltip)
-    imgPath = os.path.join(GG.utils.HUD_PATH, "delcontact.png")
-    deleteButton = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath), "Eliminar contacto", self.showTooltip, self.removeTooltip)
-    deleteButton.topleft = 20, 315
-    deleteButton.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.deleteContacts)
+    deleteButton = guiobjects.createButton(DELETE_CONTACT_IMAGE, [20, 315], ["Eliminar contacto", self.showTooltip, self.removeTooltip], self.accept)
     self.container.add_child(deleteButton)
 
-  def showTooltip(self, label):
-    """ Show a button's tooltip.
-    label: tooltip label.
-    """  
-    self.tooltipWindow = ocempgui.widgets.TooltipWindow (label)
-    x, y = pygame.mouse.get_pos ()
-    self.tooltipWindow.topleft = x + 8 - self.window.topleft[0], y - 5 - self.window.topleft[1]
-    self.tooltipWindow.depth = 99
-    self.tooltipWindow.zOrder = 30000
-    self.container.add_child(self.tooltipWindow)
-      
-  def removeTooltip(self):
-    """ Removes the tooltip from screen.
-    """   
-    if self.tooltipWindow:
-      self.container.remove_child(self.tooltipWindow)  
-      self.tooltipWindow.destroy ()
-      self.tooltipWindow = None
-
-  def deleteContacts(self):
+  def accept(self):
     """ Deletes a contact from the contact list.
     """  
     if not self.selected:
@@ -265,3 +220,9 @@ class PrivateChatWindow:
     self.contactsArea.updateMaskPlayer(name, image)
     self.container.remove_child(self.contactsArea)
     self.__paintContactList()
+
+  def showOrHide(self):
+    if self.hide:
+      self.hud.changeChatButton()
+    auxwindows.AuxWindow.showOrHide(self)
+      

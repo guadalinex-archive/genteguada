@@ -100,7 +100,7 @@ class IsoViewHud(isoview.IsoView):
     self.__textField = None
     self.__windowInventory = None
 
-    self.__privateChatWindow = privatechatwindow.PrivateChatWindow(self.__player)
+    self.__privateChatWindow = privatechatwindow.PrivateChatWindow(self, self.__player)
     if self.__player.getAccessMode():
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
@@ -1033,53 +1033,15 @@ class IsoViewHud(isoview.IsoView):
     for item in itemList:
       item.changeRoom(room, pos)
         
-  #************************************************************************      
-        
   def privateChatHandler(self):
-    """ Shows or hides the private chat window.
-    """  
-    if not self.__privateChatWindow:
-      self.showPrivateChat()
-    else:
-      if self.__privateChatWindow.hide:
-        self.showPrivateChat()
-      else:
-        self.hidePrivateChat()
-      
-  def showPrivateChat(self):
-    """ Shows the private chat window.
-    """  
+    self.__privateChatWindow.showOrHide()
+
+  def changeChatButton(self):
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(PRIVATE_CHAT_IMAGE)
     self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
     self.hud.remove_child(self.__privateChatButton)
     self.hud.add_child(self.__privateChatButton)
-    
-    self.addSprite(self.__privateChatWindow.window)
-    self.widgetContainer.add_widget(self.__privateChatWindow.window)
-    x, y = self.__privateChatWindow.getScreenPosition()
-    width, height = self.__privateChatWindow.getSize()
-    cordX = x
-    cordY = y
-    if x < 0:
-      cordX = 0
-    if y < 0:
-      cordY = 0
-    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
-      cordX = GG.utils.GAMEZONE_SZ[0] - width  
-    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
-      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
-    self.__privateChatWindow.setScreenPosition(cordX, cordY)  
-    self.__privateChatWindow.hide = False
-    
-  def hidePrivateChat(self):
-    """ Hides the private chat window.
-    """  
-    self.removeSprite(self.__privateChatWindow.window)
-    self.widgetContainer.remove_widget(self.__privateChatWindow.window)
-    self.__privateChatWindow.hide = True
-    
-  #************************************************************************  
-  
+
   def showTooltip(self, label):
     """ Shows the selected button tooltip.
     label: tooltip label.
