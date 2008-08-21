@@ -25,7 +25,6 @@ class CreateItemsWindow:
     self.window = ocempgui.widgets.Window("Creación de objetos".decode("utf-8"))
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
-    self.selected = None
     self.editableFields = {}
     self.activeLabels = []
     self.__objectsArea = None

@@ -11,24 +11,19 @@ class CreateRoomWindow:
   Defines the create room window.
   """
 
-  def __init__(self, session, player, hud):
+  def __init__(self, player, hud):
     """ Class constructor.
-    session: ggsession model.
     title: window title.
     player: active user.
     hud: hud object.
     """
-    self.__objectsDict = session.getObjectsData()
     self.__player = player
     self.__hud = hud
     self.hide = True
     self.window = ocempgui.widgets.Window("Creación de habitaciones".decode("utf-8"))
     self.window.topleft = 400, 245
     self.window.zOrder = 10000
-    self.selected = None
-    self.editableFields = {}
     self.activeLabels = []
-    self.__objectsArea = None
     self.tooltipWindow = None
     self.container = None
     self.images = None
