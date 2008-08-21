@@ -12,9 +12,6 @@ import animation
 import exchangewindow
 import guiobjects
 import privatechatwindow
-import createitemswindow
-import createroomwindow
-import broadcastwindow
 import webbrowser
 
 import auxwindows
@@ -27,14 +24,13 @@ import os
 BG_FULL_OR = [0, 0]
 TILE_TARGET_SHIFT = [18, 18]
 SELECTED_FLOOR_SHIFT = [55, -25]
-GAMEZONE_SZ = [GG.utils.SCREEN_SZ[0], 578]
-HUD_OR = [0, GAMEZONE_SZ[1]]
+HUD_OR = [0, GG.utils.GAMEZONE_SZ[1]]
 
 CHAT_SZ = [753, 118]
-CHAT_OR = [14, GAMEZONE_SZ[1]+14]
-TEXT_BOX_OR = [CHAT_OR[0], GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
+CHAT_OR = [14, GG.utils.GAMEZONE_SZ[1]+14]
+TEXT_BOX_OR = [CHAT_OR[0], GG.utils.GAMEZONE_SZ[1]+CHAT_SZ[1]+27]
 
-INV_OR = [CHAT_SZ[0]+ 53, GAMEZONE_SZ[1]+28]
+INV_OR = [CHAT_SZ[0]+ 53, GG.utils.GAMEZONE_SZ[1]+28]
 INV_ITEM_SZ = [60, 60]
 INV_SZ = [INV_ITEM_SZ[0] * GG.utils.INV_ITEM_COUNT[0] + 10, 
           INV_ITEM_SZ[1] * GG.utils.INV_ITEM_COUNT[1] + 15]
@@ -72,20 +68,14 @@ CREATE_ITEM_IMAGE = os.path.join(GG.utils.HUD_PATH, "4.png")
 DELETE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "substraction.png")
 CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addition.png")
 JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
-TINY_OK_IMAGE = os.path.join(GG.utils.HUD_PATH, "tiny_ok_button.png")
-TINY_CANCEL_IMAGE = os.path.join(GG.utils.HUD_PATH, "tiny_cancel_button.png")
 TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
 ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
 DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
-
 ADMIN_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "adminOptions.png")
-ADMIN_ACTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "adminActions.png")
 USER_ACTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "actionsNotification.png")
-
 TOOLBAR_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
 MASKUSER_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
-
 CONTACT_WINDOW_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "contactWindow.png")
 OK_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "ok_button.png")
 CANCEL_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "cancel_button.png")
@@ -109,11 +99,12 @@ class IsoViewHud(isoview.IsoView):
     self.__textArea = None
     self.__textField = None
     self.__windowInventory = None
+
     self.__privateChatWindow = privatechatwindow.PrivateChatWindow(self.__player)
     if self.__player.getAccessMode():
-      self.__createItemsWindow = createitemswindow.CreateItemsWindow(model, self)
-      self.__createRoomWindow = createroomwindow.CreateRoomWindow(model, self.__player, self)
-      self.__broadcastWindow = broadcastwindow.BroadcastWindow(self)
+      self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
+      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
+      self.__broadcastWindow = auxwindows.BroadcastWindow(self)
       self.__teleportWindow = auxwindows.TeleportWindow(self)
       self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
       self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self)
@@ -124,12 +115,12 @@ class IsoViewHud(isoview.IsoView):
       self.__teleportWindow = None
       self.__deleteRoomWindow = None
       self.__kickPlayerWindow = None
+
     self.__fullScreen = fullscreen
     self.__sound = True
     self.__soundButton = None
     self.__fullscreenButton = None
     self.__privateChatButton = None
-    self.__createItemsButton = None
     self.__buttonBarActions = None
     
     model.subscribeEvent('chatAdded', self.chatAdded)
@@ -517,7 +508,7 @@ class IsoViewHud(isoview.IsoView):
         self.removeSprite(img)
       
       self.__isoviewRoom = None
-      rect = pygame.Rect(0, 0, GAMEZONE_SZ[0], GAMEZONE_SZ[1])
+      rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
     if event.getParams()["room"]:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
@@ -737,12 +728,12 @@ class IsoViewHud(isoview.IsoView):
     self.adminOptions.add_child(itemLabel)
     
     ACTIONS = [
-      {"image":TELEPORT_IMAGE,    "action": self.auxWindowHandler,    "params":self.__teleportWindow,   "tooltip":"Teleportación"},
-      {"image":CREATE_ITEM_IMAGE, "action": self.createItemsHandler,  "params":None,                    "tooltip":"Panel de creación de objetos"},
-      {"image":DELETE_ROOM_IMAGE, "action": self.auxWindowHandler,    "params":self.__deleteRoomWindow, "tooltip":"Eliminar habitación"},
-      {"image":CREATE_ROOM_IMAGE, "action": self.createRoomHandler,   "params":None,                    "tooltip":"Crear habitación"},
-      {"image":JUMP_IMAGE,        "action": self.auxWindowHandler,    "params":self.__kickPlayerWindow, "tooltip":"Expulsar jugador"},
-      {"image":CHAT_IMAGE,        "action": self.broadcastHandler,    "params":None,                    "tooltip":"Mensaje general"},
+      {"image":TELEPORT_IMAGE,    "action": self.auxWindowHandler,  "params":self.__teleportWindow,     "tooltip":"Teleportación"},
+      {"image":CREATE_ITEM_IMAGE, "action": self.auxWindowHandler,  "params":self.__createItemsWindow,  "tooltip":"Panel de creación de objetos"},
+      {"image":DELETE_ROOM_IMAGE, "action": self.auxWindowHandler,  "params":self.__deleteRoomWindow,   "tooltip":"Eliminar habitación"},
+      {"image":CREATE_ROOM_IMAGE, "action": self.auxWindowHandler,  "params":self.__createRoomWindow,   "tooltip":"Crear habitación"},
+      {"image":JUMP_IMAGE,        "action": self.auxWindowHandler,  "params":self.__kickPlayerWindow,   "tooltip":"Expulsar jugador"},
+      {"image":CHAT_IMAGE,        "action": self.auxWindowHandler,  "params":self.__broadcastWindow,    "tooltip":"Mensaje general"},
     ]
     
     i = 0
@@ -830,7 +821,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarAdminActions = ocempgui.widgets.Box(150, 300)
     self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
     
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ADMIN_ACTIONS_BACKGROUND)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.ADMIN_ACTIONS_BACKGROUND)
     self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
@@ -886,10 +877,10 @@ class IsoViewHud(isoview.IsoView):
         self.editableFields[key] = fields
         iPos += 1
 
-    okButton = guiobjects.createButton(TINY_OK_IMAGE, [10, 262], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
+    okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 262], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
     self.buttonBarAdminActions.add_child(okButton)
     
-    cancelButton = guiobjects.createButton(TINY_CANCEL_IMAGE, [80, 262], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.discardChanges)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 262], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.discardChanges)
     self.buttonBarAdminActions.add_child(cancelButton)
     
     if not isTile:
@@ -1017,135 +1008,15 @@ class IsoViewHud(isoview.IsoView):
         self.__fullscreenButton = button
       elif  buttonData['action'] == self.showSoundControl:
         self.__soundButton = button
-      elif  buttonData['action'] == self.showCreateItems:
-        self.__createItemsButton = button
       i += 1
       self.hud.add_child(button)
       
-  def createItemsHandler(self):
-    """ Shows or hides the create items window.
-    """  
-    if not self.__createItemsWindow:
-      self.showCreateItems()
-    else:
-      if self.__createItemsWindow.hide:
-        self.showCreateItems()
-      else:
-        self.hideCreateItems()
-         
-  def showCreateItems(self):
-    """ Shows the private chat window.
-    """
-    self.addSprite(self.__createItemsWindow.window)
-    self.widgetContainer.add_widget(self.__createItemsWindow.window)
-    x, y = self.__createItemsWindow.getScreenPosition()
-    width, height = self.__createItemsWindow.getSize()
-    cordX = x
-    cordY = y
-    if x < 0:
-      cordX = 0
-    if y < 0:
-      cordY = 0
-    if (x + width) > GAMEZONE_SZ[0]:
-      cordX = GAMEZONE_SZ[0] - width  
-    if (y + height) > GAMEZONE_SZ[1]:
-      cordY = GAMEZONE_SZ[1] - height - 75
-    self.__createItemsWindow.setScreenPosition(cordX, cordY)  
-    self.__createItemsWindow.hide = False
-    
-  def hideCreateItems(self):
-    """ Hides the private chat window.
-    """ 
-    self.removeSprite(self.__createItemsWindow.window)
-    self.widgetContainer.remove_widget(self.__createItemsWindow.window)
-    self.__createItemsWindow.hide = True
-  
-  # *********************************************************************************
-  
-  def broadcastHandler(self):
-    """ Shows or hides the broadcast window.
-    """  
-    if not self.__broadcastWindow:
-      self.showBroadcast()
-    else:
-      if self.__broadcastWindow.hide:
-        self.showBroadcast()
-      else:
-        self.hideBroadcast()
-         
-  def showBroadcast(self):
-    """ Shows the broadcast window.
-    """
-    self.addSprite(self.__broadcastWindow.window)
-    self.widgetContainer.add_widget(self.__broadcastWindow.window)
-    x, y = self.__broadcastWindow.getScreenPosition()
-    width, height = self.__broadcastWindow.getSize()
-    cordX = x
-    cordY = y
-    if x < 0:
-      cordX = 0
-    if y < 0:
-      cordY = 0
-    if (x + width) > GAMEZONE_SZ[0]:
-      cordX = GAMEZONE_SZ[0] - width  
-    if (y + height) > GAMEZONE_SZ[1]:
-      cordY = GAMEZONE_SZ[1] - height - 75
-    self.__broadcastWindow.setScreenPosition(cordX, cordY)  
-    self.__broadcastWindow.hide = False
-    
-  def hideBroadcast(self):
-    """ Hides the broadcast window.
-    """ 
-    self.removeSprite(self.__broadcastWindow.window)
-    self.widgetContainer.remove_widget(self.__broadcastWindow.window)
-    self.__broadcastWindow.hide = True
-    
   def newBroadcastMessage(self, line):
     """ Sends a new broadcast message.
     line: new message.
     """  
     self.getModel().newBroadcastMessage(line)
   
-  #************************************************************************
-  
-  def createRoomHandler(self):
-    """ Shows or hides the create room window.
-    """  
-    if not self.__createRoomWindow:
-      self.showCreateRoom()
-    else:
-      if self.__createRoomWindow.hide:
-        self.showCreateRoom()
-      else: 
-        self.hideCreateRoom()
-        
-  def showCreateRoom(self):
-    """ Shows the create room window.
-    """
-    self.addSprite(self.__createRoomWindow.window)
-    self.widgetContainer.add_widget(self.__createRoomWindow.window)
-    x, y = self.__createRoomWindow.getScreenPosition()
-    width, height = self.__createRoomWindow.getSize()
-    cordX = x
-    cordY = y
-    if x < 0:
-      cordX = 0
-    if y < 0:
-      cordY = 0
-    if (x + width) > GAMEZONE_SZ[0]:
-      cordX = GAMEZONE_SZ[0] - width  
-    if (y + height) > GAMEZONE_SZ[1]:
-      cordY = GAMEZONE_SZ[1] - height - 75
-    self.__createRoomWindow.setScreenPosition(cordX, cordY)  
-    self.__createRoomWindow.hide = False
-    
-  def hideCreateRoom(self):
-    """ Hides the create room window.
-    """ 
-    self.removeSprite(self.__createRoomWindow.window)
-    self.widgetContainer.remove_widget(self.__createRoomWindow.window)
-    self.__createRoomWindow.hide = True
-    
   def createRoom(self, label, size, img, maxUsers):
     """ Creates a new room and teleports the admin there.
     label: room label.
@@ -1153,7 +1024,6 @@ class IsoViewHud(isoview.IsoView):
     img: room's dafault tile image.
     maxUsers: max users per room.
     """  
-    self.hideCreateRoom()
     room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers)
     if not room:
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
@@ -1194,10 +1064,10 @@ class IsoViewHud(isoview.IsoView):
       cordX = 0
     if y < 0:
       cordY = 0
-    if (x + width) > GAMEZONE_SZ[0]:
-      cordX = GAMEZONE_SZ[0] - width  
-    if (y + height) > GAMEZONE_SZ[1]:
-      cordY = GAMEZONE_SZ[1] - height - 75
+    if (x + width) > GG.utils.GAMEZONE_SZ[0]:
+      cordX = GG.utils.GAMEZONE_SZ[0] - width  
+    if (y + height) > GG.utils.GAMEZONE_SZ[1]:
+      cordY = GG.utils.GAMEZONE_SZ[1] - height - 75
     self.__privateChatWindow.setScreenPosition(cordX, cordY)  
     self.__privateChatWindow.hide = False
     
@@ -1217,8 +1087,8 @@ class IsoViewHud(isoview.IsoView):
     self.__tooltipWindow = ocempgui.widgets.TooltipWindow (label.decode("utf-8"))
     x, y = pygame.mouse.get_pos ()
     szX, szY = self.__tooltipWindow.size
-    if (x + 8 + szX) > GAMEZONE_SZ[0]:
-      self.__tooltipWindow.topleft = GAMEZONE_SZ[0] - szX, y - 5
+    if (x + 8 + szX) > GG.utils.GAMEZONE_SZ[0]:
+      self.__tooltipWindow.topleft = GG.utils.GAMEZONE_SZ[0] - szX, y - 5
     else:
       self.__tooltipWindow.topleft = x + 8, y - 5
     self.__tooltipWindow.depth = 99 # Make it the topmost widget.

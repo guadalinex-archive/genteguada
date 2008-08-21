@@ -17,18 +17,19 @@ if os.path.isdir("gg/GG/data"):
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
 
-
+#PATHS IMAGE
 INTERFACE_PATH = "interface"
 SOUND_PATH = "sound"
 INTERFACE_AVATARS = "avatars"
-
 HUD_PATH = os.path.join(INTERFACE_PATH, "hud")
 NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy")
 NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl")
 QUESTIONS_PATH = os.path.join(DATA_PATH, "questions")
-
 BACKGROUNDS = os.path.join(INTERFACE_PATH,"backgrounds")
 EDITOR = os.path.join(INTERFACE_PATH,"editor")
+ADMIN_ACTIONS_BACKGROUND = os.path.join(HUD_PATH, "adminActions.png")
+TINY_OK_IMAGE = os.path.join(HUD_PATH, "tiny_ok_button.png")
+TINY_CANCEL_IMAGE = os.path.join(HUD_PATH, "tiny_cancel_button.png")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values
@@ -37,6 +38,7 @@ CHAR_SZ = [50, 50]
 SCREEN_SZ = [1024, 768]
 SCREEN_OR = [SCREEN_SZ[0]/2 -8, 5]
 FLOOR_SHIFT = [55, -30]
+GAMEZONE_SZ = [SCREEN_SZ[0], 578]
 
 # Chat & iventory
 INV_ITEM_COUNT = [3, 2]

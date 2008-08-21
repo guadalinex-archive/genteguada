@@ -19,7 +19,6 @@ class BroadcastWindow:
     self.window.topleft = 0, 0
     self.window.zOrder = 10000
     self.hud = hud
-    self.selected = None
     self.__textField = None
     self.tooltipWindow = None
     self.draw()
