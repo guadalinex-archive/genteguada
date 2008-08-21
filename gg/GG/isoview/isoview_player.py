@@ -46,13 +46,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     #self.__state = self.getModel().getState()
 
   def __getAvatarImages(self):
-    if self.__timestamp == "":
-      imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001"
-    else:
-      imageAvatar = self.__path.replace("/","-") + "standing_bottomright_0001_" + self.__timestamp
-    if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
-      self.__path = "avatars/ghost/"
-      GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
+    if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
+      if self.__timestamp == "":
+        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001"
+      else:
+        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001_" + self.__timestamp
+      if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
+        self.__path = "avatars/ghost/"
+        GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
   def __del__(self):
     """ Class destructor.
