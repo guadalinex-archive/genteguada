@@ -34,6 +34,7 @@ class GenteGuada:
     self.__fullScreen = None
     self.__avatarDownloadImages = []
     self.__exitCondition = None
+    self.__singleMode = False
     self.__clearCache()
     GenteGuada.instance = self
     
@@ -107,6 +108,7 @@ class GenteGuada:
       self.__system = self.__client.getRootModel()
     else:
       import GG.model.ggsystem
+      self.__singleMode = True
       self.__system = GG.model.ggsystem.GGSystem()
 
   def __initGame(self):
@@ -156,10 +158,10 @@ class GenteGuada:
     pygame.quit()
 
   def getDataPath(self, img):
-    if os.path.isdir(GG.utils.DATA_PATH):
+    if self.__singleMode:
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
-      newImgName = img.replace("/","-")
+      newImgName = img.replace(os.sep,"-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
       if not os.path.isfile(pathFile):
         imgData = self.__system.getResource(img) 
@@ -233,4 +235,6 @@ class GenteGuada:
         avatarImage.write(resultado[key])
         avatarImage.close()
     self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
-    
+  
+  def isSingleMode(self):
+    return self.__singleMode

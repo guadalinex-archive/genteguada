@@ -257,27 +257,11 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__activeExchageWindow or self.__activeQuizWindow or self.__activeContactDialog or self.__winWardrobe or self.__adminMenu or self.__deleteConfirmDialog:
       return True
-    if self.__kickPlayerWindow:
-      if not self.__kickPlayerWindow.hide:
-        return True
-    if self.__deleteRoomWindow:
-      if not self.__deleteRoomWindow.hide:
-        return True
-    if self.__teleportWindow:
-      if not self.__teleportWindow.hide:
-        return True
-    if self.__privateChatWindow:
-      if not self.__privateChatWindow.hide:
-        return True
-    if self.__createItemsWindow:
-      if not self.__createItemsWindow.hide:
-        return True
-    if self.__broadcastWindow:
-      if not self.__broadcastWindow.hide:
-        return True
-    if self.__createRoomWindow:
-      if not self.__createRoomWindow.hide:
-        return True
+    windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, self.__createRoomWindow]
+    for window in windowsList:
+      if window:
+        if not window.hide:
+          return True
     return False
     
   def __restoreActiveActionButtonsList(self):
