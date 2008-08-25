@@ -1,3 +1,5 @@
+# -*- coding: iso-8859-15 -*-
+
 import os
 import ggmodel
 import time
@@ -18,18 +20,17 @@ class ChatMessage(ggmodel.GGModel):
     chatType: message type.
     """
     ggmodel.GGModel.__init__(self)
-    self.__message = message
+    self.__message = message.decode("iso-8859-15")
     self.__sender = sender
     self.__hour = time.time()
     self.__color = color
     self.__position = position
     self.type = chatType
-    #self.setImagePath("")
     
   def variablesToSerialize(self):
     """ Sets some class attributes as public access.
     """  
-    return ['imagePath', 'type']
+    return ['type']
     
   def getName(self):
     """ Returns the chat message.
