@@ -41,6 +41,7 @@ class AuxBox:
   def accept(self):
     pass
 
+
 class TeleportWindow(AuxBox):
 
   def __init__(self, hud):
@@ -90,6 +91,7 @@ class DeleteRoomWindow(TeleportWindow):
     self.showOrHide()
     self.hud.applyDeleteRoom(roomLabel)
 
+
 class KickPlayerWindow(TeleportWindow):
 
   def __init__(self, hud):
@@ -107,15 +109,13 @@ class KickPlayerWindow(TeleportWindow):
     self.hud.applyKickPlayer(playerLabel)
 
 
-#==========================================================================================
-
 class AuxWindow:
 
   def __init__(self, hud, title, topleft):
     self.hide = True
     self.window = ocempgui.widgets.Window(title.decode("utf-8"))
     self.window.topleft = topleft
-    self.window.zOrder = 10000
+    self.window.zOrder = 15000
     self.hud = hud
     self.container = None
     self.draw()
@@ -138,10 +138,10 @@ class AuxWindow:
         cordY = GG.utils.GAMEZONE_SZ[1] - self.container.height - 75
       self.window.topleft = cordX, cordY
     else:
+      self.removeTooltip()
       self.hud.removeSprite(self.window)
       self.hud.widgetContainer.remove_widget(self.window)
     self.hide = not self.hide
-
 
   def showTooltip(self, label):
     self.hud.showTooltip(label)

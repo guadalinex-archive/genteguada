@@ -87,9 +87,11 @@ class GenteGuada:
     winLogin = GG.isoview.login.Login(self.__screen, self)
     #self.__session = winLogin.draw()
     self.__session = winLogin.draw(params.user, params.password)
+    self.__loadingScreen()
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
       self.__session.getPlayer().setAccessMode(value)
+    self.__loadingScreen()
     while self.__system.getEntryRoom().isFull():
       time.sleep(2) 
       self.__input(pygame.event.get())
@@ -116,33 +118,26 @@ class GenteGuada:
     self.__screen.fill([0, 0, 0])
     self.__isoHud.draw()
     isohud = self.__isoHud
-
     intentedFPS = 30
     frameCounter = 0
-
     # Avoid name resolution inside the loop
     theClock = pygame.time.Clock()
     theClock_tick = theClock.tick
     get_ticks = pygame.time.get_ticks
     pygame_event_get = pygame.event.get
     time_sleep = time.sleep
-
     if self.__client:
       client_processEvents = self.__client.processEvents
     else:
       client_processEvents = lambda : None  # Do nothing!
-
     last = get_ticks()
     self.__exitCondition = False
     while not self.__exitCondition:
       time_sleep(0.01) # Minor sleep to give opportunity to another thread to execute
-      
       theClock_tick(FPS)
-      
       #theClock_tick(intentedFPS)
       client_processEvents()
       now = get_ticks()
-      
       isohud.updateFrame(pygame_event_get(), now)
       """ 
       # FPS statistics
