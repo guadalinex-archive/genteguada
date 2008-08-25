@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import random
@@ -256,12 +256,10 @@ class GGRoom(ggmodel.GGModel):
     direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
     direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
     direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
-    
     for i in range(0, len(direction)):
       if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
         if self.getBlocked(direction[i]) == 0:
           return GG.utils.HEADING[i+1]
-    
     dist = []
     for i in range(0, len(direction)):
       dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])
@@ -291,12 +289,10 @@ class GGRoom(ggmodel.GGModel):
     direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
     direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
     direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
-    
     for i in range(0, len(direction)):
       if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
         if self.getBlocked(direction[i]) == 0:
           return GG.utils.HEADING[i+1]
-    
     dist = []
     for i in range(0, len(direction)):
       dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])

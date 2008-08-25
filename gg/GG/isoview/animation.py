@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pygame
 import GG
 import os
@@ -42,13 +44,11 @@ class Animation(object):
 
     if x < lower:
       return ((upper - 1) / (lower *  tmp)) * x * x
-
     if x > upper:
       a3 = 1 / tmp
       b3 = -2 * a3
       c3 = 1 + a3
       return (a3 * x * x) + (b3 * x) + c3
-
     m = 2 * (upper - 1) / tmp
     b2 = (0 - m) * lower / 2
     return m * x + b2
@@ -146,7 +146,6 @@ class Animation(object):
     """
     return (now - self.__startedTime) >= self.time
     
-#*****************************************************************************
     
 class IdleAnimation(Animation):
   """ IdleAnimation class.
@@ -160,7 +159,6 @@ class IdleAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     
-#*****************************************************************************
     
 class ScreenPositionAnimation(Animation):
   """ PositionAnimation class.
@@ -205,7 +203,6 @@ class ScreenPositionAnimation(Animation):
     self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     Animation.stop(self)
   
-#*****************************************************************************
     
 class MovieAnimation(Animation):
   """ MovieAnimation class.
@@ -261,7 +258,6 @@ class MovieAnimation(Animation):
     """
     return False
   
-#*****************************************************************************
     
 class CompositionAnimation(Animation):
   """ CompositionAnimation class.
@@ -275,7 +271,6 @@ class CompositionAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     
-#*****************************************************************************
     
 class SecuenceAnimation(CompositionAnimation):
   """ SecuenceAnimation class.
@@ -348,7 +343,6 @@ class SecuenceAnimation(CompositionAnimation):
     else:
       return self.__animations[0].isFinished(now)
 
-#*****************************************************************************
     
 class ParalelAnimation(CompositionAnimation):
   """ ParalelAnimation class.

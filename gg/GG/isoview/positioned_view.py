@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import isoview
 
 class PositionedView(isoview.IsoView):

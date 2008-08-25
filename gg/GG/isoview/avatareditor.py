@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import GG.utils
 import pygame
@@ -345,7 +347,6 @@ class AvatarEditor:
     elif idTag == "shoes":
       self.changeBackgroundLeft("background_left_big_palette.png")
       self.paintColorPalette(self.updateShoesColor, "cloth", "shoes")
-
     self.activeOption = idTag
       
   def removeWidgets(self):
@@ -458,7 +459,6 @@ class AvatarEditor:
     """  
     if len(options) > 1:
       img = options[int(self.avatarConfiguration[tag]) - 1]
-
       buttonLeft = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "left_button.png")), self.buttonTooltips["before"]['tooltip'], self.showTooltip, self.removeTooltip)
       buttonLeft.topleft = 30, 400
       buttonLeft.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.moveOptions, "left", options, tag)
@@ -471,7 +471,6 @@ class AvatarEditor:
       self.activeWidget.append(buttonRight)
     else:
       img = options[0]
-
     if tag == "mask" and self.avatarConfiguration["mask"]:
       self.imgOptionsTab = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.PATH_PHOTO_MASK, "imgUpload.png"))
     else:
@@ -494,7 +493,6 @@ class AvatarEditor:
       if int(self.avatarConfiguration[tag]) == len(options):
         return
       newImgIndex = int(self.avatarConfiguration[tag]) + 1
-
     self.avatarConfiguration[tag] = str(newImgIndex)
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, options[int(self.avatarConfiguration[tag]) - 1]))
     img = ocempgui.draw.Image.load_image(imgPath)
@@ -557,7 +555,6 @@ class AvatarEditor:
     """  
     if self.fileDialogShow:
       return
-
     if mask == "file":
       self.fileDialogShow = True
       self.openFileDialog()

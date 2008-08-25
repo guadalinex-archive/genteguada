@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import GG.utils
 import isoview
 import isoview_tile
@@ -23,14 +25,12 @@ class IsoViewRoom(isoview.IsoView):
     self.__tileList = []
     tiles = model.getTiles()
     specialTiles = model.getSpecialTiles()
-    
     for corx in range(model.size[0]):
       listTile = []
       for corz in range(model.size[1]):
         varPos = GG.utils.p3dToP2d([corx, corz], GG.utils.FLOOR_SHIFT)
         pos = [int(varPos[0]), int(varPos[1])]
         k = 0
-        
         for specTile in specialTiles:
           if specTile[0] == [corx, 0, corz]:    
             isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
@@ -40,19 +40,16 @@ class IsoViewRoom(isoview.IsoView):
           isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], \
                     tiles[corx][corz].spriteName, self.__parent)
-        
         self.__parent.addSprite(isotile.getImg())
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
-
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
-      
-    self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
+      self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
@@ -95,37 +92,26 @@ class IsoViewRoom(isoview.IsoView):
     """ Gets the game coords that match a screen point.
     pos: screen coords.
     """
-    def compare(x, y):
-      return y.zOrder - x.zOrder
-
     images = self.__spritesDict.keys()
-    images.sort(compare)  
-    
+    images.sort(GG.utils.compare)  
     for image in images:
       if self.__spritesDict[image].checkClickPosition(pos):
         item = self.__spritesDict[image].getModel() 
         return self.__spritesDict[image].getPosition(), item
-
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
         return self.__bottomSpritesDict[image].getModel().position, None
-
     return [-1, -1], None
 
   def findTileOnly(self, pos):
     """ Gets the game coords that match a screen point.
     pos: screen coords.
     """
-    def compare(x, y):
-      return y.zOrder - x.zOrder
-
     images = self.__spritesDict.keys()
-    images.sort(compare)  
-    
+    images.sort(GG.utils.compare)  
     for image in self.__bottomSpritesDict:
       if self.__bottomSpritesDict[image].checkClickPosition(pos):
         return self.__bottomSpritesDict[image].getModel().position
-
     return [-1, -1]
   
   def itemAddedFromVoid(self, event):
@@ -299,11 +285,9 @@ class IsoViewRoom(isoview.IsoView):
         itemPositions[ivItem] = 1
       else:  
         itemPositions[ivItem] = 0
-    
     keys = itemPositions.keys()
     for key in keys:
       if itemPositions[key] == 1:
         self.updateScreenPositionsOn(key.getPosition())  
-    
     #for ivItem in self.__isoViewItems:
     #  self.updateScreenPositionsOn(ivItem.getPosition())      

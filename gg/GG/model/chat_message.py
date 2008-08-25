@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import ggmodel
@@ -76,7 +76,6 @@ class ChatMessage(ggmodel.GGModel):
     import GG.isoview.isoview_chatmessage
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
 
-#================================================================================
 
 class ChatQuiz(ChatMessage):
   """ ChatQuiz class.
@@ -145,5 +144,4 @@ class ChatQuiz(ChatMessage):
     import GG.isoview.isoview_quiz
     return GG.isoview.isoview_quiz.IsoViewQuiz(self, screen, isohud)
 
-#================================================================================
     

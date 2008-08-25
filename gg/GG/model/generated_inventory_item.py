@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import inventory_item
 
 class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):

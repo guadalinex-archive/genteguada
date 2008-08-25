@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import ocempgui
 import GG.utils
@@ -38,7 +38,6 @@ class IsoViewQuiz(positioned_view.PositionedView):
       label.topleft = 80, 85 + i *50
       self.container.add_child(label)
       i = i + 1
-    
     buttonA = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
     buttonA.topleft = [22, 70]
     buttonA.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import room_item
 import GG.utils
 
@@ -66,7 +68,6 @@ class GGWebItem(room_item.GGRoomItem):
     else:
       return False    
   
-#================================================================================
 
 class GGWebPannel(GGWebItem):
   """ GGWebPannel class.
@@ -122,4 +123,3 @@ class GGWebPannel(GGWebItem):
     for pannel in self.__pannels:
       pannel.removePannels(self)    
 
-#================================================================================

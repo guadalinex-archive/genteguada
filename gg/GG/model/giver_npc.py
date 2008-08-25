@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import GG.utils
 import room_item
 import generated_inventory_item
@@ -73,4 +75,3 @@ class GGGiverNpc(room_item.GGRoomItem):
     """  
     return False
 
-#================================================================================
