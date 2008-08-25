@@ -1442,13 +1442,9 @@ class IsoViewHud(isoview.IsoView):
       if key == "Position":
         try: 
           posX = int(self.editableFields[key][0].text)    
-        except ValueError:
-          self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
-          return
-        try: 
           posY = int(self.editableFields[key][1].text)    
         except ValueError:
-          self.__player.newChatMessage("Valor \"Position\" incorrecto", 1)
+          self.__player.newChatMessage('Valor "Position" incorrecto', 1)
           return
         size = self.__isoviewRoom.getModel().size
         if 0 < posX < size[0]:
@@ -1469,23 +1465,19 @@ class IsoViewHud(isoview.IsoView):
         roomLabel = self.editableFields[key][0].text
         room = GG.genteguada.GenteGuada.getInstance().getRoom(roomLabel)
         if not room:
-          self.__player.newChatMessage("Valor \"DestinationRoom\" incorrecto", 1)
+          self.__player.newChatMessage('Valor "DestinationRoom" incorrecto', 1)
           return  
         selectedItem.setDestinationRoom(room)  
       if key == "ExitPosition":
         try: 
           posX = int(self.editableFields[key][0].text)
-        except ValueError:
-          self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
-          return
-        try: 
           posY = int(self.editableFields[key][1].text)    
         except ValueError:
-          self.__player.newChatMessage("Valor \"ExitPosition\" incorrecto", 1)
+          self.__player.newChatMessage('Valor "ExitPosition" incorrecto', 1)
           return
         size = self.__selectedItem.getDestinationRoom().size
         if 0 < posX < size[0]:
-          if 0 < posY < size[1]:
+          if 0 < posY < size[1]: 
             selectedItem.setExitPosition([posX, posY])
       if key == "image":
         label = self.editableFields[key].getSelectedName()
