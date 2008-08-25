@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import GG.utils
 import inventory_item
 import dMVC.model

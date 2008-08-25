@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import dMVC.model
 
 class GGModel(dMVC.model.Model):

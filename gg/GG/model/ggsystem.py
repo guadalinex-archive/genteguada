@@ -1,4 +1,5 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
+
 import dMVC.model
 import GG.utils
 import GG.model.room
@@ -144,15 +145,12 @@ class GGSystem(dMVC.model.Model):
     for sess in self.__sessions:
       if sess.getPlayer().checkUser(username, password):
         return False, "El usuario tiene una sesion abierta"    
-
     if not self.__loginGuadalinex(username, password):
       return False, "No se ha podido autenticar en guadalinex"
-
     user = self.__existPlayer(username, password)
     if not user:
       user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
       self.__createPlayer(user)
-    
     if not user.getRoom(): 
       user.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
       session = GG.model.ggsession.GGSession(user, self)
@@ -212,7 +210,6 @@ class GGSystem(dMVC.model.Model):
     room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
     
     penguinRightOffset = [30, 0]
-
     # ROOM 1
     myDoor1 = GG.model.teleport.GGDoor("furniture/" + DOOR_GARDEN, [25, 2], [0, 0], [6, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin.GGPenguinTalker("furniture/" + PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
@@ -343,7 +340,6 @@ class GGSystem(dMVC.model.Model):
     for x in range(1, 8):
       image = "furniture/" + WAREHOUSE_UP[random.randint(0, len(WAREHOUSE_UP)-1)]
       room4.addItemFromVoid(GG.model.room_item.GGRoomItem(image, wallOffset, [0, 0]), [x, 0])
-    
     myBox1 = GG.model.box_heavy.GGBoxHeavy("furniture/" + BOX_HEAVY, [26, -12], [0, -10], "Caja pesada 1")
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + BOX_HEAVY, [26, -12], [0, -10], "Caja pesada 2")
     myBox3 = GG.model.box_heavy.GGBoxHeavy("furniture/" + BOX_HEAVY, [26, -12], [0, -10], "Caja pesada 3")
@@ -361,7 +357,6 @@ class GGSystem(dMVC.model.Model):
     room4.addItemFromVoid(myBox4, [4, 1])
     room4.addItemFromVoid(myBox5, [3, 2])
     room4.addItemFromVoid(myBox6, [7, 3])
-    
     # ROOM 5
     myDoor5A1 = GG.model.teleport.GGDoor("tiles/" + TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [3, 1], room3, "puerta room5a")
     myDoor5A2 = GG.model.teleport.GGDoor("tiles/" + TILES_ARROWS[1], GG.utils.FLOOR_SHIFT, [0, 0], [4, 1], room3, "puerta room5a")
@@ -374,17 +369,14 @@ class GGSystem(dMVC.model.Model):
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, columnOffset, [0, 0]), [1, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, columnOffset, [0, 0]), [6, z])
       room5.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, columnOffset, [0, 0]), [7, z])
-    
     room5.addItemFromVoid(myDoor5A1, [3, 7])    
     room5.addItemFromVoid(myDoor5A2, [4, 7])    
     room5.addItemFromVoid(myDoor5B1, [3, 0])    
     room5.addItemFromVoid(myDoor5B2, [4, 0])    
     room5.addItemFromVoid(myPenguinQuiz, [2, 3])
-    
     # ROOM 6
     myDoor6A = GG.model.teleport.GGDoor("tiles/" + TILES_ARROWS[3], GG.utils.FLOOR_SHIFT, [0, 0], [1, 6], room2, "puerta room6a")
     myGift1 = GG.model.giver_npc.GGGiverNpc("furniture/" + GIFT, [15, -30], [0, 0], "furniture/" + GIFT, "Regalo")
-    
     wallOffset = [35, 40]
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + SKYLINE_CORNER, wallOffset, [0, 0]), [0, 0])
     for z in range(1, 8):
@@ -396,13 +388,10 @@ class GGSystem(dMVC.model.Model):
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, [13, 15], [0, 0]), [2, 3])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, [13, 15], [0, 0]), [5, 2])
     room6.addItemFromVoid(GG.model.room_item.GGRoomItem("furniture/" + COLUMN_STONE, [13, 15], [0, 0]), [4, 6])
-    
     room6.addItemFromVoid(myDoor6A, [7, 6])
     room6.addItemFromVoid(myGift1, [4, 4])
-        
     #prueba para seleccionar un jugador y poder hablar con el en privado y hacer intercambio de objetos
     #room1.addItemFromVoid(nina,[1,0,2])
-
     demoPlayerPath = GG.utils.NINO_PATH
     for i in range(100):
       if demoPlayerPath == GG.utils.NINO_PATH:
@@ -534,7 +523,6 @@ class GGSystem(dMVC.model.Model):
         self.__changeAvatarConfiguration(processOptions[0], processOptions[1], processOptions[2])
       except Queue.Empty:
         pass
-
 
   def __changeAvatarConfiguration(self, configuration, player, nameMask):
     """ Changes the avatar configuration.

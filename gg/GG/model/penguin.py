@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import random
@@ -53,7 +53,6 @@ class GGPenguin(room_item.GGRoomItem):
     else:
       return False    
 
-#================================================================================
 
 class GGPenguinTalker(GGPenguin):
   """ GGPenguinTalker class.
@@ -94,7 +93,6 @@ class GGPenguinTalker(GGPenguin):
     talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
 
-#================================================================================
 
 class GGPenguinTrade(GGPenguin):
   """ GGPenguinTrade class.
@@ -161,7 +159,6 @@ class GGPenguinTrade(GGPenguin):
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
 
-#================================================================================
      
 class GGPenguinQuiz(GGPenguin):
   """ GGPenguinQuiz class.
@@ -220,4 +217,3 @@ class GGPenguinQuiz(GGPenguin):
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))   
         
-#================================================================================

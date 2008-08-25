@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import dMVC.model
 import commands
@@ -98,8 +99,6 @@ class AvatarGenerator(dMVC.model.Model):
       return "0"
     else:
       return "1"
-
-
 
   def getImages(self, player):
     dirPlayerImages = "/usr/share/avatargenerator/imagesGenerated/"+player.username

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import room_item
 import GG.utils
 
@@ -63,7 +65,6 @@ class GGPickableItem(room_item.GGRoomItem):
     """  
     return True
 
-#================================================================================
 
 class PaperMoney(GGPickableItem):
 
@@ -89,5 +90,4 @@ class PaperMoney(GGPickableItem):
     """  
     player.addPoints(self.points, self.label)  
     
-#================================================================================
 

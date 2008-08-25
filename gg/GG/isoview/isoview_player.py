@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import isoview_item
 import isoview
 import GG.utils
@@ -221,7 +223,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
                             screenPos, [screenPos[0],  screenPos[1] - JUMP_DISTANCE], True)
     positionDown = animation.ScreenPositionAnimation(JUMP_TIME, self, \
                             [screenPos[0],  screenPos[1] - JUMP_DISTANCE], screenPos, True)
-
     secAnim = animation.SecuenceAnimation()
     secAnim.addAnimation(positionUp)
     secAnim.addAnimation(positionDown)
@@ -244,7 +245,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
                             startPos, halfPos, True)
     positionDown = animation.ScreenPositionAnimation(JUMP_TIME, self, \
                             halfPos, endPos, True)
-    
     positionUp.setOnStop(self.setPosition, pos1)
     positionUp.setOnStop(self.updateZOrderFor, pos1)
     secAnim = animation.SecuenceAnimation()

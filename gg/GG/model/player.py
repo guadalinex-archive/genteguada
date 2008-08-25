@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import item_with_inventory
 import room_item
@@ -324,7 +324,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         self.setState(GG.utils.STATE[3])
         return
       return
-  
     ori = self.getPosition()
     end = self.getDestination()
     if GG.utils.checkNeighbour(ori, end):
@@ -335,7 +334,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
         self.setDestination(self.getPosition())
         return
-    
     if direction == GG.utils.HEADING[0]:
       self.setDestination(self.getPosition())
       return
@@ -362,7 +360,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.getHeading() == "topright":
       next = [pos[0] + 1, pos[1] - 1]
     self.__visited.append(pos)
-    
     items = self.getTile().getItemsFrom(self)
     for item in items:
       #print ">>>", item  
@@ -573,7 +570,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     for item in listIn:
       self.addToInventoryFromVoid(item, self.__exchangeTo.getPosition())
       self.__exchangeTo.removeFromInventory(item)
-
     self.__exchangeTo.cancelExchangeTo(1)
     self.cancelExchangeTo(1)
     

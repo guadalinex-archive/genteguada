@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import isoview
 import ocempgui.widgets
 import pygame

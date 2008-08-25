@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import math
 import os
@@ -126,13 +126,11 @@ def getSpriteName(state, heading, frame, timestamp):
     tail = ""
   else:
     tail = "_" + timestamp
-
   maxFrames = 10
   if state == STATE[1] or state == STATE[3]:
     return str(state + "_" + heading + "_0001" + tail)
   elif state == STATE[2] or state == STATE[4]:
     maxFrames = ANIM_WALKING_COUNT
-    
   if frame == 0:
     fileName = state + "_" + heading + "_00" + str(maxFrames)
   elif frame < 10:
@@ -248,4 +246,6 @@ def p3dToP2d(cord3d, anchor):
   corX2d -= anchor[0]
   corY2d -= anchor[1]
   return corX2d, corY2d
-  
+ 
+def compare(x, y):
+  return y.zOrder - x.zOrder

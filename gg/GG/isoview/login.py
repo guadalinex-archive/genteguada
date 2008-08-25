@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import pygame
@@ -35,7 +35,6 @@ class Login:
     """  
     if user and passw:
       return self.autoLogin(user, passw)
-
     self.widgetContainer = ocempgui.widgets.Renderer()
     self.widgetContainer.set_screen(self.__screen)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])  
@@ -57,7 +56,6 @@ class Login:
       for event in events:
         if event.type == QUIT:
           sys.exit(0)
-      
         if event.type == KEYDOWN:
           if event.key == K_ESCAPE:
             if self.dialog:
@@ -69,7 +67,6 @@ class Login:
               self.__closeDialog()
             else:
               self.acceptLogin()
-          
       self.widgetContainer.distribute_events(*events)
     if self.__session:
       return self.__session
@@ -124,7 +121,6 @@ class Login:
             sys.exit(0)
           elif event.key == K_RETURN: 
             self.accessModeAdmin()
-          
       self.widgetContainer.distribute_events(*events)
     if self.__accessMode:
       return self.__accessMode
@@ -216,28 +212,22 @@ class Login:
     """
     if self.dialog:
       return
-   
     self.container = ocempgui.widgets.Box(516, 197)
-
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png")
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
-    
     self.dialog = ocempgui.widgets.DialogWindow("Error")
     self.dialog.topleft = 254, 50
     self.dialog.child = self.container
     self.widgetContainer.add_widget(self.dialog)
-     
     buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")))
     buttonCancel.topleft = [400, 140]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
     self.container.add_child(buttonCancel)
-     
     labelAlert = guiobjects.OcempLabel("Error: Usuario o password incorrectos.", guiobjects.STYLES["dialogFont"])
     labelAlert.topleft = 160, 80
     self.container.add_child(labelAlert)
-
     return self.dialog
 
   def __closeDialog (self):

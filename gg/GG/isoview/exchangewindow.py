@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import ocempgui.widgets
 import GG.utils
 import guiobjects
