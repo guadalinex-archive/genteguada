@@ -20,7 +20,7 @@ class ChatMessage(ggmodel.GGModel):
     chatType: message type.
     """
     ggmodel.GGModel.__init__(self)
-    self.__message = message.decode("iso-8859-15")
+    self.__message = message
     self.__sender = sender
     self.__hour = time.time()
     self.__color = color

@@ -72,8 +72,6 @@ class GGSession(ggmodel.GGModel):
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
       
-  # self.__player
-  
   def getPlayer(self):
     """ Returns the active player.
     """
@@ -196,6 +194,7 @@ class GGSession(ggmodel.GGModel):
                             "position": pos,
                             "label": [""],
                             "gift": [""],        
+                            "message": [""],        
                             "images": IMAGES_DICT["PenguinTrade"].keys()                     
                             },
                    "RoomItem": {
@@ -281,14 +280,14 @@ class GGSession(ggmodel.GGModel):
       if data["message"][0] == "":
         self.__player.newChatMessage("Debe introducir un mensaje.", 1)
         return
-      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture", img), IMAGES_DICT[name][img][0], DICT[name][img][1], label, data["message"][0])
+      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0])
     #===============================================
     elif name == "PenguinTrade":
       room = self.__player.getRoom()
       if data["gift"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
         return
-      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["gift"][0])
+      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0], data["gift"][0])
     #===============================================
     elif name == "PenguinQuiz":
       if data["filePath"][0] == "":
