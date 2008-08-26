@@ -613,11 +613,9 @@ class AvatarEditor:
     """  
     size = 244, 244 
     try:
-      img = Image.open(filePath)
+      guiobjects.generateImageSize(filePath, [244, 244], os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png"))
     except:
       return 
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png"))
     imgPath = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
     img = ocempgui.draw.Image.load_image(imgPath)
     self.imgOptionsTab.picture = img

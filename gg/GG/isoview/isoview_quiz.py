@@ -55,7 +55,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.container.zOrder = 20000
     self.__isohud.addSprite(self.container)
     self.__isohud.widgetContainer.add_widget(self.container)
-    self.__isohud.setActiveQuizWindow(True)
+    self.__isohud.setActiveWindow(True)
     
   def __del__(self):
     """ Class destructor.
@@ -75,7 +75,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
       self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
     self.__isohud.widgetContainer.remove_widget(self.container)
-    self.__isohud.setActiveQuizWindow(False)
+    self.__isohud.setActiveWindow(False)
     self.container.destroy()
     
   def updateZOrder(self):

@@ -11,6 +11,14 @@ import os
 import GG.utils
 import pygame.locals
 
+def generateImageSize(origFilePath, size, destFilePath):
+  img = Image.open(origFilePath)
+  img.thumbnail(size, Image.ANTIALIAS)
+  img.save(destFilePath)
+
+
+
+
 # ======================= STYLES ===========================
 
 STYLES = {
@@ -969,11 +977,9 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     size = 46, 31 
     try:
-      img = Image.open(filePath)
+      generateImageSize(filePath, [46, 31], os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
     except:
       return 
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
     filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
     self._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
     
@@ -1064,19 +1070,14 @@ class OcempImageContactList(OcempImageFileList):
       item[0].text = cad
 
   def updateMaskPlayer(self, name, image):
-    #print "voy a buscar a name"
     for item in self.items:
-      #print item.text
       if item.text.find(name) > -1:
-        #print "Lo encontre "+name
         filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
         size = 46, 31 
         try:
-          img = Image.open(filePath)
+          generateImageSize(filePath, [46, 31], os.path.join(GG.utils.LOCAL_DATA_PATH, name))
         except:
           return 
-        img.thumbnail(size, Image.ANTIALIAS)
-        img.save(os.path.join(GG.utils.LOCAL_DATA_PATH, name))
         filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, name)
         item._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
         
