@@ -125,8 +125,8 @@ class IsoViewHud(isoview.IsoView):
     model.subscribeEvent('chatAdded', self.chatAdded)
     self.__player.subscribeEvent('quizAdded', self.quizAdded)
     self.__player.subscribeEvent('room', self.roomChanged)
-    self.__player.subscribeEvent('liftItem', self.liftItem)
-    self.__player.subscribeEvent('dropItem', self.dropItem)
+    self.__player.subscribeEvent('liftItem', self.updateScreenItemPosition)
+    self.__player.subscribeEvent('dropItem', self.updateScreenItemPosition)
     self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
     self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
@@ -337,24 +337,14 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory.remove(ivInventItem)
     self.paintItemsInventory()
       
-  def liftItem(self, event):
+  def updateScreenItemPosition(self, event):
     """ Triggers after receiving a lift item event.
     event: event info.
     """ 
     item = event.getParams()["item"]  
     pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
-    if ivItem != None:
-      self.__isoviewRoom.updateScreenPositionsOn(pos)  
-    
-  def dropItem(self, event):
-    """ Triggers after receiving a drop item event.
-    event: event info.
-    """ 
-    item = event.getParams()["item"]  
-    pos = event.getParams()["position"]
-    ivItem = self.__isoviewRoom.findIVItem(item)  
-    if ivItem != None:
+    if ivItem:
       self.__isoviewRoom.updateScreenPositionsOn(pos)  
       
   def addItemToInventory(self, event):
@@ -1489,7 +1479,6 @@ class IsoViewHud(isoview.IsoView):
           return  
         selectedItem.setImage(os.path.join("tiles", label))
     
-        
   def discardChanges(self):
     """ Discards the changes to the selected item attributes.
     """  
