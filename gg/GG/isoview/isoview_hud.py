@@ -1436,6 +1436,9 @@ class IsoViewHud(isoview.IsoView):
     """ Applies the changes to the selected item attributes.
     """  
     selectedItem = self.__selectedItem
+    self.itemUnselected()
+    self.dropActionsItembuttons()
+    self.__adminMenu = False
     keys = self.editableFields.keys()
     keys.sort()
     for key in keys:
@@ -1484,10 +1487,8 @@ class IsoViewHud(isoview.IsoView):
         if not label:
           self.__player.newChatMessage("Debe seleccionar una imagen", 1)
           return  
-        self.__selectedItem.setImage(os.path.join("tiles", label))
-    self.itemUnselected()
-    self.dropActionsItembuttons()
-    self.__adminMenu = False
+        selectedItem.setImage(os.path.join("tiles", label))
+    
         
   def discardChanges(self):
     """ Discards the changes to the selected item attributes.
