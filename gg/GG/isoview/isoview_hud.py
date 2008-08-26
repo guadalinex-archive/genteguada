@@ -18,7 +18,6 @@ import webbrowser
 import auxwindows
 
 from pygame.locals import * # faster name resolution
-from PIL import Image
 import os
 
 # ======================= CONSTANTS ===========================
@@ -190,8 +189,7 @@ class IsoViewHud(isoview.IsoView):
     }
     self.__winWardrobe = None
     self.__exchangeWindow = None
-    self.__activeExchageWindow = False
-    self.__activeQuizWindow = False
+    self.__activeWindow = False
     self.__activeContactDialog = None
     self.__tooltipWindow = None
     self.__ctrl = False
@@ -246,7 +244,9 @@ class IsoViewHud(isoview.IsoView):
   def __windowOpen(self):
     """ Checks if there is an open window.
     """
-    if self.__activeExchageWindow or self.__activeQuizWindow or self.__activeContactDialog or self.__winWardrobe or self.__adminMenu or self.__deleteConfirmDialog:
+    if self.__activeWindow:
+      return True
+    if self.__activeContactDialog or self.__adminMenu or self.__deleteConfirmDialog:
       return True
     windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, self.__createRoomWindow]
     for window in windowsList:
@@ -271,16 +271,11 @@ class IsoViewHud(isoview.IsoView):
   def getIVRoom(self):
     return self.__isoviewRoom
 
-  def setActiveQuizWindow(self, value):
+  def setActiveWindow(self, value):
     """ Sets the active quiz window with a new value
     """  
-    self.__activeQuizWindow = value
+    self.__activeWindow = value
     
-  def getActiveQuizWindow(self):
-    """ Returns the active quiz window.
-    """  
-    return self.__activeQuizWindow
-
   def addSprite(self, sprite):
     """ Adds a new sprite to the sprite group.
     sprite: new sprite. 
@@ -780,10 +775,7 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.buttonBarAdminActions.add_child(imgBackground)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
-    img = Image.open(filePath)
-    size = 23, 23
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(TOOLBAR_IMAGE)
+    guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
     img.topleft = 5, 6
     self.buttonBarAdminActions.add_child(img)
@@ -850,10 +842,7 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.__buttonBarActions.add_child(imgBackground)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
-    img = Image.open(filePath)
-    size = 23, 23
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(TOOLBAR_IMAGE)
+    guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
     img.topleft = 5, 6
     self.__buttonBarActions.add_child(img)
@@ -1004,10 +993,11 @@ class IsoViewHud(isoview.IsoView):
   def showDresser(self):
     """ Shows the avatar configuration window.
     """  
-    self.wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
-    self.__winWardrobe = self.wardrobe.draw()
+    wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
+    self.__winWardrobe = wardrobe.draw()
     self.addSprite(self.__winWardrobe)
     self.widgetContainer.add_widget(self.__winWardrobe)
+    self.__activeWindow = True
     
   def closeDresser(self, configuration = None):
     """ Closes the avatar configuration window.
@@ -1016,10 +1006,10 @@ class IsoViewHud(isoview.IsoView):
     if configuration:
       self.setAvatarConfiguration(configuration)
     self.widgetContainer.remove_widget(self.__winWardrobe)  
-    self.__winWardrobe.depth = 1
     self.removeSprite(self.__winWardrobe)
     self.__winWardrobe.destroy()
     self.__winWardrobe = None
+    self.__activeWindow = False
     
   def setAvatarConfiguration(self, configuration):
     """ Sets a new avatar configuration.
@@ -1091,10 +1081,7 @@ class IsoViewHud(isoview.IsoView):
         self.__privateChatButton = button
     image = self.__player.getImageLabel()
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-    img = Image.open(filePath)
-    size = 64, 64
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(MASKUSER_IMAGE)
+    guiobjects.generateImageSize(filePath, [64, 64], MASKUSER_IMAGE)
     self.imgMask = guiobjects.OcempImageButtonTransparent(MASKUSER_IMAGE)
     self.imgMask.topleft = 548, 110
     self.hud.add_child(self.imgMask)
@@ -1269,7 +1256,7 @@ class IsoViewHud(isoview.IsoView):
     self.__exchangeWindow.draw()
     self.addSprite(self.__exchangeWindow.window)
     self.widgetContainer.add_widget(self.__exchangeWindow.window)
-    self.__activeExchageWindow = True
+    self.__activeWindow = True
     
   def itemToExchange(self):
     """ Attempts to exchange an item with another player.
@@ -1284,7 +1271,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.__exchangeWindow.window)
     self.removeSprite(self.__exchangeWindow.window)
     self.__exchangeWindow = None
-    self.__activeExchageWindow = False
+    self.__activeWindow = False
 
   def addListExchange(self, event):
     """ Adds an item to the exchange list after receiving an event.
@@ -1405,10 +1392,7 @@ class IsoViewHud(isoview.IsoView):
     """  
     image = event.getParams()['imageLabel']
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
-    img = Image.open(filePath)
-    size = 64, 64
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(MASKUSER_IMAGE)
+    guiobjects.generateImageSize(filePath, [64, 64], MASKUSER_IMAGE)
     img = ocempgui.draw.Image.load_image(MASKUSER_IMAGE)
     self.imgMask.picture = img
     self.hud.remove_child(self.imgMask)
