@@ -423,10 +423,10 @@ class CreateItemsWindow(AuxWindow):
       iPos += 1
 
   def accept(self):
-    if not self.__objectsArea.getSelectedName():
+    name = self.__objectsArea.getSelectedName()
+    if not name:
       return  
     self.showOrHide()  
-    name = self.__objectsArea.getSelectedName()
     data = {}
     keys = self.editableFields.keys()
     for key in keys:

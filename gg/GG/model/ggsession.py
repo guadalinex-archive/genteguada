@@ -214,7 +214,7 @@ class GGSession(ggmodel.GGModel):
       posX = int(data["position"][0])    
       posY = int(data["position"][1])
     except ValueError: 
-      self.__player.newChatMessage("Valor \"Position\" incorrecto", 1) 
+      self.__player.newChatMessage('Valor "Position" incorrecto', 1) 
       return
     if name != "RoomItem":
       label = data["label"][0]  
@@ -222,6 +222,9 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
         return
     img = data["images"]
+    if not img:
+      self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
+      return
     room = self.__player.getRoom()
     roomSz = self.__player.getRoom().size
     if not (0 <= posX <= roomSz[0] and 0 <= posY <= roomSz[1]):
@@ -229,7 +232,7 @@ class GGSession(ggmodel.GGModel):
       return
     #===============================================
     if name == "BoxHeavy":
-      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label)
+      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label)
     #===============================================
     elif name == "Door":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -240,14 +243,13 @@ class GGSession(ggmodel.GGModel):
         exPosX = int(data["exitPosition"][0])    
         exPosY = int(data["exitPosition"][1])
       except ValueError: 
-        self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
+        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
         return
       roomSz = destinationRoom.size
       if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      box = GG.model.teleport.GGDoor(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], 
-                                      IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label)
+      box = GG.model.teleport.GGDoor(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label)
     #===============================================
     elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -261,45 +263,38 @@ class GGSession(ggmodel.GGModel):
         exPosX = int(data["exitPosition"][0])    
         exPosY = int(data["exitPosition"][1])
       except ValueError: 
-        self.__player.newChatMessage("Valor \"exitPosition\" incorrecto", 1) 
+        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
         return
       roomSz = destinationRoom.size
       if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                             IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, 
-                                             label, data["key"][0])
+      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, data["key"][0])
     #===============================================
     elif name == "GiverNpc":
-      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                          IMAGES_DICT[name][img][1], "furniture/" + img, label)
+      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
     #===============================================
     elif name == "RoomItem":
-      box = GG.model.room_item.GGRoomItem(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                          IMAGES_DICT[name][img][1])
+      box = GG.model.room_item.GGRoomItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1])
     #===============================================
     elif name == "PenguinTalker":
       if data["message"][0] == "":
         self.__player.newChatMessage("Debe introducir un mensaje.", 1)
         return
-      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                             IMAGES_DICT[name][img][1], label, data["message"][0])
+      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture", img), IMAGES_DICT[name][img][0], DICT[name][img][1], label, data["message"][0])
     #===============================================
     elif name == "PenguinTrade":
       room = self.__player.getRoom()
       if data["gift"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
         return
-      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                            IMAGES_DICT[name][img][1], label, data["gift"][0])
+      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["gift"][0])
     #===============================================
     elif name == "PenguinQuiz":
       if data["filePath"][0] == "":
         self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
         return
-      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture/", img), IMAGES_DICT[name][img][0], \
-                                           IMAGES_DICT[name][img][1], label, data["filePath"][0])
+      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["filePath"][0])
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     
