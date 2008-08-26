@@ -1506,8 +1506,8 @@ class IsoViewHud(isoview.IsoView):
     imgBackground.topleft = 0, 0
     self.__deleteConfirmDialog.add_child(imgBackground)
      
-    questionLabel = guiobjects.OcempLabel("Confirmar eliminación", guiobjects.STYLES["dialogFont"])
-    questionLabel.topleft = 68, 20 
+    questionLabel = guiobjects.OcempLabel("Eliminar objeto seleccionado", guiobjects.STYLES["dialogFont"])
+    questionLabel.topleft = 38, 20 
     self.__deleteConfirmDialog.add_child(questionLabel)
      
     okButton = guiobjects.createButton(OK_BUTTON_IMAGE, [20, 55], None, self.removeSelectedItem)
