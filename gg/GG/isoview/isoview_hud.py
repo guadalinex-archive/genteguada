@@ -993,7 +993,7 @@ class IsoViewHud(isoview.IsoView):
   def showDresser(self):
     """ Shows the avatar configuration window.
     """  
-    wardrobe = avatareditor.AvatarEditor(self.widgetContainer, self, self.__player.getAvatarConfiguration())
+    wardrobe = avatareditor.AvatarEditor(self, self.__player.getAvatarConfiguration())
     self.__winWardrobe = wardrobe.draw()
     self.addSprite(self.__winWardrobe)
     self.widgetContainer.add_widget(self.__winWardrobe)
@@ -1042,7 +1042,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(self.__soundButton)
     self.__sound = not self.__sound
     
-  def finishGame(self):
+  def finishGame(self, event = None):
     """ Finishes the game.
     """  
     GG.genteguada.GenteGuada.getInstance().finish()
@@ -1413,9 +1413,7 @@ class IsoViewHud(isoview.IsoView):
     self.itemUnselected()
     self.dropActionsItembuttons()
     self.__adminMenu = False
-    keys = self.editableFields.keys()
-    keys.sort()
-    for key in keys:
+    for key in self.editableFields.keys():
       if key == "Position":
         try: 
           posX = int(self.editableFields[key][0].text)    
@@ -1424,44 +1422,44 @@ class IsoViewHud(isoview.IsoView):
           self.__player.newChatMessage('Valor "Position" incorrecto', 1)
           return
         size = self.__isoviewRoom.getModel().size
-        if 0 < posX < size[0]:
-          if 0 < posY < size[1]:
+        if 0 <= posX < size[0]:
+          if 0 <= posY < size[1]:
             itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
             for singleItem in itemsList:
               singleItem.setPosition([posX, posY])  
-      if key == "Url":
+      elif key == "Url":
         url = self.editableFields[key][0].text
         selectedItem.distributedSetUrl(url)
-      if key == "Message":
+      elif key == "Message":
         msg = self.editableFields[key][0].text
         selectedItem.setMessage(msg)  
-      if key == "GiftLabel":
+      elif key == "GiftLabel":
         giftLabel = self.editableFields[key][0].text    
         selectedItem.setGiftLabel(giftLabel)  
-      if key == "DestinationRoom":
+      elif key == "DestinationRoom":
         roomLabel = self.editableFields[key][0].text
         room = GG.genteguada.GenteGuada.getInstance().getRoom(roomLabel)
         if not room:
           self.__player.newChatMessage('Valor "DestinationRoom" incorrecto', 1)
           return  
         selectedItem.setDestinationRoom(room)  
-      if key == "ExitPosition":
+      elif key == "ExitPosition":
         try: 
           posX = int(self.editableFields[key][0].text)
           posY = int(self.editableFields[key][1].text)    
         except ValueError:
           self.__player.newChatMessage('Valor "ExitPosition" incorrecto', 1)
           return
-        size = self.__selectedItem.getDestinationRoom().size
+        size = selectedItem.getDestinationRoom().size
         if 0 < posX < size[0]:
           if 0 < posY < size[1]: 
             selectedItem.setExitPosition([posX, posY])
-      if key == "image":
+      elif key == "image":
         label = self.editableFields[key].getSelectedName()
         if not label:
           self.__player.newChatMessage("Debe seleccionar una imagen", 1)
           return  
-        selectedItem.setImage(os.path.join("tiles", label))
+        selectedItem.setImage(os.path.join(TILE, label))
     
   def discardChanges(self):
     """ Discards the changes to the selected item attributes.

@@ -171,6 +171,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     return self.__points
 
+  def getAdminActions(self):
+    """ Returns player's available options.
+    """
+    return None
+
   def addPoints(self, points, giverLabel):
     """ Adds points to the player's point pool.
     points: points added.
