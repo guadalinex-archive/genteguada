@@ -61,9 +61,9 @@ class TeleportWindow(AuxBox):
     titleLabel = guiobjects.OcempLabel(self.title.decode("utf-8"), guiobjects.STYLES["teleportLabel"])
     titleLabel.topleft = 4, 0
     self.window.add_child(titleLabel)
-    self.__roomLabels = guiobjects.OcempImageObjectList(110, 205, self.listItems)
-    self.__roomLabels.topleft = 20, 40
-    self.window.add_child(self.__roomLabels) 
+    self.listItems = guiobjects.OcempImageObjectList(110, 205, self.listItems)
+    self.listItems.topleft = 20, 40
+    self.window.add_child(self.listItems) 
     okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 262], [self.tooltipLabel, self.showTooltip, self.removeTooltip], self.accept)
     self.window.add_child(okButton)
     cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 262], ["Cerrar menu", self.showTooltip, self.removeTooltip], self.showOrHide)
@@ -71,7 +71,7 @@ class TeleportWindow(AuxBox):
     self.window.zOrder = 10000
 
   def accept(self):
-    roomLabel = self.__roomLabels.getSelectedName()
+    roomLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyTeleport(roomLabel)
 
@@ -87,7 +87,7 @@ class DeleteRoomWindow(TeleportWindow):
     TeleportWindow.draw(self)
 
   def accept(self):
-    roomLabel = self.__roomLabels.getSelectedName()
+    roomLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyDeleteRoom(roomLabel)
 
@@ -104,7 +104,7 @@ class KickPlayerWindow(TeleportWindow):
     TeleportWindow.draw(self)
 
   def accept(self):
-    playerLabel = self.__roomLabels.getSelectedName()
+    playerLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyKickPlayer(playerLabel)
 
