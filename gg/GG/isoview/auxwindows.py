@@ -22,6 +22,7 @@ class AuxBox:
 
   def showOrHide(self):
     if self.hide:
+      self.updateListItem()
       self.hud.addSprite(self.window)
       self.hud.widgetContainer.add_widget(self.window)
     else:
@@ -75,6 +76,14 @@ class TeleportWindow(AuxBox):
     self.showOrHide()
     self.hud.applyTeleport(roomLabel)
 
+  def updateListItem(self):
+    self.window.remove_child(self.listItems)
+    self.listItems.destroy()
+    self.listItems = self.hud.getModel().getRoomLabels()
+    self.listItems = guiobjects.OcempImageObjectList(110, 205, self.listItems)
+    self.listItems.topleft = 20, 40
+    self.window.add_child(self.listItems) 
+
 
 class DeleteRoomWindow(TeleportWindow):
 
@@ -108,6 +117,13 @@ class KickPlayerWindow(TeleportWindow):
     self.showOrHide()
     self.hud.applyKickPlayer(playerLabel)
 
+  def updateListItem(self):
+    self.window.remove_child(self.listItems)
+    self.listItems.destroy()
+    self.listItems = self.hud.getModel().getPlayersList()
+    self.listItems = guiobjects.OcempImageObjectList(110, 205, self.listItems)
+    self.listItems.topleft = 20, 40
+    self.window.add_child(self.listItems) 
 
 class AuxWindow:
 
