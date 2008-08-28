@@ -211,42 +211,57 @@ class IsoViewHud(isoview.IsoView):
           self.__ctrl = False
       elif event_type == KEYDOWN:
         if self.__ctrl:
-          if event.key in self.__hotkeys.keys():
-            if self.__hotkeys[event.key] in self.__activeActions:
-              self.__hotkeys[event.key]()
+          self.__processHotkeys()
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
             self.__ctrl = True 
           if event.key == K_ESCAPE:
             GG.genteguada.GenteGuada.getInstance().finish()
-          elif event.key == K_RETURN: 
-            if self.__privateChatWindow:
-              if not self.__privateChatWindow.hide:
-                self.__privateChatWindow.chatMessageEntered()
-              else:
-                self.chatMessageEntered()
-            else:
-              self.chatMessageEntered()
+          elif event.key == K_RETURN:
+            self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
-        if not self.__windowOpen():
-          cordX, cordY = pygame.mouse.get_pos()
-          if 0 <= cordY <= HUD_OR[1]:
-            if self.__ctrl and self.__player.getAccessMode():
-              dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
-              if not dest == [-1, -1]:
-                self.__isoviewRoom.getModel().clickedTileByAdmin(self.__player, dest)
-            else:  
-              dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
-              if not dest == [-1, -1]:
-                self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
+        if self.__adminMenu:
+          self.__moveItemPositionAdmin()
+        elif not self.__windowOpen():
+          self.__clickOnMap()
     self.widgetContainer.distribute_events(*events)
+
+  def __processHotkeys(self):
+    if event.key in self.__hotkeys.keys():
+      if self.__hotkeys[event.key] in self.__activeActions:
+        self.__hotkeys[event.key]()
+
+  def __processEnterKey(self):
+    if not self.__privateChatWindow.hide:
+      self.__privateChatWindow.chatMessageEntered()
+    else:
+      self.chatMessageEntered()
+
+  def __moveItemPositionAdmin(self):
+    cordX, cordY = pygame.mouse.get_pos()
+    dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
+    if not dest == [-1, -1] and "Position" in self.editableFields.keys():
+      self.editableFields["Position"][0].text = str(dest[0])
+      self.editableFields["Position"][1].text = str(dest[1])
+  
+  def __clickOnMap(self):
+    cordX, cordY = pygame.mouse.get_pos()
+    if 0 <= cordY <= HUD_OR[1]:
+      if self.__ctrl and self.__player.getAccessMode():
+        dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
+        if not dest == [-1, -1]:
+          self.__isoviewRoom.getModel().clickedTileByAdmin(self.__player, dest)
+      else:  
+        dest, item = self.getIsoviewRoom().findTile([cordX, cordY])
+        if not dest == [-1, -1]:
+          self.__isoviewRoom.getModel().clickedByPlayer(self.__player, dest, item)
 
   def __windowOpen(self):
     """ Checks if there is an open window.
     """
     if self.__activeWindow:
       return True
-    if self.__activeContactDialog or self.__adminMenu or self.__deleteConfirmDialog:
+    if self.__activeContactDialog or self.__deleteConfirmDialog:
       return True
     windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, self.__createRoomWindow]
     for window in windowsList:
@@ -818,7 +833,7 @@ class IsoViewHud(isoview.IsoView):
         iPos += 1
     okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 262], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
     self.buttonBarAdminActions.add_child(okButton)
-    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 262], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.discardChanges)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 262], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.itemUnselected)
     self.buttonBarAdminActions.add_child(cancelButton)
     if not isTile:
       deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 227], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
@@ -869,10 +884,8 @@ class IsoViewHud(isoview.IsoView):
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
         self.removeSprite(self.__selectedImage)
         self.__restoreActiveActionButtonsList()     
-      if not self.__selectedItem.isTile():
-        self.dropActionsItembuttons()  
-    else:
-      self.dropActionsItembuttons()
+        self.__dropActionsItembuttons()
+        self.__selectedItem = None
     
   def itemUnselectedSoft(self, item):
     """ Triggers after receiving an item unselected event.
@@ -882,12 +895,7 @@ class IsoViewHud(isoview.IsoView):
       return
     if not item.getName() == self.__selectedItem.getName():
       return
-    if self.__selectedItem:
-      if self.__isoviewRoom:
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.removeSprite(self.__selectedImage)
-        self.__restoreActiveActionButtonsList()     
-    self.dropActionsItembuttons()
+    self.itemUnselected()
 
   def pointsAdded(self, event):
     """ Updates the points label after receiving a points added event.
@@ -1104,34 +1112,27 @@ class IsoViewHud(isoview.IsoView):
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
 
-  def dropActionsItembuttons(self):
+  def __dropActionsItembuttons(self):
     """ Removes the action buttons from the screen.
     """
-    if self.__selectedItem == None:
-      return
     self.removeTooltip()
-    toBeRemovedItem = self.__selectedItem
-    self.__selectedItem = None
     self.removeSprite(self.__selectedImage)        
-    if not toBeRemovedItem.isTile() and self.__buttonBarActions:
+    if self.__buttonBarActions:
       children = copy.copy(self.__buttonBarActions.children)
       for child in children:
         self.__buttonBarActions.remove_child(child)
         child.destroy()
-      try:  
-        self.widgetContainer.remove_widget(self.__buttonBarActions)
-        self.__buttonBarActions.destroy()
-      except:
-        pass    
-    if not self.__adminMenu:
-      return
-    children = copy.copy(self.buttonBarAdminActions.children)
-    for child in children:
-      self.buttonBarAdminActions.remove_child(child)
-      child.destroy()
-    self.widgetContainer.remove_widget(self.buttonBarAdminActions)
-    self.buttonBarAdminActions.destroy()
-    self.__adminMenu = False
+      self.widgetContainer.remove_widget(self.__buttonBarActions)
+      self.__buttonBarActions.destroy()
+      self.__buttonBarActions = None
+    if self.__adminMenu:
+      children = copy.copy(self.buttonBarAdminActions.children)
+      for child in children:
+        self.buttonBarAdminActions.remove_child(child)
+        child.destroy()
+      self.widgetContainer.remove_widget(self.buttonBarAdminActions)
+      self.buttonBarAdminActions.destroy()
+      self.__adminMenu = False
 
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
@@ -1176,7 +1177,6 @@ class IsoViewHud(isoview.IsoView):
       if item:
         self.__player.addToInventoryFromVoid(item, self.__player.getPosition())          
       self.itemUnselected()
-      self.dropActionsItembuttons()
  
   def itemToPush(self):
     """ Unused method.
@@ -1224,24 +1224,12 @@ class IsoViewHud(isoview.IsoView):
     """
     self.__player.lift(self.__selectedItem)
     self.itemUnselected()
-    if self.__selectedItem:
-      if self.__isoviewRoom:  
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.__selectedItem = None
-        self.removeSprite(self.__selectedImage)        
-    self.dropActionsItembuttons()
     
   def itemToDrop(self):
     """ Drops a picked item in front of the player.
     """  
     self.__player.drop(self.__selectedItem)
     self.itemUnselected()
-    if self.__selectedItem:
-      if self.__isoviewRoom:  
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.removeSprite(self.__selectedImage)        
-        self.__selectedItem = None
-    self.dropActionsItembuttons()
 
   def initExchange(self, event):
     """ Starts the exchange project after receiving an exchange event.
@@ -1285,19 +1273,12 @@ class IsoViewHud(isoview.IsoView):
     """
     self.__player.climb(self.__selectedItem)
     self.itemUnselected()
-    if self.__selectedItem:
-      if self.__isoviewRoom:  
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.removeSprite(self.__selectedImage)        
-        self.__selectedItem = None
-    self.dropActionsItembuttons()
     
   def itemToGiveCard(self):
     """ Gives a contact card to another player.
     """  
     self.__selectedItem.checkContact(self.__player)
     self.itemUnselected()
-    self.dropActionsItembuttons()
     
   def newContactDialog(self, event):
     """ Shows the new contact confirmation dialog after receiving an event.
@@ -1326,7 +1307,6 @@ class IsoViewHud(isoview.IsoView):
     self.confirmDialog.zOrder = 20000
     self.addSprite(self.confirmDialog)
     self.widgetContainer.add_widget(self.confirmDialog)
-    self.dropActionsItembuttons()
     self.__activeContactDialog = event.getParams()['contact']
     
   def giveContactCard(self, contact):
@@ -1344,7 +1324,6 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.confirmDialog)
     self.__activeContactDialog = None
     self.itemUnselected()
-    self.dropActionsItembuttons()
     
   def newContactAdded(self, event):
     """ Updates the contacts window after receiving a contact added event.
@@ -1410,9 +1389,6 @@ class IsoViewHud(isoview.IsoView):
     """ Applies the changes to the selected item attributes.
     """  
     selectedItem = self.__selectedItem
-    self.itemUnselected()
-    self.dropActionsItembuttons()
-    self.__adminMenu = False
     for key in self.editableFields.keys():
       if key == "Position":
         try: 
@@ -1427,6 +1403,7 @@ class IsoViewHud(isoview.IsoView):
             itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
             for singleItem in itemsList:
               singleItem.setPosition([posX, posY])  
+            self.__selectedImage.rect.topleft = GG.utils.p3dToP2d([posX, posY], SELECTED_FLOOR_SHIFT)
       elif key == "Url":
         url = self.editableFields[key][0].text
         selectedItem.distributedSetUrl(url)
@@ -1461,14 +1438,6 @@ class IsoViewHud(isoview.IsoView):
           return  
         selectedItem.setImage(os.path.join(TILE, label))
     
-  def discardChanges(self):
-    """ Discards the changes to the selected item attributes.
-    """  
-    if self.__adminMenu:
-      self.itemUnselected()
-      self.dropActionsItembuttons()
-      self.__adminMenu = False
-    
   def removeSelectedItemConfirmation(self):
     self.__deleteConfirmDialog = ocempgui.widgets.Box(300, 120)
     self.__deleteConfirmDialog.set_position = [0, 0]
@@ -1500,7 +1469,7 @@ class IsoViewHud(isoview.IsoView):
   def dropRemoveSelectedDialog(self):
     """ Closes the remove item dialog.
     """  
-    self.discardChanges()
+    self.itemUnselected()
     self.removeSprite(self.__deleteConfirmDialog)
     self.widgetContainer.remove_widget(self.__deleteConfirmDialog)
     self.__deleteConfirmDialog = None

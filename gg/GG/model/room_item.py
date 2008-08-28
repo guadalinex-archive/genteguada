@@ -82,7 +82,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
-    self.__room.setUnselectedFor(self)
+    #self.__room.setUnselectedFor(self)
     if not jump:
       self.triggerEvent('position', position=pos, oldPosition=old, itemList=self.__tile.getItems())
     else:
