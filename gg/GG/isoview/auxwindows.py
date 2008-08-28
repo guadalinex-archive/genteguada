@@ -30,7 +30,6 @@ class AuxBox:
       self.hud.widgetContainer.remove_widget(self.window)
       self.removeTooltip()
       self.hud.itemUnselected()
-      self.hud.dropActionsItembuttons()
     self.hide = not self.hide
 
   def showTooltip(self, label):
