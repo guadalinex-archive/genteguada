@@ -21,6 +21,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = None
     self.__tile = None
     self.points = 0
+
+  def copyObject(self):
+    copy = GGRoomItem(self.spriteName ,self.anchor, self.topAnchor)
+    return copy
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.

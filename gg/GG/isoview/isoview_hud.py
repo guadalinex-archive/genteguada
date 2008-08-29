@@ -69,6 +69,7 @@ DELETE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "substraction.png")
 CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addition.png")
 JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
 TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
+TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
 ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
 DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
@@ -838,6 +839,8 @@ class IsoViewHud(isoview.IsoView):
     if not isTile:
       deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 227], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
       self.buttonBarAdminActions.add_child(deleteButton)
+      copyButton = guiobjects.createButton(TINY_COPY_IMAGE, [10, 227], ["Copiar objeto", self.showTooltip, self.removeTooltip], self.copySelectedItem)
+      self.buttonBarAdminActions.add_child(copyButton)
     self.buttonBarAdminActions.zOrder = 10000
     self.addSprite(self.buttonBarAdminActions)
     self.widgetContainer.add_widget(self.buttonBarAdminActions)
@@ -1480,3 +1483,10 @@ class IsoViewHud(isoview.IsoView):
   def reloadImage(self, img):
     self.removeSprite(img)
     self.addSprite(img)  
+
+  def copySelectedItem(self):
+    itemCopy = self.__selectedItem.copyObject()
+    self.itemUnselected()
+    self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, [2,2])
+    self.__player.setSelectedItem(itemCopy)
+

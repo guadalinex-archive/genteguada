@@ -19,6 +19,9 @@ class GGWebItem(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.__url = url
     self.label = label
+
+  def copyObject(self):
+    return GGWebItem(self.spriteName, self.anchor, self.topAnchor, self.__url, self.label)
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -84,6 +87,9 @@ class GGWebPannel(GGWebItem):
     """
     GGWebItem.__init__(self, sprite, anchor, topAnchor, url, label)
     self.__pannels = []
+
+  def copyObject(self):
+    return GGWebPannel(self.spriteName, self.anchor, self.topAnchor, self.getUrl(), self.label)
     
   def addPannels(self, *pannels):
     """ Adds new pannels to the pannel group.
