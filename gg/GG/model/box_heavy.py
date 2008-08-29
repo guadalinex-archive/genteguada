@@ -18,6 +18,9 @@ class GGBoxHeavy(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.label = label
     self.setPoints(2)
+  
+  def copyObject(self):
+    return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.label)
     
   def variablesToSerialize(self):
     """ Sets some class attributes as public access.

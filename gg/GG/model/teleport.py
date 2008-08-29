@@ -24,6 +24,9 @@ class GGTeleport(room_item.GGRoomItem):
     self.__destinationRoom = destinationRoom
     self.points = 10
     self.label = label
+
+  def copyObject(self):
+    return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.label)
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -144,6 +147,9 @@ class GGDoor(GGTeleport):
     """
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
 
+  def copyObject(self):
+    return GGDoor(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label)
+
   def openedBy(self, clicker):
     """ Teleports a player to another location.
     clicker: player to teleport.
@@ -168,6 +174,9 @@ class GGDoorWithKey(GGTeleport):
     """
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
     self.__key = key
+
+  def copyObject(self):
+    return GGDoorWithKey(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.__key)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -202,6 +211,9 @@ class GGDoorPressedTiles(GGTeleport):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
     self.__pressedTiles = pressedTiles
 
+  def copyObject(self):
+    return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.__pressedTiles)
+
   def openedBy(self, clicker):
     """ Teleports a player to another location.
     clicker: player to teleport.
@@ -233,6 +245,9 @@ class GGDoorRoom5b(GGTeleport):
     label: teleporter label.
     """
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+
+  def copyObject(self):
+    return GGDoorRoom5b(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.

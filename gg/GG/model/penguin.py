@@ -21,6 +21,9 @@ class GGPenguin(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
+
+  def copyObject(self):
+    return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.label)
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -69,6 +72,9 @@ class GGPenguinTalker(GGPenguin):
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
+
+  def copyObject(self):
+    return GGPenguinTalker(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg)
     
   def getMessage(self):
     """ Returns the penguin's message.
@@ -111,6 +117,9 @@ class GGPenguinTrade(GGPenguin):
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
     self.__giftLabel = gift
+
+  def copyObject(self):
+    return GGPenguinTrade(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg, self.__giftLabel)
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -174,6 +183,7 @@ class GGPenguinQuiz(GGPenguin):
     filePath: folder where quiz questions are.
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
+    self.__filePath = filePath
     self.__fileList = os.listdir(filePath)
     rmList = []
     for item in self.__fileList:
@@ -182,6 +192,9 @@ class GGPenguinQuiz(GGPenguin):
     for item in rmList:
       self.__fileList.remove(item)    
     self.__availableQuestions = {}
+
+  def copyObject(self):
+    return GGPenguinQuiz(self.spriteName, self.anchor, self.topAnchor, self.label, self.__filePath)
   
   def getOptions(self):
     """ Returns the item's available options.

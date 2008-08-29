@@ -19,6 +19,9 @@ class GGPickableItem(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
     self.label = label
+
+  def copyObject(self):
+    return GGPickableIte(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -78,6 +81,9 @@ class PaperMoney(GGPickableItem):
     """
     GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, label)
     self.points = value
+
+  def copyObject(self):
+    return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.label, self.points)
     
   def getOptions(self):
     """ Returns the item's available options.

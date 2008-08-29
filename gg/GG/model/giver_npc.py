@@ -17,6 +17,9 @@ class GGGiverNpc(room_item.GGRoomItem):
     self.spriteInventory = spriteInventory
     self.label = label
     self.points = 0
+
+  def copyObject(self): 
+    return GGGiverNpc(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
