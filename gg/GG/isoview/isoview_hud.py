@@ -70,10 +70,12 @@ CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addition.png")
 JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
 TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
 TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
+EDIT_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_editroom.png")
 ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
 DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
 ADMIN_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "adminOptions.png")
+ROOM_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "roomActions.png")
 USER_ACTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "actionsNotification.png")
 TOOLBAR_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
 MASKUSER_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
@@ -436,9 +438,31 @@ class IsoViewHud(isoview.IsoView):
     self.paintUserActions()
     if self.__player.getAccessMode():
       self.paintAdminOptions()
+    self.__paintRoomInfo()
     self.hud.zOrder = 1
     self.addSprite(self.hud)
     self.widgetContainer.add_widget(self.hud)
+
+  def __paintRoomInfo(self):
+    self.roomInfo = ocempgui.widgets.Box(259, 32)
+    self.roomInfo.topleft = [1, 1]
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ROOM_OPTIONS_BACKGROUND)
+    self.roomInfo.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 1, 1
+    self.roomInfo.add_child(imgBackground)
+    self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
+    self.roomLabel.topleft = 26, -4
+    self.roomInfo.add_child(self.roomLabel)
+    if self.__player.getAccessMode():
+      button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
+      self.roomInfo.add_child(button)
+    self.roomInfo.zOrder = 10000
+    self.addSprite(self.roomInfo)
+    self.widgetContainer.add_widget(self.roomInfo)
+
+  def __showEditRoom(self):
+    print "vamos a editar la habitacion"
 
   def __paintImgBlack(self):
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
@@ -486,6 +510,10 @@ class IsoViewHud(isoview.IsoView):
     if event.getParams()["room"]:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.updateScreenPositions()
+      self.roomLabel.label = event.getParams()["room"].label
+      self.roomLabel.set_text(event.getParams()["room"].label)
+      self.roomInfo.remove_child(self.roomLabel)
+      self.roomInfo.add_child(self.roomLabel)
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.
