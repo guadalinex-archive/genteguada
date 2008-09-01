@@ -51,7 +51,6 @@ MOVE_OUT_IMAGE = os.path.join(GG.utils.HUD_PATH, "moveout.png")
 LIFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "lift.png")
 DROP_IMAGE = os.path.join(GG.utils.HUD_PATH, "drop.png")
 CLIMB_IMAGE = os.path.join(GG.utils.HUD_PATH, "climb.png")
-PUSH_IMAGE = os.path.join(GG.utils.HUD_PATH, "push.png")
 CHAT_IMAGE = os.path.join(GG.utils.HUD_PATH, "chat.png")
 PRIVATE_CHAT_IMAGE = os.path.join(GG.utils.HUD_PATH, "privatechat.png")
 EXCHANGE_IMAGE = os.path.join(GG.utils.HUD_PATH, "exchange.png")
@@ -167,11 +166,8 @@ class IsoViewHud(isoview.IsoView):
         "drop":           {"image":DROP_IMAGE,          "action": self.itemToDrop,          "tooltip":"Soltar (Q)"},
         "climb":          {"image":CLIMB_IMAGE,         "action": self.itemToClimb,         "tooltip":"Subir (B)"},
         "clone":          {"image":MOVE_IN_IMAGE,       "action": self.itemToClone,         "tooltip":"Al inventario (Y)"},
-        "push":           {"image":PUSH_IMAGE,          "action": self.itemToPush,          "tooltip":"Empujar (K)"},
-        "up":             {"image":LIFT_IMAGE,          "action": self.itemToUp,            "tooltip": "Subir (P)"},
         "talk":           {"image":CHAT_IMAGE,          "action": self.itemToTalk,          "tooltip":"Hablar (T)"},
         "talkAndGet":     {"image":CHAT_IMAGE,          "action": self.itemToTalkAndGet,    "tooltip":"Hablar (G)"},
-        "privateChat":    {"image":PRIVATE_CHAT_IMAGE,  "action": self.privateChat,         "tooltip":"Chat (H)"},
         "exchange":       {"image":EXCHANGE_IMAGE,      "action": self.exchangeItemPlayer,  "tooltip":"Intercambiar (E)"},
         "open":           {"image":OPEN_IMAGE,          "action": self.itemToOpen,          "tooltip":"Abrir (O)"},
         "url":            {"image":WWW_IMAGE,           "action": self.itemToUrl,           "tooltip":"Ir a (W)"},
@@ -184,9 +180,8 @@ class IsoViewHud(isoview.IsoView):
         K_d: self.showDresser,        K_j: self.jump,                 K_r: self.turnRight, K_l: self.turnLeft, 
         K_p: self.itemToInventory,    K_c: self.itemCopyToInventory,  K_m: self.itemOutInventory, 
         K_i: self.itemToLift,         K_q: self.itemToDrop ,          K_b: self.itemToClimb , 
-        K_y: self.itemToClone,        K_k: self.itemToPush ,          K_p: self.itemToUp , 
-        K_t: self.itemToTalk,         K_g: self.itemToTalkAndGet ,    K_h: self.privateChat , 
-        K_e: self.exchangeItemPlayer, K_o: self.itemToOpen ,          K_w: self.itemToUrl , 
+        K_y: self.itemToClone,        K_t: self.itemToTalk,           K_g: self.itemToTalkAndGet ,    
+        K_e: self.exchangeItemPlayer, K_o: self.itemToOpen ,          K_w: self.itemToUrl ,         
         K_a: self.itemToExchange,     K_v: self.itemToGiveCard,       K_z: self.privateChatHandler, 
         K_n: self.moneyToInventory
     }
@@ -1177,21 +1172,6 @@ class IsoViewHud(isoview.IsoView):
         self.__player.addToInventoryFromVoid(item, self.__player.getPosition())          
       self.itemUnselected()
  
-  def itemToPush(self):
-    """ Unused method.
-    """  
-    self.itemUnselected()
-
-  def itemToUp(self):
-    """ Unused method.
-    """  
-    self.itemUnselected()
-
-  def privateChat(self):
-    """ Unused method.
-    """  
-    self.__player.setUnselectedItem()
-    
   def itemToTalk(self):
     """ Talks to an item.
     """
