@@ -1514,7 +1514,6 @@ class IsoViewHud(isoview.IsoView):
 
   def copySelectedItem(self):
     itemCopy = self.__selectedItem.copyObject()
+    self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, self.__isoviewRoom.getModel().getNearestEmptyCell(self.__selectedItem.getPosition()))
     self.itemUnselected()
-    self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, [2,2])
     self.__player.setSelectedItem(itemCopy)
-
