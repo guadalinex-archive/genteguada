@@ -150,7 +150,7 @@ class GGSystem(dMVC.model.Model):
     user = self.__existPlayer(username, password)
     if not user:
       user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
-      self.__createPlayer(user)
+      self.createPlayer(user)
     if not user.getRoom(): 
       user.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
       session = GG.model.ggsession.GGSession(user, self)
@@ -183,6 +183,11 @@ class GGSystem(dMVC.model.Model):
     self.__sessions.remove(session)
 
   def __loadData(self):
+    import createworld
+    world = createworld.CreateWorld(self)
+    world.create()
+
+  def __loadData2(self):
     """ Llamadas provisionales. Se eliminaran cuando se defina como se cargan los datos.
     """
     
@@ -190,8 +195,8 @@ class GGSystem(dMVC.model.Model):
     nino = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "", True)
     nina = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepa", "12345", "", False)
     user0 = GG.model.player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "user0", "user0", "", False)
-    self.__createPlayer(nino)
-    self.__createPlayer(nina)
+    self.createPlayer(nino)
+    self.createPlayer(nina)
     
     nino.addContactTEST(user0)
     
@@ -211,7 +216,7 @@ class GGSystem(dMVC.model.Model):
     
     penguinRightOffset = [30, 0]
     # ROOM 1
-    myDoor1 = GG.model.teleport.GGDoor("furniture/" + DOOR_GARDEN, [25, 2], [0, 0], [6, 6], room2, "puerta lobby")
+    myDoor1 = GG.model.teleport.GGDoor(DOOR_GARDEN, [25, 2], [0, 0], [6, 6], room2, "puerta lobby")
     myPenguin = GG.model.penguin.GGPenguinTalker("furniture/" + PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
     myBox = GG.model.box_heavy.GGBoxHeavy("furniture/" + BOX_HEAVY, [26, -10], [0, -12], "Caja pesada")
     myBox2 = GG.model.box_heavy.GGBoxHeavy("furniture/" + BOX_HEAVY, [26, -10], [0, -12], "Caja pesada 2")
@@ -399,7 +404,7 @@ class GGSystem(dMVC.model.Model):
       else:
         demoPlayerPath = GG.utils.NINO_PATH
       demoPlayer = GG.model.player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user"+str(i), "user"+str(i), "", False)
-      self.__createPlayer(demoPlayer)
+      self.createPlayer(demoPlayer)
     
   def createRoom(self, spriteFull, label, size, maxUsers):
     """ Creates a new room.
@@ -432,7 +437,7 @@ class GGSystem(dMVC.model.Model):
     chosenRoom = None
     return True
       
-  def __createPlayer(self, player):
+  def createPlayer(self, player):
     """ Creates a new player.
     player: new player.
     """
