@@ -444,13 +444,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.hud)
 
   def __paintRoomInfo(self):
-    self.roomInfo = ocempgui.widgets.Box(259, 32)
-    self.roomInfo.topleft = [1, 1]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ROOM_OPTIONS_BACKGROUND)
-    self.roomInfo.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 1, 1
-    self.roomInfo.add_child(imgBackground)
+    self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 26, -4
     self.roomInfo.add_child(self.roomLabel)
@@ -523,14 +517,7 @@ class IsoViewHud(isoview.IsoView):
   def paintBackground(self):
     """ Paints the HUD background on screen.
     """
-    self.hud = ocempgui.widgets.Box(1024, 262)
-    self.hud.topleft = HUD_OR[0], HUD_OR[1]- 50
-
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(INTERFACE_LOWER)
-    self.imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    self.imgBackground.topleft = 1, 1
-    self.hud.add_child(self.imgBackground)
-    
+    self.hud = guiobjects.OcempPanel(1024, 262, [HUD_OR[0], HUD_OR[1]- 50], INTERFACE_LOWER)
     labelChat = guiobjects.OcempLabel("Chat", guiobjects.STYLES["hudLabel"])
     labelChat.topleft = 17, 58
     self.hud.add_child(labelChat)
@@ -714,14 +701,7 @@ class IsoViewHud(isoview.IsoView):
   def paintAdminOptions(self):
     """ Paints the admin action buttons on screen.
     """  
-    self.adminOptions = ocempgui.widgets.Box(379, 95)
-    self.adminOptions.topleft = [0, 431]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ADMIN_OPTIONS_BACKGROUND)
-    self.adminOptions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 1, 1
-    self.adminOptions.add_child(imgBackground)
-    
+    self.adminOptions = guiobjects.OcempPanel(379, 95, [0, 431], ADMIN_OPTIONS_BACKGROUND)
     itemLabel = guiobjects.OcempLabel("Opciones avanzadas", guiobjects.STYLES["itemLabel"])
     itemLabel.topleft = 26, -4
     self.adminOptions.add_child(itemLabel)
@@ -811,13 +791,7 @@ class IsoViewHud(isoview.IsoView):
     actions = self.__selectedItem.getAdminActions()
     if not actions:
       return
-    self.buttonBarAdminActions = ocempgui.widgets.Box(150, 300)
-    self.buttonBarAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.ADMIN_ACTIONS_BACKGROUND)
-    self.buttonBarAdminActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.buttonBarAdminActions.add_child(imgBackground)
+    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
@@ -880,13 +854,7 @@ class IsoViewHud(isoview.IsoView):
     options = self.__selectedItem.getOptions()
     if not len(options):
       return
-    self.__buttonBarActions = ocempgui.widgets.Box(259, 95)
-    self.__buttonBarActions.topleft = [GG.utils.SCREEN_SZ[0] - 260, 431]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(USER_ACTIONS_BACKGROUND)
-    self.__buttonBarActions.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.__buttonBarActions.add_child(imgBackground)
+    self.__buttonBarActions = guiobjects.OcempPanel(259, 95, [GG.utils.SCREEN_SZ[0] - 260, 431], USER_ACTIONS_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
@@ -1318,19 +1286,11 @@ class IsoViewHud(isoview.IsoView):
     if self.__activeContactDialog:
       return  
     newContact = event.getParams()["contact"]
-    self.confirmDialog = ocempgui.widgets.Box(300, 120)
-    self.confirmDialog.set_position = [0, 0]
-    
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(CONTACT_WINDOW_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.confirmDialog.add_child(imgBackground)
-     
+    self.confirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)
     cad = "Intercambiar tarjetas con " + newContact.username 
     questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 22, 20 
     self.confirmDialog.add_child(questionLabel)
-     
     okButton = guiobjects.createButton(OK_BUTTON_IMAGE, [20, 55], None, self.giveContactDialog, event.getParams()['contact'])
     cancelButton = guiobjects.createButton(CANCEL_BUTTON_IMAGE, [170, 55], None, self.dropDropContactDialog)
     self.confirmDialog.add_child(okButton)
@@ -1470,14 +1430,7 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.setImage(os.path.join(TILE, label))
     
   def removeSelectedItemConfirmation(self):
-    self.__deleteConfirmDialog = ocempgui.widgets.Box(300, 120)
-    self.__deleteConfirmDialog.set_position = [0, 0]
-    
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(CONTACT_WINDOW_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.__deleteConfirmDialog.add_child(imgBackground)
-     
+    self.__deleteConfirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)
     questionLabel = guiobjects.OcempLabel("Eliminar objeto seleccionado", guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 38, 20 
     self.__deleteConfirmDialog.add_child(questionLabel)

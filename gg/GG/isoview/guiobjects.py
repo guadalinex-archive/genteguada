@@ -899,6 +899,18 @@ class GroupSprite(pygame.sprite.Group):
 
 # ===============================================================
 
+class OcempPanel(ocempgui.widgets.Box):
+
+  def __init__(self, width, height, topleft, imageBackground):
+    ocempgui.widgets.Box.__init__(self, width, height)
+    self.topleft = topleft
+    self.set_style(ocempgui.widgets.WidgetStyle(STYLES["buttonTopBar"]))
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(imageBackground)
+    imgBackground = OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 1, 1
+    self.add_child(imgBackground)
+
+
 class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, style):
