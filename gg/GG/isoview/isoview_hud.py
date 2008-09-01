@@ -41,9 +41,8 @@ ANIM_CHAT_TIME2 = 1000
 BG_BLACK = "bg_black.png"
 INTERFACE_LOWER = os.path.join(GG.utils.HUD_PATH, "interface_lower.png")
 
-TILE = "tiles"
-TILE_SELECTED = os.path.join(TILE, "selected.png")
-TILE_TARGET = os.path.join(TILE, "target.png")
+TILE_SELECTED = os.path.join(GG.utils.TILE, "selected.png")
+TILE_TARGET = os.path.join(GG.utils.TILE, "target.png")
 # =============================================================
 
 MOVE_IN_IMAGE = os.path.join(GG.utils.HUD_PATH, "movein.png")
@@ -1407,7 +1406,7 @@ class IsoViewHud(isoview.IsoView):
         if not label:
           self.__player.newChatMessage("Debe seleccionar una imagen", 1)
           return  
-        selectedItem.setImage(os.path.join(TILE, label))
+        selectedItem.setImage(os.path.join(GG.utils.TILE, label))
     
   def removeSelectedItemConfirmation(self):
     self.__deleteConfirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)

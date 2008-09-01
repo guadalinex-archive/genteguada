@@ -21,6 +21,7 @@ else:
 INTERFACE_PATH = "interface"
 SOUND_PATH = "sound"
 INTERFACE_AVATARS = "avatars"
+TILE = "tiles"
 HUD_PATH = os.path.join(INTERFACE_PATH, "hud")
 NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy")
 NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl")
