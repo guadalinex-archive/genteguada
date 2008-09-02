@@ -477,7 +477,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
     self.__allSprites.draw(self.getScreen())
-    pygame.display.update()
+    pygame.display.flip()
         
   def addIsoAnimation(self, isoviewAnim):
     self.__isoviewAnim.append(isoviewAnim)    

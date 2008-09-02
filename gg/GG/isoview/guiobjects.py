@@ -321,18 +321,6 @@ class GroupSprite(pygame.sprite.Group):
     keys = self.spritedict.keys()
     keys.sort(lambda x, y : (x.zOrder - y.zOrder))
     return keys
-  
-  def add(self, *sprites):
-    """ Adds new sprites to the group.
-    """  
-    for sprite in sprites:
-      if hasattr(sprite, "zOrder"):
-        if sprite.zOrder != None:
-          pygame.sprite.Group.add(self, sprite)
-        else:  
-          raise "ERROR: zOrder = None"  
-      else:    
-        raise "ERROR: sprite sin zOrder"
 
 # ===============================================================
 
@@ -577,7 +565,7 @@ class OcempImageList(OcempImageFileList):
         prevSelected = self.get_selected()
         if len(prevSelected):
           self.set_cursor(prevSelected[0], False)
-        self.set_cursor(item, True)
+        self._set_cursor(item, True)
         return
     
 # ===============================================================
