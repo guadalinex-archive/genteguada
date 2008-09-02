@@ -974,6 +974,9 @@ class IsoViewHud(isoview.IsoView):
     maxUsers: max users per room.
     copyRoom: room to be copied.
     """  
+    if self.getModel().getRoom(label):
+      self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
+      return
     room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers, copyRoom)
     if not room:
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
