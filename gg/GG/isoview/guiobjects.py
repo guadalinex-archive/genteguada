@@ -565,7 +565,7 @@ class OcempImageList(OcempImageFileList):
         prevSelected = self.get_selected()
         if len(prevSelected):
           self.set_cursor(prevSelected[0], False)
-        self._set_cursor(item, True)
+        self.set_cursor(item, True)
         return
     
 # ===============================================================
