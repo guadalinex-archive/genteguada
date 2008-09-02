@@ -49,6 +49,12 @@ class GGBoxHeavy(room_item.GGRoomItem):
       else:
       # Different position, box in the middle of the stack.
         return ["climb"]
+    
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    return dic    
          
   def getName(self):
     """ Returns the item's label.
@@ -59,6 +65,11 @@ class GGBoxHeavy(room_item.GGRoomItem):
     """ Returns the item's image filename.
     """  
     return self.spriteName
+
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
   
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.

@@ -29,6 +29,7 @@ QUESTIONS_PATH = os.path.join(DATA_PATH, "questions")
 BACKGROUNDS = os.path.join(INTERFACE_PATH,"backgrounds")
 EDITOR = os.path.join(INTERFACE_PATH,"editor")
 ADMIN_ACTIONS_BACKGROUND = os.path.join(HUD_PATH, "adminActions.png")
+ADMIN_ACTIONS_LARGE_BACKGROUND = os.path.join(HUD_PATH, "adminActionsLarge.png")
 TINY_OK_IMAGE = os.path.join(HUD_PATH, "tiny_ok_button.png")
 TINY_CANCEL_IMAGE = os.path.join(HUD_PATH, "tiny_cancel_button.png")
 

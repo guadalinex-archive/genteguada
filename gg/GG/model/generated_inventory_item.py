@@ -43,6 +43,11 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """  
     return self.spriteInventory
 
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
+
   def getPosition(self):
     """ Returns item's position.
     """  

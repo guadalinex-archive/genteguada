@@ -35,6 +35,12 @@ class GGPenguin(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["talk"]
+
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    return dic    
       
   def getName(self):
     """ Returns the item's label.
@@ -45,6 +51,11 @@ class GGPenguin(room_item.GGRoomItem):
     """ Returns the item's image filename.
     """  
     return self.spriteName
+
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
@@ -90,7 +101,7 @@ class GGPenguinTalker(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg], "Label": [self.label]}
     return dic  
   
   def talkedBy(self, talker):
@@ -131,7 +142,7 @@ class GGPenguinTrade(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel], "Label": [self.label]}
     return dic  
 
   def getMessage(self):
@@ -166,7 +177,7 @@ class GGPenguinTrade(GGPenguin):
       talker.removeFromInventory(giftItem)
       return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
-      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podría darte algo a cambio...", \
+      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podrï¿½a darte algo a cambio...", \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
 

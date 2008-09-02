@@ -32,10 +32,21 @@ class GGGiverNpc(room_item.GGRoomItem):
     """
     return ["copy"]   
       
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    return dic    
+         
   def getName(self):
     """ Returns the item's label.
     """  
     return self.label
+  
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
   
   def getImageLabel(self):
     """ Returns the item's image filename.
