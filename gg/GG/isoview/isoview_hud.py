@@ -69,7 +69,7 @@ JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
 KICK_IMAGE = os.path.join(GG.utils.HUD_PATH, "kick.png")
 TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "tinyRemove.png")
 TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "tinyCopy.png")
-EDIT_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_editroom.png")
+EDIT_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "editGrid.png")
 ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
 DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
@@ -450,7 +450,7 @@ class IsoViewHud(isoview.IsoView):
     #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
     self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
-    self.roomLabel.topleft = 26, -4
+    self.roomLabel.topleft = 30, -4
     self.roomInfo.add_child(self.roomLabel)
     if self.__player.getAccessMode():
       #button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
