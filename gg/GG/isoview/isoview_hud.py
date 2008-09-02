@@ -62,13 +62,13 @@ MINIMIZE_IMAGE = os.path.join(GG.utils.HUD_PATH, "minimize.png")
 SOUND_IMAGE = os.path.join(GG.utils.HUD_PATH, "sound.png")
 MUTE_IMAGE = os.path.join(GG.utils.HUD_PATH, "mute.png")
 TELEPORT_IMAGE = os.path.join(GG.utils.HUD_PATH, "teleport.png")
-CREATE_ITEM_IMAGE = os.path.join(GG.utils.HUD_PATH, "4.png")
+CREATE_ITEM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addObject.png")
 DELETE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "removeRoom.png")
 CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addRoom.png")
 JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
 KICK_IMAGE = os.path.join(GG.utils.HUD_PATH, "kick.png")
-TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
-TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
+TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "tinyRemove.png")
+TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "tinyCopy.png")
 EDIT_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_editroom.png")
 ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
@@ -104,22 +104,7 @@ class IsoViewHud(isoview.IsoView):
     self.__windowInventory = None
 
     self.__privateChatWindow = privatechatwindow.PrivateChatWindow(self, self.__player)
-    if self.__player.getAccessMode():
-      self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
-      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
-      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
-      self.__broadcastWindow = auxwindows.BroadcastWindow(self)
-      self.__teleportWindow = auxwindows.TeleportWindow(self)
-      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
-      self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self)
-    else:
-      self.__createItemsWindow = None  
-      self.__createRoomWindow = None
-      self.__editRoomWindow = None      
-      self.__broadcastWindow = None  
-      self.__teleportWindow = None
-      self.__deleteRoomWindow = None
-      self.__kickPlayerWindow = None
+    
     self.__fullScreen = fullscreen
     self.__sound = True
     self.__soundButton = None
@@ -199,7 +184,24 @@ class IsoViewHud(isoview.IsoView):
     self.__deleteConfirmDialog = None
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
-
+    
+    if self.__player.getAccessMode():
+      self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
+      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
+      self.__editRoomWindow = auxwindows.EditRoomWindow(self)
+      self.__broadcastWindow = auxwindows.BroadcastWindow(self)
+      self.__teleportWindow = auxwindows.TeleportWindow(self)
+      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
+      self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self)
+    else:
+      self.__createItemsWindow = None  
+      self.__createRoomWindow = None
+      self.__editRoomWindow = None      
+      self.__broadcastWindow = None  
+      self.__teleportWindow = None
+      self.__deleteRoomWindow = None
+      self.__kickPlayerWindow = None
+    
   def processEvent(self, events):
     """ Processes the input events.
     events: events received.
@@ -446,7 +448,7 @@ class IsoViewHud(isoview.IsoView):
 
   def __paintRoomInfo(self):
     #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
-    self.roomInfo = guiobjects.OcempPanel(300, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
+    self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 26, -4
     self.roomInfo.add_child(self.roomLabel)
@@ -509,8 +511,12 @@ class IsoViewHud(isoview.IsoView):
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
 
-  def editRoom(self, maxUsers, newTile):
-    self.__isoviewRoom.getModel().editRoom(maxUsers, newTile)
+  def editRoom(self, maxUsers, newLabel, newTile):
+    room = self.__isoviewRoom.getModel()      
+    oldLabel = room.label
+    room.editRoom(maxUsers, newLabel, newTile)
+    self.getModel().labelChange(oldLabel, newLabel)
+    self.__editRoomWindow.showOrHide()
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.

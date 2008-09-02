@@ -194,3 +194,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """ Checks if other items can be placed on top of this one.
     """  
     return False
+
+  def labelChange(self, oldLabel, newLabel):
+    pass  

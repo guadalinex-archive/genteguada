@@ -129,6 +129,10 @@ class GGTeleport(room_item.GGRoomItem):
     itemList = clicker.getTile().getItemsFrom(clicker)
     for item in itemList:
       item.changeRoom(self.__destinationRoom, self.__exitPosition)
+      
+  def labelChange(self, oldLabel, newLabel):
+    if self.__destinationRoom == oldLabel:
+      self.__destinationRoom = newLabel      
 
 # ===============================================================
 
@@ -156,7 +160,7 @@ class GGDoor(GGTeleport):
     clicker: player to teleport.
     """
     self.transportTo(clicker)
-    
+        
 # ===============================================================
 
 class GGDoorWithKey(GGTeleport):
@@ -193,6 +197,11 @@ class GGDoorWithKey(GGTeleport):
       clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar', 2)  
       return False
     self.transportTo(clicker)
+  
+  def labelChange(self, oldLabel, newLabel):
+    GGTeleport.labelChange(self, oldLabel, newLabel)
+    if self.__key == oldLabel:
+      self.__key = newLabel    
 
 # ===============================================================
 
