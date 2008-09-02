@@ -303,7 +303,10 @@ class EditRoomWindow(AuxWindow):
       maxUsers = int(self.editRoomMaxUsers.text)
     except ValueError:
       self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
-      return  
+      return
+    if maxUsers < 1:
+      self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
+      return
     newTile = self.newTileImages.getSelectedName()
     self.__hud.editRoom(maxUsers, self.roomLabel.text, newTile)
     
