@@ -37,6 +37,7 @@ class GGRoom(ggmodel.GGModel):
     self.__items = []
     self.__specialTiles = []
     self.__population = 0
+    self.__enabled = True
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -47,6 +48,17 @@ class GGRoom(ggmodel.GGModel):
     """ Returns the current population of this room.
     """  
     return self.__population
+
+  def getEnabled(self):
+    """ Returns the room's state.
+    """  
+    return self.__enabled
+
+  def setEnabled(self, enabled):
+    """ Sets this room as enabled/disabled.
+    enabled: new enabled value.
+    """  
+    self.__enabled = enabled    
 
   def isFull(self):
     """ Checks if this room is already full or not.
@@ -383,9 +395,10 @@ class GGRoom(ggmodel.GGModel):
         if selec == selectee:
           return item  
 
-  def editRoom(self, maxUsers, newLabel, newTile):
+  def editRoom(self, maxUsers, newLabel, enabled, newTile):
     self.maxUsers = maxUsers
     self.label = newLabel
+    self.__enabled = enabled
     if not newTile:
       return
     for x in range(len(self.__tiles)):

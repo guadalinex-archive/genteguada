@@ -261,7 +261,7 @@ class EditRoomWindow(AuxWindow):
     iPos = 0
     spacing = 50
     labelShift = [5, -20]
-    label = guiobjects.OcempLabel("maxUsers", guiobjects.STYLES["itemLabel"])
+    label = guiobjects.OcempLabel("users", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.editRoomMaxUsers = guiobjects.OcempEditLine()
@@ -273,17 +273,29 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(self.editRoomMaxUsers)
     
     label = guiobjects.OcempLabel("label", guiobjects.STYLES["itemLabel"])
-    label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    label.topleft = 10 + 70 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.roomLabel = guiobjects.OcempEditLine()
     self.roomLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.roomLabel.text = self.__hud.getIVRoom().getModel().label
     self.roomLabel.border = 1
-    self.roomLabel.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-    self.roomLabel.set_minimum_size(150, 20)
+    self.roomLabel.topleft = 10 + 70 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.roomLabel.set_minimum_size(90, 20)
     self.container.add_child(self.roomLabel)
-    iPos += 1
         
+    label = guiobjects.OcempLabel("enabled", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + 180 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.enabledChecker = ocempgui.widgets.CheckButton()
+    #self.enabledChecker = ocempgui.widgets.ToggleButton()
+    self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.enabledChecker.activate()
+    self.enabledChecker.border = 1
+    self.enabledChecker.topleft = 10 + 180 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.enabledChecker.set_size(10, 10)
+    self.container.add_child(self.enabledChecker)
+    iPos += 1
+            
     label = guiobjects.OcempLabel("tiles", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
@@ -308,8 +320,9 @@ class EditRoomWindow(AuxWindow):
     if maxUsers < 1:
       self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
       return
+    enabled = self.enabledChecker.active
     newTile = self.newTileImages.getSelectedName()
-    self.__hud.editRoom(maxUsers, self.roomLabel.text, newTile)
+    self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, newTile)
     
   def discardEditRoom(self):
     self.showOrHide() 

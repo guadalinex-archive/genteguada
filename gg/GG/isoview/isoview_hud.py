@@ -511,15 +511,16 @@ class IsoViewHud(isoview.IsoView):
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
 
-  def editRoom(self, maxUsers, newLabel, newTile):
+  def editRoom(self, maxUsers, newLabel, enabled, newTile):
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
     if oldLabel != newLabel and self.getModel().getRoom(newLabel):
       self.__player.newChatMessage('La etiqueta de habitacion ya existe', 1)  
       self.__editRoomWindow.showOrHide()
       return   
-    room.editRoom(maxUsers, newLabel, newTile)
-    self.getModel().labelChange(oldLabel, newLabel)
+    room.editRoom(maxUsers, newLabel, enabled, newTile)
+    if oldLabel != newLabel:
+      self.getModel().labelChange(oldLabel, newLabel)
     self.__editRoomWindow.showOrHide()
       
   def getIsoviewRoom(self):
