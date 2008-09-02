@@ -403,7 +403,8 @@ class GGRoom(ggmodel.GGModel):
       return
     for x in range(len(self.__tiles)):
       for y in range(len(self.__tiles[x])):
-        self.__tiles[x][y].setImage(os.path.join("tiles/", newTile))
+        self.__tiles[x][y].setImage(os.path.join("tiles/", newTile), True)
+    self.triggerEvent('floorChanged', newTile=newTile)    
         
   def labelChange(self, oldLabel, newLabel):
     for singleItem in self.__items:

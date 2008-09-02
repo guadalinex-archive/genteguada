@@ -167,12 +167,13 @@ class Tile(ggmodel.GGModel):
     """  
     return True  
 
-  def setImage(self, image):
+  def setImage(self, image, noTrigger=None):
     """ Sets a new image for the tile.
     image: new image.
     """  
     self.spriteName = image
-    self.triggerEvent("imageChange", newImage = image)
+    if not noTrigger:
+      self.triggerEvent("imageChange", newImage = image)
     
   def getAccAnchor(self, itemName):
     """ Returns the accumulated anchor for an item.
