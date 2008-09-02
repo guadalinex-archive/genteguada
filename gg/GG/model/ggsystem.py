@@ -324,6 +324,10 @@ class GGSystem(dMVC.model.Model):
       listLabels.append(room.label)
     return listLabels  
 
+  def labelChange(self, oldLabel, newLabel):
+    for room in self.__rooms:
+      room.labelChange(oldLabel, newLabel)
+
   def getAvatarImages(self, avatar):
     dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.getImagePath())
     files = {}

@@ -151,6 +151,9 @@ class GGSession(ggmodel.GGModel):
   def newBroadcastMessage(self, line):
     self.__system.newBroadcastMessage(line, self.__player)  
     
+  def labelChange(self, oldLabel, newLabel):
+    self.__system.labelChange(oldLabel, newLabel)
+    
   def getObjectsData(self):
     """ Returns the objects data.
     """  
@@ -241,7 +244,7 @@ class GGSession(ggmodel.GGModel):
     elif name == "Door":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
+        self.__player.newChatMessage("No existe esa habitaciï¿½n.", 1)
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
@@ -258,7 +261,7 @@ class GGSession(ggmodel.GGModel):
     elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
+        self.__player.newChatMessage("No existe esa habitaciï¿½n.", 1)
         return
       if data["key"][0] == "":
         self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)

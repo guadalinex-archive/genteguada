@@ -225,8 +225,7 @@ class BroadcastWindow(AuxWindow):
 
 class EditRoomWindow(AuxWindow):
 
-  def __init__(self, hud, player):
-    self.__player = player
+  def __init__(self, hud):
     self.__hud = hud
     self.activeLabels = []
     self.images = None
@@ -266,11 +265,22 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.editRoomMaxUsers = guiobjects.OcempEditLine()
     self.editRoomMaxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.editRoomMaxUsers.text = "10"
+    self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)
     self.editRoomMaxUsers.border = 1
     self.editRoomMaxUsers.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.editRoomMaxUsers.set_minimum_size(50, 20)
     self.container.add_child(self.editRoomMaxUsers)
+    
+    label = guiobjects.OcempLabel("label", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.roomLabel = guiobjects.OcempEditLine()
+    self.roomLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.roomLabel.text = self.__hud.getIVRoom().getModel().label
+    self.roomLabel.border = 1
+    self.roomLabel.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.roomLabel.set_minimum_size(150, 20)
+    self.container.add_child(self.roomLabel)
     iPos += 1
         
     label = guiobjects.OcempLabel("tiles", guiobjects.STYLES["itemLabel"])
@@ -295,7 +305,7 @@ class EditRoomWindow(AuxWindow):
       self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
       return  
     newTile = self.newTileImages.getSelectedName()
-    self.__hud.editRoom(maxUsers, newTile)
+    self.__hud.editRoom(maxUsers, self.roomLabel.text, newTile)
     
   def discardEditRoom(self):
     self.showOrHide() 
