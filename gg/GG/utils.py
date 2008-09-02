@@ -76,7 +76,7 @@ SHOES_TAG = "shoes_tag.png"
 
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
-TILES = ["grass01.png", "grass02.png", "grass03.png", "pavingStone01.png", "pavingStone02.png", \
+TILES = ["grass01.png", "grass02.png", "grass03.png", "grass04.png", "pavingStone01.png", "pavingStone02.png", \
          "pavingStone03.png", "pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", \
          "pavingStoneWithGrass03.png", "castle01.png", "castle02.png", "upArrow.png", "downArrow.png", 
          "leftArrow.png", "rightArrow.png", "smallStones01.png", "smallStones02.png", "smallStones03.png"]

@@ -63,9 +63,10 @@ SOUND_IMAGE = os.path.join(GG.utils.HUD_PATH, "sound.png")
 MUTE_IMAGE = os.path.join(GG.utils.HUD_PATH, "mute.png")
 TELEPORT_IMAGE = os.path.join(GG.utils.HUD_PATH, "teleport.png")
 CREATE_ITEM_IMAGE = os.path.join(GG.utils.HUD_PATH, "4.png")
-DELETE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "substraction.png")
-CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addition.png")
+DELETE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "removeRoom.png")
+CREATE_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "addRoom.png")
 JUMP_IMAGE = os.path.join(GG.utils.HUD_PATH, "jump.png")
+KICK_IMAGE = os.path.join(GG.utils.HUD_PATH, "kick.png")
 TINY_DELETE_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
 TINY_COPY_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_tiny_delete_button.png")
 EDIT_ROOM_IMAGE = os.path.join(GG.utils.HUD_PATH, "TEMP_editroom.png")
@@ -73,7 +74,8 @@ ROTATE_RIGHT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinright.png")
 ROTATE_LEFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "spinleft.png")
 DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
 ADMIN_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "adminOptions.png")
-ROOM_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "roomActions.png")
+#ROOM_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "roomActions.png")
+ROOM_OPTIONS_UPPER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomUpper.png")
 USER_ACTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "actionsNotification.png")
 TOOLBAR_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
 MASKUSER_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
@@ -105,6 +107,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__player.getAccessMode():
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
+      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
       self.__broadcastWindow = auxwindows.BroadcastWindow(self)
       self.__teleportWindow = auxwindows.TeleportWindow(self)
       self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
@@ -112,6 +115,7 @@ class IsoViewHud(isoview.IsoView):
     else:
       self.__createItemsWindow = None  
       self.__createRoomWindow = None
+      self.__editRoomWindow = None      
       self.__broadcastWindow = None  
       self.__teleportWindow = None
       self.__deleteRoomWindow = None
@@ -191,6 +195,7 @@ class IsoViewHud(isoview.IsoView):
     self.__tooltipWindow = None
     self.__ctrl = False
     self.__adminMenu = False
+    self.__editRoomMenu = False
     self.__deleteConfirmDialog = None
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
@@ -260,7 +265,9 @@ class IsoViewHud(isoview.IsoView):
       return True
     if self.__activeContactDialog or self.__deleteConfirmDialog:
       return True
-    windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, self.__createRoomWindow]
+    windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, 
+                   self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, 
+                   self.__createRoomWindow, self.__editRoomWindow]
     for window in windowsList:
       if window:
         if not window.hide:
@@ -438,19 +445,18 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.hud)
 
   def __paintRoomInfo(self):
-    self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
+    #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
+    self.roomInfo = guiobjects.OcempPanel(300, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 26, -4
     self.roomInfo.add_child(self.roomLabel)
     if self.__player.getAccessMode():
-      button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
+      #button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
+      button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.auxWindowHandler, self.__editRoomWindow)
       self.roomInfo.add_child(button)
     self.roomInfo.zOrder = 10000
     self.addSprite(self.roomInfo)
     self.widgetContainer.add_widget(self.roomInfo)
-
-  def __showEditRoom(self):
-    print "vamos a editar la habitacion"
 
   def __paintImgBlack(self):
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
@@ -502,6 +508,9 @@ class IsoViewHud(isoview.IsoView):
       self.roomLabel.set_text(event.getParams()["room"].label)
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
+
+  def editRoom(self, maxUsers, newTile):
+    self.__isoviewRoom.getModel().editRoom(maxUsers, newTile)
       
   def getIsoviewRoom(self):
     """ Returns the room isometric view.
@@ -705,7 +714,7 @@ class IsoViewHud(isoview.IsoView):
       {"image":CREATE_ITEM_IMAGE, "action": self.auxWindowHandler,  "params":self.__createItemsWindow,  "tooltip":"Panel de creación de objetos"},
       {"image":DELETE_ROOM_IMAGE, "action": self.auxWindowHandler,  "params":self.__deleteRoomWindow,   "tooltip":"Eliminar habitación"},
       {"image":CREATE_ROOM_IMAGE, "action": self.auxWindowHandler,  "params":self.__createRoomWindow,   "tooltip":"Crear habitación"},
-      {"image":JUMP_IMAGE,        "action": self.auxWindowHandler,  "params":self.__kickPlayerWindow,   "tooltip":"Expulsar jugador"},
+      {"image":KICK_IMAGE,        "action": self.auxWindowHandler,  "params":self.__kickPlayerWindow,   "tooltip":"Expulsar jugador"},
       {"image":CHAT_IMAGE,        "action": self.auxWindowHandler,  "params":self.__broadcastWindow,    "tooltip":"Mensaje general"},
     ]
     
@@ -943,14 +952,15 @@ class IsoViewHud(isoview.IsoView):
     """  
     self.getModel().newBroadcastMessage(line)
   
-  def createRoom(self, label, size, img, maxUsers):
+  def createRoom(self, label, size, img, maxUsers, copyRoom=None):
     """ Creates a new room and teleports the admin there.
     label: room label.
     size: room size.
-    img: room's dafault tile image.
+    img: room's default tile image.
     maxUsers: max users per room.
+    copyRoom: room to be copied.
     """  
-    room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers)
+    room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers, copyRoom)
     if not room:
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return

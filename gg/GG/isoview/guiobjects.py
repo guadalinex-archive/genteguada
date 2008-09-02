@@ -16,9 +16,6 @@ def generateImageSize(origFilePath, size, destFilePath):
   img.thumbnail(size, Image.ANTIALIAS)
   img.save(destFilePath)
 
-
-
-
 # ======================= STYLES ===========================
 
 STYLES = {
@@ -1120,6 +1117,7 @@ class OcempImageList(OcempImageFileList):
   def __init__(self, width, height, imagesList, relativePath):
     self.imagesList = imagesList
     self.relativePath = relativePath
+    self.set_selectionmode(ocempgui.widgets.Constants.SELECTION_SINGLE)
     OcempImageFileList.__init__(self, width, height)
 
   def _list_contents (self):
@@ -1133,17 +1131,18 @@ class OcempImageList(OcempImageFileList):
     if len(item):
       return item[0].text
     return None
+
+  def selectItem(self, itemName):
+    print ">>>>>", itemName  
+    for item in self.items:
+      if item.text == itemName:
+        prevSelected = self.get_selected()
+        if len(prevSelected):
+          self.deselect(prevSelected[0])
+        self.set_cursor(item, True)
+        return
     
 # ===============================================================
-
-def playSound(sound):
-  sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
-  if not os.path.isfile(sndPath):
-    return False
-  if not pygame.mixer.get_busy():
-    pygame.mixer.music.load(sndPath)
-    pygame.mixer.music.play()
-
 
 class OcempEditLine(ocempgui.widgets.Entry):
 
@@ -1216,6 +1215,8 @@ class OcempEditLine(ocempgui.widgets.Entry):
     self.dirty = True
     return handled
 
+# ===============================================================
+
 def createButton(imgPath, topleft, tooltip, action, *params):
   imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath)
   if tooltip:
@@ -1226,5 +1227,12 @@ def createButton(imgPath, topleft, tooltip, action, *params):
   button.topleft = topleft
   return button
 
+# ===============================================================
 
-
+def playSound(sound):
+  sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
+  if not os.path.isfile(sndPath):
+    return False
+  if not pygame.mixer.get_busy():
+    pygame.mixer.music.load(sndPath)
+    pygame.mixer.music.play()
