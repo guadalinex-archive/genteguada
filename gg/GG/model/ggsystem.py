@@ -138,7 +138,8 @@ class GGSystem(dMVC.model.Model):
     if copyRoom:
       items = copyRoom.getItems()
       for item in items:
-        newRoom.addItemFromVoid(item.copyObject(), item.getPosition())  
+        if not hasattr(item, "username"):  
+          newRoom.addItemFromVoid(item.copyObject(), item.getPosition())  
     self.__rooms.append(newRoom)
     return newRoom
 
