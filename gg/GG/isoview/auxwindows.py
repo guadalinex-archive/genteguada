@@ -235,8 +235,6 @@ class EditRoomWindow(AuxWindow):
     self.container = None
     self.editRoomMaxUsers = None
     self.newTileImages = None
-    #AuxWindow.__init__(self, hud, "Edición de habitaciones", [400,245])
-    #AuxWindow.__init__(self, hud, "Edición de habitaciones", [300, 218])
     AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
 
   def draw(self):
@@ -292,7 +290,6 @@ class EditRoomWindow(AuxWindow):
     self.enabledChecker.activate()
     self.enabledChecker.border = 1
     self.enabledChecker.topleft = 10 + 180 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-    self.enabledChecker.set_size(10, 10)
     self.container.add_child(self.enabledChecker)
     iPos += 1
             

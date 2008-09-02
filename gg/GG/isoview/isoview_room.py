@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
 
+import os
 import GG.utils
 import isoview
 import isoview_tile
@@ -54,7 +55,8 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
     self.getModel().subscribeEvent('updateScreenPos', self.updateScreenPos)
-  
+    self.getModel().subscribeEvent('floorChanged', self.floorChanged)
+    
   def getSpritesDict(self):
     """ Returns the sprites dictionary.
     """
@@ -176,6 +178,12 @@ class IsoViewRoom(isoview.IsoView):
     
   def updateScreenPos(self, event):    
     self.updateScreenPositionsOn(event.getParams()['position'])
+    
+  def floorChanged(self, event):
+    newTile = event.getParams()['newTile']
+    for x in range(len(self.__tileList)):
+      for y in range(len(self.__tileList[x])):
+        self.__tileList[x][y].setImg(os.path.join('tiles/', newTile))
     
   def updateScreenPositionsOn(self, pos):
     """ Updates the screen cords of all items on a room position.

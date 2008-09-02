@@ -572,12 +572,11 @@ class OcempImageList(OcempImageFileList):
     return None
 
   def selectItem(self, itemName):
-    print ">>>>>", itemName  
     for item in self.items:
       if item.text == itemName:
         prevSelected = self.get_selected()
         if len(prevSelected):
-          self.deselect(prevSelected[0])
+          self.set_cursor(prevSelected[0], False)
         self.set_cursor(item, True)
         return
     
