@@ -146,6 +146,7 @@ class Animation(object):
     """
     return (now - self.__startedTime) >= self.time
     
+# ===============================================================
     
 class IdleAnimation(Animation):
   """ IdleAnimation class.
@@ -203,6 +204,7 @@ class ScreenPositionAnimation(Animation):
     self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     Animation.stop(self)
   
+# ===============================================================
     
 class MovieAnimation(Animation):
   """ MovieAnimation class.
@@ -258,6 +260,7 @@ class MovieAnimation(Animation):
     """
     return False
   
+# ===============================================================
     
 class CompositionAnimation(Animation):
   """ CompositionAnimation class.
@@ -271,6 +274,7 @@ class CompositionAnimation(Animation):
     """
     Animation.__init__(self, time, isoview)
     
+# ===============================================================
     
 class SecuenceAnimation(CompositionAnimation):
   """ SecuenceAnimation class.
@@ -343,6 +347,7 @@ class SecuenceAnimation(CompositionAnimation):
     else:
       return self.__animations[0].isFinished(now)
 
+# ===============================================================
     
 class ParalelAnimation(CompositionAnimation):
   """ ParalelAnimation class.

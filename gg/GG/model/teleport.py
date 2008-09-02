@@ -130,6 +130,7 @@ class GGTeleport(room_item.GGRoomItem):
     for item in itemList:
       item.changeRoom(self.__destinationRoom, self.__exitPosition)
 
+# ===============================================================
 
 class GGDoor(GGTeleport):
   """ GGDoor class.
@@ -156,6 +157,7 @@ class GGDoor(GGTeleport):
     """
     self.transportTo(clicker)
     
+# ===============================================================
 
 class GGDoorWithKey(GGTeleport):
   """ GGDoorWithKey class.
@@ -192,6 +194,7 @@ class GGDoorWithKey(GGTeleport):
       return False
     self.transportTo(clicker)
 
+# ===============================================================
 
 class GGDoorPressedTiles(GGTeleport):
   """ GGDoorPressedTiles class.
@@ -229,6 +232,7 @@ class GGDoorPressedTiles(GGTeleport):
         return False
     self.transportTo(clicker)
 
+# ===============================================================
 
 class GGDoorRoom5b(GGTeleport):
   """ GGDoorRoom5b class.

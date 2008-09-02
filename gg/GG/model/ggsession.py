@@ -126,6 +126,11 @@ class GGSession(ggmodel.GGModel):
     """  
     return self.__system.getRoomLabels()  
 
+  def getRooms(self):
+    """ Returns the room list.
+    """  
+    return self.__system.getRooms()  
+
   def getRoom(self, roomLabel):
     """ Returns one specific room.
     roomLabel: room label.

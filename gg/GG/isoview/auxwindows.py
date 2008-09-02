@@ -8,6 +8,7 @@ import os
 BROADCAST_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "broadcastWIndow.png")
 EDIT_ROOM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindow.png")
 CREATE_ITEM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "createObjectWindow.png")
+ROOM_OPTIONS_LOWER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomLower.png")
 
 class AuxBox:
   
@@ -41,6 +42,7 @@ class AuxBox:
   def accept(self):
     pass
 
+# ===============================================================
 
 class TeleportWindow(AuxBox):
 
@@ -83,6 +85,7 @@ class TeleportWindow(AuxBox):
     self.listItems.topleft = 20, 40
     self.window.add_child(self.listItems) 
 
+# ===============================================================
 
 class DeleteRoomWindow(TeleportWindow):
 
@@ -99,6 +102,7 @@ class DeleteRoomWindow(TeleportWindow):
     self.showOrHide()
     self.hud.applyDeleteRoom(roomLabel)
 
+# ===============================================================
 
 class KickPlayerWindow(TeleportWindow):
 
@@ -123,6 +127,8 @@ class KickPlayerWindow(TeleportWindow):
     self.listItems = guiobjects.OcempImageObjectList(110, 205, self.listItems)
     self.listItems.topleft = 20, 40
     self.window.add_child(self.listItems) 
+
+# ===============================================================
 
 class AuxWindow:
 
@@ -167,6 +173,7 @@ class AuxWindow:
   def accept(self):
     pass
 
+# ===============================================================
  
 class BroadcastWindow(AuxWindow):
 
@@ -214,6 +221,86 @@ class BroadcastWindow(AuxWindow):
     self.hud.newBroadcastMessage(self.__textField.text)
     self.__textField.text = ""
 
+# ===============================================================
+
+class EditRoomWindow(AuxWindow):
+
+  def __init__(self, hud, player):
+    self.__player = player
+    self.__hud = hud
+    self.activeLabels = []
+    self.images = None
+    self.maxUsers = None
+    self.label = None
+    self.container = None
+    self.editRoomMaxUsers = None
+    self.newTileImages = None
+    #AuxWindow.__init__(self, hud, "Edición de habitaciones", [400,245])
+    #AuxWindow.__init__(self, hud, "Edición de habitaciones", [300, 218])
+    AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
+
+  def draw(self):
+    """ Draws window components on screen.
+    """  
+    self.__paintBackground()
+    self.__paintFields()
+    self.__paintButtons()
+    
+  def __paintBackground(self):
+    """ Paints the background image.
+    """  
+    #self.container = guiobjects.OcempPanel(300, 218, [1,32], ROOM_OPTIONS_LOWER_BACKGROUND)
+    self.container = ocempgui.widgets.Box(300, 218)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ROOM_OPTIONS_LOWER_BACKGROUND)
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 1, 1
+    self.container.add_child(imgBackground)
+    self.window.child = self.container
+    
+  def __paintFields(self):
+    iPos = 0
+    spacing = 50
+    labelShift = [5, -20]
+    label = guiobjects.OcempLabel("maxUsers", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.editRoomMaxUsers = guiobjects.OcempEditLine()
+    self.editRoomMaxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.editRoomMaxUsers.text = "10"
+    self.editRoomMaxUsers.border = 1
+    self.editRoomMaxUsers.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.editRoomMaxUsers.set_minimum_size(50, 20)
+    self.container.add_child(self.editRoomMaxUsers)
+    iPos += 1
+        
+    label = guiobjects.OcempLabel("tiles", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, "tiles/")  
+    self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.container.add_child(self.newTileImages)  
+    iPos += 1
+    
+  def __paintButtons(self):
+    editButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [50, 180], ["Modificar habitación", self.showTooltip, self.removeTooltip], self.applyEditRoom)
+    self.container.add_child(editButton)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 180], ["Descartar edicion", self.showTooltip, self.removeTooltip], self.discardEditRoom)
+    self.container.add_child(cancelButton)
+    self.container.zOrder = 10000
+    
+  def applyEditRoom(self):
+    try: 
+      maxUsers = int(self.editRoomMaxUsers.text)
+    except ValueError:
+      self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
+      return  
+    newTile = self.newTileImages.getSelectedName()
+    self.__hud.editRoom(maxUsers, newTile)
+    
+  def discardEditRoom(self):
+    self.showOrHide() 
+  
+# ===============================================================
 
 class CreateRoomWindow(AuxWindow):
 
@@ -225,14 +312,28 @@ class CreateRoomWindow(AuxWindow):
     self.sizeY = None
     self.maxUsers = None
     self.label = None
+    self.rooms = hud.getModel().getRooms()
+    #self.listItems = hud.getModel().getRoomLabels()
+    listLabels = []
+    for room in self.rooms:
+      listLabels.append(room.label)
+    self.listItems = listLabels  
     AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,245])
-  
+    
+  def showOrHide(self):
+    if self.hide:
+      self.container.remove_child(self.listRooms)
+      self.__paintRoomList()
+    AuxWindow.showOrHide(self)
+    
   def draw(self):
     """ Draws the window components.
     """    
-    self.container = ocempgui.widgets.Box(358, 258)
+    #self.container = ocempgui.widgets.Box(358, 258)
+    self.container = ocempgui.widgets.Box(420, 258)
     self.__paintBackground()
     self.__paintAttributes()
+    self.__paintRoomList()
     self.__paintButtons()
 
   def __paintBackground(self):
@@ -240,9 +341,18 @@ class CreateRoomWindow(AuxWindow):
     """  
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(EDIT_ROOM_BACKGROUND)
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
+    imgBackground.topleft = 1, 1
     self.container.add_child(imgBackground)
     self.window.child = self.container
+     
+  def __paintRoomList(self):
+    """ Paints the room list on screen.
+    """     
+    labelShift = [10, -15]
+    self.listRooms = guiobjects.OcempImageObjectList(110, 170, self.listItems)
+    self.listRooms.topleft = 275 + labelShift[0], 58 + labelShift[1] 
+    self.listRooms.connect_signal (ocempgui.widgets.Constants.SIG_SELECTCHANGED, self.__selectionChange)
+    self.container.add_child(self.listRooms) 
      
   def __paintButtons(self):
     """ Paints the control buttons on screen.
@@ -291,14 +401,16 @@ class CreateRoomWindow(AuxWindow):
     self.container.add_child(self.sizeY)
     
     label = guiobjects.OcempLabel("maxUsers", guiobjects.STYLES["itemLabel"])
-    label.topleft = 10 + 190 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    #label.topleft = 10 + 190 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    label.topleft = 10 + 130 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
     self.maxUsers = guiobjects.OcempEditLine()
     self.maxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.maxUsers.text = "10"
     self.maxUsers.border = 1
-    self.maxUsers.topleft = 10 + 190 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    #self.maxUsers.topleft = 10 + 190 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.maxUsers.topleft = 10 + 130 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.maxUsers.set_minimum_size(50, 20)
     self.container.add_child(self.maxUsers)
     iPos += 1
@@ -313,6 +425,23 @@ class CreateRoomWindow(AuxWindow):
     iPos += 1
     self.container.add_child(self.images)  
     self.activeLabels.append(self.images)
+    
+    label = guiobjects.OcempLabel("copy data...", guiobjects.STYLES["itemLabel"])
+    label.topleft = 275 + labelShift[0], 25 + labelShift[1]
+    self.container.add_child(label)
+    
+  def __selectionChange(self):
+    """
+    """
+    name = self.listRooms.getSelectedName()
+    for room in self.rooms:
+      if name == room.label:
+        self.sizeX.text = str(room.size[0])  
+        self.sizeY.text = str(room.size[1])  
+        self.maxUsers.text = str(room.maxUsers)
+        imgName = room.getTile([0, 0]).spriteName
+        trimmedImgName = imgName[imgName.rfind("/")+1:]
+        self.images.selectItem(trimmedImgName)
 
   def accept(self):
     if not self.images.getSelectedName():
@@ -335,8 +464,15 @@ class CreateRoomWindow(AuxWindow):
       return
     image = self.images.getSelectedName()
     self.showOrHide()
-    self.hud.createRoom(label, [posX, posY], [image], maxUsers)
+    room = None
+    roomList = self.listRooms.get_selected()
+    if len(roomList):
+      for singleRoom in self.rooms:
+        if singleRoom.label == roomList[0].text:
+          room = singleRoom
+    self.hud.createRoom(label, [posX, posY], [image], maxUsers, room)
 
+# ===============================================================
 
 class CreateItemsWindow(AuxWindow):
 

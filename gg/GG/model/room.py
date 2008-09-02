@@ -382,3 +382,11 @@ class GGRoom(ggmodel.GGModel):
         selec = item.getSelected()
         if selec == selectee:
           return item  
+
+  def editRoom(self, maxUsers, newTile):
+    self.maxUsers = maxUsers
+    if not newTile:
+      return
+    for x in range(len(self.__tiles)):
+      for y in range(len(self.__tiles[x])):
+        self.__tiles[x][y].setImage(os.path.join("tiles/", newTile))

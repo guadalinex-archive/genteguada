@@ -11,6 +11,7 @@ import stat
 import random
 import GG.avatargenerator.generator
 import Queue
+
 import urllib2
 import urllib
 
@@ -122,17 +123,22 @@ class GGSystem(dMVC.model.Model):
     import createworld
     world = createworld.CreateWorld(self)
     world.create()
-    
-  def createRoom(self, spriteFull, label, size, maxUsers):
+
+  def createRoom(self, spriteFull, label, size, maxUsers, copyRoom=None):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     label: room label.
     size: room size.
     maxUsers: max users per room.
+    copyRoom: room to be copied.
     """
     if self.getRoom(label):
       return None  
     newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers)
+    if copyRoom:
+      items = copyRoom.getItems()
+      for item in items:
+        newRoom.addItemFromVoid(item.copyObject(), item.getPosition())  
     self.__rooms.append(newRoom)
     return newRoom
 
@@ -337,6 +343,11 @@ class GGSystem(dMVC.model.Model):
     for session in self.__sessions:
       pList.append(session.getPlayer().username)
     return pList
+
+  def getRooms(self):
+    """ Returns the rooms list.
+    """  
+    return self.__rooms  
 
   def getSpecificPlayer(self, name):
     """ Returns a specific player.
