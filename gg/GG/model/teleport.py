@@ -130,6 +130,10 @@ class GGTeleport(room_item.GGRoomItem):
     if self.__destinationRoom.isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
+    #if not self.__destinationRoom.getEnabled():
+    if not self.__destinationRoom.getEnabled() and not clicker.getAccessMode():
+      clicker.newChatMessage("La habitacion esta bloqueada. Volvere a intentarlo mas tarde", 1)
+      return
     clicker.addPoints(self.points, self.label)
     itemList = clicker.getTile().getItemsFrom(clicker)
     for item in itemList:
