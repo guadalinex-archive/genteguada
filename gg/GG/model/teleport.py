@@ -44,10 +44,10 @@ class GGTeleport(room_item.GGRoomItem):
     """  
     if self.__destinationRoom:  
       dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom.label], \
-           "ExitPosition": self.__exitPosition}
+           "ExitPosition": self.__exitPosition, "Label": [self.label]}
     else:
       dic = {"Position": self.getTile().position, "DestinationRoom": [""], \
-           "ExitPosition": self.__exitPosition}    
+           "ExitPosition": self.__exitPosition, "Label": [self.label]}    
     return dic  
       
   def getName(self):
@@ -60,6 +60,11 @@ class GGTeleport(room_item.GGRoomItem):
     """  
     return self.spriteName
 
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
+  
   # self.__exitPosition
   
   def getExitPosition(self):

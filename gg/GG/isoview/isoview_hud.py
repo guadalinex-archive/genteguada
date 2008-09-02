@@ -188,7 +188,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__player.getAccessMode():
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
-      self.__editRoomWindow = auxwindows.EditRoomWindow(self)
+      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
       self.__broadcastWindow = auxwindows.BroadcastWindow(self)
       self.__teleportWindow = auxwindows.TeleportWindow(self)
       self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
@@ -514,6 +514,10 @@ class IsoViewHud(isoview.IsoView):
   def editRoom(self, maxUsers, newLabel, newTile):
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
+    if oldLabel != newLabel and self.getModel().getRoom(newLabel):
+      self.__player.newChatMessage('La etiqueta de habitacion ya existe', 1)  
+      self.__editRoomWindow.showOrHide()
+      return   
     room.editRoom(maxUsers, newLabel, newTile)
     self.getModel().labelChange(oldLabel, newLabel)
     self.__editRoomWindow.showOrHide()
@@ -800,7 +804,8 @@ class IsoViewHud(isoview.IsoView):
     actions = self.__selectedItem.getAdminActions()
     if not actions:
       return
-    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
+    #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
+    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 360, [GG.utils.SCREEN_SZ[0] - 151, 69], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
@@ -843,15 +848,17 @@ class IsoViewHud(isoview.IsoView):
           fCount += 1
         self.editableFields[key] = fields
         iPos += 1
-    okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 262], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
-    self.buttonBarAdminActions.add_child(okButton)
-    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 262], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.itemUnselected)
-    self.buttonBarAdminActions.add_child(cancelButton)
+    
+    buttonsHeight = 227 + 60   
     if not isTile:
-      deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 227], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
+      deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 0 + buttonsHeight], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
       self.buttonBarAdminActions.add_child(deleteButton)
-      copyButton = guiobjects.createButton(TINY_COPY_IMAGE, [10, 227], ["Copiar objeto", self.showTooltip, self.removeTooltip], self.copySelectedItem)
+      copyButton = guiobjects.createButton(TINY_COPY_IMAGE, [10, 0 + buttonsHeight], ["Copiar objeto", self.showTooltip, self.removeTooltip], self.copySelectedItem)
       self.buttonBarAdminActions.add_child(copyButton)
+    okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 35 + buttonsHeight], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
+    self.buttonBarAdminActions.add_child(okButton)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 35 + buttonsHeight], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.itemUnselected)
+    self.buttonBarAdminActions.add_child(cancelButton)
     self.buttonBarAdminActions.zOrder = 10000
     self.addSprite(self.buttonBarAdminActions)
     self.widgetContainer.add_widget(self.buttonBarAdminActions)
@@ -1396,6 +1403,11 @@ class IsoViewHud(isoview.IsoView):
       elif key == "Message":
         msg = self.editableFields[key][0].text
         selectedItem.setMessage(msg)  
+      elif key == "Label":
+        newLabel = self.editableFields[key][0].text
+        oldLabel = self.__selectedItem.getName()
+        selectedItem.setLabel(newLabel)
+        self.getModel().labelChange(oldLabel, newLabel)
       elif key == "GiftLabel":
         giftLabel = self.editableFields[key][0].text    
         selectedItem.setGiftLabel(giftLabel)  

@@ -225,8 +225,9 @@ class BroadcastWindow(AuxWindow):
 
 class EditRoomWindow(AuxWindow):
 
-  def __init__(self, hud):
+  def __init__(self, hud, player):
     self.__hud = hud
+    self.__player = player
     self.activeLabels = []
     self.images = None
     self.maxUsers = None

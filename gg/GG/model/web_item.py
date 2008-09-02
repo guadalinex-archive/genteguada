@@ -37,7 +37,7 @@ class GGWebItem(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the available admin actions.
     """  
-    dic = {"Position": self.getTile().position, "Url": [self.__url]}
+    dic = {"Position": self.getTile().position, "Url": [self.__url], "Label": [self.label]}
     return dic  
         
   def getName(self):
@@ -50,6 +50,11 @@ class GGWebItem(room_item.GGRoomItem):
     """  
     return self.spriteName
 
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
+  
   def getUrl(self):
     """ Returns the internet address.
     """  
@@ -71,6 +76,7 @@ class GGWebItem(room_item.GGRoomItem):
     else:
       return False    
   
+# ===============================================================
 
 class GGWebPannel(GGWebItem):
   """ GGWebPannel class.

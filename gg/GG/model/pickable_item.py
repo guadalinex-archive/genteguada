@@ -40,6 +40,12 @@ class GGPickableItem(room_item.GGRoomItem):
       else:
         return ["removeInventory"]
 
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    return dic    
+         
   def getName(self):
     """ Returns the item's label.
     """  
@@ -49,6 +55,11 @@ class GGPickableItem(room_item.GGRoomItem):
     """ Returns the item's image filename.
     """  
     return self.spriteInventory
+
+  def setLabel(self, newLabel):
+    """ Sets a new label for the item.
+    """  
+    self.label = newLabel  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
