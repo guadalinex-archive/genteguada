@@ -158,6 +158,7 @@ class GenteGuada:
     else:
       newImgName = img.replace(os.sep,"-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      print pathFile
       if not os.path.isfile(pathFile):
         imgData = self.__system.getResource(img) 
         imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
@@ -222,13 +223,15 @@ class GenteGuada:
       self.__system.async(self.__system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
-    path = resultado["path"].replace("/", "-")
+    #path = resultado["path"].replace("/", "-")
+    path = resultado["path"].replace(os.sep, "-")
     for key in resultado.keys():
       if not key in ["path", "avatar"]:
-        fileName = path + key
+        fileName = path + "-" + key
         avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
+    print "ya he copiado todas las imagenes"    
     self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
   
   def isSingleMode(self):

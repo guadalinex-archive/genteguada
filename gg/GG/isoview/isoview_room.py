@@ -292,8 +292,10 @@ class IsoViewRoom(isoview.IsoView):
     return None  
 
   def changeAvatarImages(self, avatar, path):
+    print "llegamos a la habitacion"  
     isoAvatar = self.findIVItem(avatar)
     if isoAvatar:
+      print "encontramos el avatar"  
       isoAvatar.changeAvatarImages(path) 
       
   def updateScreenPositions(self):

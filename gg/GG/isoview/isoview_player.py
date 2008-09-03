@@ -50,9 +50,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
-        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001"
+        imageAvatar = self.__path.replace(os.sep,"-") + "-standing_bottomright_0001"
       else:
-        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001_" + self.__timestamp
+        imageAvatar = self.__path.replace(os.sep,"-") + "-standing_bottomright_0001_" + self.__timestamp
       if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
         self.__path = "avatars/ghost/"
         GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
@@ -288,5 +288,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if self.__tempTimestamp:
       self.__timestamp =  self.__tempTimestamp
       self.__tempTimestamp = None
+    print "vamos a cambiar la imagen"  
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     
