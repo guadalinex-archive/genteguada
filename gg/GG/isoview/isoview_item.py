@@ -185,6 +185,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
+    #self.getIVRoom().updateScreenPositionsOn(self.__position)
     self.__position = event.getParams()['position']
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.getScreenPosition(), \
                   self.__ivroom.getFutureScreenPosition(self, self.__position, event.getParams()['itemList']))
