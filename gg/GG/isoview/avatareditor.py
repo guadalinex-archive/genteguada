@@ -13,7 +13,6 @@ import ocempgui.draw
 from PIL import Image
 
 # ======================= CONSTANTS ===========================
-PATH_EDITOR_BACKGROUNDS = "interface/backgrounds"
 PATH_EDITOR_IMG = "editor"
 IMG_EXTENSION = ".png"
 MASK_SIZE = {"S":[112, 105], "M":[124, 116], "L":[134, 127], "XL":[146, 137]}
@@ -554,7 +553,7 @@ class AvatarEditor:
     self.dialog = ocempgui.widgets.Box(373, 372)
     self.dialog.topleft = 528, 205
 
-    background = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_BACKGROUNDS, "uploadWindow.png")))
+    background = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "uploadWindow.png")))
     self.dialog.add_child(background)
     
     self.listDir = guiobjects.OcempImageFileList(310, 239)
