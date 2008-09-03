@@ -185,7 +185,9 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
     
-    if self.__player.getAccessMode():
+    self.__accessMode = self.__player.getAccessMode() 
+    
+    if self.__accessMode:
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
       self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
@@ -251,7 +253,7 @@ class IsoViewHud(isoview.IsoView):
   def __clickOnMap(self):
     cordX, cordY = pygame.mouse.get_pos()
     if 0 <= cordY <= HUD_OR[1]:
-      if self.__ctrl and self.__player.getAccessMode():
+      if self.__ctrl and self.__accessMode:
         dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
         if not dest == [-1, -1]:
           self.__isoviewRoom.getModel().clickedTileByAdmin(self.__player, dest)
@@ -439,7 +441,7 @@ class IsoViewHud(isoview.IsoView):
     self.paintTextBox()
     self.paintActionButtons()
     self.paintUserActions()
-    if self.__player.getAccessMode():
+    if self.__accessMode:
       self.paintAdminOptions()
     self.__paintRoomInfo()
     self.hud.zOrder = 1
@@ -452,7 +454,7 @@ class IsoViewHud(isoview.IsoView):
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 30, -4
     self.roomInfo.add_child(self.roomLabel)
-    if self.__player.getAccessMode():
+    if self.__accessMode:
       #button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
       button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.auxWindowHandler, self.__editRoomWindow)
       self.roomInfo.add_child(button)
@@ -693,7 +695,9 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item']
-    isTile = self.__selectedItem.isTile()
+    isTile = False
+    if self.__accessMode:
+      isTile = self.__selectedItem.isTile()
     itemName = self.__selectedItem.getName()
     itemImageLabel = self.__selectedItem.getImageLabel()
     highlight = event.getParams()['highlight']
@@ -707,7 +711,7 @@ class IsoViewHud(isoview.IsoView):
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
       self.__selectedImage.zOrder = 0
       self.addSprite(self.__selectedImage)        
-    if self.__player.getAccessMode():
+    if self.__accessMode:
       self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
     if not isTile:
       self.itemSelectedByUser(itemName, itemImageLabel)
