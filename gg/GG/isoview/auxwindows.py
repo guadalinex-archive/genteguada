@@ -617,4 +617,3 @@ class CreateItemsWindow(AuxWindow):
   def __restoreDefault(self):
     if self.__objectsArea.getSelectedName(): 
       self.__selectionChange()  
-

@@ -217,11 +217,16 @@ class GGSession(ggmodel.GGModel):
     name: object type.
     data: object data.
     """  
+    room = self.__player.getRoom()
+    roomSz = self.__player.getRoom().size
     try: 
       posX = int(data["position"][0])    
       posY = int(data["position"][1])
     except ValueError: 
       self.__player.newChatMessage('Valor "Position" incorrecto', 1) 
+      return
+    if not room.getTile([posX, posY]).stepOn():
+      self.__player.newChatMessage('No se puede colocar un objeto en esa posicion', 1) 
       return
     if name != "RoomItem":
       label = data["label"][0]  
@@ -232,8 +237,6 @@ class GGSession(ggmodel.GGModel):
     if not img:
       self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
       return
-    room = self.__player.getRoom()
-    roomSz = self.__player.getRoom().size
     if not (0 <= posX <= roomSz[0] and 0 <= posY <= roomSz[1]):
       self.__player.newChatMessage("Las coordenadas del objeto no son correctas.", 1)
       return

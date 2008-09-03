@@ -104,6 +104,18 @@ class Tile(ggmodel.GGModel):
       return None
     return self.__items[0]  
   
+  def getSteppedItem(self, overItem):
+    """ Returns the item just below.
+    overItem: 
+    """  
+    prevItem = None
+    for currentItem in self.__items:
+      if currentItem == overItem:
+        return prevItem
+      else:
+        prevItem = currentItem
+    return prevItem
+  
   def getItems(self):
     """ Returns the tile's item stack.
     """  
