@@ -53,13 +53,7 @@ class TeleportWindow(AuxBox):
     AuxBox.__init__(self, hud)
 
   def draw(self):
-    self.window = ocempgui.widgets.Box(150, 300)
-    self.window.topleft = [GG.utils.SCREEN_SZ[0] - 151, 129]
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.ADMIN_ACTIONS_BACKGROUND)
-    self.window.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["buttonTopBar"]))
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.window.add_child(imgBackground)
+    self.window = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     titleLabel = guiobjects.OcempLabel(self.title.decode("utf-8"), guiobjects.STYLES["teleportLabel"])
     titleLabel.topleft = 4, 0
     self.window.add_child(titleLabel)
@@ -184,7 +178,6 @@ class BroadcastWindow(AuxWindow):
   def draw(self):
     """ Draws window components on screen.
     """  
-    self.container = ocempgui.widgets.Box(303, 123)
     self.__paintBackground()
     self.__paintChat()
     self.__paintSendButton()
@@ -192,10 +185,7 @@ class BroadcastWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the window background.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(BROADCAST_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.container.add_child(imgBackground)
+    self.container = guiobjects.OcempPanel(303, 123, [0, 0], BROADCAST_BACKGROUND)
     self.window.child = self.container
     labelChat = guiobjects.OcempLabel("Mensaje", guiobjects.STYLES["userName"])
     labelChat.topleft = 115, 10
@@ -247,12 +237,7 @@ class EditRoomWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    #self.container = guiobjects.OcempPanel(300, 218, [1,32], ROOM_OPTIONS_LOWER_BACKGROUND)
-    self.container = ocempgui.widgets.Box(300, 218)
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(ROOM_OPTIONS_LOWER_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 1, 1
-    self.container.add_child(imgBackground)
+    self.container = guiobjects.OcempPanel(300, 218, [1, 1], ROOM_OPTIONS_LOWER_BACKGROUND)
     self.window.child = self.container
     
   def __paintFields(self):
@@ -353,8 +338,6 @@ class CreateRoomWindow(AuxWindow):
   def draw(self):
     """ Draws the window components.
     """    
-    #self.container = ocempgui.widgets.Box(358, 258)
-    self.container = ocempgui.widgets.Box(420, 258)
     self.__paintBackground()
     self.__paintAttributes()
     self.__paintRoomList()
@@ -363,10 +346,7 @@ class CreateRoomWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(EDIT_ROOM_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 1, 1
-    self.container.add_child(imgBackground)
+    self.container = guiobjects.OcempPanel(420, 258, [1, 1], EDIT_ROOM_BACKGROUND)
     self.window.child = self.container
      
   def __paintRoomList(self):
@@ -512,7 +492,6 @@ class CreateItemsWindow(AuxWindow):
   def draw(self):
     """ Draws the window components.
     """  
-    self.container = ocempgui.widgets.Box(373, 390)
     self.__paintBackground()
     self.__paintObjectsList()
     self.__paintButtons()
@@ -520,10 +499,7 @@ class CreateItemsWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(CREATE_ITEM_BACKGROUND)
-    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
-    imgBackground.topleft = 0, 0
-    self.container.add_child(imgBackground)
+    self.container = guiobjects.OcempPanel(373, 390, [0, 0], CREATE_ITEM_BACKGROUND)
     self.window.child = self.container
     itemsLabel = guiobjects.OcempLabel("Objetos", guiobjects.STYLES["pointLabel"])
     itemsLabel.topleft = 20, 10

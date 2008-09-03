@@ -11,10 +11,6 @@ import os
 import GG.utils
 import pygame.locals
 
-def generateImageSize(origFilePath, size, destFilePath):
-  img = Image.open(origFilePath)
-  img.thumbnail(size, Image.ANTIALIAS)
-  img.save(destFilePath)
 
 # ======================= STYLES ===========================
 
@@ -653,6 +649,11 @@ def createButton(imgPath, topleft, tooltip, action, *params):
   button.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, action, *params)
   button.topleft = topleft
   return button
+
+def generateImageSize(origFilePath, size, destFilePath):
+  img = Image.open(origFilePath)
+  img.thumbnail(size, Image.ANTIALIAS)
+  img.save(destFilePath)
 
 # ===============================================================
 
