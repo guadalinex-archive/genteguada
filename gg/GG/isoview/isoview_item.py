@@ -17,7 +17,7 @@ class IsoViewItem(positioned_view.PositionedView):
   Defines an item view.
   """
   
-  def __init__(self, model, screen, room, parent):
+  def __init__(self, model, screen, room, parent, position=None, image=None):
     """ Class constructor.
     model: isometric view model.
     screen: screen handler.
@@ -27,15 +27,21 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
-    self.__position = model.getPosition()
+    if position:
+      self.__position = position
+    else:    
+      self.__position = model.getPosition()
     self.__img = None
-    self.loadImage()
+    self.loadImage(image)
     self.getModel().subscribeEvent('position', self.positionChanged)
         
-  def loadImage(self):
+  def loadImage(self, image=None):
     """ Loads the item's image.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
+    if image:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(image, self.getModel().spriteName))
+    else:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()

@@ -161,14 +161,14 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
 
   @dMVC.model.localMethod 
-  def defaultView(self, screen, room, parent):
+  def defaultView(self, screen, room, parent, position=None, image=None):
     """ Creates an isometric view object for the item.
     screen: screen handler.
     room: item's room.
     parent: isoview hud handler.
     """
     import GG.isoview.isoview_item
-    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
+    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent, position, image)
   
   def inventoryOnly(self):
     """ checks if this is an inventory only item.

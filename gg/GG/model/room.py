@@ -105,6 +105,13 @@ class GGRoom(ggmodel.GGModel):
     """
     return self.__items
 
+  def getPositionItems(self):
+    items = []
+    for item in self.__items:
+      dictItem = {"obj": item, "position": item.getPosition(), "image": item.getImagePath()}
+      items.append(dictItem)
+    return items
+
   def setItems(self, items):
     """ Sets a new items list on the room.
     items: item list.
