@@ -159,7 +159,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       oldRoom.removeItem(self)
     room.addItemFromVoid(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
-
+    
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent, position=None, image=None):
     """ Creates an isometric view object for the item.
