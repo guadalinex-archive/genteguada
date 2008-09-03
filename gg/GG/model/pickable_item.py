@@ -77,8 +77,9 @@ class GGPickableItem(room_item.GGRoomItem):
   def stepOn(self):
     """ Checks if other items can be placed on top of this one.
     """  
-    return True
+    return False
 
+# ===============================================================
 
 class PaperMoney(GGPickableItem):
 
