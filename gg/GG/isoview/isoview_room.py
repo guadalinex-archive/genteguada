@@ -45,12 +45,23 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
+      
+    itemsDict = self.getModel().getPositionItems()
+    for item in itemsDict:
+      isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["image"])
+      self.__isoViewItems.append(isoviewitem)
+      self.__parent.addSprite(isoviewitem.getImg())
+      self.__spritesDict[isoviewitem.getImg()] = isoviewitem  
+      
+    """  
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
-      self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
+    """  
+      
+    self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)

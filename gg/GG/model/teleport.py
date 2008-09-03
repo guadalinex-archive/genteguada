@@ -97,13 +97,13 @@ class GGTeleport(room_item.GGRoomItem):
 
 
   @dMVC.model.localMethod 
-  def defaultView(self, screen, room, parent):
+  def defaultView(self, screen, room, parent, position=None, image=None):
     """ Creates an isometric view object for the item.
     screen: screen handler.
     parent: isoview hud handler.
     """
     import GG.isoview.isoview_item
-    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent)
+    return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent, position, image)
   
   def clickedBy(self, clicker):
     """ Triggers an event when the teleporter receives a click by a player.
