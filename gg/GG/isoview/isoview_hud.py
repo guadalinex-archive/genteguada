@@ -427,6 +427,7 @@ class IsoViewHud(isoview.IsoView):
       if self.__sound:  
         guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
@@ -1161,19 +1162,23 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     if self.__selectedItem:
-      self.__player.addToInventoryFromRoom(self.__selectedItem)
-      self.__player.setUnselectedItem()    
+      if self.__selectedItem.isTopItem():  
+        self.__player.addToInventoryFromRoom(self.__selectedItem)
+        self.__player.setUnselectedItem()    
 
   def moneyToInventory(self):
     """ Picks up money from the room and deletes the money object.
     """  
     if self.__selectedItem:
-      ivItem = self.findIVItem(self.__selectedItem)
-      ivItem.updateZOrder(40000)
-      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, ivItem.getScreenPosition(), [565, 90+568], True)
-      positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)
-      positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
-      ivItem.setAnimation(positionAnim)
+      if self.__selectedItem.isTopItem():
+        ivItem = self.findIVItem(self.__selectedItem)
+        ivItem.updateZOrder(40000)
+        positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, ivItem.getScreenPosition(), [565, 90+568], True)
+        positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)
+        positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
+        ivItem.setAnimation(positionAnim)
+      else:
+        self.__player.newChatMessage('No puedo coger eso, hay algo encima', 1)    
       self.__player.setUnselectedItem()
     
   def itemCopyToInventory(self):
@@ -1402,7 +1407,8 @@ class IsoViewHud(isoview.IsoView):
           if 0 <= posY < size[1]:
             itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
             for singleItem in itemsList:
-              singleItem.setPosition([posX, posY])  
+              singleItem.setPosition([posX, posY])
+              self.__isoviewRoom.getModel().moveItem(singleItem.getPosition(), [posX, posY], singleItem)  
             self.__selectedImage.rect.topleft = GG.utils.p3dToP2d([posX, posY], SELECTED_FLOOR_SHIFT)
       elif key == "Url":
         url = self.editableFields[key][0].text

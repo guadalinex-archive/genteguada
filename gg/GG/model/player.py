@@ -367,7 +367,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__visited.append(pos)
     items = self.getTile().getItemsFrom(self)
     for item in items:
-      #print ">>>", item  
       item.setPosition(next)
       
   def changeRoom(self, room, pos):
@@ -487,7 +486,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def jump(self):
     """ Jumps over an item or the current position.
     """  
-    if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
+    #if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
+    if not self.isTopItem():
       self.newChatMessage("No puedo saltar con tanto peso", 1)
       return
     if not self.__selected:
@@ -678,3 +678,16 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Kicks this player from the game.
     """  
     self.triggerEvent("finish")
+
+  def setPosition(self, pos, jump=None):
+    if self.isTopItem():
+      if self.getState() == GG.utils.STATE[3]:
+        self.setState(GG.utils.STATE[1])
+      if self.getState() == GG.utils.STATE[4]:
+        self.setState(GG.utils.STATE[2])
+    else:
+      if self.getState() == GG.utils.STATE[1]:
+        self.setState(GG.utils.STATE[3])
+      if self.getState() == GG.utils.STATE[2]:
+        self.setState(GG.utils.STATE[4])  
+    item_with_inventory.GGItemWithInventory.setPosition(self, pos, jump)

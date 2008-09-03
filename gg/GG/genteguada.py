@@ -158,7 +158,6 @@ class GenteGuada:
     else:
       newImgName = img.replace(os.sep,"-")
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
-      print pathFile
       if not os.path.isfile(pathFile):
         imgData = self.__system.getResource(img) 
         imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
