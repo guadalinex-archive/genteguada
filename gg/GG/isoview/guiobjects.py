@@ -314,6 +314,7 @@ class GroupSprite(pygame.sprite.Group):
     *sprites: sprites list.
     """
     pygame.sprite.Group.__init__(self, *sprites)
+    self.__oldSprites = {}
   
   def sprites(self):
     """ Order the group sprites according to their position.
@@ -564,7 +565,7 @@ class OcempImageList(OcempImageFileList):
       if item.text == itemName:
         prevSelected = self.get_selected()
         if len(prevSelected):
-          self.set_cursor(prevSelected[0], False)
+          self._set_cursor(prevSelected[0], False)
         self.set_cursor(item, True)
         return
     

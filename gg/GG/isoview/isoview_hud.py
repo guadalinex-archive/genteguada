@@ -849,7 +849,6 @@ class IsoViewHud(isoview.IsoView):
           fCount += 1
         self.editableFields[key] = fields
         iPos += 1
-    
     buttonsHeight = 227 + 60   
     if not isTile:
       deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 0 + buttonsHeight], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
@@ -1477,7 +1476,11 @@ class IsoViewHud(isoview.IsoView):
     self.addSprite(img)  
 
   def copySelectedItem(self):
-    itemCopy = self.__selectedItem.copyObject()
-    self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, self.__isoviewRoom.getModel().getNearestEmptyCell(self.__selectedItem.getPosition()))
-    self.itemUnselected()
-    self.__player.setSelectedItem(itemCopy)
+    position = self.__isoviewRoom.getModel().getNearestEmptyCell(self.__selectedItem.getPosition())
+    if position:
+      itemCopy = self.__selectedItem.copyObject()
+      self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, position)
+      self.itemUnselected()
+      self.__player.setSelectedItem(itemCopy)
+    else:
+      self.__player.newChatMessage("No hay sitio en la habitación", 1)
