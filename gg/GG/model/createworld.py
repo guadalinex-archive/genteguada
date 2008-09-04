@@ -67,7 +67,6 @@ SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.
 class CreateWorld:
 
   def __init__(self, system):
-    print "creando el mundo"
     self.__system = system
 
   def create(self):

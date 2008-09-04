@@ -615,13 +615,13 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Removes a contact from the agenda.
     contact: contact to be removed.
     """  
-    contact = None
+    contactSelected = None
     for item in self.__agenda:
       if item.getPlayer().username == contact.username:
-        contact = item
+        contactSelected = item
         break
-    if contact:
-      self.__agenda.remove(contact)
+    if contactSelected:
+      self.__agenda.remove(contactSelected)
         
   def removeContactRemote(self, contact):
     """ Removes a contact from the agenda. This method is called from another player's agenda.
