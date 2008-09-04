@@ -823,7 +823,7 @@ class IsoViewHud(isoview.IsoView):
     for item in itemList:
       item.changeRoom(room, pos)
   
-  def applyDeleteRoom(self):
+  def applyDeleteRoom(self, roomLabel):
     """ Deletes the selected room.
     """  
     if not roomLabel:
@@ -834,7 +834,7 @@ class IsoViewHud(isoview.IsoView):
     pos = room.getNearestEmptyCell(pos)
     
     players = room.getPlayers()
-    if not len(players):
+    if not len(players) == 0:
       self.__player.newChatMessage("Error: la habitación seleccionada contiene jugadores", 1)
       return
     if GG.genteguada.GenteGuada.getInstance().deleteRoom(roomLabel):
@@ -1432,7 +1432,9 @@ class IsoViewHud(isoview.IsoView):
     """ Applies the changes to the selected item attributes.
     """  
     selectedItem = self.__selectedItem
-    for key in self.editableFields.keys():
+    values = self.editableFields.keys()
+    values.sort()
+    for key in values:
       if key == "Position":
         try: 
           posX = int(self.editableFields[key][0].text)    

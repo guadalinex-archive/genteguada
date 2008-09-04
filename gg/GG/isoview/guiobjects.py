@@ -356,7 +356,10 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
 
   def __init__(self, text, width):
     line = ""  
-    cad = text
+    try:
+      cad = text.decode("utf-8")
+    except:
+      cad = text
     width = width/4
     while len(cad) > width:
       cad2aux = cad[0:width]
