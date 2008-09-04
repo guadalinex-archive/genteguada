@@ -227,7 +227,6 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
-        
         if self.__accessMode:
           if self.__adminMenu or not self.__createItemsWindow.hide:
             self.__moveItemPositionAdmin()
@@ -235,21 +234,6 @@ class IsoViewHud(isoview.IsoView):
             self.__clickOnMap()
         elif not self.__windowOpen():
           self.__clickOnMap()  
-        
-        
-        """
-        if self.__adminMenu:
-          self.__moveItemPositionAdmin()
-        if self.__accessMode:
-          if not self.__createItemsWindow.hide:
-            self.__moveItemPositionAdmin()
-          else:
-            self.__clickOnMap()    
-        else:
-          if not self.__accessMode or (self.__accessMode and not self.__windowOpen()):
-            self.__clickOnMap()
-        """    
-
     self.widgetContainer.distribute_events(*events)
 
   def __processHotkeys(self):
@@ -1343,8 +1327,8 @@ class IsoViewHud(isoview.IsoView):
     questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 22, 20 
     self.confirmDialog.add_child(questionLabel)
-    okButton = guiobjects.createButton(OK_BUTTON_IMAGE, [20, 55], None, self.giveContactDialog, event.getParams()['contact'])
-    cancelButton = guiobjects.createButton(CANCEL_BUTTON_IMAGE, [170, 55], None, self.dropDropContactDialog)
+    okButton = guiobjects.createButton(OK_BUTTON_IMAGE, [20, 55], None, self.giveContactCard, event.getParams()['contact'])
+    cancelButton = guiobjects.createButton(CANCEL_BUTTON_IMAGE, [170, 55], None, self.dropContactDialog)
     self.confirmDialog.add_child(okButton)
     self.confirmDialog.add_child(cancelButton)
     self.confirmDialog.zOrder = 20000
