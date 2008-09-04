@@ -748,6 +748,21 @@ class IsoViewHud(isoview.IsoView):
     
   def auxWindowHandler(self, window):
     if window:
+      if window == self.__kickPlayerWindow:
+        if not self.__deleteRoomWindow.hide:
+          self.__deleteRoomWindow.showOrHide()
+        if not self.__teleportWindow.hide:
+          self.__teleportWindow.showOrHide()
+      if window == self.__deleteRoomWindow:
+        if not self.__kickPlayerWindow.hide:
+          self.__kickPlayerWindow.showOrHide()
+        if not self.__teleportWindow.hide:
+          self.__teleportWindow.showOrHide()
+      if window == self.__teleportWindow:
+        if not self.__deleteRoomWindow.hide:
+          self.__deleteRoomWindow.showOrHide()
+        if not self.__kickPlayerWindow.hide:
+          self.__kickPlayerWindow.showOrHide()
       window.showOrHide()
 
   def applyKickPlayer(self, playerLabel):
