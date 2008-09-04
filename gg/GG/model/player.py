@@ -343,7 +343,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setDestination(self.getPosition())
       return
     pos = self.getPosition()
-    
+    if self.__state == GG.utils.STATE[1]:
+      self.setState(GG.utils.STATE[2])
+    elif self.__state == GG.utils.STATE[3]:
+      self.setState(GG.utils.STATE[4])
     self.setHeading(direction)
     if self.getHeading() == "up":
       next = [pos[0], pos[1] - 1]
@@ -365,11 +368,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     items = self.getTile().getItemsFrom(self)
     for item in items:
       item.setPosition(next)
-    
-    if self.__state == GG.utils.STATE[1]:
-      self.setState(GG.utils.STATE[2])
-    elif self.__state == GG.utils.STATE[3]:
-      self.setState(GG.utils.STATE[4])
       
   def changeRoom(self, room, pos):
     """ Changes the player's room.
