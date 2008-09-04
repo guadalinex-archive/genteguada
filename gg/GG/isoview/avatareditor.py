@@ -131,6 +131,7 @@ class AvatarEditor:
   def draw(self):
     """ Draws all the editor elements on screen.    
     """  
+    pygame.event.clear()
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
     self.paintScreen()
     self.paintAvatar()
