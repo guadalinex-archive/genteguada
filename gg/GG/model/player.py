@@ -480,6 +480,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     tile = itemToClimb.getTile()  
     if tile.getDepth() <= MAX_DEPTH and tile.stepOn():
       self.setDestination(itemToClimb.getPosition())
+      self.setUnselectedItem()
     else:
       self.newChatMessage("No puedo subirme ah�", 1)
 
@@ -493,6 +494,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if not self.__selected:
       self.triggerEvent('jump', position=self.getPosition())
       return
+    print self.__selected 
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
     dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
     if dest == None or self.getRoom().getTile(dest).getDepth():
