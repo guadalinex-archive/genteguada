@@ -182,7 +182,7 @@ class CreateWorld:
   def __decorateRoom3(self):
     self.__room3.setSpecialTile([2, 0, 1], "tiles/pressed.png")
     self.__room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
-    tiles = [[2, 2], [5, 1]]
+    tiles = [[2, 1], [5, 1]]
     myDoor3A = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room2, "puerta room3a")
     myDoor3B = teleport.GGDoorWithKey(DOOR_AMORED, [35, 25], [0, 0], [6, 5], self.__room4, "puerta room3b", "Llave Dorada")
     myDoor3C1 = teleport.GGDoorPressedTiles(DOOR_WOODEN_A, [24, 37], [0, 0], [3, 6], self.__room5, "puerta room3c1", tiles)
