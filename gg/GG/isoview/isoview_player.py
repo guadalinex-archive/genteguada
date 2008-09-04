@@ -279,9 +279,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.getParent().removeMovementDestination()
     #self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
     
-    currentPos = self.getScreenPosition()
-    calculatedPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
-    self.setScreenPosition([calculatedPos[0], currentPos[1]])
+    if self.__state == GG.utils.STATE[1] or self.__state == GG.utils.STATE[3]:  
+      currentPos = self.getScreenPosition()
+      calculatedPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
+      self.setScreenPosition([calculatedPos[0], currentPos[1]])
         
     self.getIVRoom().updateScreenPositionsOn(oldPos)
     isoview_item.IsoViewItem.positionChanged(self, event)
