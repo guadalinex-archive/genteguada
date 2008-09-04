@@ -187,6 +187,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     st = event.getParams()["state"]
     self.__state = st
     pos = event.getParams()["position"]
+      
     if st == GG.utils.STATE[1]: # standing
       self.getParent().removeMovementDestination()
       self.setAnimation(None)
@@ -267,6 +268,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
+    #if self.__state == GG.utils.STATE[1] or self.__state == GG.utils.STATE[3]:  
+    """
+    currentPos = self.getScreenPosition()
+    calculatedPos = GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor)
+    self.setScreenPosition([calculatedPos[0], currentPos[1]])
+    """
+    self.getIVRoom().updateScreenPositionsOn(self.getPosition())
+    
     self.__destination = event.getParams()['destination']
     
   def positionChanged(self, event):
@@ -278,13 +287,13 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
     #self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
-    
+    """
     if self.__state == GG.utils.STATE[1] or self.__state == GG.utils.STATE[3]:  
       currentPos = self.getScreenPosition()
       calculatedPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
       self.setScreenPosition([calculatedPos[0], currentPos[1]])
-        
     self.getIVRoom().updateScreenPositionsOn(oldPos)
+    """    
     isoview_item.IsoViewItem.positionChanged(self, event)
     
   def changeAvatarImages(self, path):

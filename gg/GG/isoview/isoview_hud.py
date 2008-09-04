@@ -419,7 +419,7 @@ class IsoViewHud(isoview.IsoView):
     itemPos = ivItem.getPosition()
     endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems())
     if ivItem:
-      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, [endPos[0], 0], endPos, True)
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, [endPos[0], -500], endPos, True)
       ivItem.setAnimation(positionAnim)
       if isinstance(ivItem, isoview_player.IsoViewPlayer):
         movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"), ivItem.getPath())

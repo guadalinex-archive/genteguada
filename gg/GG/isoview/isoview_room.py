@@ -207,8 +207,8 @@ class IsoViewRoom(isoview.IsoView):
     i = 0
     for item in itemList:
       ivIt = self.__parent.findIVItem(item)
-      scPos = GG.utils.p3dToP2d(ivIt.getPosition(), item.anchor)
-      if ivIt != None:  
+      if ivIt:  
+        scPos = GG.utils.p3dToP2d(ivIt.getPosition(), item.anchor)
         if i == 0:
           zOrder = ivIt.getZOrder()
           i = 1
