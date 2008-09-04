@@ -416,3 +416,5 @@ class GGRoom(ggmodel.GGModel):
   def labelChange(self, oldLabel, newLabel):
     for singleItem in self.__items:
       singleItem.labelChange(oldLabel, newLabel)
+      
+  

@@ -604,5 +604,6 @@ class CreateItemsWindow(AuxWindow):
       self.__selectionChange()  
       
   def setNewPosition(self, pos):
-    self.editableFields["position"][0].text = str(pos[0])  
-    self.editableFields["position"][1].text = str(pos[1])
+    if "position" in self.editableFields.keys():
+      self.editableFields["position"][0].text = str(pos[0])  
+      self.editableFields["position"][1].text = str(pos[1])
