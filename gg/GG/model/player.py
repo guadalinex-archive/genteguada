@@ -487,7 +487,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def jump(self):
     """ Jumps over an item or the current position.
     """  
-    #if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
     if not self.isTopItem():
       self.newChatMessage("No puedo saltar con tanto peso", 1)
       return
