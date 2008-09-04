@@ -186,6 +186,7 @@ class ScreenPositionAnimation(Animation):
     """ Starts the animation.
     """
     Animation.start(self)
+    print "(", self.__originX, ", ", self.__originY, ") ", self.__destination
     self.isoview.setScreenPosition([self.__originX, self.__originY])
     
   def step(self, now):
