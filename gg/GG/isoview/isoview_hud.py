@@ -228,14 +228,28 @@ class IsoViewHud(isoview.IsoView):
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
         
+        if self.__accessMode:
+          if self.__adminMenu or not self.__createItemsWindow.hide:
+            self.__moveItemPositionAdmin()
+          elif not self.__windowOpen():
+            self.__clickOnMap()
+        elif not self.__windowOpen():
+          self.__clickOnMap()  
+        
+        
+        """
         if self.__adminMenu:
           self.__moveItemPositionAdmin()
         if self.__accessMode:
           if not self.__createItemsWindow.hide:
             self.__moveItemPositionAdmin()
-        
-        if not self.__accessMode or (self.__accessMode and not self.__windowOpen()):
-          self.__clickOnMap()
+          else:
+            self.__clickOnMap()    
+        else:
+          if not self.__accessMode or (self.__accessMode and not self.__windowOpen()):
+            self.__clickOnMap()
+        """    
+
     self.widgetContainer.distribute_events(*events)
 
   def __processHotkeys(self):

@@ -307,3 +307,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     print "vamos a cambiar la imagen"  
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     
+  def unselected(self):
+    """ Restores the item's color and sets it as unselected.
+    """
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + "-" + self.getModel().spriteName)
+    self.setSprite(pygame.image.load(imgPath).convert_alpha())
+    #self.__parent.reloadImage(self.__img)      
+      
