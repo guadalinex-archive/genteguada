@@ -164,7 +164,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def getOptions(self):
     """ Returns player's available options.
     """
-    return ["privateChat", "exchange", "giveCard"]
+    #return ["privateChat", "exchange", "giveCard"]
+    return ["exchange", "giveCard"]
         
   def getPoints(self):
     """ Returns player's points.

@@ -162,6 +162,7 @@ class IsoViewHud(isoview.IsoView):
         "toExchange":     {"image":EXCHANGE_IMAGE,      "action": self.itemToExchange,      "tooltip":"Intercambiar (A)"},
         "giveCard":       {"image":CONTACT_IMAGE,       "action": self.itemToGiveCard,      "tooltip":"Dar tarjeta de visita (V)"},
         "money":          {"image":MOVE_IN_IMAGE,       "action": self.moneyToInventory,    "tooltip":"Recoger puntos (N)"},
+        #"privateChat":    {"image":PRIVATE_CHAT_IMAGE,  "action": self.privateChat,         "tooltip":"Chat (H)"},
     }
     self.__hotkeys = {
         K_x: self.finishGame,         K_f: self.showFullScreen,       K_s: self.showSoundControl, 
@@ -226,9 +227,14 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
-        if self.__adminMenu or not self.__createItemsWindow.hide:
+        
+        if self.__adminMenu:
           self.__moveItemPositionAdmin()
-        elif not self.__windowOpen():
+        if self.__accessMode:
+          if not self.__createItemsWindow.hide:
+            self.__moveItemPositionAdmin()
+        
+        if not self.__accessMode or (self.__accessMode and not self.__windowOpen()):
           self.__clickOnMap()
     self.widgetContainer.distribute_events(*events)
 
