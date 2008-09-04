@@ -226,7 +226,7 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
-        if self.__adminMenu:
+        if self.__adminMenu or not self.__createItemsWindow.hide:
           self.__moveItemPositionAdmin()
         elif not self.__windowOpen():
           self.__clickOnMap()
@@ -246,9 +246,12 @@ class IsoViewHud(isoview.IsoView):
   def __moveItemPositionAdmin(self):
     cordX, cordY = pygame.mouse.get_pos()
     dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
-    if not dest == [-1, -1] and "Position" in self.editableFields.keys():
-      self.editableFields["Position"][0].text = str(dest[0])
-      self.editableFields["Position"][1].text = str(dest[1])
+    if not dest == [-1, -1]:
+      if not self.__createItemsWindow.hide:
+        self.__createItemsWindow.setNewPosition(dest)    
+      if self.__adminMenu and "Position" in self.editableFields.keys():
+        self.editableFields["Position"][0].text = str(dest[0])
+        self.editableFields["Position"][1].text = str(dest[1])
   
   def __clickOnMap(self):
     cordX, cordY = pygame.mouse.get_pos()
@@ -1502,7 +1505,13 @@ class IsoViewHud(isoview.IsoView):
     self.addSprite(img)  
 
   def copySelectedItem(self):
-    position = self.__isoviewRoom.getModel().getNearestEmptyCell(self.__selectedItem.getPosition())
+    try: 
+      posX = int(self.editableFields['Position'][0].text)    
+      posY = int(self.editableFields['Position'][1].text)    
+    except ValueError:
+      self.__player.newChatMessage('Valor "Position" incorrecto', 1)
+      return
+    position = self.__isoviewRoom.getModel().getNearestEmptyCell([posX, posY])
     if position:
       itemCopy = self.__selectedItem.copyObject()
       self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, position)

@@ -456,18 +456,26 @@ class CreateRoomWindow(AuxWindow):
     except ValueError:
       self.__player.newChatMessage('Valor "Dimension X" incorrecto', 1)
       return
+    if not (4 <= posX <= 8):
+      self.__player.newChatMessage('"Dimension X" debe ser un valor entre 4 y 8', 1)
+      return
     try: 
       posY = int(self.sizeY.text)    
     except ValueError:
       self.__player.newChatMessage('Valor "Dimension Y" incorrecto', 1)
+      return
+    if not (4 <= posY <= 8):
+      self.__player.newChatMessage('"Dimension Y" debe ser un valor entre 4 y 8', 1)
       return
     try: 
       maxUsers = int(self.maxUsers.text)    
     except ValueError:
       self.__player.newChatMessage('Valor "Capacidad" incorrecto', 1)
       return
+    if not (1 <= maxUsers <= 15):
+      self.__player.newChatMessage('"maxUsers" debe ser un valor entre 1 y 15', 1)
+      return
     image = self.images.getSelectedName()
-    self.showOrHide()
     room = None
     roomList = self.listRooms.get_selected()
     if len(roomList):
@@ -475,7 +483,8 @@ class CreateRoomWindow(AuxWindow):
         if singleRoom.label == roomList[0].text:
           room = singleRoom
     self.hud.createRoom(label, [posX, posY], [image], maxUsers, room)
-
+    self.showOrHide()
+    
 # ===============================================================
 
 class CreateItemsWindow(AuxWindow):
@@ -593,3 +602,7 @@ class CreateItemsWindow(AuxWindow):
   def __restoreDefault(self):
     if self.__objectsArea.getSelectedName(): 
       self.__selectionChange()  
+      
+  def setNewPosition(self, pos):
+    self.editableFields["position"][0].text = str(pos[0])  
+    self.editableFields["position"][1].text = str(pos[1])
