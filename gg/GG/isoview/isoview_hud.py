@@ -1257,7 +1257,7 @@ class IsoViewHud(isoview.IsoView):
     """ Drops a picked item in front of the player.
     """  
     self.__player.drop(self.__selectedItem)
-    self.itemUnselected()
+    #self.itemUnselected()
 
   def initExchange(self, event):
     """ Starts the exchange project after receiving an exchange event.

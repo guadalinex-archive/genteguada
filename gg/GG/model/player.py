@@ -465,6 +465,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         self.setState(GG.utils.STATE[1])
         item.setPosition(dropLocation)
         self.triggerEvent('dropItem', item=item, position=item.getPosition())
+        self.setUnselectedItem()
     else:
       if dropLocation == [-1, -1]:
         self.newChatMessage("No puedo soltarlo ah�.", 1)
@@ -472,6 +473,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
       self.triggerEvent('dropItem', item=item, position=item.getPosition())
+      self.setUnselectedItem()
   
   def climb(self, itemToClimb):
     """ Climbs over an item.
