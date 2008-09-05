@@ -11,7 +11,6 @@ import guiobjects
 COLOR_SHIFT = 80
 # =============================================================
 
-
 class IsoViewItem(positioned_view.PositionedView):
   """ IsoViewItem class.
   Defines an item view.
@@ -47,10 +46,13 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.rect = self.__img.image.get_rect()
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    self.__img.rect.topleft = scrPos
+    """
     if self.isPlayer():
       self.__img.rect.topleft = scrPos[0], -500
     else:  
       self.__img.rect.topleft = scrPos     
+    """  
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
             
   def getPosition(self):
