@@ -23,6 +23,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.points = 0
 
   def copyObject(self):
+    """ Creates and returns a copy of this item.
+    """  
     copy = GGRoomItem(self.spriteName ,self.anchor, self.topAnchor)
     return copy
     
@@ -213,9 +215,13 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     return False
 
   def labelChange(self, oldLabel, newLabel):
+    """ DO NOT delete.
+    """  
     pass  
 
   def isTopItem(self):
+    """ Checks if this is the top item on the tile.
+    """  
     if self.__tile.getTopItem() == self:
       return True
     else:
