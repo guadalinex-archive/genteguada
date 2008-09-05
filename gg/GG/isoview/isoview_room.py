@@ -143,10 +143,12 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
+    """
     for ivitem in self.__isoViewItems:
       if isinstance(ivitem, isoview_player.IsoViewPlayer):
         if ivitem.getModel().username == event.getParams()['item'].username:
           return
+    """      
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     self.addIsoViewItem(ivItem)
     self.__parent.addItemToRoomFromInventory(ivItem)

@@ -35,11 +35,11 @@ class GGPickableItem(room_item.GGRoomItem):
     if self.getRoom():
       return ["inventory"]
     else:
-      if self.__player.isExchange():
+      if self.getPlayer().isExchange():
         return ["toExchange"]
       else:
         return ["removeInventory"]
-
+      
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
