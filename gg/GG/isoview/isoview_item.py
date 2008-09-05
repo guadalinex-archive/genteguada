@@ -129,11 +129,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def selected(self):
     """ Changes the item's color and sets it as selected.
     """
-    #self.__img.image.set_alpha(128)
-    #self.__img.update()
-    
     size = self.__img.rect
-    #size = self.__img.image.get_rect()
     color2 = [0, 0, 0]
     for x in range(0, size[2]):
       for y in range(0, size[3]):
@@ -149,19 +145,16 @@ class IsoViewItem(positioned_view.PositionedView):
           if color2[2] > 255: 
             color2[2] = 255
           self.__img.image.set_at((x, y), color2)
-    #self.__parent.reloadImage(self.__img)      
     
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    #self.__parent.reloadImage(self.__img)      
     
   def getScreenPosition(self):
     """ Returns the item's screen position.
     """  
-    #print "*** screenPos ", self
     return self.__img.rect.topleft
     
   def setScreenPosition(self, pos):
@@ -197,7 +190,6 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Updates the item position and draws the room after receiving a position change event.
     event: even info.
     """
-    #self.getIVRoom().updateScreenPositionsOn(self.__position)
     self.__position = event.getParams()['position']
     destination = self.__ivroom.getFutureScreenPosition(self, self.__position, event.getParams()['itemList'])
     #print self.getScreenPosition(), self.__img.rect.topleft, destination
@@ -217,7 +209,11 @@ class IsoViewItem(positioned_view.PositionedView):
     self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
     
   def stopFallingAndRestore(self):
-    pass # Do NOT delete  
+    """ DO NOT delete
+    """
+    pass  
 
   def isPlayer(self):
+    """ Checks if this item is a player or not.
+    """
     return False  

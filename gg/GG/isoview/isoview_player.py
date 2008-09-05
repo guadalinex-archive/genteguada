@@ -92,9 +92,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     pass
 
   def getPath(self):
+    """ Returns the data path.
+    """  
     return self.__path
 
   def setPath(self, path):
+    """ Sets a new data path value.
+    path: new data path.
+    """  
     self.__path = path
 
   def timestampChanged(self, event):
@@ -158,7 +163,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if dataState:
       state = dataState
     else:
-      #state = self.getModel().getState()
       state = self.__state
     if state == GG.utils.STATE[1] or state == GG.utils.STATE[3]:
       string = GG.utils.getSpriteName(state, self.__heading, 0, self.__timestamp)
@@ -289,14 +293,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
-    #if self.__state == GG.utils.STATE[1] or self.__state == GG.utils.STATE[3]:  
-    """
-    currentPos = self.getScreenPosition()
-    calculatedPos = GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor)
-    self.setScreenPosition([calculatedPos[0], currentPos[1]])
-    """
     self.getIVRoom().updateScreenPositionsOn(self.getPosition())
-    
     self.__destination = event.getParams()['destination']
     
   def positionChanged(self, event):
@@ -307,14 +304,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     oldPos = event.getParams()['oldPosition']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-    #self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
-    """
-    if self.__state == GG.utils.STATE[1] or self.__state == GG.utils.STATE[3]:  
-      currentPos = self.getScreenPosition()
-      calculatedPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
-      self.setScreenPosition([calculatedPos[0], currentPos[1]])
-    self.getIVRoom().updateScreenPositionsOn(oldPos)
-    """    
     isoview_item.IsoViewItem.positionChanged(self, event)
     
   def changeAvatarImages(self, path):
@@ -325,7 +314,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     if self.__tempTimestamp:
       self.__timestamp =  self.__tempTimestamp
       self.__tempTimestamp = None
-    print "vamos a cambiar la imagen"  
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     
   def unselected(self):
@@ -333,7 +321,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + "-" + self.getModel().spriteName)
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
-    #self.__parent.reloadImage(self.__img)      
       
   def isPlayer(self):
+    """ Checks if this item is a player or not.
+    """  
     return True  

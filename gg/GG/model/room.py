@@ -106,6 +106,8 @@ class GGRoom(ggmodel.GGModel):
     return self.__items
 
   def getPositionItems(self):
+    """ Returns the room items data.
+    """  
     items = []
     for item in self.__items:
       dictItem = {"obj": item, "position": item.getPosition(), "image": item.getImagePath()}
@@ -403,6 +405,12 @@ class GGRoom(ggmodel.GGModel):
           return item  
 
   def editRoom(self, maxUsers, newLabel, enabled, newTile):
+    """ Sets the room attributes with new values.
+    maxUsers: new maxUsers value.
+    newLabel: new room label.
+    enabled: sets the room as enabled or disabled.
+    newTile: sets a new tile design for the room floor.
+    """  
     self.maxUsers = maxUsers
     self.label = newLabel
     self.__enabled = enabled
@@ -414,6 +422,10 @@ class GGRoom(ggmodel.GGModel):
     self.triggerEvent('floorChanged', newTile=newTile)    
         
   def labelChange(self, oldLabel, newLabel):
+    """ Propagates a room label change all over its items.
+    oldLabel: old room label.
+    newLabel: new room label.
+    """  
     for singleItem in self.__items:
       singleItem.labelChange(oldLabel, newLabel)
       
