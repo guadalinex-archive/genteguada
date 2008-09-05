@@ -53,6 +53,9 @@ IMAGES_DICT["PenguinQuiz"] = IMAGES_DICT["PenguinTalker"]
 IMAGES_DICT["GiverNpc"] = {}
 IMAGES_DICT["GiverNpc"]["gift.png"] = [[15, -30], [0, 0]]
 IMAGES_DICT["GiverNpc"]["golden_key.png"] = [[15, -30], [0, 0]]
+IMAGES_DICT["PickableItem"] = {}
+IMAGES_DICT["PickableItem"]["gift.png"] = [[15, -30], [0, 0]]
+IMAGES_DICT["PickableItem"]["golden_key.png"] = [[15, -30], [0, 0]]
 
 # ====================================================================
 class GGSession(ggmodel.GGModel):
@@ -208,6 +211,11 @@ class GGSession(ggmodel.GGModel):
                    "RoomItem": {
                             "position": pos,
                             "images": IMAGES_DICT["RoomItem"].keys()                     
+                            },
+                   "PickableItem": {
+                            "position": pos,
+                            "label": [""],
+                            "images": IMAGES_DICT["PickableItem"].keys()                     
                             }
                   }
     return self.objectsDict
@@ -305,6 +313,9 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
         return
       box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["filePath"][0])
+    #===============================================
+    elif name == "PickableItem":
+      box = GG.model.pickable_item.GGPickableItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     

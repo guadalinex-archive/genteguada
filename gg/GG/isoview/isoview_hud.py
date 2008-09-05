@@ -98,7 +98,8 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
     self.__allSprites = guiobjects.GroupSprite()
-    #self.__allSprites = guiobjects.LayeredDirty()    
+    #self.__allSprites = guiobjects.LayeredDirty()
+    self.__isoviewRoom = None    
     self.__textArea = None
     self.__textField = None
     self.__windowInventory = None
@@ -227,15 +228,22 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
+        """  
+        if self.__adminMenu:
+          self.__moveItemPositionAdmin()
+        elif not self.__windowOpen():
+          self.__clickOnMap()
+        """  
+        #self.__clickOnMap()
         if self.__accessMode:
           if self.__adminMenu or not self.__createItemsWindow.hide:
             self.__moveItemPositionAdmin()
           elif not self.__windowOpen():
             self.__clickOnMap()
         elif not self.__windowOpen():
-          self.__clickOnMap()  
+          self.__clickOnMap()
     self.widgetContainer.distribute_events(*events)
-
+    
   def __processHotkeys(self):
     if event.key in self.__hotkeys.keys():
       if self.__hotkeys[event.key] in self.__activeActions:
@@ -709,23 +717,24 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     self.__selectedItem = event.getParams()['item']
+    ivItem = self.findIVItem(self.__selectedItem)
     isTile = False
     if self.__accessMode:
       isTile = self.__selectedItem.isTile()
     itemName = self.__selectedItem.getName()
     itemImageLabel = self.__selectedItem.getImageLabel()
     highlight = event.getParams()['highlight']
-    if not self.__selectedItem.inventoryOnly():
+    if not self.__selectedItem.inventoryOnly() and ivItem:
       if highlight:  
         self.__isoviewRoom.itemSelected(self.__selectedItem)
       if isTile:
         selImgPos = self.__selectedItem.getPosition()
       else:
-        selImgPos = self.findIVItem(self.__selectedItem).getPosition()
+        selImgPos = ivItem.getPosition()
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
       self.__selectedImage.zOrder = 0
       self.addSprite(self.__selectedImage)        
-    if self.__accessMode:
+    if self.__accessMode and ivItem:
       self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
     if not isTile:
       self.itemSelectedByUser(itemName, itemImageLabel)
@@ -1422,6 +1431,8 @@ class IsoViewHud(isoview.IsoView):
     """ Applies the changes to the selected item attributes.
     """  
     selectedItem = self.__selectedItem
+    if not self.__selectedItem:
+      return
     values = self.editableFields.keys()
     values.sort()
     for key in values:
