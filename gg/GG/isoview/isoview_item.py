@@ -46,7 +46,11 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     pos = self.__position
-    self.__img.rect.topleft = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    if self.isPlayer():
+      self.__img.rect.topleft = scrPos[0], -500
+    else:  
+      self.__img.rect.topleft = scrPos     
     self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
             
   def getPosition(self):
@@ -96,7 +100,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     return self.__img
   
-  def setImg(self, img, path = None):
+  def setImg(self, img, path=None):
     """ Sets a new image for the item.
     img: image name.
     """
@@ -113,7 +117,13 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     self.__img.image = sprite
     self.__img.dirty = 1
-   
+  
+  def setRect(self, rect):
+    """ Sets a new rect for the item iamge
+    rect: new rect.
+    """
+    self.__img.rect = rect
+    
   def selected(self):
     """ Changes the item's color and sets it as selected.
     """
@@ -206,3 +216,6 @@ class IsoViewItem(positioned_view.PositionedView):
     
   def stopFallingAndRestore(self):
     pass # Do NOT delete  
+
+  def isPlayer(self):
+    return False  

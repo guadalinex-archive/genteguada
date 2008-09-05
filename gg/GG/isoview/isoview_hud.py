@@ -205,6 +205,7 @@ class IsoViewHud(isoview.IsoView):
       self.__teleportWindow = None
       self.__deleteRoomWindow = None
       self.__kickPlayerWindow = None
+    self.addItemToRoomFromVoid(self.findIVItem(self.__player))  
     
   def processEvent(self, events):
     """ Processes the input events.
@@ -529,6 +530,11 @@ class IsoViewHud(isoview.IsoView):
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
 
+    if self.__isoviewRoom:
+      ivItem = self.findIVItem(self.__player)
+      self.__isoviewRoom.addIsoViewItem(ivItem)    
+      self.addItemToRoomFromVoid(ivItem)
+    
   def editRoom(self, maxUsers, newLabel, enabled, newTile):
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
