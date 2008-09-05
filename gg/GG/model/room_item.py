@@ -159,9 +159,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       oldRoom.removeItem(self)
     room.addItemFromVoid(self, pos)
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
-    #import time
-    #time.sleep(1.5)
-    #room.triggerEvent('addItemFromVoid', item=self)
     
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent, position=None, image=None):

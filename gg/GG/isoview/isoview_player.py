@@ -28,6 +28,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     parent: isoview_hud handler.
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
+    #pos = self.getScreenPosition()
+    #self.setScreenPosition([pos[0], -500])
     self.__movieAnimation = None
     self.__destination = None
     self.__tempTimestamp = None
@@ -48,6 +50,24 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     #self.__heading = self.getModel().getHeading()
     #self.__state = self.getModel().getState()
 
+
+  """
+  def loadImage(self, image=None):
+    if image is None:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
+    else:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(image, self.getModel().spriteName))
+    self.__img = pygame.sprite.Sprite()
+    
+    self.setSprite(pygame.image.load(imgPath).convert_alpha())
+    self.setRect(self.getImg().image.get_rect())
+    pos = self.getPosition()
+    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    print "player"  
+    self.setScreenPosition([scrPos[0], -500])
+    self.updateZOrder((pow(pos[0], 2) + pow(pos[1], 2))*10)
+  """  
+  
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
@@ -315,3 +335,5 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
     #self.__parent.reloadImage(self.__img)      
       
+  def isPlayer(self):
+    return True  
