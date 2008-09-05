@@ -19,6 +19,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     """
     self.__isohud = isohud
     self.__answers = model.getAnswers()
+    self.__position = model.getPosition()
     
     positioned_view.PositionedView.__init__(self, model, screen)
     self.container = ocempgui.widgets.Box(358, 258)
@@ -67,13 +68,13 @@ class IsoViewQuiz(positioned_view.PositionedView):
     option: quiz answer.
     """ 
     if option == self.getModel().getRightAnswer():
-      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("¡Respuesta correcta!", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
+      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("ï¿½Respuesta correcta!", \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2))
       self.__isohud.getPlayer().addPoints(0, self.getModel().question)
       self.getModel().removeRightAnsweredQuestion()
     else:   
-      self.__isohud.getPlayer().triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], [2, 0, 2], 2))
+      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2))
     self.__isohud.widgetContainer.remove_widget(self.container)
     self.__isohud.setActiveWindow(False)
     self.container.destroy()
