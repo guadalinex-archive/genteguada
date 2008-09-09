@@ -37,7 +37,19 @@ class GGSystem(dMVC.model.Model):
     """ Returns the room used as lobby for all new players.
     """
     #return self.__rooms[0]
-    return self.__startRooms[random.randint(0, len(self.__startRooms)-1)]
+    roomsCopy = self.__startRooms
+    
+    for x in range(0, len(self.__startRooms)):
+      room = roomsCopy[random.randint(0, len(roomsCopy)-1)]
+      if room.isFull():
+        roomsCopy.remove(room)
+      else:
+        return room    
+    return None
+    #return self.__startRooms[random.randint(0, len(self.__startRooms)-1)]
+      
+  def getEntryRooms(self):
+    return self.__startRooms      
       
   # self.__players
   

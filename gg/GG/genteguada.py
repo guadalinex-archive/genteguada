@@ -92,9 +92,15 @@ class GenteGuada:
       value = winLogin.drawAccessMode()  
       self.__session.getPlayer().setAccessMode(value)
     self.__loadingScreen()
+    
+    while not self.__system.getEntryRoom():
+      time.sleep(2)
+      self.__input(pygame.event.get())
+    """
     while self.__system.getEntryRoom().isFull():
       time.sleep(2) 
       self.__input(pygame.event.get())
+    """  
     self.__initGame()
 
   def getSystem(self):
