@@ -549,16 +549,17 @@ class IsoViewHud(isoview.IsoView):
     #if self.__accessMode:
     #  self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
     
-  def editRoom(self, maxUsers, newLabel, enabled, newTile):
+  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile=None):
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
     if oldLabel != newLabel and self.getModel().getRoom(newLabel):
       self.__player.newChatMessage('La etiqueta de habitacion ya existe', 1)  
       self.__editRoomWindow.showOrHide()
       return   
-    room.editRoom(maxUsers, newLabel, enabled, newTile)
+    room.editRoom(maxUsers, newLabel, enabled, startRoom, newTile)
     if oldLabel != newLabel:
       self.getModel().labelChange(oldLabel, newLabel)
+    self.getModel().setStartRoom(room, startRoom)  
     self.__editRoomWindow.showOrHide()
       
   def getIsoviewRoom(self):
@@ -1027,7 +1028,7 @@ class IsoViewHud(isoview.IsoView):
     """  
     self.getModel().newBroadcastMessage(line)
   
-  def createRoom(self, label, size, img, maxUsers, copyRoom=None):
+  def createRoom(self, label, size, img, maxUsers, enabled, startRoom, copyRoom=None):
     """ Creates a new room and teleports the admin there.
     label: room label.
     size: room size.
@@ -1038,7 +1039,7 @@ class IsoViewHud(isoview.IsoView):
     if self.getModel().getRoom(label):
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return
-    room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers, copyRoom)
+    room = GG.genteguada.GenteGuada.getInstance().createRoom(label, size, img, maxUsers, enabled, startRoom, copyRoom)
     if not room:
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return

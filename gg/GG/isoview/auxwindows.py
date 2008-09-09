@@ -249,7 +249,7 @@ class EditRoomWindow(AuxWindow):
       self.roomLabel.text = self.__hud.getIVRoom().getModel().label
       self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
       self.imageName = self.imageName[self.imageName.rfind("/")+1:]
-      self.newTileImages.selectItem(self.imageName)
+      #self.newTileImages.selectItem(self.imageName)
     AuxWindow.showOrHide(self)
   
   def draw(self):
@@ -274,7 +274,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.editRoomMaxUsers = guiobjects.OcempEditLine()
     self.editRoomMaxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)
+    self.editRoomMaxUsers.text = str(self.room.maxUsers)
     self.editRoomMaxUsers.border = 1
     self.editRoomMaxUsers.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.editRoomMaxUsers.set_minimum_size(50, 20)
@@ -285,7 +285,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.roomLabel = guiobjects.OcempEditLine()
     self.roomLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.roomLabel.text = self.__hud.getIVRoom().getModel().label
+    self.roomLabel.text = self.room.label
     self.roomLabel.border = 1
     self.roomLabel.topleft = 10 + 70 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.roomLabel.set_minimum_size(90, 20)
@@ -298,7 +298,8 @@ class EditRoomWindow(AuxWindow):
     self.enabledChecker = ocempgui.widgets.CheckButton()
     #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.enabledChecker.activate()
+    if self.room.getEnabled():
+      self.enabledChecker.activate()
     self.enabledChecker.border = 1
     self.enabledChecker.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.container.add_child(self.enabledChecker)
@@ -309,7 +310,8 @@ class EditRoomWindow(AuxWindow):
     self.startRoomChecker = ocempgui.widgets.CheckButton()
     #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.startRoomChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.startRoomChecker.activate()
+    if self.room.getStartRoom():
+      self.startRoomChecker.activate()
     self.startRoomChecker.border = 1
     self.startRoomChecker.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.container.add_child(self.startRoomChecker)
@@ -320,7 +322,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, "tiles/")  
     self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-    self.newTileImages.selectItem(self.imageName)
+    #self.newTileImages.selectItem(self.imageName)
     self.container.add_child(self.newTileImages)  
     iPos += 1
     
@@ -341,8 +343,12 @@ class EditRoomWindow(AuxWindow):
       self.__player.newChatMessage('Valor "maxUsers" incorrecto', 1)
       return
     enabled = self.enabledChecker.active
+    startRoom = self.startRoomChecker.active
     newTile = self.newTileImages.getSelectedName()
-    self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, newTile)
+    if newTile:
+      self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom, newTile)
+    else:  
+      self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom)  
     
   def discardEditRoom(self):
     self.showOrHide() 
@@ -365,7 +371,7 @@ class CreateRoomWindow(AuxWindow):
     for room in self.rooms:
       listLabels.append(room.label)
     self.listItems = listLabels  
-    AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,245])
+    AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,320])
     
   def showOrHide(self):
     if self.hide:
@@ -543,7 +549,9 @@ class CreateRoomWindow(AuxWindow):
       for singleRoom in self.rooms:
         if singleRoom.label == roomList[0].text:
           room = singleRoom
-    self.hud.createRoom(label, [posX, posY], [image], maxUsers, room)
+    enabled = self.enabledChecker.active      
+    startRoom = self.startRoomChecker.active
+    self.hud.createRoom(label, [posX, posY], [image], maxUsers, enabled, startRoom, room)
     self.showOrHide()
     
 # ===============================================================
