@@ -412,7 +412,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Sets an item as unselected.
     """
     if self.__selected:
-      item = self.__selected
       self.__selected = None
       self.triggerEvent('unselectedItem')
     
