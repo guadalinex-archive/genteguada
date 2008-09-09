@@ -1554,7 +1554,6 @@ class IsoViewHud(isoview.IsoView):
     self.__deleteConfirmDialog = None
 
   def changeAvatarImages(self, avatar, path):
-    print "el isohud se entera"  
     self.__isoviewRoom.changeAvatarImages(avatar, path) 
 
   def reloadImage(self, img):
