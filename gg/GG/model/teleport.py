@@ -136,8 +136,9 @@ class GGTeleport(room_item.GGRoomItem):
       return
     clicker.addPoints(self.points, self.label)
     itemList = clicker.getTile().getItemsFrom(clicker)
+    finalPosition = self.__destinationRoom.getNearestEmptyCell(self.__exitPosition)
     for item in itemList:
-      item.changeRoom(self.__destinationRoom, self.__destinationRoom.getNearestEmptyCell(self.__exitPosition))
+      item.changeRoom(self.__destinationRoom, finalPosition)
       
   def labelChange(self, oldLabel, newLabel):
     if self.__destinationRoom == oldLabel:

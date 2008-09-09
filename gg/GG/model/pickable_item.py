@@ -96,6 +96,12 @@ class PaperMoney(GGPickableItem):
 
   def copyObject(self):
     return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.label, self.points)
+
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    return dic    
     
   def getOptions(self):
     """ Returns the item's available options.
