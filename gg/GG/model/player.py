@@ -488,7 +488,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.newChatMessage("No puedo subirme ah�", 1)
 
   def jump(self):
-    """ Jumps over an item or the current position.
+    """ Jumps on the current position.
     """  
     if not self.isTopItem():
       self.newChatMessage("No puedo saltar con tanto peso", 1)
@@ -496,6 +496,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent('jump', position=self.getPosition())
     
   def jumpOver(self):  
+    """ Jumps over an item.
+    """  
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
     dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
     if dest == None or self.getRoom().getTile(dest).getDepth():

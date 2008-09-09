@@ -337,7 +337,7 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage("El valor del billete debe ser un numero positivo.", 1)
         return
       spriteImg = os.path.join("furniture", img)
-      box = GG.model.pickable_item.GGPickableItem(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
+      box = GG.model.pickable_item.PaperMoney(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     

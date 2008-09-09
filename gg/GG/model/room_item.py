@@ -88,25 +88,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
-    #self.__room.setUnselectedFor(self)
     if not jump:
-      """  
-      if self.getTile().getTopItem() == self:
-        if hasattr(self, "username"):
-          if self.getState() == GG.utils.STATE[3]: 
-            self.setState(GG.utils.STATE[1])
-          if self.getState() == GG.utils.STATE[4]:
-            self.setState(GG.utils.STATE[2])
-      """   
-      """    
-      steppedItem = self.getTile().getSteppedItem(self)
-      print "1", self, steppedItem
-      if steppedItem:
-        print "2", self, steppedItem.getPosition(), pos
-        if hasattr(steppedItem, "username") and steppedItem.getPosition() != pos:
-          print "3", self  
-          steppedItem.setState(GG.utils.STATE[1])
-      """
       self.triggerEvent('position', position=pos, oldPosition=old, itemList=self.__tile.getItems())
     else:
       self.triggerEvent('jumpOver', position=pos, oldPosition=old, itemList=self.__tile.getItems())
