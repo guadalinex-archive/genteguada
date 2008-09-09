@@ -45,7 +45,10 @@ class GGBoxHeavy(room_item.GGRoomItem):
     else:
       if (selfDepth + 1) == depth:  
       # Different position, box on top of the stack.
-        return ["lift", "climb"]
+        if selfDepth:     
+          return ["lift", "climb"]
+        else:
+          return ["lift", "climb", "jumpOver"]  
       else:
       # Different position, box in the middle of the stack.
         return ["climb"]

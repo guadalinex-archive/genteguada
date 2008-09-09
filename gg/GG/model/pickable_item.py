@@ -33,7 +33,7 @@ class GGPickableItem(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     if self.getRoom():
-      return ["inventory"]
+      return ["inventory", "jumpOver"]
     else:
       if self.getPlayer().isExchange():
         return ["toExchange"]
@@ -100,7 +100,7 @@ class PaperMoney(GGPickableItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["money"]
+    return ["money", "jumpOver"]
     
   def addPointsTo(self, player):
     """ Gives points to a player.

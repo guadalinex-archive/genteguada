@@ -76,6 +76,7 @@ DRESSER_IMAGE = os.path.join(GG.utils.HUD_PATH, "dresser.png")
 ADMIN_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "adminOptions.png")
 #ROOM_OPTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "roomActions.png")
 ROOM_OPTIONS_UPPER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomUpper.png")
+ROOM_OPTIONS_UPPER_USER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomUpperUser.png")
 USER_ACTIONS_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "actionsNotification.png")
 TOOLBAR_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgToolbar.png")
 MASKUSER_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
@@ -151,6 +152,7 @@ class IsoViewHud(isoview.IsoView):
         "inventory":      {"image":MOVE_IN_IMAGE,       "action": self.itemToInventory,     "tooltip":"Al inventario (P)"},
         "copy":           {"image":MOVE_IN_IMAGE,       "action": self.itemCopyToInventory, "tooltip":"Al inventario (C)"},
         "removeInventory":{"image":MOVE_OUT_IMAGE,      "action": self.itemOutInventory,    "tooltip":"Sacar del inventario (M)"},
+        "jumpOver":       {"image":JUMP_IMAGE,          "action": self.itemToJumpOver,      "tooltip":"Saltar (J)"},
         "lift":           {"image":LIFT_IMAGE,          "action": self.itemToLift,          "tooltip":"Levantar (I)"},
         "drop":           {"image":DROP_IMAGE,          "action": self.itemToDrop,          "tooltip":"Soltar (Q)"},
         "climb":          {"image":CLIMB_IMAGE,         "action": self.itemToClimb,         "tooltip":"Subir (B)"},
@@ -220,7 +222,7 @@ class IsoViewHud(isoview.IsoView):
           self.__ctrl = False
       elif event_type == KEYDOWN:
         if self.__ctrl:
-          self.__processHotkeys()
+          self.__processHotkeys(event)
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
             self.__ctrl = True 
@@ -245,7 +247,7 @@ class IsoViewHud(isoview.IsoView):
           self.__clickOnMap()
     self.widgetContainer.distribute_events(*events)
     
-  def __processHotkeys(self):
+  def __processHotkeys(self, event):
     if event.key in self.__hotkeys.keys():
       if self.__hotkeys[event.key] in self.__activeActions:
         self.__hotkeys[event.key]()
@@ -467,7 +469,10 @@ class IsoViewHud(isoview.IsoView):
 
   def __paintRoomInfo(self):
     #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
-    self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
+    if self.__accessMode:
+      self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
+    else:  
+      self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_USER_BACKGROUND)
     self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 30, -4
     self.roomInfo.add_child(self.roomLabel)
@@ -534,6 +539,9 @@ class IsoViewHud(isoview.IsoView):
       ivItem = self.findIVItem(self.__player)
       self.__isoviewRoom.addIsoViewItem(ivItem)    
       self.addItemToRoomFromVoid(ivItem)
+
+    #if self.__accessMode:
+    #  self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
     
   def editRoom(self, maxUsers, newLabel, enabled, newTile):
     room = self.__isoviewRoom.getModel()      
@@ -625,7 +633,7 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to move an item from the inventory to the active room.
     """  
     if self.__selectedItem.inventoryOnly():
-      self.__player.newChatMessage("Mejor no. Creo que puede ser util mas adelante.", 2) 
+      self.__player.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
       self.paintItemsInventory()
     else:   
       self.__player.addToRoomFromInventory(self.__selectedItem)
@@ -1034,9 +1042,13 @@ class IsoViewHud(isoview.IsoView):
       item.changeRoom(room, pos)
         
   def privateChatHandler(self):
+    """ Handles the private chat window.
+    """  
     self.__privateChatWindow.showOrHide()
 
   def changeChatButton(self):
+    """ Changes the private chat button appearance.
+    """  
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(PRIVATE_CHAT_IMAGE)
     self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
     self.hud.remove_child(self.__privateChatButton)
@@ -1053,7 +1065,7 @@ class IsoViewHud(isoview.IsoView):
       self.__tooltipWindow.topleft = GG.utils.GAMEZONE_SZ[0] - szX, y - 5
     else:
       self.__tooltipWindow.topleft = x + 8, y - 5
-    self.__tooltipWindow.depth = 99 # Make it the topmost widget.
+    self.__tooltipWindow.depth = 99 # Makes it the topmost widget.
     self.__tooltipWindow.zOrder = 30000
     self.addSprite(self.__tooltipWindow)
       
@@ -1178,6 +1190,11 @@ class IsoViewHud(isoview.IsoView):
     """  
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
+
+  def itemToJumpOver(self):
+    """ Makes the player jump over an item.
+    """  
+    self.__player.jumpOver()
 
   def __dropActionsItembuttons(self):
     """ Removes the action buttons from the screen.

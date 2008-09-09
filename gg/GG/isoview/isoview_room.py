@@ -313,3 +313,6 @@ class IsoViewRoom(isoview.IsoView):
         self.updateScreenPositionsOn(key.getPosition())  
     #for ivItem in self.__isoViewItems:
     #  self.updateScreenPositionsOn(ivItem.getPosition())      
+
+  def getTile(self, pos):
+    return self.__tileList[pos[0]][pos[1]] 

@@ -32,7 +32,7 @@ class GGWebItem(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["url"]
+    return ["url", "jumpOver"]
       
   def getAdminActions(self):
     """ Returns the available admin actions.
