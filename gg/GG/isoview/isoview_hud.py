@@ -960,12 +960,16 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item unselected event.
     event: event info.
     """
+    print "*************** intentando deseleccionar"
     if self.__selectedItem:
       self.removeSprite(self.__selectedImage)
       self.__restoreActiveActionButtonsList()     
       self.__dropActionsItembuttons()
+      print ">>> preguntando"
       if self.__isoviewRoom:
+        print "entrando"  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
+      print self.__selectedItem
       self.__selectedItem = None
     
   def itemUnselectedSoft(self, item):
@@ -1217,8 +1221,9 @@ class IsoViewHud(isoview.IsoView):
 
   def __dropUserOptions(self):
     if self.__buttonBarActions:
-      children = copy.copy(self.__buttonBarActions.children)
-      for child in children:
+      #children = copy.copy(self.__buttonBarActions.children)
+      #for child in children:
+      for child in self.__buttonBarActions.children:
         self.__buttonBarActions.remove_child(child)
         child.destroy()
       self.widgetContainer.remove_widget(self.__buttonBarActions)

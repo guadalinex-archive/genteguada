@@ -411,7 +411,7 @@ class GGRoom(ggmodel.GGModel):
         if selec == selectee:
           return item  
 
-  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile=None):
+  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile):
     """ Sets the room attributes with new values.
     maxUsers: new maxUsers value.
     newLabel: new room label.
