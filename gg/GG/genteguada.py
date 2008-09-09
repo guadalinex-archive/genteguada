@@ -84,6 +84,13 @@ class GenteGuada:
       pygame.display.toggle_fullscreen()
     self.__fullScreen = params.fullscreen
     self.__loadingScreen()
+    
+    
+    while not self.__system.getEntryRoom():
+      time.sleep(2)
+      self.__input(pygame.event.get())
+    
+    
     winLogin = GG.isoview.login.Login(self.__screen, self)
     #self.__session = winLogin.draw()
     self.__session = winLogin.draw(params.user, params.password)
@@ -93,14 +100,12 @@ class GenteGuada:
       self.__session.getPlayer().setAccessMode(value)
     self.__loadingScreen()
     
+    """
     while not self.__system.getEntryRoom():
       time.sleep(2)
       self.__input(pygame.event.get())
     """
-    while self.__system.getEntryRoom().isFull():
-      time.sleep(2) 
-      self.__input(pygame.event.get())
-    """  
+    
     self.__initGame()
 
   def getSystem(self):

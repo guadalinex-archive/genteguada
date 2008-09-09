@@ -41,7 +41,7 @@ class GGSystem(dMVC.model.Model):
     
     for x in range(0, len(self.__startRooms)):
       room = roomsCopy[random.randint(0, len(roomsCopy)-1)]
-      if room.isFull():
+      if room.isFull() or not room.getEnabled():
         roomsCopy.remove(room)
       else:
         return room    
@@ -102,7 +102,9 @@ class GGSystem(dMVC.model.Model):
     if not user:
       user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
       self.createPlayer(user)
-    if not user.getRoom(): 
+    if not user.getRoom():
+      if not self.getEntryRoom():
+        return False, "No existen habitaciones disponibles"  
       user.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
       session = GG.model.ggsession.GGSession(user, self)
       self.__sessions.append(session)
