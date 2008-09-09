@@ -37,7 +37,7 @@ class GGTeleport(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["open"]    
+    return ["open", "jumpOver"]    
       
   def getAdminActions(self):
     """ Returns the possible admin actions.

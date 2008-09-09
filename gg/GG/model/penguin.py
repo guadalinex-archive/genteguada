@@ -34,7 +34,7 @@ class GGPenguin(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["talk"]
+    return ["talk", "jumpOver"]
 
   def getAdminActions(self):
     """ Returns the admin available options.
@@ -137,7 +137,7 @@ class GGPenguinTrade(GGPenguin):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["talkAndGet"]
+    return ["talkAndGet", "jumpOver"]
 
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
@@ -213,7 +213,7 @@ class GGPenguinQuiz(GGPenguin):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["talk"]
+    return ["talk", "jumpOver"]
   
   def getFileList(self):
     """ Returns the questions list.

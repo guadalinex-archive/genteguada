@@ -493,19 +493,18 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if not self.isTopItem():
       self.newChatMessage("No puedo saltar con tanto peso", 1)
       return
-    if not self.__selected:
-      self.triggerEvent('jump', position=self.getPosition())
-      return
-    print self.__selected 
+    self.triggerEvent('jump', position=self.getPosition())
+    
+  def jumpOver(self):  
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
     dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
     if dest == None or self.getRoom().getTile(dest).getDepth():
-      self.newChatMessage("No puedo saltar all�", 1)
+      self.newChatMessage("No puedo saltar allí", 1)
       return
     self.setHeading(heading)
     self.setDestination(dest)
     self.setPosition(dest, 1)
-
+    
   def turnRight(self):
     """ Turns the player to the right.
     """  

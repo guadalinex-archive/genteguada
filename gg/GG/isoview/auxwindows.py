@@ -218,6 +218,9 @@ class EditRoomWindow(AuxWindow):
   def __init__(self, hud, player):
     self.__hud = hud
     self.__player = player
+    self.room = player.getRoom()
+    self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+    self.imageName = self.imageName[self.imageName.rfind("/")+1:]
     self.activeLabels = []
     self.images = None
     self.maxUsers = None
@@ -227,6 +230,15 @@ class EditRoomWindow(AuxWindow):
     self.newTileImages = None
     AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
 
+  def showOrHide(self):
+    if self.hide:
+      self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)  
+      self.roomLabel.text = self.__hud.getIVRoom().getModel().label
+      self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+      self.imageName = self.imageName[self.imageName.rfind("/")+1:]
+      self.newTileImages.selectItem(self.imageName)
+    AuxWindow.showOrHide(self)
+  
   def draw(self):
     """ Draws window components on screen.
     """  
@@ -283,13 +295,14 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, "tiles/")  
     self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.newTileImages.selectItem(self.imageName)
     self.container.add_child(self.newTileImages)  
     iPos += 1
     
   def __paintButtons(self):
     editButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [50, 180], ["Modificar habitación", self.showTooltip, self.removeTooltip], self.applyEditRoom)
     self.container.add_child(editButton)
-    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 180], ["Descartar edicion", self.showTooltip, self.removeTooltip], self.discardEditRoom)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 180], ["Descartar edición", self.showTooltip, self.removeTooltip], self.discardEditRoom)
     self.container.add_child(cancelButton)
     self.container.zOrder = 10000
     
