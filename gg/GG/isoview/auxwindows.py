@@ -7,6 +7,7 @@ import os
 
 BROADCAST_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "broadcastWIndow.png")
 EDIT_ROOM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindow.png")
+EDIT_ROOM_LARGE_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindowLarge.png")
 CREATE_ITEM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "createObjectWindow.png")
 ROOM_OPTIONS_LOWER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomLower.png")
 
@@ -261,7 +262,7 @@ class EditRoomWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    self.container = guiobjects.OcempPanel(300, 218, [1, 1], ROOM_OPTIONS_LOWER_BACKGROUND)
+    self.container = guiobjects.OcempPanel(300, 270, [1, 1], ROOM_OPTIONS_LOWER_BACKGROUND)
     self.window.child = self.container
     
   def __paintFields(self):
@@ -289,17 +290,29 @@ class EditRoomWindow(AuxWindow):
     self.roomLabel.topleft = 10 + 70 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.roomLabel.set_minimum_size(90, 20)
     self.container.add_child(self.roomLabel)
+    iPos += 1
         
     label = guiobjects.OcempLabel("enabled", guiobjects.STYLES["itemLabel"])
-    label.topleft = 10 + 180 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.enabledChecker = ocempgui.widgets.CheckButton()
     #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.enabledChecker.activate()
     self.enabledChecker.border = 1
-    self.enabledChecker.topleft = 10 + 180 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.enabledChecker.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.container.add_child(self.enabledChecker)
+    
+    label = guiobjects.OcempLabel("startRoom", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.startRoomChecker = ocempgui.widgets.CheckButton()
+    #self.enabledChecker = ocempgui.widgets.ToggleButton()
+    self.startRoomChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.startRoomChecker.activate()
+    self.startRoomChecker.border = 1
+    self.startRoomChecker.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.container.add_child(self.startRoomChecker)
     iPos += 1
             
     label = guiobjects.OcempLabel("tiles", guiobjects.STYLES["itemLabel"])
@@ -312,9 +325,9 @@ class EditRoomWindow(AuxWindow):
     iPos += 1
     
   def __paintButtons(self):
-    editButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [50, 180], ["Modificar habitación", self.showTooltip, self.removeTooltip], self.applyEditRoom)
+    editButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [50, 230], ["Modificar habitación", self.showTooltip, self.removeTooltip], self.applyEditRoom)
     self.container.add_child(editButton)
-    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 180], ["Descartar edición", self.showTooltip, self.removeTooltip], self.discardEditRoom)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 230], ["Descartar edición", self.showTooltip, self.removeTooltip], self.discardEditRoom)
     self.container.add_child(cancelButton)
     self.container.zOrder = 10000
     
@@ -371,7 +384,7 @@ class CreateRoomWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    self.container = guiobjects.OcempPanel(420, 258, [1, 1], EDIT_ROOM_BACKGROUND)
+    self.container = guiobjects.OcempPanel(420, 320, [1, 1], EDIT_ROOM_LARGE_BACKGROUND)
     self.window.child = self.container
      
   def __paintRoomList(self):
@@ -386,7 +399,7 @@ class CreateRoomWindow(AuxWindow):
   def __paintButtons(self):
     """ Paints the control buttons on screen.
     """ 
-    createButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [150, 220], ["Crear habitación", self.showTooltip, self.removeTooltip], self.accept)
+    createButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [150, 275], ["Crear habitación", self.showTooltip, self.removeTooltip], self.accept)
     self.container.add_child(createButton)
 
   def __paintAttributes(self):
@@ -444,13 +457,36 @@ class CreateRoomWindow(AuxWindow):
     self.container.add_child(self.maxUsers)
     iPos += 1
     
+    label = guiobjects.OcempLabel("enabled", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.enabledChecker = ocempgui.widgets.CheckButton()
+    #self.enabledChecker = ocempgui.widgets.ToggleButton()
+    self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.enabledChecker.activate()
+    self.enabledChecker.border = 1
+    self.enabledChecker.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.container.add_child(self.enabledChecker)
+    
+    label = guiobjects.OcempLabel("startRoom", guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+    self.container.add_child(label)
+    self.startRoomChecker = ocempgui.widgets.CheckButton()
+    #self.enabledChecker = ocempgui.widgets.ToggleButton()
+    self.startRoomChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    self.startRoomChecker.activate()
+    self.startRoomChecker.border = 1
+    self.startRoomChecker.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.container.add_child(self.startRoomChecker)
+    iPos += 1
+    
     label = guiobjects.OcempLabel("images", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
     height = 60
     self.images = guiobjects.OcempImageList(240, height, GG.utils.TILES, "tiles/")  
-    self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 25 + labelShift[1]
     iPos += 1
     self.container.add_child(self.images)  
     self.activeLabels.append(self.images)
