@@ -151,6 +151,7 @@ class IsoViewHud(isoview.IsoView):
     self.__buttonActions = {
         "inventory":      {"image":MOVE_IN_IMAGE,       "action": self.itemToInventory,     "tooltip":"Al inventario (P)"},
         "copy":           {"image":MOVE_IN_IMAGE,       "action": self.itemCopyToInventory, "tooltip":"Al inventario (C)"},
+        "gift":           {"image":MOVE_IN_IMAGE,       "action": self.itemGiftToInventory, "tooltip":"Al inventario"},
         "removeInventory":{"image":MOVE_OUT_IMAGE,      "action": self.itemOutInventory,    "tooltip":"Sacar del inventario (M)"},
         "jumpOver":       {"image":JUMP_IMAGE,          "action": self.itemToJumpOver,      "tooltip":"Saltar (J)"},
         "lift":           {"image":LIFT_IMAGE,          "action": self.itemToLift,          "tooltip":"Levantar (I)"},
@@ -1250,6 +1251,16 @@ class IsoViewHud(isoview.IsoView):
         self.__player.addToInventoryFromVoid(item, pos)
       self.__player.setUnselectedItem()
  
+  def itemGiftToInventory(self):
+    """ Gets a gift from the room to the player's inventory.
+    """
+    if self.__selectedItem:
+      selectedItem = self.__selectedItem
+      item, pos = self.__selectedItem.getGiftFor(self.__player)
+      self.__player.addToInventoryFromVoid(item, pos)
+      self.__player.setUnselectedItem()
+      self.__player.getRoom().removeItem(selectedItem)
+      
   def itemToClone(self):
     """ Clones an item from the room and inserts it on the player's inventory
     """

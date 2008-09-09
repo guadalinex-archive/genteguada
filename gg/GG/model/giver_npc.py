@@ -12,6 +12,10 @@ class GGGiverNpc(room_item.GGRoomItem):
   def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
     """ Class constructor.
     spriteName: image name.
+    anchor: image offset on screen.
+    topAnchor: top item's image offset.
+    spriteInventory: sprite used to paint this object on player's inventory.
+    label: item label.
     """
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
     self.spriteInventory = spriteInventory
@@ -30,7 +34,7 @@ class GGGiverNpc(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["copy"]   
+    return ["copy", "jumpOver"]   
       
   def getAdminActions(self):
     """ Returns the admin available options.
@@ -67,7 +71,7 @@ class GGGiverNpc(room_item.GGRoomItem):
     if player.hasItemLabeledInInventory(self.label):
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido " + self.label, \
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-      return None, [-1, -1, -1]
+      return None, [-1, -1]
     else:  
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
@@ -89,3 +93,39 @@ class GGGiverNpc(room_item.GGRoomItem):
     """  
     return False
 
+# ===============================================================
+
+class WebGift(GGGiverNpc):
+    
+  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
+    """ Class constructor.
+    spriteName: image name.
+    anchor: image offset on screen.
+    topAnchor: top item's image offset.
+    spriteInventory: sprite used to paint this object on player's inventory.
+    label: item label.
+    """
+    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
+
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["gift", "jumpOver"]   
+      
+  def getAdminActions(self):
+    """ Returns the admin available options.
+    """  
+    dic = {"Position": self.getPosition()}
+    return dic    
+
+  def copyObject(self): 
+    return WebGift(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
+  
+  def getGiftFor(self, player):
+    """ If target player does not have this item on his inventory, creates a new item and gives it to him.
+    """  
+    player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.label, self.anchor, \
+                                                    self.getPosition()), self.getPosition()
+    
