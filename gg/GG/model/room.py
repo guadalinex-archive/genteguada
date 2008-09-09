@@ -15,7 +15,7 @@ class GGRoom(ggmodel.GGModel):
   Defines atributes and methods for a single room.
   """
 
-  def __init__(self, spriteFull, label, size, maxUsers):
+  def __init__(self, spriteFull, label, size, maxUsers, enabled, startRoom):
     """ Class constructor.
     spriteFull: sprite used to paint the room floor on screen.
     label: room label.
@@ -37,7 +37,8 @@ class GGRoom(ggmodel.GGModel):
     self.__items = []
     self.__specialTiles = []
     self.__population = 0
-    self.__enabled = True
+    self.__enabled = enabled
+    self.__startRoom = startRoom
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -59,6 +60,12 @@ class GGRoom(ggmodel.GGModel):
     enabled: new enabled value.
     """  
     self.__enabled = enabled    
+
+  def getStartRoom(self):
+    return self.__startRoom
+
+  def setStartRoom(self, value):
+    self.__startRoom = value    
 
   def isFull(self):
     """ Checks if this room is already full or not.
@@ -404,7 +411,7 @@ class GGRoom(ggmodel.GGModel):
         if selec == selectee:
           return item  
 
-  def editRoom(self, maxUsers, newLabel, enabled, newTile):
+  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile=None):
     """ Sets the room attributes with new values.
     maxUsers: new maxUsers value.
     newLabel: new room label.
@@ -414,6 +421,7 @@ class GGRoom(ggmodel.GGModel):
     self.maxUsers = maxUsers
     self.label = newLabel
     self.__enabled = enabled
+    self.__startRoom = startRoom
     if not newTile:
       return
     for x in range(len(self.__tiles)):
@@ -428,4 +436,4 @@ class GGRoom(ggmodel.GGModel):
     """  
     for singleItem in self.__items:
       singleItem.labelChange(oldLabel, newLabel)
-      
+    

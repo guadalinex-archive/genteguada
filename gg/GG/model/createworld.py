@@ -94,12 +94,12 @@ class CreateWorld:
       self.__system.createPlayer(demoPlayer)
 
   def __createRooms(self):
-    self.__room1 = self.__system.createRoom(TILES_GRASS, "habitacion 1", [8, 8], 12)
-    self.__room2 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8)
-    self.__room3 = self.__system.createRoom(TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8)
-    self.__room4 = self.__system.createRoom(TILES_SMALLSTONES, "habitacion 4", [8, 8], 8)
-    self.__room5 = self.__system.createRoom(TILES_CASTLE1, "habitacion 5", [8, 8], 8)
-    self.__room6 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8)
+    self.__room1 = self.__system.createRoom(TILES_GRASS, "habitacion 1", [8, 8], 12, True, True)
+    self.__room2 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8, True, False)
+    self.__room3 = self.__system.createRoom(TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8, True, False)
+    self.__room4 = self.__system.createRoom(TILES_SMALLSTONES, "habitacion 4", [8, 8], 8, True, False)
+    self.__room5 = self.__system.createRoom(TILES_CASTLE1, "habitacion 5", [8, 8], 8, True, False)
+    self.__room6 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8, True, False)
 
   def __decorateRoom1(self):
     myDoor1 = teleport.GGDoor(DOOR_GARDEN, [25, 2], [0, 0], [6, 6], self.__room2, "puerta lobby")

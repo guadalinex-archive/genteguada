@@ -79,6 +79,9 @@ class GGSession(ggmodel.GGModel):
     player.getRoom().subscribeEvent('chatAdded', self.chatAdded)
     player.subscribeEvent('roomChanged', self.roomChanged)
       
+  def setStartRoom(self, room, startRoom):
+    self.__system.setStartRoom(room, startRoom)
+      
   def getPlayer(self):
     """ Returns the active player.
     """

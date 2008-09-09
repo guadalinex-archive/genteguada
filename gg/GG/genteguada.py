@@ -229,8 +229,8 @@ class GenteGuada:
   def getRoom(self, label):
     return self.__system.getRoom(label)  
 
-  def createRoom(self, label, size, image, maxUsers, copyRoom=None):
-    return self.__system.createRoom(image, label, size, maxUsers, copyRoom)
+  def createRoom(self, label, size, image, maxUsers, enabled, startRoom, copyRoom=None):
+    return self.__system.createRoom(image, label, size, maxUsers, enabled, startRoom, copyRoom)
 
   def deleteRoom(self, label):
     return self.__system.deleteRoom(label)  

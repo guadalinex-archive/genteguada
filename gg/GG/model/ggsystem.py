@@ -25,6 +25,7 @@ class GGSystem(dMVC.model.Model):
     """
     dMVC.model.Model.__init__(self)
     self.__rooms = []
+    self.__startRooms = []
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
     self.__loadData()
@@ -35,7 +36,8 @@ class GGSystem(dMVC.model.Model):
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
     """
-    return self.__rooms[0]
+    #return self.__rooms[0]
+    return self.__startRooms[random.randint(0, len(self.__startRooms)-1)]
       
   # self.__players
   
@@ -123,18 +125,29 @@ class GGSystem(dMVC.model.Model):
     import createworld
     world = createworld.CreateWorld(self)
     world.create()
+    
+  def setStartRoom(self, room, startRoom):
+    foundRoom = None
+    for oneRoom in self.__startRooms:
+      if oneRoom.label == room.label:
+        foundRoom = oneRoom
+    if foundRoom and not startRoom:
+      self.__startRooms.remove(foundRoom)
+    elif not foundRoom and startRoom:
+      self.__startRooms.append(foundRoom)
 
-  def createRoom(self, spriteFull, label, size, maxUsers, copyRoom=None):
+  def createRoom(self, spriteFull, label, size, maxUsers, enabled, startRoom, copyRoom=None):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
     label: room label.
     size: room size.
     maxUsers: max users per room.
+    starterRoom: sets this room as starter or not.
     copyRoom: room to be copied.
     """
     if self.getRoom(label):
       return None  
-    newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers)
+    newRoom = GG.model.room.GGRoom(spriteFull, label, size, maxUsers, enabled, startRoom)
     if copyRoom:
       items = copyRoom.getItems()
       for item in items:
@@ -143,6 +156,9 @@ class GGSystem(dMVC.model.Model):
           if (pos[0] < size[0]) and (pos[1] < size[1]):
             newRoom.addItemFromVoid(item.copyObject(), item.getPosition())  
     self.__rooms.append(newRoom)
+    if startRoom:
+      print newRoom  
+      self.__startRooms.append(newRoom)    
     return newRoom
 
   def deleteRoom(self, label):
