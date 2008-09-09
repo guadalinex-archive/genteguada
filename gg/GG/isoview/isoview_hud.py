@@ -960,14 +960,14 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item unselected event.
     event: event info.
     """
-    print "*************** intentando deseleccionar"
+    #print "*************** intentando deseleccionar"
     if self.__selectedItem:
       self.removeSprite(self.__selectedImage)
       self.__restoreActiveActionButtonsList()     
       self.__dropActionsItembuttons()
-      print ">>> preguntando"
+      #print ">>> preguntando"
       if self.__isoviewRoom:
-        print "entrando"  
+        #print "entrando"  
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
       print self.__selectedItem
       self.__selectedItem = None
