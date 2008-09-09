@@ -267,10 +267,12 @@ class IsoViewHud(isoview.IsoView):
     dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
     if not dest == [-1, -1]:
       if not self.__createItemsWindow.hide:
-        self.__createItemsWindow.setNewPosition(dest)    
+        if not self.__createItemsWindow.isInside([cordX, cordY]):  
+          self.__createItemsWindow.setNewPosition(dest)    
       if self.__adminMenu and "Position" in self.editableFields.keys():
-        self.editableFields["Position"][0].text = str(dest[0])
-        self.editableFields["Position"][1].text = str(dest[1])
+        if not self.buttonBarAdminActions.isInside([cordX, cordY]):
+          self.editableFields["Position"][0].text = str(dest[0])
+          self.editableFields["Position"][1].text = str(dest[1])
   
   def __clickOnMap(self):
     cordX, cordY = pygame.mouse.get_pos()

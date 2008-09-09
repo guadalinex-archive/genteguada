@@ -42,6 +42,12 @@ class AuxBox:
   def accept(self):
     pass
 
+  def isInside(self, pos):
+    if (self.window.topleft[0] <= pos[0] <= (self.window.topleft[0] + self.window.width)): 
+      if (self.window.topleft[1] <= pos[1] <= (self.window.topleft[1] + self.window.height)):
+        return True
+    return False
+
 # ===============================================================
 
 class TeleportWindow(AuxBox):
@@ -166,6 +172,12 @@ class AuxWindow:
 
   def accept(self):
     pass
+
+  def isInside(self, pos):
+    if (self.window.topleft[0] <= pos[0] <= (self.window.topleft[0] + self.window.width)): 
+      if (self.window.topleft[1] <= pos[1] <= (self.window.topleft[1] + self.window.height)):
+        return True
+    return False
 
 # ===============================================================
  

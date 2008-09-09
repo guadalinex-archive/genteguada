@@ -332,6 +332,12 @@ class OcempPanel(ocempgui.widgets.Box):
     imgBackground.topleft = 1, 1
     self.add_child(imgBackground)
 
+  def isInside(self, pos):
+    if (self.topleft[0] <= pos[0] <= (self.topleft[0] + self.width)): 
+      if (self.topleft[1] <= pos[1] <= (self.topleft[1] + self.height)):
+        return True
+    return False
+
 class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, style):
