@@ -75,3 +75,27 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """  
     return False
 
+
+# ===============================================================
+
+class GGGeneratedGift(GGGeneratedInventoryItem):
+  """GGGeneratedGift class.
+  Defines item attributes and methods.
+  """
+  
+  def __init__(self, spriteName, label, anchor, parentPosition):
+    """ Class constructor.
+    spriteName: image name.
+    """
+    GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
+      
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["url"]  
+      
+  def getUrl(self):
+    """ Returns the internet address.
+    """  
+    return "www.google.com"  
+ 
