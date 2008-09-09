@@ -20,6 +20,7 @@ LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
 LOADING_BACKGROUND_POSITION = [0, 0]
 LOADING_LABEL = "Cargando..."
 LOADING_LABEL_POSITION = [350, 300]
+WAITING_LABEL_POSITION = [314, 335]
 ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
 
@@ -75,6 +76,19 @@ class GenteGuada:
     window.add_child(loadingLabel)
     widgetContainer.add_widget(window)
   
+  def __waitScreen(self):
+    widgetContainer = ocempgui.widgets.Renderer()
+    widgetContainer.set_screen(self.__screen)
+    window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
+    imgPath = self.getDataPath(LOADING_BACKGROUND)
+    imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
+    imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
+    window.add_child(imgBackgroundRight)
+    loadingLabel = GG.isoview.guiobjects.OcempLabel("Salas ocupadas. Espere...", GG.isoview.guiobjects.STYLES["labelWaiting"])
+    loadingLabel.topleft = WAITING_LABEL_POSITION
+    window.add_child(loadingLabel)
+    widgetContainer.add_widget(window)
+  
   def start(self, params):
     self.__setSystem(params.ip)
     pygame.init()
@@ -84,13 +98,12 @@ class GenteGuada:
       pygame.display.toggle_fullscreen()
     self.__fullScreen = params.fullscreen
     self.__loadingScreen()
-    
-    
+        
     while not self.__system.getEntryRoom():
+      self.__waitScreen()
       time.sleep(2)
       self.__input(pygame.event.get())
-    
-    
+        
     winLogin = GG.isoview.login.Login(self.__screen, self)
     #self.__session = winLogin.draw()
     self.__session = winLogin.draw(params.user, params.password)
