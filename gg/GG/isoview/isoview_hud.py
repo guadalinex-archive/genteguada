@@ -737,6 +737,8 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item selected event.
     event: event info.
     """
+    if self.__buttonBarActions:
+      self.__dropUserOptions()
     self.__selectedItem = event.getParams()['item']
     ivItem = self.findIVItem(self.__selectedItem)
     isTile = False
@@ -930,6 +932,7 @@ class IsoViewHud(isoview.IsoView):
   def itemSelectedByUser(self, itemName, itemImageLabel):
     """ Paints the user action buttons.
     """  
+    
     options = self.__selectedItem.getOptions()
     if not len(options):
       return
@@ -958,12 +961,12 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     if self.__selectedItem:
+      self.removeSprite(self.__selectedImage)
+      self.__restoreActiveActionButtonsList()     
+      self.__dropActionsItembuttons()
       if self.__isoviewRoom:
         self.__isoviewRoom.itemUnselected(self.__selectedItem)
-        self.removeSprite(self.__selectedImage)
-        self.__restoreActiveActionButtonsList()     
-        self.__dropActionsItembuttons()
-        self.__selectedItem = None
+      self.__selectedItem = None
     
   def itemUnselectedSoft(self, item):
     """ Triggers after receiving an item unselected event.
@@ -1208,6 +1211,11 @@ class IsoViewHud(isoview.IsoView):
     """
     self.removeTooltip()
     self.removeSprite(self.__selectedImage)        
+    self.__dropUserOptions()
+    if self.__adminMenu:
+      self.__dropAdminOptions()
+
+  def __dropUserOptions(self):
     if self.__buttonBarActions:
       children = copy.copy(self.__buttonBarActions.children)
       for child in children:
@@ -1216,14 +1224,15 @@ class IsoViewHud(isoview.IsoView):
       self.widgetContainer.remove_widget(self.__buttonBarActions)
       self.__buttonBarActions.destroy()
       self.__buttonBarActions = None
-    if self.__adminMenu:
-      children = copy.copy(self.buttonBarAdminActions.children)
-      for child in children:
-        self.buttonBarAdminActions.remove_child(child)
-        child.destroy()
-      self.widgetContainer.remove_widget(self.buttonBarAdminActions)
-      self.buttonBarAdminActions.destroy()
-      self.__adminMenu = False
+
+  def __dropAdminOptions(self):
+    children = copy.copy(self.buttonBarAdminActions.children)
+    for child in children:
+      self.buttonBarAdminActions.remove_child(child)
+      child.destroy()
+    self.widgetContainer.remove_widget(self.buttonBarAdminActions)
+    self.buttonBarAdminActions.destroy()
+    self.__adminMenu = False
 
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
