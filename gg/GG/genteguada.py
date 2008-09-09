@@ -198,14 +198,33 @@ class GenteGuada:
     except:
       return None
     return self.__system.uploadFile([name, ext], dataFile)
+ 
+  def asyncUploadFile(self, upFile, finishMethod):
+    if not os.path.isfile(upFile):
+      finishMethod(None)
+      return 
+    filepath, fileName = os.path.split(upFile)
+    name, ext = os.path.splitext(fileName)
+    try:
+      uploadedFile = open(file , "rb")
+      dataFile = uploadedFile.read()
+      uploadedFile.close()
+    except:
+      finishMethod(None)
+      return 
+    self.__system.async(self.__system.uploadFile, finishMethod, [name, ext], dataFile)
   
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
       fileName = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
-      nameMask = self.uploadFile(fileName)
+      self.asyncUploadFile(fileName, self.uploadMaskFileFinish)
+      #nameMask = self.uploadFile(fileName)
     else:
-      nameMask = None
-    self.__system.changeAvatarConfiguration(configuration, player, nameMask) 
+      self.__system.changeAvatarConfiguration(configuration, player, None) 
+
+  def uploadMaskFileFinish(self, resultado):
+    if resultado:
+      self.__system.changeAvatarConfiguration(configuration, player, resultado) 
 
   def getRoom(self, label):
     return self.__system.getRoom(label)  
