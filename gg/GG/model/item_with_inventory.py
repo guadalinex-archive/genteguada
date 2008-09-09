@@ -16,6 +16,9 @@ class GGItemWithInventory(room_item.GGRoomItem):
     
   # self.__inventory
   
+  def getInventory(self):
+    return self.__inventory  
+  
   def setInventory(self, inventory):
     """ Sets a new player's inventory.
     inventory: new player's inventory.

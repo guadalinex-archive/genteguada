@@ -96,10 +96,13 @@ class IsoViewHud(isoview.IsoView):
     fullscreen: sets the game as started on fullscreen or not.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__isoviewInventory = []
     self.__player = self.getModel().getPlayer()
+    self.__isoviewInventory = []
+    inven = self.__player.getInventory()
+    room = self.__player.getRoom()
+    for invItem in inven:
+      self.__isoviewInventory.append(isoview_inventoryitem.IsoViewInventoryItem(invItem, screen, self))
     self.__allSprites = guiobjects.GroupSprite()
-    #self.__allSprites = guiobjects.LayeredDirty()
     self.__isoviewRoom = None    
     self.__textArea = None
     self.__textField = None
