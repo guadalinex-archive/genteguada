@@ -742,7 +742,7 @@ class IsoViewHud(isoview.IsoView):
     itemName = self.__selectedItem.getName()
     itemImageLabel = self.__selectedItem.getImageLabel()
     highlight = event.getParams()['highlight']
-    if not self.__selectedItem.inventoryOnly() and ivItem:
+    if (not self.__selectedItem.inventoryOnly() and ivItem) or isTile:
       if highlight:  
         self.__isoviewRoom.itemSelected(self.__selectedItem)
       if isTile:
@@ -752,7 +752,7 @@ class IsoViewHud(isoview.IsoView):
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
       self.__selectedImage.zOrder = 0
       self.addSprite(self.__selectedImage)        
-    if self.__accessMode and ivItem:
+    if (self.__accessMode and ivItem) or isTile:
       self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
     if not isTile:
       self.itemSelectedByUser(itemName, itemImageLabel)
@@ -1557,7 +1557,8 @@ class IsoViewHud(isoview.IsoView):
     self.__deleteConfirmDialog = None
 
   def changeAvatarImages(self, avatar, path):
-    self.__isoviewRoom.changeAvatarImages(avatar, path) 
+    if self.__isoviewRoom:
+      self.__isoviewRoom.changeAvatarImages(avatar, path) 
 
   def reloadImage(self, img):
     self.removeSprite(img)
