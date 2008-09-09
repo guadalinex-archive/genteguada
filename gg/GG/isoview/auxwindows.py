@@ -556,7 +556,7 @@ class CreateItemsWindow(AuxWindow):
       self.activeLabels.append(label)
       if key == "images":
         height = 60
-        self.images = guiobjects.OcempImageList(190, height, attrDict[key], "furniture/")  
+        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), "furniture/")  
         self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
         iPos += 1
         self.container.add_child(self.images)  

@@ -56,6 +56,10 @@ IMAGES_DICT["GiverNpc"]["golden_key.png"] = [[15, -30], [0, 0]]
 IMAGES_DICT["PickableItem"] = {}
 IMAGES_DICT["PickableItem"]["gift.png"] = [[15, -30], [0, 0]]
 IMAGES_DICT["PickableItem"]["golden_key.png"] = [[15, -30], [0, 0]]
+IMAGES_DICT["PaperMoney"] = {}
+IMAGES_DICT["PaperMoney"]["5Guadapuntos.png"] = [[14, -25], [0, -10]]
+IMAGES_DICT["PaperMoney"]["10Guadapuntos.png"] = [[14, -25], [0, -10]]
+IMAGES_DICT["PaperMoney"]["50Guadapuntos.png"] = [[14, -25], [0, -10]]
 
 # ====================================================================
 class GGSession(ggmodel.GGModel):
@@ -216,6 +220,12 @@ class GGSession(ggmodel.GGModel):
                             "position": pos,
                             "label": [""],
                             "images": IMAGES_DICT["PickableItem"].keys()                     
+                            },
+                   "PaperMoney": {
+                            "position": pos,
+                            "label": [""],
+                            "value": [5],
+                            "images": IMAGES_DICT["PaperMoney"].keys()           
                             }
                   }
     return self.objectsDict
@@ -316,6 +326,18 @@ class GGSession(ggmodel.GGModel):
     #===============================================
     elif name == "PickableItem":
       box = GG.model.pickable_item.GGPickableItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
+    #===============================================
+    elif name == "PaperMoney":
+      try: 
+        moneyValue = int(data["value"][0])    
+      except ValueError: 
+        self.__player.newChatMessage('Valor "value" incorrecto', 1) 
+        return
+      if not (moneyValue > 0):
+        self.__player.newChatMessage("El valor del billete debe ser un numero positivo.", 1)
+        return
+      spriteImg = os.path.join("furniture", img)
+      box = GG.model.pickable_item.GGPickableItem(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     
