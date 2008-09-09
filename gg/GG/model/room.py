@@ -245,10 +245,12 @@ class GGRoom(ggmodel.GGModel):
     target: position the active player clicked on.
     item: item that the player clicked on.
     """
-    clickerPlayer.setUnselectedItem()
     if item:
-      item.clickedBy(clickerPlayer)
+      if not item == clickerPlayer.getSelected():
+        clickerPlayer.setUnselectedItem()
+        item.clickedBy(clickerPlayer)
     else:
+      clickerPlayer.setUnselectedItem()
       if clickerPlayer.getPosition() != target:
         bottom = self.getTile(target).getBottomItem()
         if bottom:
