@@ -7,14 +7,12 @@ import isoview_inventoryitem
 import isoview_player
 import ocempgui.widgets
 import ocempgui.draw
-import copy
 import avatareditor
 import animation
 import exchangewindow
 import guiobjects
 import privatechatwindow
 import webbrowser
-
 import auxwindows
 
 from pygame.locals import * # faster name resolution
@@ -144,6 +142,7 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedImage = pygame.sprite.Sprite()
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
+    self.__selectedImage.zOrder = 0
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_TARGET)  
     self.__targetTile = None
     self.__targetTileImage = pygame.sprite.Sprite()
@@ -540,14 +539,10 @@ class IsoViewHud(isoview.IsoView):
       self.roomLabel.set_text(event.getParams()["room"].label)
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
-
     if self.__isoviewRoom:
       ivItem = self.findIVItem(self.__player)
       self.__isoviewRoom.addIsoViewItem(ivItem)    
       self.addItemToRoomFromVoid(ivItem)
-
-    #if self.__accessMode:
-    #  self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
     
   def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile=None):
     room = self.__isoviewRoom.getModel()      
@@ -732,13 +727,11 @@ class IsoViewHud(isoview.IsoView):
       self.__targetTile = not self.__targetTile
       return
     self.__targetTile = not self.__targetTile
-    
+  
   def itemSelected(self, event):
     """ Triggers after receiving an item selected event.
     event: event info.
     """
-    if self.__buttonBarActions:
-      self.__dropUserOptions()
     self.__selectedItem = event.getParams()['item']
     ivItem = self.findIVItem(self.__selectedItem)
     isTile = False
@@ -755,7 +748,6 @@ class IsoViewHud(isoview.IsoView):
       else:
         selImgPos = ivItem.getPosition()
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
-      self.__selectedImage.zOrder = 0
       self.addSprite(self.__selectedImage)        
     if (self.__accessMode and ivItem) or isTile:
       self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
@@ -960,17 +952,14 @@ class IsoViewHud(isoview.IsoView):
     """ Triggers after receiving an item unselected event.
     event: event info.
     """
-    #print "*************** intentando deseleccionar"
     if self.__selectedItem:
-      self.removeSprite(self.__selectedImage)
-      self.__restoreActiveActionButtonsList()     
-      self.__dropActionsItembuttons()
-      #print ">>> preguntando"
-      if self.__isoviewRoom:
-        #print "entrando"  
-        self.__isoviewRoom.itemUnselected(self.__selectedItem)
-      print self.__selectedItem
+      item = self.__selectedItem
       self.__selectedItem = None
+      self.removeSprite(self.__selectedImage)
+      self.__dropActionsItembuttons()
+      if self.__isoviewRoom:
+        self.__isoviewRoom.itemUnselected(item)
+      self.__restoreActiveActionButtonsList()     
     
   def itemUnselectedSoft(self, item):
     """ Triggers after receiving an item unselected event.
@@ -1214,15 +1203,12 @@ class IsoViewHud(isoview.IsoView):
     """ Removes the action buttons from the screen.
     """
     self.removeTooltip()
-    self.removeSprite(self.__selectedImage)        
     self.__dropUserOptions()
     if self.__adminMenu:
       self.__dropAdminOptions()
 
   def __dropUserOptions(self):
     if self.__buttonBarActions:
-      #children = copy.copy(self.__buttonBarActions.children)
-      #for child in children:
       for child in self.__buttonBarActions.children:
         self.__buttonBarActions.remove_child(child)
         child.destroy()
@@ -1231,8 +1217,7 @@ class IsoViewHud(isoview.IsoView):
       self.__buttonBarActions = None
 
   def __dropAdminOptions(self):
-    children = copy.copy(self.buttonBarAdminActions.children)
-    for child in children:
+    for child in self.buttonBarAdminActions.children:
       self.buttonBarAdminActions.remove_child(child)
       child.destroy()
     self.widgetContainer.remove_widget(self.buttonBarAdminActions)
