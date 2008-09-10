@@ -251,12 +251,15 @@ class GGSystem(dMVC.model.Model):
     imgFile.close()
     return imgData
 
-  def uploadFile(self, fileName, fileData):
+  def uploadFile(self, fileName, fileData, dirDest = None):
     """ Uploads a new file to the system.
     """  
     name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
     try:
-      upFile = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
+      if dirDest:
+        upFile = open(os.path.join(GG.utils.DATA_PATH, dirDest, name), "wb")
+      else:
+        upFile = open(os.path.join(GG.utils.DATA_PATH, name), "wb")
       upFile.write(fileData)
       upFile.close()
     except:

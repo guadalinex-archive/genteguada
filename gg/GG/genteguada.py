@@ -43,6 +43,9 @@ class GenteGuada:
   @staticmethod
   def getInstance():
     return GenteGuada.instance
+
+  def getSession(self):
+    return self.__session
   
   def __input(self, events):
     for event in events:
@@ -204,7 +207,7 @@ class GenteGuada:
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
       os.remove(pathFile)
 
-  def uploadFile(self, upFile):
+  def uploadFile(self, upFile, dirDest = None):
     if not os.path.isfile(upFile):
       return None
     filepath, fileName = os.path.split(upFile)
@@ -215,27 +218,26 @@ class GenteGuada:
       uploadedFile.close()
     except:
       return None
-    return self.__system.uploadFile([name, ext], dataFile)
+    return self.__system.uploadFile([name, ext], dataFile, dirDest)
  
-  def asyncUploadFile(self, upFile, finishMethod):
+  def asyncUploadFile(self, upFile, finishMethod, dirDest = None):
     if not os.path.isfile(upFile):
       finishMethod(None)
       return 
     filepath, fileName = os.path.split(upFile)
     name, ext = os.path.splitext(fileName)
     try:
-      uploadedFile = open(file , "rb")
+      uploadedFile = open(upFile , "rb")
       dataFile = uploadedFile.read()
       uploadedFile.close()
     except:
       finishMethod(None)
       return 
-    self.__system.async(self.__system.uploadFile, finishMethod, [name, ext], dataFile)
+    self.__system.async(self.__system.uploadFile, finishMethod, [name, ext], dataFile, dirDest)
   
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
       self.asyncUploadFile(UPLOAD_MASK, self.uploadMaskFileFinish)
-      #nameMask = self.uploadFile(fileName)
     else:
       self.__system.changeAvatarConfiguration(configuration, player, None) 
 

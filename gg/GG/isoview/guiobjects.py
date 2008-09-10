@@ -550,6 +550,7 @@ class OcempImageObjectList(OcempImageFileList):
       return item[0].text
     return None
 
+
 # ===============================================================
   
 class OcempImageList(OcempImageFileList):
@@ -561,9 +562,9 @@ class OcempImageList(OcempImageFileList):
     OcempImageFileList.__init__(self, width, height)
 
   def _list_contents (self):
-    items = ocempgui.widgets.components.ListItemCollection ()
+    items = ocempgui.widgets.components.ListItemCollection()
     for image in self.imagesList:
-      items.append (OcempContactListItem (image, self.relativePath + image))
+      items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
     self.set_items (items)
 
   def getSelectedName(self):
@@ -595,7 +596,8 @@ class OcempImageList(OcempImageFileList):
     for item in self.items:
       if item.text in imgNames:
         self._set_cursor(item, True)
-    
+
+
 # ===============================================================
 
 class OcempEditLine(ocempgui.widgets.Entry):

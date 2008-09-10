@@ -11,6 +11,8 @@ EDIT_ROOM_LARGE_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindowL
 CREATE_ITEM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "createObjectWindow.png")
 ROOM_OPTIONS_LOWER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomLower.png")
 
+FURNITURE = "furniture"
+
 class AuxBox:
   """ AuxBox class.
   Defines an auxiliary box used to show and get info on screen.
@@ -599,7 +601,7 @@ class CreateRoomWindow(AuxWindow):
     self.container.add_child(label)
     
     height = 60
-    self.images = guiobjects.OcempImageList(240, height, GG.utils.TILES, "tiles/")  
+    self.images = guiobjects.OcempImageList(240, height, GG.utils.TILES, "tiles")  
     self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 25 + labelShift[1]
     self.images.set_selectionmode(ocempgui.widgets.Constants.SELECTION_MULTIPLE)
     iPos += 1
@@ -749,12 +751,24 @@ class CreateItemsWindow(AuxWindow):
       self.activeLabels.append(label)
       if key == "images":
         height = 60
-        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), "furniture/")  
+        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), FURNITURE)  
         self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
         iPos += 1
         self.container.add_child(self.images)  
         self.activeLabels.append(self.images)
         self.editableFields[key] = self.images
+      elif key == "imagesGift":
+        self.imagesGiftList = attrDict[key]
+        height = 60
+        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)  
+        self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+        iPos += 1
+        self.container.add_child(self.imagesgift)  
+        self.activeLabels.append(self.imagesgift)
+        self.editableFields[key] = self.imagesgift
+        buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + labelShift[0], 40 + iPos*spacing + 40 + labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
+        self.container.add_child(buttonFileChooser)
+        iPos += 1
       else:  
         fCount = 0
         fields = []
@@ -774,6 +788,38 @@ class CreateItemsWindow(AuxWindow):
           fCount += 1
         self.editableFields[key] = fields
       iPos += 1
+
+  def openFileDialog(self):
+    self.dialog = guiobjects.OcempPanel(373, 372, [528, 100], GG.utils.UPLOAD_BACKGROUND)
+    self.dialog.zOrder = 10000
+    self.listDir = guiobjects.OcempImageFileList(310, 239)
+    self.listDir.topleft = 31, 60
+    self.dialog.add_child(self.listDir)
+    buttonOK = guiobjects.createButton(GG.utils.OK_BUTTON_IMAGE, [233, 308], ["aceptar", self.showTooltip, self.removeTooltip], self.closeFileDialog,"OK")
+    self.dialog.add_child(buttonOK)
+    buttonCancel = guiobjects.createButton(GG.utils.CANCEL_BUTTON_IMAGE, [122, 308], ["cerrar", self.showTooltip, self.removeTooltip], self.closeFileDialog,"KO")
+     
+    self.dialog.add_child(buttonCancel)
+    self.hud.addSprite(self.dialog)
+    self.hud.widgetContainer.add_widget(self.dialog)
+
+  def closeFileDialog(self, action):
+    if action == "OK":
+      filePath = None
+      filePath = self.listDir.getFileName()
+      if filePath:
+        GG.genteguada.GenteGuada.getInstance().asyncUploadFile(filePath, self.uploadImageFinish, "imagesgift")
+    self.removeTooltip()
+    self.hud.removeSprite(self.dialog)
+    self.hud.widgetContainer.remove_widget(self.dialog)
+
+  def uploadImageFinish(self, resultado):
+    if resultado:
+      self.imagesGiftList.append(resultado)
+      self.imagesgift.imageList = self.imagesGiftList
+      self.imagesgift._list_contents()
+      self.container.remove_child(self.imagesgift)  
+      self.container.add_child(self.imagesgift)  
 
   def accept(self):
     """ Gets and checks all data to create a new room.
