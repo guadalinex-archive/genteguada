@@ -320,7 +320,7 @@ class EditRoomWindow(AuxWindow):
     label = guiobjects.OcempLabel("tiles", guiobjects.STYLES["itemLabel"])
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
-    self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, "tiles/")  
+    self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, GG.utils.TILE)  
     self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.newTileImages.set_selectionmode(ocempgui.widgets.Constants.SELECTION_MULTIPLE)
     #self.newTileImages.selectItem(self.imageName)

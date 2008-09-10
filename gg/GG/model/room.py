@@ -31,7 +31,7 @@ class GGRoom(ggmodel.GGModel):
     for i in range(0, self.size[0]):
       line = []  
       for j in range(0, self.size[1]):
-        image = os.path.join("tiles/", self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
+        image = os.path.join(GG.utils.TILE, self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
         line.append(tile.Tile([i, j], image, [0, 0], self))
       self.__tiles.append(line)  
     self.__items = []
@@ -433,7 +433,7 @@ class GGRoom(ggmodel.GGModel):
       subList = []
       for y in range(len(self.__tiles[x])):
         singleTile = newTile[random.randint(0, len(newTile)-1)]
-        imgName = os.path.join("tiles", singleTile)
+        imgName = os.path.join(GG.utils.TILE, singleTile)
         self.__tiles[x][y].setImage(imgName, True)
         subList.append(singleTile)  
       tilesList.append(subList)  

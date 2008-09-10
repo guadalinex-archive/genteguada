@@ -294,13 +294,13 @@ class GGSystem(dMVC.model.Model):
       data = maskFile.read()
       maskFile.close()
       self.__avatarGeneratorHandler.copyImageMask(nameMask, data)
-      maskFile = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"),"wb")
+      maskFile = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png"),"wb")
       maskFile.write(data)
       maskFile.close()
       os.remove(os.path.join(GG.utils.DATA_PATH, nameMask))
     else:
-      if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png")):
-        os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username+".png"))
+      if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png")):
+        os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png"))
     execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
       images = self.__avatarGeneratorHandler.getImages(player)

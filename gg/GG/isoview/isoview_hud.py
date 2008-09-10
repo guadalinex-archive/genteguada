@@ -880,7 +880,7 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBarAdminActions.add_child(label)
       if key == "image":
         height = 80
-        self.tileImages = guiobjects.OcempImageList(145, height, GG.utils.TILES, "tiles/")  
+        self.tileImages = guiobjects.OcempImageList(145, height, GG.utils.TILES, GG.utils.TILE)  
         self.tileImages.topleft = 5, 40 + iPos*60 + 27
         self.buttonBarAdminActions.add_child(self.tileImages)  
         self.editableFields[key] = self.tileImages

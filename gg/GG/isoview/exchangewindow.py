@@ -5,6 +5,9 @@ import ocempgui.widgets
 import GG.utils
 import guiobjects
 
+BUTTON_OK = os.path.join(GG.utils.EDITOR, "ok_button.png")
+BUTTON_CANCEL = os.path.join(GG.utils.EDITOR, "cancel_button.png")
+
 class ExchangeWindow:
   """ ExchangeWindow class.
   Defines the item exchange window.
@@ -103,16 +106,14 @@ class ExchangeWindow:
   def __paintButtons(self):
     """ Paints the exchangeWindow buttons.
     """  
-    filePath = os.path.join(GG.utils.EDITOR, "ok_button.png")
-    buttonOK = guiobjects.createButton(filePath, [240, 100], ["Aceptar", self.showTooltip, self.removeTooltip], self.okExchange)
+    buttonOK = guiobjects.createButton(BUTTON_OK, [240, 100], ["Aceptar", self.showTooltip, self.removeTooltip], self.okExchange)
     #filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png")
     #buttonOK = guiobjects.OcempImageButtonTransparent(filePath)
     #buttonOK.topleft = 240, 100
     #buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.okExchange)
     self.container.add_child(buttonOK)
      
-    filePath = os.path.join(GG.utils.EDITOR, "cancel_button.png") 
-    buttonCancel = guiobjects.createButton(filePath, [240, 180], ["Cancelar", self.showTooltip, self.removeTooltip], self.koExchange)
+    buttonCancel = guiobjects.createButton(BUTTON_CANCEL, [240, 180], ["Cancelar", self.showTooltip, self.removeTooltip], self.koExchange)
     #filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png")
     #buttonCancel = guiobjects.OcempImageButtonTransparent(filePath)
     #buttonCancel.topleft = 240, 180

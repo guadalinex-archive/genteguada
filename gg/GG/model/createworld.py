@@ -20,6 +20,7 @@ TILES_SMALLSTONES = ["smallStones01.png", "smallStones02.png", "smallStones03.pn
 TILES_CASTLE1 = ["castle01.png"]
 TILES_CASTLE2 = ["castle02.png"]
 TILES_ARROWS = ["upArrow.png", "downArrow.png", "leftArrow.png", "rightArrow.png"]
+TILE_PRESSED = os.path.join(GG.utils.TILE, "pressed.png")
 DOOR_GARDEN = os.path.join(FURNITURE_PATH, "garden_door.png")
 PENGUIN_SPRITE_RIGHT = os.path.join(FURNITURE_PATH, "andatuz_right.png")
 BOX_HEAVY = os.path.join(FURNITURE_PATH, "heavy_box.png")
@@ -183,8 +184,8 @@ class CreateWorld:
     self.__room2.addItemFromVoid(myGoldenKeyRoom2, [4, 6])
 
   def __decorateRoom3(self):
-    self.__room3.setSpecialTile([2, 0, 1], "tiles/pressed.png")
-    self.__room3.setSpecialTile([5, 0, 1], "tiles/pressed.png")
+    self.__room3.setSpecialTile([2, 0, 1], TILE_PRESSED)
+    self.__room3.setSpecialTile([5, 0, 1], TILE_PRESSED)
     tiles = [[2, 1], [5, 1]]
     myDoor3A = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room2, "puerta room3a")
     myDoor3B = teleport.GGDoorWithKey(DOOR_AMORED, [35, 25], [0, 0], [6, 5], self.__room4, "puerta room3b", "Llave Dorada")
