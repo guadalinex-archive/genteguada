@@ -60,6 +60,10 @@ IMAGES_DICT["PaperMoney"] = {}
 IMAGES_DICT["PaperMoney"]["5Guadapuntos.png"] = [[14, -25], [0, -10]]
 IMAGES_DICT["PaperMoney"]["10Guadapuntos.png"] = [[14, -25], [0, -10]]
 IMAGES_DICT["PaperMoney"]["50Guadapuntos.png"] = [[14, -25], [0, -10]]
+IMAGES_DICT["WebGift"] = {}
+IMAGES_DICT["WebGift"]["gift.png"] = [[15, -30], [0, 0]]
+
+IMAGES_GIFT_PATH = os.path.join(GG.utils.DATA_PATH, GG.utils.IMAGES_GIFT)
 
 # ====================================================================
 class GGSession(ggmodel.GGModel):
@@ -229,6 +233,12 @@ class GGSession(ggmodel.GGModel):
                             "label": [""],
                             "value": [5],
                             "images": IMAGES_DICT["PaperMoney"].keys()           
+                            },
+                    "WebGift": {
+                            "position": pos,
+                            "label": [""],
+                            "images": IMAGES_DICT["WebGift"].keys(),           
+                            "imagesGift": self.getImagesGift()          
                             }
                   }
     return self.objectsDict
@@ -344,4 +354,13 @@ class GGSession(ggmodel.GGModel):
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     
+  def getImagesGift(self):
+    result = []
+    for giftFile in os.listdir(IMAGES_GIFT_PATH):
+      if os.path.isfile(os.path.join(IMAGES_GIFT_PATH, giftFile)):
+        filepath, fileName = os.path.split(giftFile)
+        name, ext = os.path.splitext(fileName)
+        if ext in [".jpg", ".png", ".JPG", ".PNG"]:
+          result.append(fileName)
+    return result
     

@@ -22,6 +22,7 @@ INTERFACE_PATH = "interface"
 SOUND_PATH = "sound"
 INTERFACE_AVATARS = "avatars"
 TILE = "tiles"
+IMAGES_GIFT = "imagesgift"
 HUD_PATH = os.path.join(INTERFACE_PATH, "hud")
 NINO_PATH = os.path.join(INTERFACE_AVATARS, "default_boy")
 NINA_PATH = os.path.join(INTERFACE_AVATARS, "default_girl")
@@ -32,6 +33,13 @@ ADMIN_ACTIONS_BACKGROUND = os.path.join(HUD_PATH, "adminActions.png")
 ADMIN_ACTIONS_LARGE_BACKGROUND = os.path.join(HUD_PATH, "adminActionsLarge.png")
 TINY_OK_IMAGE = os.path.join(HUD_PATH, "tiny_ok_button.png")
 TINY_CANCEL_IMAGE = os.path.join(HUD_PATH, "tiny_cancel_button.png")
+
+PATH_EDITOR_INTERFACE = os.path.join(INTERFACE_PATH,"editor")
+FILE_BUTTON_IMAGE = os.path.join(HUD_PATH, "tiny_file_button.png")
+OK_BUTTON_IMAGE = os.path.join(PATH_EDITOR_INTERFACE, "ok_button.png")
+CANCEL_BUTTON_IMAGE = os.path.join(PATH_EDITOR_INTERFACE, "cancel_button.png")
+
+UPLOAD_BACKGROUND = os.path.join(BACKGROUNDS, "uploadWindow.png")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values
@@ -61,7 +69,6 @@ STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carryi
 IMAGE_CHAT_MESSAGE = "chatEntry.png"
 
 # Avatar editor
-PATH_EDITOR_INTERFACE = os.path.join(INTERFACE_PATH,"editor")
 PATH_PHOTO_MASK = os.path.join(LOCAL_DATA_PATH, "mask") 
 
 GENDER_TAG = "gender_tag.png"
