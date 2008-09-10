@@ -398,3 +398,5 @@ class GGSystem(dMVC.model.Model):
   def newBroadcastMessage(self, line, player):
     for room in self.__rooms:
       room.newChatMessage(line, player, 3)    
+
+    

@@ -105,9 +105,9 @@ class Model(synchronized.Synchronized):
       self.__subscriptions.remove(subscription)
   #}}}
 
-  def async(self, method, arg, callback):
+  def async(self, method, callback, *args):
     try:
-      returnValue = method(arg)
+      returnValue = method(args)
       callback(returnValue)
     except:
       Exception("Error executing async method")
