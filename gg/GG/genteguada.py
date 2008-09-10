@@ -21,6 +21,7 @@ LOADING_BACKGROUND_POSITION = [0, 0]
 LOADING_LABEL = "Cargando..."
 LOADING_LABEL_POSITION = [350, 300]
 WAITING_LABEL_POSITION = [314, 335]
+UPLOAD_MASK = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
 ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
 
@@ -244,8 +245,7 @@ class GenteGuada:
   
   def uploadAvatarConfiguration(self, configuration, player):
     if configuration["mask"]:
-      fileName = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
-      self.asyncUploadFile(fileName, self.uploadMaskFileFinish)
+      self.asyncUploadFile(UPLOAD_MASK, self.uploadMaskFileFinish)
       #nameMask = self.uploadFile(fileName)
     else:
       self.__system.changeAvatarConfiguration(configuration, player, None) 

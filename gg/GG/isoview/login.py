@@ -10,6 +10,7 @@ import guiobjects
 
 from pygame.locals import * # faster name resolution
 
+BUTTON_CANCEL = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")
 
 class Login:
   """ Login class.
@@ -84,7 +85,7 @@ class Login:
     imgBackgroundRight.topleft = 0, 0
     self.window.add_child(imgBackgroundRight)
    
-    cad = "¿Desea entrar como administrador?"
+    cad = "Â¿Desea entrar como administrador?"
     notificationLabel = guiobjects.OcempLabel(cad, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
     #notificationLabel.topleft = 225,300
     notificationLabel.topleft = 100, 300
@@ -221,7 +222,7 @@ class Login:
     self.dialog.topleft = 254, 50
     self.dialog.child = self.container
     self.widgetContainer.add_widget(self.dialog)
-    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")))
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(BUTTON_CANCEL))
     buttonCancel.topleft = [400, 140]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
     self.container.add_child(buttonCancel)

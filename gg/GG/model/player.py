@@ -88,7 +88,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def getImageLabel(self):
     """ Returns the player's mask filename.
     """  
-    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.username+".png")):
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.username + ".png")):
       return "avatars/masks/"+self.username+".png"
     else:
       return "interface/editor/masko.png"

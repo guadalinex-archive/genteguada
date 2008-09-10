@@ -197,7 +197,7 @@ class IsoViewRoom(isoview.IsoView):
     #print ">>>", newTile
     for x in range(len(self.__tileList)):
       for y in range(len(self.__tileList[x])):
-        self.__tileList[x][y].setImg(os.path.join('tiles', newTiles[x][y]))
+        self.__tileList[x][y].setImg(os.path.join(GG.utils.TILE, newTiles[x][y]))
     
   def updateScreenPositionsOn(self, pos):
     """ Updates the screen cords of all items on a room position.
