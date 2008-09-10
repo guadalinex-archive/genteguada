@@ -19,7 +19,6 @@ class ExchangeWindow:
     step: exchange process step.
     listIn: incoming item list.
     """  
-    #self.window = ocempgui.widgets.DialogWindow("Ventana de intercambio")
     title = "Ventana de intercambio"
     self.window = ocempgui.widgets.Window(title.decode("utf-8"))
     self.window.topleft = 200, 200
@@ -107,17 +106,8 @@ class ExchangeWindow:
     """ Paints the exchangeWindow buttons.
     """  
     buttonOK = guiobjects.createButton(BUTTON_OK, [240, 100], ["Aceptar", self.showTooltip, self.removeTooltip], self.okExchange)
-    #filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/ok_button.png")
-    #buttonOK = guiobjects.OcempImageButtonTransparent(filePath)
-    #buttonOK.topleft = 240, 100
-    #buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.okExchange)
     self.container.add_child(buttonOK)
-     
     buttonCancel = guiobjects.createButton(BUTTON_CANCEL, [240, 180], ["Cancelar", self.showTooltip, self.removeTooltip], self.koExchange)
-    #filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/editor/cancel_button.png")
-    #buttonCancel = guiobjects.OcempImageButtonTransparent(filePath)
-    #buttonCancel.topleft = 240, 180
-    #buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.koExchange)
     self.container.add_child(buttonCancel)
 
   def okExchange(self):
