@@ -36,19 +36,14 @@ class GGSystem(dMVC.model.Model):
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
     """
-    #return self.__rooms[0]
     roomsCopy = self.__startRooms
-    print self.__startRooms
     for x in range(0, len(self.__startRooms)):
       room = roomsCopy[random.randint(0, len(roomsCopy)-1)]
-      #if not room:
-      #  continue
       if room.isFull() or not room.getEnabled():
         roomsCopy.remove(room)
       else:
         return room    
     return None
-    #return self.__startRooms[random.randint(0, len(self.__startRooms)-1)]
       
   def getEntryRooms(self):
     return self.__startRooms      
@@ -158,6 +153,7 @@ class GGSystem(dMVC.model.Model):
     label: room label.
     size: room size.
     maxUsers: max users per room.
+    enabled: enabled room flag.
     starterRoom: sets this room as starter or not.
     copyRoom: room to be copied.
     """
@@ -173,7 +169,6 @@ class GGSystem(dMVC.model.Model):
             newRoom.addItemFromVoid(item.copyObject(), item.getPosition())  
     self.__rooms.append(newRoom)
     if startRoom:
-      print newRoom  
       self.__startRooms.append(newRoom)    
     return newRoom
 

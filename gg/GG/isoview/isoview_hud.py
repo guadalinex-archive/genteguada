@@ -544,7 +544,7 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.addIsoViewItem(ivItem)    
       self.addItemToRoomFromVoid(ivItem)
     
-  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile=None):
+  def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile):
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
     if oldLabel != newLabel and self.getModel().getRoom(newLabel):
