@@ -91,7 +91,7 @@ class TeleportWindow(AuxBox):
     """ Draws the item parts on screen.
     """  
     self.window = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
-    titleLabel = guiobjects.OcempLabel(self.title.decode("utf-8"), guiobjects.STYLES["teleportLabel"])
+    titleLabel = guiobjects.OcempLabel(self.title, guiobjects.STYLES["teleportLabel"])
     titleLabel.topleft = 4, 0
     self.window.add_child(titleLabel)
     self.listItems = guiobjects.OcempImageObjectList(110, 205, self.listItems)

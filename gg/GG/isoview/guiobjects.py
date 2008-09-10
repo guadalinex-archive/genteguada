@@ -348,7 +348,7 @@ class OcempPanel(ocempgui.widgets.Box):
 class OcempLabel(ocempgui.widgets.Label):
 
   def __init__(self, text, style):
-    self.label = text
+    self.label = text.decode("utf-8")
     self.typeFont = GG.utils.LOCAL_DATA_PATH+"/font/Domestic_Manners.ttf"
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]

@@ -87,7 +87,6 @@ class Login:
    
     cad = "¿Desea entrar como administrador?"
     notificationLabel = guiobjects.OcempLabel(cad, ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelLogin"]))
-    #notificationLabel.topleft = 225,300
     notificationLabel.topleft = 100, 300
     notificationLabel.border = 1
     notificationLabel.set_minimum_size(230, 40)
