@@ -892,9 +892,12 @@ class IsoViewHud(isoview.IsoView):
           entryLabel = guiobjects.OcempEditLine()
           entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
           try:
-            entryLabel.text = field  
+            entryLabel.text = field.decode("utf-8")  
           except:
-            entryLabel.text = str(field)
+            try:
+              entryLabel.text = field
+            except:
+              entryLabel.text = str(field)
           entryLabel.border = 1
           entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
           if len(actions[key]) == 1:
