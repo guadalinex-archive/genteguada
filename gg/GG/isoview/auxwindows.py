@@ -831,7 +831,7 @@ class CreateItemsWindow(AuxWindow):
     data = {}
     keys = self.editableFields.keys()
     for key in keys:
-      if key == "images":
+      if key in ["images","imagesGift"]:
         data[key] = self.editableFields[key].getSelectedName()
       else:      
         values = []

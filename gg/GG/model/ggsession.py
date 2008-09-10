@@ -352,6 +352,15 @@ class GGSession(ggmodel.GGModel):
       spriteImg = os.path.join("furniture", img)
       box = GG.model.pickable_item.PaperMoney(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
     #===============================================
+    elif name == "WebGift":
+      imgGift = data["imagesGift"]
+      if not imgGift:
+        self.__player.newChatMessage("Debe seleccionar una imagen de premio para el objeto.", 1)
+        return
+      spriteImgGift = os.path.join(GG.utils.IMAGES_GIFT, imgGift) 
+      spriteImg = os.path.join("furniture", img)
+      box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label)
+    #===============================================
     room.addItemFromVoid(box, [posX, posY])
     
   def getImagesGift(self):
