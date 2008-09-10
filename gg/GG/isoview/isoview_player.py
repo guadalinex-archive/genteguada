@@ -49,24 +49,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('destination', self.destinationChanged)
     #self.__heading = self.getModel().getHeading()
     #self.__state = self.getModel().getState()
-
-
-  """
-  def loadImage(self, image=None):
-    if image is None:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
-    else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(image, self.getModel().spriteName))
-    self.__img = pygame.sprite.Sprite()
-    
-    self.setSprite(pygame.image.load(imgPath).convert_alpha())
-    self.setRect(self.getImg().image.get_rect())
-    pos = self.getPosition()
-    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
-    print "player"  
-    self.setScreenPosition([scrPos[0], -500])
-    self.updateZOrder((pow(pos[0], 2) + pow(pos[1], 2))*10)
-  """  
   
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
@@ -304,6 +286,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     oldPos = event.getParams()['oldPosition']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
+      
+    tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)  
+    scrPos = self.getScreenPosition()
+    self.setScreenPosition([tmpPos[0], scrPos[1]])
+    #self.getIVRoom().updateScreenPositionsOn(oldPos)
+    #self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
     isoview_item.IsoViewItem.positionChanged(self, event)
     
   def changeAvatarImages(self, path):
