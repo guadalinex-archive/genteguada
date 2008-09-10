@@ -38,9 +38,11 @@ class GGSystem(dMVC.model.Model):
     """
     #return self.__rooms[0]
     roomsCopy = self.__startRooms
-    
+    print self.__startRooms
     for x in range(0, len(self.__startRooms)):
       room = roomsCopy[random.randint(0, len(roomsCopy)-1)]
+      #if not room:
+      #  continue
       if room.isFull() or not room.getEnabled():
         roomsCopy.remove(room)
       else:
@@ -148,7 +150,7 @@ class GGSystem(dMVC.model.Model):
     if foundRoom and not startRoom:
       self.__startRooms.remove(foundRoom)
     elif not foundRoom and startRoom:
-      self.__startRooms.append(foundRoom)
+      self.__startRooms.append(room)
 
   def createRoom(self, spriteFull, label, size, maxUsers, enabled, startRoom, copyRoom=None):
     """ Creates a new room.
