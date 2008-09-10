@@ -235,8 +235,9 @@ class GGRoom(ggmodel.GGModel):
     """ Checks if a tile is blocked or not.
     pos: tile position.
     """
-    if self.__tiles[pos[0]][pos[1]].getDepth() != 0:
-      return True
+    if (0 <= pos[0] <= self.size[0]) and (0 <= pos[1] <= self.size[1]):
+      if self.__tiles[pos[0]][pos[1]].getDepth() != 0:
+        return True
     return False
     
   def clickedByPlayer(self, clickerPlayer, target, item):
@@ -424,12 +425,19 @@ class GGRoom(ggmodel.GGModel):
     self.label = newLabel
     self.__enabled = enabled
     self.__startRoom = startRoom
-    if not newTile:
+    print newTile
+    if not len(newTile):
       return
+    tilesList = []
     for x in range(len(self.__tiles)):
+      subList = []
       for y in range(len(self.__tiles[x])):
-        self.__tiles[x][y].setImage(os.path.join("tiles/", newTile), True)
-    self.triggerEvent('floorChanged', newTile=newTile)    
+        singleTile = newTile[random.randint(0, len(newTile)-1)]
+        imgName = os.path.join("tiles", singleTile)
+        self.__tiles[x][y].setImage(imgName, True)
+        subList.append(singleTile)  
+      tilesList.append(subList)  
+    self.triggerEvent('floorChanged', newTile=tilesList)    
         
   def labelChange(self, oldLabel, newLabel):
     """ Propagates a room label change all over its items.

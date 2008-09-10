@@ -193,10 +193,11 @@ class IsoViewRoom(isoview.IsoView):
     self.updateScreenPositionsOn(event.getParams()['position'])
     
   def floorChanged(self, event):
-    newTile = event.getParams()['newTile']
+    newTiles = event.getParams()['newTile']
+    #print ">>>", newTile
     for x in range(len(self.__tileList)):
       for y in range(len(self.__tileList[x])):
-        self.__tileList[x][y].setImg(os.path.join('tiles/', newTile))
+        self.__tileList[x][y].setImg(os.path.join('tiles', newTiles[x][y]))
     
   def updateScreenPositionsOn(self, pos):
     """ Updates the screen cords of all items on a room position.

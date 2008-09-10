@@ -322,6 +322,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, "tiles/")  
     self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+    self.newTileImages.set_selectionmode(ocempgui.widgets.Constants.SELECTION_MULTIPLE)
     #self.newTileImages.selectItem(self.imageName)
     self.container.add_child(self.newTileImages)  
     iPos += 1
@@ -344,11 +345,8 @@ class EditRoomWindow(AuxWindow):
       return
     enabled = self.enabledChecker.active
     startRoom = self.startRoomChecker.active
-    newTile = self.newTileImages.getSelectedName()
-    if newTile:
-      self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom, newTile)
-    else:  
-      self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom)  
+    newTile = self.newTileImages.getSelectedNames()
+    self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom, newTile)
     
   def discardEditRoom(self):
     self.showOrHide() 
@@ -493,6 +491,7 @@ class CreateRoomWindow(AuxWindow):
     height = 60
     self.images = guiobjects.OcempImageList(240, height, GG.utils.TILES, "tiles/")  
     self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 25 + labelShift[1]
+    self.images.set_selectionmode(ocempgui.widgets.Constants.SELECTION_MULTIPLE)
     iPos += 1
     self.container.add_child(self.images)  
     self.activeLabels.append(self.images)
@@ -510,9 +509,10 @@ class CreateRoomWindow(AuxWindow):
         self.sizeX.text = str(room.size[0])  
         self.sizeY.text = str(room.size[1])  
         self.maxUsers.text = str(room.maxUsers)
-        imgName = room.getTile([0, 0]).spriteName
-        trimmedImgName = imgName[imgName.rfind("/")+1:]
-        self.images.selectItem(trimmedImgName)
+        imgNames = []
+        for singleSprite in room.spriteFull:
+          imgNames.append(singleSprite[singleSprite.rfind("/")+1:])  
+        self.images.selectItems(imgNames)
 
   def accept(self):
     if not self.images.getSelectedName():
@@ -542,7 +542,10 @@ class CreateRoomWindow(AuxWindow):
     if not (1 <= maxUsers <= 15):
       self.__player.newChatMessage('"maxUsers" debe ser un valor entre 1 y 15', 1)
       return
-    image = self.images.getSelectedName()
+    image = self.images.getSelectedNames()
+    if not len(image):
+      self.__player.newChatMessage('Debe elegir al menos un modelo de suelo', 1)
+      return
     room = None
     roomList = self.listRooms.get_selected()
     if len(roomList):
@@ -551,7 +554,7 @@ class CreateRoomWindow(AuxWindow):
           room = singleRoom
     enabled = self.enabledChecker.active      
     startRoom = self.startRoomChecker.active
-    self.hud.createRoom(label, [posX, posY], [image], maxUsers, enabled, startRoom, room)
+    self.hud.createRoom(label, [posX, posY], image, maxUsers, enabled, startRoom, room)
     self.showOrHide()
     
 # ===============================================================

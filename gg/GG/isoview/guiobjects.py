@@ -572,6 +572,13 @@ class OcempImageList(OcempImageFileList):
       return item[0].text
     return None
 
+  def getSelectedNames(self):
+    retList = []
+    items = self.get_selected()
+    for singleItem in items:
+      retList.append(singleItem.text)
+    return retList
+
   def selectItem(self, itemName):
     for item in self.items:
       if item.text == itemName:
@@ -580,6 +587,14 @@ class OcempImageList(OcempImageFileList):
           self._set_cursor(prevSelected[0], False)
         self._set_cursor(item, True)
         return
+  
+  def selectItems(self, imgNames):
+    prevSelected = self.get_selected()
+    for item in prevSelected:
+      self._set_cursor(item, False)
+    for item in self.items:
+      if item.text in imgNames:
+        self._set_cursor(item, True)
     
 # ===============================================================
 
