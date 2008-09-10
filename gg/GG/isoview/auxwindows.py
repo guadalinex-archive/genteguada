@@ -12,17 +12,27 @@ CREATE_ITEM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "createObjectWindow.
 ROOM_OPTIONS_LOWER_BACKGROUND = os.path.join(GG.utils.HUD_PATH, "editRoomLower.png")
 
 class AuxBox:
+  """ AuxBox class.
+  Defines an auxiliary box used to show and get info on screen.
+  """
   
   def __init__(self, hud):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    """  
     self.hide = True
     self.window = None
     self.hud = hud
     self.draw()
 
   def draw(self):
+    """ Drawing method, redefined on subclasses.
+    """  
     pass
 
   def showOrHide(self):
+    """ Shows or hides the auxiliary window.
+    """  
     if self.hide:
       self.updateListItem()
       self.hud.addSprite(self.window)
@@ -35,15 +45,25 @@ class AuxBox:
     self.hide = not self.hide
 
   def showTooltip(self, label):
+    """ Shows the item's tooltip.
+    label: tooltip's label.
+    """
     self.hud.showTooltip(label)
   
   def removeTooltip(self):
+    """ Removes the item's tooltip from screen.
+    """  
     self.hud.removeTooltip()
 
   def accept(self):
+    """ Accepts all info, redefined on sublasses.
+    """  
     pass
 
   def isInside(self, pos):
+    """ Checks wether one point is located or not inside the item.
+    pos: point.
+    """  
     if (self.window.topleft[0] <= pos[0] <= (self.window.topleft[0] + self.window.width)): 
       if (self.window.topleft[1] <= pos[1] <= (self.window.topleft[1] + self.window.height)):
         return True
@@ -52,14 +72,22 @@ class AuxBox:
 # ===============================================================
 
 class TeleportWindow(AuxBox):
-
+  """ TeleportWindow class.
+  Defines an teleport window on screen.
+  """
+  
   def __init__(self, hud):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    """  
     self.title = "Escoja destino"
     self.tooltipLabel = "Teleportar"
     self.listItems = hud.getModel().getRoomLabels()
     AuxBox.__init__(self, hud)
 
   def draw(self):
+    """ Draws the item parts on screen.
+    """  
     self.window = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     titleLabel = guiobjects.OcempLabel(self.title.decode("utf-8"), guiobjects.STYLES["teleportLabel"])
     titleLabel.topleft = 4, 0
@@ -74,11 +102,15 @@ class TeleportWindow(AuxBox):
     self.window.zOrder = 10000
 
   def accept(self):
+    """ Gets the teleport data and processes it.
+    """  
     roomLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyTeleport(roomLabel)
 
   def updateListItem(self):
+    """ Updates the room's list.
+    """  
     self.window.remove_child(self.listItems)
     self.listItems.destroy()
     self.listItems = self.hud.getModel().getRoomLabels()
@@ -89,16 +121,26 @@ class TeleportWindow(AuxBox):
 # ===============================================================
 
 class DeleteRoomWindow(TeleportWindow):
+  """ DeleteRoomWindow class.
+  Defines the delete room window.
+  """
 
   def __init__(self, hud):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    """  
     TeleportWindow.__init__(self, hud)
 
   def draw(self):
+    """ Draws the window parts.
+    """  
     self.title = "Eliminar habitación"
     self.tooltipLabel = "Eliminar habitación"
     TeleportWindow.draw(self)
 
   def accept(self):
+    """ Gathers and processes all data.
+    """
     roomLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyDeleteRoom(roomLabel)
@@ -106,22 +148,34 @@ class DeleteRoomWindow(TeleportWindow):
 # ===============================================================
 
 class KickPlayerWindow(TeleportWindow):
+  """ KickPlayerWindow class.
+  Defines the kick player window.
+  """  
 
   def __init__(self, hud):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    """  
     TeleportWindow.__init__(self, hud)
 
   def draw(self):
+    """ Draws all window parts on screen.
+    """  
     self.title = "Escaja jugador"
     self.tooltipLabel = "Expulsar jugador"
     self.listItems = self.hud.getModel().getPlayersList()
     TeleportWindow.draw(self)
 
   def accept(self):
+    """ Gathers and processes all data.
+    """  
     playerLabel = self.listItems.getSelectedName()
     self.showOrHide()
     self.hud.applyKickPlayer(playerLabel)
 
   def updateListItem(self):
+    """ Updates the players list.
+    """  
     self.window.remove_child(self.listItems)
     self.listItems.destroy()
     self.listItems = self.hud.getModel().getPlayersList()
@@ -132,8 +186,16 @@ class KickPlayerWindow(TeleportWindow):
 # ===============================================================
 
 class AuxWindow:
-
+  """ AuxWindow class.
+  Defines an auxiliary window used to show and get info on screen.
+  """
+  
   def __init__(self, hud, title, topleft):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    title: window title.
+    topleft: topleft window cords.
+    """  
     self.hide = True
     self.window = ocempgui.widgets.Window(title.decode("utf-8"))
     self.window.topleft = topleft
@@ -143,9 +205,13 @@ class AuxWindow:
     self.draw()
 
   def draw(self):
+    """ Draws this window on screen. Redefined on subclasses.
+    """  
     pass
 
   def showOrHide(self):
+    """ Shows or hides this window.
+    """  
     if self.hide:
       self.hud.addSprite(self.window)
       self.hud.widgetContainer.add_widget(self.window)
@@ -166,15 +232,25 @@ class AuxWindow:
     self.hide = not self.hide
 
   def showTooltip(self, label):
+    """ Shows this window's tooltip on screen.
+    label: tooltip's label.
+    """  
     self.hud.showTooltip(label)
   
   def removeTooltip(self):
+    """ Removes this window's tooltip from screen.
+    """  
     self.hud.removeTooltip()
 
   def accept(self):
+    """ Redefined on subclasses.
+    """  
     pass
 
   def isInside(self, pos):
+    """ Checks wether one point is located or not inside the item.
+    pos: point.
+    """  
     if (self.window.topleft[0] <= pos[0] <= (self.window.topleft[0] + self.window.width)): 
       if (self.window.topleft[1] <= pos[1] <= (self.window.topleft[1] + self.window.height)):
         return True
@@ -183,8 +259,14 @@ class AuxWindow:
 # ===============================================================
  
 class BroadcastWindow(AuxWindow):
+  """ BroadcastWindow class.
+  Defines a broadcast window used to send messages to all connected players.
+  """
 
   def __init__(self, hud):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    """
     self.__textField = None
     AuxWindow.__init__(self, hud, "Mensajes de sistema", [0,0])
 
@@ -215,20 +297,29 @@ class BroadcastWindow(AuxWindow):
     self.container.add_child(self.__textField)  
     
   def __paintSendButton(self):
-    """ Paints the send broadcast message button.
+    """ Paints the broadcast send message button.
     """  
     sendButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [120, 80], ["Enviar mensaje", self.showTooltip, self.removeTooltip], self.accept)
     self.container.add_child(sendButton)
 
   def accept(self):
+    """ Sends a new broadcast message.
+    """  
     self.hud.newBroadcastMessage(self.__textField.text)
     self.__textField.text = ""
 
 # ===============================================================
 
 class EditRoomWindow(AuxWindow):
+  """ EditRoomWindow class.
+  Defines the edit room window.
+  """
 
   def __init__(self, hud, player):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    player: active player.
+    """
     self.__hud = hud
     self.__player = player
     self.room = player.getRoom()
@@ -244,6 +335,8 @@ class EditRoomWindow(AuxWindow):
     AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
 
   def showOrHide(self):
+    """ Shows or hides the edit room window.
+    """  
     if self.hide:
       self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)  
       self.roomLabel.text = self.__hud.getIVRoom().getModel().label
@@ -266,6 +359,8 @@ class EditRoomWindow(AuxWindow):
     self.window.child = self.container
     
   def __paintFields(self):
+    """ Paints data fields on the window.
+    """  
     iPos = 0
     spacing = 50
     labelShift = [5, -20]
@@ -328,6 +423,8 @@ class EditRoomWindow(AuxWindow):
     iPos += 1
     
   def __paintButtons(self):
+    """ Paints modify and discard buttons on screen.
+    """  
     editButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [50, 230], ["Modificar habitación", self.showTooltip, self.removeTooltip], self.applyEditRoom)
     self.container.add_child(editButton)
     cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [180, 230], ["Descartar edición", self.showTooltip, self.removeTooltip], self.discardEditRoom)
@@ -335,6 +432,8 @@ class EditRoomWindow(AuxWindow):
     self.container.zOrder = 10000
     
   def applyEditRoom(self):
+    """ Edits the room using the data provided by the user.
+    """
     try: 
       maxUsers = int(self.editRoomMaxUsers.text)
     except ValueError:
@@ -349,13 +448,22 @@ class EditRoomWindow(AuxWindow):
     self.__hud.editRoom(maxUsers, self.roomLabel.text, enabled, startRoom, newTile)
     
   def discardEditRoom(self):
+    """ Discards changes and closes window.
+    """  
     self.showOrHide() 
   
 # ===============================================================
 
 class CreateRoomWindow(AuxWindow):
+  """ CreateRoomWindow class.
+  Defines the create room window.
+  """  
 
   def __init__(self, hud, player):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    player: active player.
+    """
     self.__player = player
     self.activeLabels = []
     self.images = None
@@ -372,6 +480,8 @@ class CreateRoomWindow(AuxWindow):
     AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,320])
     
   def showOrHide(self):
+    """ Shows or hides the create room window. 
+    """
     if self.hide:
       self.container.remove_child(self.listRooms)
       self.__paintRoomList()
@@ -501,7 +611,7 @@ class CreateRoomWindow(AuxWindow):
     self.container.add_child(label)
     
   def __selectionChange(self):
-    """
+    """ Changes the default values, according to the selected room.
     """
     name = self.listRooms.getSelectedName()
     for room in self.rooms:
@@ -515,6 +625,8 @@ class CreateRoomWindow(AuxWindow):
         self.images.selectItems(imgNames)
 
   def accept(self):
+    """ Gets and checks all data to create a new room.
+    """  
     if not self.images.getSelectedName():
       return  
     label = self.label.text
@@ -560,8 +672,15 @@ class CreateRoomWindow(AuxWindow):
 # ===============================================================
 
 class CreateItemsWindow(AuxWindow):
+  """ CreateItemsWindow class.
+  Defines the create item window.
+  """  
 
   def __init__(self, hud, session):
+    """ Class constructor.
+    hud: isometric view hud handler.
+    session: game session object.
+    """  
     self.__session = session
     self.__objectsDict = session.getObjectsData()
     self.editableFields = {}
@@ -609,6 +728,8 @@ class CreateItemsWindow(AuxWindow):
     self.container.add_child(defaultButton)
 
   def __selectionChange(self):
+    """ Changes the default values, according to the selected item.
+    """
     labelShift = [153, 10]
     spacing = 45
     self.editableFields = []
@@ -655,6 +776,8 @@ class CreateItemsWindow(AuxWindow):
       iPos += 1
 
   def accept(self):
+    """ Gets and checks all data to create a new room.
+    """  
     name = self.__objectsArea.getSelectedName()
     if not name:
       return  
@@ -672,10 +795,14 @@ class CreateItemsWindow(AuxWindow):
     self.__session.createObject(name, data)
 
   def __restoreDefault(self):
+    """ Restore default values.
+    """  
     if self.__objectsArea.getSelectedName(): 
       self.__selectionChange()  
       
   def setNewPosition(self, pos):
+    """ Sets a new position for the created item.
+    """  
     if "position" in self.editableFields.keys():
       self.editableFields["position"][0].text = str(pos[0])  
       self.editableFields["position"][1].text = str(pos[1])

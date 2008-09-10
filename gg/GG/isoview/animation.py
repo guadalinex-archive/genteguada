@@ -216,6 +216,7 @@ class MovieAnimation(Animation):
     time: animation length.
     isoview: isoview used on the animation.
     frames: frames used on the animation.
+    path: image path.
     """
     Animation.__init__(self, time, isoview)
     self.__frames = None
@@ -225,12 +226,14 @@ class MovieAnimation(Animation):
   def setFrames(self, frames, path):
     """ Sets a new frame set for the animation.
     frames: new frame set
+    path: image path.
     """
     self.__frames = frames
     self.loadSprites(path)  
     
   def loadSprites(self, path):
     """ Loads a new sprite set using a previously provided frame list.    
+    path: image path.
     """
     self.__sprites = []
     if path is None:
