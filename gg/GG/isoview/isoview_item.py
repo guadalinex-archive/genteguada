@@ -9,6 +9,7 @@ import guiobjects
 
 # ======================= CONSTANTS ===========================
 COLOR_SHIFT = 80
+NEW_SIZE = [40, 40]
 # =============================================================
 
 class IsoViewItem(positioned_view.PositionedView):
@@ -16,7 +17,7 @@ class IsoViewItem(positioned_view.PositionedView):
   Defines an item view.
   """
   
-  def __init__(self, model, screen, room, parent, position=None, image=None):
+  def __init__(self, model, screen, room, parent, position=None, imagePath=None):
     """ Class constructor.
     model: isometric view model.
     screen: screen handler.
@@ -31,16 +32,16 @@ class IsoViewItem(positioned_view.PositionedView):
     else:    
       self.__position = model.getPosition()
     self.__img = None
-    self.loadImage(image)
+    self.loadImage(imagePath)
     self.getModel().subscribeEvent('position', self.positionChanged)
         
-  def loadImage(self, image=None):
+  def loadImage(self, imagePath=None):
     """ Loads the item's image.
     """
-    if image is None:
+    if imagePath is None:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(image, self.getModel().spriteName))
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(imagePath, self.getModel().spriteName))
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
@@ -100,7 +101,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def getImg(self):
     """ Returns the item's image.
     """
-    return self.__img
+    return self.__img   
   
   def setImg(self, img, path=None):
     """ Sets a new image for the item.
@@ -121,7 +122,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.dirty = 1
   
   def setRect(self, rect):
-    """ Sets a new rect for the item iamge
+    """ Sets a new rect for the item iamgeprint "****************************AQUI ESTOY*****************"
     rect: new rect.
     """
     self.__img.rect = rect
@@ -214,3 +215,24 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Checks if this item is a player or not.
     """
     return False  
+
+# =============================================================
+
+class IsoViewResizedItem(IsoViewItem):
+  """ IsoViewResizedItem class.
+  Defines an item view.
+  """
+  
+  def __init__(self, model, screen, room, parent, position=None, image=None):
+    """ Class constructor.
+    model: isometric view model.
+    screen: screen handler.
+    room: item's isometric room object.
+    parent: isoview_hud handler.
+    """
+    if image:
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(model.getImagePath(), model.spriteName))
+      tempFileName = model.spriteName.replace(os.sep, "-")
+      guiobjects.generateImageSize(imgPath, NEW_SIZE, os.path.join(GG.utils.LOCAL_DATA_PATH,tempFileName))
+    IsoViewItem.__init__(self, model, screen, room, parent)
+    
