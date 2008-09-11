@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import inventory_item
+import dMVC.model
 
 class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   """GGGeneratedInventoryItem class.
@@ -88,6 +89,16 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
     spriteName: image name.
     """
     GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
+      
+  @dMVC.model.localMethod 
+  def defaultView(self, screen, room, parent):
+    """ Creates an isometric view object for the item.
+    screen: screen handler.
+    room: item's room.
+    parent: isoview hud handler.
+    """
+    import GG.isoview.isoview_item
+    return GG.isoview.isoview_item.IsoViewResizedItem(self, screen, room, parent, None, self.spriteInventory)
       
   def getOptions(self):
     """ Returns the item's available options.
