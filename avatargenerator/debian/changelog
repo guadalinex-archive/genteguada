@@ -1,3 +1,9 @@
+avatargenerator (0.4.1-1) unstable; urgency=low
+
+  * Finalizada la edicion del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 11 Sep 2008 17:58:58 +0200
+
 avatargenerator (0.3.1-1) unstable; urgency=low
 
   * Herramienta de adminsistracion del juego
