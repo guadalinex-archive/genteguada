@@ -9,6 +9,7 @@ import Queue
 import remotecommand
 import time
 import select
+import signal
 
 class RServer(synchronized.Synchronized):
 
@@ -27,12 +28,19 @@ class RServer(synchronized.Synchronized):
     self.__models = {}
     self.__rootModel = rootModel
     self.__port = port
+    self.__con = None
+    self.__activeServer = False
     self._onConnection = onConnection
     self._onDisconnection = onDisconnection
     self._onExecution = onExecution
+    signal.signal(signal.SIGINT, self.__finish)
     self.__start()
   #}}}
 
+  def __finish(self, signal, frame):
+    print "Finalizando el servidor del juego"
+    self.__con.server_close()
+    self.__activeServer = False
 
   @synchronized.synchronized(lockName='models')
   def getModelByID(self, theId): #{{{
@@ -56,18 +64,13 @@ class RServer(synchronized.Synchronized):
 
   def __start(self): #{{{
     utils.logger.debug("RServer.__start")
-    con = SocketServer.ThreadingTCPServer(('', self.__port), RServerHandler)
-    con.request_queue_size = 500
-    thread.start_new(con.serve_forever, ())
+    self.__con = SocketServer.ThreadingTCPServer(('', self.__port), RServerHandler)
+    self.__con.request_queue_size = 500
+    thread.start_new(self.__con.serve_forever, ())
     utils.logger.debug("Server listen...")
-    #TODO habra que eliminar este import porque para cerrar el servidor habra que hacerlo de otro manera
-    import sys
-    while 1:
-      data = raw_input('')
-      if data.rstrip() == "quit": 
-        con.server_close()
-        #utils.statServer.strServer()
-        sys.exit(0)
+    self.__activeServer = True
+    while self.__activeServer:
+      time.sleep(0.1)
   #}}}
 
 
