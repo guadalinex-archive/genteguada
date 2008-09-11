@@ -405,6 +405,7 @@ class IsoViewHud(isoview.IsoView):
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
+      print "pos aqui habra que hacer algo, pero cuando????" 
       self.__isoviewRoom.addIsoViewItem(ivItem)  
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, GG.utils.p3dToP2d(posOrigin, [0, 0]), pos, True)
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
