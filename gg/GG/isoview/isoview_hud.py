@@ -679,12 +679,13 @@ class IsoViewHud(isoview.IsoView):
     """ Shows a new chat message on screen.
     messageChat: new chat message.
     """  
+    print "Nuevo mensaje de chat"
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     animTime = (len(messageChat.getMessage()) / 12) * 1000
     if animTime < 2000:
       animTime = 2000 
     if messageChat.type == 3:
-      animTime = animTime * animTime   
+      animTime = animTime * 2   
     idleAnim = animation.IdleAnimation(animTime, ivMessageChat)
     positionAnim = animation.ScreenPositionAnimation(ANIM_CHAT_TIME2, ivMessageChat, ivMessageChat.getScreenPosition(), TEXT_BOX_OR, True)
     if not messageChat.type == 3:

@@ -84,11 +84,12 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, label, anchor, parentPosition):
+  def __init__(self, spriteName, label, anchor, parentPosition, idGift):
     """ Class constructor.
     spriteName: image name.
     """
     GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
+    self.__idGift = idGift
       
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
