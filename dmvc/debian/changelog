@@ -1,3 +1,9 @@
+dmvc (0.4.1-1) unstable; urgency=low
+
+  * Finalizada la edicion del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 11 Sep 2008 18:00:16 +0200
+
 dmvc (0.3.1-1) unstable; urgency=low
 
   * ejecuciones asincronas
