@@ -123,7 +123,7 @@ class WebGift(GGGiverNpc):
     return dic    
 
   def copyObject(self): 
-    return WebGift(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
+    return WebGift(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label, self.__creator)
   
   def getGiftFor(self, player):
     """ If target player does not have this item on his inventory, creates a new item and gives it to him.
