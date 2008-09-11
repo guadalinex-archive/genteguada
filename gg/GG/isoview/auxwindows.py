@@ -4,6 +4,8 @@ import GG.utils
 import guiobjects
 import ocempgui.widgets
 import os
+import copy
+import time
 
 BROADCAST_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "broadcastWIndow.png")
 EDIT_ROOM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindow.png")
@@ -732,10 +734,14 @@ class CreateItemsWindow(AuxWindow):
   def __selectionChange(self):
     """ Changes the default values, according to the selected item.
     """
+    name = self.__objectsArea.getSelectedName()
+    print ">>>", name
+    if not name:
+      return  
+    
     labelShift = [153, 10]
     spacing = 45
     self.editableFields = []
-    name = self.__objectsArea.getSelectedName()
     attrDict = self.__objectsDict[name]
     for label in self.activeLabels:
       self.container.remove_child(label)
@@ -758,9 +764,13 @@ class CreateItemsWindow(AuxWindow):
         self.activeLabels.append(self.images)
         self.editableFields[key] = self.images
       elif key == "imagesGift":
+        print "1"  
         self.imagesGiftList = attrDict[key]
+        print attrDict[key]
         height = 60
-        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)  
+        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)
+        print "2" 
+        #print "*************", str(10 + labelShift[0]), str(40 + iPos*spacing + 18 + labelShift[1]) 
         self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
         iPos += 1
         self.container.add_child(self.imagesgift)  
@@ -790,6 +800,8 @@ class CreateItemsWindow(AuxWindow):
       iPos += 1
 
   def openFileDialog(self):
+    """ Opens the file explorer dialog.
+    """  
     self.dialog = guiobjects.OcempPanel(373, 372, [528, 100], GG.utils.UPLOAD_BACKGROUND)
     self.dialog.zOrder = 10000
     self.listDir = guiobjects.OcempImageFileList(310, 239)
@@ -804,6 +816,8 @@ class CreateItemsWindow(AuxWindow):
     self.hud.widgetContainer.add_widget(self.dialog)
 
   def closeFileDialog(self, action):
+    """ Closes the file explorer dialog.
+    """  
     if action == "OK":
       filePath = None
       filePath = self.listDir.getFileName()
@@ -814,13 +828,77 @@ class CreateItemsWindow(AuxWindow):
     self.hud.widgetContainer.remove_widget(self.dialog)
 
   def uploadImageFinish(self, resultado):
+    """ Reloads the item pannel after an image upload finishes.
+    """  
     if resultado:
+      #self.__objectsDict["WebGift"]["imagesGift"].append(resultado)
       self.imagesGiftList.append(resultado)
-      self.imagesgift.imageList = self.imagesGiftList
-      self.imagesgift._list_contents()
-      self.container.remove_child(self.imagesgift)  
-      self.container.add_child(self.imagesgift)  
+      self.__selectionChange()
+      #self.__objectsArea.selectItem("WebGift")
+      
+      """
+      #print "Antes --->>> ", self.imagesGiftList
+      self.imagesGiftList.append(resultado)
+      #print "Mitad --->>> ", self.imagesGiftList
+      self.imagesgift.imagesList = self.imagesGiftListimport copy
 
+      #print "Despues --->>> ", self.imagesgift.imagesList
+      self.imagesgift._list_contents()
+      self.imagesgift.update()
+      self.container.update()
+      self.container.remove_child(self.imagesgift)  
+      self.imagesgift.selectItem(resultado)
+      self.container.add_child(self.imagesgift)  
+      """   
+         
+      """
+      name = self.__objectsArea.getSelectedName()
+      self.__objectsDict[name]["imagesGift"].append(resultado)  
+      #self.imagesGiftList.append(resultado)
+      #self.imagesgift.imagesList = self.imagesGiftList
+      #self.imagesgift._list_contents()
+      self.__objectsArea.selectItem("WebGift")
+      """
+      
+      """
+      print ">>>>>>>>>>> Terminado 1"
+      self.container.remove_child(self.imagesgift)
+      self.activeLabels.remove(self.imagesgift)
+      self.editableFields["imagesGift"] = None
+      self.imagesgift.destroy()
+      self.imagesgift = None
+      print ">>>>>>>>>>> Terminado 2"
+      self.imagesGiftList.append(resultado)
+      self.imagesgift = guiobjects.OcempImageList(190, 60, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)  
+      self.imagesgift.topleft = 163, 158
+      self.container.add_child(self.imagesgift)  
+      self.activeLabels.append(self.imagesgift)
+      self.editableFields["imagesGift"] = self.imagesgift
+      print ">>>>>>>>>>> Terminado 3"
+      """
+      
+      """  
+      print ">>>>>>>>>>> Terminado 2"
+      self.container.remove_child(self.imagesgift)
+      self.activeLabels.remove(self.imagesgift)
+      self.imagesgift.destroy()
+      print ">>>>>>>>>>> Terminado 3"
+      self.imagesGiftList.append(resultado)
+      self.imagesgift = guiobjects.OcempImageList(190, 60, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)  
+      self.imagesgift.topleft = 163, 158
+      self.container.add_child(self.imagesgift)  
+      self.activeLabels.append(self.imagesgift)
+      self.editableFields["imagesGift"] = self.imagesgift
+      print ">>>>>>>>>>> Terminado 4"
+      """
+      
+      #self.__objectsArea.selectItem("WebGift")
+      #self.imagesGiftList.append(resultado)
+      #self.imagesgift.imageList = self.imagesGiftList
+      #self.imagesgift._list_contents()
+      #self.container.remove_child(self.imagesgift)  
+      #self.container.add_child(self.imagesgift)  
+      
   def accept(self):
     """ Gets and checks all data to create a new room.
     """  

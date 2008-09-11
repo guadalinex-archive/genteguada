@@ -10,6 +10,7 @@ import stat
 import os
 import GG.utils
 import pygame.locals
+import copy
 
 
 # ======================= STYLES ===========================
@@ -307,7 +308,6 @@ STYLES = {
 # ===============================================================
 
 class GroupSprite(pygame.sprite.Group):
-#class GroupSprite(pygame.sprite.LayeredDirty):
   """ GroupSprite class.
   Redefines an OrderedUpdates sprite group class.
   """
@@ -329,8 +329,17 @@ class GroupSprite(pygame.sprite.Group):
 # ===============================================================
 
 class OcempPanel(ocempgui.widgets.Box):
+  """ OcempPanel class.
+  Redefines an ocempgui Box class as a panel.
+  """ 
 
   def __init__(self, width, height, topleft, imageBackground):
+    """ Class constructor.
+    width: panel width.
+    height: panel height.
+    topleft: panel top left position.
+    imageBackground: panel background image.
+    """  
     ocempgui.widgets.Box.__init__(self, width, height)
     self.topleft = topleft
     self.set_style(ocempgui.widgets.WidgetStyle(STYLES["buttonTopBar"]))
@@ -340,14 +349,26 @@ class OcempPanel(ocempgui.widgets.Box):
     self.add_child(imgBackground)
 
   def isInside(self, pos):
+    """ Checks if one point is inside the panel.
+    pos: point cords.
+    """  
     if (self.topleft[0] <= pos[0] <= (self.topleft[0] + self.width)): 
       if (self.topleft[1] <= pos[1] <= (self.topleft[1] + self.height)):
         return True
     return False
 
+# ===============================================================
+
 class OcempLabel(ocempgui.widgets.Label):
+  """ OcempLabel class.
+  Redefines an ocempgui label class.
+  """ 
 
   def __init__(self, text, style):
+    """ Class constructor.
+    text: label text.
+    style: label text style.
+    """  
     try:
       self.label = text.decode("utf-8")
     except:
@@ -361,16 +382,27 @@ class OcempLabel(ocempgui.widgets.Label):
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
   def update(self):
+    """ Updates the label text.
+    """  
     self.draw()
 
   def draw(self):
+    """ Draws the label text.
+    """  
     self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
 
 # ===============================================================
 
 class OcempLabelNotTransparent(ocempgui.widgets.Label):
+  """ OcempLabelNotTransparent class.
+  Redefines an ocempgui label class as a not transparent label.
+  """ 
 
   def __init__(self, text, width):
+    """ Class constructor.
+    text: label text.
+    style: label text style.
+    """  
     line = ""  
     try:
       cad = text.decode("utf-8")
@@ -395,18 +427,32 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
 # ===============================================================
 
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
+  """ OcempImageMapTransparent class.
+  Redefines an ocempgui image map class as transparent.
+  """ 
 
   def __init__(self, image):
+    """ Class constructor.
+    image: image file name.
+    """  
     ocempgui.widgets.ImageMap.__init__(self, image)
   
   def draw (self):
+    """ Draws the image on screen.
+    """  
     self._image = self.picture
       
 # ===============================================================
 
 class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
+  """ OcempImageButtonTransparent class.
+  Redefines an ocempgui image button class as a transparent one.
+  """ 
 
   def __init__(self, image, label = None, tooltipShow = None, tooltipRemove = None):
+    """ Class constructor.
+    image: image file name.
+    """
     ocempgui.widgets.ImageButton.__init__(self, image)
     if tooltipShow and label:
       self.connect_signal (ocempgui.widgets.Constants.SIG_ENTER, tooltipShow, label)
@@ -553,7 +599,15 @@ class OcempImageObjectList(OcempImageFileList):
       return item[0].text
     return None
 
-
+  def selectItem(self, itemName):
+    for item in self.items:
+      print item.text  
+      if item.text == itemName:
+        prevSelected = self.get_selected()
+        if len(prevSelected):
+          self._set_cursor(prevSelected[0], False)
+        self._set_cursor(item, True)
+        
 # ===============================================================
   
 class OcempImageList(OcempImageFileList):
@@ -563,12 +617,15 @@ class OcempImageList(OcempImageFileList):
     self.relativePath = relativePath
     self.set_selectionmode(ocempgui.widgets.Constants.SELECTION_SINGLE)
     OcempImageFileList.__init__(self, width, height)
-
+    
   def _list_contents (self):
     items = ocempgui.widgets.components.ListItemCollection()
     for image in self.imagesList:
       items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
     self.set_items (items)
+    
+  def getImagesList(self):
+    return self.imagesList  
 
   def getSelectedName(self):
     item = self.get_selected()
