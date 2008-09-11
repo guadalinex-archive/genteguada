@@ -135,6 +135,4 @@ class WebGift(GGGiverNpc):
                                                     
   def generateId(self):
     originalString = self.__creator + str(int(time.time()))
-    print originalString
-    print md5.new(originalString).hexdigest()
     return md5.new(originalString).hexdigest()                                              

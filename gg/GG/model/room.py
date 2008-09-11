@@ -374,7 +374,7 @@ class GGRoom(ggmodel.GGModel):
     """ Returns the nearest empty cell to a position.
     pos: start position.
     """
-    if not self.getBlocked(pos):
+    if not (pos[0] > self.size[0] or pos[1] > self.size[1]) and not self.getBlocked(pos):
       return pos
     emptyCell = self.getEmptyCell()
     if len(emptyCell) == 0:

@@ -1044,6 +1044,7 @@ class IsoViewHud(isoview.IsoView):
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return
     pos = room.getNearestEmptyCell(self.__player.getPosition())
+    print pos
     itemList = self.__player.getTile().getItemsFrom(self.__player)
     for item in itemList:
       item.changeRoom(room, pos)

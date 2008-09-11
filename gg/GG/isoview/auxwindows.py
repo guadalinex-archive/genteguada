@@ -6,6 +6,7 @@ import ocempgui.widgets
 import os
 import copy
 import time
+import shutil
 
 BROADCAST_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "broadcastWIndow.png")
 EDIT_ROOM_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "editRoomWindow.png")
@@ -561,7 +562,6 @@ class CreateRoomWindow(AuxWindow):
     self.container.add_child(self.sizeY)
     
     label = guiobjects.OcempLabel("maxUsers", guiobjects.STYLES["itemLabel"])
-    #label.topleft = 10 + 190 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     label.topleft = 10 + 130 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     
@@ -569,7 +569,6 @@ class CreateRoomWindow(AuxWindow):
     self.maxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.maxUsers.text = "10"
     self.maxUsers.border = 1
-    #self.maxUsers.topleft = 10 + 190 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.maxUsers.topleft = 10 + 130 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.maxUsers.set_minimum_size(50, 20)
     self.container.add_child(self.maxUsers)
@@ -579,7 +578,6 @@ class CreateRoomWindow(AuxWindow):
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.enabledChecker = ocempgui.widgets.CheckButton()
-    #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     self.enabledChecker.activate()
     self.enabledChecker.border = 1
@@ -590,9 +588,7 @@ class CreateRoomWindow(AuxWindow):
     label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.startRoomChecker = ocempgui.widgets.CheckButton()
-    #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.startRoomChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.startRoomChecker.activate()
     self.startRoomChecker.border = 1
     self.startRoomChecker.topleft = 10 + 120 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.container.add_child(self.startRoomChecker)
@@ -627,7 +623,9 @@ class CreateRoomWindow(AuxWindow):
         for singleSprite in room.spriteFull:
           imgNames.append(singleSprite[singleSprite.rfind("/")+1:])  
         self.images.selectItems(imgNames)
-
+        self.enabledChecker.set_active(room.getEnabled())
+        self.startRoomChecker.set_active(room.getStartRoom())
+          
   def accept(self):
     """ Gets and checks all data to create a new room.
     """  
@@ -737,13 +735,13 @@ class CreateItemsWindow(AuxWindow):
     name = self.__objectsArea.getSelectedName()
     if not name:
       return  
-    
     labelShift = [153, 10]
     spacing = 45
     self.editableFields = []
     attrDict = self.__objectsDict[name]
     for label in self.activeLabels:
       self.container.remove_child(label)
+      label.destroy()
     self.activeLabels = []  
     self.editableFields = {}
     iPos = 0
@@ -773,6 +771,7 @@ class CreateItemsWindow(AuxWindow):
         self.editableFields[key] = self.imagesgift
         buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + labelShift[0], 40 + iPos*spacing + 40 + labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
         self.container.add_child(buttonFileChooser)
+        self.activeLabels.append(buttonFileChooser)
         iPos += 1
       else:  
         fCount = 0
@@ -817,6 +816,7 @@ class CreateItemsWindow(AuxWindow):
       filePath = None
       filePath = self.listDir.getFileName()
       if filePath:
+        self.origFilePath = filePath
         GG.genteguada.GenteGuada.getInstance().asyncUploadFile(filePath, self.uploadImageFinish, "imagesgift")
     self.removeTooltip()
     self.hud.removeSprite(self.dialog)
@@ -826,73 +826,21 @@ class CreateItemsWindow(AuxWindow):
     """ Reloads the item pannel after an image upload finishes.
     """  
     if resultado:
-      #self.__objectsDict["WebGift"]["imagesGift"].append(resultado)
+      fileName = "imagesgift-"+resultado
+      shutil.copy(self.origFilePath, os.path.join(GG.utils.LOCAL_DATA_PATH, fileName))
       self.imagesGiftList.append(resultado)
-      self.__selectionChange()
-      #self.__objectsArea.selectItem("WebGift")
-      
-      """
-      #print "Antes --->>> ", self.imagesGiftList
-      self.imagesGiftList.append(resultado)
-      #print "Mitad --->>> ", self.imagesGiftList
-      self.imagesgift.imagesList = self.imagesGiftListimport copy
-
-      #print "Despues --->>> ", self.imagesgift.imagesList
-      self.imagesgift._list_contents()
-      self.imagesgift.update()
-      self.container.update()
-      self.container.remove_child(self.imagesgift)  
-      self.imagesgift.selectItem(resultado)
-      self.container.add_child(self.imagesgift)  
-      """   
-         
-      """
-      name = self.__objectsArea.getSelectedName()
-      self.__objectsDict[name]["imagesGift"].append(resultado)  
-      #self.imagesGiftList.append(resultado)
-      #self.imagesgift.imagesList = self.imagesGiftList
-      #self.imagesgift._list_contents()
-      self.__objectsArea.selectItem("WebGift")
-      """
-      
-      """
-      print ">>>>>>>>>>> Terminado 1"
       self.container.remove_child(self.imagesgift)
       self.activeLabels.remove(self.imagesgift)
-      self.editableFields["imagesGift"] = None
+      del self.editableFields["imagesGift"]
       self.imagesgift.destroy()
-      self.imagesgift = None
-      print ">>>>>>>>>>> Terminado 2"
-      self.imagesGiftList.append(resultado)
-      self.imagesgift = guiobjects.OcempImageList(190, 60, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)  
-      self.imagesgift.topleft = 163, 158
-      self.container.add_child(self.imagesgift)  
+      height = 60
+      labelShift = [153, 10]
+      spacing = 45
+      self.imagesgift = guiobjects.OcempImageList(190, height, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)
+      self.imagesgift.topleft = 10 + labelShift[0], 40 + 2*spacing + 18 + labelShift[1]
+      self.container.add_child(self.imagesgift)
       self.activeLabels.append(self.imagesgift)
       self.editableFields["imagesGift"] = self.imagesgift
-      print ">>>>>>>>>>> Terminado 3"
-      """
-      
-      """  
-      print ">>>>>>>>>>> Terminado 2"
-      self.container.remove_child(self.imagesgift)
-      self.activeLabels.remove(self.imagesgift)
-      self.imagesgift.destroy()
-      print ">>>>>>>>>>> Terminado 3"
-      self.imagesGiftList.append(resultado)
-      self.imagesgift = guiobjects.OcempImageList(190, 60, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)  
-      self.imagesgift.topleft = 163, 158
-      self.container.add_child(self.imagesgift)  
-      self.activeLabels.append(self.imagesgift)
-      self.editableFields["imagesGift"] = self.imagesgift
-      print ">>>>>>>>>>> Terminado 4"
-      """
-      
-      #self.__objectsArea.selectItem("WebGift")
-      #self.imagesGiftList.append(resultado)
-      #self.imagesgift.imageList = self.imagesGiftList
-      #self.imagesgift._list_contents()
-      #self.container.remove_child(self.imagesgift)  
-      #self.container.add_child(self.imagesgift)  
       
   def accept(self):
     """ Gets and checks all data to create a new room.
