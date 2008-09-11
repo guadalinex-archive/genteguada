@@ -359,7 +359,7 @@ class GGSession(ggmodel.GGModel):
         return
       spriteImgGift = os.path.join(GG.utils.IMAGES_GIFT, imgGift) 
       spriteImg = os.path.join("furniture", img)
-      box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label)
+      box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label, self.__player.username)
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     

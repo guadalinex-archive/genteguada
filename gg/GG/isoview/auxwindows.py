@@ -735,7 +735,6 @@ class CreateItemsWindow(AuxWindow):
     """ Changes the default values, according to the selected item.
     """
     name = self.__objectsArea.getSelectedName()
-    print ">>>", name
     if not name:
       return  
     
@@ -764,13 +763,9 @@ class CreateItemsWindow(AuxWindow):
         self.activeLabels.append(self.images)
         self.editableFields[key] = self.images
       elif key == "imagesGift":
-        print "1"  
         self.imagesGiftList = attrDict[key]
-        print attrDict[key]
         height = 60
         self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)
-        print "2" 
-        #print "*************", str(10 + labelShift[0]), str(40 + iPos*spacing + 18 + labelShift[1]) 
         self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
         iPos += 1
         self.container.add_child(self.imagesgift)  

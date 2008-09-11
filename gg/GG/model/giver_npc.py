@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import md5
+import time
 import GG.utils
 import room_item
 import generated_inventory_item
@@ -97,7 +99,7 @@ class GGGiverNpc(room_item.GGRoomItem):
 
 class WebGift(GGGiverNpc):
     
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
+  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label, creator):
     """ Class constructor.
     spriteName: image name.
     anchor: image offset on screen.
@@ -106,8 +108,9 @@ class WebGift(GGGiverNpc):
     label: item label.
     """
     GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
-    self.__idGift = 0
-
+    self.__creator = creator
+    self.__idGift = self.generateId()
+    
   def getOptions(self):
     """ Returns the item's available options.
     """
@@ -129,3 +132,9 @@ class WebGift(GGGiverNpc):
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.label, self.anchor, \
                                                     self.getPosition(), self.__idGift), self.getPosition()
+                                                    
+  def generateId(self):
+    originalString = self.__creator + str(int(time.time()))
+    print originalString
+    print md5.new(originalString).hexdigest()
+    return md5.new(originalString).hexdigest()                                              

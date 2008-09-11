@@ -109,9 +109,6 @@ class CreateWorld:
     penguinLobbyText = "¡Bienvenido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y ábrela."
     myPenguin = penguin.GGPenguinTalker(PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinLobbyText)
     
-    myGoldenKeyRoom1 = giver_npc.WebGift(KEY_GOLDEN, [15, -30], [0, 0], KEY_GOLDEN, "Llave Dorada")
-    self.__room1.addItemFromVoid(myGoldenKeyRoom1, [1, 1])
-    
     self.__room1.addItemFromVoid(myPenguin, [1, 6])
     myBox = box_heavy.GGBoxHeavy(BOX_HEAVY, [26, -10], [0, -12], "Caja pesada")
     self.__room1.addItemFromVoid(myBox, [6, 6])
