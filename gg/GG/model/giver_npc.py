@@ -106,6 +106,7 @@ class WebGift(GGGiverNpc):
     label: item label.
     """
     GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
+    self.__idGift = 0
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -127,5 +128,4 @@ class WebGift(GGGiverNpc):
     player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.label, self.anchor, \
-                                                    self.getPosition()), self.getPosition()
-    
+                                                    self.getPosition(), self.__idGift), self.getPosition()
