@@ -601,7 +601,6 @@ class OcempImageObjectList(OcempImageFileList):
 
   def selectItem(self, itemName):
     for item in self.items:
-      print item.text  
       if item.text == itemName:
         prevSelected = self.get_selected()
         if len(prevSelected):
