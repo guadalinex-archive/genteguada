@@ -45,14 +45,12 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
-      
     itemsDict = self.getModel().getPositionItems()
     for item in itemsDict:
       isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["image"])
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem  
-      
     """  
     for item in self.getModel().getItems():
       isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
@@ -60,7 +58,6 @@ class IsoViewRoom(isoview.IsoView):
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
     """  
-      
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -171,6 +168,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getPosition()
+    print "addIsoViewItem"
     self.updateScreenPositionsOn(pos)
 
   def removeIsoViewItem(self, ivPlayer):
@@ -190,6 +188,7 @@ class IsoViewRoom(isoview.IsoView):
     ivPlayer.unsubscribeAllEvents()
     
   def updateScreenPos(self, event):    
+    print "updateScreenPos"
     self.updateScreenPositionsOn(event.getParams()['position'])
     
   def floorChanged(self, event):
@@ -199,12 +198,13 @@ class IsoViewRoom(isoview.IsoView):
       for y in range(len(self.__tileList[x])):
         self.__tileList[x][y].setImg(os.path.join(GG.utils.TILE, newTiles[x][y]))
     
-  def updateScreenPositionsOn(self, pos):
+  def updateScreenPositionsOn(self, pos, itemList = None):
     """ Updates the screen cords of all items on a room position.
     pos: room position.
     """  
     tile = self.__tileList[pos[0]][pos[1]].getModel()
-    itemList = tile.getItems()
+    if not itemList:
+      itemList = tile.getItems()
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     i = 0
@@ -309,6 +309,7 @@ class IsoViewRoom(isoview.IsoView):
     keys = itemPositions.keys()
     for key in keys:
       if itemPositions[key] == 1:
+        print "updateScreenPositions"
         self.updateScreenPositionsOn(key.getPosition())  
     #for ivItem in self.__isoViewItems:
     #  self.updateScreenPositionsOn(ivItem.getPosition())      

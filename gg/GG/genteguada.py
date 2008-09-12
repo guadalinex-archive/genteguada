@@ -108,8 +108,8 @@ class GenteGuada:
       time.sleep(2)
       self.__input(pygame.event.get())
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    self.__session = winLogin.draw()
-    #self.__session = winLogin.draw(params.user, params.password)
+    #self.__session = winLogin.draw()
+    self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
     if self.__session.getPlayer().admin:
       value = winLogin.drawAccessMode()  
