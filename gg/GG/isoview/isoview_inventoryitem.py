@@ -27,6 +27,9 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.zOrder = 10001
     
+  def updateZOrder(self):
+    pass  
+  
   def getImg(self):
     """ Returns the item's image.
     """  
