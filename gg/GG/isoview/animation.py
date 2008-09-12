@@ -4,6 +4,8 @@ import pygame
 import GG
 import os
 
+COLOR_SHIFT = 10
+
 class Animation(object):
   """ Animation class.
   Defines animation methods and atributes.
@@ -159,7 +161,8 @@ class IdleAnimation(Animation):
     isoview: isoview used on the animation.
     """
     Animation.__init__(self, time, isoview)
-    
+
+# ===============================================================
     
 class ScreenPositionAnimation(Animation):
   """ PositionAnimation class.
@@ -203,7 +206,7 @@ class ScreenPositionAnimation(Animation):
     """
     self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     Animation.stop(self)
-  
+
 # ===============================================================
     
 class MovieAnimation(Animation):

@@ -15,8 +15,14 @@ import privatechatwindow
 import webbrowser
 import auxwindows
 
+
 from pygame.locals import * # faster name resolution
 import os
+
+class FakeModel:
+  def __init__(self, spriteInventory, label):
+    self.spriteInventory = spriteInventory
+    self.label = label
 
 # ======================= CONSTANTS ===========================
 BG_FULL_OR = [0, 0]
@@ -43,6 +49,7 @@ TILE_SELECTED = os.path.join(GG.utils.TILE, "selected.png")
 TILE_TARGET = os.path.join(GG.utils.TILE, "target.png")
 # =============================================================
 
+NOTIFICATION_IMAGE = os.path.join(GG.utils.HUD_PATH, "4.png")
 MOVE_IN_IMAGE = os.path.join(GG.utils.HUD_PATH, "movein.png")
 MOVE_OUT_IMAGE = os.path.join(GG.utils.HUD_PATH, "moveout.png")
 LIFT_IMAGE = os.path.join(GG.utils.HUD_PATH, "lift.png")
@@ -505,6 +512,8 @@ class IsoViewHud(isoview.IsoView):
     self.processEvent(events)
     if self.__isoviewRoom:
       self.__isoviewRoom.updateFrame(elapsedTime)
+    for item in self.__isoviewInventory:
+      item.updateFrame(elapsedTime)  
     self.__allSprites.draw(self.getScreen())
     pygame.display.flip()
         
@@ -1426,10 +1435,22 @@ class IsoViewHud(isoview.IsoView):
     chat = event.getParams()['chat']
     player = event.getParams()['player']
     if self.__privateChatWindow.hide == True:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(CREATE_ITEM_IMAGE)
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(NOTIFICATION_IMAGE)
       self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
       self.hud.remove_child(self.__privateChatButton)
       self.hud.add_child(self.__privateChatButton)
+      
+      mail = FakeModel("book.png", "correo")
+      posOrigin = [0, 0]
+      pos = [960, 540]
+      invItem = isoview_inventoryitem.IsoViewInventoryItem(mail, self.getScreen(), self)
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME*2, invItem, posOrigin, pos, True)
+      self.addSprite(invItem.getImg())
+      self.__isoviewInventory.append(invItem)
+      positionAnim.setOnStop(self.removeSprite, invItem.getImg())  
+      positionAnim.setOnStop(self.__isoviewInventory.remove, invItem)
+      invItem.setAnimation(positionAnim)
+    
     self.__privateChatWindow.incomingChatMessage(chat, player)
       
   def removeContactRemote(self, event):
