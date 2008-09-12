@@ -147,7 +147,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
             data += self.request.recv(size - len(data))
 
           commandOrFragment = pickle.loads(data)
-          #print commandOrFragment
+          print commandOrFragment
           if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
             self.__processCommand(commandOrFragment, size)
           elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
@@ -233,7 +233,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       self.request.send(size)
       self.request.send(serialized)
       #if command:
-        #print "Enviado ",sizeSerialized , command
+      #  print "Enviado ",sizeSerialized , command
       return True
     except:
       utils.logger.exception("Can''t send an object, probable conexion lost")
