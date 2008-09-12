@@ -140,7 +140,6 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('contactAdded', self.newContactAdded)
     self.__player.subscribeEvent("privateChatReceived", self.privateChatReceived)
     self.__player.subscribeEvent("removeContactRemote", self.removeContactRemote)
-    self.__player.subscribeEvent('destination', self.destinationChanged)
     self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
     self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
     self.__player.subscribeEvent('finish', self.finishGame)
@@ -1440,7 +1439,6 @@ class IsoViewHud(isoview.IsoView):
       self.__privateChatButton.picture = ocempgui.draw.Image.load_image(imgPath)
       self.hud.remove_child(self.__privateChatButton)
       self.hud.add_child(self.__privateChatButton)
-      
       mail = FakeModel("book.png", "correo")
       posOrigin = [0, 0]
       pos = [960, 540]
@@ -1451,7 +1449,6 @@ class IsoViewHud(isoview.IsoView):
       positionAnim.setOnStop(self.removeSprite, invItem.getImg())  
       positionAnim.setOnStop(self.__isoviewInventory.remove, invItem)
       invItem.setAnimation(positionAnim)
-    
     self.__privateChatWindow.incomingChatMessage(chat, player)
       
   def removeContactRemote(self, event):
@@ -1468,12 +1465,6 @@ class IsoViewHud(isoview.IsoView):
       self.__isoviewRoom.unsubscribeAllEvents()
     self.__player.unsubscribeEventObserver(self)
     isoview.IsoView.unsubscribeAllEvents(self) 
-      
-  def destinationChanged(self, event):
-    """ Triggers after receiving a destination change event.
-    event: event info.
-    """
-    self.setMovementDestination(event.getParams()['destination'])
   
   def playerConfigurationChanged(self, event):
     """ Triggers after receiving a player avatar configuration change event.

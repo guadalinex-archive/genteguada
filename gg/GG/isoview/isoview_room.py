@@ -168,7 +168,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getPosition()
-    print "addIsoViewItem"
     self.updateScreenPositionsOn(pos)
 
   def removeIsoViewItem(self, ivPlayer):
@@ -188,7 +187,6 @@ class IsoViewRoom(isoview.IsoView):
     ivPlayer.unsubscribeAllEvents()
     
   def updateScreenPos(self, event):    
-    print "updateScreenPos"
     self.updateScreenPositionsOn(event.getParams()['position'])
     
   def floorChanged(self, event):
@@ -309,10 +307,7 @@ class IsoViewRoom(isoview.IsoView):
     keys = itemPositions.keys()
     for key in keys:
       if itemPositions[key] == 1:
-        print "updateScreenPositions"
         self.updateScreenPositionsOn(key.getPosition())  
-    #for ivItem in self.__isoViewItems:
-    #  self.updateScreenPositionsOn(ivItem.getPosition())      
 
   def getTile(self, pos):
     return self.__tileList[pos[0]][pos[1]] 
