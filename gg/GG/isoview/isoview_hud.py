@@ -1196,6 +1196,8 @@ class IsoViewHud(isoview.IsoView):
   def jump(self):
     """ Makes the player jump.
     """  
+    #self.getModel().getSystem().deletePlayer("pepa")
+    #self.getModel().getSystem().deleteGift("recopetin")
     if not self.findIVItem(self.__player).hasAnimation():
       self.__player.jump()
 

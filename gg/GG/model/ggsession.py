@@ -161,6 +161,9 @@ class GGSession(ggmodel.GGModel):
     name: player name.
     """  
     return self.__system.getSpecificPlayer(name)  
+
+  def getSystem(self):
+    return self.__system  
     
   def newBroadcastMessage(self, line):
     self.__system.newBroadcastMessage(line, self.__player)  

@@ -4,6 +4,7 @@ import dMVC.model
 import GG.utils
 import GG.model.room
 import GG.model.ggsession
+import GG.model.giver_npc
 import thread
 import time
 import os
@@ -399,4 +400,65 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       room.newChatMessage(line, player, 3)    
 
+  def deleteGift(self, idGift, username=None):
+    """ Deletes a web gift from the game.
+    idGift: gift id.
+    username: gift owner.
+    """  
+    markedItem = None
+    markedRoom = None
+    markedPlayer = None
     
+    if username:
+      player = self.getSpecificPlayer(username)  
+      if player:
+        inventory = player.getInventory()
+        for item in inventory:
+          if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
+            if item.getIdGift() == idGift:
+              markedItem = item
+              markedPlayer = player
+    else:
+      for player in self.__players:
+        inventory = player.getInventory()
+        for item in inventory:
+          if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
+            if item.getIdGift() == idGift:
+              markedItem = item
+              markedPlayer = player
+                
+    if markedItem:
+      markedPlayer.removeFromInventory(markedItem)
+      return
+    
+    markedItem = None
+    markedRoom = None
+    markedPlayer = None
+    
+    for room in self.__rooms:
+      items = room.getItems()
+      for item in items:
+        if isinstance(item, GG.model.giver_npc.WebGift):
+          if item.getIdGift() == idGift:
+            markedItem = item
+            markedRoom = room
+    if markedItem:
+      markedRoom.removeItem(markedItem)
+      return
+  
+            
+  def deletePlayer(self, username):
+    """ Deletes a player and all references to him from the game.
+    username: player name.
+    """  
+    markedPlayer = None
+    markedSession = None
+    for player in self.__players:
+      if player.username == username:
+        markedPlayer = player
+      else:
+        player.removePlayerContactFromAgenda(username)  
+    if not markedPlayer:
+      return
+    markedPlayer.kick()
+    self.__players.remove(markedPlayer)

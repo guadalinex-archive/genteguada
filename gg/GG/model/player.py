@@ -629,7 +629,17 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     contact: contact to be removed.
     """  
     self.removeContact(contact)  
-    self.triggerEvent("removeContactRemote", contact=contact)  
+    self.triggerEvent("removeContactRemote", contact=contact)
+    
+  def removePlayerContactFromAgenda(self, playerName):
+    contactSelected = None
+    for item in self.__agenda:
+      if item.getPlayer().username == playerName:
+        contactSelected = item
+        break
+    if contactSelected:
+      self.__agenda.remove(contactSelected)
+      self.triggerEvent("removeContactRemote", contact=contactSelected)
     
   def checkContact(self, player):
     """ Checks if a contact already exists on the agenda.
@@ -638,7 +648,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
     else:
-      if player.admin:
+      if not player.getAccessMode():
         player.newChatMessage("No puedes entregarle una tarjeta a este usuario.", 1)
       else:  
         player.newChatMessage("Preguntando a " + self.username + "...", 1)  
