@@ -43,7 +43,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
-    self.getModel().subscribeEvent('destination', self.destinationChanged)
+    #self.getModel().subscribeEvent('destination', self.destinationChanged)
   
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
@@ -55,6 +55,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
         self.__path = "avatars/ghost/"
         GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
+  def setDestination(self, destination):
+    self.__destination = destination
+  
   def __del__(self):
     """ Class destructor.
     """  
@@ -273,7 +276,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.__destination = event.getParams()['destination']
     listItemsTile = event.getParams()["listItemsTiles"]
-    self.getParent().setMovementDestination(self.__destination)
     self.getIVRoom().updateScreenPositionsOn(self.getPosition(),listItemsTile)
     
   def positionChanged(self, event):

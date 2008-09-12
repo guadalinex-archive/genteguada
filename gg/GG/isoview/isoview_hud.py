@@ -143,6 +143,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
     self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
     self.__player.subscribeEvent('finish', self.finishGame)
+    self.__player.subscribeEvent('destination', self.destinationChanged)
     self.__selectedItem = None
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_SELECTED)  
     self.__selectedImage = pygame.sprite.Sprite()
@@ -715,7 +716,13 @@ class IsoViewHud(isoview.IsoView):
     messageChat = event.getParams()['message']
     ivMessageChat = messageChat.chatView(self.getScreen(), self)
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
-        
+  
+  def destinationChanged(self, event):
+    destination = event.getParams()['destination']
+    ivPlayer = self.findIVItem(self.__player)
+    ivPlayer.setDestination(destination)
+    self.setMovementDestination(destination)
+
   def setMovementDestination(self, target):
     """ Adds a marker to the player's movement destination.
     target: movement destination.
