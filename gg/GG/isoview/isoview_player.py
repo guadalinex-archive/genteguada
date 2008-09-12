@@ -271,9 +271,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
-    listItemsTile = event.getParams()["listItemsTiles"]
-    self.getIVRoom().updateScreenPositionsOn(self.getPosition(),listItemsTile)
     self.__destination = event.getParams()['destination']
+    listItemsTile = event.getParams()["listItemsTiles"]
+    self.getParent().setMovementDestination(self.__destination)
+    self.getIVRoom().updateScreenPositionsOn(self.getPosition(),listItemsTile)
     
   def positionChanged(self, event):
     """ Triggers after receiving a position change event.

@@ -8,7 +8,7 @@ import positioned_view
 import guiobjects
 
 # ======================= CONSTANTS ===========================
-CHAT_PATH = "interface/chat2"
+CHAT_PATH = "interface/chat"
 
 BALLOON_OPACITY = 210
 # Message types --> 0: general; 1: private; 2: npcs; 3: system)

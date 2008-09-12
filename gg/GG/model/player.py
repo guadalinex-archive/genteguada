@@ -321,56 +321,55 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Calls for an update on player's position an movement direction.
     now: current timestamp.
     """
-    if self.getRoom() == None:
-      return
-    item_with_inventory.GGItemWithInventory.tick(self, now) 
-    if self.getPosition() == self.__destination:
-      if self.__state == GG.utils.STATE[2]:
-        self.setState(GG.utils.STATE[1])
+    if self.getRoom():
+      #item_with_inventory.GGItemWithInventory.tick(self, now) 
+      if self.getPosition() == self.__destination:
+        if self.__state == GG.utils.STATE[2]:
+          self.setState(GG.utils.STATE[1])
+          return
+        if self.__state == GG.utils.STATE[4]:
+          self.setState(GG.utils.STATE[3])
+          return
         return
-      if self.__state == GG.utils.STATE[4]:
-        self.setState(GG.utils.STATE[3])
-        return
-      return
-    ori = self.getPosition()
-    end = self.getDestination()
-    if GG.utils.checkNeighbour(ori, end):
-      direction = GG.utils.getNextDirection(ori, end)
-    else:
-      direction = self.getRoom().getNextDirection(self, ori, end)
+      ori = self.getPosition()
+      end = self.getDestination()
+      if GG.utils.checkNeighbour(ori, end):
+        direction = GG.utils.getNextDirection(ori, end)
+      else:
+        direction = self.getRoom().getNextDirection(self, ori, end)
+        if direction == GG.utils.HEADING[0]:
+          self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
+          self.setDestination(self.getPosition())
+          return
       if direction == GG.utils.HEADING[0]:
-        self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
         self.setDestination(self.getPosition())
         return
-    if direction == GG.utils.HEADING[0]:
-      self.setDestination(self.getPosition())
-      return
-    pos = self.getPosition()
-    if self.__state == GG.utils.STATE[1]:
-      self.setState(GG.utils.STATE[2])
-    elif self.__state == GG.utils.STATE[3]:
-      self.setState(GG.utils.STATE[4])
-    self.setHeading(direction)
-    if self.getHeading() == "up":
-      next = [pos[0], pos[1] - 1]
-    if self.getHeading() == "down":
-      next = [pos[0], pos[1] + 1]
-    if self.getHeading() == "left":
-      next = [pos[0] - 1, pos[1]]
-    if self.getHeading() == "right":
-      next = [pos[0] + 1, pos[1]]
-    if self.getHeading() == "topleft":
-      next = [pos[0] - 1, pos[1] - 1]
-    if self.getHeading() == "bottomright": 
-      next = [pos[0] + 1, pos[1] + 1]
-    if self.getHeading() == "bottomleft":
-      next = [pos[0] - 1, pos[1] + 1]
-    if self.getHeading() == "topright":
-      next = [pos[0] + 1, pos[1] - 1]
-    self.__visited.append(pos)
-    items = self.getTile().getItemsFrom(self)
-    for item in items:
-      item.setPosition(next)
+      pos = self.getPosition()
+      if self.__state == GG.utils.STATE[1]:
+        self.setState(GG.utils.STATE[2])
+      elif self.__state == GG.utils.STATE[3]:
+        self.setState(GG.utils.STATE[4])
+      self.setHeading(direction)
+      if self.getHeading() == "up":
+        next = [pos[0], pos[1] - 1]
+      if self.getHeading() == "down":
+        next = [pos[0], pos[1] + 1]
+      if self.getHeading() == "left":
+        next = [pos[0] - 1, pos[1]]
+      if self.getHeading() == "right":
+        next = [pos[0] + 1, pos[1]]
+      if self.getHeading() == "topleft":
+        next = [pos[0] - 1, pos[1] - 1]
+      if self.getHeading() == "bottomright": 
+        next = [pos[0] + 1, pos[1] + 1]
+      if self.getHeading() == "bottomleft":
+        next = [pos[0] - 1, pos[1] + 1]
+      if self.getHeading() == "topright":
+        next = [pos[0] + 1, pos[1] - 1]
+      self.__visited.append(pos)
+      items = self.getTile().getItemsFrom(self)
+      for item in items:
+        item.setPosition(next)
       
   def changeRoom(self, room, pos):
     """ Changes the player's room.
