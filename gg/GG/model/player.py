@@ -230,8 +230,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     state: new state
     """
     if not self.__state == state:
+      listItemsTile = self.getRoom().getTile(self.getPosition()).getItems()
       self.__state = state
-      self.triggerEvent('state', state=state, position=self.getPosition())
+      self.triggerEvent('state', state=state, position=self.getPosition(), listItemsTiles=listItemsTile)
   
   # self.__destination
   
@@ -245,9 +246,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     destination: movement destination.
     """
     if not self.__destination == destination:
+      listItemsTile = self.getRoom().getTile(self.getPosition()).getItems()
       self.__visited = []
       self.__destination = destination
-      self.triggerEvent('destination', destination=destination)
+      self.triggerEvent('destination', destination=destination, listItemsTiles=listItemsTile)
     
   def setStartDestination(self, destination):
     """ Sets a new destination for the player movement without calling for a 'destination' event.

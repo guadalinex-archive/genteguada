@@ -28,8 +28,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     parent: isoview_hud handler.
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
-    #pos = self.getScreenPosition()
-    #self.setScreenPosition([pos[0], -500])
     self.__movieAnimation = None
     self.__destination = None
     self.__tempTimestamp = None
@@ -39,7 +37,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__path = model.getImagePath()
     self.__getAvatarImages()
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
-    #self.setImg(GG.utils.getSpriteName(model.getState(), model.getHeading(), 0, self.__timestamp))
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
@@ -47,8 +44,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
     self.getModel().subscribeEvent('destination', self.destinationChanged)
-    #self.__heading = self.getModel().getHeading()
-    #self.__state = self.getModel().getState()
   
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
@@ -194,13 +189,14 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     st = event.getParams()["state"]
     self.__state = st
     pos = event.getParams()["position"]
+    listItemsTile = event.getParams()["listItemsTiles"]
       
     if st == GG.utils.STATE[1]: # standing
       self.getParent().removeMovementDestination()
       self.setAnimation(None)
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0, self.__timestamp), self.__path)
-      self.getIVRoom().updateScreenPositionsOn(pos)
+      self.getIVRoom().updateScreenPositionsOn(pos, listItemsTile)
       
     elif st == GG.utils.STATE[2]: # walking
       self.setAnimation(None)
@@ -213,7 +209,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.setAnimation(None)   
       self.setMovieAnimation(None)  
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[3], self.__heading, 0, self.__timestamp), self.__path)
-      self.getIVRoom().updateScreenPositionsOn(pos)
+      self.getIVRoom().updateScreenPositionsOn(pos, listItemsTile)
       
     elif st == GG.utils.STATE[4]: # walking_carrying
       self.setAnimation(None)
@@ -275,7 +271,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a destination change event.
     event: event info.
     """
-    self.getIVRoom().updateScreenPositionsOn(self.getPosition())
+    listItemsTile = event.getParams()["listItemsTiles"]
+    self.getIVRoom().updateScreenPositionsOn(self.getPosition(),listItemsTile)
     self.__destination = event.getParams()['destination']
     
   def positionChanged(self, event):
@@ -286,12 +283,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     oldPos = event.getParams()['oldPosition']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-      
     tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)  
     scrPos = self.getScreenPosition()
     self.setScreenPosition([tmpPos[0], scrPos[1]])
-    #self.getIVRoom().updateScreenPositionsOn(oldPos)
-    #self.setScreenPosition(GG.utils.p3dToP2d(oldPos, self.getModel().anchor))
     isoview_item.IsoViewItem.positionChanged(self, event)
     
   def changeAvatarImages(self, path):
