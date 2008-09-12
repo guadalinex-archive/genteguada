@@ -111,3 +111,7 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
     """  
     return "www.google.com"  
  
+  def getIdGift(self):
+    """ Returns the gift id value.
+    """  
+    return self.__idGift

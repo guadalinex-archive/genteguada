@@ -8,6 +8,8 @@ import positioned_view
 import guiobjects
 
 # ======================= CONSTANTS ===========================
+CHAT_PATH = "interface/chat2"
+
 BALLOON_OPACITY = 210
 # Message types --> 0: general; 1: private; 2: npcs; 3: system)
 CHAT_TYPE = {0: "White", 1: "Red", 2: "Green", 3: "Blue"}
@@ -63,7 +65,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud.addSprite(self.balloon)
     
     if model.type != 3:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", TAIL[model.type]))  
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, TAIL[model.type]))  
       self.tail = guiobjects.OcempImageMapTransparent(imgPath)
       self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
       self.tail.zOrder = 20002
@@ -114,59 +116,61 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     label = guiobjects.OcempLabelNotTransparent(message, 140)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     label.padding = 5
-    label.set_minimum_size(150, 50)
+    label.set_minimum_size(100, 30)
     label.opacity = 200
     
     width = label.width
     height = label.height
-    num = width/20 + 1
-    num2 = height/20 + 1
-    label.set_minimum_size((num)*20, (num2)*20)
-    label.set_maximum_size((num)*20, (num2)*20)
+    num = width/10 + 1
+    num2 = height/10 + 1
+    label.set_minimum_size((num)*10, (num2)*10)
+    label.set_maximum_size((num)*10, (num2)*10)
     balloon = ocempgui.widgets.VFrame()
     balloon.border = 0
     balloon.padding = 0
     balloon.set_spacing(0)
-    balloon.set_minimum_size((num+1)*20, (num2+1)*20)
+    balloon.set_minimum_size((num+1)*10, (num2+1)*10)
     
     modelType = self.getModel().type
     topRow = ocempgui.widgets.HFrame()
     bottomRow = ocempgui.widgets.HFrame()  
-    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", CORNER_TOPLEFT[modelType]))))
-    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", CORNER_BOTTOMLEFT[modelType]))))
+
+    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, CORNER_TOPLEFT[modelType]))))
+    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, CORNER_BOTTOMLEFT[modelType]))))
     for i in range(0, num):
-      topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", BORDER_TOP[modelType]))))
-      bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", BORDER_BOTTOM[modelType]))))
-    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", CORNER_TOPRIGHT[modelType]))))
-    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", CORNER_BOTTOMRIGHT[modelType]))))
+      topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, BORDER_TOP[modelType]))))
+      bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, BORDER_BOTTOM[modelType]))))
+    topRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, CORNER_TOPRIGHT[modelType]))))
+    bottomRow.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, CORNER_BOTTOMRIGHT[modelType]))))
     topRow.border = 0  
     topRow.padding = 0
-    topRow.set_minimum_size((num+2)*20, 20)
-    topRow.set_spacing(20)
+    topRow.set_minimum_size((num+2)*10, 10)
+    topRow.set_spacing(10)
     topRow.set_align(ocempgui.widgets.Constants.ALIGN_TOP)
     bottomRow.border = 0  
     bottomRow.padding = 0
-    bottomRow.set_minimum_size((num+2)*20, 20)
-    bottomRow.set_spacing(20)
+    bottomRow.set_minimum_size((num+2)*10, 10)
+    bottomRow.set_spacing(10)
     bottomRow.set_align(ocempgui.widgets.Constants.ALIGN_TOP)
-    
+
+        
     # *****
     
     middleRow = ocempgui.widgets.HFrame()
     midVerticalColumn1 = ocempgui.widgets.VFrame()
     midVerticalColumn2 = ocempgui.widgets.VFrame()
     for i in range(0, num2):
-      midVerticalColumn1.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", BORDER_LEFT[modelType]))))
-      midVerticalColumn2.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join("interface/chat/", BORDER_RIGHT[modelType]))))
+      midVerticalColumn1.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, BORDER_LEFT[modelType]))))
+      midVerticalColumn2.add_child(guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, BORDER_RIGHT[modelType]))))
     midVerticalColumn1.border = 0  
     midVerticalColumn1.padding = 0
-    midVerticalColumn1.set_minimum_size(20, (num2)*20)
-    midVerticalColumn1.set_spacing(20)
+    midVerticalColumn1.set_minimum_size(10, (num2)*10)
+    midVerticalColumn1.set_spacing(10)
     midVerticalColumn1.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     midVerticalColumn2.border = 0  
     midVerticalColumn2.padding = 0
-    midVerticalColumn2.set_minimum_size(20, (num2)*20)
-    midVerticalColumn2.set_spacing(20)
+    midVerticalColumn2.set_minimum_size(10, (num2)*10)
+    midVerticalColumn2.set_spacing(10)
     midVerticalColumn2.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     label.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
     middleRow.border = 0  
@@ -174,10 +178,10 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     middleRow.add_child(midVerticalColumn1)
     middleRow.add_child(label)
     middleRow.add_child(midVerticalColumn2)
-    middleRow.set_minimum_size((num+1)*20, (num2)*20)
+    middleRow.set_minimum_size((num+1)*10, (num2)*10)
     middleRow.set_spacing(0)
     middleRow.set_align(ocempgui.widgets.Constants.ALIGN_LEFT)
-    
+
     # *****
     
     balloon.add_child(topRow)

@@ -452,6 +452,9 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
   def __init__(self, image, label = None, tooltipShow = None, tooltipRemove = None):
     """ Class constructor.
     image: image file name.
+    label: button label.
+    tooltipShow: method used to show button's tooltip.
+    tooltipRemove: method used to hide button's tooltip.
     """
     ocempgui.widgets.ImageButton.__init__(self, image)
     if tooltipShow and label:
@@ -460,17 +463,28 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
       self.connect_signal (ocempgui.widgets.Constants.SIG_LEAVE, tooltipRemove)
     
   def draw(self):
+    """ Draws button on screen.
+    """  
     ocempgui.widgets.ImageButton.draw(self)
     self._image = self.picture
 
   def update(self): 
+    """ Updates button picture on screen.
+    """  
     self.draw()
   
 # ===============================================================
 
 class OcempContactListItem(ocempgui.widgets.components.FileListItem):
+  """ OcempContactListItem class.
+  Redefines an ocempgui file list item as a contact list item.
+  """ 
 
   def __init__(self, name, image):
+    """ Class constructor.
+    name: contact name.
+    image: contact image name.
+    """
     ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     size = 46, 31 
@@ -484,11 +498,20 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
 # ===============================================================
 
 class OcempImageFileList(ocempgui.widgets.FileList):
+  """ OcempImageFileList class.
+  Redefines an ocempgui file list item as an image item.
+  """ 
   
   def __init__(self, width, height):
+    """ Class constructor.
+    width: item width.
+    height: item height.
+    """  
     ocempgui.widgets.FileList.__init__(self, width, height)
 
   def _list_contents (self):
+    """ Creates and lists all list contents.
+    """  
     items = ocempgui.widgets.components.ListItemCollection ()
     items.append (ocempgui.widgets.components.FileListItem (os.pardir, stat.S_IFDIR))
     stats = None
@@ -528,12 +551,22 @@ class OcempImageFileList(ocempgui.widgets.FileList):
 # ===============================================================
   
 class OcempImageContactList(OcempImageFileList):
+  """ OcempImageContactList class.
+  Defines a contact list composed by images & text.
+  """  
   
   def __init__(self, width, height, contactList):
+    """ Class constructor.
+    width: list width.
+    height: list height.
+    contactList: contacts to be included on the list.
+    """  
     self.contactList = contactList
     OcempImageFileList.__init__(self, width, height)
 
   def _list_contents (self):
+    """ Creates and lists all list contacts.
+    """  
     items = ocempgui.widgets.components.ListItemCollection ()
     for contact in self.contactList:
       player = contact.getPlayer()
@@ -541,6 +574,9 @@ class OcempImageContactList(OcempImageFileList):
     self.set_items (items)
 
   def setContacts(self, agenda):
+    """ Sets a new contact list.
+    agenda: new contact list.
+    """  
     self.contactList = agenda  
     items = ocempgui.widgets.components.ListItemCollection ()
     for contact in agenda.keys():
@@ -548,12 +584,17 @@ class OcempImageContactList(OcempImageFileList):
     self.set_items (items)
 
   def getSelectedName(self):
+    """ Returns the name of the selected item.
+    """  
     item = self.get_selected()
     if len(item):
       return item[0].text
     return None
 
   def addMessageHintForContact(self, contact):
+    """ Adds a "message received" hin on a given contact.
+    contact: message sender.
+    """
     for item in self.items:
       if item.text.find(contact.username) > -1:
         if item.text.find(" ") == -1:
@@ -561,6 +602,8 @@ class OcempImageContactList(OcempImageFileList):
           return
         
   def restoreContactName(self):
+    """ Restores and removes the "message received" hint from selected contact.
+    """  
     item = self.get_selected()
     if len(item):
       cad = item[0].text
@@ -568,6 +611,10 @@ class OcempImageContactList(OcempImageFileList):
       item[0].text = cad
 
   def updateMaskPlayer(self, name, image):
+    """ Updates a player's mask.
+    name: player's name.
+    image: mask image name.
+    """  
     for item in self.items:
       if item.text.find(name) > -1:
         filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
@@ -582,24 +629,39 @@ class OcempImageContactList(OcempImageFileList):
 # ===============================================================
   
 class OcempImageObjectList(OcempImageFileList):
+  """ OcempImageObjectList class.
+  Defines an image object list.
+  """ 
   
   def __init__(self, width, height, objectLabelList):
+    """ Class constructor.
+    width: list width.
+    height: list width.
+    objectLabelList: items label list.
+    """  
     self.objectLabelList = objectLabelList
     OcempImageFileList.__init__(self, width, height)
 
   def _list_contents (self):
+    """ Creates the list items.
+    """  
     items = ocempgui.widgets.components.ListItemCollection ()
     for objectLabel in self.objectLabelList:
       items.append (OcempContactListItem (objectLabel, "chatEntry.png"))
     self.set_items (items)
 
   def getSelectedName(self):
+    """ Returns the selected item's name.
+    """  
     item = self.get_selected()
     if len(item):
       return item[0].text
     return None
 
   def selectItem(self, itemName):
+    """ Selects a single item.
+    itemName: item name.
+    """  
     for item in self.items:
       if item.text == itemName:
         prevSelected = self.get_selected()
@@ -610,29 +672,46 @@ class OcempImageObjectList(OcempImageFileList):
 # ===============================================================
   
 class OcempImageList(OcempImageFileList):
+  """ OcempImageList class.
+  Defines an image list.
+  """
   
   def __init__(self, width, height, imagesList, relativePath):
+    """ Class constructor.
+    width: list width.
+    height: list height.
+    imagesList: images to be included on the list.
+    relativePath: images path.
+    """  
     self.imagesList = imagesList
     self.relativePath = relativePath
     self.set_selectionmode(ocempgui.widgets.Constants.SELECTION_SINGLE)
     OcempImageFileList.__init__(self, width, height)
     
   def _list_contents (self):
+    """ Creates the list items.
+    """  
     items = ocempgui.widgets.components.ListItemCollection()
     for image in self.imagesList:
       items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
     self.set_items (items)
     
   def getImagesList(self):
+    """ Returns the image name list.
+    """  
     return self.imagesList  
 
   def getSelectedName(self):
+    """ Returns the selected item's name.
+    """  
     item = self.get_selected()
     if len(item):
       return item[0].text
     return None
 
   def getSelectedNames(self):
+    """ Returns the selected items names.
+    """  
     retList = []
     items = self.get_selected()
     for singleItem in items:
@@ -640,6 +719,9 @@ class OcempImageList(OcempImageFileList):
     return retList
 
   def selectItem(self, itemName):
+    """ Selects a single item.
+    itemName: item name.
+    """  
     for item in self.items:
       if item.text == itemName:
         prevSelected = self.get_selected()
@@ -649,6 +731,9 @@ class OcempImageList(OcempImageFileList):
         return
   
   def selectItems(self, imgNames):
+    """ Selects various item.
+    itemName: item name.
+    """  
     prevSelected = self.get_selected()
     for item in prevSelected:
       self._set_cursor(item, False)
@@ -656,15 +741,23 @@ class OcempImageList(OcempImageFileList):
       if item.text in imgNames:
         self._set_cursor(item, True)
 
-
 # ===============================================================
 
 class OcempEditLine(ocempgui.widgets.Entry):
+  """ OcempEditLine class.
+  Redefines an ocempgui entry object as an edit line object.
+  """  
 
   def __init__(self, text = ""):
+    """ Class constructor.
+    text: entry line initial text.
+    """  
     ocempgui.widgets.Entry.__init__(self, text)
 
   def _input (self, event):
+    """ Handles the events on the entry line.
+    event: event info.
+    """  
     handled = False
     if event.key == pygame.locals.K_ESCAPE:
       if self.editable:
@@ -733,6 +826,12 @@ class OcempEditLine(ocempgui.widgets.Entry):
 # ===============================================================
 
 def createButton(imgPath, topleft, tooltip, action, *params):
+  """ Creates a transparent button.
+  topleft: button topleft cords.
+  tooltip: button tooltip.
+  action: button triggered action after being pushed.
+  params: button action params.
+  """  
   imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath)
   if tooltip:
     button = OcempImageButtonTransparent(imgPath, tooltip[0], tooltip[1], tooltip[2])
@@ -742,7 +841,14 @@ def createButton(imgPath, topleft, tooltip, action, *params):
   button.topleft = topleft
   return button
 
+# ===============================================================
+
 def generateImageSize(origFilePath, size, destFilePath):
+  """ Copies and resizes an image.
+  origFilePath: original image path.
+  size: image name.
+  destFilePath: image copy path.
+  """  
   img = Image.open(origFilePath)
   img.thumbnail(size, Image.ANTIALIAS)
   img.save(destFilePath)
@@ -750,6 +856,9 @@ def generateImageSize(origFilePath, size, destFilePath):
 # ===============================================================
 
 def playSound(sound):
+  """ Plays a sound.
+  sound: sound file name.
+  """  
   sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
   if not os.path.isfile(sndPath):
     return False
