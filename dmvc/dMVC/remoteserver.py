@@ -135,7 +135,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
           data = ""
           while len(data) < size:
             data += self.request.recv(size - len(data))
-
+          data = gzip.zlib.decompress(data)
           commandOrFragment = pickle.loads(data)
           print commandOrFragment
           if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):

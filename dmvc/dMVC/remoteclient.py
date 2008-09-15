@@ -14,7 +14,7 @@ import gzip
 
 class RClient(synchronized.Synchronized): 
 
-  def __init__(self, serverIP, port=770, autoEvents=True): 
+  def __init__(self, serverIP, port=8000, autoEvents=True): 
     utils.logger.debug("RClient.__init__")
     synchronized.Synchronized.__init__(self)
 
@@ -130,11 +130,12 @@ class RClient(synchronized.Synchronized):
 
   def sendCommand(self, command): 
     serializedCommand = pickle.dumps(command)
-    sizeCommand = len(serializedCommand)
+    serializedCompress = gzip.zlib.compress(serializedCommand)
+    sizeCommand = len(serializedCompress)
     size = struct.pack("i", sizeCommand)
     utils.logger.debug("Sending command: " + str(command) + ' (' + str(sizeCommand) + 'b)')
     self.__socket.send(size)
-    self.__socket.send(serializedCommand)
+    self.__socket.send(serializedCompress)
 
   @synchronized.synchronized(lockName='commandsList')
   def __getAnswer(self, executerCommand):
