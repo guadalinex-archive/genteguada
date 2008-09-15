@@ -10,6 +10,7 @@ import remotecommand
 import time
 import select
 import signal
+import gzip
 
 class RServer(synchronized.Synchronized):
 
@@ -19,7 +20,7 @@ class RServer(synchronized.Synchronized):
                onConnection=None,
                onDisconnection=None,
                onExecution=[]
-               ): #{{{
+               ): 
     utils.logger.debug("RServer.__init__")
     synchronized.Synchronized.__init__(self)
 
@@ -35,7 +36,6 @@ class RServer(synchronized.Synchronized):
     self._onExecution = onExecution
     signal.signal(signal.SIGINT, self.__finish)
     self.__start()
-  #}}}
 
   def __finish(self, signal, frame):
     print "Finalizando el servidor del juego"
@@ -43,12 +43,11 @@ class RServer(synchronized.Synchronized):
     self.__activeServer = False
 
   @synchronized.synchronized(lockName='models')
-  def getModelByID(self, theId): #{{{
+  def getModelByID(self, theId): 
     return self.__models[theId]
-  #}}}
 
   @synchronized.synchronized(lockName='models')
-  def registerModel(self, model): #{{{
+  def registerModel(self, model): 
     if model in self.__models.values():
       utils.logger.error("The model "+str(model)+" is allready register")
       return
@@ -56,13 +55,11 @@ class RServer(synchronized.Synchronized):
     model.setID(modelID)
     self.__models[modelID] = model
     utils.logger.debug("Registered the model " + str(model) + " with id "+str(modelID))
-  #}}}
 
-  def getRootModel(self): #{{{
+  def getRootModel(self): 
     return self.__rootModel
-  #}}}
 
-  def __start(self): #{{{
+  def __start(self): 
     utils.logger.debug("RServer.__start")
     self.__con = SocketServer.ThreadingTCPServer(('', self.__port), RServerHandler)
     self.__con.request_queue_size = 500
@@ -71,11 +68,9 @@ class RServer(synchronized.Synchronized):
     self.__activeServer = True
     while self.__activeServer:
       time.sleep(0.1)
-  #}}}
 
 
 class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
-
 
   def __sendInitialData(self): #{{{
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
@@ -88,7 +83,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     self.__sendObject(initialData)
   #}}}
 
-  def setup(self): #{{{
+  def setup(self): 
     utils.logger.debug("Conect client "+str(self.client_address))
 
     self.__sessionID = utils.nextID()
@@ -104,7 +99,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     handler = dMVC.getRServer()._onConnection
     if handler:
       handler(self)
-  #}}}
 
   def __sendCommandQueue(self):
     #prueba
@@ -124,15 +118,11 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       print "Enviando ",fragmentCommand," ",fragmentCommand.sequence,"/",fragmentCommand.total
     except Queue.Empty:
       pass
- 
-
-
-    
 
   def getSessionID(self):
     return self.__sessionID
 
-  def handle(self): #{{{
+  def handle(self): 
     utils.logger.debug("RServerHandler.handle client:  "+str(self.client_address))
     sizeInt = struct.calcsize("i")
     while True:
@@ -160,9 +150,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       else:
         if not self.request in write:
           self.__sendAsyncFragment()
-          
-  #}}}
-
 
   def __processCommand(self, command, size):
     utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
@@ -191,8 +178,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       if answer:
         self.__sendAsyncObject(answer, fragment.groupID)
 
-    
-  def __sendAsyncObject(self, obj, commandID): #{{{
+  def __sendAsyncObject(self, obj, commandID): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
     #serialized = pickle.dumps(obj)
@@ -213,7 +199,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       lenProcess += 10000
     #prueba
     #thread.start_new(self.__sendAsyncQueue, (asyncQueue,))
-  #}}}
 
   def __sendAsyncQueue(self, queue):
     #prueba
@@ -223,34 +208,31 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       self.sendCommand(fragment)
 
   @synchronized.synchronized(lockName='sendObject')
-  def __sendObject(self, obj, command=None): #{{{
+  def __sendObject(self, obj, command=None): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
-    sizeSerialized = len(serialized)
+    serializedCompress = gzip.zlib.compress(serialized)
+    sizeSerialized = len(serializedCompress)
     try:
       size = struct.pack("i", sizeSerialized)
       utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
       self.request.send(size)
-      self.request.send(serialized)
+      self.request.send(serializedCompress)
       #if command:
       #  print "Enviado ",sizeSerialized , command
       return True
     except:
       utils.logger.exception("Can''t send an object, probable conexion lost")
       return False
-  #}}}
 
-  def sendCommand(self, command): #{{{
+  def sendCommand(self, command): 
     #self.__commandsQueue.put(command)
     #prueba
     return self.__sendObject(command)
-  #}}}
 
-  def finish(self): #{{{
+  def finish(self): 
     utils.logger.debug("Close the connection with "+str(self.client_address))
-
     handler = dMVC.getRServer()._onDisconnection
     if handler:
       handler(self)
 
-  #}}}

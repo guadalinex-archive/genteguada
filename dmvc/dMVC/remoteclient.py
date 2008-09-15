@@ -9,11 +9,12 @@ import struct
 import thread
 import synchronized
 import Queue
+import gzip
 
 
 class RClient(synchronized.Synchronized): 
 
-  def __init__(self, serverIP, port=8000, autoEvents=True): #{{{
+  def __init__(self, serverIP, port=770, autoEvents=True): 
     utils.logger.debug("RClient.__init__")
     synchronized.Synchronized.__init__(self)
 
@@ -43,9 +44,7 @@ class RClient(synchronized.Synchronized):
       threadProcessCommand = threading.Thread(target=self.processCommandQueue)
       threadProcessCommand.setDaemon(True)
       threadProcessCommand.start()
-
     thread.start_new(self.__start, ())
-  #}}}
 
   def processEvents(self):
     try:
@@ -69,48 +68,39 @@ class RClient(synchronized.Synchronized):
       except Queue.Empty:
         self.__sendAsyncFragment()
 
-  def __connect(self): #{{{
+  def __connect(self): 
     utils.logger.debug("connecting to server")
     self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.__socket.connect((self.__serverIP, self.__serverPort))
     #self.__socket.setblocking(0)
     utils.logger.debug("connected to server")
-  #}}}
 
   @synchronized.synchronized(lockName='commandsList')
-  def __addAnswererCommand(self, command): #{{{
+  def __addAnswererCommand(self, command): 
     self.__answersCommandsList.append(command)
     #print "ponemos ",command
-  #}}}
 
-
-  def __setInitialData(self, initialData): #{{{
+  def __setInitialData(self, initialData): 
     utils.logger.debug("RClient.__setInitialData: "+str(initialData))
 
     if self.__rootModel != None:
       utils.logger.error("The receiver already has a rootModel")
       raise Exception('The receiver already has a rootModel')
-
     self.__rootModel = dMVC.clientMaterialize(initialData['rootModel'], self)
     self.__sessionID = dMVC.clientMaterialize(initialData['sessionID'], self)
-
     self.__initialDataSemaphore.release()
-  #}}}
 
-
-  def getRootModel(self): #{{{
+  def getRootModel(self): 
     self.__initialDataSemaphore.acquire()
     result = self.__rootModel
     self.__initialDataSemaphore.release()   
     return result
-  #}}}
 
-  def getSessionID(self): #{{{
+  def getSessionID(self): 
     self.__initialDataSemaphore.acquire()
     result = self.__sessionID
     self.__initialDataSemaphore.release()   
     return result
-  #}}}
 
   def sendAsyncCommand(self, command, callback):
     serializedCommand = pickle.dumps(command)
@@ -137,19 +127,14 @@ class RClient(synchronized.Synchronized):
       print "Enviando ",fragmentCommand," ",fragmentCommand.sequence,"/",fragmentCommand.total
     except Queue.Empty:
       pass
- 
-    
 
-
-  def sendCommand(self, command): #{{{
+  def sendCommand(self, command): 
     serializedCommand = pickle.dumps(command)
     sizeCommand = len(serializedCommand)
     size = struct.pack("i", sizeCommand)
     utils.logger.debug("Sending command: " + str(command) + ' (' + str(sizeCommand) + 'b)')
     self.__socket.send(size)
     self.__socket.send(serializedCommand)
-  #}}}
-
 
   @synchronized.synchronized(lockName='commandsList')
   def __getAnswer(self, executerCommand):
@@ -163,8 +148,7 @@ class RClient(synchronized.Synchronized):
       self.__answersCommandsList.remove(found)
     return found
 
-
-  def waitForExecutionAnswerer(self, executerCommand): #{{{
+  def waitForExecutionAnswerer(self, executerCommand): 
     utils.logger.debug("RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand))
     #print "RClient.waitForExecutionAnswerer executerCommand: "+str(executerCommand)
     found = None
@@ -175,19 +159,16 @@ class RClient(synchronized.Synchronized):
           self.processEvents()
         time.sleep(0.001) # tiny sleep to avoid burning the CPU
     return found
-  #}}}
-
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def registerRemoteSuscription(self, suscription): #{{{
+  def registerRemoteSuscription(self, suscription): 
     utils.logger.debug("RClient.registerRemoteSuscription suscription: "+str(suscription))
     suscriptionID = utils.nextID()
     self.__remoteSuscriptions[suscriptionID] = suscription
     return suscriptionID
-  #}}}
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def unsubscribeEventObserver(self, observer, eventType, classInstance): #{{{
+  def unsubscribeEventObserver(self, observer, eventType, classInstance): 
     utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
@@ -200,10 +181,9 @@ class RClient(synchronized.Synchronized):
     for key in toRemove:
       del self.__remoteSuscriptions[key]
     return toRemove
-  #}}}
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def unsubscribeEventMethod(self, method, eventType, classInstance): #{{{
+  def unsubscribeEventMethod(self, method, eventType, classInstance): 
     utils.logger.debug("RClient.unsubscribeEventMethod method: "+str(method)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
@@ -216,33 +196,28 @@ class RClient(synchronized.Synchronized):
     for key in toRemove:
       del self.__remoteSuscriptions[key]
     return toRemove
-  #}}}
-
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
-  def getRemoteSuscriptionByID(self, suscriptionID): #{{{
+  def getRemoteSuscriptionByID(self, suscriptionID): 
     utils.logger.debug("RClient.getRemoteSuscriptionByID suscriptionID: "+str(suscriptionID))
     if suscriptionID in self.__remoteSuscriptions:
       return self.__remoteSuscriptions[suscriptionID]
     else:
       return False
-  #}}}
 
-
-  def __receiveInitialData(self): #{{{
+  def __receiveInitialData(self): 
     utils.logger.debug("RClient.receiveRootModel")
     size = self.__socket.recv(struct.calcsize("i"))
     if len(size):
       size = struct.unpack("i", size)[0]
-      data = ""
-      while len(data) < size:
-        data = self.__socket.recv(size - len(data))
+      dataCompress = ""
+      while len(dataCompress) < size:
+        dataCompress = self.__socket.recv(size - len(dataCompress))
+      data = gzip.zlib.decompress(dataCompress)
       initialData = pickle.loads(data)
       self.__setInitialData(initialData)
-  #}}}
 
-
-  def __start(self): #{{{
+  def __start(self): 
     utils.logger.debug("Starting connection thread")
     try:
       self.__receiveInitialData()
@@ -251,12 +226,13 @@ class RClient(synchronized.Synchronized):
         size = self.__socket.recv(sizeInt)
         if len(size):
           size = struct.unpack("i", size)[0]
-          commandData = ""
+          commandCompress = ""
           utils.logger.debug("Receive from the server the size: " + str(size)  +"b)")
           #print "recibimos ",size
-          while len(commandData) < size:
-            commandData += self.__socket.recv(size - len(commandData))
+          while len(commandCompress) < size:
+            commandCompress += self.__socket.recv(size - len(commandCompress))
             #print "==============================================>  ",len(commandData)
+          commandData = gzip.zlib.decompress(commandCompress)
           command = pickle.loads(commandData)
           #print "ya tenemos el comando ",command
           print "recibimos ",size , command
@@ -272,7 +248,6 @@ class RClient(synchronized.Synchronized):
           self.__socket.close()
     except:
       utils.logger.exception('exception in __start')
-  #}}}
 
   def __processFragment(self, fragment):
     if not fragment.groupID in self.__fragmentAnswer.keys():

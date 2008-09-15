@@ -257,7 +257,7 @@ class GGRoom(ggmodel.GGModel):
         if bottom:
           bottom.clickedBy(clickerPlayer)
         else:
-          if not GG.utils.checkNeighbour(target, clickerPlayer.getPosition()) and self.getNextDirectionForAnItem(target, clickerPlayer.getPosition()) == "none":
+          if not GG.utils.checkNeighbour(target, clickerPlayer.getPosition()) and self.getNextDirection(target, clickerPlayer.getPosition()) == "none":
             clickerPlayer.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
           clickerPlayer.setDestination(target)
@@ -269,73 +269,59 @@ class GGRoom(ggmodel.GGModel):
     """
     player.setUnselectedItem()
     player.setSelectedItemWithoutHighlight(self.__tiles[target[0]][target[1]])
-          
-  def getNextDirection(self, player, pos1, pos2):
+  
+  def __getPossibleDirection(self, pos):
+    result = {}
+    if 0 <= pos[1] - 1 < self.size[1]:
+      if not self.getBlocked([pos[0], pos[1] - 1]): 
+        result["up"] = [pos[0], pos[1] - 1]
+      if 0 <= pos[0] - 1 < self.size[0]:
+        if not self.getBlocked([pos[0] - 1, pos[1] - 1]):
+          result["topleft"] = [pos[0] - 1, pos[1] - 1]
+      if 0 <= pos[0] + 1 < self.size[0]:
+        if not self.getBlocked([pos[0] + 1, pos[1] - 1]):
+          result["topright"] = [pos[0] + 1, pos[1] - 1]
+    if 0 <= pos[1] + 1 < self.size[1]:
+      if not self.getBlocked([pos[0], pos[1] + 1]):
+        result["down"] = [pos[0], pos[1] + 1]
+        if 0 <= pos[0] - 1 < self.size[0]:
+          if not self.getBlocked([pos[0] - 1, pos[1] + 1]):
+            result["bottomleft"] = [pos[0] - 1, pos[1] + 1]
+        if 0 <= pos[0] + 1 < self.size[0]:
+          if not self.getBlocked([pos[0] + 1, pos[1] + 1]):
+            result["bottomright"] = [pos[0] + 1, pos[1] + 1]
+    if 0 <= pos[0] - 1 < self.size[0]:
+      if not self.getBlocked([pos[0] - 1 , pos[1]]):
+        result["left"] = [pos[0] - 1 , pos[1]]
+    if 0 <= pos[0] + 1 < self.size[0]:
+      if not self.getBlocked([pos[0] + 1, pos[1]]):
+        result["right"] = [pos[0] + 1 , pos[1]]
+    return result
+
+  def getNextDirection(self, pos1, pos2, player = None):
     """ Gets the direction of a player's movement between 2 points.
     player: moving player.
     pos1: starting point.
     pos2: ending point.
     """
     startingDistance = GG.utils.p2pDistance(pos1, pos2)
-    
-    direction = []
-    direction.append([pos1[0], pos1[1] - 1]) #up
-    direction.append([pos1[0], pos1[1] + 1]) #down
-    direction.append([pos1[0] - 1, pos1[1]]) #left
-    direction.append([pos1[0] + 1, pos1[1]]) #right
-    direction.append([pos1[0] - 1, pos1[1] - 1]) #topleft
-    direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
-    direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
-    direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
-    for i in range(0, len(direction)):
-      if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
-        if self.getBlocked(direction[i]) == 0:
-          return GG.utils.HEADING[i+1]
+    listDirection = self.__getPossibleDirection(pos1)
     dist = []
-    for i in range(0, len(direction)):
-      dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])
-    dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
-    while len(dist) > 0:
-      first = dist.pop()
-      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][1] < self.size[1]):
-        if self.getBlocked(first[2]) == 0:
-          if not player.hasBeenVisited(first[2]):
-            if first[1] < startingDistance:
-              return first[0]
+    for key in listDirection.keys():
+      if listDirection[key] == pos2:
+        return key
+      dist.append([key, GG.utils.p2pDistance(listDirection[key], pos2), listDirection[key]])
+    dist = sorted(dist, key=operator.itemgetter(1), reverse=False)
+    for dataDist in dist:
+      if player:
+        if not player.hasBeenVisited(dataDist[2]):
+          if dataDist[1] < startingDistance:
+            return dataDist[0]
+      else:
+        if dataDist[1] < startingDistance:
+          return dataDist[0]
     return "none"  
-    
-  def getNextDirectionForAnItem(self, pos1, pos2):
-    """ Gets the direction of an item's movement between 2 points.
-    pos1: starting point.
-    pos2: ending point.
-    """
-    startingDistance = GG.utils.p2pDistance(pos1, pos2)
-    
-    direction = []
-    direction.append([pos1[0], pos1[1] - 1]) #up
-    direction.append([pos1[0], pos1[1] + 1]) #down
-    direction.append([pos1[0] - 1, pos1[1]]) #left
-    direction.append([pos1[0] + 1, pos1[1]]) #right
-    direction.append([pos1[0] - 1, pos1[1] - 1]) #topleft
-    direction.append([pos1[0] + 1, pos1[1] + 1]) #bottomright
-    direction.append([pos1[0] - 1, pos1[1] + 1]) #bottomleft
-    direction.append([pos1[0] + 1, pos1[1] - 1]) #topright
-    for i in range(0, len(direction)):
-      if (pos2 == direction[i]) and (0 <= direction[i][0] <= self.size[0]) and (0 <= direction[i][2] <= self.size[1]):
-        if self.getBlocked(direction[i]) == 0:
-          return GG.utils.HEADING[i+1]
-    dist = []
-    for i in range(0, len(direction)):
-      dist.append([GG.utils.HEADING[i+1], GG.utils.p2pDistance(direction[i], pos2), direction[i]])
-    dist = sorted(dist, key=operator.itemgetter(1), reverse=True)
-    while len(dist) > 0:
-      first = dist.pop()
-      if (0 <= first[2][0] < self.size[0]) and (0 <= first[2][1] < self.size[1]):
-        if self.getBlocked(first[2]) == 0:
-          if first[1] < startingDistance:
-            return first[0]
-    return "none"    
-    
+
   def tick(self, now):
     """ Calls for an update on all player movements.
     """

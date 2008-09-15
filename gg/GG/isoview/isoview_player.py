@@ -43,7 +43,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
-    #self.getModel().subscribeEvent('destination', self.destinationChanged)
   
   def __getAvatarImages(self):
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
@@ -270,14 +269,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       self.__movieAnimation = None
       self.setImg(GG.utils.getSpriteName(GG.utils.STATE[1], self.__heading, 0, self.__timestamp), self.__path)
       
-  def destinationChanged(self, event):
-    """ Triggers after receiving a destination change event.
-    event: event info.
-    """
-    self.__destination = event.getParams()['destination']
-    listItemsTile = event.getParams()["listItemsTiles"]
-    self.getIVRoom().updateScreenPositionsOn(self.getPosition(),listItemsTile)
-    
   def positionChanged(self, event):
     """ Triggers after receiving a position change event.
     event: event info.
