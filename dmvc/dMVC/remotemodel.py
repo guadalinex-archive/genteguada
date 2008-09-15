@@ -6,16 +6,14 @@ import utils
 import new
 
 import thread
-import synchronized
 
-class RemoteModel(synchronized.Synchronized): #{{{
+class RemoteModel: #{{{
 
   def __init__(self, modelID, modelModuleName, modelClassName, variablesDict): #{{{
     self.__modelID         = modelID
     self.__modelModuleName = modelModuleName
     self.__modelClassName  = modelClassName
     self.__variablesDict   = variablesDict
-    synchronized.Synchronized.__init__(self)
   #}}}
 
   
