@@ -239,16 +239,24 @@ class RClient(synchronized.Synchronized):
           print "recibimos ",size , command
           #print "Al siguiente"
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
-          if isinstance(command, remotecommand.RExecutionAnswerer):
-            self.__addAnswererCommand(command)
-          elif isinstance(command, remotecommand.RFragment):
-            self.__processFragment(command)
+
+          if isinstance(command, RCompositeCommand):
+            for eachCommand in command:
+              self.__processCommand(eachCommand)
           else:
-            self.__commandQueue.put(command)
+            self.__processCommand(command)
         else:
           self.__socket.close()
     except:
       utils.logger.exception('exception in __start')
+
+  def __processCommand(self, command):
+    if isinstance(command, remotecommand.RExecutionAnswerer):
+      self.__addAnswererCommand(command)
+    elif isinstance(command, remotecommand.RFragment):
+      self.__processFragment(command)
+    else:
+      self.__commandQueue.put(command)
 
   def __processFragment(self, fragment):
     if not fragment.groupID in self.__fragmentAnswer.keys():

@@ -67,7 +67,7 @@ class RServer(synchronized.Synchronized):
     utils.logger.debug("Server listen...")
     self.__activeServer = True
     while self.__activeServer:
-      time.sleep(0.1)
+      time.sleep(2)
 
 
 class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
@@ -103,10 +103,27 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
   def __sendCommandQueue(self):
     #prueba
     while True:
-      time.sleep(0.1)
+      time.sleep(0.025)
       try:
         command = self.__commandsQueue.get_nowait()
-        self.__sendObject(command)
+
+        commands = []
+        commands.append(command)
+
+        time.sleep(0.015) # Wait for more commands, to send them all in a shot
+
+        try:
+          while True:
+            commands.append(self.__commandsQueue.get_nowait())
+        except Queue.Empty:
+          pass
+
+        if (len(commands) == 1):
+          self.__sendObject(command)
+        else:
+          utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
+          self.__sendObject(RCompositeCommand(commands))
+
       except Queue.Empty:
         self.__sendAsyncFragment()
 
