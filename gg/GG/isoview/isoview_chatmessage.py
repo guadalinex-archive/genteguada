@@ -67,7 +67,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     if model.type != 3:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, TAIL[model.type]))  
       self.tail = guiobjects.OcempImageMapTransparent(imgPath)
-      self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 10]
+      self.tail.topleft = [self.balloon.topleft[0] + 30, self.balloon.topleft[1] + self.balloon.size[1] - 5]
       self.tail.zOrder = 20002
       self.__isohud.addSprite(self.tail)
     
@@ -152,7 +152,6 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     bottomRow.set_minimum_size((num+2)*10, 10)
     bottomRow.set_spacing(10)
     bottomRow.set_align(ocempgui.widgets.Constants.ALIGN_TOP)
-
         
     # *****
     
