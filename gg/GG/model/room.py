@@ -257,8 +257,8 @@ class GGRoom(ggmodel.GGModel):
         if bottom:
           bottom.clickedBy(clickerPlayer)
         else:
-          if not GG.utils.checkNeighbour(target, clickerPlayer.getPosition()) and self.getNextDirection(target, clickerPlayer.getPosition()) == "none":
-            clickerPlayer.newChatMessage("No puedo llegar hasta ese lugar.", 2)
+          if self.getNextDirection(clickerPlayer.getPosition(), target)[0] == "none":
+            clickerPlayer.newChatMessage("No puedo llegar hasta ese maravilloso lugar.", 2)
             return
           clickerPlayer.setDestination(target)
   
@@ -284,12 +284,12 @@ class GGRoom(ggmodel.GGModel):
     if 0 <= pos[1] + 1 < self.size[1]:
       if not self.getBlocked([pos[0], pos[1] + 1]):
         result["down"] = [pos[0], pos[1] + 1]
-        if 0 <= pos[0] - 1 < self.size[0]:
-          if not self.getBlocked([pos[0] - 1, pos[1] + 1]):
-            result["bottomleft"] = [pos[0] - 1, pos[1] + 1]
-        if 0 <= pos[0] + 1 < self.size[0]:
-          if not self.getBlocked([pos[0] + 1, pos[1] + 1]):
-            result["bottomright"] = [pos[0] + 1, pos[1] + 1]
+      if 0 <= pos[0] - 1 < self.size[0]:
+        if not self.getBlocked([pos[0] - 1, pos[1] + 1]):
+          result["bottomleft"] = [pos[0] - 1, pos[1] + 1]
+      if 0 <= pos[0] + 1 < self.size[0]:
+        if not self.getBlocked([pos[0] + 1, pos[1] + 1]):
+          result["bottomright"] = [pos[0] + 1, pos[1] + 1]
     if 0 <= pos[0] - 1 < self.size[0]:
       if not self.getBlocked([pos[0] - 1 , pos[1]]):
         result["left"] = [pos[0] - 1 , pos[1]]
@@ -309,18 +309,18 @@ class GGRoom(ggmodel.GGModel):
     dist = []
     for key in listDirection.keys():
       if listDirection[key] == pos2:
-        return key
+        return key, listDirection[key] 
       dist.append([key, GG.utils.p2pDistance(listDirection[key], pos2), listDirection[key]])
     dist = sorted(dist, key=operator.itemgetter(1), reverse=False)
     for dataDist in dist:
       if player:
         if not player.hasBeenVisited(dataDist[2]):
           if dataDist[1] < startingDistance:
-            return dataDist[0]
+            return dataDist[0], dataDist[2]
       else:
         if dataDist[1] < startingDistance:
-          return dataDist[0]
-    return "none"  
+          return dataDist[0], dataDist[2]
+    return "none", None  
 
   def tick(self, now):
     """ Calls for an update on all player movements.
@@ -411,7 +411,6 @@ class GGRoom(ggmodel.GGModel):
     self.label = newLabel
     self.__enabled = enabled
     self.__startRoom = startRoom
-    print newTile
     if not len(newTile):
       return
     tilesList = []
