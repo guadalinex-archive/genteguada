@@ -110,7 +110,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
         if len(commands) == 1:
           self.__sendObject(command)
         else:
-          print "Lanzando unos cuantos comandos juntos ",len(commands)
           utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
           self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
