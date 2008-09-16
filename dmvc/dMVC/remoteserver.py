@@ -104,12 +104,12 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
   def __sendCommandQueue(self):
     #prueba
     while True:
-      time.sleep(0.25)
+      time.sleep(0.025)
       try:
         command = self.__commandsQueue.get_nowait()
         commands = []
         commands.append(command)
-        time.sleep(0.15) # Wait for more commands, to send them all in a shot
+        time.sleep(0.015) # Wait for more commands, to send them all in a shot
         try:
           while True:
             commands.append(self.__commandsQueue.get_nowait())
