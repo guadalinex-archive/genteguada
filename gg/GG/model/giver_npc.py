@@ -70,13 +70,16 @@ class GGGiverNpc(room_item.GGRoomItem):
   def getCopyFor(self, player):
     """ If target player does not have this item on his inventory, creates a new item and gives it to him.
     """  
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
     if player.hasItemLabeledInInventory(self.label):
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Ya has obtenido " + self.label, \
-                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      message = "Ya has obtenido " + self.label
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 
+                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
       return None, [-1, -1]
     else:  
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
-                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      message = "Obtienes " + self.label
+      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, \
+                self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
       return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.label, self.anchor, self.getPosition()), self.getPosition()
   
   def inventoryOnly(self):

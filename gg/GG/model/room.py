@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
 import random
 import operator
 import GG.utils
@@ -355,8 +356,9 @@ class GGRoom(ggmodel.GGModel):
     player: message emitter.
     msgType: message type.
     """
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + player.username + "]: "
     self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, \
-                    GG.utils.TEXT_COLOR["black"], player.getPosition(), msgType))    
+                    GG.utils.TEXT_COLOR["black"], player.getPosition(), msgType), text=message, header=header)    
     
   def getEmptyCell(self):
     """ Returns a list with the room's empty cells.

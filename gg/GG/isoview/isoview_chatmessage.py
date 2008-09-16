@@ -30,24 +30,28 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   Defines a chat message view.
   """
   
-  def __init__(self, model, screen, isohud):
+  def __init__(self, model, screen, isohud, message, header, position):
     """ Class constructor.
     model: chat message model.
     screen: screen handler.
     isohud: isometric hud handler.
     """
     self.__isohud = isohud
+    self.__message = message
+    self.__header = header
+    self.__position = position
     positioned_view.PositionedView.__init__(self, model, screen)
     self.style = self.getStyleMessageChat()
-    self.label = guiobjects.OcempLabelNotTransparent(model.getMessage(), 140)
+    self.label = guiobjects.OcempLabelNotTransparent(message, 140)
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     self.label.padding = 5
     self.label.set_minimum_size(150, 50)
     
-    self.balloon = self.drawBalloon(model.getMessage())
+    self.balloon = self.drawBalloon(message)
     #self.balloon.opacity = BALLOON_OPACITY
     
     if model.type != 3:
+      #pos = GG.utils.p3dToP2d(self.__position, [0, 0])
       pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
       if (pos[0] + 10 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
         xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
@@ -199,11 +203,11 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     image = ocempgui.widgets.ImageLabel(imgPath)
     image.buttom = 0
     hframe.add_child(image)
-    string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
-    label = guiobjects.OcempLabelNotTransparent(string, 200)
+    #string = self.getModel().getHour()+" [" + self.getModel().getSender() + "]: "
+    label = guiobjects.OcempLabelNotTransparent(self.__header, 200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
-    label = guiobjects.OcempLabelNotTransparent(self.getModel().getMessage(), 200)
+    label = guiobjects.OcempLabelNotTransparent(self.__message, 200)
     label.set_style(ocempgui.widgets.WidgetStyle(self.style["entry"]))
     hframe.add_child(label)
     return hframe

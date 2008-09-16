@@ -68,13 +68,13 @@ class ChatMessage(ggmodel.GGModel):
     return self.type
 
   @dMVC.model.localMethod 
-  def chatView(self, screen, isohud):
+  def chatView(self, screen, isohud, message, header):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
     isohud: isohud handler.
     """
     import GG.isoview.isoview_chatmessage
-    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud)
+    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud, message, header, self.__position)
 
 
 class ChatQuiz(ChatMessage):

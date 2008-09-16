@@ -114,7 +114,8 @@ class GGSession(ggmodel.GGModel):
     """ Triggers after receiving a chat added event.
     event: event info.
     """
-    self.triggerEvent('chatAdded', message=event.getParams()['message'])
+    self.triggerEvent('chatAdded', message=event.getParams()['message'], text=event.getParams()['text'], 
+                      header=event.getParams()['header'])
   
   def quizAdded(self, event):
     """ Triggers after receiving a chat added event.

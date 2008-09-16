@@ -385,8 +385,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.username + "]: "
     self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.username, \
-                    GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType))
+                    GG.utils.TEXT_COLOR["black"], self.getPosition(), msgType), text=message, header=header)
 
   def getSelected(self):
     """ Returns player's selected item.
@@ -399,7 +400,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if self.__selected != item:
       self.__selected = item
-      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=1)
+      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
+                        imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
+                        options=item.getOptions(), highlight=1)
   
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't highlights it.
