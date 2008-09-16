@@ -332,7 +332,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         return
       pos = self.getPosition()
       end = self.getDestination()
-      direction, nextPos = self.getRoom().getNextDirection(pos, end, self)
+      if GG.utils.checkNeighbour(pos, end):
+        direction = GG.utils.getNextDirection(pos, end)
+        nextPos = end
+      else:
+        direction, nextPos = self.getRoom().getNextDirection(pos, end, self)
       if direction == GG.utils.HEADING[0]:
         self.newChatMessage("No puedo llegar hasta ese lugar.", 2)
         self.setDestination(self.getPosition())
@@ -462,7 +466,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setDestination(itemToClimb.getPosition())
       self.setUnselectedItem()
     else:
-      self.newChatMessage("No puedo subirme ah�", 1)
+      self.newChatMessage("No puedo subirme ahí", 1)
 
   def jump(self):
     """ Jumps on the current position.

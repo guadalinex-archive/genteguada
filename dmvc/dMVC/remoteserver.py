@@ -207,7 +207,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     sizeSerialized = len(serialized)
     serializedCompress = gzip.zlib.compress(serialized)
     sizeSerializedCompress = len(serializedCompress)
-    compress = '%.2f'% ((float(sizeSerializedCompress) / float(sizeSerialized)) * 100)
+    compress = '%.2f'% (100 - ((float(sizeSerializedCompress) / float(sizeSerialized)) * 100))
     try:
       size = struct.pack("i", sizeSerializedCompress)
       utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerializedCompress) + "b), compress: "+compress )

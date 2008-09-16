@@ -38,7 +38,7 @@ class RCommand:
     return self._serverHandler.getSessionID()
 
   def __str__(self):
-    return str(self.__class__.__name__) + ":" + str(id(self)) +': '
+    return str(self.__class__.__name__) + ":" 
 
 
 class RExecuterCommand(RCommand): 
