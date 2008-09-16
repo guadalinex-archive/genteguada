@@ -56,6 +56,24 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__accessMode = admin
     self.startSessionTiming()
 
+  def save(self):
+    #TABLA PLAYER
+    #player.username
+    #player.points
+    #player.playedTime
+    #player.exp
+    #player.timestamp
+    #player.admin
+    #player.room
+    #player.spriteName
+    #RELACIONES
+    #items que nos dan puntos
+    #habitaciones que pasamos
+    #otros player en la agenda
+    #items que tengo en el inventario
+    pass
+    
+
   def getAccessMode(self):
     """ Returns the access mode.
     """  

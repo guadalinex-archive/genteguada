@@ -39,6 +39,18 @@ class GGRoom(ggmodel.GGModel):
     self.__population = 0
     self.__enabled = enabled
     self.__startRoom = startRoom
+
+  def save(self):
+    #ROOM
+    #room.size
+    #room.label
+    #room.maxuser
+    #room.enabled
+    #room.startRoom
+    #RELACIONES
+    #tiles que estan en una posicion
+    #items que estan en una habitacion
+    pass
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
