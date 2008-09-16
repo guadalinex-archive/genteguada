@@ -239,9 +239,8 @@ class RClient(synchronized.Synchronized):
           print "recibimos ",size , command
           #print "Al siguiente"
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
-
-          if isinstance(command, RCompositeCommand):
-            for eachCommand in command:
+          if isinstance(command, remotecommand.RCompositeCommand):
+            for eachCommand in command.commandList:
               self.__processCommand(eachCommand)
           else:
             self.__processCommand(command)

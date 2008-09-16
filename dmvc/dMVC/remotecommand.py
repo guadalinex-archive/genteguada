@@ -3,18 +3,16 @@ import sys
 import utils
 
 
-class RCommand: #{{{
+class RCommand: 
 
-  def __init__(self): #{{{
+  def __init__(self): 
     self._serverHandler = None
-  #}}}
 
-  def do(self): #{{{
+  def do(self): 
     raise Exception('subclasses must implements do()')
 
   def objectToSerialize(self, server):
     return self
-  #}}}
 
   def initStat(self, size):
     return utils.statServer.initCount((self.getCommandType(), str(self.getClass()), str(self.getMethod())), size )
@@ -42,17 +40,15 @@ class RCommand: #{{{
   def __str__(self):
     return str(self.__class__.__name__) + ":" + str(id(self)) +': '
 
-#}}}
 
-class RExecuterCommand(RCommand): #{{{
+class RExecuterCommand(RCommand): 
 
-  def __init__(self, modelID, methodName, args): #{{{
+  def __init__(self, modelID, methodName, args): 
     RCommand.__init__(self)
     self._executionID = utils.nextID() 
     self._modelID    = modelID
     self._methodName = methodName
     self._args       = args
-  #}}}
 
   def getMethod(self):
     return self._methodName
@@ -63,11 +59,9 @@ class RExecuterCommand(RCommand): #{{{
   def isYourAnswer(self, command):
     if not isinstance(command, RExecutionAnswerer):
       return False
-
     return command._executionID == self._executionID
 
-
-  def do(self): #{{{
+  def do(self): 
     rServer = dMVC.getRServer()
     model = rServer.getModelByID(self._modelID)
 
@@ -100,40 +94,33 @@ class RExecuterCommand(RCommand): #{{{
           handler(self._serverHandler,
                   result,
                   error)
-          
-  #}}}
-
 
   def __str__(self):
     return RCommand.__str__(self) + 'executionID=' + str(self._executionID) + \
         ', modelID=' + str(self._modelID) + ', ' + str(self._methodName)# + str(self._args)
     #return RCommand.__str__(self) + 'executionID=' + str(self._executionID)
 
-#}}}
 
-class RExecutionAnswerer(RCommand): #{{{
+class RExecutionAnswerer(RCommand): 
 
-  def __init__(self, executionID): #{{{
+  def __init__(self, executionID): 
     RCommand.__init__(self)
     self._executionID = executionID
-  #}}}
 
   def __str__(self):
     return RCommand.__str__(self) + 'executionID=' + str(self._executionID)
 #}}}  
 
-class RExecutionResult(RExecutionAnswerer): #{{{
 
-  def __init__(self, executionID, result): #{{{
+class RExecutionResult(RExecutionAnswerer): 
+
+  def __init__(self, executionID, result): 
     RExecutionAnswerer.__init__(self, executionID)
     self._result = result
-  #}}}
 
-  def do(self): #{{{ 
+  def do(self):  
     rClient = dMVC.getRClient()
     return dMVC.clientMaterialize(self._result, rClient)
-  #}}}
-
 
   def objectToSerialize(self, server):
     self._result = dMVC.objectToSerialize(self._result, server)
@@ -143,23 +130,22 @@ class RExecutionResult(RExecutionAnswerer): #{{{
     return RExecutionAnswerer.__str__(self)# + ', result=' + str(self._result)
 #}}}
 
-class RExceptionRaiser(RExecutionAnswerer): #{{{
 
-  def __init__(self, executionID, exception): #{{{
+class RExceptionRaiser(RExecutionAnswerer): 
+
+  def __init__(self, executionID, exception): 
     RExecutionAnswerer.__init__(self, executionID)
     self._exception = exception
-  #}}}
 
-  def do(self): #{{{
+  def do(self): 
     raise self._exception
-  #}}}
 
   def __str__(self):
     return RExecutionAnswerer.__str__(self) + ', exception=' + str(self._exception)
 
-#}}}
 
 class REventUnsuscriber(RCommand):
+
   def __init__(self, modelID, suscriptionIDs):
     RCommand.__init__(self)
     self._modelID        = modelID
@@ -180,8 +166,8 @@ class REventUnsuscriber(RCommand):
          ', suscriptionIDs=' + str(self._suscriptionIDs)
 
 
-
 class REventSuscriber(RCommand):
+
   def __init__(self, modelID, eventType, suscriptionID):
     RCommand.__init__(self)
     self._modelID       = modelID
@@ -198,7 +184,6 @@ class REventSuscriber(RCommand):
     model = dMVC.getRServer().getModelByID(self._modelID)
     model.subscribeEvent(self._eventType, self.eventFired, self._suscriptionID, self.getSessionID())
 
-
   def eventFired(self, event):
     command = REventTriggerer(self._suscriptionID, event)
     if not self._serverHandler.sendCommand(command):
@@ -214,10 +199,8 @@ class REventSuscriber(RCommand):
         ', eventType=' + str(self._eventType) + ', suscriptionID=' + str(self._suscriptionID)
 
 
-      
-
-
 class REventTriggerer(RCommand):
+
   def __init__(self, suscriptionID, event):
     RCommand.__init__(self)
     self._suscriptionID = suscriptionID
@@ -239,12 +222,19 @@ class REventTriggerer(RCommand):
     return RCommand.__str__(self) + 'suscriptionID=' + str(self._suscriptionID) + ', event=' + str(self._event)
 
 
-
 class RFragment:
+
   def __init__(self, groupID, sequence, total, data, commandID = None):
     self.groupID  = groupID
     self.sequence = sequence
     self.total    = total
     self.data     = data
     self.commandID = commandID
+
+
+class RCompositeCommand(RCommand):
+
+  def __init__(self, commandList):
+    RCommand.__init__(self)
+    self.commandList  = commandList
 

@@ -103,27 +103,22 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
   def __sendCommandQueue(self):
     #prueba
     while True:
-      time.sleep(0.025)
+      time.sleep(0.25)
       try:
         command = self.__commandsQueue.get_nowait()
-
         commands = []
         commands.append(command)
-
-        time.sleep(0.015) # Wait for more commands, to send them all in a shot
-
+        time.sleep(0.15) # Wait for more commands, to send them all in a shot
         try:
           while True:
             commands.append(self.__commandsQueue.get_nowait())
         except Queue.Empty:
           pass
-
-        if (len(commands) == 1):
+        if len(commands) == 1:
           self.__sendObject(command)
         else:
           utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
-          self.__sendObject(RCompositeCommand(commands))
-
+          self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
         self.__sendAsyncFragment()
 
@@ -179,8 +174,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     utils.logger.debug("Run the command " + str(command) + " from the client " + \
                          str(self.client_address)+ " and the result is "+str(answer))
     if answer:
-      self.__sendObject(answer,command)
-      #self.sendCommand(answer)
+      #self.__sendObject(answer,command)
+      self.sendCommand(answer)
 
   def __processFragment(self, fragment, size):
     if not fragment.groupID in self.fragmentCommand.keys():
@@ -224,7 +219,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       time.sleep(0.1)
       self.sendCommand(fragment)
 
-  @synchronized.synchronized(lockName='sendObject')
+  #@synchronized.synchronized(lockName='sendObject')
   def __sendObject(self, obj, command=None): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
@@ -243,8 +238,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       return False
 
   def sendCommand(self, command): 
-    #self.__commandsQueue.put(command)
     #prueba
+    #self.__commandsQueue.put(command)
     return self.__sendObject(command)
 
   def finish(self): 
