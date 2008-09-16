@@ -9,6 +9,13 @@ if False:
 
 import GG.model.ggsystem
 import dMVC.remoteserver
+from optparse import OptionParser
+import sys
+
+__usage__ = "\n  %s -P puerto"%sys.argv[0]
+parser = OptionParser( usage = __usage__ )
+parser.add_option("-P",dest="port", help="puerto",default=8000, type = int)
+(params, args) = parser.parse_args()
 
 if __name__ == "__main__":
   def onLogin(rhandler, result, error):
@@ -29,5 +36,6 @@ if __name__ == "__main__":
 
   print "Iniciado el servidor del juego Gente Guada"
   dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),
+                            port = params.port,
                             onDisconnection = onDisconnection,
                             onExecution = onExecution)

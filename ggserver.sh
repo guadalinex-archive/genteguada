@@ -7,4 +7,4 @@ echo
 
 export PYTHONPATH="./dmvc"
 #python  -m cProfile -o ggserver.prof  gg/ggserver
-python gg/ggserver
+python gg/ggserver 

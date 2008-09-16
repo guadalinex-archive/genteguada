@@ -94,7 +94,7 @@ class GenteGuada:
     widgetContainer.add_widget(window)
   
   def start(self, params):
-    self.__setSystem(params.ip)
+    self.__setSystem(params.ip, params.port)
     pygame.init()
     pygame.display.set_caption(VERSION)
     self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
@@ -120,10 +120,10 @@ class GenteGuada:
   def getSystem(self):
     return self.__system
 
-  def __setSystem(self, ipAddress):
+  def __setSystem(self, ipAddress, port):
     if ipAddress:
       try:
-        self.__client = dMVC.remoteclient.RClient(ipAddress, autoEvents=False)
+        self.__client = dMVC.remoteclient.RClient(ipAddress, port = port, autoEvents=False)
       except Exception, excep:
         print excep, ERROR_CONNECTION
         self.finish()
