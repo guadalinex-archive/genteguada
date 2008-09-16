@@ -79,8 +79,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     initialData = {}
     initialData['rootModel'] = dMVC.getRServer().getRootModel()
     initialData['sessionID'] = self.__sessionID
-
-    self.__sendObject(initialData)
+    self.sendCommand(initialData)
+    #self.__sendObject(initialData)
   #}}}
 
   def setup(self): 
@@ -90,11 +90,12 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
 
     self.fragmentCommand = {}
 
-    self.__sendInitialData()
     #prueba
     self.__commandsQueue = Queue.Queue()
     self.__asyncCommandQueue = Queue.Queue()
     thread.start_new(self.__sendCommandQueue, ())
+
+    self.__sendInitialData()
 
     handler = dMVC.getRServer()._onConnection
     if handler:
@@ -117,6 +118,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
         if len(commands) == 1:
           self.__sendObject(command)
         else:
+          print "Lanzando unos cuantos comandos juntos ",len(commands)
           utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
           self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
@@ -174,7 +176,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     utils.logger.debug("Run the command " + str(command) + " from the client " + \
                          str(self.client_address)+ " and the result is "+str(answer))
     if answer:
-      #self.__sendObject(answer,command)
       self.sendCommand(answer)
 
   def __processFragment(self, fragment, size):
@@ -219,7 +220,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       time.sleep(0.1)
       self.sendCommand(fragment)
 
-  #@synchronized.synchronized(lockName='sendObject')
+  @synchronized.synchronized(lockName='sendObject')
   def __sendObject(self, obj, command=None): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
@@ -239,8 +240,9 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
 
   def sendCommand(self, command): 
     #prueba
-    #self.__commandsQueue.put(command)
-    return self.__sendObject(command)
+    self.__commandsQueue.put(command)
+    return True
+    #return self.__sendObject(command)
 
   def finish(self): 
     utils.logger.debug("Close the connection with "+str(self.client_address))

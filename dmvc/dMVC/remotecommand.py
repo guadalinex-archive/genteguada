@@ -238,3 +238,7 @@ class RCompositeCommand(RCommand):
     RCommand.__init__(self)
     self.commandList  = commandList
 
+  def objectToSerialize(self, server):
+    self.commandList = dMVC.objectToSerialize(self.commandList, server)
+    return self
+
