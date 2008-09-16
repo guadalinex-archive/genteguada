@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import time
 import ocempgui
 import GG.utils
 import isoview
@@ -67,14 +68,15 @@ class IsoViewQuiz(positioned_view.PositionedView):
     """ Processes the quiz answer.
     option: quiz answer.
     """ 
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [Andatuz]: "
     if option == self.getModel().getRightAnswer():
-      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("�Respuesta correcta!", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2))
+      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("!Respuesta correcta!", \
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "!Respuesta correcta!", header)
       self.__isohud.getPlayer().addPoints(0, self.getModel().question)
       self.getModel().removeRightAnsweredQuestion()
     else:   
       self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2))
+                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "Respuesta incorrecta", header)
     self.__isohud.widgetContainer.remove_widget(self.container)
     self.__isohud.setActiveWindow(False)
     self.container.destroy()

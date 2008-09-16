@@ -683,15 +683,16 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """
     messageChat = event.getParams()['message']
-    self.newChatMessage(messageChat)
+    messageText = event.getParams()['text']
+    messageHeader = event.getParams()['header']
+    self.newChatMessage(messageChat, messageText, messageHeader)
 
-  def newChatMessage(self, messageChat):
+  def newChatMessage(self, messageChat, messageText, messageHeader):
     """ Shows a new chat message on screen.
     messageChat: new chat message.
     """  
-    print "Nuevo mensaje de chat"
-    ivMessageChat = messageChat.chatView(self.getScreen(), self)
-    animTime = (len(messageChat.getMessage()) / 12) * 1000
+    ivMessageChat = messageChat.chatView(self.getScreen(), self, messageText, messageHeader)
+    animTime = (len(messageText) / 12) * 1000
     if animTime < 2000:
       animTime = 2000 
     if messageChat.type == 3:
@@ -754,10 +755,12 @@ class IsoViewHud(isoview.IsoView):
     isTile = False
     if self.__accessMode:
       isTile = self.__selectedItem.isTile()
-    itemName = self.__selectedItem.getName()
-    itemImageLabel = self.__selectedItem.getImageLabel()
+    itemName = event.getParams()['name']
+    itemImageLabel = event.getParams()['imageLabel']
     highlight = event.getParams()['highlight']
-    if (not self.__selectedItem.inventoryOnly() and ivItem) or isTile:
+    inventoryOnly = event.getParams()['inventoryOnly']
+    options = event.getParams()['options']
+    if (not inventoryOnly and ivItem) or isTile:
       if highlight:  
         self.__isoviewRoom.itemSelected(self.__selectedItem)
       if isTile:
@@ -769,7 +772,7 @@ class IsoViewHud(isoview.IsoView):
     if (self.__accessMode and ivItem) or isTile:
       self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
     if not isTile:
-      self.itemSelectedByUser(itemName, itemImageLabel)
+      self.itemSelectedByUser(itemName, itemImageLabel, options)
     
   def paintAdminOptions(self):
     """ Paints the admin action buttons on screen.
@@ -941,11 +944,10 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.buttonBarAdminActions)
     self.__adminMenu = True
   
-  def itemSelectedByUser(self, itemName, itemImageLabel):
+  def itemSelectedByUser(self, itemName, itemImageLabel, options):
     """ Paints the user action buttons.
     """  
-    
-    options = self.__selectedItem.getOptions()
+    #options = self.__selectedItem.getOptions()
     if not len(options):
       return
     self.__buttonBarActions = guiobjects.OcempPanel(259, 95, [GG.utils.SCREEN_SZ[0] - 260, 431], USER_ACTIONS_BACKGROUND)

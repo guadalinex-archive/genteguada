@@ -31,6 +31,7 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__position = position
     else:    
       self.__position = model.getPosition()
+    self.__imagePath = model.getImagePath()
     self.__img = None
     self.loadImage(imagePath)
     self.getModel().subscribeEvent('position', self.positionChanged)
@@ -150,7 +151,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + self.getModel().spriteName)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__imagePath + self.getModel().spriteName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     
   def getScreenPosition(self):
