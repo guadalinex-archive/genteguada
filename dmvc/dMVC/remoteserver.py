@@ -80,29 +80,21 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     initialData['rootModel'] = dMVC.getRServer().getRootModel()
     initialData['sessionID'] = self.__sessionID
     self.sendCommand(initialData)
-    #self.__sendObject(initialData)
   #}}}
 
   def setup(self): 
     utils.logger.debug("Conect client "+str(self.client_address))
-
     self.__sessionID = utils.nextID()
-
     self.fragmentCommand = {}
-
-    #prueba
     self.__commandsQueue = Queue.Queue()
     self.__asyncCommandQueue = Queue.Queue()
     thread.start_new(self.__sendCommandQueue, ())
-
     self.__sendInitialData()
-
     handler = dMVC.getRServer()._onConnection
     if handler:
       handler(self)
 
   def __sendCommandQueue(self):
-    #prueba
     while True:
       time.sleep(0.025)
       try:
@@ -123,10 +115,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
           self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
         pass
-        #self.__sendAsyncFragment()
 
   def __sendAsyncFragment(self):
-    #prueba
     try:
       fragmentCommand = self.__asyncCommandQueue.get_nowait()
       self.__sendObject(fragmentCommand)
@@ -161,6 +151,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
             raise "Not valid reading from socket: " + str(commandOrFragment)
         else:
           # The conection is lost
+          self.finish()
           break
       else:
         if not self.request in write:
@@ -195,7 +186,6 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
   def __sendAsyncObject(self, obj, commandID): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
-    #serialized = pickle.dumps(obj)
     sizeSerialized = len(serialized)
     total = sizeSerialized / 10000
     if not sizeSerialized % 10000 == 0:
@@ -203,33 +193,24 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     lenProcess = 0
     sequence = 0
     asyncCommandID = utils.nextID()
-    #asyncQueue = []
     while lenProcess < sizeSerialized:
       sequence += 1
       fragmentCommand = serialized[lenProcess : lenProcess + 10000]
       fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand, commandID)
-      #asyncQueue.append(fragment)
       self.__asyncCommandQueue.put(fragment)
       lenProcess += 10000
-    #prueba
-    #thread.start_new(self.__sendAsyncQueue, (asyncQueue,))
-
-  def __sendAsyncQueue(self, queue):
-    #prueba
-    import time
-    for fragment in queue:
-      time.sleep(0.1)
-      self.sendCommand(fragment)
 
   @synchronized.synchronized(lockName='sendObject')
   def __sendObject(self, obj, command=None): 
     toSerialize = dMVC.objectToSerialize(obj, dMVC.getRServer())
     serialized = pickle.dumps(toSerialize)
+    sizeSerialized = len(serialized)
     serializedCompress = gzip.zlib.compress(serialized)
-    sizeSerialized = len(serializedCompress)
+    sizeSerializedCompress = len(serializedCompress)
+    compress = '%.2f'% ((float(sizeSerializedCompress) / float(sizeSerialized)) * 100)
     try:
-      size = struct.pack("i", sizeSerialized)
-      utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerialized) + "b)" )
+      size = struct.pack("i", sizeSerializedCompress)
+      utils.logger.debug("Sendind object " + str(obj) + " to client: "+str(self.client_address) + " (" + str(sizeSerializedCompress) + "b), compress: "+compress )
       self.request.send(size)
       self.request.send(serializedCompress)
       #if command:
@@ -237,6 +218,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       return True
     except:
       utils.logger.exception("Can''t send an object, probable conexion lost")
+      self.finish()
       return False
 
   def sendCommand(self, command): 
