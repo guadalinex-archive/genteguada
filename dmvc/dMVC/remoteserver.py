@@ -122,7 +122,8 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
           utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
           self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
-        self.__sendAsyncFragment()
+        pass
+        #self.__sendAsyncFragment()
 
   def __sendAsyncFragment(self):
     #prueba
