@@ -229,7 +229,8 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     itemModel = ivItem.getModel()
-    listaAux = itemList[:len(itemList)-1]
+    #listaAux = itemList[:len(itemList)-1]
+    listaAux = itemList
     for item in listaAux:
       accWidth += item.topAnchor[0] 
       accHeight += item.topAnchor[1]

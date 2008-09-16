@@ -119,7 +119,10 @@ class Tile(ggmodel.GGModel):
   def getItems(self):
     """ Returns the tile's item stack.
     """  
-    return self.__items  
+    items = []
+    for item in self.__items:
+      items.append(item)
+    return items
     
   def getItemsAndDestroy(self):
     """ Returns the tile items and removes them from itself.
