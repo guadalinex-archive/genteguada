@@ -230,9 +230,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     state: new state
     """
     if not self.__state == state:
-      listItemsTile = self.getRoom().getTile(self.getPosition()).getItems()
-      self.__state = state
-      self.triggerEvent('state', state=state, position=self.getPosition(), listItemsTiles=listItemsTile)
+      if self.getRoom():
+        listItemsTile = self.getRoom().getTile(self.getPosition()).getItems()
+        self.__state = state
+        self.triggerEvent('state', state=state, position=self.getPosition(), listItemsTiles=listItemsTile)
   
   # self.__destination
   
@@ -348,6 +349,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setHeading(direction)
       self.__visited.append(nextPos)
       items = self.getTile().getItemsFrom(self)
+      #listItems = self.getRoom().getTile(nextPos).getItems()
       for item in items:
         item.setPosition(nextPos)
 
@@ -629,7 +631,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
     else:
-      if not player.getAccessMode():
+      if player.getAccessMode():
         player.newChatMessage("No puedes entregarle una tarjeta a este usuario.", 1)
       else:  
         player.newChatMessage("Preguntando a " + self.username + "...", 1)  

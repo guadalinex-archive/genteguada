@@ -122,7 +122,7 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.dirty = 1
   
   def setRect(self, rect):
-    """ Sets a new rect for the item iamgeprint "****************************AQUI ESTOY*****************"
+    """ Sets a new rect for the item image.
     rect: new rect.
     """
     self.__img.rect = rect
@@ -192,7 +192,8 @@ class IsoViewItem(positioned_view.PositionedView):
     event: even info.
     """
     self.__position = event.getParams()['position']
-    destination = self.__ivroom.getFutureScreenPosition(self, self.__position, event.getParams()['itemList'])
+    itemList = event.getParams()['itemList']
+    destination = self.__ivroom.getFutureScreenPosition(self, self.__position, itemList)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.__img.rect.topleft, destination)
     if self.__parent.getSound():
       guiobjects.playSound(GG.utils.SOUND_STEPS01)
