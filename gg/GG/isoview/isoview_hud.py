@@ -435,12 +435,13 @@ class IsoViewHud(isoview.IsoView):
       pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems()), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
+      if self.__sound:
+        positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
+        #guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       ivItem.setAnimation(positionAnim)
       if ivInventItem:
         self.__isoviewInventory.remove(ivInventItem)
         self.paintItemsInventory()
-      if self.__sound:  
-        guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       
   def addItemToRoomFromVoid(self, ivItem):
     """ Creates an animation from the top of the screen to the room.
@@ -455,8 +456,9 @@ class IsoViewHud(isoview.IsoView):
       if isinstance(ivItem, isoview_player.IsoViewPlayer):
         movieAnim = animation.MovieAnimation(GG.utils.ANIM_WALKING_TIME, ivItem, ivItem.createFrameSet("walking_carrying"), ivItem.getPath())
         ivItem.setMovieAnimation(movieAnim)
-      if self.__sound:  
-        guiobjects.playSound(GG.utils.SOUND_DROPITEM)
+      if self.__sound:
+        positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
+        #guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       
