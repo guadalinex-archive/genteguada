@@ -118,6 +118,7 @@ class GGPenguinTalker(GGPenguin):
     """
     self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), self.__msg)
+    talker.setUnselectedItem()
     
 # ===============================================================
 
@@ -188,7 +189,8 @@ class GGPenguinTrade(GGPenguin):
       chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..."
       self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), chatMessage)
-      return None
+    talker.setUnselectedItem()
+    return None
 
 # ===============================================================
      
@@ -248,8 +250,10 @@ class GGPenguinQuiz(GGPenguin):
       self.__availableQuestions[name] = self.__fileList  
     if len(self.__availableQuestions[name]) == 0:
       talker.newChatMessage("Ya no tengo preguntas que hacerte", 2)
+      talker.setUnselectedItem()
       return  
     question = random.randint(0, len(self.__availableQuestions[name])-1)
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))   
-        
+    talker.setUnselectedItem()
+            
