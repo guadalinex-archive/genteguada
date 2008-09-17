@@ -59,7 +59,10 @@ class GGPickableItem(room_item.GGRoomItem):
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
     """  
-    self.label = newLabel  
+    if self.label != newLabel:
+      self.label = newLabel
+      return True
+    return False  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.

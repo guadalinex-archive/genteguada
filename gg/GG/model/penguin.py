@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
 import random
 import room_item
 import chat_message
@@ -21,6 +22,7 @@ class GGPenguin(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
     self.label = label
+    self.header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
 
   def copyObject(self):
     return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.label)
@@ -55,7 +57,10 @@ class GGPenguin(room_item.GGRoomItem):
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
     """  
-    self.label = newLabel  
+    if self.label != newLabel:
+      self.label = newLabel
+      return True
+    return False  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
@@ -66,6 +71,9 @@ class GGPenguin(room_item.GGRoomItem):
       clicker.setSelectedItem(self)
     else:
       return False    
+  
+  def newChatMessage(self, talker, chatMessage, text):
+    talker.triggerEvent('chatAdded', message=chatMessage, text=text, header=self.header)
 
 # ===============================================================
 
@@ -108,9 +116,12 @@ class GGPenguinTalker(GGPenguin):
     """ Method executed after being talked by a player.
     talker: player.
     """
+    self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
+                                                 self.getPosition(), 2), self.__msg)
+    """
     talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
                 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-
+    """
 # ===============================================================
 
 class GGPenguinTrade(GGPenguin):
@@ -172,13 +183,18 @@ class GGPenguinTrade(GGPenguin):
     """
     giftItem = talker.getItemFromInventory(self.__giftLabel)
     if giftItem:
-      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
+                                                 self.getPosition(), 2), self.__msg)
+      #talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
+      #          'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       talker.removeFromInventory(giftItem)
       return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
-      talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podr�a darte algo a cambio...", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+      chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..."
+      self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
+                                                 self.getPosition(), 2), chatMessage)
+      #talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podr�a darte algo a cambio...", \
+      #          'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
 
 # ===============================================================
@@ -239,6 +255,9 @@ class GGPenguinQuiz(GGPenguin):
       self.__availableQuestions[name] = self.__fileList  
     if len(self.__availableQuestions[name]) == 0:
       talker.newChatMessage("Ya no tengo preguntas que hacerte", 2)
+      #chatMessage = "Ya no tengo preguntas que hacerte"
+      #self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
+      #                                           self.getPosition(), 2), chatMessage)
       return  
     question = random.randint(0, len(self.__availableQuestions[name])-1)
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  

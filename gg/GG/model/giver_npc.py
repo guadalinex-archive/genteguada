@@ -52,7 +52,10 @@ class GGGiverNpc(room_item.GGRoomItem):
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
     """  
-    self.label = newLabel  
+    if self.label != newLabel:
+      self.label = newLabel
+      return True
+    return False  
   
   def getImageLabel(self):
     """ Returns the item's image filename.

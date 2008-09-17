@@ -30,7 +30,7 @@ class IsoViewChatMessage(positioned_view.PositionedView):
   Defines a chat message view.
   """
   
-  def __init__(self, model, screen, isohud, message, header, position):
+  def __init__(self, model, screen, isohud, message, header):
     """ Class constructor.
     model: chat message model.
     screen: screen handler.
@@ -39,7 +39,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__isohud = isohud
     self.__message = message
     self.__header = header
-    self.__position = position
+    self.position = model.position
+    #print self.position
     positioned_view.PositionedView.__init__(self, model, screen)
     self.style = self.getStyleMessageChat()
     self.label = guiobjects.OcempLabelNotTransparent(message, 140)
@@ -51,8 +52,8 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     #self.balloon.opacity = BALLOON_OPACITY
     
     if model.type != 3:
-      #pos = GG.utils.p3dToP2d(self.__position, [0, 0])
-      pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
+      pos = GG.utils.p3dToP2d(self.position, [0, 0])
+      #pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
       if (pos[0] + 10 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
         xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
       else:

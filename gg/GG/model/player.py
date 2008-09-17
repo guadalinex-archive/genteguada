@@ -381,6 +381,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.updateSessionTiming()
     room_item.GGRoomItem.changeRoom(self, room, pos)
     
+  def newChatMessageEntered(self, message):
+    """ Receives a new chat message and sends it to the room.
+    message: new chat message.
+    """  
+    self.getRoom().newChatMessage(message, self, 0)  
+  
   def newChatMessage(self, message, msgType):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
@@ -402,7 +408,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
-                        options=item.getOptions(), highlight=1)
+                        options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 
+                        highlight=1)
   
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't highlights it.
@@ -710,3 +717,16 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       if self.getState() == GG.utils.STATE[2]:
         self.setState(GG.utils.STATE[4])  
     item_with_inventory.GGItemWithInventory.setPosition(self, pos, jump)
+    
+  def tryToInventory(self, item):
+    if item.isTopItem():  
+      self.addToInventoryFromRoom(item)
+      self.setUnselectedItem()
+    else:      
+      self.newChatMessage('No puedo coger eso, hay algo encima', 1)     
+    
+  def tryToPocket(self, item):
+    if item.isTopItem():
+      self.setUnselectedItem()
+      item.addPointsTo(self)
+      return True  

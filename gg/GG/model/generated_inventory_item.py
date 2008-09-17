@@ -47,7 +47,10 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
     """  
-    self.label = newLabel  
+    if self.label != newLabel:
+      self.label = newLabel
+      return True
+    return False  
 
   def getPosition(self):
     """ Returns item's position.

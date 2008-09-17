@@ -675,7 +675,8 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__textField.text == "" or self.__textField.text.isspace():
       return
-    self.__player.getRoom().newChatMessage(self.__textField.text, self.__player, 0)
+    #self.__player.getRoom().newChatMessage(self.__textField.text, self.__player, 0)
+    self.__player.newChatMessageEntered(self.__textField.text)
     self.__textField.text = ""
 
   def chatAdded(self, event):
@@ -754,12 +755,14 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.findIVItem(self.__selectedItem)
     isTile = False
     if self.__accessMode:
-      isTile = self.__selectedItem.isTile()
+      #isTile = self.__selectedItem.isTile()
+      isTile = event.getParams()['isTile']
     itemName = event.getParams()['name']
     itemImageLabel = event.getParams()['imageLabel']
     highlight = event.getParams()['highlight']
     inventoryOnly = event.getParams()['inventoryOnly']
     options = event.getParams()['options']
+    adminActions = event.getParams()['adminActions']
     if (not inventoryOnly and ivItem) or isTile:
       if highlight:  
         self.__isoviewRoom.itemSelected(self.__selectedItem)
@@ -770,7 +773,7 @@ class IsoViewHud(isoview.IsoView):
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(selImgPos, SELECTED_FLOOR_SHIFT)
       self.addSprite(self.__selectedImage)        
     if (self.__accessMode and ivItem) or isTile:
-      self.itemSelectedByAdmin(itemName, itemImageLabel, isTile)
+      self.itemSelectedByAdmin(itemName, itemImageLabel, isTile, adminActions)
     if not isTile:
       self.itemSelectedByUser(itemName, itemImageLabel, options)
     
@@ -876,10 +879,11 @@ class IsoViewHud(isoview.IsoView):
     else:
       self.__player.newChatMessage("Error: habitación no encontrada", 1)  
      
-  def itemSelectedByAdmin(self, itemName, itemImageLabel, isTile):
+  def itemSelectedByAdmin(self, itemName, itemImageLabel, isTile, adminActions):
     """ Paints the selected item actions admin pannel.
     """  
-    actions = self.__selectedItem.getAdminActions()
+    #actions = self.__selectedItem.getAdminActions()
+    actions = adminActions
     if not actions:
       return
     #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
@@ -1253,13 +1257,24 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     if self.__selectedItem:
+      self.__player.tryToInventory(self.__selectedItem)
+      """
       if self.__selectedItem.isTopItem():  
         self.__player.addToInventoryFromRoom(self.__selectedItem)
-        self.__player.setUnselectedItem()    
+        self.__player.setUnselectedItem()
+      """      
 
   def moneyToInventory(self):
     """ Picks up money from the room and deletes the money object.
     """  
+    if self.__selectedItem:
+      ivItem = self.findIVItem(self.__selectedItem)
+      ivItem.updateZOrder(40000)
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, ivItem.getScreenPosition(), [565, 90+568], True)
+      positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
+      if self.__player.tryToPocket(self.__selectedItem):
+        ivItem.setAnimation(positionAnim)
+    """
     if self.__selectedItem:
       if self.__selectedItem.isTopItem():
         ivItem = self.findIVItem(self.__selectedItem)
@@ -1271,6 +1286,7 @@ class IsoViewHud(isoview.IsoView):
       else:
         self.__player.newChatMessage('No puedo coger eso, hay algo encima', 1)    
       self.__player.setUnselectedItem()
+      """
     
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
@@ -1514,10 +1530,13 @@ class IsoViewHud(isoview.IsoView):
         size = self.__isoviewRoom.getModel().size
         if 0 <= posX < size[0]:
           if 0 <= posY < size[1]:
+            self.__isoviewRoom.getModel().moveStack([posX, posY], selectedItem)  
+            """  
             itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
             for singleItem in itemsList:
               singleItem.setPosition([posX, posY])
-              self.__isoviewRoom.getModel().moveItem(singleItem.getPosition(), [posX, posY], singleItem)  
+              self.__isoviewRoom.getModel().moveItem(singleItem.getPosition(), [posX, posY], singleItem)
+            """    
             self.__selectedImage.rect.topleft = GG.utils.p3dToP2d([posX, posY], SELECTED_FLOOR_SHIFT)
       elif key == "Url":
         url = self.editableFields[key][0].text
@@ -1527,9 +1546,9 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.setMessage(msg)  
       elif key == "Label":
         newLabel = self.editableFields[key][0].text
-        oldLabel = self.__selectedItem.getName()
-        selectedItem.setLabel(newLabel)
-        self.getModel().labelChange(oldLabel, newLabel)
+        if selectedItem.setLabel(newLabel):
+          oldLabel = self.__selectedItem.getName()
+          self.getModel().labelChange(oldLabel, newLabel)
       elif key == "GiftLabel":
         giftLabel = self.editableFields[key][0].text    
         selectedItem.setGiftLabel(giftLabel)  

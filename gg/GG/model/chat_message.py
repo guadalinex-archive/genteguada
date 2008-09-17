@@ -24,13 +24,14 @@ class ChatMessage(ggmodel.GGModel):
     self.__sender = sender
     self.__hour = time.time()
     self.__color = color
-    self.__position = position
+    #print "METODO ", position
+    self.position = position
     self.type = chatType
     
   def variablesToSerialize(self):
     """ Sets some class attributes as public access.
     """  
-    return ['type']
+    return ['type', 'position']
     
   def getName(self):
     """ Returns the chat message.
@@ -60,7 +61,7 @@ class ChatMessage(ggmodel.GGModel):
   def getPosition(self):
     """ On-screen chat message starting position.
     """
-    return self.__position
+    return self.position
 
   def getType(self):
     """ Returns the chat message type.
@@ -74,7 +75,7 @@ class ChatMessage(ggmodel.GGModel):
     isohud: isohud handler.
     """
     import GG.isoview.isoview_chatmessage
-    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud, message, header, self.__position)
+    return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud, message, header)
 
 
 class ChatQuiz(ChatMessage):
@@ -95,6 +96,7 @@ class ChatQuiz(ChatMessage):
     self.__parent = parent
     self.question = question
     self.player = player
+    #self.position = position
     self.__msgQuestion = ""
     self.__msgAnswers = []
     self.__rightAnswer = 0
