@@ -11,6 +11,7 @@ import time
 import select
 import signal
 import gzip
+import weakref
 
 class RServer(synchronized.Synchronized):
 
@@ -27,6 +28,7 @@ class RServer(synchronized.Synchronized):
     dMVC.setRServer(self)
 
     self.__models = {}
+    #self.__models = weakref.WeakValueDictionary()
     self.__rootModel = rootModel
     self.__port = port
     self.__con = None

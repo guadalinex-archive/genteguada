@@ -248,7 +248,7 @@ class GGRoom(ggmodel.GGModel):
     """ Checks if a tile is blocked or not.
     pos: tile position.
     """
-    if (0 <= pos[0] <= self.size[0]) and (0 <= pos[1] <= self.size[1]):
+    if (0 <= pos[0] < self.size[0]) and (0 <= pos[1] < self.size[1]):
       if self.__tiles[pos[0]][pos[1]].getDepth() != 0:
         return True
     return False
@@ -271,7 +271,7 @@ class GGRoom(ggmodel.GGModel):
           bottom.clickedBy(clickerPlayer)
         else:
           if self.getNextDirection(clickerPlayer.getPosition(), target)[0] == "none":
-            clickerPlayer.newChatMessage("No puedo llegar hasta ese maravilloso lugar.", 2)
+            clickerPlayer.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
           clickerPlayer.setDestination(target)
   
@@ -285,30 +285,22 @@ class GGRoom(ggmodel.GGModel):
   
   def __getPossibleDirection(self, pos):
     result = {}
-    if 0 <= pos[1] - 1 < self.size[1]:
-      if not self.getBlocked([pos[0], pos[1] - 1]): 
-        result["up"] = [pos[0], pos[1] - 1]
-      if 0 <= pos[0] - 1 < self.size[0]:
-        if not self.getBlocked([pos[0] - 1, pos[1] - 1]):
-          result["topleft"] = [pos[0] - 1, pos[1] - 1]
-      if 0 <= pos[0] + 1 < self.size[0]:
-        if not self.getBlocked([pos[0] + 1, pos[1] - 1]):
-          result["topright"] = [pos[0] + 1, pos[1] - 1]
-    if 0 <= pos[1] + 1 < self.size[1]:
-      if not self.getBlocked([pos[0], pos[1] + 1]):
-        result["down"] = [pos[0], pos[1] + 1]
-      if 0 <= pos[0] - 1 < self.size[0]:
-        if not self.getBlocked([pos[0] - 1, pos[1] + 1]):
-          result["bottomleft"] = [pos[0] - 1, pos[1] + 1]
-      if 0 <= pos[0] + 1 < self.size[0]:
-        if not self.getBlocked([pos[0] + 1, pos[1] + 1]):
-          result["bottomright"] = [pos[0] + 1, pos[1] + 1]
-    if 0 <= pos[0] - 1 < self.size[0]:
-      if not self.getBlocked([pos[0] - 1 , pos[1]]):
-        result["left"] = [pos[0] - 1 , pos[1]]
-    if 0 <= pos[0] + 1 < self.size[0]:
-      if not self.getBlocked([pos[0] + 1, pos[1]]):
-        result["right"] = [pos[0] + 1 , pos[1]]
+    if not self.getBlocked([pos[0], pos[1] - 1]):
+      result["up"] = [pos[0], pos[1] - 1]
+    if not self.getBlocked([pos[0] - 1, pos[1] - 1]):
+      result["topleft"] = [pos[0] - 1, pos[1] - 1]
+    if not self.getBlocked([pos[0] + 1, pos[1] - 1]):
+      result["topright"] = [pos[0] + 1, pos[1] - 1]
+    if not self.getBlocked([pos[0], pos[1] + 1]):
+      result["down"] = [pos[0], pos[1] + 1]
+    if not self.getBlocked([pos[0] - 1, pos[1] + 1]):
+      result["bottomleft"] = [pos[0] - 1, pos[1] + 1]
+    if not self.getBlocked([pos[0] + 1, pos[1] + 1]):
+      result["bottomright"] = [pos[0] + 1, pos[1] + 1]
+    if not self.getBlocked([pos[0] - 1 , pos[1]]):
+      result["left"] = [pos[0] - 1 , pos[1]]
+    if not self.getBlocked([pos[0] + 1, pos[1]]):
+      result["right"] = [pos[0] + 1 , pos[1]]
     return result
 
   def getNextDirection(self, pos1, pos2, player = None):
