@@ -461,6 +461,9 @@ class GGSystem(dMVC.model.Model):
       else:
         player.removePlayerContactFromAgenda(username)  
     if not markedPlayer:
-      return
+      return False
     markedPlayer.kick()
+    markedPlayer.removeAllData()
     self.__players.remove(markedPlayer)
+    return True
+    

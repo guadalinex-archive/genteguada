@@ -20,6 +20,7 @@ else:
 #PATHS IMAGE
 INTERFACE_PATH = "interface"
 SOUND_PATH = "sound"
+MASKS_PATH = "masks"
 INTERFACE_AVATARS = "avatars"
 TILE = "tiles"
 IMAGES_GIFT = "imagesgift"
