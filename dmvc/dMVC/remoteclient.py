@@ -12,6 +12,7 @@ import Queue
 import gzip
 
 
+
 class RClient(synchronized.Synchronized): 
 
   def __init__(self, serverIP, port=8000, autoEvents=True): 
