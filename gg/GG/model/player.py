@@ -471,10 +471,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
       self.newChatMessage("Ya tengo algo cogido. �No puedo aguantar m�s peso!", 1)
+      self.setUnselectedItem()
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
     self.triggerEvent('liftItem', item=item, position=item.getPosition())
+    self.setUnselectedItem()
     
   def drop(self, item):
     """ Drops an item.
@@ -487,6 +489,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if tile.getDepth():
       if not tile.getTopItem().stepOn():  
         self.newChatMessage("No puedo soltarlo encima de eso, podr�a aplastarlo.", 1)
+        self.setUnselectedItem()
       else:
         self.setState(GG.utils.STATE[1])
         item.setPosition(dropLocation)
@@ -495,6 +498,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     else:
       if dropLocation == [-1, -1]:
         self.newChatMessage("No puedo soltarlo ah�.", 1)
+        self.setUnselectedItem()
         return
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
