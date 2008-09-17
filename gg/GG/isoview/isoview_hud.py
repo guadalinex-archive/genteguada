@@ -1258,11 +1258,6 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__selectedItem:
       self.__player.tryToInventory(self.__selectedItem)
-      """
-      if self.__selectedItem.isTopItem():  
-        self.__player.addToInventoryFromRoom(self.__selectedItem)
-        self.__player.setUnselectedItem()
-      """      
 
   def moneyToInventory(self):
     """ Picks up money from the room and deletes the money object.
@@ -1274,19 +1269,6 @@ class IsoViewHud(isoview.IsoView):
       positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
       if self.__player.tryToPocket(self.__selectedItem):
         ivItem.setAnimation(positionAnim)
-    """
-    if self.__selectedItem:
-      if self.__selectedItem.isTopItem():
-        ivItem = self.findIVItem(self.__selectedItem)
-        ivItem.updateZOrder(40000)
-        positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, ivItem.getScreenPosition(), [565, 90+568], True)
-        positionAnim.setOnStop(self.__selectedItem.addPointsTo, self.__player)
-        positionAnim.setOnStop(self.__isoviewRoom.getModel().removeItem, self.__selectedItem)
-        ivItem.setAnimation(positionAnim)
-      else:
-        self.__player.newChatMessage('No puedo coger eso, hay algo encima', 1)    
-      self.__player.setUnselectedItem()
-      """
     
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
