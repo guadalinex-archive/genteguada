@@ -188,7 +188,8 @@ class Tile(ggmodel.GGModel):
     """  
     self.spriteName = image
     if not noTrigger:
-      self.triggerEvent("imageChange", newImage = image)
+      #self.triggerEvent("imageChange", newImage = image)
+      self.__room.tileImageChange(self.position, image)
     
   def getAccAnchor(self, itemName):
     """ Returns the accumulated anchor for an item.

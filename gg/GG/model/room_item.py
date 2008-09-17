@@ -21,6 +21,12 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = None
     self.__tile = None
     self.points = 0
+    
+  def getItemBuildPackage(self):    
+    infoPackage = {}
+    infoPackage["position"] = self.getPosition() 
+    infoPackage["imagepath"] = self.getImagePath()
+    return infoPackage
 
   def copyObject(self):
     """ Creates and returns a copy of this item.

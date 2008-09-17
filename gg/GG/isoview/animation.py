@@ -189,7 +189,7 @@ class ScreenPositionAnimation(Animation):
     """ Starts the animation.
     """
     Animation.start(self)
-    self.isoview.setScreenPosition([self.__originX, self.__originY])
+    #self.isoview.setScreenPosition([self.__originX, self.__originY])
     
   def step(self, now):
     """ Progresses the animation.
@@ -204,7 +204,7 @@ class ScreenPositionAnimation(Animation):
   def stop(self):
     """ Stops the animation.
     """
-    self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
+    #self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     Animation.stop(self)
 
 # ===============================================================

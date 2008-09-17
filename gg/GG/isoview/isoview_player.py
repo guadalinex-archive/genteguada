@@ -31,10 +31,13 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__movieAnimation = None
     self.__destination = None
     self.__tempTimestamp = None
-    self.__timestamp = model.getTimestamp()
-    self.__heading = model.getHeading()
-    self.__state = model.getState()
-    self.__path = model.getImagePath()
+    
+    infoPackage = model.getPlayerBuildPackage()
+    self.__timestamp = infoPackage["timestamp"]
+    self.__heading = infoPackage["heading"]
+    self.__state = infoPackage["state"]
+    self.__path = infoPackage["imagepath"]
+    
     self.__getAvatarImages()
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     self.getModel().subscribeEvent('heading', self.headingChanged)
@@ -275,11 +278,17 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     pos = event.getParams()['position']
     oldPos = event.getParams()['oldPosition']
+    itemList = event.getParams()['itemList']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
+    
+    #self.getIVRoom().updateScreenPositionsOn(pos, itemList)
+    """
     tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)  
-    scrPos = self.getScreenPosition()
-    self.setScreenPosition([tmpPos[0], scrPos[1]])
+    #scrPos = self.getScreenPosition()
+    #self.setScreenPosition([tmpPos[0], scrPos[1]])
+    self.setScreenPosition(tmpPos)
+    """    
     isoview_item.IsoViewItem.positionChanged(self, event)
     
   def changeAvatarImages(self, path):

@@ -24,8 +24,11 @@ class IsoViewRoom(isoview.IsoView):
     self.__bottomSpritesDict = {}
     self.__insertedIVItem = None
     self.__tileList = []
-    tiles = model.getTiles()
-    specialTiles = model.getSpecialTiles()
+    infoPackage = model.getRoomBuildPackage()
+    #tiles = model.getTiles()
+    tiles = infoPackage["tiles"]
+    #specialTiles = model.getSpecialTiles()
+    specialTiles = infoPackage["specialtiles"]
     for corx in range(model.size[0]):
       listTile = []
       for corz in range(model.size[1]):
@@ -45,7 +48,8 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
-    itemsDict = self.getModel().getPositionItems()
+    #itemsDict = self.getModel().getPositionItems()
+    itemsDict = infoPackage["positionitems"]
     for item in itemsDict:
       isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["image"])
       self.__isoViewItems.append(isoviewitem)
@@ -64,6 +68,7 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
     self.getModel().subscribeEvent('updateScreenPos', self.updateScreenPos)
     self.getModel().subscribeEvent('floorChanged', self.floorChanged)
+    self.getModel().subscribeEvent('tileImageChange', self.tileImageChange)
     
   def getSpritesDict(self):
     """ Returns the sprites dictionary.
@@ -312,3 +317,8 @@ class IsoViewRoom(isoview.IsoView):
 
   def getTile(self, pos):
     return self.__tileList[pos[0]][pos[1]] 
+
+  def tileImageChange(self, event):
+    pos = event.getParams()['pos']
+    image = event.getParams()['image']
+    self.__tileList[pos[0]][pos[1]].setImg(image)  

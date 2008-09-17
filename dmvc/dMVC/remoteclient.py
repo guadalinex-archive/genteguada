@@ -237,12 +237,12 @@ class RClient(synchronized.Synchronized):
           commandData = gzip.zlib.decompress(commandCompress)
           command = pickle.loads(commandData)
           #print "ya tenemos el comando ",command
-          print "recibimos ",size , command
+          #-> print "recibimos ",size , command
           #print "Al siguiente"
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RCompositeCommand):
             for eachCommand in command.commandList:
-              print "recibimos ",size , eachCommand
+              #-> print "recibimos ",size , eachCommand
               self.__processCommand(eachCommand)
           else:
             self.__processCommand(command)
