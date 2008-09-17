@@ -447,9 +447,13 @@ class GGRoom(ggmodel.GGModel):
       singleItem.labelChange(oldLabel, newLabel)
     
   def moveStack(self, newPos, item):
+    """ Moves an item and any other item above him to a new position.
+    newPos: new position.
+    item: selected item.
+    """  
     pos = item.getPosition()
     itemsList = self.__tiles[pos[0]][pos[1]].getItemsFrom(item)  
     for singleItem in itemsList:
        singleItem.setPosition(newPos)
        self.moveItem(singleItem.getPosition(), newPos, singleItem)  
-    pass  
+    

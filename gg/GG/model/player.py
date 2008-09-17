@@ -706,6 +706,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent("finish")
 
   def setPosition(self, pos, jump=None):
+    """ Sets a new position and modifies player's state whenever necessary.
+    pos: new position.
+    jump: sets the movement as a jump or not.
+    """  
     if self.isTopItem():
       if self.getState() == GG.utils.STATE[3]:
         self.setState(GG.utils.STATE[1])
@@ -719,6 +723,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item_with_inventory.GGItemWithInventory.setPosition(self, pos, jump)
     
   def tryToInventory(self, item):
+    """ Attempts to add a new item to the player's inventory.
+    item: new item.
+    """  
     if item.isTopItem():  
       self.addToInventoryFromRoom(item)
       self.setUnselectedItem()
@@ -726,6 +733,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.newChatMessage('No puedo coger eso, hay algo encima', 1)     
     
   def tryToPocket(self, item):
+    """ Attempts to pick a new paper money item.
+    item: new paper money item.
+    """  
     if item.isTopItem():
       self.setUnselectedItem()
       item.addPointsTo(self)

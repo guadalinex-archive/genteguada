@@ -118,10 +118,7 @@ class GGPenguinTalker(GGPenguin):
     """
     self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), self.__msg)
-    """
-    talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    """
+    
 # ===============================================================
 
 class GGPenguinTrade(GGPenguin):
@@ -185,16 +182,12 @@ class GGPenguinTrade(GGPenguin):
     if giftItem:
       self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), self.__msg)
-      #talker.triggerEvent('chatAdded', message=chat_message.ChatMessage(self.__msg, \
-      #          'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       talker.removeFromInventory(giftItem)
       return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
     else:
       chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..."
       self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), chatMessage)
-      #talker.triggerEvent('chatAdded', message=chat_message.ChatMessage("Si me trajeras un regalo, podr�a darte algo a cambio...", \
-      #          'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
       return None
 
 # ===============================================================
@@ -255,9 +248,6 @@ class GGPenguinQuiz(GGPenguin):
       self.__availableQuestions[name] = self.__fileList  
     if len(self.__availableQuestions[name]) == 0:
       talker.newChatMessage("Ya no tengo preguntas que hacerte", 2)
-      #chatMessage = "Ya no tengo preguntas que hacerte"
-      #self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
-      #                                           self.getPosition(), 2), chatMessage)
       return  
     question = random.randint(0, len(self.__availableQuestions[name])-1)
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
