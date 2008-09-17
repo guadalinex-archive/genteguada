@@ -429,7 +429,7 @@ class GGSystem(dMVC.model.Model):
                 
     if markedItem:
       markedPlayer.removeFromInventory(markedItem)
-      return
+      return True
     
     markedItem = None
     markedRoom = None
@@ -444,8 +444,9 @@ class GGSystem(dMVC.model.Model):
             markedRoom = room
     if markedItem:
       markedRoom.removeItem(markedItem)
-      return
+      return True
   
+    return False  
             
   def deletePlayer(self, username):
     """ Deletes a player and all references to him from the game.
