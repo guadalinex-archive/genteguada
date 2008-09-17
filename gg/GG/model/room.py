@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import copy
 import time
 import random
 import operator

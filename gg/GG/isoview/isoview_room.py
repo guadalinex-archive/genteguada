@@ -68,7 +68,7 @@ class IsoViewRoom(isoview.IsoView):
       pos = singleTile[0]
       listItems = singleTile[1]
       print ">>>>> Actualizando ", pos, listItems
-      self.updateScreenPositionsOn(pos, listItems)
+      self.updateScreenPositionsOn(pos)
     
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
@@ -219,8 +219,9 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     i = 0
+    print pos, itemList
     for item in itemList:
-      ivIt = self.__parent.findIVItem(item)
+      ivIt = self.findIVItem(item)
       if ivIt:  
         scPos = GG.utils.p3dToP2d(ivIt.getPosition(), item.anchor)
         if i == 0:
@@ -228,7 +229,6 @@ class IsoViewRoom(isoview.IsoView):
           i = 1
         else:
           zOrder += 2
-        print item, str(scPos[1] - accHeight)  
         ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
         ivIt.updateZOrder(zOrder)
         accWidth += item.topAnchor[0] 
