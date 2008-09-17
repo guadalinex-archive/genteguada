@@ -7,6 +7,7 @@ import private_contact
 import GG.utils
 import time
 import dMVC.model
+import shutil
 import os
 
 # ======================= CONSTANTS ===========================
@@ -740,3 +741,15 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setUnselectedItem()
       item.addPointsTo(self)
       return True  
+  
+  def removeAllData(self):
+    imagesPath = os.path.join(os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_AVATARS), self.username)
+    interfacePath = os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_AVATARS)
+    maskPath = os.path.join(interfacePath, GG.utils.MASKS_PATH)
+    maskImage = os.path.join(maskPath, (self.username + ".png"))
+    if os.path.isdir(imagesPath):
+      shutil.rmtree(imagesPath)
+    if os.path.isfile(maskImage):
+      os.remove(maskImage)  
+      
+    
