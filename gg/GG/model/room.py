@@ -41,6 +41,13 @@ class GGRoom(ggmodel.GGModel):
     self.__enabled = enabled
     self.__startRoom = startRoom
 
+  def getRoomBuildPackage(self):    
+    infoPackage = {}
+    infoPackage["tiles"] = self.getTiles()
+    infoPackage["specialtiles"] = self.getSpecialTiles()
+    infoPackage["positionitems"] = self.getPositionItems()
+    return infoPackage
+    
   def save(self):
     #ROOM
     #room.size
@@ -448,4 +455,7 @@ class GGRoom(ggmodel.GGModel):
     for singleItem in itemsList:
        singleItem.setPosition(newPos)
        self.moveItem(singleItem.getPosition(), newPos, singleItem)  
+    
+  def tileImageChange(self, tilePos, image):
+    self.triggerEvent("tileImageChange", pos=tilePos, image=image)
     

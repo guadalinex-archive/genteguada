@@ -91,7 +91,7 @@ class CreateWorld:
         demoPlayerPath = GG.utils.NINA_PATH
       else:
         demoPlayerPath = GG.utils.NINO_PATH
-      demoPlayer = player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, 0], "user"+str(i), "user"+str(i), "", False)
+      demoPlayer = player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "user"+str(i), "user"+str(i), "", False)
       self.__system.createPlayer(demoPlayer)
 
   def __createRooms(self):

@@ -57,6 +57,14 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__accessMode = admin
     self.startSessionTiming()
 
+  def getPlayerBuildPackage(self):    
+    infoPackage = {}
+    infoPackage["timestamp"] = self.getTimestamp()
+    infoPackage["heading"] = self.getHeading()
+    infoPackage["state"] = self.getState()
+    infoPackage["imagepath"] = self.getImagePath()
+    return infoPackage
+
   def save(self):
     #TABLA PLAYER
     #player.username
@@ -418,7 +426,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if self.__selected != item:
       self.__selected = item
-      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=0)
+      #self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=0)
+      self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
+                        imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
+                        options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 
+                        highlight=1)
+  
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.
@@ -705,7 +718,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Kicks this player from the game.
     """  
     self.triggerEvent("finish")
-
+    
   def setPosition(self, pos, jump=None):
     """ Sets a new position and modifies player's state whenever necessary.
     pos: new position.

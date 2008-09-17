@@ -27,11 +27,14 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
+    
+    infoPackage = model.getItemBuildPackage()
     if position:
       self.__position = position
     else:    
-      self.__position = model.getPosition()
-    self.__imagePath = model.getImagePath()
+      self.__position = infoPackage["position"]
+    self.__imagePath = infoPackage["imagepath"]
+    
     self.__img = None
     self.loadImage(imagePath)
     self.getModel().subscribeEvent('position', self.positionChanged)
@@ -193,7 +196,19 @@ class IsoViewItem(positioned_view.PositionedView):
     event: even info.
     """
     self.__position = event.getParams()['position']
+    oldPos = event.getParams()['oldPosition']
     itemList = event.getParams()['itemList']
+    
+    """
+    import isoview_player
+    
+    if not isinstance(self, isoview_player.IsoViewPlayer):
+      tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
+      scrPos = self.getScreenPosition()
+      self.setScreenPosition([tmpPos[0], scrPos[1]])
+      #self.setScreenPosition(tmpPos)
+    """  
+    
     destination = self.__ivroom.getFutureScreenPosition(self, self.__position, itemList)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.__img.rect.topleft, destination)
     if self.__parent.getSound():
