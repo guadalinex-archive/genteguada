@@ -94,7 +94,7 @@ class GGSystem(dMVC.model.Model):
     for sess in self.__sessions:
       if sess.getPlayer().checkUser(username, password):
         return False, "El usuario tiene una sesion abierta"    
-    if not self.__loginGuadalinex(username, password):
+    if not self.loginGuadalinex(username, password):
       return False, "No se ha podido autenticar en guadalinex"
     user = self.__existPlayer(username, password)
     if not user:
@@ -115,17 +115,18 @@ class GGSystem(dMVC.model.Model):
         return player
     return None
 
-  def __loginGuadalinex(self, user, passwd):
+  def loginGuadalinex(self, user, passwd):
+    #return "A"
     return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
     result = guadalinexLogin.read()  
     guadalinexLogin.close()  
     data = result.split(";")
-    if not len(data) == 3:
+    if not len(data) == 4:
       return False
-    return True
-
+    return data[3]
+    
   def logout(self, session):
     """ Logs out a player and ends his session.
     session: player's session.

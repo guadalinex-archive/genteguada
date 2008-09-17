@@ -116,6 +116,7 @@ class WebGift(GGGiverNpc):
     GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
     self.__creator = creator
     self.__idGift = self.generateId()
+    print self.__idGift
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -143,3 +144,5 @@ class WebGift(GGGiverNpc):
     originalString = self.__creator + str(int(time.time()))
     return md5.new(originalString).hexdigest()
 
+  def getIdGift(self):
+    return self.__idGift  
