@@ -46,6 +46,13 @@ class GGRoom(ggmodel.GGModel):
     infoPackage["tiles"] = self.getTiles()
     infoPackage["specialtiles"] = self.getSpecialTiles()
     infoPackage["positionitems"] = self.getPositionItems()
+    populatedtiles = []
+    for x in range(len(self.__tiles)):
+      for y in range(len(self.__tiles[x])):
+        if self.__tiles[x][y].getDepth() > 1:
+          populatedtiles.append([[x, y], self.__tiles[x][y].getItems()])
+    infoPackage["populatedtiles"] = populatedtiles 
+    
     return infoPackage
     
   def save(self):

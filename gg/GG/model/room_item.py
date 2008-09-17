@@ -176,7 +176,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       clicker.setHeading(GG.utils.getNextDirection(clickerPos, selfPos))
       if not GG.utils.checkNeighbour(clickerPos, self.__tile.position):
         direction = self.__room.getNextDirection(self.__tile.position, clickerPos)
-        destination = GG.utils.getFrontPosition(self.__tile.position, direction, self.__room.size)
+        destination = GG.utils.getFrontPosition(self.__tile.position, direction[0], self.__room.size)
         if destination != clickerPos and destination != [-1, -1]:
           clicker.setDestination(destination)
       if clicker.getAccessMode():

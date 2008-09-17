@@ -26,9 +26,12 @@ class IsoViewRoom(isoview.IsoView):
     self.__tileList = []
     infoPackage = model.getRoomBuildPackage()
     #tiles = model.getTiles()
-    tiles = infoPackage["tiles"]
     #specialTiles = model.getSpecialTiles()
+    #itemsDict = self.getModel().getPositionItems()
+    tiles = infoPackage["tiles"]
     specialTiles = infoPackage["specialtiles"]
+    itemsDict = infoPackage["positionitems"]
+    populatedTiles = infoPackage["populatedtiles"] 
     for corx in range(model.size[0]):
       listTile = []
       for corz in range(model.size[1]):
@@ -48,8 +51,6 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
-    #itemsDict = self.getModel().getPositionItems()
-    itemsDict = infoPackage["positionitems"]
     for item in itemsDict:
       isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["image"])
       self.__isoViewItems.append(isoviewitem)
@@ -62,6 +63,13 @@ class IsoViewRoom(isoview.IsoView):
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
     """  
+    
+    for singleTile in populatedTiles:
+      pos = singleTile[0]
+      listItems = singleTile[1]
+      print ">>>>> Actualizando ", pos, listItems
+      self.updateScreenPositionsOn(pos, listItems)
+    
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -204,7 +212,7 @@ class IsoViewRoom(isoview.IsoView):
   def updateScreenPositionsOn(self, pos, itemList = None):
     """ Updates the screen cords of all items on a room position.
     pos: room position.
-    """  
+    """
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     if not itemList:
       itemList = tile.getItems()
@@ -220,6 +228,7 @@ class IsoViewRoom(isoview.IsoView):
           i = 1
         else:
           zOrder += 2
+        print item, str(scPos[1] - accHeight)  
         ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
         ivIt.updateZOrder(zOrder)
         accWidth += item.topAnchor[0] 
