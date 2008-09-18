@@ -249,8 +249,8 @@ class CreateWorld:
   def __decorateRoom5(self):
     myDoor5A1 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [3, 1], self.__room3, "puerta room5a")
     myDoor5A2 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [4, 1], self.__room3, "puerta room5a")
-    myDoor5B1 = teleport.GGDoorRoom5b(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 7], self.__room1, "puerta room5b")
-    myDoor5B2 = teleport.GGDoorRoom5b(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 7], self.__room1, "puerta room5b")
+    myDoor5B1 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 7], self.__room1, "puerta room5b", "Penguin Quiz")
+    myDoor5B2 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 7], self.__room1, "puerta room5b", "Penguin Quiz")
     penguinRightOffset = [30, 0]
     myPenguinQuiz = penguin.GGPenguinQuiz(PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", GG.utils.QUESTIONS_PATH)
     columnOffset = [13, 15]

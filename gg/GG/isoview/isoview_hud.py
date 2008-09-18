@@ -888,6 +888,9 @@ class IsoViewHud(isoview.IsoView):
     actions = adminActions
     if not actions:
       return
+  
+    YShift = 50
+    
     #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     self.buttonBarAdminActions = guiobjects.OcempPanel(150, 360, [GG.utils.SCREEN_SZ[0] - 151, 69], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
@@ -902,12 +905,12 @@ class IsoViewHud(isoview.IsoView):
     iPos = 0
     for key in actions.keys():
       label = guiobjects.OcempLabel(key, guiobjects.STYLES["teleportLabel"])
-      label.topleft = 10, 30 + iPos*60
+      label.topleft = 10, 30 + iPos*YShift
       self.buttonBarAdminActions.add_child(label)
       if key == "image":
         height = 80
         self.tileImages = guiobjects.OcempImageList(145, height, GG.utils.TILES, GG.utils.TILE)  
-        self.tileImages.topleft = 5, 40 + iPos*60 + 27
+        self.tileImages.topleft = 5, 40 + iPos*YShift + 27
         self.buttonBarAdminActions.add_child(self.tileImages)  
         self.editableFields[key] = self.tileImages
         iPos += 2
@@ -925,7 +928,7 @@ class IsoViewHud(isoview.IsoView):
             except:
               entryLabel.text = str(field)
           entryLabel.border = 1
-          entryLabel.topleft = 10 + fCount*65, 40 + iPos*60 + 27
+          entryLabel.topleft = 10 + fCount*65, 40 + iPos*YShift + 22
           if len(actions[key]) == 1:
             entryLabel.set_minimum_size(125, 20)
           else:    
@@ -943,7 +946,7 @@ class IsoViewHud(isoview.IsoView):
       self.buttonBarAdminActions.add_child(copyButton)
     okButton = guiobjects.createButton(GG.utils.TINY_OK_IMAGE, [10, 35 + buttonsHeight], ["Aplicar cambios", self.showTooltip, self.removeTooltip], self.applyChanges)
     self.buttonBarAdminActions.add_child(okButton)
-    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 35 + buttonsHeight], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.itemUnselected)
+    cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 35 + buttonsHeight], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.discardChanges)
     self.buttonBarAdminActions.add_child(cancelButton)
     self.buttonBarAdminActions.zOrder = 10000
     self.addSprite(self.buttonBarAdminActions)
@@ -975,6 +978,11 @@ class IsoViewHud(isoview.IsoView):
     self.__buttonBarActions.zOrder = 10000
     self.addSprite(self.__buttonBarActions)
     self.widgetContainer.add_widget(self.__buttonBarActions)
+
+  def discardChanges(self):
+    if self.__selectedItem:
+      self.__player.setUnselectedItem()
+      self.itemUnselected()
 
   def itemUnselected(self, event=None):
     """ Triggers after receiving an item unselected event.
@@ -1554,6 +1562,9 @@ class IsoViewHud(isoview.IsoView):
         if 0 < posX < size[0]:
           if 0 < posY < size[1]: 
             selectedItem.setExitPosition([posX, posY])
+      elif key == "PointsGiver":
+        pointsGiver = self.editableFields[key][0].text
+        selectedItem.setPointsGiver(pointsGiver)
       elif key == "image":
         label = self.editableFields[key].getSelectedName()
         if not label:
