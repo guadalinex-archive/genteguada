@@ -892,7 +892,7 @@ class IsoViewHud(isoview.IsoView):
     YShift = 50
     
     #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
-    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 360, [GG.utils.SCREEN_SZ[0] - 151, 69], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
+    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [GG.utils.SCREEN_SZ[0] - 151, 1], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
@@ -903,7 +903,7 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarAdminActions.add_child(itemLabel)
     self.editableFields = {}
     iPos = 0
-    for key in actions.keys():
+    for key in sorted(actions.keys()):
       label = guiobjects.OcempLabel(key, guiobjects.STYLES["teleportLabel"])
       label.topleft = 10, 30 + iPos*YShift
       self.buttonBarAdminActions.add_child(label)
@@ -938,7 +938,7 @@ class IsoViewHud(isoview.IsoView):
           fCount += 1
         self.editableFields[key] = fields
         iPos += 1
-    buttonsHeight = 227 + 60   
+    buttonsHeight = 292 + 60   
     if not isTile:
       deleteButton = guiobjects.createButton(TINY_DELETE_IMAGE, [80, 0 + buttonsHeight], ["Eliminar objeto", self.showTooltip, self.removeTooltip], self.removeSelectedItemConfirmation)
       self.buttonBarAdminActions.add_child(deleteButton)
@@ -1565,6 +1565,22 @@ class IsoViewHud(isoview.IsoView):
       elif key == "PointsGiver":
         pointsGiver = self.editableFields[key][0].text
         selectedItem.setPointsGiver(pointsGiver)
+      elif key == "PressedTile1":
+        try: 
+          posX = int(self.editableFields[key][0].text)
+          posY = int(self.editableFields[key][1].text)    
+        except ValueError:
+          self.__player.newChatMessage('Valor "PressedTile1" incorrecto', 1)
+          return  
+        selectedItem.setPressedTile1([posX, posY])
+      elif key == "PressedTile2":
+        try: 
+          posX = int(self.editableFields[key][0].text)
+          posY = int(self.editableFields[key][1].text)    
+        except ValueError:
+          self.__player.newChatMessage('Valor "PressedTile2" incorrecto', 1)
+          return  
+        selectedItem.setPressedTile2([posX, posY])
       elif key == "image":
         label = self.editableFields[key].getSelectedName()
         if not label:
