@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import time
 import room_item
 import dMVC.model
 import GG.utils
@@ -24,7 +25,7 @@ class GGTeleport(room_item.GGRoomItem):
     self.__destinationRoom = destinationRoom
     self.points = 10
     self.label = label
-
+    
   def copyObject(self):
     return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.label)
     
@@ -122,7 +123,8 @@ class GGTeleport(room_item.GGRoomItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
+    self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
 
   def transportTo(self, clicker):
     """ Teleports a player to another location.
@@ -142,6 +144,7 @@ class GGTeleport(room_item.GGRoomItem):
     finalPosition = self.__destinationRoom.getNearestEmptyCell(self.__exitPosition)
     for item in itemList:
       item.changeRoom(self.__destinationRoom, finalPosition)
+    clicker.setUnselectedItem()  
       
   def labelChange(self, oldLabel, newLabel):
     if self.__destinationRoom == oldLabel:
@@ -215,7 +218,15 @@ class GGDoorWithKey(GGTeleport):
     GGTeleport.labelChange(self, oldLabel, newLabel)
     if self.__key == oldLabel:
       self.__key = newLabel    
-
+      
+      
+  def getAdminActions(self):
+    """ Returns the possible admin actions.
+    """  
+    dict = GGTeleport.getAdminActions(self)
+    dict["Key": [self.__key]]
+    return dict
+    
 # ===============================================================
 
 class GGDoorPressedTiles(GGTeleport):
@@ -256,12 +267,12 @@ class GGDoorPressedTiles(GGTeleport):
 
 # ===============================================================
 
-class GGDoorRoom5b(GGTeleport):
-  """ GGDoorRoom5b class.
-  Defines a door object behaviour.
+class GGDoorOpenedByPoints(GGTeleport):
+  """ GGDoorOpenedByPoints class.
+  Defines a door object opened if the clicker received points from another item.
   """
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
+  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, pointsGiver):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
@@ -269,11 +280,26 @@ class GGDoorRoom5b(GGTeleport):
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
+    pointsGiver: item who gave points to the player.
     """
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    self.pointsGiver = pointsGiver 
+
+  def getAdminActions(self):
+    """ Returns the possible admin actions.
+    """  
+    dict = GGTeleport.getAdminActions(self)
+    dict["PointsGiver"] = [self.pointsGiver]
+    return dict
+
+  def getPointsGiver(self):
+    return self.pointsGiver
+
+  def setPointsGiver(self, pointsGiver):
+    self.pointsGiver = pointsGiver    
 
   def copyObject(self):
-    return GGDoorRoom5b(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label)
+    return GGDoorOpenedByPoints(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.pointsGiver)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -282,8 +308,8 @@ class GGDoorRoom5b(GGTeleport):
     if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
       return
-    if not clicker.checkPointGiver("Penguin Quiz"):
-      self.newChatMessage('Antes de pasar, debes responder al acertijo de Andatuz.')
+    if not clicker.checkPointGiver(self.pointsGiver):
+      self.newChatMessage('Si no has obtenido puntos de ' + self.pointsGiver + 'no puedo dejarte pasar')
       return False
     self.transportTo(clicker)
 

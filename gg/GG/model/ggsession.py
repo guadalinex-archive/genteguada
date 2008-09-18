@@ -17,7 +17,12 @@ IMAGES_DICT["Door"]["wooden_door.png"] = [[28, 23], [0, 0]]
 IMAGES_DICT["Door"]["wooden_door_a.png"] = [[24, 37], [0, 0]]
 IMAGES_DICT["Door"]["wooden_door_b.png"] = [[24, 55], [0, 0]]
 IMAGES_DICT["Door"]["armored_door_left.png"] = [[17, 15], [0, 0]]
+IMAGES_DICT["Door"]["downArrow.png"] = [GG.utils.FLOOR_SHIFT, [0, 0]]
+IMAGES_DICT["Door"]["leftArrow.png"] = [GG.utils.FLOOR_SHIFT, [0, 0]]
+IMAGES_DICT["Door"]["rightArrow.png"] = [GG.utils.FLOOR_SHIFT, [0, 0]]
+IMAGES_DICT["Door"]["upArrow.png"] = [GG.utils.FLOOR_SHIFT, [0, 0]]
 IMAGES_DICT["DoorWithKey"] = IMAGES_DICT["Door"]
+IMAGES_DICT["DoorOpenedByPoints"] = IMAGES_DICT["Door"]
 IMAGES_DICT["RoomItem"] = {}
 IMAGES_DICT["RoomItem"]["hedge.png"] = [[55, 13], [0, -26]]
 IMAGES_DICT["RoomItem"]["fence_up.png"] = [[55, 15], [0, 0]]
@@ -200,6 +205,14 @@ class GGSession(ggmodel.GGModel):
                             "key": [""],        
                             "images": IMAGES_DICT["DoorWithKey"].keys()                     
                             },
+                   "DoorOpenedByPoints": {
+                            "position": pos,
+                            "destinationRoom": [self.__player.getRoom().label],
+                            "exitPosition": [0, 0],
+                            "label": [""],
+                            "pointsGiver": [""], 
+                            "images": IMAGES_DICT["Door"].keys()                     
+                            },
                    "GiverNpc": {
                             "position": pos,
                             "label": [""],
@@ -236,7 +249,6 @@ class GGSession(ggmodel.GGModel):
                    "PaperMoney": {
                             "position": pos,
                             "label": [""],
-                            "value": [5],
                             "images": IMAGES_DICT["PaperMoney"].keys()           
                             },
                     "WebGift": {
@@ -317,6 +329,24 @@ class GGSession(ggmodel.GGModel):
         return
       box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, data["key"][0])
     #===============================================
+    elif name == "DoorOpenedByPoints":
+      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
+      if not room or not destinationRoom:
+        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
+        return
+      try: 
+        exPosX = int(data["exitPosition"][0])    
+        exPosY = int(data["exitPosition"][1])
+      except ValueError: 
+        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
+        return
+      pointsGiver = data["pointsGiver"][0]
+      roomSz = destinationRoom.size
+      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
+        return
+      box = GG.model.teleport.GGDoorOpenedByPoints(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, pointsGiver)
+    #===============================================
     elif name == "GiverNpc":
       box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
     #===============================================
@@ -346,15 +376,8 @@ class GGSession(ggmodel.GGModel):
       box = GG.model.pickable_item.GGPickableItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
     #===============================================
     elif name == "PaperMoney":
-      try: 
-        moneyValue = int(data["value"][0])    
-      except ValueError: 
-        self.__player.newChatMessage('Valor "value" incorrecto', 1) 
-        return
-      if not (moneyValue > 0):
-        self.__player.newChatMessage("El valor del billete debe ser un numero positivo.", 1)
-        return
       spriteImg = os.path.join("furniture", img)
+      moneyValue = int(img[0:img.find("G")])
       box = GG.model.pickable_item.PaperMoney(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
     #===============================================
     elif name == "WebGift":

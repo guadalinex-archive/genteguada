@@ -22,6 +22,12 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     self.anchor = anchor
     self.__position = parentPosition
     
+  def getItemBuildPackage(self):    
+    infoPackage = {}
+    infoPackage["position"] = self.getPosition() 
+    infoPackage["imagepath"] = self.getImagePath()
+    return infoPackage
+  
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
