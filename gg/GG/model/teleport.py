@@ -247,8 +247,25 @@ class GGDoorPressedTiles(GGTeleport):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
     self.__pressedTiles = pressedTiles
 
+  def getAdminActions(self):
+    """ Returns the possible admin actions.
+    """  
+    dict = GGTeleport.getAdminActions(self)
+    index = 1
+    for tile in self.__pressedTiles:
+      if tile: 
+        dict["PressedTile" + str(index)] = tile
+      index += 1
+    return dict
+
   def copyObject(self):
     return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.__pressedTiles)
+
+  def setPressedTile1(self, pos):
+    self.__pressedTiles[0] = pos  
+  
+  def setPressedTile2(self, pos):
+    self.__pressedTiles[1] = pos  
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -256,13 +273,16 @@ class GGDoorPressedTiles(GGTeleport):
     """
     if self.getDestinationRoom().isFull():
       clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
+      clicker.setUnselectedItem()
       return
     if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
       return False
     for tile in self.__pressedTiles:
-      if not self.getRoom().getBlocked(tile):
-        clicker.newChatMessage('El resorte no esta activado.', 2)  
-        return False
+      if tile:  
+        if not self.getRoom().getBlocked(tile):
+          clicker.newChatMessage('El resorte no esta activado.', 2)  
+          clicker.setUnselectedItem()
+          return False
     self.transportTo(clicker)
 
 # ===============================================================

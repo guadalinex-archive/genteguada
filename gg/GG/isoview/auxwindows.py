@@ -701,7 +701,7 @@ class CreateItemsWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    self.container = guiobjects.OcempPanel(373, 390, [0, 0], CREATE_ITEM_BACKGROUND)
+    self.container = guiobjects.OcempPanel(373, 410, [0, 0], CREATE_ITEM_BACKGROUND)
     self.window.child = self.container
     itemsLabel = guiobjects.OcempLabel("Objetos", guiobjects.STYLES["pointLabel"])
     itemsLabel.topleft = 20, 10
