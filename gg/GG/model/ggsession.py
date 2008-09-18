@@ -67,6 +67,8 @@ IMAGES_DICT["PaperMoney"]["10Guadapuntos.png"] = [[14, -25], [0, -10]]
 IMAGES_DICT["PaperMoney"]["50Guadapuntos.png"] = [[14, -25], [0, -10]]
 IMAGES_DICT["WebGift"] = {}
 IMAGES_DICT["WebGift"]["gift.png"] = [[15, -30], [0, 0]]
+IMAGES_DICT["WebItem"] = {}
+IMAGES_DICT["WebItem"] = {"heavy_box.png": [[26, -10], [0, -12]]}
 
 IMAGES_GIFT_PATH = os.path.join(GG.utils.DATA_PATH, GG.utils.IMAGES_GIFT)
 
@@ -241,6 +243,12 @@ class GGSession(ggmodel.GGModel):
                             "position": pos,
                             "images": IMAGES_DICT["RoomItem"].keys()                     
                             },
+                   "WebItem": {
+                            "position": pos,
+                            "label": [""],
+                            "url": [""],
+                            "images": IMAGES_DICT["WebItem"].keys()                     
+                            },
                    "PickableItem": {
                             "position": pos,
                             "label": [""],
@@ -251,7 +259,7 @@ class GGSession(ggmodel.GGModel):
                             "label": [""],
                             "images": IMAGES_DICT["PaperMoney"].keys()           
                             },
-                    "WebGift": {
+                   "WebGift": {
                             "position": pos,
                             "label": [""],
                             "images": IMAGES_DICT["WebGift"].keys(),           
@@ -388,6 +396,10 @@ class GGSession(ggmodel.GGModel):
       spriteImgGift = os.path.join(GG.utils.IMAGES_GIFT, imgGift) 
       spriteImg = os.path.join("furniture", img)
       box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label, self.__player.username)
+    #===============================================
+    elif name == "WebItem":
+      url = data["url"][0]    
+      box = GG.model.web_item.GGWebItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], url, label)
     #===============================================
     room.addItemFromVoid(box, [posX, posY])
     
