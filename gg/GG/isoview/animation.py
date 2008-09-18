@@ -204,7 +204,7 @@ class ScreenPositionAnimation(Animation):
   def stop(self):
     """ Stops the animation.
     """
-    #self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
+    self.isoview.setScreenPosition([self.__destination[0], self.__destination[1]])
     Animation.stop(self)
 
 # ===============================================================

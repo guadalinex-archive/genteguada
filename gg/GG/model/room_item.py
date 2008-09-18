@@ -91,14 +91,15 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     jump: enables the player to jump to the new position.
     """
     listItems = self.getRoom().getTile(pos).getItems()
+    oldListItems = self.getRoom().getTile(self.getPosition()).getItems()
     if pos == self.__tile.position:
       return
     old = self.__tile.position
     self.__room.moveItem(self.__tile.position, pos, self)
     if not jump:
-      self.triggerEvent('position', position=pos, oldPosition=old, itemList=listItems)
+      self.triggerEvent('position', position=pos, oldPosition=old, itemList=listItems, oldItemList=oldListItems)
     else:
-      self.triggerEvent('jumpOver', position=pos, oldPosition=old, itemList=listItems)
+      self.triggerEvent('jumpOver', position=pos, oldPosition=old, itemList=listItems, oldItemList=oldListItems)
 
   def setStartPosition(self, pos):
     """ Sets a new start position for the item.

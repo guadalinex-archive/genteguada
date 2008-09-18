@@ -67,7 +67,6 @@ class IsoViewRoom(isoview.IsoView):
     for singleTile in populatedTiles:
       pos = singleTile[0]
       listItems = singleTile[1]
-      print ">>>>> Actualizando ", pos, listItems
       self.updateScreenPositionsOn(pos)
     
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
@@ -219,7 +218,6 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     i = 0
-    print pos, itemList
     for item in itemList:
       ivIt = self.findIVItem(item)
       if ivIt:  
