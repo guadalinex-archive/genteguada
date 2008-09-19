@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
 
+import guiobjects
 import isoview_item
 import isoview
 import GG.utils
@@ -306,8 +307,10 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.getModel().getImagePath() + "-" + self.getModel().spriteName)
+    imageName = self.getModel().getImagePath() + "-" + self.getModel().spriteName
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
+    #self.setSprite(guiobjects.loadSprite(imageName, False, None, None))
       
   def isPlayer(self):
     """ Checks if this item is a player or not.

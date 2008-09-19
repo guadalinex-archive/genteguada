@@ -43,22 +43,19 @@ class IsoViewItem(positioned_view.PositionedView):
     """ Loads the item's image.
     """
     if imagePath is None:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), self.getModel().spriteName))  
+      imageName = os.path.join(self.getModel().getImagePath(), self.getModel().spriteName)
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(imagePath, self.getModel().spriteName))
+      imageName = os.path.join(imagePath, self.getModel().spriteName)  
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
+    pos = self.__position
+    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
     self.__img = pygame.sprite.Sprite()
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
-    pos = self.__position
-    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
     self.__img.rect.topleft = scrPos
-    """
-    if self.isPlayer():
-      self.__img.rect.topleft = scrPos[0], -500
-    else:  
-      self.__img.rect.topleft = scrPos     
-    """  
-    self.__img.zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
+    self.__img.zOrder = zOrder
+    #self.__img = guiobjects.loadSprite(imageName, True, scrPos, zOrder)
             
   def getPosition(self):
     """ Returns the item's position on the room.
@@ -112,10 +109,14 @@ class IsoViewItem(positioned_view.PositionedView):
     img: image name.
     """
     if path:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(path, img))
+      imageName = os.path.join(path, img)
     else:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(self.getModel().getImagePath(), img))
+      imageName = os.path.join(self.getModel().getImagePath(), img)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    #topleft = self.__img.rect.topleft
+    #zOrder = self.__img.zOrder
+    #self.__img = guiobjects.loadSprite(imageName, False, topleft, zOrder)
     self.__img.dirty = 1
     
   def setSprite(self, sprite):
@@ -154,8 +155,10 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__imagePath + self.getModel().spriteName)
+    imageName = os.path.join(self.__imagePath, self.getModel().spriteName)
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    #self.__img = guiobjects.loadSprite(imageName, False, None, None)
     
   def getScreenPosition(self):
     """ Returns the item's screen position.

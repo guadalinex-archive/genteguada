@@ -145,16 +145,21 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('finish', self.finishGame)
     self.__player.subscribeEvent('destination', self.destinationChanged)
     self.__selectedItem = None
+    
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_SELECTED)  
     self.__selectedImage = pygame.sprite.Sprite()
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
     self.__selectedImage.zOrder = 0
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_TARGET)  
+    #self.__selectedImage = guiobjects.loadSprite(TILE_SELECTED, True, None, 1)
+      
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_TARGET)
     self.__targetTile = None
     self.__targetTileImage = pygame.sprite.Sprite()
     self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
+    #self.__targetTileImage = guiobjects.loadSprite(TILE_TARGET, True, None, None)
+    
     self.__activeActions = []
     self.__restoreActiveActionButtonsList()
     self.__buttonActions = {
@@ -506,6 +511,7 @@ class IsoViewHud(isoview.IsoView):
     self.__bg.rect = self.__bg.image.get_rect()
     self.__bg.rect.topleft = BG_FULL_OR
     self.__bg.zOrder = -200
+    #self.__bg = guiobjects.loadSprite(BG_BLACK, True, BG_FULL_OR, -200)
     self.__allSprites.add(self.__bg)
     
   def updateFrame(self, events ,elapsedTime):
