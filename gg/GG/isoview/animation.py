@@ -3,6 +3,7 @@
 import pygame
 import GG
 import os
+import guiobjects
 
 COLOR_SHIFT = 10
 
@@ -244,6 +245,7 @@ class MovieAnimation(Animation):
     for frame in self.__frames:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(path, frame))
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
+      #self.__sprites.append(guiobjects.loadSprite(os.path.join(path, frame), True))
           
   def step(self, now):
     """ Progresses the animation.

@@ -26,6 +26,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.zOrder = 10001
+    #self.__img = guiobjects.loadSprite(model.spriteInventory, True, None, 10001)
     
   def updateZOrder(self):
     pass  

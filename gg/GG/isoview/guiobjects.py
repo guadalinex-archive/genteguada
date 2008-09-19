@@ -865,3 +865,19 @@ def playSound(sound):
   if not pygame.mixer.get_busy():
     pygame.mixer.music.load(sndPath)
     pygame.mixer.music.play()
+
+# ===============================================================
+
+def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
+    image = pygame.sprite.Sprite()
+    image.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
+    if loadRect:
+      image.rect = image.image.get_rect()
+    if topleft:
+      image.rect.topleft = topleft
+    if zOrder:  
+      image.zOrder = zOrder
+    else:
+      image.zOrder = 0    
+    return image  
+    
