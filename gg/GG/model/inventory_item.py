@@ -29,9 +29,14 @@ class GGInventoryItem(ggmodel.GGModel):
     return None
   
   def getImagePath(self):
+    """ Returns the item image path.
+    """  
     return self.__imagePath  
   
   def setImagePath(self, imagePath):
+    """ Sets a new item image path.
+    imagePath: new image path.
+    """  
     self.__imagePath = imagePath 
   
   # self.__player
@@ -62,16 +67,18 @@ class GGInventoryItem(ggmodel.GGModel):
     return True
   
   def clickedBy(self, clicker):
-    """ Triggers an avent when the item receives a click by a player.
+    """ Triggers an avent when the item receives a click by a player. Do NOT delete.
     clicker: player who clicks.
     """
     pass
     
   def tick(self, now):
-    """ Call for an update on item.
+    """ Call for an update on item. Do NOT delete.
     Not used at the moment.
     """
     pass
 
   def isTile(self):
+    """ Checks if this item is a tile or not.
+    """  
     return False  

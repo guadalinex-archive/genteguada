@@ -97,6 +97,9 @@ class GGSession(ggmodel.GGModel):
     player.subscribeEvent('roomChanged', self.roomChanged)
       
   def setStartRoom(self, room, startRoom):
+    """ Adds a new startRoom.
+    startRoom: new start room.
+    """  
     self.__system.setStartRoom(room, startRoom)
       
   def getPlayer(self):
@@ -117,8 +120,9 @@ class GGSession(ggmodel.GGModel):
       
   @dMVC.model.localMethod
   def defaultView(self, screen, fullscreen):
-    """ Esto deberia ser IsoViewSession.
+    """ Creates the isoview hud.
     screen: screen handler.
+    fullscreen: sets view as fullscreen or windowed mode.
     """
     import GG.isoview.isoview_hud
     return GG.isoview.isoview_hud.IsoViewHud(self, screen, fullscreen)
@@ -178,12 +182,21 @@ class GGSession(ggmodel.GGModel):
     return self.__system.getSpecificPlayer(name)  
 
   def getSystem(self):
+    """ Returns the system object.
+    """  
     return self.__system  
     
   def newBroadcastMessage(self, line):
+    """ Sends a new broadcast message.
+    line: new message.
+    """  
     self.__system.newBroadcastMessage(line, self.__player)  
     
   def labelChange(self, oldLabel, newLabel):
+    """ Changes an item label and all its references on all items.
+    oldLabel: old label.
+    newLabel: new label.
+    """  
     self.__system.labelChange(oldLabel, newLabel)
     
   def getObjectsData(self):
@@ -455,6 +468,8 @@ class GGSession(ggmodel.GGModel):
     room.addItemFromVoid(box, [posX, posY])
     
   def getImagesGift(self):
+    """ Returns all available images for an admin created gift.
+    """  
     result = []
     for giftFile in os.listdir(IMAGES_GIFT_PATH):
       if os.path.isfile(os.path.join(IMAGES_GIFT_PATH, giftFile)):

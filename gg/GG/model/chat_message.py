@@ -24,7 +24,6 @@ class ChatMessage(ggmodel.GGModel):
     self.__sender = sender
     self.__hour = time.time()
     self.__color = color
-    #print "METODO ", position
     self.position = position
     self.type = chatType
     
@@ -73,10 +72,13 @@ class ChatMessage(ggmodel.GGModel):
     """ Creates an isometric view object for the chat message.
     screen: screen handler.
     isohud: isohud handler.
+    message: message text.
+    header: chat message header.
     """
     import GG.isoview.isoview_chatmessage
     return GG.isoview.isoview_chatmessage.IsoViewChatMessage(self, screen, isohud, message, header)
 
+# ===============================================================
 
 class ChatQuiz(ChatMessage):
   """ ChatQuiz class.
@@ -96,7 +98,6 @@ class ChatQuiz(ChatMessage):
     self.__parent = parent
     self.question = question
     self.player = player
-    #self.position = position
     self.__msgQuestion = ""
     self.__msgAnswers = []
     self.__rightAnswer = 0

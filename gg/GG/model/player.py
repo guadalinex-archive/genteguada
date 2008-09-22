@@ -57,7 +57,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__accessMode = admin
     self.startSessionTiming()
 
-  def getPlayerBuildPackage(self):    
+  def getPlayerBuildPackage(self):
+    """ Returns item info used to create the isometric view object.
+    """      
     infoPackage = {}
     infoPackage["timestamp"] = self.getTimestamp()
     infoPackage["heading"] = self.getHeading()
@@ -66,6 +68,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     return infoPackage
 
   def save(self):
+    """ Saves all player info.
+    """  
     #TABLA PLAYER
     #player.username
     #player.points
@@ -81,7 +85,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     #otros player en la agenda
     #items que tengo en el inventario
     pass
-    
 
   def getAccessMode(self):
     """ Returns the access mode.
@@ -90,6 +93,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
 
   def setAccessMode(self, mode):
     """ Sets a new access mode.
+    mode: access mode.
     """  
     self.__accessMode = mode
 
@@ -108,7 +112,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent('timestamp', timestamp=timestamp, imgPath = self.imgPath)
       
   def getName(self):
-    """ returns the player's username.
+    """ Returns the player's username.
     """  
     return self.username
   
@@ -185,6 +189,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     
   def changeMaskContact(self, name, imageLabel):
     """ Changes a contact's mask.
+    name: contact's name.
+    imageLabel: contact's mask image name.
     """  
     self.triggerEvent('contactMask', playerName = name, imageLabel = imageLabel)
 
@@ -295,6 +301,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     screen: screen handler.
     room: room view object.
     parent: hud or session view object.
+    position: player position.
+    image: image used to paint the player on screen.
     """
     import GG.isoview.isoview_player
     return GG.isoview.isoview_player.IsoViewPlayer(self, screen, room, parent)
@@ -316,7 +324,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading, self.getRoom().size)
     if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1]:
-      self.newChatMessage("No puedo soltarlo ah�", 1)
+      self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
       item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
     
@@ -661,6 +669,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent("removeContactRemote", contact=contact)
     
   def removePlayerContactFromAgenda(self, playerName):
+    """ Removes a contact from the agenda.
+    playerName: contact name.
+    """  
     contactSelected = None
     for item in self.__agenda:
       if item.getPlayer().username == playerName:
@@ -695,7 +706,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     
   def checkContactOnAgenda(self, contact):
     """ Checks if a contact already exists on the agenda.
-    player: new contact.
+    contact: new contact.
     """  
     for cont in self.__agenda:
       if cont.getPlayer().username == contact.username:
@@ -760,6 +771,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       return True  
   
   def removeAllData(self):
+    """ Removes all data for this player.
+    """  
     imagesPath = os.path.join(os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_AVATARS), self.username)
     interfacePath = os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_AVATARS)
     maskPath = os.path.join(interfacePath, GG.utils.MASKS_PATH)

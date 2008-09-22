@@ -20,6 +20,8 @@ class GGBoxHeavy(room_item.GGRoomItem):
     self.setPoints(2)
   
   def copyObject(self):
+    """ Creates and returns a copy of this item.
+    """  
     return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.label)
     
   def variablesToSerialize(self):
@@ -71,6 +73,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
 
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
+    newLabel: new label.
     """  
     if self.label != newLabel:
       self.label = newLabel

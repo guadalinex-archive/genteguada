@@ -21,6 +21,8 @@ class GGPickableItem(room_item.GGRoomItem):
     self.label = label
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGPickableIte(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
     
   def variablesToSerialize(self):
@@ -58,6 +60,7 @@ class GGPickableItem(room_item.GGRoomItem):
 
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
+    newLabel: new label.
     """  
     if self.label != newLabel:
       self.label = newLabel
@@ -98,6 +101,8 @@ class PaperMoney(GGPickableItem):
     self.points = value
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.label, self.points)
 
   def getAdminActions(self):
@@ -117,4 +122,3 @@ class PaperMoney(GGPickableItem):
     """  
     player.addPoints(self.points, self.label)  
     
-
