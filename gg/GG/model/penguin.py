@@ -20,14 +20,13 @@ class GGPenguin(room_item.GGRoomItem):
     topAnchor: image top anchor on screen.
     label: penguin's label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
-    self.label = label
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
     self.header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
 
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.label)
+    return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.getName())
         
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -43,27 +42,13 @@ class GGPenguin(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
     return dic    
       
-  def getName(self):
-    """ Returns the item's label.
-    """  
-    return self.label
-  
   def getImageLabel(self):
     """ Returns the item's image filename.
     """  
     return self.spriteName
-
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    newLabel: new label.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
@@ -104,7 +89,7 @@ class GGPenguinTalker(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguinTalker(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg)
+    return GGPenguinTalker(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__msg)
     
   def getMessage(self):
     """ Returns the penguin's message.
@@ -119,7 +104,7 @@ class GGPenguinTalker(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg], "Label": [self.label]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg], "Label": [self.getName()]}
     return dic  
   
   def talkedBy(self, talker):
@@ -153,7 +138,7 @@ class GGPenguinTrade(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguinTrade(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg, self.__giftLabel)
+    return GGPenguinTrade(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__msg, self.__giftLabel)
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -163,7 +148,7 @@ class GGPenguinTrade(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel], "Label": [self.label]}
+    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel], "Label": [self.getName()]}
     return dic  
 
   def getMessage(self):
@@ -233,7 +218,7 @@ class GGPenguinQuiz(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """      
-    return GGPenguinQuiz(self.spriteName, self.anchor, self.topAnchor, self.label, self.__filePath)
+    return GGPenguinQuiz(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__filePath)
   
   def getOptions(self):
     """ Returns the item's available options.

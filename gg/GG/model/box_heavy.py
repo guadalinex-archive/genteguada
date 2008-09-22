@@ -15,14 +15,13 @@ class GGBoxHeavy(room_item.GGRoomItem):
     topAnchor: image top anchor on screen.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
-    self.label = label
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
     self.setPoints(2)
   
   def copyObject(self):
     """ Creates and returns a copy of this item.
     """  
-    return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.label)
+    return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some class attributes as public access.
@@ -50,7 +49,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
         if selfDepth:     
           return ["lift", "climb"]
         else:
-          return ["lift", "climb", "jumpOver"]  
+          return ["lift", "climb", "jumpOver"]
       else:
       # Different position, box in the middle of the stack.
         return ["climb"]
@@ -58,28 +57,14 @@ class GGBoxHeavy(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
     return dic    
-         
-  def getName(self):
-    """ Returns the item's label.
-    """  
-    return self.label
-  
+
   def getImageLabel(self):
     """ Returns the item's image filename.
     """  
     return self.spriteName
 
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    newLabel: new label.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
-  
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.

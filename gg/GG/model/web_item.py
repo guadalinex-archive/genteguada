@@ -16,12 +16,11 @@ class GGWebItem(room_item.GGRoomItem):
     url: internet address.
     label: item's label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
     self.__url = url
-    self.label = label
-
+    
   def copyObject(self):
-    return GGWebItem(self.spriteName, self.anchor, self.topAnchor, self.__url, self.label)
+    return GGWebItem(self.spriteName, self.anchor, self.topAnchor, self.__url, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -37,26 +36,13 @@ class GGWebItem(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the available admin actions.
     """  
-    dic = {"Position": self.getTile().position, "Url": [self.__url], "Label": [self.label]}
+    dic = {"Position": self.getTile().position, "Url": [self.__url], "Label": [self.getName()]}
     return dic  
         
-  def getName(self):
-    """ Returns the item's name.
-    """  
-    return self.label
-  
   def getImageLabel(self):
     """ Returns the item's image file name.
     """  
     return self.spriteName
-
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
   
   def getUrl(self):
     """ Returns the internet address.
@@ -98,7 +84,7 @@ class GGWebPannel(GGWebItem):
     self.__pannels = []
 
   def copyObject(self):
-    return GGWebPannel(self.spriteName, self.anchor, self.topAnchor, self.getUrl(), self.label)
+    return GGWebPannel(self.spriteName, self.anchor, self.topAnchor, self.getUrl(), self.getName())
     
   def addPannels(self, *pannels):
     """ Adds new pannels to the pannel group.

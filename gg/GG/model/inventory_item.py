@@ -8,7 +8,7 @@ class GGInventoryItem(ggmodel.GGModel):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName):
+  def __init__(self, spriteName, label=None):
     """ Class constructor.
     spriteName: image name.
     """
@@ -16,6 +16,10 @@ class GGInventoryItem(ggmodel.GGModel):
     self.__player = None
     self.spriteName = spriteName
     self.spriteInventory = None
+    if label:
+      self.label = label
+    else:  
+      self.label = "No label"
     self.setImagePath("")
     
   def variablesToSerialize(self):
@@ -27,6 +31,20 @@ class GGInventoryItem(ggmodel.GGModel):
     """ Returns all possible admin actions for this item.
     """  
     return None
+  
+  def getName(self):
+    """ Returns the item's label.
+    """  
+    return self.label
+  
+  def setName(self, newLabel):
+    """ Sets a new label for the item.
+    newLabel: new label.
+    """  
+    if self.label != newLabel:
+      self.label = newLabel
+      return True
+    return False
   
   def getImagePath(self):
     """ Returns the item image path.
