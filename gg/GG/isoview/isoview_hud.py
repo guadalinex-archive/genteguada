@@ -578,8 +578,8 @@ class IsoViewHud(isoview.IsoView):
     if event.getParams()["room"]:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.updateScreenPositions()
-      self.roomLabel.label = event.getParams()["room"].label
-      self.roomLabel.set_text(event.getParams()["room"].label)
+      self.roomLabel.label = event.getParams()["room"].getName()
+      self.roomLabel.set_text(event.getParams()["room"].getName())
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
     if self.__isoviewRoom:
