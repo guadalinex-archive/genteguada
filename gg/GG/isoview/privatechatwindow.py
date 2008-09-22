@@ -222,6 +222,8 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     self.__paintContactList()
 
   def showOrHide(self):
+    """ Shows or hides the private chat window.
+    """  
     if self.hide:
       self.hud.changeChatButton()
     auxwindows.AuxWindow.showOrHide(self)

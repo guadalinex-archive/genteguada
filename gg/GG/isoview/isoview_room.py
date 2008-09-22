@@ -25,9 +25,6 @@ class IsoViewRoom(isoview.IsoView):
     self.__insertedIVItem = None
     self.__tileList = []
     infoPackage = model.getRoomBuildPackage()
-    #tiles = model.getTiles()
-    #specialTiles = model.getSpecialTiles()
-    #itemsDict = self.getModel().getPositionItems()
     tiles = infoPackage["tiles"]
     specialTiles = infoPackage["specialtiles"]
     itemsDict = infoPackage["positionitems"]
@@ -63,7 +60,6 @@ class IsoViewRoom(isoview.IsoView):
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem
     """  
-    
     for singleTile in populatedTiles:
       pos = singleTile[0]
       listItems = singleTile[1]
@@ -152,12 +148,6 @@ class IsoViewRoom(isoview.IsoView):
     """ Updates the room view when an item add event happens.
     event: even info.
     """
-    """
-    for ivitem in self.__isoViewItems:
-      if isinstance(ivitem, isoview_player.IsoViewPlayer):
-        if ivitem.getModel().username == event.getParams()['item'].username:
-          return
-    """      
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     self.addIsoViewItem(ivItem)
     self.__parent.addItemToRoomFromInventory(ivItem)
@@ -198,19 +188,25 @@ class IsoViewRoom(isoview.IsoView):
     self.__isoViewItems.remove(ivPlayer)
     ivPlayer.unsubscribeAllEvents()
     
-  def updateScreenPos(self, event):    
+  def updateScreenPos(self, event):
+    """ Updates the screen position for all items located on a specific position.
+    event: event info.
+    """      
     self.updateScreenPositionsOn(event.getParams()['position'])
     
   def floorChanged(self, event):
+    """ Changes the floor tile's images.
+    event: event info.
+    """
     newTiles = event.getParams()['newTile']
-    #print ">>>", newTile
     for x in range(len(self.__tileList)):
       for y in range(len(self.__tileList[x])):
         self.__tileList[x][y].setImg(os.path.join(GG.utils.TILE, newTiles[x][y]))
     
-  def updateScreenPositionsOn(self, pos, itemList = None):
+  def updateScreenPositionsOn(self, pos, itemList=None):
     """ Updates the screen cords of all items on a room position.
     pos: room position.
+    itemList: items located on the selected room position.
     """
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     if not itemList:
@@ -236,6 +232,7 @@ class IsoViewRoom(isoview.IsoView):
     """ Returns the future screen cords for an item moving to a room position.
     ivItem: item.
     pos: room position.
+    itemList: items located on the selected room position.
     """  
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     accHeight = tile.anchor[0]
@@ -305,11 +302,17 @@ class IsoViewRoom(isoview.IsoView):
     return None  
 
   def changeAvatarImages(self, avatar, path):
+    """ Changes the avatar images.
+    avatar: player's avatar.
+    path: new images path.
+    """  
     isoAvatar = self.findIVItem(avatar)
     if isoAvatar:
       isoAvatar.changeAvatarImages(path) 
       
   def updateScreenPositions(self):
+    """ Updates screen positions for all items on all room positions.
+    """  
     itemPositions = {}  
     for ivItem in self.__isoViewItems:
       #pos = ivItem.getPosition()
@@ -323,9 +326,15 @@ class IsoViewRoom(isoview.IsoView):
         self.updateScreenPositionsOn(key.getPosition())  
 
   def getTile(self, pos):
+    """ Returns the tile located on selected position.
+    pos: selected position.
+    """  
     return self.__tileList[pos[0]][pos[1]] 
 
   def tileImageChange(self, event):
+    """ Triggers after receiving a tile image change event.
+    event: event info.
+    """  
     pos = event.getParams()['pos']
     image = event.getParams()['image']
     self.__tileList[pos[0]][pos[1]].setImg(image)  

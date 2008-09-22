@@ -29,7 +29,9 @@ class IsoViewInventoryItem(isoview.IsoView):
     #self.__img = guiobjects.loadSprite(model.spriteInventory, True, None, 10001)
     
   def updateZOrder(self):
-    pass  
+    """ Updates the item image zOrder value.
+    """  
+    self.__img.zOrder = 10001  
   
   def getImg(self):
     """ Returns the item's image.

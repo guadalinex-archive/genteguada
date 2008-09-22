@@ -29,8 +29,6 @@ class IsoViewTile(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     self.__img.zOrder = -1
-    #self.__img = guiobjects.loadSprite(img, True, GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT), -1)
-    
     #model.subscribeEvent('imageChange', self.imageChange)
 
   """
@@ -48,7 +46,6 @@ class IsoViewTile(isoview.IsoView):
     """ Sets a new tile image.
     """  
     self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-    #self.__img = guiobjects.loadSprite(imageName, False, None, None)
     
   def getTopLeft(self):
     """ Returns the top left coord.

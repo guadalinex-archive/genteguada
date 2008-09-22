@@ -76,6 +76,3 @@ class IsoView(dMVC.synchronized.Synchronized):
     """  
     if self.__animation:
       self.__animation.stop()
-
-    
-  

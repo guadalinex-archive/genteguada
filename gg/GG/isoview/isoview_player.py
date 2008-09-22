@@ -49,6 +49,8 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
   
   def __getAvatarImages(self):
+    """ Grabs a new set of images for player's avatar. 
+    """  
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
         imageAvatar = self.__path.replace(os.sep,"-") + "-standing_bottomright_0001"
@@ -59,6 +61,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
         GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
   def setDestination(self, destination):
+    """ Saves a player's destination local copy.
+    destination: new destination.
+    """  
     self.__destination = destination
   
   def __del__(self):
@@ -124,7 +129,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       
   def setMovieAnimation(self, anim=None):
     """ Creates a new movie animation.
-    animation: new movie animation.
+    anim: new movie animation.
     """
     if self.__movieAnimation:
       self.__movieAnimation.stop()
@@ -138,9 +143,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     self.__movieAnimation.setFrames(frames, self.__path)
         
-  def createFrameSet(self, dataState = None):
+  def createFrameSet(self, dataState=None):
     """ Creates a new frame set.
-    state: player's state.
+    dataState: player's state.
     """
     frames = []
     if dataState:
@@ -310,7 +315,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     imageName = self.getModel().getImagePath() + "-" + self.getModel().spriteName
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
-    #self.setSprite(guiobjects.loadSprite(imageName, False, None, None))
       
   def isPlayer(self):
     """ Checks if this item is a player or not.
