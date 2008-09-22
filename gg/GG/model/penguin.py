@@ -28,12 +28,6 @@ class GGPenguin(room_item.GGRoomItem):
     """  
     return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.getName())
         
-  def variablesToSerialize(self):
-    """ Sets some vars to be used as locals.
-    """
-    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label']
-  
   def getOptions(self):
     """ Returns the item's available options.
     """

@@ -71,7 +71,13 @@ class GGRoom(ggmodel.GGModel):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteFull', 'size', 'label', 'maxUsers']
+    return ['spriteFull', 'size', 'maxUsers']
+
+  def getName(self):
+    return self.label
+
+  def setName(self, name):
+    self.label = label    
 
   def getPopulation(self):
     """ Returns the current population of this room.

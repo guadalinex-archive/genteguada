@@ -28,12 +28,6 @@ class GGTeleport(room_item.GGRoomItem):
   def copyObject(self):
     return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.getName())
     
-  def variablesToSerialize(self):
-    """ Sets some vars to be used as locals.
-    """
-    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label']    
-    
   def getOptions(self):
     """ Returns the item's available options.
     """
