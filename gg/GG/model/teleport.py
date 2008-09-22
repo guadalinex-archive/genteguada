@@ -20,14 +20,13 @@ class GGTeleport(room_item.GGRoomItem):
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
     self.points = 10
-    self.label = label
     
   def copyObject(self):
-    return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.label)
+    return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -45,30 +44,17 @@ class GGTeleport(room_item.GGRoomItem):
     """  
     if self.__destinationRoom:  
       dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom.label], \
-           "ExitPosition": self.__exitPosition, "Label": [self.label]}
+           "ExitPosition": self.__exitPosition, "Label": [self.getName()]}
     else:
       dic = {"Position": self.getTile().position, "DestinationRoom": [""], \
-           "ExitPosition": self.__exitPosition, "Label": [self.label]}    
+           "ExitPosition": self.__exitPosition, "Label": [self.getName()]}    
     return dic  
       
-  def getName(self):
-    """ Returns the teleporter's label.
-    """  
-    return self.label
-  
   def getImageLabel(self):
     """ Returns the teleporter's image file name.
     """  
     return self.spriteName
 
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
-  
   # self.__exitPosition
   
   def getExitPosition(self):
@@ -123,8 +109,8 @@ class GGTeleport(room_item.GGRoomItem):
     """ Triggers a new event after receiving a new chat message.
     message: new chat message.
     """
-    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
-    self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.getName() + "]: "
+    self.getRoom().triggerEvent('chatAdded', message=chat_message.ChatMessage(message, self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
 
   def transportTo(self, clicker):
     """ Teleports a player to another location.
@@ -139,7 +125,7 @@ class GGTeleport(room_item.GGRoomItem):
     if not self.__destinationRoom.getEnabled() and not clicker.getAccessMode():
       clicker.newChatMessage("La habitacion esta bloqueada. Volvere a intentarlo mas tarde", 1)
       return
-    clicker.addPoints(self.points, self.label)
+    clicker.addPoints(self.points, self.getName())
     itemList = clicker.getTile().getItemsFrom(clicker)
     finalPosition = self.__destinationRoom.getNearestEmptyCell(self.__exitPosition)
     for item in itemList:
@@ -169,7 +155,7 @@ class GGDoor(GGTeleport):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
 
   def copyObject(self):
-    return GGDoor(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label)
+    return GGDoor(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName())
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -198,7 +184,7 @@ class GGDoorWithKey(GGTeleport):
     self.__key = key
 
   def copyObject(self):
-    return GGDoorWithKey(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.__key)
+    return GGDoorWithKey(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__key)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -259,7 +245,7 @@ class GGDoorPressedTiles(GGTeleport):
     return dict
 
   def copyObject(self):
-    return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.__pressedTiles)
+    return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__pressedTiles)
 
   def setPressedTile1(self, pos):
     self.__pressedTiles[0] = pos  
@@ -319,7 +305,7 @@ class GGDoorOpenedByPoints(GGTeleport):
     self.pointsGiver = pointsGiver    
 
   def copyObject(self):
-    return GGDoorOpenedByPoints(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.label, self.pointsGiver)
+    return GGDoorOpenedByPoints(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.pointsGiver)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.

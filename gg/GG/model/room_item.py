@@ -9,13 +9,13 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, anchor, topAnchor):
+  def __init__(self, spriteName, anchor, topAnchor, label=None):
     """ Class constructor.
     spriteName: image name.
     anchor: image offset on screen.
     topAnchor: image top offset on screen.
     """
-    inventory_item.GGInventoryItem.__init__(self, spriteName)
+    inventory_item.GGInventoryItem.__init__(self, spriteName, label)
     self.anchor = anchor
     self.topAnchor = [topAnchor[0] , GG.utils.TILE_SZ[1] + anchor[1] + topAnchor[1]]
     self.__room = None
@@ -51,11 +51,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     dic = {"Position": self.__tile.position}
     return dic  
         
-  def getName(self):
-    """ Returns the item's name.
-    """  
-    return "No label"
-  
   def getImageLabel(self):
     """ Returns the item image sprite name.
     """  

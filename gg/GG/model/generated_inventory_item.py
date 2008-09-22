@@ -15,9 +15,8 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     anchor: on-screen sprite offset.
     parentPosition: origin position.
     """
-    inventory_item.GGInventoryItem.__init__(self, spriteName)
+    inventory_item.GGInventoryItem.__init__(self, spriteName, label)
     self.spriteInventory = spriteName
-    self.label = label
     self.points = 0
     self.anchor = anchor
     self.__position = parentPosition
@@ -42,24 +41,10 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """
     return ["removeInventory"]  
 
-  def getName(self):
-    """ Returns the item's label.
-    """  
-    return self.label
-  
   def getImageLabel(self):
     """ Returns the item's image filename.
     """  
     return self.spriteInventory
-
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    newLabel: new label.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
 
   def getPosition(self):
     """ Returns item's position.

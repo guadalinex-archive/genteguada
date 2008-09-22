@@ -1592,7 +1592,7 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.setMessage(msg)  
       elif key == "Label":
         newLabel = self.editableFields[key][0].text
-        if selectedItem.setLabel(newLabel):
+        if selectedItem.setName(newLabel):
           oldLabel = self.__selectedItem.getName()
           self.getModel().labelChange(oldLabel, newLabel)
       elif key == "GiftLabel":

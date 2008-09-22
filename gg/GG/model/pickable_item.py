@@ -16,14 +16,13 @@ class GGPickableItem(room_item.GGRoomItem):
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
     self.spriteInventory = spriteInventory
-    self.label = label
-
+    
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPickableIte(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
+    return GGPickableIte(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -45,27 +44,13 @@ class GGPickableItem(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
     return dic    
          
-  def getName(self):
-    """ Returns the item's label.
-    """  
-    return self.label
-  
   def getImageLabel(self):
     """ Returns the item's image filename.
     """  
     return self.spriteInventory
-
-  def setLabel(self, newLabel):
-    """ Sets a new label for the item.
-    newLabel: new label.
-    """  
-    if self.label != newLabel:
-      self.label = newLabel
-      return True
-    return False  
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
@@ -103,12 +88,12 @@ class PaperMoney(GGPickableItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.label, self.points)
+    return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.points)
 
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.label]}
+    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
     return dic    
     
   def getOptions(self):
@@ -120,5 +105,5 @@ class PaperMoney(GGPickableItem):
     """ Gives points to a player.
     player: player to give points to.
     """  
-    player.addPoints(self.points, self.label)  
+    player.addPoints(self.points, self.getName())  
     
