@@ -25,6 +25,8 @@ class GGPenguin(room_item.GGRoomItem):
     self.header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.label)
         
   def variablesToSerialize(self):
@@ -56,6 +58,7 @@ class GGPenguin(room_item.GGRoomItem):
 
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
+    newLabel: new label.
     """  
     if self.label != newLabel:
       self.label = newLabel
@@ -73,6 +76,11 @@ class GGPenguin(room_item.GGRoomItem):
       return False    
   
   def newChatMessage(self, talker, chatMessage, text):
+    """ Sends a new chat message.
+    talker: message emitter.
+    chatMessage: message object.
+    text: message text.
+    """  
     talker.triggerEvent('chatAdded', message=chatMessage, text=text, header=self.header)
 
 # ===============================================================
@@ -94,6 +102,8 @@ class GGPenguinTalker(GGPenguin):
     self.__msg = message
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGPenguinTalker(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg)
     
   def getMessage(self):
@@ -141,6 +151,8 @@ class GGPenguinTrade(GGPenguin):
     self.__giftLabel = gift
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGPenguinTrade(self.spriteName, self.anchor, self.topAnchor, self.label, self.__msg, self.__giftLabel)
 
   def getOptions(self):
@@ -219,6 +231,8 @@ class GGPenguinQuiz(GGPenguin):
     self.__availableQuestions = {}
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """      
     return GGPenguinQuiz(self.spriteName, self.anchor, self.topAnchor, self.label, self.__filePath)
   
   def getOptions(self):

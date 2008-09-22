@@ -25,6 +25,8 @@ class GGGiverNpc(room_item.GGRoomItem):
     self.points = 0
 
   def copyObject(self): 
+    """ Copies and returns this object.
+    """  
     return GGGiverNpc(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label)
     
   def variablesToSerialize(self):
@@ -51,6 +53,7 @@ class GGGiverNpc(room_item.GGRoomItem):
   
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
+    newLabel: new label.
     """  
     if self.label != newLabel:
       self.label = newLabel
@@ -71,7 +74,8 @@ class GGGiverNpc(room_item.GGRoomItem):
       clicker.setSelectedItem(self)
 
   def getCopyFor(self, player):
-    """ If target player does not have this item on his inventory, creates a new item and gives it to him.
+    """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
+    player: selected player.
     """  
     header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
     if player.hasItemLabeledInInventory(self.label):
@@ -91,8 +95,8 @@ class GGGiverNpc(room_item.GGRoomItem):
     return False
   
   def tick(self, now):
-    """ Call for an update on item.
-    Not used at the moment.
+    """ Call for an update on item. Do NOT delete.
+    now: current timestamp.
     """
     pass
   
@@ -112,11 +116,12 @@ class WebGift(GGGiverNpc):
     topAnchor: top item's image offset.
     spriteInventory: sprite used to paint this object on player's inventory.
     label: item label.
+    creator: item's creator.
     """
     GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
     self.__creator = creator
     self.__idGift = self.generateId()
-    print self.__idGift
+    #print self.__idGift
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -129,11 +134,14 @@ class WebGift(GGGiverNpc):
     dic = {"Position": self.getPosition()}
     return dic    
 
-  def copyObject(self): 
+  def copyObject(self):
+    """ Copies and returns this item.
+    """   
     return WebGift(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.label, self.__creator)
   
   def getGiftFor(self, player):
-    """ If target player does not have this item on his inventory, creates a new item and gives it to him.
+    """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
+    player: selected player.
     """  
     player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.label, \
                 self.label, GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
@@ -141,8 +149,12 @@ class WebGift(GGGiverNpc):
                                                     self.getPosition(), self.__idGift), self.getPosition()
                                                     
   def generateId(self):
+    """ Generates an unique id for this item.
+    """  
     originalString = self.__creator + str(int(time.time()))
     return md5.new(originalString).hexdigest()
 
   def getIdGift(self):
+    """ Returns the gift id.
+    """  
     return self.__idGift  

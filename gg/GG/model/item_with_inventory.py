@@ -17,6 +17,8 @@ class GGItemWithInventory(room_item.GGRoomItem):
   # self.__inventory
   
   def getInventory(self):
+    """ Returns the item's inventory.
+    """  
     return self.__inventory  
   
   def setInventory(self, inventory):

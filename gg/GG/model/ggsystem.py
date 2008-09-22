@@ -47,6 +47,8 @@ class GGSystem(dMVC.model.Model):
     return None
       
   def getEntryRooms(self):
+    """ Returns all start rooms.
+    """  
     return self.__startRooms      
       
   # self.__players
@@ -96,7 +98,7 @@ class GGSystem(dMVC.model.Model):
         return False, "El usuario tiene una sesion abierta"    
     if not self.loginGuadalinex(username, password):
       return False, "No se ha podido autenticar en guadalinex"
-    user = self.__existPlayer(username, password)
+    user = self.__existsPlayer(username, password)
     if not user:
       user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
       self.createPlayer(user)
@@ -109,13 +111,21 @@ class GGSystem(dMVC.model.Model):
       return True, session 
     return False, "No se pudo autentificar el usuario"
 
-  def __existPlayer(self, user, passwd):
+  def __existsPlayer(self, user, passwd):
+    """ Checks if a player exists.
+    user: player user name.
+    passwd: player password.
+    """  
     for player in self.__players:
       if player.checkUser(user, passwd):
         return player
     return None
 
   def loginGuadalinex(self, user, passwd):
+    """ Logs in an user.
+    user: user name.
+    passwd: user password.
+    """  
     #return "A"
     return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
@@ -135,11 +145,17 @@ class GGSystem(dMVC.model.Model):
     self.__sessions.remove(session)
 
   def __loadData(self):
+    """ Loads all system data.
+    """  
     import createworld
     world = createworld.CreateWorld(self)
     world.create()
     
   def setStartRoom(self, room, startRoom):
+    """ Sets a room as start room or not.
+    room: room to be changed.
+    startRoom: start room flag.
+    """  
     foundRoom = None
     for oneRoom in self.__startRooms:
       if oneRoom.label == room.label:
@@ -255,6 +271,9 @@ class GGSystem(dMVC.model.Model):
 
   def uploadFile(self, fileName, fileData, dirDest = None):
     """ Uploads a new file to the system.
+    fileName: file name.
+    fileData: file copy name.
+    dirDest: file copy path.
     """  
     name = fileName[0] + "_" + str(int(time.time())) + fileName[1]
     try:
@@ -279,6 +298,8 @@ class GGSystem(dMVC.model.Model):
     #thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
 
   def __throwAvatarGeneratorCommand(self):
+    """ Starts the avatar generation process.
+    """  
     if not self.__avatarGeneratorHandler.isFullProcess():
       try:
         processOptions = self.__avatarGeneratorProcessQueue.get_nowait()
@@ -360,10 +381,17 @@ class GGSystem(dMVC.model.Model):
     return listLabels  
 
   def labelChange(self, oldLabel, newLabel):
+    """ Changes an item label.
+    oldLabel: old item label.
+    newLabel: new item label.
+    """  
     for room in self.__rooms:
       room.labelChange(oldLabel, newLabel)
 
   def getAvatarImages(self, avatar):
+    """ Returns the avatar images.
+    avatar: player's avatar.
+    """  
     dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.getImagePath())
     files = {}
     files["path"] = avatar.getImagePath()
@@ -398,6 +426,10 @@ class GGSystem(dMVC.model.Model):
     return None  
 
   def newBroadcastMessage(self, line, player):
+    """ Sends a new broadcast message.
+    line: message text.
+    player: message sender.
+    """  
     for room in self.__rooms:
       room.newChatMessage(line, player, 3)    
 

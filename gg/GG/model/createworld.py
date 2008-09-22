@@ -66,11 +66,19 @@ SKYLINES_UP = [os.path.join(FURNITURE_PATH, "skylineWallUp01.png"), os.path.join
 SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.join(FURNITURE_PATH, "skylineWallLeft02.png")]
 
 class CreateWorld:
+  """ CreateWorld class.
+  Creates and initializes all GenteGuada items, players and rooms. 
+  """  
 
   def __init__(self, system):
+    """ Class constructor.
+    system: system object.
+    """  
     self.__system = system
 
   def create(self):
+    """ Creates all GenteGuada components.
+    """  
     self.__createPlayers()
     self.__createRooms()
     self.__decorateRoom1()
@@ -81,6 +89,8 @@ class CreateWorld:
     self.__decorateRoom6()
 
   def __createPlayers(self):
+    """ Creates all players.
+    """  
     nino = player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "", True)
     nina = player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepa", "12345", "", False)
     self.__system.createPlayer(nino)
@@ -95,6 +105,8 @@ class CreateWorld:
       self.__system.createPlayer(demoPlayer)
 
   def __createRooms(self):
+    """ Creates all rooms.
+    """  
     self.__room1 = self.__system.createRoom(TILES_GRASS, "habitacion 1", [8, 8], 12, True, True)
     self.__room2 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 2", [8, 8], 8, True, False)
     self.__room3 = self.__system.createRoom(TILES_PAVINGSTONE, "habitacion 3", [8, 8], 8, True, False)
@@ -103,6 +115,8 @@ class CreateWorld:
     self.__room6 = self.__system.createRoom(TILES_PAVINGSTONEWITHGRASS, "habitacion 6", [8, 8], 8, True, False)
 
   def __decorateRoom1(self):
+    """ Creates all items for room1.
+    """  
     myDoor1 = teleport.GGDoor(DOOR_GARDEN, [25, 2], [0, 0], [6, 6], self.__room2, "puerta lobby")
     self.__room1.addItemFromVoid(myDoor1, [6, 0])
     penguinRightOffset = [30, 0]
@@ -142,6 +156,8 @@ class CreateWorld:
     self.__room1.addItemFromVoid(room_item.GGRoomItem(TREE, [100, 150], [0, 0]), [0, 7])
 
   def __decorateRoom2(self):
+    """ Creates all items for room2.
+    """  
     wallOffset = [35, -10]
     wallOffset2 = [55, 0]
     wallOffset3 = [20, 0]
@@ -181,6 +197,8 @@ class CreateWorld:
     self.__room2.addItemFromVoid(myGoldenKeyRoom2, [4, 6])
 
   def __decorateRoom3(self):
+    """ Creates all items for room3.
+    """  
     self.__room3.setSpecialTile([2, 0, 1], TILE_PRESSED)
     self.__room3.setSpecialTile([5, 0, 1], TILE_PRESSED)
     tiles = [[2, 1], [5, 1]]
@@ -218,6 +236,8 @@ class CreateWorld:
     self.__room3.addItemFromVoid(myPenguinRoom3, [1, 6])
 
   def __decorateRoom4(self):
+    """ Creates all items for room4.
+    """  
     myDoor4A = teleport.GGDoorWithKey(DOOR_AMORED, [17, 15], [0, 0], [1, 5], self.__room3, "puerta room4a", "Llave Dorada")
     self.__room4.addItemFromVoid(myDoor4A, [7, 5])    
     wallOffset = [35, 33]
@@ -247,6 +267,8 @@ class CreateWorld:
     self.__room4.addItemFromVoid(myBox6, [7, 3])
 
   def __decorateRoom5(self):
+    """ Creates all items for room5.
+    """  
     myDoor5A1 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [3, 1], self.__room3, "puerta room5a")
     myDoor5A2 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [4, 1], self.__room3, "puerta room5a")
     myDoor5B1 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 7], self.__room1, "puerta room5b", "Penguin Quiz")
@@ -266,6 +288,8 @@ class CreateWorld:
     self.__room5.addItemFromVoid(myPenguinQuiz, [2, 3])
 
   def __decorateRoom6(self):
+    """ Creates all items for room6.
+    """  
     myDoor6A = teleport.GGDoor(TILE_ARROW_DOWN, GG.utils.FLOOR_SHIFT, [0, 0], [1, 6], self.__room2, "puerta room6a")
     myGift1 = giver_npc.GGGiverNpc(GIFT, [15, -30], [0, 0], GIFT, "Regalo")
     wallOffset = [35, 40]

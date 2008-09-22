@@ -22,7 +22,9 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     self.anchor = anchor
     self.__position = parentPosition
     
-  def getItemBuildPackage(self):    
+  def getItemBuildPackage(self):
+    """ Returns item info used to create the isometric view object.
+    """      
     infoPackage = {}
     infoPackage["position"] = self.getPosition() 
     infoPackage["imagepath"] = self.getImagePath()
@@ -52,6 +54,7 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
 
   def setLabel(self, newLabel):
     """ Sets a new label for the item.
+    newLabel: new label.
     """  
     if self.label != newLabel:
       self.label = newLabel
@@ -85,7 +88,6 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     """  
     return False
 
-
 # ===============================================================
 
 class GGGeneratedGift(GGGeneratedInventoryItem):
@@ -96,6 +98,11 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
   def __init__(self, spriteName, label, anchor, parentPosition, idGift):
     """ Class constructor.
     spriteName: image name.
+    label: item's label.
+    anchor: on-screen sprite offset.
+    parentPosition: origin position.
+    spriteName: image name.
+    idGift: gift identifier.
     """
     GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
     self.__idGift = idGift
