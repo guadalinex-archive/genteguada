@@ -23,6 +23,8 @@ class IsoViewItem(positioned_view.PositionedView):
     screen: screen handler.
     room: item's isometric room object.
     parent: isoview_hud handler.
+    position: isometric view's initial position. 
+    imagePath: item's image path.
     """
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
@@ -41,6 +43,7 @@ class IsoViewItem(positioned_view.PositionedView):
         
   def loadImage(self, imagePath=None):
     """ Loads the item's image.
+    imagePath: item's image path.
     """
     if imagePath is None:
       imageName = os.path.join(self.getModel().getImagePath(), self.getModel().spriteName)
@@ -107,6 +110,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def setImg(self, img, path=None):
     """ Sets a new image for the item.
     img: image name.
+    path: image path.
     """
     if path:
       imageName = os.path.join(path, img)
@@ -114,9 +118,6 @@ class IsoViewItem(positioned_view.PositionedView):
       imageName = os.path.join(self.getModel().getImagePath(), img)
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    #topleft = self.__img.rect.topleft
-    #zOrder = self.__img.zOrder
-    #self.__img = guiobjects.loadSprite(imageName, False, topleft, zOrder)
     self.__img.dirty = 1
     
   def setSprite(self, sprite):
@@ -191,6 +192,7 @@ class IsoViewItem(positioned_view.PositionedView):
     
   def setPosition(self, pos):
     """ Stores a local copy for item's position.
+    pos: item's position.
     """  
     self.__position = pos  
     
@@ -249,6 +251,8 @@ class IsoViewResizedItem(IsoViewItem):
     screen: screen handler.
     room: item's isometric room object.
     parent: isoview_hud handler.
+    position: isometric view's initial position. 
+    imagePath: item's image path.
     """
     if image:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(model.getImagePath(), model.spriteName))

@@ -20,6 +20,9 @@ from pygame.locals import * # faster name resolution
 import os
 
 class FakeModel:
+  """ FakeModel class.
+  Used to create temporary screen animations without an associated item.
+  """  
   def __init__(self, spriteInventory, label):
     self.spriteInventory = spriteInventory
     self.label = label
@@ -263,17 +266,24 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.distribute_events(*events)
     
   def __processHotkeys(self, event):
+    """ Processes the hotkeys and keyboard shortcuts.
+    event: keyboard event type.
+    """  
     if event.key in self.__hotkeys.keys():
       if self.__hotkeys[event.key] in self.__activeActions:
         self.__hotkeys[event.key]()
 
   def __processEnterKey(self):
+    """ Processes the "enter" key event.
+    """  
     if not self.__privateChatWindow.hide:
       self.__privateChatWindow.chatMessageEntered()
     else:
       self.chatMessageEntered()
 
   def __moveItemPositionAdmin(self):
+    """ Changes an item position on the item edit window in admin access mode.
+    """  
     cordX, cordY = pygame.mouse.get_pos()
     dest = self.getIsoviewRoom().findTileOnly([cordX, cordY])
     if not dest == [-1, -1]:
@@ -286,6 +296,8 @@ class IsoViewHud(isoview.IsoView):
           self.editableFields["Position"][1].text = str(dest[1])
   
   def __clickOnMap(self):
+    """ Processes a mouse click on the room.
+    """  
     cordX, cordY = pygame.mouse.get_pos()
     if 0 <= cordY <= HUD_OR[1]:
       if self.__ctrl and self.__accessMode:
@@ -327,6 +339,8 @@ class IsoViewHud(isoview.IsoView):
     self.__activeActions.append(self.privateChatHandler)
     
   def getIVRoom(self):
+    """ Returns the active room's isometric view.
+    """  
     return self.__isoviewRoom
 
   def setActiveWindow(self, value):
@@ -488,6 +502,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.hud)
 
   def __paintRoomInfo(self):
+    """ Paints the room info.
+    """  
     #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
     if self.__accessMode:
       self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
@@ -505,6 +521,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.roomInfo)
 
   def __paintImgBlack(self):
+    """ Paints the game zone background.
+    """  
     bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
     self.__bg = pygame.sprite.Sprite()
     self.__bg.image = pygame.image.load(bgPath).convert_alpha()
@@ -516,6 +534,7 @@ class IsoViewHud(isoview.IsoView):
     
   def updateFrame(self, events ,elapsedTime):
     """ Updates all sprites for a new timestamp.
+    event: events info.
     elapsedTime: elapsedTime
     """
     self.processEvent(events)
@@ -527,9 +546,15 @@ class IsoViewHud(isoview.IsoView):
     pygame.display.flip()
         
   def addIsoAnimation(self, isoviewAnim):
+    """ Adds a new animation.
+    isoviewAnim: new animation.
+    """  
     self.__isoviewAnim.append(isoviewAnim)    
   
   def removeIsoAnimation(self, isoviewAnim):
+    """ Removes an animation.
+    isoviewAnim: animation to be removed.
+    """  
     self.__isoviewAnim.remove(isoviewAnim)
     
   def roomChanged(self, event):
@@ -563,6 +588,13 @@ class IsoViewHud(isoview.IsoView):
       self.addItemToRoomFromVoid(ivItem)
     
   def editRoom(self, maxUsers, newLabel, enabled, startRoom, newTile):
+    """ Edits the active room.
+    maxUsers: new max users limit.
+    newLabel: new room label.
+    enabled: sets the active room as enabled or disabled.
+    startRoom: sets the active room as start room or not.
+    newTile: new tile models.
+    """  
     room = self.__isoviewRoom.getModel()      
     oldLabel = room.label
     if oldLabel != newLabel and self.getModel().getRoom(newLabel):
@@ -728,6 +760,8 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom.addIsoViewChatItem(ivMessageChat)
   
   def destinationChanged(self, event):
+    """ Draws a destination marker on the room after a player destination change event.
+    """  
     destination = event.getParams()['destination']
     ivPlayer = self.findIVItem(self.__player)
     ivPlayer.setDestination(destination)
@@ -815,6 +849,9 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.adminOptions)
     
   def auxWindowHandler(self, window):
+    """ Shows or hides the selected window.
+    window: selected window.
+    """  
     if window:
       if window == self.__kickPlayerWindow:
         if not self.__deleteRoomWindow.hide:
@@ -850,6 +887,7 @@ class IsoViewHud(isoview.IsoView):
 
   def applyTeleport(self, roomLabel):
     """ Teleports the player to another room.
+    roomLabel: new room's label.
     """  
     if not roomLabel:
       self.__player.newChatMessage("Escoja un destino para el teletransporte", 1)
@@ -870,6 +908,7 @@ class IsoViewHud(isoview.IsoView):
   
   def applyDeleteRoom(self, roomLabel):
     """ Deletes the selected room.
+    roomLabel: room to be deleted.
     """  
     if not roomLabel:
       self.__player.newChatMessage("Escoja una habitación para eliminar", 1)
@@ -889,6 +928,10 @@ class IsoViewHud(isoview.IsoView):
      
   def itemSelectedByAdmin(self, itemName, itemImageLabel, isTile, adminActions):
     """ Paints the selected item actions admin pannel.
+    itemName: selected item's name.
+    itemImageLabel: selected item's image name.
+    isTile: sets the selected item as tile or not.
+    adminActions: item's available admin actions.
     """  
     #actions = self.__selectedItem.getAdminActions()
     actions = adminActions
@@ -961,6 +1004,9 @@ class IsoViewHud(isoview.IsoView):
   
   def itemSelectedByUser(self, itemName, itemImageLabel, options):
     """ Paints the user action buttons.
+    itemName: selected item's name.
+    itemImageLabel: selected item's image name.
+    options: item's available options.
     """  
     #options = self.__selectedItem.getOptions()
     if not len(options):
@@ -986,6 +1032,8 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.__buttonBarActions)
 
   def discardChanges(self):
+    """ Discards the selected item's changes and closes the item's edit window.
+    """  
     if self.__selectedItem:
       self.__player.setUnselectedItem()
       self.itemUnselected()
@@ -1072,6 +1120,8 @@ class IsoViewHud(isoview.IsoView):
     size: room size.
     img: room's default tile image.
     maxUsers: max users per room.
+    enabled: sets the room as enabled or disabled.
+    startRoom: sets the room as start room or not.
     copyRoom: room to be copied.
     """  
     if self.getModel().getRoom(label):
@@ -1132,7 +1182,7 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.add_widget(self.__winWardrobe)
     self.__activeWindow = True
     
-  def closeDresser(self, configuration = None):
+  def closeDresser(self, configuration=None):
     """ Closes the avatar configuration window.
     configuration: avatar configuration.
     """  
@@ -1253,6 +1303,8 @@ class IsoViewHud(isoview.IsoView):
       self.__dropAdminOptions()
 
   def __dropUserOptions(self):
+    """ Removes the user's option buttons from the screen.
+    """
     if self.__buttonBarActions:
       for child in self.__buttonBarActions.children:
         self.__buttonBarActions.remove_child(child)
@@ -1262,6 +1314,8 @@ class IsoViewHud(isoview.IsoView):
       self.__buttonBarActions = None
 
   def __dropAdminOptions(self):
+    """ Removes the admin's option buttons from the screen.
+    """
     for child in self.buttonBarAdminActions.children:
       self.buttonBarAdminActions.remove_child(child)
       child.destroy()
@@ -1529,12 +1583,6 @@ class IsoViewHud(isoview.IsoView):
         if 0 <= posX < size[0]:
           if 0 <= posY < size[1]:
             self.__isoviewRoom.getModel().moveStack([posX, posY], selectedItem)  
-            """  
-            itemsList = selectedItem.getTile().getItemsFrom(selectedItem)
-            for singleItem in itemsList:
-              singleItem.setPosition([posX, posY])
-              self.__isoviewRoom.getModel().moveItem(singleItem.getPosition(), [posX, posY], singleItem)
-            """    
             self.__selectedImage.rect.topleft = GG.utils.p3dToP2d([posX, posY], SELECTED_FLOOR_SHIFT)
       elif key == "Url":
         url = self.editableFields[key][0].text
@@ -1595,6 +1643,8 @@ class IsoViewHud(isoview.IsoView):
         selectedItem.setImage(os.path.join(GG.utils.TILE, label))
     
   def removeSelectedItemConfirmation(self):
+    """ Shows the confirmation dialog to delete the selected item.
+    """  
     self.__deleteConfirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)
     questionLabel = guiobjects.OcempLabel("Eliminar objeto seleccionado", guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 38, 20 
@@ -1624,14 +1674,23 @@ class IsoViewHud(isoview.IsoView):
     self.__deleteConfirmDialog = None
 
   def changeAvatarImages(self, avatar, path):
+    """ Changes the player's avatar images.
+    avatar: player's avatar.
+    path: new image path.
+    """  
     if self.__isoviewRoom:
       self.__isoviewRoom.changeAvatarImages(avatar, path) 
 
   def reloadImage(self, img):
+    """ Reloads the selected image.
+    img: selected image.
+    """  
     self.removeSprite(img)
     self.addSprite(img)  
 
   def copySelectedItem(self):
+    """ Copies the selected room item.
+    """  
     try: 
       posX = int(self.editableFields['Position'][0].text)    
       posY = int(self.editableFields['Position'][1].text)    

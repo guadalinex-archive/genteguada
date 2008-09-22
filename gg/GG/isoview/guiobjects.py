@@ -12,7 +12,6 @@ import GG.utils
 import pygame.locals
 import copy
 
-
 # ======================= STYLES ===========================
 
 STYLES = {
@@ -541,6 +540,8 @@ class OcempImageFileList(ocempgui.widgets.FileList):
     self.set_items (items)
 
   def getFileName(self):
+    """ Returns the file name of the selected item.
+    """  
     item = self.get_selected()
     if len(item):
       fileName = os.path.join (self.directory, item[0].text)
@@ -869,15 +870,21 @@ def playSound(sound):
 # ===============================================================
 
 def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
-    image = pygame.sprite.Sprite()
-    image.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-    if loadRect:
-      image.rect = image.image.get_rect()
-    if topleft:
-      image.rect.topleft = topleft
-    if zOrder:  
-      image.zOrder = zOrder
-    else:
-      image.zOrder = 0    
-    return image  
+  """ Loads a new sprite.
+  imageName: sprite file name.
+  loadRect: rectangle load flag.
+  topleft: new sprite topleft.
+  zOrder: sprite zOrder value.
+  """  
+  image = pygame.sprite.Sprite()
+  image.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
+  if loadRect:
+    image.rect = image.image.get_rect()
+  if topleft:
+    image.rect.topleft = topleft
+  if zOrder:  
+    image.zOrder = zOrder
+  else:
+    image.zOrder = 0    
+  return image  
     

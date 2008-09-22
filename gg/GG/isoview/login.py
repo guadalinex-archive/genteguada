@@ -20,7 +20,7 @@ class Login:
   def __init__(self, screen, parent):
     """ Class constructor.
     screen: screen handler.
-    parent: 
+    parent: genteguada object.
     """
     self.__screen = screen
     self.__textFieldUsername = None
@@ -33,6 +33,8 @@ class Login:
   
   def draw(self, user=None, passw=None):
     """ Draws the login screen.
+    user: user name.
+    passw: user password.
     """  
     if user and passw:
       return self.autoLogin(user, passw)
@@ -252,6 +254,8 @@ class Login:
   
   def autoLogin(self, user, passw):
     """ Logs an user automatically.
+    user: user name.
+    passw: user password.
     """  
     loginData = self.__parent.getSystem().login(user, passw)
     if loginData[0] == True:

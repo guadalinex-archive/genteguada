@@ -178,8 +178,13 @@ class ExchangeWindow:
     return hframe
 
   def showTooltip(self, label):
+    """ Shows an item's tooltip.
+    label: tolltip label.
+    """  
     self.__isohud.showTooltip(label)
   
   def removeTooltip(self):
+    """ Removes an item's tooltip from screen.
+    """  
     self.__isohud.removeTooltip()
 
