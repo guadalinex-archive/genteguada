@@ -23,12 +23,6 @@ class GGBoxHeavy(room_item.GGRoomItem):
     """  
     return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.getName())
     
-  def variablesToSerialize(self):
-    """ Sets some class attributes as public access.
-    """  
-    parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label']
-
   def getOptions(self):
     """ Returns the item options.
     """  

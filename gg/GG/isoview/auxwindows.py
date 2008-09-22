@@ -337,6 +337,7 @@ class EditRoomWindow(AuxWindow):
     self.container = None
     self.editRoomMaxUsers = None
     self.newTileImages = None
+    self.roomLabel = self.__hud.getIVRoom().getModel().getName()
     AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
 
   def showOrHide(self):
@@ -344,7 +345,7 @@ class EditRoomWindow(AuxWindow):
     """  
     if self.hide:
       self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)  
-      self.roomLabel.text = self.__hud.getIVRoom().getModel().label
+      self.roomLabel.text = self.roomLabel
       self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
       self.imageName = self.imageName[self.imageName.rfind("/")+1:]
       #self.newTileImages.selectItem(self.imageName)
@@ -385,7 +386,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.roomLabel = guiobjects.OcempEditLine()
     self.roomLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.roomLabel.text = self.room.label
+    self.roomLabel.text = self.room.getName()
     self.roomLabel.border = 1
     self.roomLabel.topleft = 10 + 70 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.roomLabel.set_minimum_size(90, 20)
@@ -480,7 +481,7 @@ class CreateRoomWindow(AuxWindow):
     #self.listItems = hud.getModel().getRoomLabels()
     listLabels = []
     for room in self.rooms:
-      listLabels.append(room.label)
+      listLabels.append(room.getName())
     self.listItems = listLabels  
     AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,320])
     
@@ -615,7 +616,7 @@ class CreateRoomWindow(AuxWindow):
     """
     name = self.listRooms.getSelectedName()
     for room in self.rooms:
-      if name == room.label:
+      if name == room.getName():
         self.sizeX.text = str(room.size[0])  
         self.sizeY.text = str(room.size[1])  
         self.maxUsers.text = str(room.maxUsers)
@@ -664,7 +665,7 @@ class CreateRoomWindow(AuxWindow):
     roomList = self.listRooms.get_selected()
     if len(roomList):
       for singleRoom in self.rooms:
-        if singleRoom.label == roomList[0].text:
+        if singleRoom.getName() == roomList[0].text:
           room = singleRoom
     enabled = self.enabledChecker.active      
     startRoom = self.startRoomChecker.active

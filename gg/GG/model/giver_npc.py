@@ -31,9 +31,8 @@ class GGGiverNpc(room_item.GGRoomItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    parentVars = GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['label']
-
+    return GG.model.room_item.GGRoomItem.variablesToSerialize(self)
+    
   def getOptions(self):
     """ Returns the item's available options.
     """

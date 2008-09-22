@@ -509,7 +509,7 @@ class IsoViewHud(isoview.IsoView):
       self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
     else:  
       self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_USER_BACKGROUND)
-    self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().label, guiobjects.STYLES["itemLabel"])
+    self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().getName(), guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 30, -4
     self.roomInfo.add_child(self.roomLabel)
     if self.__accessMode:
@@ -596,7 +596,7 @@ class IsoViewHud(isoview.IsoView):
     newTile: new tile models.
     """  
     room = self.__isoviewRoom.getModel()      
-    oldLabel = room.label
+    oldLabel = room.getName()
     if oldLabel != newLabel and self.getModel().getRoom(newLabel):
       self.__player.newChatMessage('La etiqueta de habitacion ya existe', 1)  
       self.__editRoomWindow.showOrHide()

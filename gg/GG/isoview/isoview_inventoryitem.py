@@ -18,7 +18,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__spriteName = model.spriteInventory
-    self.__label = model.label
+    self.__label = model.getName()
     self.__count = 0
     self.__isohud = isohud
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)

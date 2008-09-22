@@ -28,7 +28,7 @@ class GGPickableItem(room_item.GGRoomItem):
     """ Sets some vars to be used as locals.
     """
     parentVars = room_item.GGRoomItem.variablesToSerialize(self)
-    return parentVars + ['spriteInventory', 'label']
+    return parentVars + ['spriteInventory']
 
   def getOptions(self):
     """ Returns the item's available options.
