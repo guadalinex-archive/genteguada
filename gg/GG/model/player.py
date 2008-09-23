@@ -371,9 +371,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.getRoom():
         
       tmp = time.localtime(time.time())
-      var1 = self.__startPlayedTime[4]
-      var2 = tmp[4]
-      playedTime = var2 - var1
+      playedTime = tmp[4] - self.__startPlayedTime[4]
       if playedTime:
         self.updateSessionTiming()
         
