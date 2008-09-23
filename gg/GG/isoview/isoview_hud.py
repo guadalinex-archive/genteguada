@@ -1271,13 +1271,14 @@ class IsoViewHud(isoview.IsoView):
     labelUserName = guiobjects.OcempLabel(self.__player.username, guiobjects.STYLES["userName"])
     labelUserName.topleft = 655, 75
     self.hud.add_child(labelUserName)
-    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: 0", guiobjects.STYLES["pointLabel"])
+    expPackage = self.__player.getExpInforPackage()
+    self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: " + str(expPackage["points"]), guiobjects.STYLES["pointLabel"])
     self.__pointsLabel.topleft = 627, 110
     self.hud.add_child(self.__pointsLabel)
-    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: 0", guiobjects.STYLES["pointLabel"])
+    self.__labelOld = guiobjects.OcempLabel("ClockPuntos: " + str(expPackage["playedTime"]), guiobjects.STYLES["pointLabel"])
     self.__labelOld.topleft = 627, 135
     self.hud.add_child(self.__labelOld)
-    self.__expLabel = guiobjects.OcempLabel("Experiencia: 1", guiobjects.STYLES["pointLabel"])
+    self.__expLabel = guiobjects.OcempLabel("Experiencia: " + str(expPackage["exp"]), guiobjects.STYLES["pointLabel"])
     self.__expLabel.topleft = 627, 160
     self.hud.add_child(self.__expLabel)
 

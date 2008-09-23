@@ -67,6 +67,15 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     infoPackage["imagepath"] = self.getImagePath()
     return infoPackage
 
+  def getExpInforPackage(self):
+    """ Returns player's achievement info.
+    """      
+    infoPackage = {}
+    infoPackage["points"] = self.__points
+    infoPackage["playedTime"] = self.__playedTime
+    infoPackage["exp"] = self.__exp
+    return infoPackage
+
   def save(self):
     """ Saves all player info.
     """  
@@ -134,8 +143,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Updates the session playing time.
     """  
     tmp = time.localtime(time.time())
-    var1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
-    var2 = (tmp[4]*60 + tmp[5])
+    #var1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
+    #var2 = (tmp[4]*60 + tmp[5])
+    var1 = self.__startPlayedTime[4]
+    var2 = tmp[4]
     playedTime = var2 - var1
     self.__startPlayedTime = tmp  
     self.__playedTime += playedTime
