@@ -23,6 +23,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.points = 0
     
   def getItemBuildPackage(self):    
+    """ Returns info used to build the item.
+    """  
     infoPackage = {}
     infoPackage["position"] = self.getPosition() 
     infoPackage["imagepath"] = self.getImagePath()
@@ -153,6 +155,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     screen: screen handler.
     room: item's room.
     parent: isoview hud handler.
+    position: item position.
+    image: default item image.
     """
     import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent, position, image)
@@ -179,7 +183,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
         clicker.setSelectedItem(self)
     
   def tick(self, now):
-    """ Call for an update on item.
+    """ Call for an update on item. Do NOT delete.
     Not used at the moment.
     """
     pass

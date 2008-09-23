@@ -15,7 +15,7 @@ class GGTeleport(room_item.GGRoomItem):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
-    anchor: image top offset on screen.
+    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
@@ -26,6 +26,8 @@ class GGTeleport(room_item.GGRoomItem):
     self.points = 10
     
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.getName())
     
   def getOptions(self):
@@ -79,12 +81,13 @@ class GGTeleport(room_item.GGRoomItem):
       self.__destinationRoom = destinationRoom
       self.triggerEvent('destinationRoom', destinationRoom=destinationRoom)
 
-
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent, position=None, image=None):
     """ Creates an isometric view object for the item.
     screen: screen handler.
     parent: isoview hud handler.
+    position: item position.
+    image: item default image.
     """
     import GG.isoview.isoview_item
     return GG.isoview.isoview_item.IsoViewItem(self, screen, room, parent, position, image)
@@ -108,6 +111,7 @@ class GGTeleport(room_item.GGRoomItem):
 
   def transportTo(self, clicker):
     """ Teleports a player to another location.
+    clicker: player to be teleported.
     """  
     if not self.__destinationRoom:
       clicker.newChatMessage("La habitacion de destino no existe", 1)
@@ -127,6 +131,10 @@ class GGTeleport(room_item.GGRoomItem):
     clicker.setUnselectedItem()  
       
   def labelChange(self, oldLabel, newLabel):
+    """ Changes the destination room label if necessary.
+    oldLabel: old label.
+    newLabel: new label.
+    """  
     if self.__destinationRoom == oldLabel:
       self.__destinationRoom = newLabel      
 
@@ -141,7 +149,7 @@ class GGDoor(GGTeleport):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
-    anchor: image top offset on screen.
+    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
@@ -149,6 +157,8 @@ class GGDoor(GGTeleport):
     GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGDoor(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName())
 
   def openedBy(self, clicker):
@@ -168,7 +178,7 @@ class GGDoorWithKey(GGTeleport):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
-    anchor: image top offset on screen.
+    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
@@ -178,6 +188,8 @@ class GGDoorWithKey(GGTeleport):
     self.__key = key
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGDoorWithKey(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__key)
 
   def openedBy(self, clicker):
@@ -195,6 +207,10 @@ class GGDoorWithKey(GGTeleport):
     self.transportTo(clicker)
   
   def labelChange(self, oldLabel, newLabel):
+    """ Changes the destination room label if necessary.
+    oldLabel: old label.
+    newLabel: new label.
+    """  
     GGTeleport.labelChange(self, oldLabel, newLabel)
     if self.__key == oldLabel:
       self.__key = newLabel    
@@ -218,7 +234,7 @@ class GGDoorPressedTiles(GGTeleport):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
-    anchor: image top offset on screen.
+    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
@@ -239,12 +255,20 @@ class GGDoorPressedTiles(GGTeleport):
     return dict
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__pressedTiles)
 
   def setPressedTile1(self, pos):
+    """ Sets the first monitored tile.
+    pos: monitored tile position.
+    """  
     self.__pressedTiles[0] = pos  
   
   def setPressedTile2(self, pos):
+    """ Sets the second monitored tile.
+    pos: monitored tile position.
+    """  
     self.__pressedTiles[1] = pos  
 
   def openedBy(self, clicker):
@@ -276,7 +300,7 @@ class GGDoorOpenedByPoints(GGTeleport):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
     anchor: image offset on screen.
-    anchor: image top offset on screen.
+    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
@@ -299,6 +323,8 @@ class GGDoorOpenedByPoints(GGTeleport):
     self.pointsGiver = pointsGiver    
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGDoorOpenedByPoints(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.pointsGiver)
 
   def openedBy(self, clicker):

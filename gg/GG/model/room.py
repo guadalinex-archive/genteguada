@@ -23,6 +23,8 @@ class GGRoom(ggmodel.GGModel):
     label: room label.
     size: room size.
     maxUsers: maximum users number on this room.
+    enabled: sets this room as enabled or disabled for common users.
+    startRoom: sets this room as a start room or not.
     """
     ggmodel.GGModel.__init__(self)
     self.spriteFull = spriteFull
@@ -42,7 +44,9 @@ class GGRoom(ggmodel.GGModel):
     self.__enabled = enabled
     self.__startRoom = startRoom
 
-  def getRoomBuildPackage(self):    
+  def getRoomBuildPackage(self):
+    """ Returns all info used to create the room's view.
+    """  
     infoPackage = {}
     infoPackage["tiles"] = self.getTiles()
     infoPackage["specialtiles"] = self.getSpecialTiles()
@@ -57,6 +61,8 @@ class GGRoom(ggmodel.GGModel):
     return infoPackage
     
   def save(self):
+    """ Saves all room data.
+    """  
     #ROOM
     #room.size
     #room.label
@@ -73,16 +79,27 @@ class GGRoom(ggmodel.GGModel):
     """
     return ['spriteFull', 'size', 'maxUsers']
 
+  # self.label
+
   def getName(self):
+    """ Returns the room label.
+    """  
     return self.label
 
   def setName(self, name):
+    """ Sets a new room label.
+    name: room label.
+    """  
     self.label = label    
+
+  # self.__population
 
   def getPopulation(self):
     """ Returns the current population of this room.
     """  
     return self.__population
+
+  # self.__enabled
 
   def getEnabled(self):
     """ Returns the room's state.
@@ -94,11 +111,18 @@ class GGRoom(ggmodel.GGModel):
     enabled: new enabled value.
     """  
     self.__enabled = enabled    
+    
+  # self.__startRoom
 
   def getStartRoom(self):
+    """ Returns the startRoom flag.
+    """  
     return self.__startRoom
 
   def setStartRoom(self, value):
+    """ Sets a new startRoom flag value.
+    value: new value.
+    """  
     self.__startRoom = value    
 
   def isFull(self):
@@ -146,15 +170,6 @@ class GGRoom(ggmodel.GGModel):
     """
     return self.__items
 
-  def getPositionItems(self):
-    """ Returns the room items data.
-    """  
-    items = []
-    for item in self.__items:
-      dictItem = {"obj": item, "position": item.getPosition(), "image": item.getImagePath()}
-      items.append(dictItem)
-    return items
-
   def setItems(self, items):
     """ Sets a new items list on the room.
     items: item list.
@@ -168,6 +183,15 @@ class GGRoom(ggmodel.GGModel):
       self.triggerEvent('items', items=items)
       return True
     return False
+
+  def getPositionItems(self):
+    """ Returns the room items data.
+    """  
+    items = []
+    for item in self.__items:
+      dictItem = {"obj": item, "position": item.getPosition(), "image": item.getImagePath()}
+      items.append(dictItem)
+    return items
 
   def addItemFromVoid(self, item, pos):
     """ Adds a new item to the room from nowhere.
@@ -234,7 +258,6 @@ class GGRoom(ggmodel.GGModel):
     item.clearRoom()
     item.setState(GG.utils.STATE[1])
     self.triggerEvent('removeItem', item=item)
-    #self.removeItem(item)    
     
   def getSpecialTiles(self):
     """ Return the special tiles list.
@@ -251,10 +274,8 @@ class GGRoom(ggmodel.GGModel):
       if checkedTile[0] == position:
         k = 1
         checkedTile[1] = imageName
-        #self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
     if k == 0:
       self.__specialTiles.append([position, imageName])
-      #self.triggerEvent('setSpecialTile', position=position, imageName=imageName)
       
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
@@ -305,6 +326,9 @@ class GGRoom(ggmodel.GGModel):
     player.setSelectedItemWithoutHighlight(self.__tiles[target[0]][target[1]])
   
   def __getPossibleDirection(self, pos):
+    """ Gets all possible headings for an item, based on room size and blocked tiles.
+    pos: item position.
+    """  
     result = {}
     if not self.getBlocked([pos[0], pos[1] - 1]):
       result["up"] = [pos[0], pos[1] - 1]
@@ -324,11 +348,11 @@ class GGRoom(ggmodel.GGModel):
       result["right"] = [pos[0] + 1 , pos[1]]
     return result
 
-  def getNextDirection(self, pos1, pos2, player = None):
+  def getNextDirection(self, pos1, pos2, player=None):
     """ Gets the direction of a player's movement between 2 points.
-    player: moving player.
     pos1: starting point.
     pos2: ending point.
+    player: moving player.
     """
     startingDistance = GG.utils.p2pDistance(pos1, pos2)
     listDirection = self.__getPossibleDirection(pos1)
@@ -350,6 +374,7 @@ class GGRoom(ggmodel.GGModel):
 
   def tick(self, now):
     """ Calls for an update on all player movements.
+    now: current timestamp.
     """
     for item in self.__items:
       item.tick(now)
@@ -417,7 +442,7 @@ class GGRoom(ggmodel.GGModel):
           itemPlayer.setUnselectedItem()  
 
   def getSelecter(self, selectee):
-    """ Returns the selecter of a selectee.
+    """ Returns selected item's selecter.
     selectee: selected item.
     """  
     selec = None
@@ -432,6 +457,7 @@ class GGRoom(ggmodel.GGModel):
     maxUsers: new maxUsers value.
     newLabel: new room label.
     enabled: sets the room as enabled or disabled.
+    startRoom: sets the room as starter room or not.
     newTile: sets a new tile design for the room floor.
     """  
     self.maxUsers = maxUsers
@@ -471,5 +497,9 @@ class GGRoom(ggmodel.GGModel):
        self.moveItem(singleItem.getPosition(), newPos, singleItem)  
     
   def tileImageChange(self, tilePos, image):
+    """ Calls for an update on a tile image.
+    tilePos: tile position.
+    image: new tile image.
+    """  
     self.triggerEvent("tileImageChange", pos=tilePos, image=image)
     
