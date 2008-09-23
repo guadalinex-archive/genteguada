@@ -369,6 +369,14 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     now: current timestamp.
     """
     if self.getRoom():
+        
+      tmp = time.localtime(time.time())
+      var1 = self.__startPlayedTime[4]
+      var2 = tmp[4]
+      playedTime = var2 - var1
+      if playedTime:
+        self.updateSessionTiming()
+        
       if self.getPosition() == self.__destination:
         if self.__state == GG.utils.STATE[2]:
           self.setState(GG.utils.STATE[1])
