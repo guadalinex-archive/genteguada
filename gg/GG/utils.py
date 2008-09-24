@@ -86,6 +86,7 @@ SHOES_TAG = "shoes_tag.png"
 
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
+# Floor tile designs
 TILES = ["grass01.png", "grass02.png", "grass03.png", "grass04.png", "pavingStone01.png", "pavingStone02.png", \
          "pavingStone03.png", "pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", \
          "pavingStoneWithGrass03.png", "castle01.png", "castle02.png", "upArrow.png", "downArrow.png", 
@@ -106,6 +107,11 @@ SOUND_STEPS02 = "steps02.ogg"
 # ===============================================================
 
 def getJumpDestination(pos, heading, size):
+  """ Returns a jump destination given a player heading and position, and room size.
+  pos: player position.
+  heading: player heading.
+  size: room size.
+  """  
   length = 2
   if heading == HEADING[1]: #up
     dest = [pos[0], pos[1] - length]
@@ -133,6 +139,12 @@ def getJumpDestination(pos, heading, size):
 # ===============================================================
 
 def getSpriteName(state, heading, frame, timestamp):
+  """ Returns a composed sprite file name created using a player and current timestamp.
+  state: player's state.
+  heading: player's heading.
+  frame: frame number.
+  timestamp: current system timestamp.
+  """  
   timestamp = str(timestamp)
   if timestamp == "":
     tail = ""
@@ -259,5 +271,11 @@ def p3dToP2d(cord3d, anchor):
   corY2d -= anchor[1]
   return corX2d, corY2d
  
+# ===============================================================
+
 def compare(x, y):
+  """ Checks two images and compares their zOrder attribute values.
+  x: first image.
+  y: second image.
+  """  
   return y.zOrder - x.zOrder
