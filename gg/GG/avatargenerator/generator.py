@@ -92,7 +92,7 @@ class AvatarGenerator(dMVC.model.Model):
     if configuration["gender"] == "boy":
       return self.__adaptWinterSummer(configuration["typeShirt"])
     else:
-      return self.__adaptWinterSummer(configuration["typeSKirt"])
+      return self.__adaptWinterSummer(configuration["typeSkirt"])
   
   def __adaptWinterSummer(self, value):
     if value == "short":

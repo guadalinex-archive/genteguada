@@ -27,6 +27,9 @@ class FakeModel:
     self.spriteInventory = spriteInventory
     self.label = label
 
+  def getName(self):
+    return self.label
+
 # ======================= CONSTANTS ===========================
 BG_FULL_OR = [0, 0]
 TILE_TARGET_SHIFT = [18, 18]
@@ -437,6 +440,7 @@ class IsoViewHud(isoview.IsoView):
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
+    positionAnim.setOnStop(self.__player.save, "player")
     self.__isoviewRoom.itemUnselected(item)
     self.__player.setUnselectedItem()
     ivItem.setAnimation(positionAnim)
@@ -937,9 +941,7 @@ class IsoViewHud(isoview.IsoView):
     actions = adminActions
     if not actions:
       return
-  
     YShift = 50
-    
     #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [GG.utils.SCREEN_SZ[0] - 151, 1], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)

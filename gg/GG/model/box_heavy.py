@@ -17,7 +17,11 @@ class GGBoxHeavy(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
     self.setPoints(2)
-  
+ 
+  def load(self, dict):
+    room_item.GGRoomItem.load(self, dict)
+    self.setPoints(2)
+
   def copyObject(self):
     """ Creates and returns a copy of this item.
     """  

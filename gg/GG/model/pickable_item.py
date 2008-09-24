@@ -19,6 +19,15 @@ class GGPickableItem(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
     self.spriteInventory = spriteInventory
     
+  def objectToPersist(self):
+    dict = room_item.GGRoomItem.objectToPersist(self)
+    dict["spriteInventory"] = self.spriteInventory
+    return dict
+
+  def load(self, dict):
+    room_item.GGRoomItem.load(self, dict)
+    self.spriteInventory = dict["spriteInventory"]
+
   def copyObject(self):
     """ Copies and returns this item.
     """  
@@ -44,8 +53,10 @@ class GGPickableItem(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-    return dic    
+    if self.getRoom():
+      dic = {"Position": self.getPosition(), "Label": [self.getName()]}
+      return dic
+    return None
          
   def getImageLabel(self):
     """ Returns the item's image filename.
@@ -85,6 +96,15 @@ class PaperMoney(GGPickableItem):
     GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, label)
     self.points = value
 
+  def objectToPersist(self):
+    dict = GGPickableItem.objectToPersist(self)
+    dict["points"] = self.points
+    return dict
+
+  def load(self, dict):
+    GGPickableItem.load(self, dict)
+    self.points = dict["points"]
+    
   def copyObject(self):
     """ Copies and returns this item.
     """  

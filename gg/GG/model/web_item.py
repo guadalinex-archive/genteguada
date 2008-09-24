@@ -2,6 +2,7 @@
 
 import room_item
 import GG.utils
+import ggmodel
 
 class GGWebItem(room_item.GGRoomItem):
   """ GGWebItem class.
@@ -19,6 +20,15 @@ class GGWebItem(room_item.GGRoomItem):
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
     self.__url = url
     
+  def objectToPersist(self):
+    dict = room_item.GGRoomItem.objectToPersist(self)
+    dict["url"] = self.__url
+    return dict
+
+  def load(self, dict):
+    room_item.GGRoomItem.load(self, dict)
+    self.__url = dict["url"]
+
   def copyObject(self):
     """ Copies and returns this item.
     """  
@@ -78,6 +88,20 @@ class GGWebPannel(GGWebItem):
     """
     GGWebItem.__init__(self, sprite, anchor, topAnchor, url, label)
     self.__pannels = []
+
+  def objectToPersist(self):
+    dict = GGWebItem.objectToPersist(self)
+    listPannels = []
+    for pannel in self.__pannels:
+      listPannels.append(pannel.getName())
+    dict["pannels"] = listPannels
+    return dict
+
+  def load(self, dict):
+    GGWebItem.load(self, dict)
+    self.__pannels = []
+    #for pannelDict in dict["pannels"]:
+    #  self.__pannels.append(ggmodel.GGModel.read(pannelDict["id"], "room", pannelDict))
 
   def copyObject(self):
     """ Copies and returns this item.

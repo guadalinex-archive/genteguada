@@ -1,17 +1,104 @@
 # -*- coding: utf-8 -*-
 
 import dMVC.model
+import os
+import GG.utils
+import weakref
+import pickle
+import glob
+import sys
+
+SAVE_DATA = os.path.join(GG.utils.DATA_PATH, "savedata")
+SAVE_DATA_ROOM = os.path.join(SAVE_DATA, "rooms")
+SAVE_DATA_PLAYER = os.path.join(SAVE_DATA, "players")
+MODEL_ID_FILE = os.path.join(SAVE_DATA, "modelid.txt")
+
+f = open(MODEL_ID_FILE, "r")
+ID = int(f.read())
+f.close()
+
+class EmptyClass:
+  pass
 
 class GGModel(dMVC.model.Model):
   """ Model class.
   Defines a generic model, its attributes and behaviour.
   """
-  
+ 
   def __init__(self):
     """ Class constructor.
     """
     dMVC.model.Model.__init__(self)
-  
+    self.idModel = self.__getModelId()
+    GGModel.instances[self.idModel] = self
+
+  @staticmethod
+  def readAll(obj):
+    instanceList = []
+    if obj == "room":
+      listFile = glob.glob(SAVE_DATA_ROOM+"/*.serialized")
+    else:
+      listFile = glob.glob(SAVE_DATA_PLAYER+"/*.serialized")
+    for file in listFile:
+      filePath, fileName = os.path.split(file)
+      idModel, extFile = os.path.splitext(fileName) 
+      instanceList.append(GGModel.read(idModel, obj))
+    return instanceList
+
+  @staticmethod
+  def read(id, obj, dict = None):
+    #syncronizar el acceso a Model.instances
+    if (GGModel.instances.has_key(id)):
+      return GGModel.instances[id]
+    if not dict:
+      if obj == "room":
+        fileSerialized = os.path.join(SAVE_DATA_ROOM, str(id)+".serialized")
+      else:
+        fileSerialized = os.path.join(SAVE_DATA_PLAYER, str(id)+".serialized")
+      try:
+        f = open(fileSerialized, "r")
+        dict = pickle.load(f)
+        f.close()
+      except:
+        return None
+    __import__(dict["module"])
+    mod = sys.modules[dict["module"]]
+    klass = getattr(mod, dict["class"])
+    instance = EmptyClass()
+    instance.__class__ = klass
+    instance.load(dict)
+    #syncronizar el acceso a Model.instances
+    GGModel.instances[id] = instance
+    return instance
+
+  def __getModelId(self):
+    global ID 
+    ID += 1
+    f = open(MODEL_ID_FILE, "w")
+    f.write(str(ID))
+    f.close()
+    return ID
+
+  def save(self, obj):
+    print "SALVANDO LOS DATOS ", obj
+    if obj == "room":
+      fileSerialized = os.path.join(SAVE_DATA_ROOM, str(self.idModel) + ".serialized")
+    else:
+      fileSerialized = os.path.join(SAVE_DATA_PLAYER, str(self.username) + ".serialized")
+    f = open(fileSerialized, "w")
+    pickle.dump(self.objectToPersist(), f)
+
+  def objectToPersist(self):
+    return {
+            "id": self.idModel,
+            "class": self.__class__.__name__,
+            "module": self.__class__.__module__
+            }
+
+  def load(self, dict):
+    self.idModel = dict["id"] 
+    dMVC.model.Model.__init__(self)
+
   def getPosition(self):
     """ Returns item's default position.
     """  
@@ -21,3 +108,4 @@ class GGModel(dMVC.model.Model):
   def defaultView(self):
     raise Exception("Metodo no definido en los hijos")
   
+GGModel.instances = weakref.WeakValueDictionary()
