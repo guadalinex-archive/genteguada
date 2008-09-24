@@ -23,6 +23,16 @@ class GGGiverNpc(room_item.GGRoomItem):
     self.spriteInventory = spriteInventory
     self.points = 0
 
+  def objectToPersist(self):
+    dict = room_item.GGRoomItem.objectToPersist(self)
+    dict["spriteInventory"] = self.spriteInventory
+    return dict
+
+  def load(self, dict):
+    room_item.GGRoomItem.load(self, dict)
+    self.spriteInventory = dict["spriteInventory"]
+    self.points = 0
+
   def copyObject(self): 
     """ Copies and returns this object.
     """  
@@ -106,7 +116,18 @@ class WebGift(GGGiverNpc):
     self.__creator = creator
     self.__idGift = self.generateId()
     #print self.__idGift
-    
+
+  def objectToPersist(self):
+    dict = GGGiverNpc.objectToPersist(self)
+    dict["creator"] = self.__creator
+    dict["idGift"] = self.__idGift
+    return dict
+
+  def load(self, dict):
+    GGGiverNpc.load(self, dict)
+    self.__creator = dict["creator"]
+    self.__idGift = dict["idGift"]
+
   def getOptions(self):
     """ Returns the item's available options.
     """

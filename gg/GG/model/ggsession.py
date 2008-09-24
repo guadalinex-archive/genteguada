@@ -5,6 +5,10 @@ import dMVC.model
 import ggmodel
 import GG.model.teleport
 import GG.model.box_heavy
+import GG.model.giver_npc
+import GG.model.penguin
+import GG.model.pickable_item
+import GG.model.web_item
 import GG.utils
 
     
@@ -302,7 +306,7 @@ class GGSession(ggmodel.GGModel):
     data: object data.
     """  
     room = self.__player.getRoom()
-    roomSz = self.__player.getRoom().size
+    roomSz = room.size
     try: 
       posX = int(data["position"][0])    
       posY = int(data["position"][1])
@@ -321,7 +325,7 @@ class GGSession(ggmodel.GGModel):
     if not img:
       self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
       return
-    if not (0 <= posX <= roomSz[0] and 0 <= posY <= roomSz[1]):
+    if not (0 <= posX < roomSz[0] and 0 <= posY < roomSz[1]):
       self.__player.newChatMessage("Las coordenadas del objeto no son correctas.", 1)
       return
     #===============================================
@@ -331,7 +335,7 @@ class GGSession(ggmodel.GGModel):
     elif name == "Door":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
+        self.__player.newChatMessage("No existe esa habitación.", 1)
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
@@ -340,10 +344,10 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
         return
       roomSz = destinationRoom.size
-      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      box = GG.model.teleport.GGDoor(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label)
+      box = GG.model.teleport.GGTeleport(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label)
     #===============================================
     elif name == "DoorWithKey":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
@@ -360,15 +364,15 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
         return
       roomSz = destinationRoom.size
-      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, data["key"][0])
+      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, data["key"][0])
     #===============================================
     elif name == "DoorOpenedByPoints":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
+        self.__player.newChatMessage("No existe esa habitación.", 1)
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
@@ -378,15 +382,15 @@ class GGSession(ggmodel.GGModel):
         return
       pointsGiver = data["pointsGiver"][0]
       roomSz = destinationRoom.size
-      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      box = GG.model.teleport.GGDoorOpenedByPoints(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, pointsGiver)
+      box = GG.model.teleport.GGDoorOpenedByPoints(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, pointsGiver)
     #===============================================
     elif name == "DoorPressedTiles":
       destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
       if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
+        self.__player.newChatMessage("No existe esa habitación.", 1)
         return
       try: 
         exPosX = int(data["exitPosition"][0])    
@@ -403,21 +407,21 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage('Valores "pressedTiles" incorrectos', 1) 
         return
       roomSz = destinationRoom.size
-      if not (0 <= exPosX <= roomSz[0] and 0 <= exPosY <= roomSz[1]):
+      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
         return
-      if not (0 <= pt1PosX <= roomSz[0] and 0 <= pt1PosY <= roomSz[1]):
+      if not (0 <= pt1PosX < roomSz[0] and 0 <= pt1PosY < roomSz[1]):
         self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
         return
       pt1 = [pt1PosX, pt1PosY]
       if pt2PosX == "" and pt2PosY == "":
         pt2 = None
       else:
-        if not (0 <= pt2PosX <= roomSz[0] and 0 <= pt2PosY <= roomSz[1]):
+        if not (0 <= pt2PosX < roomSz[0] and 0 <= pt2PosY < roomSz[1]):
           self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
           return
         pt2 = [pt2PosX, pt2PosY]
-      box = GG.model.teleport.GGDoorPressedTiles(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom, label, [pt1, pt2])
+      box = GG.model.teleport.GGDoorPressedTiles(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, [pt1, pt2])
     #===============================================
     elif name == "GiverNpc":
       box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)

@@ -90,7 +90,9 @@ class PrivateChatWindow(auxwindows.AuxWindow):
       return    
     self.player.removeContact(self.selected.getPlayer())
     self.updateContactList()
-    self.selected.getPlayer().removeContactRemote(self.player)
+    otherPlayer = self.selected.getPlayerObject()
+    if otherPlayer:
+      otherPlayer.removeContactRemote(self.player)
     self.selected = None
     self.clearChatArea()
     
@@ -124,7 +126,7 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     """ Adds a new message to the chat area.
     """  
     if self.selected:
-      text = self.selected.getPlayer().username + ": " + self.__textField.text
+      text = self.selected.getPlayer() + ": " + self.__textField.text
       self.selected.addChatLine(self.player, text)
       if not text.strip() == "" and self.contactsArea.getSelectedName():
         self.writeChatMessage(text)
@@ -152,7 +154,10 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     string: chat message.
     """  
     line = self.sliceLine(string)  
-    self.selected.getPlayer().newPrivateChatReceived(line, self.player)
+    otherPlayer = self.selected.getPlayerObject()
+    print otherPlayer
+    if otherPlayer:
+      otherPlayer.newPrivateChatReceived(line, self.player)
     self.__layoutTextArea.add_child(self.createChatMessage(line))
     self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
 
@@ -164,7 +169,7 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     self.player.newChatForPlayer(string, player)
     if self.selected == None:
       self.contactsArea.addMessageHintForContact(player)
-    elif self.selected.getPlayer().username == player.username:
+    elif self.selected.getPlayer() == player.username:
       self.__layoutTextArea.add_child(self.createChatMessage(string))
       self.textArea.vscrollbar.value = self.textArea.vscrollbar.maximum
     else:

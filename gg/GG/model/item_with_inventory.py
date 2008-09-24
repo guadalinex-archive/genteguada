@@ -1,4 +1,5 @@
 import room_item
+import ggmodel
 
 class GGItemWithInventory(room_item.GGRoomItem):
   """ GGItemWithInventory class.
@@ -13,7 +14,27 @@ class GGItemWithInventory(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
     self.__inventory = []
-    
+
+  def objectToPersist(self):
+    dict = room_item.GGRoomItem.objectToPersist(self)
+    print self.__inventory
+    itemsToPersist = []
+    for item in self.__inventory:
+      itemsToPersist.append(item.objectToPersist())
+    dict["inventory"] = itemsToPersist
+    return dict
+
+  def load(self, dict):
+    room_item.GGRoomItem.load(self, dict)
+    self.__inventory = []
+    for itemDict in dict["inventory"]:
+      item = ggmodel.GGModel.read(itemDict["id"], "player", itemDict)
+      print item
+      self.__inventory.append(item)
+      print self.__inventory
+      item.setPlayer(self)
+      print "acabo"
+
   # self.__inventory
   
   def getInventory(self):
@@ -39,7 +60,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
       if item.label == label:
         return True  
     return False    
-      
+    
   def addToInventoryFromRoom(self, item):
     """ Adds a new item to inventory from room.
     item: new item.
@@ -47,6 +68,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     self.__inventory.append(item)
     item.setPlayer(self)
     self.triggerEvent('addToInventory', item=item, position=item.getPosition())
+    self.save("player")
     
   def addToInventoryFromVoid(self, item, position):
     """ Adds a new item to inventory from nowhere.
@@ -55,6 +77,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     self.__inventory.append(item)
     item.setPlayer(self)
     self.triggerEvent('addToInventory', item=item, position=position)
+    self.save("player")
     
   def removeFromInventory(self, item):
     """ Removes an item from the player's inventory.
@@ -63,6 +86,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     if item in self.__inventory:
       self.__inventory.remove(item)
       self.triggerEvent('removeFromInventory', item=item)
+      self.save("player")
       return True
     return False
   
@@ -81,6 +105,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
       return False
     self.__inventory.remove(item)
     item.setPlayer(None)
+    self.save("player")
     self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
     
   def tick(self, now):

@@ -12,6 +12,7 @@ import stat
 import random
 import GG.avatargenerator.generator
 import Queue
+import ggmodel
 
 import urllib2
 import urllib
@@ -29,10 +30,11 @@ class GGSystem(dMVC.model.Model):
     self.__startRooms = []
     self.__players = []
     self.__sessions = [] # Variable privada solo para uso interno.
-    self.__loadData()
     self.__avatarGeneratorHandler = GG.avatargenerator.generator.AvatarGenerator()
     self.__avatarGeneratorProcessQueue = Queue.Queue()
     thread.start_new(self.__start, ())
+    GGSystem.instance = self
+    self.__loadData()
      
   def getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
@@ -88,45 +90,52 @@ class GGSystem(dMVC.model.Model):
       return True
     return False
 
+  def getPlayerObject(self, username):
+    for sess in self.__sessions:
+      if sess.getPlayer().username == username:
+        return sess.getPlayer()
+    return None
+
   def login(self, username, password):
     """ Attempts to login on an user. If succesfull, returns a ggsession model.
     username: user name.
     password: user password.
     """
     for sess in self.__sessions:
-      if sess.getPlayer().checkUser(username, password):
+      if sess.getPlayer().checkUser(username):
         return False, "El usuario tiene una sesion abierta"    
-    if not self.loginGuadalinex(username, password):
+    accessMode = self.loginGuadalinex(username, password)
+    if not accessMode:
       return False, "No se ha podido autenticar en guadalinex"
-    user = self.__existsPlayer(username, password)
-    if not user:
-      user = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, password, "", False)
-      self.createPlayer(user)
-    if not user.getRoom():
-      if not self.getEntryRoom():
+    user = self.__getPlayer(username, accessMode)
+    newRoom = user.getRoom()
+    if not newRoom:
+      newRoom = self.getEntryRoom()
+      if not newRoom:
         return False, "No existen habitaciones disponibles"  
-      user.changeRoom(self.getEntryRoom(), self.getEntryRoom().getNearestEmptyCell([1, 1]))
-      session = GG.model.ggsession.GGSession(user, self)
-      self.__sessions.append(session)
-      return True, session 
-    return False, "No se pudo autentificar el usuario"
+      else:
+        newRoom = self.getEntryRoom()
+    else:
+      user.clearRoom()
+    user.changeRoom(newRoom, newRoom.getNearestEmptyCell([1, 1]))
+    session = GG.model.ggsession.GGSession(user, self)
+    self.__sessions.append(session)
+    return True, session 
 
-  def __existsPlayer(self, user, passwd):
-    """ Checks if a player exists.
-    user: player user name.
-    passwd: player password.
-    """  
-    for player in self.__players:
-      if player.checkUser(user, passwd):
-        return player
-    return None
-
+  def __getPlayer(self, username, accessMode):
+    player = ggmodel.GGModel.read(username, "player")
+    if not player:
+      player = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, "")
+    if accessMode == "A":
+      player.admin = True
+    return player
+  
   def loginGuadalinex(self, user, passwd):
     """ Logs in an user.
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
@@ -147,10 +156,15 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Loads all system data.
     """  
-    import createworld
-    world = createworld.CreateWorld(self)
-    world.create()
-    
+    #import createworld
+    #world = createworld.CreateWorld(self)
+    #world.create()
+    roomList = ggmodel.GGModel.readAll("room") 
+    for room in roomList:
+      self.__rooms.append(room)
+      if room.getStartRoom():
+        self.__startRooms.append(room) 
+
   def setStartRoom(self, room, startRoom):
     """ Sets a room as start room or not.
     room: room to be changed.
@@ -303,8 +317,8 @@ class GGSystem(dMVC.model.Model):
     if not self.__avatarGeneratorHandler.isFullProcess():
       try:
         processOptions = self.__avatarGeneratorProcessQueue.get_nowait()
-        #thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
-        self.__changeAvatarConfiguration(processOptions[0], processOptions[1], processOptions[2])
+        thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
+        #self.__changeAvatarConfiguration(processOptions[0], processOptions[1], processOptions[2])
       except Queue.Empty:
         pass
 
@@ -353,6 +367,10 @@ class GGSystem(dMVC.model.Model):
       f.write(images[image])
       f.close()
     return timestamp
+
+  @staticmethod
+  def getInstance():
+    return GGSystem.instance
 
   def getRoom(self, label):
     """ Returns a selected room.
@@ -441,7 +459,6 @@ class GGSystem(dMVC.model.Model):
     markedItem = None
     markedRoom = None
     markedPlayer = None
-    
     if username:
       player = self.getSpecificPlayer(username)  
       if player:
@@ -459,15 +476,12 @@ class GGSystem(dMVC.model.Model):
             if item.getIdGift() == idGift:
               markedItem = item
               markedPlayer = player
-                
     if markedItem:
       markedPlayer.removeFromInventory(markedItem)
       return True
-    
     markedItem = None
     markedRoom = None
     markedPlayer = None
-    
     for room in self.__rooms:
       items = room.getItems()
       for item in items:
@@ -478,7 +492,6 @@ class GGSystem(dMVC.model.Model):
     if markedItem:
       markedRoom.removeItem(markedItem)
       return True
-  
     return False  
             
   def deletePlayer(self, username):

@@ -120,11 +120,12 @@ class RemoteModel: #{{{
     for key in dir(donorClass):
       method = getattr(donorClass, key)
       if callable(method):
-        function = method.im_func
-        if 'flag' in function.__dict__:
-          if function.__dict__['flag'] == 'localMethod':
-            utils.logger.debug("Transplanting method " + str(function.func_name) + " in " + str(self) + " from " + str(donorClass))
-            self.__dict__[function.func_name] = new.instancemethod(function, self)
+        if hasattr(method, "im_func"):
+          function = method.im_func
+          if 'flag' in function.__dict__:
+            if function.__dict__['flag'] == 'localMethod':
+              utils.logger.debug("Transplanting method " + str(function.func_name) + " in " + str(self) + " from " + str(donorClass))
+              self.__dict__[function.func_name] = new.instancemethod(function, self)
 
   def __findModelClass(self):
     __import__(self.__modelModuleName)

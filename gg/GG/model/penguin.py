@@ -21,7 +21,6 @@ class GGPenguin(room_item.GGRoomItem):
     label: penguin's label.
     """
     room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
-    self.header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
 
   def copyObject(self):
     """ Copies and returns this item.
@@ -60,7 +59,8 @@ class GGPenguin(room_item.GGRoomItem):
     chatMessage: message object.
     text: message text.
     """  
-    talker.triggerEvent('chatAdded', message=chatMessage, text=text, header=self.header)
+    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
+    talker.triggerEvent('chatAdded', message=chatMessage, text=text, header=header)
 
 # ===============================================================
 
@@ -79,6 +79,15 @@ class GGPenguinTalker(GGPenguin):
     """
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
+
+  def objectToPersist(self):
+    dict = GGPenguin.objectToPersist(self)
+    dict["msg"] = self.__msg
+    return dict
+
+  def load(self, dict):
+    GGPenguin.load(self, dict)
+    self.__msg = dict["msg"]
 
   def copyObject(self):
     """ Copies and returns this item.
@@ -128,6 +137,17 @@ class GGPenguinTrade(GGPenguin):
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__msg = message
     self.__giftLabel = gift
+
+  def objectToPersist(self):
+    dict = GGPenguin.objectToPersist(self)
+    dict["msg"] = self.__msg
+    dict["giftLabel"] = self.__giftLabel
+    return dict
+
+  def load(self, dict):
+    GGPenguin.load(self, dict)
+    self.__msg = dict["msg"]
+    self.__giftLabel = dict["giftLabel"]
 
   def copyObject(self):
     """ Copies and returns this item.
@@ -201,6 +221,23 @@ class GGPenguinQuiz(GGPenguin):
     GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
     self.__filePath = filePath
     self.__fileList = os.listdir(filePath)
+    rmList = []
+    for item in self.__fileList:
+      if item.find(".") > -1 or item.find("~") > -1:
+        rmList.append(item)  
+    for item in rmList:
+      self.__fileList.remove(item)    
+    self.__availableQuestions = {}
+
+  def objectToPersist(self):
+    dict = GGPenguin.objectToPersist(self)
+    dict["filePath"] = self.__filePath
+    return dict
+
+  def load(self, dict):
+    GGPenguin.load(self, dict)
+    self.__filePath = dict["filePath"]
+    self.__fileList = os.listdir(self.__filePath)
     rmList = []
     for item in self.__fileList:
       if item.find(".") > -1 or item.find("~") > -1:

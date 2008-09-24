@@ -3,6 +3,7 @@
 import GG.utils
 import inventory_item
 import dMVC.model
+import ggsystem
 
 class GGRoomItem(inventory_item.GGInventoryItem):
   """GGRoomItem class.
@@ -21,7 +22,33 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.__room = None
     self.__tile = None
     self.points = 0
-    
+
+  def objectToPersist(self):
+    dict = inventory_item.GGInventoryItem.objectToPersist(self)
+    dict["anchor"] = self.anchor
+    dict["topAnchor"] = self.topAnchor
+    if self.__tile:
+      dict["position"] = self.__tile.getPosition()
+    else:
+      dict["position"] = [-1,-1]
+    if self.__room:
+      dict["room"] = self.__room.label
+    else:
+      dict["room"] = None
+    return dict
+
+  def load(self, dict): 
+    inventory_item.GGInventoryItem.load(self, dict)
+    self.anchor = dict["anchor"]
+    self.topAnchor = dict["topAnchor"]
+    if "room" in dict.keys():
+      myRoom = ggsystem.GGSystem.getInstance().getRoom(dict["room"])
+    else:
+      myRoom = None
+    self.__room = myRoom
+    self.__tile = None
+    self.points = 0
+
   def getItemBuildPackage(self):    
     """ Returns info used to build the item.
     """  

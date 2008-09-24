@@ -19,7 +19,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, anchor, topAnchor, username, password, timestamp, admin):
+  def __init__(self, spritePath, anchor, topAnchor, username, timestamp):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     anchor: image anchor on screen.
@@ -32,7 +32,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
     item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
     self.username = username
-    self.__password = password # Not used outside this class
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]
     self.__state = GG.utils.STATE[1]
@@ -49,12 +48,61 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__exchangeTo = None
     self.__agenda = []
     self.__timestamp = timestamp
+    self.__spritePath = spritePath
     if not self.__timestamp == "":
       self.setImagePath("avatars/"+self.username+"/")
     else:
-      self.setImagePath(spritePath)
-    self.admin = admin  
-    self.__accessMode = admin
+      self.setImagePath(self.__spritePath)
+    self.admin = False 
+    self.__accessMode = False
+    self.startSessionTiming()
+    self.save("player")
+
+  def objectToPersist(self):
+    dict = item_with_inventory.GGItemWithInventory.objectToPersist(self)
+    dict["username"] = self.username
+    dict["pointsGivers"] = self.__pointGivers
+    dict["points"] = self.__points
+    dict["playedTime"] = self.__playedTime
+    dict["exp"] = self.__exp
+    dict["expRooms"] = self.__expRooms
+    dict["avatarConfiguration"] = self.__avatarConfiguration
+    contactList = []
+    for contact in self.__agenda:
+      contactList.append(contact.getPlayer())
+    dict["agenda"] = contactList
+    dict["timestamp"] = self.__timestamp
+    dict["spritePath"] = self.__spritePath
+    return dict
+
+  def load(self, dict):
+    item_with_inventory.GGItemWithInventory.load(self, dict)
+    self.username = dict["username"]
+    self.__visited = []
+    self.__heading = GG.utils.HEADING[2]
+    self.__state = GG.utils.STATE[1]
+    self.__destination = None
+    self.__visited = []
+    self.__selected = None
+    self.__pointGivers = dict["pointsGivers"] 
+    self.__points = dict["points"] 
+    self.__playedTime = dict["playedTime"] 
+    self.__startPlayedTime = 0
+    self.__exp = dict["exp"]
+    self.__expRooms = dict["expRooms"] 
+    self.__avatarConfiguration = dict["avatarConfiguration"] 
+    self.__exchangeTo = None
+    self.__agenda = []
+    for contact in dict["agenda"]:
+      self.__agenda.append(private_contact.PrivateContact(contact))
+    self.__timestamp = dict["timestamp"]
+    self.__spritePath = dict["spritePath"] 
+    if not self.__timestamp == "":
+      self.setImagePath("avatars/"+self.username+"/")
+    else:
+      self.setImagePath(self.__spritePath)
+    self.admin = False 
+    self.__accessMode = False
     self.startSessionTiming()
 
   def getPlayerBuildPackage(self):
@@ -75,25 +123,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     infoPackage["playedTime"] = self.__playedTime
     infoPackage["exp"] = self.__exp
     return infoPackage
-
-  def save(self):
-    """ Saves all player info.
-    """  
-    #TABLA PLAYER
-    #player.username
-    #player.points
-    #player.playedTime
-    #player.exp
-    #player.timestamp
-    #player.admin
-    #player.room
-    #player.spriteName
-    #RELACIONES
-    #items que nos dan puntos
-    #habitaciones que pasamos
-    #otros player en la agenda
-    #items que tengo en el inventario
-    pass
 
   def getAccessMode(self):
     """ Returns the access mode.
@@ -119,6 +148,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__timestamp = timestamp
     self.imgPath = "avatars/"+self.username+"/"
     self.triggerEvent('timestamp', timestamp=timestamp, imgPath = self.imgPath)
+    self.save("player")
       
   def getName(self):
     """ Returns the player's username.
@@ -138,7 +168,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     tmp = time.localtime(time.time())
     self.__startPlayedTime = tmp
-    
+
   def updateSessionTiming(self):
     """ Updates the session playing time.
     """  
@@ -197,6 +227,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
     for contact in self.__agenda:
       contact.getPlayer().changeMaskContact(self.username, self.getImageLabel())
+    self.save("player")
     
   def changeMaskContact(self, name, imageLabel):
     """ Changes a contact's mask.
@@ -232,6 +263,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__pointGivers.append(giverLabel)
     if points != 0:
       self.triggerEvent('points', points=self.__points)
+    self.save("player")
     
   def checkPointGiver(self, pointGiver):
     """ Checks if a given item has already given points to the player,
@@ -328,6 +360,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     for itemToInv in itemList:
       self.addPoints(itemToInv.points, itemToInv.label)
       item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, itemToInv)
+    self.save("player")
     
   def addToRoomFromInventory(self, item):
     """ Removes an item from the inventory and drops it in front of the player.
@@ -338,15 +371,16 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.newChatMessage("No puedo soltarlo ahí", 1)
     else:    
       item_with_inventory.GGItemWithInventory.addToRoomFromInventory(self, item, dropLocation)
+    self.save("player")
     
-  def checkUser(self, username, password):
+  def checkUser(self, username):
     """ Searches for an user by his user name and password.
     username: user name.
     password: user password.
     """
-    if self.username == username and self.__password == password:
-      return 1
-    return 0
+    if self.username == username:
+      return True
+    return False
   
   def hasBeenVisited(self, pos):
     """ Checks if a tile has been visited by the player on the last movement.
@@ -369,12 +403,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     now: current timestamp.
     """
     if self.getRoom():
-        
       tmp = time.localtime(time.time())
       playedTime = tmp[4] - self.__startPlayedTime[4]
       if playedTime:
         self.updateSessionTiming()
-        
       if self.getPosition() == self.__destination:
         if self.__state == GG.utils.STATE[2]:
           self.setState(GG.utils.STATE[1])
@@ -414,6 +446,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.updateExp(room)
       self.updateSessionTiming()
     room_item.GGRoomItem.changeRoom(self, room, pos)
+    self.save("player")
     
   def newChatMessageEntered(self, message):
     """ Receives a new chat message and sends it to the room.
@@ -456,7 +489,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
                         options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 
                         highlight=1)
-  
     
   def setUnselectedItem(self):
     """ Sets an item as unselected.
@@ -644,14 +676,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     name: contact's name.
     """  
     for contact in self.__agenda:
-      if contact.getPlayer().username == name:
-        return contact
+      if contact.getPlayer() == name:
+        return contact 
     return None
-    
-  def addContactTEST(self, player):
-    """ Adds a new contact. TEST PURPOSES ONLY.
-    """  
-    self.__agenda.append(private_contact.PrivateContact(player))
     
   def getAgenda(self):
     """ Returns the player's agenda.
@@ -663,7 +690,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     data = {}
     for contact in self.__agenda:
-      data[contact.getPlayer().username] = contact.getPlayer().getImageLabel()
+      data[contact.getPlayer()] = contact.getImageLabel()
     return data  
     
   def removeContact(self, contact):
@@ -672,11 +699,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     contactSelected = None
     for item in self.__agenda:
-      if item.getPlayer().username == contact.username:
+      if item.getPlayer() == contact:
         contactSelected = item
         break
     if contactSelected:
       self.__agenda.remove(contactSelected)
+    self.save("player")
         
   def removeContactRemote(self, contact):
     """ Removes a contact from the agenda. This method is called from another player's agenda.
@@ -684,6 +712,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     self.removeContact(contact)  
     self.triggerEvent("removeContactRemote", contact=contact)
+    self.save("player")
     
   def removePlayerContactFromAgenda(self, playerName):
     """ Removes a contact from the agenda.
@@ -691,12 +720,13 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     contactSelected = None
     for item in self.__agenda:
-      if item.getPlayer().username == playerName:
+      if item.getPlayer() == playerName:
         contactSelected = item
         break
     if contactSelected:
       self.__agenda.remove(contactSelected)
       self.triggerEvent("removeContactRemote", contact=contactSelected)
+    self.save("player")
     
   def checkContact(self, player):
     """ Checks if a contact already exists on the agenda.
@@ -718,15 +748,16 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
       return
-    self.__agenda.append(private_contact.PrivateContact(player))
+    self.__agenda.append(private_contact.PrivateContact(player.username))
     self.triggerEvent("contactAdded", contact=player)
+    self.save("player")
     
   def checkContactOnAgenda(self, contact):
     """ Checks if a contact already exists on the agenda.
     contact: new contact.
     """  
     for cont in self.__agenda:
-      if cont.getPlayer().username == contact.username:
+      if cont.getPlayer() == contact.username:
         return True
     return False  
 
@@ -736,7 +767,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     player: message emitter.
     """
     for item in self.__agenda:
-      if item.getPlayer().username == player.username:
+      if item.getPlayer() == player.username:
         item.addChatLine(player, string)        
 
   def newPrivateChatReceived(self, line, player):

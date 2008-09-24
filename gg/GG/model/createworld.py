@@ -79,7 +79,7 @@ class CreateWorld:
   def create(self):
     """ Creates all GenteGuada components.
     """  
-    self.__createPlayers()
+    #self.__createPlayers()
     self.__createRooms()
     self.__decorateRoom1()
     self.__decorateRoom2()
@@ -117,7 +117,7 @@ class CreateWorld:
   def __decorateRoom1(self):
     """ Creates all items for room1.
     """  
-    myDoor1 = teleport.GGDoor(DOOR_GARDEN, [25, 2], [0, 0], [6, 6], self.__room2, "puerta lobby")
+    myDoor1 = teleport.GGTeleport(DOOR_GARDEN, [25, 2], [0, 0], [6, 6], self.__room2.getName(), "puerta lobby")
     self.__room1.addItemFromVoid(myDoor1, [6, 0])
     penguinRightOffset = [30, 0]
     penguinLobbyText = "¡Bienvenido a GenteGuada! Soy Andatuz, y te guiaré a lo largo de este tutorial para conocer GenteGuada. Puedes explorar por este jardín para aprender a moverte. Cuando estés listo, ve a la puerta y ábrela."
@@ -162,9 +162,9 @@ class CreateWorld:
     wallOffset2 = [55, 0]
     wallOffset3 = [20, 0]
     columnOffset = [13, 15]
-    myDoor2A = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room1, "puerta room2b")
-    myDoor2B = teleport.GGDoor(DOOR_WOODEN, [28, 23], [0, 0], [6, 6], self.__room3, "puerta room2a")
-    myDoor2C = teleport.GGDoor(WALL_LEFT, wallOffset2, [0, 0], [6, 6], self.__room6, "puerta room2c")
+    myDoor2A = teleport.GGTeleport(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room1.getName(), "puerta room2b")
+    myDoor2B = teleport.GGTeleport(DOOR_WOODEN, [28, 23], [0, 0], [6, 6], self.__room3.getName(), "puerta room2a")
+    myDoor2C = teleport.GGTeleport(WALL_LEFT, wallOffset2, [0, 0], [6, 6], self.__room6.getName(), "puerta room2c")
     penguinRightOffset = [30, 0]
     penguinTradeText = "Vaya, veo que me traes un regalo. Toma, déjame cambiártelo por esta nueva camiseta."
     myPenguinShirt = penguin.GGPenguinTrade(PENGUIN_SPRITE_BOTTOMRIGHT, penguinRightOffset, [0, 0], "Andatuz Shirt", penguinTradeText, "Regalo")
@@ -202,10 +202,10 @@ class CreateWorld:
     self.__room3.setSpecialTile([2, 0, 1], TILE_PRESSED)
     self.__room3.setSpecialTile([5, 0, 1], TILE_PRESSED)
     tiles = [[2, 1], [5, 1]]
-    myDoor3A = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room2, "puerta room3a")
-    myDoor3B = teleport.GGDoorWithKey(DOOR_AMORED, [35, 25], [0, 0], [6, 5], self.__room4, "puerta room3b", "Llave Dorada")
-    myDoor3C1 = teleport.GGDoorPressedTiles(DOOR_WOODEN_A, [24, 37], [0, 0], [3, 6], self.__room5, "puerta room3c1", tiles)
-    myDoor3C2 = teleport.GGDoorPressedTiles(DOOR_WOODEN_B, [24, 55], [0, 0], [3, 6], self.__room5, "puerta room3c2", tiles)
+    myDoor3A = teleport.GGTeleport(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [6, 1], self.__room2.getName(), "puerta room3a")
+    myDoor3B = teleport.GGDoorWithKey(DOOR_AMORED, [35, 25], [0, 0], [6, 5], self.__room4.getName(), "puerta room3b", "Llave Dorada")
+    myDoor3C1 = teleport.GGDoorPressedTiles(DOOR_WOODEN_A, [24, 37], [0, 0], [3, 6], self.__room5.getName(), "puerta room3c1", tiles)
+    myDoor3C2 = teleport.GGDoorPressedTiles(DOOR_WOODEN_B, [24, 55], [0, 0], [3, 6], self.__room5.getName(), "puerta room3c2", tiles)
     penguinRightOffset = [30, 0]
     penguinRoom3Text = "Para abrir el portón de madera deberás depositar algo pesado sobre ese resorte. Quizá puedas hallar cajas en el almacén, pero la puerta está cerrada. Me pregunto dónde estará la llave que abre la puerta..."
     myPenguinRoom3 = penguin.GGPenguinTalker(PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz", penguinRoom3Text)
@@ -238,7 +238,7 @@ class CreateWorld:
   def __decorateRoom4(self):
     """ Creates all items for room4.
     """  
-    myDoor4A = teleport.GGDoorWithKey(DOOR_AMORED, [17, 15], [0, 0], [1, 5], self.__room3, "puerta room4a", "Llave Dorada")
+    myDoor4A = teleport.GGDoorWithKey(DOOR_AMORED, [17, 15], [0, 0], [1, 5], self.__room3.getName(), "puerta room4a", "Llave Dorada")
     self.__room4.addItemFromVoid(myDoor4A, [7, 5])    
     wallOffset = [35, 33]
     self.__room4.addItemFromVoid(room_item.GGRoomItem(WAREHOUSE_CORNER, wallOffset, [0, 0]), [0, 0])
@@ -269,10 +269,10 @@ class CreateWorld:
   def __decorateRoom5(self):
     """ Creates all items for room5.
     """  
-    myDoor5A1 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [3, 1], self.__room3, "puerta room5a")
-    myDoor5A2 = teleport.GGDoor(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [4, 1], self.__room3, "puerta room5a")
-    myDoor5B1 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 7], self.__room1, "puerta room5b", "Penguin Quiz")
-    myDoor5B2 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 7], self.__room1, "puerta room5b", "Penguin Quiz")
+    myDoor5A1 = teleport.GGTeleport(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [3, 1], self.__room3.getName(), "puerta room5a")
+    myDoor5A2 = teleport.GGTeleport(TILE_ARROW_BACK, GG.utils.FLOOR_SHIFT, [0, 0], [4, 1], self.__room3.getName(), "puerta room5a")
+    myDoor5B1 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [3, 7], self.__room1.getName(), "puerta room5b", "Penguin Quiz")
+    myDoor5B2 = teleport.GGDoorOpenedByPoints(TILE_MYSTCYRCLE_CASTLE01, GG.utils.FLOOR_SHIFT, [0, 0], [4, 7], self.__room1.getName(), "puerta room5b", "Penguin Quiz")
     penguinRightOffset = [30, 0]
     myPenguinQuiz = penguin.GGPenguinQuiz(PENGUIN_SPRITE_RIGHT, penguinRightOffset, [0, 0], "Andatuz Quiz", GG.utils.QUESTIONS_PATH)
     columnOffset = [13, 15]
@@ -290,7 +290,7 @@ class CreateWorld:
   def __decorateRoom6(self):
     """ Creates all items for room6.
     """  
-    myDoor6A = teleport.GGDoor(TILE_ARROW_DOWN, GG.utils.FLOOR_SHIFT, [0, 0], [1, 6], self.__room2, "puerta room6a")
+    myDoor6A = teleport.GGTeleport(TILE_ARROW_DOWN, GG.utils.FLOOR_SHIFT, [0, 0], [1, 6], self.__room2.getName(), "puerta room6a")
     myGift1 = giver_npc.GGGiverNpc(GIFT, [15, -30], [0, 0], GIFT, "Regalo")
     wallOffset = [35, 40]
     self.__room6.addItemFromVoid(room_item.GGRoomItem(SKYLINE_CORNER, wallOffset, [0, 0]), [0, 0])

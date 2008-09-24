@@ -21,7 +21,21 @@ class GGInventoryItem(ggmodel.GGModel):
     else:  
       self.label = "No label"
     self.setImagePath("")
-    
+
+  def objectToPersist(self):
+    dict = ggmodel.GGModel.objectToPersist(self)
+    dict["spriteName"] = self.spriteName
+    dict["spriteInventory"] = self.spriteInventory
+    dict["label"] = self.label
+    return dict
+  
+  def load(self, dict):
+    ggmodel.GGModel.load(self, dict)
+    self.spriteName = dict["spriteName"]
+    self.spriteInventory = dict["spriteInventory"]
+    self.label = dict["label"]
+    self.setImagePath("")
+
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """

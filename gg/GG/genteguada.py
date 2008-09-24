@@ -123,7 +123,6 @@ class GenteGuada:
       pygame.display.toggle_fullscreen()
     self.__fullScreen = params.fullscreen
     self.__loadingScreen()
-    
     while not self.__system.getEntryRoom():
       self.__waitScreen()
       time.sleep(2)

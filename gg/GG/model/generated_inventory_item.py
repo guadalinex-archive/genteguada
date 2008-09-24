@@ -20,7 +20,21 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     self.points = 0
     self.anchor = anchor
     self.__position = parentPosition
-    
+
+  def objectToPersist(self):
+    dict = inventory_item.GGInventoryItem.objectToPersist(self)
+    dict["spriteInventory"] = self.spriteInventory
+    dict["anchor"] = self.anchor
+    dict["position"] = self.__position
+    return dict
+
+  def load(self, dict):
+    inventory_item.GGInventoryItem.load(self, dict)
+    self.spriteInventory = dict["spriteInventory"]
+    self.points = 0
+    self.anchor = dict["anchor"]
+    self.__position = dict["position"]
+
   def getItemBuildPackage(self):
     """ Returns item info used to create the isometric view object.
     """      
@@ -91,7 +105,16 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
     """
     GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
     self.__idGift = idGift
-      
+
+  def objectToPersist(self):
+    dict = GGGeneratedInventoryItem.objectToPersist(self)
+    dict["idGift"] = self.__idGift
+    return dict
+
+  def load(self, dict):
+    GGGeneratedInventoryItem.load(self, dict)
+    self.__idGift = dict["idGift"]
+
   @dMVC.model.localMethod 
   def defaultView(self, screen, room, parent):
     """ Creates an isometric view object for the item.

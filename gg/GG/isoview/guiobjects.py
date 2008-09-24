@@ -570,8 +570,7 @@ class OcempImageContactList(OcempImageFileList):
     """  
     items = ocempgui.widgets.components.ListItemCollection ()
     for contact in self.contactList:
-      player = contact.getPlayer()
-      items.append (OcempContactListItem (player.username, player.getImageLabel()))
+      items.append (OcempContactListItem (contact.getPlayer(), contact.getImageLabel()))
     self.set_items (items)
 
   def setContacts(self, agenda):

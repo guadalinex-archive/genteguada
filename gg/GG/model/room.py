@@ -43,6 +43,50 @@ class GGRoom(ggmodel.GGModel):
     self.__population = 0
     self.__enabled = enabled
     self.__startRoom = startRoom
+    self.save("room")
+
+  def objectToPersist(self):
+    dict = ggmodel.GGModel.objectToPersist(self)
+    dict["spriteFull"] = self.spriteFull
+    dict["label"] = self.label
+    dict["size"] = self.size
+    dict["maxUsers"] = self.maxUsers
+    dict["enabled"] = self.__enabled
+    dict["startRoom"] = self.__startRoom
+    dict["specialTiles"] = self.__specialTiles
+    itemsToPersist = []
+    for item in self.__items:
+      if not isinstance(item, player.GGPlayer):
+        itemsToPersist.append(item.objectToPersist())
+    dict["items"] = itemsToPersist
+    return dict
+
+  def load(self, dict):
+    ggmodel.GGModel.load(self, dict)
+    self.spriteFull = dict["spriteFull"]
+    self.label = dict["label"] 
+    self.size = dict["size"] 
+    self.maxUsers = dict["maxUsers"] 
+    self.__enabled = dict["enabled"]
+    self.__startRoom = dict["startRoom"]  
+    self.__specialTiles = dict["specialTiles"] 
+    self.__population = 0
+    self.__tiles = []
+    self.__items = []
+    for i in range(0, self.size[0]):
+      line = []  
+      for j in range(0, self.size[1]):
+        image = os.path.join(GG.utils.TILE, self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
+        line.append(tile.Tile([i, j], image, [0, 0], self))
+      self.__tiles.append(line)  
+    for itemDict in dict["items"]:
+      item = ggmodel.GGModel.read(itemDict["id"], "room", itemDict)
+      pos = itemDict["position"]
+      self.__tiles[pos[0]][pos[1]].stackItem(item)
+      item.setTile(self.__tiles[pos[0]][pos[1]])
+      item.setStartPosition(item.getTile().position)
+      self.__items.append(item)
+      item.setRoom(self)
 
   def getRoomBuildPackage(self):
     """ Returns all info used to create the room's view.
@@ -57,22 +101,7 @@ class GGRoom(ggmodel.GGModel):
         if self.__tiles[x][y].getDepth() > 1:
           populatedtiles.append([[x, y], self.__tiles[x][y].getItems()])
     infoPackage["populatedtiles"] = populatedtiles 
-    
     return infoPackage
-    
-  def save(self):
-    """ Saves all room data.
-    """  
-    #ROOM
-    #room.size
-    #room.label
-    #room.maxuser
-    #room.enabled
-    #room.startRoom
-    #RELACIONES
-    #tiles que estan en una posicion
-    #items que estan en una habitacion
-    pass
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -111,8 +140,7 @@ class GGRoom(ggmodel.GGModel):
     enabled: new enabled value.
     """  
     self.__enabled = enabled    
-    
-  # self.__startRoom
+    self.save("room")
 
   def getStartRoom(self):
     """ Returns the startRoom flag.
@@ -124,6 +152,7 @@ class GGRoom(ggmodel.GGModel):
     value: new value.
     """  
     self.__startRoom = value    
+    self.save("room")
 
   def isFull(self):
     """ Checks if this room is already full or not.
@@ -181,6 +210,7 @@ class GGRoom(ggmodel.GGModel):
           self.__population += 1    
         self.__tiles[item.getPosition()[0]][item.getPosition()[1]].stackItem(item)
       self.triggerEvent('items', items=items)
+      self.save("room")
       return True
     return False
 
@@ -199,14 +229,16 @@ class GGRoom(ggmodel.GGModel):
     pos: item's position.
     """  
     if not item in self.__items:
-      if isinstance(item, player.GGPlayer):
-        self.__population += 1    
       self.__tiles[pos[0]][pos[1]].stackItem(item)
       item.setTile(self.__tiles[pos[0]][pos[1]])
       item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
       self.triggerEvent('addItemFromVoid', item=item)
+      if isinstance(item, player.GGPlayer):
+        self.__population += 1
+      else:
+        self.save("room")
       return True
     return False
   
@@ -225,6 +257,7 @@ class GGRoom(ggmodel.GGModel):
       item.setRoom(self)
       item.setPlayer(None)
       self.triggerEvent('addItemFromInventory', item=item, room=self)
+      self.save("room")
       return True
     return False
     
@@ -233,13 +266,15 @@ class GGRoom(ggmodel.GGModel):
     item: item to be removed.
     """
     if item in self.__items:
-      if isinstance(item, player.GGPlayer):
-        self.__population -= 1
       pos = item.getPosition()
       self.__tiles[pos[0]][pos[1]].unstackItem()
       self.__items.remove(item)
       item.clearRoom()
       self.triggerEvent('removeItem', item=item)
+      if isinstance(item, player.GGPlayer):
+        self.__population -= 1
+      else:
+        self.save("room")
       return
     raise Exception("Error: item no eliminado")
 
@@ -258,6 +293,7 @@ class GGRoom(ggmodel.GGModel):
     item.clearRoom()
     item.setState(GG.utils.STATE[1])
     self.triggerEvent('removeItem', item=item)
+    self.save("room")
     
   def getSpecialTiles(self):
     """ Return the special tiles list.
@@ -276,6 +312,7 @@ class GGRoom(ggmodel.GGModel):
         checkedTile[1] = imageName
     if k == 0:
       self.__specialTiles.append([position, imageName])
+    self.save("room")
       
   @dMVC.model.localMethod
   def defaultView(self, screen, hud):
@@ -293,7 +330,10 @@ class GGRoom(ggmodel.GGModel):
     if (0 <= pos[0] < self.size[0]) and (0 <= pos[1] < self.size[1]):
       if self.__tiles[pos[0]][pos[1]].getDepth() != 0:
         return True
-    return False
+      else:
+        return False
+    else:
+      return True
     
   def clickedByPlayer(self, clickerPlayer, target, item):
     """ Applies a player's click over an item.
@@ -440,6 +480,7 @@ class GGRoom(ggmodel.GGModel):
       if isinstance(itemPlayer, player.GGPlayer):
         if itemPlayer.getSelected() == item:
           itemPlayer.setUnselectedItem()  
+          self.save("room")
 
   def getSelecter(self, selectee):
     """ Returns selected item's selecter.
@@ -484,6 +525,7 @@ class GGRoom(ggmodel.GGModel):
     """  
     for singleItem in self.__items:
       singleItem.labelChange(oldLabel, newLabel)
+      self.save("room")
     
   def moveStack(self, newPos, item):
     """ Moves an item and any other item above him to a new position.
@@ -493,8 +535,9 @@ class GGRoom(ggmodel.GGModel):
     pos = item.getPosition()
     itemsList = self.__tiles[pos[0]][pos[1]].getItemsFrom(item)  
     for singleItem in itemsList:
-       singleItem.setPosition(newPos)
-       self.moveItem(singleItem.getPosition(), newPos, singleItem)  
+      singleItem.setPosition(newPos)
+      self.moveItem(singleItem.getPosition(), newPos, singleItem)  
+      self.save("room")
     
   def tileImageChange(self, tilePos, image):
     """ Calls for an update on a tile image.
