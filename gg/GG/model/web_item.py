@@ -20,6 +20,8 @@ class GGWebItem(room_item.GGRoomItem):
     self.__url = url
     
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGWebItem(self.spriteName, self.anchor, self.topAnchor, self.__url, self.getName())
     
   def getOptions(self):
@@ -28,7 +30,7 @@ class GGWebItem(room_item.GGRoomItem):
     return ["url", "jumpOver"]
       
   def getAdminActions(self):
-    """ Returns the available admin actions.
+    """ Returns the item's available admin actions.
     """  
     dic = {"Position": self.getTile().position, "Url": [self.__url], "Label": [self.getName()]}
     return dic  
@@ -39,7 +41,7 @@ class GGWebItem(room_item.GGRoomItem):
     return self.spriteName
   
   def getUrl(self):
-    """ Returns the internet address.
+    """ Returns saved internet address.
     """  
     return self.__url  
   
@@ -78,6 +80,8 @@ class GGWebPannel(GGWebItem):
     self.__pannels = []
 
   def copyObject(self):
+    """ Copies and returns this item.
+    """  
     return GGWebPannel(self.spriteName, self.anchor, self.topAnchor, self.getUrl(), self.getName())
     
   def addPannels(self, *pannels):
@@ -117,4 +121,3 @@ class GGWebPannel(GGWebItem):
     """  
     for pannel in self.__pannels:
       pannel.removePannels(self)    
-

@@ -106,7 +106,7 @@ class Tile(ggmodel.GGModel):
   
   def getSteppedItem(self, overItem):
     """ Returns the item just below.
-    overItem: 
+    overItem: item on top of the looked for item.
     """  
     prevItem = None
     for currentItem in self.__items:
@@ -185,6 +185,7 @@ class Tile(ggmodel.GGModel):
   def setImage(self, image, noTrigger=None):
     """ Sets a new image for the tile.
     image: new image.
+    noTrigger: flag to indicate wether trigger an image change event or not.
     """  
     self.spriteName = image
     if not noTrigger:
@@ -203,4 +204,3 @@ class Tile(ggmodel.GGModel):
       else:
         if item.getName() == itemName:
           accAnchor = 1    
-    
