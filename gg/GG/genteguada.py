@@ -26,8 +26,13 @@ ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
 
 class GenteGuada:
+  """ GenteGuada class.
+  This is the program's main class. It starts all services and runs the game.
+  """  
 
   def __init__(self):
+    """ Class constructor.
+    """  
     self.__screen = None
     self.__system = None
     self.__isoHud = None
@@ -42,12 +47,18 @@ class GenteGuada:
     
   @staticmethod
   def getInstance():
+    """ Returns this class's instance.
+    """  
     return GenteGuada.instance
 
   def getSession(self):
+    """ Returns the active session object.
+    """  
     return self.__session
   
   def __input(self, events):
+    """ Handles the keyboard and window input events.
+    """  
     for event in events:
       if event.type == pygame.locals.QUIT:
         self.finish()
@@ -56,6 +67,8 @@ class GenteGuada:
           self.finish()
     
   def finish(self):
+    """ Closes the program and all its services.
+    """  
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
     self.__session.getPlayer().setState(GG.utils.STATE[1])    
@@ -69,6 +82,8 @@ class GenteGuada:
     self.__exitCondition = True
 
   def __loadingScreen(self):
+    """ Loads the "loading screen".
+    """  
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
@@ -82,6 +97,8 @@ class GenteGuada:
     widgetContainer.add_widget(window)
   
   def __waitScreen(self):
+    """ Loads the "waiting screen".
+    """  
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
@@ -95,6 +112,9 @@ class GenteGuada:
     widgetContainer.add_widget(window)
   
   def start(self, params):
+    """ Creates all necessary objects and initializes attributes.
+    params: application start parameters.
+    """  
     self.__setSystem(params.ip, params.port)
     pygame.init()
     pygame.display.set_caption(VERSION)
@@ -119,9 +139,15 @@ class GenteGuada:
     self.__initGame()
 
   def getSystem(self):
+    """ Returns the system object.
+    """  
     return self.__system
 
   def __setSystem(self, ipAddress, port):
+    """ Loads a new system object from a remote location.
+    ipAddress: remote location ip address.
+    port: remote location port.
+    """  
     if ipAddress:
       try:
         self.__client = dMVC.remoteclient.RClient(ipAddress, port = port, autoEvents=False)
@@ -135,6 +161,8 @@ class GenteGuada:
       self.__system = GG.model.ggsystem.GGSystem()
 
   def __initGame(self):
+    """ Initializes all start parameters and runs the game's main process.
+    """  
     self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen)
     self.__screen.fill([0, 0, 0])
     self.__isoHud.draw()
@@ -174,6 +202,8 @@ class GenteGuada:
     pygame.quit()
 
   def getDataPath(self, img):
+    """ Returns the data path for an item image, being local or remote.
+    """  
     if self.__singleMode:
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
@@ -187,12 +217,17 @@ class GenteGuada:
       return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
 
   def getListDataPath(self, imgList):
+    """ Returns the data path for an item image list.
+    imgList: image list.
+    """  
     result = []
     for imgName in imgList:
       result.append(self.getDataPath(imgName))
     return result
   
   def __clearCache(self):
+    """ Clears the local cache folder.
+    """  
     now = datetime.datetime.today()
     limitDate = now - datetime.timedelta(weeks=CLEAR_CACHE_WEEKS)
     limitTime = time.mktime(limitDate.timetuple())
@@ -207,7 +242,11 @@ class GenteGuada:
       pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
       os.remove(pathFile)
 
-  def uploadFile(self, upFile, dirDest = None):
+  def uploadFile(self, upFile, dirDest=None):
+    """ Uploads a new file and copies it.
+    upFile: uploaded file.
+    dirDest: file copy location.
+    """  
     if not os.path.isfile(upFile):
       return None
     filepath, fileName = os.path.split(upFile)
@@ -221,6 +260,11 @@ class GenteGuada:
     return self.__system.uploadFile([name, ext], dataFile, dirDest)
  
   def asyncUploadFile(self, upFile, finishMethod, dirDest = None):
+    """ Uploads a new file  on asynchronous mode and copies it.
+    upFile: uploaded file.
+    finishMethod: method executed on upload end. 
+    dirDest: file copy location.
+    """  
     if not os.path.isfile(upFile):
       finishMethod(None)
       return 
@@ -236,30 +280,58 @@ class GenteGuada:
     self.__system.async(self.__system.uploadFile, finishMethod, [name, ext], dataFile, dirDest)
   
   def uploadAvatarConfiguration(self, configuration, player):
+    """ Uploads an avatar configuration.
+    configuration: avatar configuration data.
+    player: avatar's owner.
+    """  
     if configuration["mask"]:
       self.asyncUploadFile(UPLOAD_MASK, self.uploadMaskFileFinish)
     else:
       self.__system.changeAvatarConfiguration(configuration, player, None) 
 
   def uploadMaskFileFinish(self, resultado):
+    """ Changes the avatar's mask after upload is finished.
+    resultado: upload result.
+    """  
     if resultado:
       self.__system.changeAvatarConfiguration(configuration, player, resultado) 
 
   def getRoom(self, label):
+    """ Returns an specific room.
+    label: room's label.
+    """  
     return self.__system.getRoom(label)  
 
   def createRoom(self, label, size, image, maxUsers, enabled, startRoom, copyRoom=None):
+    """ Creates a new room.
+    label: room label.
+    size: room size.
+    image: sprite used to paint the room floor.
+    maxUsers: max users per room.
+    enabled: enabled room flag.
+    starterRoom: sets this room as starter or not.
+    copyRoom: room to be copied.
+    """  
     return self.__system.createRoom(image, label, size, maxUsers, enabled, startRoom, copyRoom)
 
   def deleteRoom(self, label):
+    """ Deletes a room from the system.
+    label: room's label.
+    """  
     return self.__system.deleteRoom(label)  
 
   def getAvatarImages(self, avatar):
+    """ Creates avatar images.
+    avatar: curren player's avatar.
+    """  
     if not avatar in self.__avatarDownloadImages:
       self.__avatarDownloadImages.append(avatar)
       self.__system.async(self.__system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
+    """ Saves all created avatar images.
+    resultado: avatar images creation result.
+    """  
     #path = resultado["path"].replace("/", "-")
     path = resultado["path"].replace(os.sep, "-")
     for key in resultado.keys():
@@ -272,4 +344,6 @@ class GenteGuada:
     self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
   
   def isSingleMode(self):
+    """ Checks wether the game is in sigle player mode or multiplayer mode.
+    """  
     return self.__singleMode
