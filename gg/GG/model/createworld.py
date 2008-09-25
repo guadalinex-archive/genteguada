@@ -91,17 +91,12 @@ class CreateWorld:
   def __createPlayers(self):
     """ Creates all players.
     """  
-    nino = player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepe", "1234", "", True)
-    nina = player.GGPlayer(GG.utils.NINA_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "pepa", "12345", "", False)
+    nino = player.GGPlayer("pepe", "")
+    nina = player.GGPlayer("pepa", "")
     self.__system.createPlayer(nino)
     self.__system.createPlayer(nina)
-    demoPlayerPath = GG.utils.NINO_PATH
     for i in range(100):
-      if demoPlayerPath == GG.utils.NINO_PATH:
-        demoPlayerPath = GG.utils.NINA_PATH
-      else:
-        demoPlayerPath = GG.utils.NINO_PATH
-      demoPlayer = player.GGPlayer(demoPlayerPath, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], "user"+str(i), "user"+str(i), "", False)
+      demoPlayer = player.GGPlayer("user"+str(i), "")
       self.__system.createPlayer(demoPlayer)
 
   def __createRooms(self):

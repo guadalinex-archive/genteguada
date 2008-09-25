@@ -27,6 +27,7 @@ class GGInventoryItem(ggmodel.GGModel):
     dict["spriteName"] = self.spriteName
     dict["spriteInventory"] = self.spriteInventory
     dict["label"] = self.label
+    dict["imagePath"] = self.__imagePath
     return dict
   
   def load(self, dict):
@@ -34,12 +35,18 @@ class GGInventoryItem(ggmodel.GGModel):
     self.spriteName = dict["spriteName"]
     self.spriteInventory = dict["spriteInventory"]
     self.label = dict["label"]
-    self.setImagePath("")
+    self.__imagePath = dict["imagePath"]
 
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteName', 'spriteInventory']
+    return ['spriteInventory']
+
+  def getSpriteName(self):
+    return self.spriteName
+
+  def setSpriteName(self, spriteName):
+    self.spriteName = spriteName
   
   def getAdminActions(self):
     """ Returns all possible admin actions for this item.

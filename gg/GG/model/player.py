@@ -12,6 +12,8 @@ import os
 
 # ======================= CONSTANTS ===========================
 MAX_DEPTH = 1
+ANCHOR_PLAYER = [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30]
+TOP_ANCHOR_PLAYER = [0, -20]
 # =============================================================
 
 class GGPlayer(item_with_inventory.GGItemWithInventory):
@@ -19,7 +21,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   Defines a player object behaviour.
   """
  
-  def __init__(self, spritePath, anchor, topAnchor, username, timestamp):
+  def __init__(self, username, timestamp):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     anchor: image anchor on screen.
@@ -30,7 +32,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     admin: sets the player as game administrator.
     """
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
-    item_with_inventory.GGItemWithInventory.__init__(self, filename, anchor, topAnchor)
+    item_with_inventory.GGItemWithInventory.__init__(self, filename, ANCHOR_PLAYER, TOP_ANCHOR_PLAYER)
     self.username = username
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]
@@ -48,11 +50,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__exchangeTo = None
     self.__agenda = []
     self.__timestamp = timestamp
-    self.__spritePath = spritePath
     if not self.__timestamp == "":
       self.setImagePath("avatars/"+self.username+"/")
     else:
-      self.setImagePath(self.__spritePath)
+      self.setImagePath("avatars/ghost/")
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
@@ -72,7 +73,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       contactList.append(contact.getPlayer())
     dict["agenda"] = contactList
     dict["timestamp"] = self.__timestamp
-    dict["spritePath"] = self.__spritePath
     return dict
 
   def load(self, dict):
@@ -96,11 +96,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     for contact in dict["agenda"]:
       self.__agenda.append(private_contact.PrivateContact(contact))
     self.__timestamp = dict["timestamp"]
-    self.__spritePath = dict["spritePath"] 
-    if not self.__timestamp == "":
-      self.setImagePath("avatars/"+self.username+"/")
-    else:
-      self.setImagePath(self.__spritePath)
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
@@ -146,8 +141,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     timestamp = str(timestamp)
     self.__timestamp = timestamp
-    self.imgPath = "avatars/"+self.username+"/"
-    self.triggerEvent('timestamp', timestamp=timestamp, imgPath = self.imgPath)
+    self.setImagePath("avatars/"+self.username+"/")
+    self.spriteName = self.spriteName+"_"+timestamp
+    self.triggerEvent('timestamp', timestamp=timestamp, imgPath = "avatars/"+self.username+"/")
     self.save("player")
       
   def getName(self):
@@ -223,10 +219,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     self.setImagePath("avatars/"+self.username+"/")
     self.__avatarConfiguration = avatarConfiguration
-    self.setTimestamp(timestamp)
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
+    self.setTimestamp(timestamp)
     for contact in self.__agenda:
-      contact.getPlayer().changeMaskContact(self.username, self.getImageLabel())
+      contact.getPlayerObject().changeMaskContact(self.username, self.getImageLabel())
     self.save("player")
     
   def changeMaskContact(self, name, imageLabel):

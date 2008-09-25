@@ -46,9 +46,9 @@ class IsoViewItem(positioned_view.PositionedView):
     imagePath: item's image path.
     """
     if imagePath is None:
-      imageName = os.path.join(self.getModel().getImagePath(), self.getModel().spriteName)
+      imageName = os.path.join(self.getModel().getImagePath(), self.getModel().getSpriteName())
     else:
-      imageName = os.path.join(imagePath, self.getModel().spriteName)  
+      imageName = os.path.join(imagePath, self.getModel().getSpriteName())  
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
@@ -156,7 +156,7 @@ class IsoViewItem(positioned_view.PositionedView):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imageName = os.path.join(self.__imagePath, self.getModel().spriteName)
+    imageName = os.path.join(self.__imagePath, self.getModel().getSpriteName())
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     #self.__img = guiobjects.loadSprite(imageName, False, None, None)
@@ -255,8 +255,8 @@ class IsoViewResizedItem(IsoViewItem):
     imagePath: item's image path.
     """
     if image:
-      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(model.getImagePath(), model.spriteName))
-      tempFileName = model.spriteName.replace(os.sep, "-")
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(model.getImagePath(), model.getSpriteName()))
+      tempFileName = model.getSpriteName().replace(os.sep, "-")
       guiobjects.generateImageSize(imgPath, NEW_SIZE, os.path.join(GG.utils.LOCAL_DATA_PATH,tempFileName))
     IsoViewItem.__init__(self, model, screen, room, parent)
     

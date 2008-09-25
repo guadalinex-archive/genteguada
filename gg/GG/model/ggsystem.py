@@ -125,7 +125,7 @@ class GGSystem(dMVC.model.Model):
   def __getPlayer(self, username, accessMode):
     player = ggmodel.GGModel.read(username, "player")
     if not player:
-      player = GG.model.player.GGPlayer(GG.utils.NINO_PATH, [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30], [0, -20], username, "")
+      player = GG.model.player.GGPlayer(username, "")
     if accessMode == "A":
       player.admin = True
     return player
@@ -156,9 +156,11 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Loads all system data.
     """  
-    #import createworld
-    #world = createworld.CreateWorld(self)
-    #world.create()
+    """
+    import createworld
+    world = createworld.CreateWorld(self)
+    world.create()
+    """
     roomList = ggmodel.GGModel.readAll("room") 
     for room in roomList:
       self.__rooms.append(room)
@@ -309,7 +311,6 @@ class GGSystem(dMVC.model.Model):
     """  
     self.__avatarGeneratorProcessQueue.put([configuration, player, nameMask])
     self.__throwAvatarGeneratorCommand()
-    #thread.start_new(self.__changeAvatarConfiguration, (configuration, player, nameMask))
 
   def __throwAvatarGeneratorCommand(self):
     """ Starts the avatar generation process.
@@ -318,7 +319,6 @@ class GGSystem(dMVC.model.Model):
       try:
         processOptions = self.__avatarGeneratorProcessQueue.get_nowait()
         thread.start_new(self.__changeAvatarConfiguration, (processOptions[0], processOptions[1], processOptions[2]))
-        #self.__changeAvatarConfiguration(processOptions[0], processOptions[1], processOptions[2])
       except Queue.Empty:
         pass
 
