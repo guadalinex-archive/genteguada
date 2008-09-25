@@ -38,7 +38,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__heading = infoPackage["heading"]
     self.__state = infoPackage["state"]
     self.__path = infoPackage["imagepath"]
-    
     self.__getAvatarImages()
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     self.getModel().subscribeEvent('heading', self.headingChanged)
@@ -47,15 +46,15 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
-  
+
   def __getAvatarImages(self):
     """ Grabs a new set of images for player's avatar. 
     """  
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
-        imageAvatar = self.__path.replace(os.sep,"-") + "-standing_bottomright_0001"
+        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001"
       else:
-        imageAvatar = self.__path.replace(os.sep,"-") + "-standing_bottomright_0001_" + self.__timestamp
+        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001_" + self.__timestamp
       if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
         self.__path = "avatars/ghost/"
         GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
@@ -288,7 +287,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     oldItemList = event.getParams()['oldItemList']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-    
     #self.getIVRoom().updateScreenPositionsOn(pos, itemList)
     tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)  
     #scrPos = self.getScreenPosition()
@@ -312,7 +310,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imageName = self.getModel().getImagePath() + "-" + self.getModel().spriteName
+    imageName = self.getModel().getImagePath() + "-" + self.getModel().getSpriteName()
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
       

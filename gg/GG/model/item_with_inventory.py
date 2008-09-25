@@ -17,7 +17,6 @@ class GGItemWithInventory(room_item.GGRoomItem):
 
   def objectToPersist(self):
     dict = room_item.GGRoomItem.objectToPersist(self)
-    print self.__inventory
     itemsToPersist = []
     for item in self.__inventory:
       itemsToPersist.append(item.objectToPersist())
@@ -29,11 +28,8 @@ class GGItemWithInventory(room_item.GGRoomItem):
     self.__inventory = []
     for itemDict in dict["inventory"]:
       item = ggmodel.GGModel.read(itemDict["id"], "player", itemDict)
-      print item
       self.__inventory.append(item)
-      print self.__inventory
       item.setPlayer(self)
-      print "acabo"
 
   # self.__inventory
   

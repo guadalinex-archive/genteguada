@@ -323,8 +323,8 @@ class GenteGuada:
     """ Creates avatar images.
     avatar: curren player's avatar.
     """  
-    if not avatar in self.__avatarDownloadImages:
-      self.__avatarDownloadImages.append(avatar)
+    if not avatar.username in self.__avatarDownloadImages:
+      self.__avatarDownloadImages.append(avatar.username)
       self.__system.async(self.__system.getAvatarImages, self.getAvatarImagesFinish, avatar)
 
   def getAvatarImagesFinish(self, resultado):
@@ -335,12 +335,14 @@ class GenteGuada:
     path = resultado["path"].replace(os.sep, "-")
     for key in resultado.keys():
       if not key in ["path", "avatar"]:
-        fileName = path + "-" + key
+        fileName = path + key
         avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
-    print "ya he copiado todas las imagenes"    
     self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
+    if resultado["avatar"].username in self.__avatarDownloadImages:
+      self.__avatarDownloadImages.remove(resultado["avatar"].username)
+
   
   def isSingleMode(self):
     """ Checks wether the game is in sigle player mode or multiplayer mode.

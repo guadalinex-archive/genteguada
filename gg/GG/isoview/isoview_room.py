@@ -43,7 +43,7 @@ class IsoViewRoom(isoview.IsoView):
         if k == 0:
           isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], \
-                    tiles[corx][corz].spriteName, self.__parent)
+                    tiles[corx][corz].getSpriteName(), self.__parent)
         self.__parent.addSprite(isotile.getImg())
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
@@ -53,18 +53,10 @@ class IsoViewRoom(isoview.IsoView):
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem  
-    """  
-    for item in self.getModel().getItems():
-      isoviewitem = item.defaultView(self.getScreen(), self, self.__parent)
-      self.__isoViewItems.append(isoviewitem)
-      self.__parent.addSprite(isoviewitem.getImg())
-      self.__spritesDict[isoviewitem.getImg()] = isoviewitem
-    """  
     for singleTile in populatedTiles:
       pos = singleTile[0]
       listItems = singleTile[1]
       self.updateScreenPositionsOn(pos)
-    
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)

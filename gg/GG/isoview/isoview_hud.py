@@ -415,7 +415,6 @@ class IsoViewHud(isoview.IsoView):
     pos = event.getParams()["position"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem:
-      #print "updateScreenItemPosition"
       self.__isoviewRoom.updateScreenPositionsOn(pos)  
       
   def addItemToInventory(self, event):
@@ -1134,7 +1133,6 @@ class IsoViewHud(isoview.IsoView):
       self.__player.newChatMessage("La etiqueta de habitación ya existe.", 1)
       return
     pos = room.getNearestEmptyCell(self.__player.getPosition())
-    print pos
     itemList = self.__player.getTile().getItemsFrom(self.__player)
     for item in itemList:
       item.changeRoom(room, pos)

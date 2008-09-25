@@ -115,7 +115,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
           utils.logger.debug("Sending " + str(len(commands)) + " commands in a shot")
           self.__sendObject(remotecommand.RCompositeCommand(commands))
       except Queue.Empty:
-        pass
+        self.__sendAsyncFragment()
 
   def __sendAsyncFragment(self):
     try:
@@ -180,8 +180,10 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       command = pickle.loads(self.fragmentCommand[fragment.groupID])
       del self.fragmentCommand[fragment.groupID]
       command.setServerHandler(self)
+      print "voy a ejecutar el comando asincrono"
       answer = command.do()
       if answer:
+        print "tengo respuesta"
         self.__sendAsyncObject(answer, fragment.groupID)
 
   def __sendAsyncObject(self, obj, commandID): 
@@ -200,6 +202,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       fragment = remotecommand.RFragment(asyncCommandID, sequence, total, fragmentCommand, commandID)
       self.__asyncCommandQueue.put(fragment)
       lenProcess += 10000
+    print "Ya tenemos todos los fragmentos puestos en la cola"
 
   @synchronized.synchronized(lockName='sendObject')
   def __sendObject(self, obj, command=None): 

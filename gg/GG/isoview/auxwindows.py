@@ -328,7 +328,7 @@ class EditRoomWindow(AuxWindow):
     self.__hud = hud
     self.__player = player
     self.room = player.getRoom()
-    self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+    self.imageName = self.__player.getRoom().getTile([0, 0]).getSpriteName()
     self.imageName = self.imageName[self.imageName.rfind("/")+1:]
     self.activeLabels = []
     self.images = None
@@ -346,7 +346,7 @@ class EditRoomWindow(AuxWindow):
     if self.hide:
       self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)  
       self.roomLabel.text = self.roomLabel
-      self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+      self.imageName = self.__player.getRoom().getTile([0, 0]).getSpriteName()
       self.imageName = self.imageName[self.imageName.rfind("/")+1:]
       #self.newTileImages.selectItem(self.imageName)
     AuxWindow.showOrHide(self)
