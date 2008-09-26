@@ -21,7 +21,7 @@ class Tile(ggmodel.GGModel):
     self.position = position
     self.spriteName = spriteName
     self.anchor = anchor
-    
+
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """

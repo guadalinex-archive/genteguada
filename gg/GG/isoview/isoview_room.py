@@ -43,7 +43,7 @@ class IsoViewRoom(isoview.IsoView):
         if k == 0:
           isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], \
-                    tiles[corx][corz].getSpriteName(), self.__parent)
+                    tiles[corx][corz].spriteName, self.__parent)
         self.__parent.addSprite(isotile.getImg())
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)

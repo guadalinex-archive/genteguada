@@ -11,7 +11,7 @@ import sys
 SAVE_DATA = os.path.join(GG.utils.DATA_PATH, "savedata")
 SAVE_DATA_ROOM = os.path.join(SAVE_DATA, "rooms")
 SAVE_DATA_PLAYER = os.path.join(SAVE_DATA, "players")
-MODEL_ID_FILE = os.path.join(SAVE_DATA, "modelid.txt")
+MODEL_ID_FILE = os.path.join(SAVE_DATA, "modelid2.txt")
 
 f = open(MODEL_ID_FILE, "r")
 ID = int(f.read())
@@ -80,7 +80,6 @@ class GGModel(dMVC.model.Model):
     return ID
 
   def save(self, obj):
-    print "SALVANDO LOS DATOS ", obj
     if obj == "room":
       fileSerialized = os.path.join(SAVE_DATA_ROOM, str(self.idModel) + ".serialized")
     else:
@@ -98,6 +97,13 @@ class GGModel(dMVC.model.Model):
   def load(self, dict):
     self.idModel = dict["id"] 
     dMVC.model.Model.__init__(self)
+
+  def deleteObject(self, obj):
+    if obj == "room":
+      fileSerialized = os.path.join(SAVE_DATA_ROOM, str(self.idModel) + ".serialized")
+    else:
+      fileSerialized = os.path.join(SAVE_DATA_PLAYER, str(self.username) + ".serialized")
+    os.remove(fileSerialized)
 
   def getPosition(self):
     """ Returns item's default position.

@@ -59,6 +59,14 @@ class GGRoom(ggmodel.GGModel):
       if not isinstance(item, player.GGPlayer):
         itemsToPersist.append(item.objectToPersist())
     dict["items"] = itemsToPersist
+    tilesToPersist = []
+    for listTile in self.__tiles:
+      for tile in listTile:
+        dictTile = {}
+        dictTile["position"] = tile.position
+        dictTile["spriteName"] = tile.spriteName
+        tilesToPersist.append(dictTile)
+    dict["tiles"] = tilesToPersist
     return dict
 
   def load(self, dict):
@@ -79,6 +87,8 @@ class GGRoom(ggmodel.GGModel):
         image = os.path.join(GG.utils.TILE, self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
         line.append(tile.Tile([i, j], image, [0, 0], self))
       self.__tiles.append(line)  
+    for dataTile in dict["tiles"]:
+      self.__tiles[dataTile["position"][0]][dataTile["position"][1]].setImage(dataTile["spriteName"],True)
     for itemDict in dict["items"]:
       item = ggmodel.GGModel.read(itemDict["id"], "room", itemDict)
       pos = itemDict["position"]

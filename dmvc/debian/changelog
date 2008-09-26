@@ -1,3 +1,9 @@
+dmvc (0.5.1-1) unstable; urgency=low
+
+  * Version de prueba del servidor
+
+ -- Joseba Mariscal <jmariscal@jmariscal@igosoftware.es>  Fri, 26 Sep 2008 10:59:24 +0200
+
 dmvc (0.4.1-1) unstable; urgency=low
 
   * Finalizada la edicion del juego
