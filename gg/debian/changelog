@@ -1,4 +1,10 @@
-genteguada (0.4.1-1) unstable; urgency=low
+genteguada (0.5.1-1) unstable; urgency=low
+
+  * Version de prueba en el servidor 
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Fri, 26 Sep 2008 10:57:56 +0200
+
+genteguada (0.4.1-1) unstable ; urgency=low
 
   * Finalizada la edicion del juego
 

@@ -137,7 +137,7 @@ class IsoViewHud(isoview.IsoView):
     self.__player.subscribeEvent('selectedItem', self.itemSelected)
     self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
     self.__player.subscribeEvent('points', self.pointsAdded)
-    self.__player.subscribeEvent('clock', self.clockAdded)
+    #self.__player.subscribeEvent('clock', self.clockAdded)
     self.__player.subscribeEvent('exp', self.expAdded)
     self.__player.subscribeEvent('initExchange', self.initExchange)
     self.__player.subscribeEvent('cancelExchange', self.cancelExchange)

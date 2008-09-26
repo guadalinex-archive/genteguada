@@ -217,9 +217,10 @@ class GGSystem(dMVC.model.Model):
         itemsList = room.getItems()
         for item in itemsList:
           if isinstance(item, GG.model.teleport.GGTeleport):
-            if item.getDestinationRoom().label == label: 
+            if item.getDestinationRoom() == label: 
               item.setDestinationRoom(None)
     self.__rooms.remove(chosenRoom)
+    chosenRoom.deleteObject("room")
     del chosenRoom
     chosenRoom = None
     return True
