@@ -1,3 +1,9 @@
+genteguada (0.5.2-1) unstable; urgency=low
+
+  * Solucionados fallos a la hora de generar los avatares
+
+ -- Joseba Mariscal <jmariscal@jmariscal@igosoftware.es>  Fri, 26 Sep 2008 14:08:49 +0200
+
 genteguada (0.5.1-1) unstable; urgency=low
 
   * Version de prueba en el servidor 
