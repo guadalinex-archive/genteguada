@@ -13,9 +13,12 @@ SAVE_DATA_ROOM = os.path.join(SAVE_DATA, "rooms")
 SAVE_DATA_PLAYER = os.path.join(SAVE_DATA, "players")
 MODEL_ID_FILE = os.path.join(SAVE_DATA, "modelid.txt")
 
-f = open(MODEL_ID_FILE, "r")
-ID = int(f.read())
-f.close()
+try:
+  f = open(MODEL_ID_FILE, "r")
+  ID = int(f.read())
+  f.close()
+except:
+  ID = 0
 
 class EmptyClass:
   pass
@@ -74,9 +77,12 @@ class GGModel(dMVC.model.Model):
   def __getModelId(self):
     global ID 
     ID += 1
-    f = open(MODEL_ID_FILE, "w")
-    f.write(str(ID))
-    f.close()
+    try:
+      f = open(MODEL_ID_FILE, "w")
+      f.write(str(ID))
+      f.close()
+    except:
+      pass
     return ID
 
   def save(self, obj):

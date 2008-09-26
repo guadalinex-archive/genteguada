@@ -139,10 +139,19 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Sets a new timestamp.
     timestamp: new timestamp.
     """  
+    if self.__timestamp == "":
+      self.spriteName = self.spriteName+"_"+str(timestamp)
+    else:
+      dataSpriteName = self.spriteName.split("_")
+      dataSprite = dataSpriteName[:-1]
+      spriteNameTemp = ""
+      for data in dataSprite:
+        spriteNameTemp += data+"_"
+      spriteNameTemp += str(timestamp)
+      self.spriteName = spriteNameTemp
     timestamp = str(timestamp)
     self.__timestamp = timestamp
     self.setImagePath("avatars/"+self.username+"/")
-    self.spriteName = self.spriteName+"_"+timestamp
     self.triggerEvent('timestamp', timestamp=timestamp, imgPath = "avatars/"+self.username+"/")
     self.save("player")
       
