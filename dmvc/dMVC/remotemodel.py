@@ -7,65 +7,71 @@ import new
 
 import thread
 
-class RemoteModel: #{{{
+class RemoteModel: 
 
-  def __init__(self, modelID, modelModuleName, modelClassName, variablesDict): #{{{
+  def __init__(self, modelID, modelModuleName, modelClassName, variablesDict): 
     self.__modelID         = modelID
     self.__modelModuleName = modelModuleName
     self.__modelClassName  = modelClassName
     self.__variablesDict   = variablesDict
-  #}}}
-
   
-  def __str__(self): #{{{
+  def __str__(self): 
     return '<RemoteModel modelID: ' + str(self.__modelID) + ' (' + self.__modelModuleName + '.' + self.__modelClassName + ')>'
-  #}}}
 
-  def __repr__(self): #{{{
+  def __repr__(self): 
     return self.__str__()
-  #}}}
 
   def __setattr__(self, attrName, attrValue):
     if attrName in ('_RemoteModel__modelID', '_RemoteModel__modelModuleName', '_RemoteModel__modelClassName', '_RemoteModel__variablesDict'):
       self.__dict__[attrName] = attrValue
       return
-
     if attrName in self.__variablesDict:
       raise Exception("Can't assign to transplantable variables")
-
-    #print "__setattr__ name " + attrName + " to " + str(attrValue)
     self.__dict__[attrName] = attrValue
-    
 
-  def __getattr__(self, attrName): #{{{
+  def __getattr__(self, attrName): 
     if attrName == "__getinitargs__":       # allows it to be safely pickled
       raise AttributeError()
-
     varDict = self.__dict__["_RemoteModel__variablesDict"]
     if attrName in varDict:
       return varDict[attrName]
-
     return RemoteMethod(self.__modelID, attrName, self.__modelClassName)
-  #}}}
 
-  # Pickling support, otherwise pickle uses __getattr__:
-  def __getstate__(self): #{{{
+  def __getstate__(self): 
+    # Pickling support, otherwise pickle uses __getattr__:
     newDict = {}
     for key, value in self.__dict__.iteritems():
       if not callable(value):
         newDict[key] = value
     return newDict
-  #}}}
 
-  def __setstate__(self, args): #{{{
+  def __setstate__(self, args): 
     # this appears to be necessary otherwise pickle won't work
     self.__dict__ = args
-  #}}}
-
 
   def getModelID(self):
     return self.__modelID
 
+  def subscribeChildListEvent(self, childListEvent):
+    rClient = dMVC.getRClient()
+    subscriptionList = []
+    for event in childListEvent:
+      remoteModel = event[0]
+      eventType = event[1]
+      method = event[2]
+      suscription = [eventType, method, remoteModel]
+      suscriptionID = rClient.registerRemoteSuscription(suscription)
+      subscriptionList.append([event[1], suscriptionID, remoteModel.getModelID()])
+    rClient.sendCommand(remotecommand.REventChildListSuscriber(self.__modelID, subscriptionList))
+
+  def subscribeListEvent(self, eventList):
+    rClient = dMVC.getRClient()
+    subscriptionList = []
+    for event in eventList:
+      suscription = [event[0], event[1], self]
+      suscriptionID = rClient.registerRemoteSuscription(suscription)
+      subscriptionList.append([event[0], suscriptionID])
+    rClient.sendCommand(remotecommand.REventListSuscriber(self.__modelID, subscriptionList))
 
   def subscribeEvent(self, eventType, method):
     """ Indica la accion a realizar ante un evento.
@@ -76,7 +82,6 @@ class RemoteModel: #{{{
     suscription = [eventType, method, self]
     suscriptionID = rClient.registerRemoteSuscription(suscription)
     rClient.sendCommand(remotecommand.REventSuscriber(self.__modelID, eventType, suscriptionID))
-
     
   def triggerEvent(self, eventType, **params):
     """ Activa un evento.
@@ -84,12 +89,20 @@ class RemoteModel: #{{{
     params: datos sobre el evento.
     """
     raise Exception('RemoteModel can\'t raise events')
-
     
   def unsubscribeEventObserver(self, observer, eventType=None):
     rClient = dMVC.getRClient()
     subscriptionIDs =  rClient.unsubscribeEventObserver(observer, eventType, self)
     rClient.sendCommand(remotecommand.REventUnsuscriber(self.__modelID, subscriptionIDs))
+
+  def unsubscribeEventListObserver(self, observers, eventType=None):
+    rClient = dMVC.getRClient()
+    unsubscribeList = []
+    for observer in observers:
+      subscriptionIDs =  rClient.unsubscribeEventObserver(observer, eventType, observer.getModel())
+      subscriptionData = [observer.getModel().getModelID(), subscriptionIDs]
+      unsubscribeList.append(subscriptionData)
+    rClient.sendCommand(remotecommand.REventListUnsuscriber(self.__modelID, unsubscribeList))
 
   def unsubscribeEventMethod(self, method, eventType=None):
     rClient = dMVC.getRClient()
@@ -99,22 +112,18 @@ class RemoteModel: #{{{
   def __eq__(self, comparand):
     if not isinstance(comparand, RemoteModel):
       return False
-
     return self.__modelID == comparand.getModelID()
 
   def __nonzero__(self):
     return True
 
-
   def serverMaterialize(self, rServer):
     return rServer.getModelByID(self.__modelID)
-
 
   def __transplantVariables(self):
     for key, value in self.__variablesDict.iteritems():
       utils.logger.debug("Transplanting variable " + str(key) + " in " + str(self) + " with value " + str(value))
       setattr(self, key, value)
-
 
   def __transplantMethods(self, donorClass):
     for key in dir(donorClass):
@@ -133,7 +142,6 @@ class RemoteModel: #{{{
     klass = getattr(mod, self.__modelClassName)
     return klass
 
-
   def clientMaterialize(self, rClient):
     #self.__transplantVariables()
     self.__transplantMethods(self.__findModelClass())
@@ -145,23 +153,16 @@ class RemoteModel: #{{{
     #rClient.sendAsyncCommand(asyncMethod, callback)
     thread.start_new(rClient.sendAsyncCommand, (asyncMethod, callback))
 
-#}}}
 
+class RemoteMethod: 
 
-
-
-
-class RemoteMethod: #{{{
-
-  def __init__(self, modelID, methodName, className): #{{{
+  def __init__(self, modelID, methodName, className): 
     self._modelID    = modelID
     self._methodName = methodName
     self._className  = className
-  #}}}
 
-  def __call__(self, *args): #{{{
+  def __call__(self, *args): 
     initTime = utils.statClient.initClientCount()
-
     rClient = dMVC.getRClient()
     executer = remotecommand.RExecuterCommand(self._modelID, self._methodName, args)
     rClient.sendCommand(executer)
@@ -170,7 +171,5 @@ class RemoteMethod: #{{{
     utils.statClient.stopClientCount(initTime, (self._className, self._modelID, self._methodName))
     return result
 
-  #}}}rClient
 
-#}}}
 

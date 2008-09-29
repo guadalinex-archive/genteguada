@@ -17,7 +17,7 @@ class IsoViewItem(positioned_view.PositionedView):
   Defines an item view.
   """
   
-  def __init__(self, model, screen, room, parent, position=None, imagePath=None):
+  def __init__(self, model, screen, room, parent, position=None, imagePath=None, imageName=None):
     """ Class constructor.
     model: isometric view model.
     screen: screen handler.
@@ -29,26 +29,28 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
-    
-    infoPackage = model.getItemBuildPackage()
     if position:
       self.__position = position
+      self.__imagePath = imagePath
+      self.__imageName = imageName
     else:    
+      infoPackage = model.getItemBuildPackage()
       self.__position = infoPackage["position"]
-    self.__imagePath = infoPackage["imagepath"]
-    
+      self.__imagePath = infoPackage["imagepath"]
+      self.__imageName = None
     self.__img = None
-    self.loadImage(imagePath)
-    self.getModel().subscribeEvent('position', self.positionChanged)
+    self.loadImage(self.__imagePath)
+    #self.getModel().subscribeEvent('position', self.positionChanged)
         
   def loadImage(self, imagePath=None):
     """ Loads the item's image.
     imagePath: item's image path.
     """
     if imagePath is None:
-      imageName = os.path.join(self.getModel().getImagePath(), self.getModel().getSpriteName())
-    else:
-      imageName = os.path.join(imagePath, self.getModel().getSpriteName())  
+      imagePath = self.getModel().getImagePath()
+    if not self.__imageName: 
+      self.__imageName = self.getModel().getSpriteName()
+    imageName = os.path.join(imagePath, self.__imageName)  
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)

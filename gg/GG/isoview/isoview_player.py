@@ -40,12 +40,22 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.__path = infoPackage["imagepath"]
     self.__getAvatarImages()
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
+    subscriptionList = []
+    subscriptionList.append(['heading', self.headingChanged])
+    subscriptionList.append(['state', self.stateChanged])
+    subscriptionList.append(['jump', self.onJump])
+    subscriptionList.append(['jumpOver', self.onJumpOver])
+    subscriptionList.append(['avatarConfiguration', self.avatarConfigurationChanged])
+    subscriptionList.append(['timestamp', self.timestampChanged])
+    self.getModel().subscribeListEvent(subscriptionList)
+    """
     self.getModel().subscribeEvent('heading', self.headingChanged)
     self.getModel().subscribeEvent('state', self.stateChanged)
     self.getModel().subscribeEvent('jump', self.onJump)
     self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
     self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
     self.getModel().subscribeEvent('timestamp', self.timestampChanged)
+    """
 
   def __getAvatarImages(self):
     """ Grabs a new set of images for player's avatar. 

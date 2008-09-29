@@ -166,6 +166,27 @@ class REventUnsuscriber(RCommand):
          ', suscriptionIDs=' + str(self._suscriptionIDs)
 
 
+class REventListUnsuscriber(RCommand):
+
+  def __init__(self, modelID, suscriptionList):
+    RCommand.__init__(self)
+    self._modelID        = modelID
+    self._suscriptionList = suscriptionList
+
+  def getCommandType(self):
+    return "EventListUnSubscribe"
+
+  def do(self):
+    for suscription in self._suscriptionList:
+      model = dMVC.getRServer().getModelByID(suscription[0])
+      model.unsubscribeEventById(suscription[1], self.getSessionID())
+
+  def __str__(self):
+    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + \
+         ', suscriptionList=' + str(self._suscriptionList)
+
+
+
 class REventSuscriber(RCommand):
 
   def __init__(self, modelID, eventType, suscriptionID):
@@ -197,6 +218,45 @@ class REventSuscriber(RCommand):
   def __str__(self):
     return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + \
         ', eventType=' + str(self._eventType) + ', suscriptionID=' + str(self._suscriptionID)
+
+class REventListSuscriber(RCommand):
+
+  def __init__(self, modelID, suscriptionList):
+    RCommand.__init__(self)
+    self._modelID       = modelID
+    self._suscriptionList = suscriptionList
+
+  def getCommandType(self):
+    return "EventListSubscribe"
+
+  def do(self):
+    for suscription in self._suscriptionList:
+      eventSubscriber = REventSuscriber(self._modelID, suscription[0], suscription[1])
+      eventSubscriber.setServerHandler(self._serverHandler)
+      eventSubscriber.do()
+
+  def __str__(self):
+    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + ', suscriptionList=' + str(self._suscriptionList)
+
+
+class REventChildListSuscriber(RCommand):
+
+  def __init__(self, modelID, suscriptionList):
+    RCommand.__init__(self)
+    self._modelID = modelID
+    self._suscriptionList = suscriptionList
+
+  def getCommandType(self):
+    return "EventChildListSubscribe"
+
+  def do(self):
+    for suscription in self._suscriptionList:
+      eventSubscriber = REventSuscriber(suscription[2], suscription[0], suscription[1])
+      eventSubscriber.setServerHandler(self._serverHandler)
+      eventSubscriber.do()
+
+  def __str__(self):
+    return RCommand.__str__(self) + 'modelID=' + str(self._modelID) + ', suscriptionList=' + str(self._suscriptionList)
 
 
 class REventTriggerer(RCommand):
