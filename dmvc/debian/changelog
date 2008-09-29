@@ -1,3 +1,9 @@
+dmvc (0.5.3-1) unstable; urgency=low
+
+  * Envio de eventos y desuscripciones apiladas
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 29 Sep 2008 18:01:30 +0200
+
 dmvc (0.5.1-1) unstable; urgency=low
 
   * Version de prueba del servidor

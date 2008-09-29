@@ -100,14 +100,14 @@ class IsoViewHud(isoview.IsoView):
   Defines the HUD.
   """
   
-  def __init__(self, model, screen, fullscreen):
+  def __init__(self, model, screen, fullscreen, user, accesMode):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
     fullscreen: sets the game as started on fullscreen or not.
     """
     isoview.IsoView.__init__(self, model, screen)
-    self.__player = self.getModel().getPlayer()
+    self.__player = user
     self.__isoviewInventory = []
     inven = self.__player.getInventory()
     room = self.__player.getRoom()
@@ -233,10 +233,10 @@ class IsoViewHud(isoview.IsoView):
     self.__adminMenu = False
     self.__editRoomMenu = False
     self.__deleteConfirmDialog = None
-    self.__isoviewRoom = self.__player.getRoom().defaultView(self.getScreen(), self)
+    self.__isoviewRoom = room.defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
     
-    self.__accessMode = self.__player.getAccessMode() 
+    self.__accessMode = accesMode 
     
     if self.__accessMode:
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
@@ -497,7 +497,8 @@ class IsoViewHud(isoview.IsoView):
     """
     item = ivItem.getModel()
     itemPos = ivItem.getPosition()
-    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems())
+    #endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems())
+    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getItemsOnMyTile())
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, [endPos[0], -500], endPos, True)
       ivItem.setAnimation(positionAnim)
