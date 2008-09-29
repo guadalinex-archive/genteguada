@@ -344,7 +344,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.__destination = destination
       
   @dMVC.model.localMethod
-  def defaultView(self, screen, room, parent, position=None, image=None):
+  def defaultView(self, screen, room, parent, position=None, imagePath=None, image=None):
     """ Creates a view object associated with this player.
     screen: screen handler.
     room: room view object.

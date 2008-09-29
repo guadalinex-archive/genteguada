@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+#-*- coding: utf-8 -*- 
 
 import os
 import GG.utils
@@ -48,15 +48,28 @@ class IsoViewRoom(isoview.IsoView):
         self.__bottomSpritesDict[isotile.getImg()] = isotile
         listTile.append(isotile)
       self.__tileList.append(listTile)
+    subscriptionChildList = []
     for item in itemsDict:
-      isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["image"])
+      isoviewitem = item["obj"].defaultView(self.getScreen(), self, self.__parent, item["position"], item["imagePath"], item["image"])
       self.__isoViewItems.append(isoviewitem)
       self.__parent.addSprite(isoviewitem.getImg())
       self.__spritesDict[isoviewitem.getImg()] = isoviewitem  
+      subscriptionChildList.append([isoviewitem.getModel(), "position", isoviewitem.positionChanged])
+    self.getModel().subscribeChildListEvent(subscriptionChildList)
     for singleTile in populatedTiles:
       pos = singleTile[0]
       listItems = singleTile[1]
       self.updateScreenPositionsOn(pos)
+    subscriptionList = []
+    subscriptionList.append(['addItemFromVoid', self.itemAddedFromVoid])
+    subscriptionList.append(['addItemFromInventory', self.itemAddedFromInventory])
+    subscriptionList.append(['removeItem', self.itemRemoved])
+    subscriptionList.append(['setSpecialTile', self.specialTileAdded])
+    subscriptionList.append(['updateScreenPos', self.updateScreenPos])
+    subscriptionList.append(['floorChanged', self.floorChanged])
+    subscriptionList.append(['tileImageChange', self.tileImageChange])
+    self.getModel().subscribeListEvent(subscriptionList)
+    """
     self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
     self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
     self.getModel().subscribeEvent('removeItem', self.itemRemoved)
@@ -64,6 +77,7 @@ class IsoViewRoom(isoview.IsoView):
     self.getModel().subscribeEvent('updateScreenPos', self.updateScreenPos)
     self.getModel().subscribeEvent('floorChanged', self.floorChanged)
     self.getModel().subscribeEvent('tileImageChange', self.tileImageChange)
+    """
     
   def getSpritesDict(self):
     """ Returns the sprites dictionary.
@@ -254,8 +268,12 @@ class IsoViewRoom(isoview.IsoView):
   def unsubscribeAllEvents(self):
     """ Unsubscribe this view ands all its children from all events.
     """
+    #for item in self.__isoViewItems:
+    #  item.unsubscribeAllEvents()
+    observers = []
     for item in self.__isoViewItems:
-      item.unsubscribeAllEvents()
+      observers.append(item)
+    self.getModel().unsubscribeEventListObserver(observers)
     isoview.IsoView.unsubscribeAllEvents(self)
 
   def itemSelected(self, item):

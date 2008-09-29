@@ -229,7 +229,7 @@ class GGRoom(ggmodel.GGModel):
     """  
     items = []
     for item in self.__items:
-      dictItem = {"obj": item, "position": item.getPosition(), "image": item.getImagePath()}
+      dictItem = {"obj": item, "position": item.getPosition(), "imagePath": item.getImagePath(), "image":item.getSpriteName()}
       items.append(dictItem)
     return items
 
