@@ -131,11 +131,12 @@ class GenteGuada:
     self.__session = winLogin.draw()
     #self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
-    if self.__session.getPlayer().admin:
+    user = self.__session.getPlayer()
+    if user.admin:
       value = winLogin.drawAccessMode()  
-      self.__session.getPlayer().setAccessMode(value)
+      user.setAccessMode(value)
     self.__loadingScreen()
-    self.__initGame()
+    self.__initGame(user, value)
 
   def getSystem(self):
     """ Returns the system object.
@@ -159,10 +160,10 @@ class GenteGuada:
       self.__singleMode = True
       self.__system = GG.model.ggsystem.GGSystem()
 
-  def __initGame(self):
+  def __initGame(self, user, accesMode):
     """ Initializes all start parameters and runs the game's main process.
     """  
-    self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen)
+    self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen, user, accesMode)
     self.__screen.fill([0, 0, 0])
     self.__isoHud.draw()
     isohud = self.__isoHud
@@ -343,7 +344,6 @@ class GenteGuada:
     if resultado["avatar"].username in self.__avatarDownloadImages:
       self.__avatarDownloadImages.remove(resultado["avatar"].username)
 
-  
   def isSingleMode(self):
     """ Checks wether the game is in sigle player mode or multiplayer mode.
     """  

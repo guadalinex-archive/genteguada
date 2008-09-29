@@ -92,6 +92,9 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     self.points = points
       
   # self.__tile
+
+  def getItemsOnMyTile(self):
+    return self.__tile.getItems()
   
   def getTile(self):
     """ Returns the tile that this item is located in.

@@ -1,3 +1,9 @@
+genteguada (0.5.3-1) unstable; urgency=low
+
+  * Mejora la velocidad en el cambio de habitaciones
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 29 Sep 2008 18:00:03 +0200
+
 genteguada (0.5.2-1) unstable; urgency=low
 
   * Solucionados fallos a la hora de generar los avatares

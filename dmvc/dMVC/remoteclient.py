@@ -170,7 +170,6 @@ class RClient(synchronized.Synchronized):
 
   @synchronized.synchronized(lockName='remoteSuscriptions')
   def unsubscribeEventObserver(self, observer, eventType, classInstance): 
-    print observer, eventType, classInstance
     utils.logger.debug("RClient.unsubscribeEventObserver observer: "+str(observer)+" , event type: "+str(eventType))
     toRemove = []
     for key, value in self.__remoteSuscriptions.iteritems():
