@@ -132,11 +132,12 @@ class GenteGuada:
     #self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
     user = self.__session.getPlayer()
+    userAdmin = False
     if user.admin:
-      value = winLogin.drawAccessMode()  
-      user.setAccessMode(value)
+      userAdmin = winLogin.drawAccessMode()  
+      user.setAccessMode(userAdmin)
     self.__loadingScreen()
-    self.__initGame(user, value)
+    self.__initGame(user, userAdmin)
 
   def getSystem(self):
     """ Returns the system object.
