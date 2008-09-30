@@ -345,3 +345,6 @@ class GenteGuada:
     """ Checks wether the game is in sigle player mode or multiplayer mode.
     """  
     return self.__singleMode
+
+  def isAvatarDownload(self, avatar):
+    return avatar.username in self.__avatarDownloadImages
