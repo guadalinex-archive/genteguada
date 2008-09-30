@@ -66,8 +66,9 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
       else:
         imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001_" + self.__timestamp
       if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
-        self.__path = "avatars/ghost/"
-        GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
+        if not GG.genteguada.GenteGuada.getInstance().isAvatarDownload(self.getModel()):
+          self.__path = "avatars/ghost/"
+          GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
   def setDestination(self, destination):
     """ Saves a player's destination local copy.
