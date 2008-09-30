@@ -117,6 +117,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     infoPackage["points"] = self.__points
     infoPackage["playedTime"] = self.__playedTime
     infoPackage["exp"] = self.__exp
+    infoPackage["imageLabel"] = self.getImageLabel()
     return infoPackage
 
   def getAccessMode(self):

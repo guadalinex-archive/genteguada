@@ -166,7 +166,11 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     room: new room.
     """
     self.__room = room
-    self.triggerEvent('room', room=room)
+    if room:
+      roomLabel = room.getName()
+    else:
+      roomLabel = None
+    self.triggerEvent('room', room=room, roomLabel = roomLabel)
 
   def changeRoom(self, room, pos):
     """ Changes the item's room.

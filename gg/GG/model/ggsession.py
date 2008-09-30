@@ -482,4 +482,11 @@ class GGSession(ggmodel.GGModel):
         if ext in [".jpg", ".png", ".JPG", ".PNG"]:
           result.append(fileName)
     return result
-    
+
+  def getAdminInitData(self):
+    package = {}
+    package["objectsData"] = self.getObjectsData()
+    package["roomList"] = self.getRooms()
+    package["roomListLabel"] = self.getRoomLabels()
+    package["playerList"] = self.getPlayersList()
+    return package

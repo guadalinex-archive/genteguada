@@ -81,13 +81,13 @@ class TeleportWindow(AuxBox):
   Defines an teleport window on screen.
   """
   
-  def __init__(self, hud):
+  def __init__(self, hud, listRoomLabels):
     """ Class constructor.
     hud: isometric view hud handler.
     """  
     self.title = "Escoja destino"
     self.tooltipLabel = "Teleportar"
-    self.listItems = hud.getModel().getRoomLabels()
+    self.listItems = listRoomLabels
     AuxBox.__init__(self, hud)
 
   def draw(self):
@@ -130,11 +130,11 @@ class DeleteRoomWindow(TeleportWindow):
   Defines the delete room window.
   """
 
-  def __init__(self, hud):
+  def __init__(self, hud, listRoomLabels):
     """ Class constructor.
     hud: isometric view hud handler.
     """  
-    TeleportWindow.__init__(self, hud)
+    TeleportWindow.__init__(self, hud, listRoomLabels)
 
   def draw(self):
     """ Draws the window parts.
@@ -157,18 +157,18 @@ class KickPlayerWindow(TeleportWindow):
   Defines the kick player window.
   """  
 
-  def __init__(self, hud):
+  def __init__(self, hud, playerList):
     """ Class constructor.
     hud: isometric view hud handler.
     """  
-    TeleportWindow.__init__(self, hud)
+    TeleportWindow.__init__(self, hud, playerList)
 
   def draw(self):
     """ Draws all window parts on screen.
     """  
     self.title = "Escaja jugador"
     self.tooltipLabel = "Expulsar jugador"
-    self.listItems = self.hud.getModel().getPlayersList()
+    #self.listItems = self.hud.getModel().getPlayersList()
     TeleportWindow.draw(self)
 
   def accept(self):
@@ -320,15 +320,15 @@ class EditRoomWindow(AuxWindow):
   Defines the edit room window.
   """
 
-  def __init__(self, hud, player):
+  def __init__(self, hud, player, room, roomName):
     """ Class constructor.
     hud: isometric view hud handler.
     player: active player.
     """
     self.__hud = hud
     self.__player = player
-    self.room = player.getRoom()
-    self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+    self.room = room
+    self.imageName = room.getTile([0, 0]).spriteName
     self.imageName = self.imageName[self.imageName.rfind("/")+1:]
     self.activeLabels = []
     self.images = None
@@ -337,7 +337,7 @@ class EditRoomWindow(AuxWindow):
     self.container = None
     self.editRoomMaxUsers = None
     self.newTileImages = None
-    self.roomLabelText = self.__hud.getIVRoom().getModel().getName()
+    self.roomLabelText = roomName
     AuxWindow.__init__(self, hud, "Edición de habitaciones", [0, 32])
 
   def showOrHide(self):
@@ -386,7 +386,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.roomLabel = guiobjects.OcempEditLine()
     self.roomLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.roomLabel.text = self.room.getName()
+    self.roomLabel.text = self.roomLabelText
     self.roomLabel.border = 1
     self.roomLabel.topleft = 10 + 70 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.roomLabel.set_minimum_size(90, 20)
@@ -397,7 +397,6 @@ class EditRoomWindow(AuxWindow):
     label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.enabledChecker = ocempgui.widgets.CheckButton()
-    #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.enabledChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     if self.room.getEnabled():
       self.enabledChecker.activate()
@@ -409,7 +408,6 @@ class EditRoomWindow(AuxWindow):
     label.topleft = 10 + 120 + labelShift[0], 25 + iPos*spacing + labelShift[1]
     self.container.add_child(label)
     self.startRoomChecker = ocempgui.widgets.CheckButton()
-    #self.enabledChecker = ocempgui.widgets.ToggleButton()
     self.startRoomChecker.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
     if self.room.getStartRoom():
       self.startRoomChecker.activate()
@@ -424,7 +422,6 @@ class EditRoomWindow(AuxWindow):
     self.newTileImages = guiobjects.OcempImageList(240, 80, GG.utils.TILES, GG.utils.TILE)  
     self.newTileImages.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.newTileImages.set_selectionmode(ocempgui.widgets.Constants.SELECTION_MULTIPLE)
-    #self.newTileImages.selectItem(self.imageName)
     self.container.add_child(self.newTileImages)  
     iPos += 1
     
@@ -465,7 +462,7 @@ class CreateRoomWindow(AuxWindow):
   Defines the create room window.
   """  
 
-  def __init__(self, hud, player):
+  def __init__(self, hud, player, listRooms, listRoomsLabel):
     """ Class constructor.
     hud: isometric view hud handler.
     player: active player.
@@ -477,12 +474,8 @@ class CreateRoomWindow(AuxWindow):
     self.sizeY = None
     self.maxUsers = None
     self.label = None
-    self.rooms = hud.getModel().getRooms()
-    #self.listItems = hud.getModel().getRoomLabels()
-    listLabels = []
-    for room in self.rooms:
-      listLabels.append(room.getName())
-    self.listItems = listLabels  
+    self.rooms = listRooms
+    self.listItems = listRoomsLabel
     AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,320])
     
   def showOrHide(self):
@@ -679,13 +672,13 @@ class CreateItemsWindow(AuxWindow):
   Defines the create item window.
   """  
 
-  def __init__(self, hud, session):
+  def __init__(self, hud, session, objectsData):
     """ Class constructor.
     hud: isometric view hud handler.
     session: game session object.
     """  
     self.__session = session
-    self.__objectsDict = session.getObjectsData()
+    self.__objectsDict = objectsData
     self.editableFields = {}
     self.activeLabels = []
     self.__objectsArea = None
