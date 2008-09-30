@@ -64,7 +64,6 @@ class RExecuterCommand(RCommand):
   def do(self): 
     rServer = dMVC.getRServer()
     model = rServer.getModelByID(self._modelID)
-
     result = None
     error = None
     try:

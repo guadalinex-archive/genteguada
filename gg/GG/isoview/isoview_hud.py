@@ -110,7 +110,8 @@ class IsoViewHud(isoview.IsoView):
     self.__player = user
     self.__isoviewInventory = []
     inven = self.__player.getInventory()
-    room = self.__player.getRoom()
+    self.room = self.__player.getRoom()
+    self.roomName = self.room.getName()
     for invItem in inven:
       self.__isoviewInventory.append(isoview_inventoryitem.IsoViewInventoryItem(invItem, screen, self))
     self.__allSprites = guiobjects.GroupSprite()
@@ -233,19 +234,20 @@ class IsoViewHud(isoview.IsoView):
     self.__adminMenu = False
     self.__editRoomMenu = False
     self.__deleteConfirmDialog = None
-    self.__isoviewRoom = room.defaultView(self.getScreen(), self)
+    self.__isoviewRoom = self.room.defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
     
     self.__accessMode = accesMode 
     
     if self.__accessMode:
-      self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model)
-      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player)
-      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player)
+      adminInitData = model.getAdminInitData()
+      self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model, adminInitData["objectsData"])
+      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player, adminInitData["roomList"], adminInitData["roomListLabel"])
+      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player, self.room, self.roomName)
       self.__broadcastWindow = auxwindows.BroadcastWindow(self)
-      self.__teleportWindow = auxwindows.TeleportWindow(self)
-      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self)
-      self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self)
+      self.__teleportWindow = auxwindows.TeleportWindow(self, adminInitData["roomListLabel"])
+      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self, adminInitData["roomListLabel"])
+      self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self, adminInitData["playerList"])
     else:
       self.__createItemsWindow = None  
       self.__createRoomWindow = None
@@ -534,16 +536,14 @@ class IsoViewHud(isoview.IsoView):
   def __paintRoomInfo(self):
     """ Paints the room info.
     """  
-    #self.roomInfo = guiobjects.OcempPanel(259, 32, [1,1], ROOM_OPTIONS_BACKGROUND)
     if self.__accessMode:
       self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_BACKGROUND)
     else:  
       self.roomInfo = guiobjects.OcempPanel(308, 31, [1,1], ROOM_OPTIONS_UPPER_USER_BACKGROUND)
-    self.roomLabel = guiobjects.OcempLabel(self.__isoviewRoom.getModel().getName(), guiobjects.STYLES["itemLabel"])
+    self.roomLabel = guiobjects.OcempLabel(self.roomName, guiobjects.STYLES["itemLabel"])
     self.roomLabel.topleft = 30, -4
     self.roomInfo.add_child(self.roomLabel)
     if self.__accessMode:
-      #button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.__showEditRoom)
       button = guiobjects.createButton(EDIT_ROOM_IMAGE, [1, 5], ["Editar habitación", self.showTooltip, self.removeTooltip], self.auxWindowHandler, self.__editRoomWindow)
       self.roomInfo.add_child(button)
     self.roomInfo.zOrder = 10000
@@ -608,8 +608,8 @@ class IsoViewHud(isoview.IsoView):
     if event.getParams()["room"]:
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.updateScreenPositions()
-      self.roomLabel.label = event.getParams()["room"].getName()
-      self.roomLabel.set_text(event.getParams()["room"].getName())
+      self.roomLabel.label = event.getParams()["roomLabel"]
+      self.roomLabel.set_text(event.getParams()["roomLabel"])
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
     if self.__isoviewRoom:
@@ -827,7 +827,6 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.findIVItem(self.__selectedItem)
     isTile = False
     if self.__accessMode:
-      #isTile = self.__selectedItem.isTile()
       isTile = event.getParams()['isTile']
     itemName = event.getParams()['name']
     itemImageLabel = event.getParams()['imageLabel']
@@ -1289,7 +1288,8 @@ class IsoViewHud(isoview.IsoView):
       i += 1
       if buttonData['action'] == self.privateChatHandler:
         self.__privateChatButton = button
-    image = self.__player.getImageLabel()
+    expPackage = self.__player.getExpInforPackage()
+    image = expPackage["imageLabel"]
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     guiobjects.generateImageSize(filePath, [64, 64], MASKUSER_IMAGE)
     self.imgMask = guiobjects.OcempImageButtonTransparent(MASKUSER_IMAGE)
@@ -1298,7 +1298,6 @@ class IsoViewHud(isoview.IsoView):
     labelUserName = guiobjects.OcempLabel(self.__player.username, guiobjects.STYLES["userName"])
     labelUserName.topleft = 655, 75
     self.hud.add_child(labelUserName)
-    expPackage = self.__player.getExpInforPackage()
     self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: " + str(expPackage["points"]), guiobjects.STYLES["pointLabel"])
     self.__pointsLabel.topleft = 627, 110
     self.hud.add_child(self.__pointsLabel)

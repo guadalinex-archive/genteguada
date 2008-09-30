@@ -108,19 +108,24 @@ class GGSystem(dMVC.model.Model):
     if not accessMode:
       return False, "No se ha podido autenticar en guadalinex"
     user = self.__getPlayer(username, accessMode)
+    if not self.__accessUserIntoRoom(user):
+      return False, "No existen habitaciones disponibles"  
+    session = GG.model.ggsession.GGSession(user, self)
+    self.__sessions.append(session)
+    return True, session 
+
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
+  def __accessUserIntoRoom(self, user):
     newRoom = user.getRoom()
     if not newRoom:
       newRoom = self.getEntryRoom()
       if not newRoom:
-        return False, "No existen habitaciones disponibles"  
-      else:
-        newRoom = self.getEntryRoom()
+        return False
     else:
+      #comprobar que hay sitio en la habitacion
       user.clearRoom()
     user.changeRoom(newRoom, newRoom.getNearestEmptyCell([1, 1]))
-    session = GG.model.ggsession.GGSession(user, self)
-    self.__sessions.append(session)
-    return True, session 
+    return True
 
   def __getPlayer(self, username, accessMode):
     player = ggmodel.GGModel.read(username, "player")
