@@ -15,18 +15,10 @@ import weakref
 
 class RServer(synchronized.Synchronized):
 
-  def __init__(self,
-               rootModel,
-               port=8000,
-               onConnection=None,
-               onDisconnection=None,
-               onExecution=[]
-               ): 
+  def __init__(self, rootModel, port=8000, onConnection=None, onDisconnection=None, onExecution=[]): 
     utils.logger.debug("RServer.__init__")
     synchronized.Synchronized.__init__(self)
-
     dMVC.setRServer(self)
-
     self.__models = {}
     #self.__models = weakref.WeakValueDictionary()
     self.__rootModel = rootModel
@@ -74,15 +66,13 @@ class RServer(synchronized.Synchronized):
 
 class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
 
-  def __sendInitialData(self): #{{{
+  def __sendInitialData(self): 
     utils.logger.debug("RServerHandler.sendRootModel client: "+str(self.client_address))
-
     synchronized.Synchronized.__init__(self)
     initialData = {}
     initialData['rootModel'] = dMVC.getRServer().getRootModel()
     initialData['sessionID'] = self.__sessionID
     self.sendCommand(initialData)
-  #}}}
 
   def setup(self): 
     utils.logger.debug("Conect client "+str(self.client_address))
@@ -221,15 +211,13 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       #  print "Enviado ",sizeSerialized , command
       return True
     except:
-      utils.logger.exception("Can''t send an object, probable conexion lost")
+      #utils.logger.exception("Can''t send an object, probable conexion lost")
       self.finish()
       return False
 
   def sendCommand(self, command): 
-    #prueba
     self.__commandsQueue.put(command)
     return True
-    #return self.__sendObject(command)
 
   def finish(self): 
     utils.logger.debug("Close the connection with "+str(self.client_address))

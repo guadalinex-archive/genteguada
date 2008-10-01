@@ -322,6 +322,7 @@ class GGRoom(ggmodel.GGModel):
         checkedTile[1] = imageName
     if k == 0:
       self.__specialTiles.append([position, imageName])
+    self.getTile(position).setImage(imageName)
     self.save("room")
       
   @dMVC.model.localMethod

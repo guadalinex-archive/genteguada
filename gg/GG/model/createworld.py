@@ -65,6 +65,7 @@ SKYLINE_CORNER =  os.path.join(FURNITURE_PATH, "skylineCorner.png")
 SKYLINES_UP = [os.path.join(FURNITURE_PATH, "skylineWallUp01.png"), os.path.join(FURNITURE_PATH, "skylineWallUp02.png"), os.path.join(FURNITURE_PATH, "skylineWallUp03.png"), os.path.join(FURNITURE_PATH, "skylineWallUp04.png")]
 SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.join(FURNITURE_PATH, "skylineWallLeft02.png")]
 
+
 class CreateWorld:
   """ CreateWorld class.
   Creates and initializes all GenteGuada items, players and rooms. 
@@ -80,6 +81,8 @@ class CreateWorld:
     """ Creates all GenteGuada components.
     """  
     #self.__createPlayers()
+    self.__createExampleWorld()
+    """
     self.__createRooms()
     self.__decorateRoom1()
     self.__decorateRoom2()
@@ -87,6 +90,7 @@ class CreateWorld:
     self.__decorateRoom4()
     self.__decorateRoom5()
     self.__decorateRoom6()
+    """
 
   def __createPlayers(self):
     """ Creates all players.
@@ -300,4 +304,27 @@ class CreateWorld:
     self.__room6.addItemFromVoid(room_item.GGRoomItem(COLUMN_STONE, [13, 15], [0, 0]), [4, 6])
     self.__room6.addItemFromVoid(myDoor6A, [7, 6])
     self.__room6.addItemFromVoid(myGift1, [4, 4])
+
+  def __createExampleWorld(self):
+    self.__beachRoom = self.__system.createRoom(GG.utils.TILES_BEACH, "Playa", [8, 8], 12, True, True)
+    self.__desertRoom = self.__system.createRoom(GG.utils.TILES_DESERT, "Desierto", [8, 8], 12, True, True)
+    self.__gravelRoom = self.__system.createRoom(GG.utils.TILES_GRAVEL, "Gravilla", [8, 8], 12, True, True)
+    self.__alberoRoom = self.__system.createRoom(GG.utils.TILES_ALBERO, "Albero", [8, 8], 12, True, True)
+    self.__grassRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Hierba", [8, 8], 12, True, True)
+    self.__snowRoom = self.__system.createRoom(GG.utils.TILES_SNOW, "Nieve", [8, 8], 12, True, True)
+    self.__terrazoRoom = self.__system.createRoom(GG.utils.TILES_TERRAZO, "Terrazo", [8, 8], 12, True, True)
+    self.__mudRoom = self.__system.createRoom(GG.utils.TILES_MUD, "Barro", [8, 8], 12, True, True)
+    self.__mozarabeRoom = self.__system.createRoom(GG.utils.TILES_MOZARABE, "Mozárabe", [8, 8], 12, True, True)
+    self.__footballRoom = self.__system.createRoom(GG.utils.TILES_FOOTBALL, "Fútbol", [8, 8], 12, True, True)
+    self.__chessRoom = self.__system.createRoom(GG.utils.TILES_CHESS, "Ajedrez", [8, 8], 12, True, True)
+    self.__roadRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Carretera", [8, 8], 12, True, True)
+    self.__decorateRoad()
+
+  def __decorateRoad(self):
+    for i in range(8):
+      self.__roadRoom.setSpecialTile([4,i], os.path.join(GG.utils.TILE,"disc_vert.png"))
+    for i in range(8):
+      self.__roadRoom.setSpecialTile([5,i], os.path.join(GG.utils.TILE,"asfalto.png"))
+    for i in range(8):
+      self.__roadRoom.setSpecialTile([3,i], os.path.join(GG.utils.TILE,"asfalto.png"))
 

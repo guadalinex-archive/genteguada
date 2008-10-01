@@ -242,11 +242,11 @@ class IsoViewHud(isoview.IsoView):
     if self.__accessMode:
       adminInitData = model.getAdminInitData()
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model, adminInitData["objectsData"])
-      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player, adminInitData["roomList"], adminInitData["roomListLabel"])
+      self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player, adminInitData["roomListInfo"])
       self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player, self.room, self.roomName)
       self.__broadcastWindow = auxwindows.BroadcastWindow(self)
-      self.__teleportWindow = auxwindows.TeleportWindow(self, adminInitData["roomListLabel"])
-      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self, adminInitData["roomListLabel"])
+      self.__teleportWindow = auxwindows.TeleportWindow(self, adminInitData["roomListInfo"].keys())
+      self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self, adminInitData["roomListInfo"].keys())
       self.__kickPlayerWindow = auxwindows.KickPlayerWindow(self, adminInitData["playerList"])
     else:
       self.__createItemsWindow = None  
@@ -606,10 +606,12 @@ class IsoViewHud(isoview.IsoView):
       rect = pygame.Rect(0, 0, GG.utils.GAMEZONE_SZ[0], GG.utils.GAMEZONE_SZ[1])
       self.getScreen().fill((0, 0, 0), rect)
     if event.getParams()["room"]:
+      self.room = event.getParams()["room"]
+      self.roomName = event.getParams()["roomLabel"]
       self.__isoviewRoom = event.getParams()["room"].defaultView(self.getScreen(), self)
       self.__isoviewRoom.updateScreenPositions()
-      self.roomLabel.label = event.getParams()["roomLabel"]
-      self.roomLabel.set_text(event.getParams()["roomLabel"])
+      self.roomLabel.label = event.getParams()["roomLabel"].decode("utf-8")
+      self.roomLabel.set_text(event.getParams()["roomLabel"].decode("utf-8"))
       self.roomInfo.remove_child(self.roomLabel)
       self.roomInfo.add_child(self.roomLabel)
     if self.__isoviewRoom:
@@ -1432,7 +1434,6 @@ class IsoViewHud(isoview.IsoView):
     """ Picks an item and takes it ove the player's head.
     """
     self.__player.lift(self.__selectedItem)
-    self.itemUnselected()
     
   def itemToDrop(self):
     """ Drops a picked item in front of the player.

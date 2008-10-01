@@ -87,11 +87,27 @@ SHOES_TAG = "shoes_tag.png"
 TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG, SHORT_TAG, SKIRT_TAG, SHOES_TAG]
 
 # Floor tile designs
+"""
 TILES = ["grass01.png", "grass02.png", "grass03.png", "grass04.png", "pavingStone01.png", "pavingStone02.png", \
          "pavingStone03.png", "pavingStoneWithGrass01.png", "pavingStoneWithGrass02.png", \
          "pavingStoneWithGrass03.png", "castle01.png", "castle02.png", "upArrow.png", "downArrow.png", 
          "leftArrow.png", "rightArrow.png", "smallStones01.png", "smallStones02.png", "smallStones03.png", \
          "pressed.png"]
+"""
+
+TILES_BEACH = ["arena1.png","arena2.png","arena3.png","arena4.png"] 
+TILES_DESERT = ["desierto1.png","desierto2.png","desierto3.png"] 
+TILES_GRAVEL = ["gravilla1.png"] 
+TILES_ALBERO = ["albero1.png","albero2.png"] 
+TILES_GRASS = ["hierba1.png","hierba2.png"] 
+TILES_SNOW = ["nieve1.png","nieve2.png"] 
+TILES_TERRAZO = ["terrazo1.png"] 
+TILES_MUD = ["barro1.png","barro2.png","barro3.png"] 
+TILES_MOZARABE = ["mozarabe1.png","mozarabe2.png"] 
+TILES_FOOTBALL = ["futbol1.png","futbol2.png","futbol3.png"] 
+TILES_CHESS = ["ajedrez1.png","ajedrez1b.png","ajedrez2.png","ajedrez2b.png"]
+
+TILES = TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + ["asfalto.png"]
 
 # ======================= SOUNDS ===========================
 

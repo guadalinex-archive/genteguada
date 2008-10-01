@@ -288,9 +288,9 @@ class IsoViewRoom(isoview.IsoView):
     """ Sets an item on the room as unselected.
     item: unselected item.
     """
-    cosa = self.findIVItem(item)
-    if cosa:
-      cosa.unselected()
+    itemSelected = self.findIVItem(item)
+    if itemSelected:
+      itemSelected.unselected()
     
   def setItemOnTile(self, item, position):
     """ Adds an item to a room position.

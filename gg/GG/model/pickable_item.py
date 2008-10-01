@@ -31,7 +31,7 @@ class GGPickableItem(room_item.GGRoomItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPickableIte(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName())
+    return GGPickableItem(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.

@@ -486,7 +486,13 @@ class GGSession(ggmodel.GGModel):
   def getAdminInitData(self):
     package = {}
     package["objectsData"] = self.getObjectsData()
-    package["roomList"] = self.getRooms()
-    package["roomListLabel"] = self.getRoomLabels()
     package["playerList"] = self.getPlayersList()
+    package["roomListInfo"] = self.getRoomsInfo()
     return package
+
+  def getRoomsInfo(self):
+    roomsDict = {}
+    rooms = self.getRooms()
+    for room in rooms:
+      roomsDict[room.getName()] = room
+    return roomsDict
