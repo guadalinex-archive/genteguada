@@ -321,7 +321,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def unselected(self):
     """ Restores the item's color and sets it as unselected.
     """
-    imageName = self.getModel().getImagePath() + "-" + self.getModel().getSpriteName()
+    imageName = os.path.join(self.getModel().getImagePath(),self.getModel().getSpriteName())
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
     self.setSprite(pygame.image.load(imgPath).convert_alpha())
       

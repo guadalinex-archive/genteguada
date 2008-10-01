@@ -367,7 +367,7 @@ class OcempLabel(ocempgui.widgets.Label):
     """ Class constructor.
     text: label text.
     style: label text style.
-    """  
+    """
     try:
       self.label = text.decode("utf-8")
     except:
@@ -484,7 +484,7 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
     name: contact name.
     image: contact image name.
     """
-    ocempgui.widgets.components.FileListItem.__init__(self, name, 0)
+    ocempgui.widgets.components.FileListItem.__init__(self, name.decode("utf-8"), 0)
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     size = 46, 31 
     try:

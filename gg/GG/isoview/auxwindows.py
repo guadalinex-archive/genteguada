@@ -111,7 +111,7 @@ class TeleportWindow(AuxBox):
     """  
     roomLabel = self.listItems.getSelectedName()
     self.showOrHide()
-    self.hud.applyTeleport(roomLabel)
+    self.hud.applyTeleport(roomLabel.encode("utf-8"))
 
   def updateListItem(self):
     """ Updates the room's list.
@@ -344,11 +344,11 @@ class EditRoomWindow(AuxWindow):
     """ Shows or hides the edit room window.
     """  
     if self.hide:
-      self.editRoomMaxUsers.text = str(self.__hud.getIVRoom().getModel().maxUsers)  
-      self.roomLabel.text = self.roomLabelText
-      self.imageName = self.__player.getRoom().getTile([0, 0]).spriteName
+      self.editRoomMaxUsers.text = str(self.__hud.room.maxUsers)  
+      self.roomLabel.text = self.__hud.roomName.decode("utf-8")
+      self.imageName = self.__hud.room.getTile([0, 0]).spriteName
       self.imageName = self.imageName[self.imageName.rfind("/")+1:]
-      #self.newTileImages.selectItem(self.imageName)
+      self.newTileImages.selectItem(self.imageName)
     AuxWindow.showOrHide(self)
   
   def draw(self):
@@ -462,7 +462,7 @@ class CreateRoomWindow(AuxWindow):
   Defines the create room window.
   """  
 
-  def __init__(self, hud, player, listRooms, listRoomsLabel):
+  def __init__(self, hud, player, roomsInfo):
     """ Class constructor.
     hud: isometric view hud handler.
     player: active player.
@@ -474,8 +474,9 @@ class CreateRoomWindow(AuxWindow):
     self.sizeY = None
     self.maxUsers = None
     self.label = None
-    self.rooms = listRooms
-    self.listItems = listRoomsLabel
+    self.dictInfoRooms = roomsInfo
+    self.rooms = roomsInfo.values()
+    self.listItems = roomsInfo.keys()
     AuxWindow.__init__(self, hud, "Creación de habitaciones", [400,320])
     
   def showOrHide(self):
@@ -607,9 +608,10 @@ class CreateRoomWindow(AuxWindow):
   def __selectionChange(self):
     """ Changes the default values, according to the selected room.
     """
-    name = self.listRooms.getSelectedName()
-    for room in self.rooms:
-      if name == room.getName():
+    name = self.listRooms.getSelectedName().encode("utf-8")
+    for key in self.listItems:
+      if name == key:
+        room = self.dictInfoRooms[key] 
         self.sizeX.text = str(room.size[0])  
         self.sizeY.text = str(room.size[1])  
         self.maxUsers.text = str(room.maxUsers)
