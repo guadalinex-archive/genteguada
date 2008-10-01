@@ -1,3 +1,9 @@
+dmvc (0.5.4-1) unstable; urgency=low
+
+  * solucionados problemas de velocidad en el envio de comandos rpc
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 01 Oct 2008 21:18:53 +0200
+
 dmvc (0.5.3-1) unstable; urgency=low
 
   * Envio de eventos y desuscripciones apiladas
