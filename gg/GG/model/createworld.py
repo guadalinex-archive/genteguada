@@ -66,6 +66,9 @@ SKYLINES_UP = [os.path.join(FURNITURE_PATH, "skylineWallUp01.png"), os.path.join
 SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.join(FURNITURE_PATH, "skylineWallLeft02.png")]
 
 
+CORNER_STONE = os.path.join(FURNITURE_PATH, "esquina_piedra.png")
+STONE_SIDEA = os.path.join(FURNITURE_PATH, "piedra.png")
+
 class CreateWorld:
   """ CreateWorld class.
   Creates and initializes all GenteGuada items, players and rooms. 
@@ -318,7 +321,12 @@ class CreateWorld:
     self.__footballRoom = self.__system.createRoom(GG.utils.TILES_FOOTBALL, "Fútbol", [8, 8], 12, True, True)
     self.__chessRoom = self.__system.createRoom(GG.utils.TILES_CHESS, "Ajedrez", [8, 8], 12, True, True)
     self.__roadRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Carretera", [8, 8], 12, True, True)
+    #self.__decorateTerrazo()
     self.__decorateRoad()
+
+  def __decorateTerrazo(self):
+    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(CORNER_STONE, [35, 35], [0, 0]), [0, 0])
+    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(STONE_SIDEA, [35, 33], [0, 0]), [0, 1])
 
   def __decorateRoad(self):
     for i in range(8):

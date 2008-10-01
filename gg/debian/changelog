@@ -1,3 +1,9 @@
+genteguada (0.5.4-1) unstable; urgency=low
+
+  * Baldosas definitivas y solucion de algunos problemas encontrados
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 01 Oct 2008 21:17:33 +0200
+
 genteguada (0.5.3-1) unstable; urgency=low
 
   * Mejora la velocidad en el cambio de habitaciones
