@@ -90,8 +90,8 @@ class GGModel(dMVC.model.Model):
       fileSerialized = os.path.join(SAVE_DATA_ROOM, str(self.idModel) + ".serialized")
     else:
       fileSerialized = os.path.join(SAVE_DATA_PLAYER, str(self.username) + ".serialized")
-    f = open(fileSerialized, "w")
-    pickle.dump(self.objectToPersist(), f)
+    #f = open(fileSerialized, "w")
+    #pickle.dump(self.objectToPersist(), f)
 
   def objectToPersist(self):
     return {
