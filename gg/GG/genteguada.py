@@ -124,8 +124,8 @@ class GenteGuada:
     self.__fullScreen = params.fullscreen
     self.__loadingScreen()
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    self.__session = winLogin.draw()
-    #self.__session = winLogin.draw(params.user, params.password)
+    #self.__session = winLogin.draw()
+    self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
     user = self.__session.getPlayer()
     userAdmin = False

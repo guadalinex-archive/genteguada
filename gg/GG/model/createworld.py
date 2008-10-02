@@ -68,6 +68,9 @@ SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.
 
 CORNER_STONE = os.path.join(FURNITURE_PATH, "esquina_piedra.png")
 STONE_SIDEA = os.path.join(FURNITURE_PATH, "piedra.png")
+PRUEBA = os.path.join(FURNITURE_PATH, "esquina2.png")
+PRUEBA2 = os.path.join(FURNITURE_PATH, "ladrillo_2.png")
+PRUEBA3 = os.path.join(FURNITURE_PATH, "ladrillo_2b.png")
 
 class CreateWorld:
   """ CreateWorld class.
@@ -309,24 +312,47 @@ class CreateWorld:
     self.__room6.addItemFromVoid(myGift1, [4, 4])
 
   def __createExampleWorld(self):
+    """
     self.__beachRoom = self.__system.createRoom(GG.utils.TILES_BEACH, "Playa", [8, 8], 12, True, True)
     self.__desertRoom = self.__system.createRoom(GG.utils.TILES_DESERT, "Desierto", [8, 8], 12, True, True)
     self.__gravelRoom = self.__system.createRoom(GG.utils.TILES_GRAVEL, "Gravilla", [8, 8], 12, True, True)
     self.__alberoRoom = self.__system.createRoom(GG.utils.TILES_ALBERO, "Albero", [8, 8], 12, True, True)
     self.__grassRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Hierba", [8, 8], 12, True, True)
     self.__snowRoom = self.__system.createRoom(GG.utils.TILES_SNOW, "Nieve", [8, 8], 12, True, True)
+    """
     self.__terrazoRoom = self.__system.createRoom(GG.utils.TILES_TERRAZO, "Terrazo", [8, 8], 12, True, True)
+    """
     self.__mudRoom = self.__system.createRoom(GG.utils.TILES_MUD, "Barro", [8, 8], 12, True, True)
     self.__mozarabeRoom = self.__system.createRoom(GG.utils.TILES_MOZARABE, "Mozárabe", [8, 8], 12, True, True)
     self.__footballRoom = self.__system.createRoom(GG.utils.TILES_FOOTBALL, "Fútbol", [8, 8], 12, True, True)
     self.__chessRoom = self.__system.createRoom(GG.utils.TILES_CHESS, "Ajedrez", [8, 8], 12, True, True)
     self.__roadRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Carretera", [8, 8], 12, True, True)
-    #self.__decorateTerrazo()
-    self.__decorateRoad()
+    """
+    self.__decorateTerrazo()
+    #self.__decorateRoad()
+
+  def getOffset(self, imageFile):
+    from PIL import Image
+    im = Image.open(os.path.join(GG.utils.DATA_PATH,imageFile))
+    sizeImage = im.size
+    if sizeImage[0] > 120:
+      finalOffsetX = (sizeImage[0] - 120) / 2
+      offsetX = 55 - finalOffsetX
+    else:
+      offsetX = 55
+    if sizeImage[1] > 60:
+      offsetY = sizeImage[1] - 90
+    else:
+      offsetY = -30
+    return [offsetX, offsetY]
 
   def __decorateTerrazo(self):
-    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(CORNER_STONE, [35, 35], [0, 0]), [0, 0])
-    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(STONE_SIDEA, [35, 33], [0, 0]), [0, 1])
+    #[55, -30]
+    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA, self.getOffset(PRUEBA), [0, 0]), [0, 0])
+    for i in range(8):
+      if not i == 0:
+        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA2, self.getOffset(PRUEBA2), [0, 0]), [0, i])
+        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA3, self.getOffset(PRUEBA3), [0, 0]), [i, 0])
 
   def __decorateRoad(self):
     for i in range(8):
