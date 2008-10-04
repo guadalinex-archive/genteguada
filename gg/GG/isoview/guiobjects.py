@@ -887,3 +887,16 @@ def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
     image.zOrder = 0    
   return image  
     
+
+def getOffset(imageFile):
+  im = Image.open(imageFile)
+  sizeImage = im.size
+  if sizeImage[0] > GG.utils.TILE_SZ[0]:
+    offsetX = GG.utils.FLOOR_SHIFT[0] - ((sizeImage[0] - GG.utils.TILE_SZ[0]) / 2)
+  else:
+    offsetX = GG.utils.FLOOR_SHIFT[0]
+  if sizeImage[1] > GG.utils.TILE_SZ[1]:
+    offsetY = sizeImage[1] - GG.utils.TILE_SZ[1] + GG.utils.FLOOR_SHIFT[1]
+  else:
+    offsetY = GG.utils.FLOOR_SHIFT[1]
+  return [offsetX, offsetY]

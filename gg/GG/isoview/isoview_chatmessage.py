@@ -40,20 +40,15 @@ class IsoViewChatMessage(positioned_view.PositionedView):
     self.__message = message
     self.__header = header
     self.position = model.position
-    #print self.position
     positioned_view.PositionedView.__init__(self, model, screen)
     self.style = self.getStyleMessageChat()
     self.label = guiobjects.OcempLabelNotTransparent(message, 140)
     self.label.set_style(ocempgui.widgets.WidgetStyle(self.style["balloon"]))
     self.label.padding = 5
     self.label.set_minimum_size(150, 50)
-    
     self.balloon = self.drawBalloon(message)
-    #self.balloon.opacity = BALLOON_OPACITY
-    
     if model.type != 3:
       pos = GG.utils.p3dToP2d(self.position, [0, 0])
-      #pos = GG.utils.p3dToP2d(model.getPosition(), [0, 0])
       if (pos[0] + 10 + self.balloon.size[0]) > GG.utils.SCREEN_SZ[0]:
         xCord = GG.utils.SCREEN_SZ[0] - self.balloon.size[0]
       else:
@@ -64,11 +59,9 @@ class IsoViewChatMessage(positioned_view.PositionedView):
         yCord = 0
       self.balloon.topleft = [xCord, yCord]
     else:      
-      self.balloon.topleft = [GG.utils.SCREEN_SZ[0]/2 - (self.balloon.size[0]/2), \
-                              GG.utils.SCREEN_SZ[1]/3]
+      self.balloon.topleft = [GG.utils.SCREEN_SZ[0]/2 - (self.balloon.size[0]/2), GG.utils.SCREEN_SZ[1]/3]
     self.balloon.zOrder = 20000
     self.__isohud.addSprite(self.balloon)
-    
     if model.type != 3:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(CHAT_PATH, TAIL[model.type]))  
       self.tail = guiobjects.OcempImageMapTransparent(imgPath)

@@ -14,6 +14,7 @@ JUMP_TIME = 800
 JUMP_ANIMATION_TIME = 100
 JUMP_DISTANCE = 70
 JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
+ANCHOR_PLAYER = [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30]
 # =============================================================
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
@@ -29,6 +30,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     parent: isoview_hud handler.
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
+    self.anchor = ANCHOR_PLAYER
     self.__movieAnimation = None
     self.__destination = None
     self.__tempTimestamp = None
@@ -195,7 +197,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
   def restoreImagePosition(self):  
     """ Restores the image position.
     """  
-    self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.getModel().anchor))
+    self.setScreenPosition(GG.utils.p3dToP2d(self.getPosition(), self.anchor))
       
   def stopFallingAndRestore(self):    
     """ Stops the falling movie animation and restores player's image frame.
@@ -298,10 +300,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     oldItemList = event.getParams()['oldItemList']
     if pos == self.__destination:
       self.getParent().removeMovementDestination()
-    #self.getIVRoom().updateScreenPositionsOn(pos, itemList)
-    tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)  
-    #scrPos = self.getScreenPosition()
-    #self.setScreenPosition([tmpPos[0], scrPos[1]])
+    tmpPos = GG.utils.p3dToP2d(oldPos, self.anchor)  
     if len(oldItemList) < 2:
       self.setScreenPosition(tmpPos)
     else:  

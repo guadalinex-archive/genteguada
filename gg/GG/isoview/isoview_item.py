@@ -29,6 +29,7 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
+    self.__anchor = None
     if position:
       self.__position = position
       self.__imagePath = imagePath
@@ -51,16 +52,16 @@ class IsoViewItem(positioned_view.PositionedView):
     if not self.__imageName: 
       self.__imageName = self.getModel().getSpriteName()
     imageName = os.path.join(imagePath, self.__imageName)  
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
+    self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
+    self.anchor = guiobjects.getOffset(self.imgPath)
     pos = self.__position
-    scrPos = GG.utils.p3dToP2d(pos, self.getModel().anchor)
+    scrPos = GG.utils.p3dToP2d(pos, self.anchor)
     zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
     self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(imgPath).convert_alpha()
+    self.__img.image = pygame.image.load(self.imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = scrPos
     self.__img.zOrder = zOrder
-    #self.__img = guiobjects.loadSprite(imageName, True, scrPos, zOrder)
             
   def getPosition(self):
     """ Returns the item's position on the room.
@@ -204,17 +205,6 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__position = event.getParams()['position']
     oldPos = event.getParams()['oldPosition']
     itemList = event.getParams()['itemList']
-    
-    """
-    import isoview_player
-    
-    if not isinstance(self, isoview_player.IsoViewPlayer):
-      tmpPos = GG.utils.p3dToP2d(oldPos, self.getModel().anchor)
-      scrPos = self.getScreenPosition()
-      self.setScreenPosition([tmpPos[0], scrPos[1]])
-      #self.setScreenPosition(tmpPos)
-    """  
-    
     destination = self.__ivroom.getFutureScreenPosition(self, self.__position, itemList)
     positionAnim = animation.ScreenPositionAnimation(GG.utils.ANIM_WALKING_TIME, self, self.__img.rect.topleft, destination)
     if self.__parent.getSound():
@@ -227,7 +217,7 @@ class IsoViewItem(positioned_view.PositionedView):
     """
     self.__position = event.getParams()['position']
     self.setPositionAnimation(None)
-    self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.getModel().anchor))
+    self.setImgPosition(GG.utils.p3dToP2d(event.getParams()['position'], self.anchor))
     
   def stopFallingAndRestore(self):
     """ DO NOT delete

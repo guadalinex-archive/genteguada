@@ -457,7 +457,7 @@ class IsoViewHud(isoview.IsoView):
     ivItem = self.findIVItem(item)
     invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
     if ivItem:
-      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, GG.utils.p3dToP2d(posOrigin, item.anchor), pos, True)
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, GG.utils.p3dToP2d(posOrigin, ivItem.anchor), pos, True)
       positionAnim.setOnStop(item.getRoom().removeItem, item)
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:

@@ -66,12 +66,6 @@ SKYLINES_UP = [os.path.join(FURNITURE_PATH, "skylineWallUp01.png"), os.path.join
 SKYLINES_LEFT = [os.path.join(FURNITURE_PATH, "skylineWallLeft01.png"), os.path.join(FURNITURE_PATH, "skylineWallLeft02.png")]
 
 
-CORNER_STONE = os.path.join(FURNITURE_PATH, "esquina_piedra.png")
-STONE_SIDEA = os.path.join(FURNITURE_PATH, "piedra.png")
-PRUEBA = os.path.join(FURNITURE_PATH, "esquina2.png")
-PRUEBA2 = os.path.join(FURNITURE_PATH, "ladrillo_2.png")
-PRUEBA3 = os.path.join(FURNITURE_PATH, "ladrillo_2b.png")
-
 class CreateWorld:
   """ CreateWorld class.
   Creates and initializes all GenteGuada items, players and rooms. 
@@ -312,47 +306,89 @@ class CreateWorld:
     self.__room6.addItemFromVoid(myGift1, [4, 4])
 
   def __createExampleWorld(self):
-    """
     self.__beachRoom = self.__system.createRoom(GG.utils.TILES_BEACH, "Playa", [8, 8], 12, True, True)
     self.__desertRoom = self.__system.createRoom(GG.utils.TILES_DESERT, "Desierto", [8, 8], 12, True, True)
     self.__gravelRoom = self.__system.createRoom(GG.utils.TILES_GRAVEL, "Gravilla", [8, 8], 12, True, True)
     self.__alberoRoom = self.__system.createRoom(GG.utils.TILES_ALBERO, "Albero", [8, 8], 12, True, True)
     self.__grassRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Hierba", [8, 8], 12, True, True)
     self.__snowRoom = self.__system.createRoom(GG.utils.TILES_SNOW, "Nieve", [8, 8], 12, True, True)
-    """
     self.__terrazoRoom = self.__system.createRoom(GG.utils.TILES_TERRAZO, "Terrazo", [8, 8], 12, True, True)
-    """
     self.__mudRoom = self.__system.createRoom(GG.utils.TILES_MUD, "Barro", [8, 8], 12, True, True)
     self.__mozarabeRoom = self.__system.createRoom(GG.utils.TILES_MOZARABE, "Mozárabe", [8, 8], 12, True, True)
     self.__footballRoom = self.__system.createRoom(GG.utils.TILES_FOOTBALL, "Fútbol", [8, 8], 12, True, True)
     self.__chessRoom = self.__system.createRoom(GG.utils.TILES_CHESS, "Ajedrez", [8, 8], 12, True, True)
     self.__roadRoom = self.__system.createRoom(GG.utils.TILES_GRASS, "Carretera", [8, 8], 12, True, True)
-    """
+    self.__decorateBeach()
+    self.__decorateDesert()
+    self.__decorateGravel()
+    self.__decorateGrass()
     self.__decorateTerrazo()
-    #self.__decorateRoad()
+    self.__decorateFootball()
+    self.__decorateMud()
+    self.__decorateChess()
+    self.__decorateRoad()
 
-  def getOffset(self, imageFile):
-    from PIL import Image
-    im = Image.open(os.path.join(GG.utils.DATA_PATH,imageFile))
-    sizeImage = im.size
-    if sizeImage[0] > 120:
-      finalOffsetX = (sizeImage[0] - 120) / 2
-      offsetX = 55 - finalOffsetX
-    else:
-      offsetX = 55
-    if sizeImage[1] > 60:
-      offsetY = sizeImage[1] - 90
-    else:
-      offsetY = -30
-    return [offsetX, offsetY]
-
-  def __decorateTerrazo(self):
-    #[55, -30]
-    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA, self.getOffset(PRUEBA), [0, 0]), [0, 0])
+  def __decorateBeach(self):
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_WIRE, [0, 0], [0, 0]), [0, 0])
     for i in range(8):
       if not i == 0:
-        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA2, self.getOffset(PRUEBA2), [0, 0]), [0, i])
-        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(PRUEBA3, self.getOffset(PRUEBA3), [0, 0]), [i, 0])
+        self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.WIRE_LEFT, [0, 0], [0, 0]), [0, i])
+        self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.WIRE_UP, [0, 0], [0, 0]), [i, 0])
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.ORANGETREE, [0, 0], [0, 0]), [7, 7])
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.OLIVETREE, [0, 0], [0, 0]), [7, 2])
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.RACK, [0, 0], [0, 0]), [5, 2])
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.PINE_1, [0, 0], [0, 0]), [1, 7])
+    self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.PINE_2, [0, 0], [0, 0]), [1, 3])
+    self.__beachRoom.addItemFromVoid(box_heavy.GGBoxHeavy(GG.utils.WEIGHS, [0, 0], [0, -12], "Pesa"), [7, 1])
+    self.__beachRoom.addItemFromVoid(box_heavy.GGBoxHeavy(GG.utils.BOX, [0, 0], [0, -12], "Caja"), [3, 1])
+    self.__beachRoom.addItemFromVoid(pickable_item.GGPickableItem(GG.utils.GIFT, [0, 0], [0, 0], GG.utils.GIFT, "regalo"), [5,3])
+
+  def __decorateDesert(self):
+    self.__desertRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CACTUS_1, [0, 0], [0, 0]), [4, 4])
+    self.__desertRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CACTUS_2, [0, 0], [0, 0]), [1, 7])
+    self.__desertRoom.addItemFromVoid(box_heavy.GGBoxHeavy(GG.utils.HAY, [0, 0], [0, -12], "Bala de heno"), [7, 1])
+    self.__desertRoom.addItemFromVoid(box_heavy.GGBoxHeavy(GG.utils.TABLE, [0, 0], [0, -12], "Mesa"), [7, 7])
+    self.__desertRoom.addItemFromVoid(pickable_item.PaperMoney(GG.utils.TICKET_5, [0, 0], [0, 0]), [4,3])
+
+  def __decorateGravel(self):
+    self.__gravelRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_BUSH, [0, 0], [0, 0]), [0, 0])
+    for i in range(8):
+      if not i == 0:
+        self.__gravelRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.BUSH_LEFT, [0, 0], [0, 0]), [0, i])
+        self.__gravelRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.BUSH_UP, [0, 0], [0, 0]), [i, 0])
+    self.__gravelRoom.addItemFromVoid(giver_npc.GGGiverNpc(GG.utils.KEY_RED, [0, 0], [0, 0], GG.utils.KEY_RED, "Llave"),[2,2])
+
+  def __decorateGrass(self):
+    self.__grassRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.FIR, [0, 0], [0, 0]), [4, 4])
+    self.__grassRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.BUSH, [0, 0], [0, 0]), [4, 4])
+
+  def __decorateTerrazo(self):
+    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_BRICK, [0, 0], [0, 0]), [0, 0])
+    for i in range(8):
+      if not i == 0:
+        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.BRICK_LEFT, [0, 0], [0, 0]), [0, i])
+        self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.BRICK_UP, [0, 0], [0, 0]), [i, 0])
+    self.__terrazoRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.COLUMN, [0, 0], [0, 0]), [4, 4])
+
+  def __decorateFootball(self):
+    self.__footballRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_WOOD, [0, 0], [0, 0]), [0, 0])
+    for i in range(8):
+      if not i == 0:
+        self.__footballRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.WOOD_LEFT, [0, 0], [0, 0]), [0, i])
+        self.__footballRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.WOOD_UP, [0, 0], [0, 0]), [i, 0])
+
+  def __decorateMud(self):
+    self.__mudRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_STONE, [0, 0], [0, 0]), [0, 0])
+    for i in range(8):
+      if not i == 0:
+        self.__mudRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.STONE_LEFT, [0, 0], [0, 0]), [0, i])
+        self.__mudRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.STONE_UP, [0, 0], [0, 0]), [i, 0])
+    self.__mudRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.SHELF_1, [0, 0], [0, 0]), [4, 4])
+    self.__mudRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.SHELF_2, [0, 0], [0, 0]), [2, 2])
+
+  def __decorateChess(self):
+    self.__chessRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.LAMP, [0, 0], [0, 0]), [4, 4])
+    self.__chessRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.FONT, [0, 0], [0, 0]), [1, 7])
 
   def __decorateRoad(self):
     for i in range(8):

@@ -249,3 +249,17 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       return True
     else:
       return False    
+
+
+class GGRiver(GGRoomItem):
+
+  def __init__(self, spriteName, anchor, topAnchor, label=None):
+    GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
+
+  def getOptions(self):
+    return ["jumpOver"]
+
+  def copyObject(self):
+    copy = GGRiver(self.spriteName ,self.anchor, self.topAnchor)
+    return copy
+

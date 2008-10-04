@@ -147,6 +147,7 @@ class IsoViewRoom(isoview.IsoView):
       self.__parent.addItemToRoomFromVoid(ivitem)  
       return
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
+    event.getParams()['item'].subscribeEvent( "position", ivItem.positionChanged)
     self.addIsoViewItem(ivItem)
     self.__parent.addItemToRoomFromVoid(ivItem)
     
@@ -155,6 +156,7 @@ class IsoViewRoom(isoview.IsoView):
     event: even info.
     """
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
+    event.getParams()['item'].subscribeEvent( "position", ivItem.positionChanged)
     self.addIsoViewItem(ivItem)
     self.__parent.addItemToRoomFromInventory(ivItem)
         
@@ -223,7 +225,7 @@ class IsoViewRoom(isoview.IsoView):
     for item in itemList:
       ivIt = self.findIVItem(item)
       if ivIt:  
-        scPos = GG.utils.p3dToP2d(ivIt.getPosition(), item.anchor)
+        scPos = GG.utils.p3dToP2d(ivIt.getPosition(), ivIt.anchor)
         if i == 0:
           zOrder = ivIt.getZOrder()
           i = 1
@@ -244,12 +246,11 @@ class IsoViewRoom(isoview.IsoView):
     accHeight = tile.anchor[0]
     accWidth = tile.anchor[1]
     itemModel = ivItem.getModel()
-    #listaAux = itemList[:len(itemList)-1]
     listaAux = itemList
     for item in listaAux:
       accWidth += item.topAnchor[0] 
       accHeight += item.topAnchor[1]
-    scPos = GG.utils.p3dToP2d(pos, itemModel.anchor)
+    scPos = GG.utils.p3dToP2d(pos, ivItem.anchor)
     return [scPos[0] - accWidth, scPos[1] - accHeight]
           
   def addIsoViewChatItem(self, ivChatItem):

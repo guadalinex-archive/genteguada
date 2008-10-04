@@ -685,6 +685,8 @@ class CreateItemsWindow(AuxWindow):
     self.activeLabels = []
     self.__objectsArea = None
     self.images = None
+    self.labelShift = [153, 10]
+    self.spacing = 45
     AuxWindow.__init__(self, hud, "Creación de objetos", [0,0])
 
   def draw(self):
@@ -725,7 +727,7 @@ class CreateItemsWindow(AuxWindow):
     defaultButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [90, 340], ["Restaurar valores por defecto", self.showTooltip, self.removeTooltip], self.__restoreDefault)
     self.container.add_child(defaultButton)
 
-  def __selectionChange(self):
+  def __selectionChange2(self):
     """ Changes the default values, according to the selected item.
     """
     name = self.__objectsArea.getSelectedName()
@@ -788,6 +790,146 @@ class CreateItemsWindow(AuxWindow):
           fCount += 1
         self.editableFields[key] = fields
       iPos += 1
+
+  def __selectionChange(self):
+    """ Changes the default values, according to the selected item.
+    """
+    name = self.__objectsArea.getSelectedName()
+    if not name:
+      return  
+    self.editableFields = []
+    attrDict = self.__objectsDict[name]
+    for label in self.activeLabels:
+      self.container.remove_child(label)
+      label.destroy()
+    self.activeLabels = []  
+    self.editableFields = {}
+    iPos = 0
+    keys = attrDict.keys()
+    if "position" in keys:
+      self.__paintDoubleTextField(iPos, "Posición", attrDict["position"], "position")
+      iPos += 1
+    if "label" in keys:
+      self.__paintTextField(iPos, "Etiqueta", attrDict["label"], "label")
+      iPos += 1
+    if "destinationRoom" in keys:
+      self.__paintTextField(iPos, "Habitación destino", attrDict["destinationRoom"], "destinationRoom")
+      iPos += 1
+    if "exitPosition" in keys:
+      self.__paintDoubleTextField(iPos, "Posición de salida", attrDict["exitPosition"], "exitPosition")
+      iPos += 1
+    if "images" in keys:
+      self.__paintImage(iPos, attrDict["images"])
+    """
+    keys.sort()
+    for key in keys:
+      label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
+      label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
+      self.container.add_child(label)
+      self.activeLabels.append(label)
+      if key == "images":
+        height = 60
+        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), FURNITURE)  
+        self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+        iPos += 1
+        self.container.add_child(self.images)  
+        self.activeLabels.append(self.images)
+        self.editableFields[key] = self.images
+      elif key == "imagesGift":
+        self.imagesGiftList = attrDict[key]
+        height = 60
+        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)
+        self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+        iPos += 1
+        self.container.add_child(self.imagesgift)  
+        self.activeLabels.append(self.imagesgift)
+        self.editableFields[key] = self.imagesgift
+        buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + labelShift[0], 40 + iPos*spacing + 40 + labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
+        self.container.add_child(buttonFileChooser)
+        self.activeLabels.append(buttonFileChooser)
+        iPos += 1
+      else:  
+        fCount = 0
+        fields = []
+        for field in attrDict[key]:
+          entryLabel = guiobjects.OcempEditLine()
+          entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+          entryLabel.text = str(field)
+          entryLabel.border = 1
+          entryLabel.topleft = 10 + fCount*65 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
+          if len(attrDict[key]) == 1:
+            entryLabel.set_minimum_size(125, 20)
+          else:    
+            entryLabel.set_minimum_size(50, 20)
+          self.container.add_child(entryLabel)
+          self.activeLabels.append(entryLabel)
+          fields.append(entryLabel)
+          fCount += 1
+        self.editableFields[key] = fields
+      iPos += 1
+  """
+
+  def __paintTextField(self, iPos, title, label, key):
+    self.__paintTitleField(title, iPos)
+    entryLabel = self.__paintLongField(label, iPos)
+    self.editableFields[key] = [entryLabel]
+
+  def __paintImage(self, iPos, images):
+    self.__paintTitleField("Imagenes", iPos)
+    imagesArea = self.__paintImagesField(iPos, images)
+    self.editableFields["images"] = imagesArea
+
+  def __paintDoubleTextField(self, iPos, title, values, key):
+    self.__paintTitleField(title, iPos)
+    entryPosX = self.__paintSortField(values[0], iPos, 0)
+    entryPosY = self.__paintSortField(values[1], iPos, 1)
+    self.editableFields[key] = [entryPosX, entryPosY]
+ 
+
+  def __paintImagesField(self, iPos, images):
+    imagesArea = guiobjects.OcempImageList(190, self.__getImagesFieldHeight(iPos), sorted(images), FURNITURE)  
+    imagesArea.topleft = 10 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
+    self.container.add_child(imagesArea)  
+    self.activeLabels.append(imagesArea)
+    return imagesArea
+
+  def __getImagesFieldHeight(self, iPos):
+    if iPos == 1:
+      return 250
+    elif iPos == 2:
+      return 220
+    elif iPos == 4:
+      return 150
+    return 60
+
+  def __paintTitleField(self, title, iPos):
+    label = guiobjects.OcempLabel(title, guiobjects.STYLES["itemLabel"])
+    label.topleft = 10 + self.labelShift[0], 25 + iPos * self.spacing + self.labelShift[1]
+    self.container.add_child(label)
+    self.activeLabels.append(label)
+
+  def __paintSortField(self, text, iPos, margin):
+    entryLabel = guiobjects.OcempEditLine()
+    entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    entryLabel.text = str(text)
+    entryLabel.border = 1
+    entryLabel.topleft = 10 + margin * 65 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
+    entryLabel.set_minimum_size(50, 20)
+    self.container.add_child(entryLabel)
+    self.activeLabels.append(entryLabel)
+    return entryLabel
+
+  def __paintLongField(self, text, iPos):
+    entryLabel = guiobjects.OcempEditLine()
+    entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
+    entryLabel.text = str(text)
+    entryLabel.border = 1
+    entryLabel.topleft = 10 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
+    entryLabel.set_minimum_size(180, 20)
+    self.container.add_child(entryLabel)
+    self.activeLabels.append(entryLabel)
+    return entryLabel
+
 
   def openFileDialog(self):
     """ Opens the file explorer dialog.
