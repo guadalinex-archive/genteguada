@@ -29,7 +29,8 @@ class IsoViewItem(positioned_view.PositionedView):
     positioned_view.PositionedView.__init__(self, model, screen)
     self.__ivroom = room
     self.__parent = parent
-    self.__anchor = None
+    self.anchor = None
+    self.topAnchor = None
     if position:
       self.__position = position
       self.__imagePath = imagePath
@@ -54,6 +55,7 @@ class IsoViewItem(positioned_view.PositionedView):
     imageName = os.path.join(imagePath, self.__imageName)  
     self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     self.anchor = guiobjects.getOffset(self.imgPath)
+    self.topAnchor = guiobjects.getTopOffset(self.anchor, imageName)
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.anchor)
     zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10

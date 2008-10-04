@@ -8,23 +8,20 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, label, anchor, parentPosition):
+  def __init__(self, spriteName, label, parentPosition):
     """ Class constructor.
     spriteName: image name.
     label: item's label.
-    anchor: on-screen sprite offset.
     parentPosition: origin position.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName, label)
     self.spriteInventory = spriteName
     self.points = 0
-    self.anchor = anchor
     self.__position = parentPosition
 
   def objectToPersist(self):
     dict = inventory_item.GGInventoryItem.objectToPersist(self)
     dict["spriteInventory"] = self.spriteInventory
-    dict["anchor"] = self.anchor
     dict["position"] = self.__position
     return dict
 
@@ -32,7 +29,6 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     inventory_item.GGInventoryItem.load(self, dict)
     self.spriteInventory = dict["spriteInventory"]
     self.points = 0
-    self.anchor = dict["anchor"]
     self.__position = dict["position"]
 
   def getItemBuildPackage(self):
@@ -46,9 +42,8 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    #parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
     parentVars = inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['points', 'anchor']
+    return parentVars + ['points']
       
   def getOptions(self):
     """ Returns the item's available options.
@@ -94,16 +89,15 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, label, anchor, parentPosition, idGift):
+  def __init__(self, spriteName, label, parentPosition, idGift):
     """ Class constructor.
     spriteName: image name.
     label: item's label.
-    anchor: on-screen sprite offset.
     parentPosition: origin position.
     spriteName: image name.
     idGift: gift identifier.
     """
-    GGGeneratedInventoryItem.__init__(self, spriteName, label, anchor, parentPosition)
+    GGGeneratedInventoryItem.__init__(self, spriteName, label, parentPosition)
     self.__idGift = idGift
 
   def objectToPersist(self):

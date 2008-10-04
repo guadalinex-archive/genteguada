@@ -403,11 +403,11 @@ class GGSession(ggmodel.GGModel):
     if images and position and label:
       print objectLabel
       if objectLabel == "Apilables":
-        object = box_heavy.GGBoxHeavy(images, [0,0], [0,-12], label)
+        object = box_heavy.GGBoxHeavy(images, label)
       elif objectLabel == "Llaves":
-        object = giver_npc.GGGiverNpc(images, [0, 0], [0, 0], images, label)
+        object = giver_npc.GGGiverNpc(images, images, label)
       elif objectLabel == "Inventario":
-        object = pickable_item.GGPickableItem(images, [0, 0], [0, 0], images, label)
+        object = pickable_item.GGPickableItem(images, images, label)
       room.addItemFromVoid(object, position)
 
   def __createObjectTeleport(self, data, room):
@@ -417,7 +417,7 @@ class GGSession(ggmodel.GGModel):
     exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
     label = self.__getLabelCreateObject(data["label"])
     if images and position and destinationRoom and exitPosition:
-      door = teleport.GGTeleport(images, [0, 0], [0, 0], exitPosition, destinationRoom.getName(), label)
+      door = teleport.GGTeleport(images, exitPosition, destinationRoom.getName(), label)
       room.addItemFromVoid(door, position)
 
   def createObject(self, name, data):

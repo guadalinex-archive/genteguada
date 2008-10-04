@@ -10,23 +10,18 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, anchor, topAnchor, label=None):
+  def __init__(self, spriteName, label=None):
     """ Class constructor.
     spriteName: image name.
-    anchor: image offset on screen.
     topAnchor: image top offset on screen.
     """
     inventory_item.GGInventoryItem.__init__(self, spriteName, label)
-    self.anchor = anchor
-    self.topAnchor = [topAnchor[0] , GG.utils.TILE_SZ[1] + anchor[1] + topAnchor[1]]
     self.__room = None
     self.__tile = None
     self.points = 0
 
   def objectToPersist(self):
     dict = inventory_item.GGInventoryItem.objectToPersist(self)
-    dict["anchor"] = self.anchor
-    dict["topAnchor"] = self.topAnchor
     if self.__tile:
       dict["position"] = self.__tile.getPosition()
     else:
@@ -39,8 +34,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
 
   def load(self, dict): 
     inventory_item.GGInventoryItem.load(self, dict)
-    self.anchor = dict["anchor"]
-    self.topAnchor = dict["topAnchor"]
     if "room" in dict.keys():
       myRoom = ggsystem.GGSystem.getInstance().getRoom(dict["room"])
     else:
@@ -60,14 +53,14 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def copyObject(self):
     """ Creates and returns a copy of this item.
     """  
-    copy = GGRoomItem(self.spriteName ,self.anchor, self.topAnchor)
+    copy = GGRoomItem(self.spriteName)
     return copy
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
     parentVars = GG.model.inventory_item.GGInventoryItem.variablesToSerialize(self)
-    return parentVars + ['anchor', 'topAnchor', 'points']
+    return parentVars + ['points']
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -253,13 +246,13 @@ class GGRoomItem(inventory_item.GGInventoryItem):
 
 class GGRiver(GGRoomItem):
 
-  def __init__(self, spriteName, anchor, topAnchor, label=None):
-    GGRoomItem.__init__(self, spriteName, anchor, topAnchor)
+  def __init__(self, spriteName):
+    GGRoomItem.__init__(self, spriteName)
 
   def getOptions(self):
     return ["jumpOver"]
 
   def copyObject(self):
-    copy = GGRiver(self.spriteName ,self.anchor, self.topAnchor)
+    copy = GGRiver(self.spriteName)
     return copy
 

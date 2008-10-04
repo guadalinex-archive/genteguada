@@ -11,15 +11,13 @@ class GGGiverNpc(room_item.GGRoomItem):
   Defines item attributes and methods.
   """
   
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
+  def __init__(self, spriteName, spriteInventory, label):
     """ Class constructor.
     spriteName: image name.
-    anchor: image offset on screen.
-    topAnchor: top item's image offset.
     spriteInventory: sprite used to paint this object on player's inventory.
     label: item label.
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, spriteName, label)
     self.spriteInventory = spriteInventory
     self.points = 0
 
@@ -36,7 +34,7 @@ class GGGiverNpc(room_item.GGRoomItem):
   def copyObject(self): 
     """ Copies and returns this object.
     """  
-    return GGGiverNpc(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName())
+    return GGGiverNpc(self.spriteName, self.spriteInventory, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -81,7 +79,7 @@ class GGGiverNpc(room_item.GGRoomItem):
       message = "Obtienes " + self.getName()
       player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, \
                 self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
-      return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.getName(), self.anchor, self.getPosition()), self.getPosition()
+      return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.getName(), self.getPosition()), self.getPosition()
   
   def inventoryOnly(self):
     """ Checks if this is an inventory item or not.
@@ -103,16 +101,14 @@ class GGGiverNpc(room_item.GGRoomItem):
 
 class WebGift(GGGiverNpc):
     
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label, creator):
+  def __init__(self, spriteName, spriteInventory, label, creator):
     """ Class constructor.
     spriteName: image name.
-    anchor: image offset on screen.
-    topAnchor: top item's image offset.
     spriteInventory: sprite used to paint this object on player's inventory.
     label: item label.
     creator: item's creator.
     """
-    GGGiverNpc.__init__(self, spriteName, anchor, topAnchor, spriteInventory, label)
+    GGGiverNpc.__init__(self, spriteName, spriteInventory, label)
     self.__creator = creator
     self.__idGift = self.generateId()
     #print self.__idGift
@@ -142,7 +138,7 @@ class WebGift(GGGiverNpc):
   def copyObject(self):
     """ Copies and returns this item.
     """   
-    return WebGift(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName(), self.__creator)
+    return WebGift(self.spriteName, self.spriteInventory, self.getName(), self.__creator)
   
   def getGiftFor(self, player):
     """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
@@ -150,7 +146,7 @@ class WebGift(GGGiverNpc):
     """  
     player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.getName(), \
                 self.getName().getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), self.anchor, \
+    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), \
                                                     self.getPosition(), self.__idGift), self.getPosition()
                                                     
   def generateId(self):

@@ -172,6 +172,14 @@ BOX = os.path.join(FURNITURE_PATH, "caja.png")
 ROCK2 = os.path.join(FURNITURE_PATH, "roca2.png")
 POT = os.path.join(FURNITURE_PATH, "maceta.png")
 
+STACKS_TOPANCHOR = {}
+STACKS_TOPANCHOR["heno.png"] = -12
+STACKS_TOPANCHOR["mesa.png"] = -12
+STACKS_TOPANCHOR["pesa.png"] = -12
+STACKS_TOPANCHOR["caja.png"] = -12
+STACKS_TOPANCHOR["roca2.png"] = -25
+STACKS_TOPANCHOR["maceta.png"] = -12
+
 STACKS = ["heno.png","mesa.png","pesa.png","caja.png","roca2.png","maceta.png"]
 
 

@@ -6,13 +6,12 @@ class GGItemWithInventory(room_item.GGRoomItem):
   Defines an item with inventory.
   """
  
-  def __init__(self, spritePath, anchor, topAnchor):
+  def __init__(self, spritePath):
     """ Class builder.
     spriteList: sprite list used to paint the player.
     position: player position.
-    topAnchor: image anchor on screen.
     """
-    room_item.GGRoomItem.__init__(self, spritePath, anchor, topAnchor)
+    room_item.GGRoomItem.__init__(self, spritePath)
     self.__inventory = []
 
   def objectToPersist(self):

@@ -13,19 +13,17 @@ class GGPenguin(room_item.GGRoomItem):
   Defines a penguin object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label):
+  def __init__(self, sprite, label):
     """ Class builder.
     sprite: sprite used to paint the penguin.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: penguin's label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, sprite, label)
 
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguin(self.spriteName, self.anchor, self.topAnchor, self.getName())
+    return GGPenguin(self.spriteName, self.getName())
         
   def getOptions(self):
     """ Returns the item's available options.
@@ -69,15 +67,13 @@ class GGPenguinTalker(GGPenguin):
   Defines a talker penguin object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label, message):
+  def __init__(self, sprite, label, message):
     """ Class builder.
     sprite: sprite used to paint the penguin.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: penguin's label.
     message: penguin's message.
     """
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
+    GGPenguin.__init__(self, sprite, label)
     self.__msg = message
 
   def objectToPersist(self):
@@ -92,7 +88,7 @@ class GGPenguinTalker(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguinTalker(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__msg)
+    return GGPenguinTalker(self.spriteName, self.getName(), self.__msg)
     
   def getMessage(self):
     """ Returns the penguin's message.
@@ -125,16 +121,14 @@ class GGPenguinTrade(GGPenguin):
   Defines a trade penguin behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label, message, gift):
+  def __init__(self, sprite, label, message, gift):
     """ Class builder.
     sprite: sprite used to paint the penguin.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: penguin's label
     message: penguin's message.
     gift: item the penguin will ask the player for.
     """
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
+    GGPenguin.__init__(self, sprite, label)
     self.__msg = message
     self.__giftLabel = gift
 
@@ -152,7 +146,7 @@ class GGPenguinTrade(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPenguinTrade(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__msg, self.__giftLabel)
+    return GGPenguinTrade(self.spriteName, self.getName(), self.__msg, self.__giftLabel)
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -195,7 +189,7 @@ class GGPenguinTrade(GGPenguin):
       self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
                                                  self.getPosition(), 2), self.__msg)
       talker.removeFromInventory(giftItem)
-      return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.anchor, self.getPosition())
+      return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.getPosition())
     else:
       chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..."
       self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
@@ -210,15 +204,13 @@ class GGPenguinQuiz(GGPenguin):
   Defines a quiz penguin object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, label, filePath):
+  def __init__(self, sprite, label, filePath):
     """ Class builder.
     sprite: sprite used to paint the penguin.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: penguin's label.
     filePath: folder where quiz questions are.
     """
-    GGPenguin.__init__(self, sprite, anchor, topAnchor, label)
+    GGPenguin.__init__(self, sprite, label)
     self.__filePath = filePath
     self.__fileList = os.listdir(filePath)
     rmList = []
@@ -249,7 +241,7 @@ class GGPenguinQuiz(GGPenguin):
   def copyObject(self):
     """ Copies and returns this item.
     """      
-    return GGPenguinQuiz(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.__filePath)
+    return GGPenguinQuiz(self.spriteName, self.getName(), self.__filePath)
   
   def getOptions(self):
     """ Returns the item's available options.

@@ -12,8 +12,6 @@ import os
 
 # ======================= CONSTANTS ===========================
 MAX_DEPTH = 1
-ANCHOR_PLAYER = [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30]
-TOP_ANCHOR_PLAYER = [0, -20]
 # =============================================================
 
 class GGPlayer(item_with_inventory.GGItemWithInventory):
@@ -24,8 +22,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def __init__(self, username, timestamp):
     """ Class builder.
     spriteList: sprite list used to paint the player.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     username: user name.
     password: user password.
     timestamp: last update on avatar configuration.

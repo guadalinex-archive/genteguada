@@ -12,16 +12,14 @@ class GGTeleport(room_item.GGRoomItem):
   Defines a teleporter object behaviour.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label):
+  def __init__(self, sprite, exitPosition, destinationRoom, label):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
-    anchor: image offset on screen.
-    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, sprite, label)
     self.__exitPosition = exitPosition
     self.__destinationRoom = destinationRoom
     self.points = 10
@@ -41,7 +39,7 @@ class GGTeleport(room_item.GGRoomItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGTeleport(self.spriteName, self.anchor, self.topAnchor, self.__exitPosition, self.__destinationRoom, self.getName())
+    return GGTeleport(self.spriteName, self.__exitPosition, self.__destinationRoom, self.getName())
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -164,17 +162,15 @@ class GGDoorWithKey(GGTeleport):
   Defines a locked door object behaviour.
   """
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, key):
+  def __init__(self, sprite, exitPosition, destinationRoom, label, key):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
-    anchor: image offset on screen.
-    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
     key: door's key
     """
-    GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
     self.__key = key
 
   def objectToPersist(self):
@@ -189,7 +185,7 @@ class GGDoorWithKey(GGTeleport):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGDoorWithKey(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__key)
+    return GGDoorWithKey(self.spriteName, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__key)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
@@ -229,17 +225,15 @@ class GGDoorPressedTiles(GGTeleport):
   Defines a door with pressed tiles behaviour.
   """
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, pressedTiles):
+  def __init__(self, sprite, exitPosition, destinationRoom, label, pressedTiles):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
-    anchor: image offset on screen.
-    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
     pressedTiles: tiles that need to be pressed to open the door.
     """
-    GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
     self.__pressedTiles = pressedTiles
 
   def objectToPersist(self):
@@ -265,7 +259,7 @@ class GGDoorPressedTiles(GGTeleport):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGDoorPressedTiles(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__pressedTiles)
+    return GGDoorPressedTiles(self.spriteName, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.__pressedTiles)
 
   def setPressedTile1(self, pos):
     """ Sets the first monitored tile.
@@ -304,17 +298,15 @@ class GGDoorOpenedByPoints(GGTeleport):
   Defines a door object opened if the clicker received points from another item.
   """
 
-  def __init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label, pointsGiver):
+  def __init__(self, sprite, exitPosition, destinationRoom, label, pointsGiver):
     """ Class builder.
     sprite: sprite used to paint the teleporter.
-    anchor: image offset on screen.
-    topAnchor: image top offset on screen.
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
     pointsGiver: item who gave points to the player.
     """
-    GGTeleport.__init__(self, sprite, anchor, topAnchor, exitPosition, destinationRoom, label)
+    GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
     self.pointsGiver = pointsGiver 
 
   def objectToPersist(self):
@@ -342,7 +334,7 @@ class GGDoorOpenedByPoints(GGTeleport):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGDoorOpenedByPoints(self.spriteName, self.anchor, self.topAnchor, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.pointsGiver)
+    return GGDoorOpenedByPoints(self.spriteName, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.pointsGiver)
 
   def openedBy(self, clicker):
     """ Teleports a player to another location.
