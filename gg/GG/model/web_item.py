@@ -9,15 +9,13 @@ class GGWebItem(room_item.GGRoomItem):
   Defines a web item object.  
   """
  
-  def __init__(self, sprite, anchor, topAnchor, url, label):
+  def __init__(self, sprite, url, label):
     """ Class builder.
     sprite: sprite used to paint the item.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     url: internet address.
     label: item's label.
     """
-    room_item.GGRoomItem.__init__(self, sprite, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, sprite, label)
     self.__url = url
     
   def objectToPersist(self):
@@ -32,7 +30,7 @@ class GGWebItem(room_item.GGRoomItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGWebItem(self.spriteName, self.anchor, self.topAnchor, self.__url, self.getName())
+    return GGWebItem(self.spriteName, self.__url, self.getName())
     
   def getOptions(self):
     """ Returns the item's available options.
@@ -78,15 +76,13 @@ class GGWebPannel(GGWebItem):
   Defines a web pannel object.
   """
  
-  def __init__(self, sprite, anchor, topAnchor, url, label):
+  def __init__(self, sprite, url, label):
     """ Class builder.
     sprite: sprite used to paint the item.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     url: internet address.
     label: item's label.
     """
-    GGWebItem.__init__(self, sprite, anchor, topAnchor, url, label)
+    GGWebItem.__init__(self, sprite, url, label)
     self.__pannels = []
 
   def objectToPersist(self):
@@ -106,7 +102,7 @@ class GGWebPannel(GGWebItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGWebPannel(self.spriteName, self.anchor, self.topAnchor, self.getUrl(), self.getName())
+    return GGWebPannel(self.spriteName, self.getUrl(), self.getName())
     
   def addPannels(self, *pannels):
     """ Adds new pannels to the pannel group.

@@ -9,15 +9,14 @@ class GGPickableItem(room_item.GGRoomItem):
   Defines a pickable item behaviour.
   """
  
-  def __init__(self, spriteName, anchor, topAnchor, spriteInventory, label):
+  def __init__(self, spriteName, spriteInventory, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     position: item position.
-    anchor: image anchor on screen.
     spriteInventory: sprite used to paint the item on the screen inventory zone.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, spriteName, label)
     self.spriteInventory = spriteInventory
     
   def objectToPersist(self):
@@ -32,7 +31,7 @@ class GGPickableItem(room_item.GGRoomItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return GGPickableItem(self.spriteName, self.anchor, self.topAnchor, self.spriteInventory, self.getName())
+    return GGPickableItem(self.spriteName, self.spriteInventory, self.getName())
     
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
@@ -86,15 +85,13 @@ class GGPickableItem(room_item.GGRoomItem):
 
 class PaperMoney(GGPickableItem):
 
-  def __init__(self, spriteName, anchor, topAnchor):
+  def __init__(self, spriteName):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: item's label
     value: item's value
     """
-    GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, GG.utils.MONEY_LABEL[os.path.split(spriteName)[-1]])
+    GGPickableItem.__init__(self, spriteName, spriteName, GG.utils.MONEY_LABEL[os.path.split(spriteName)[-1]])
     self.points = GG.utils.MONEY_VALUE[os.path.split(spriteName)[-1]]
 
   def objectToPersist(self):
@@ -109,7 +106,7 @@ class PaperMoney(GGPickableItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return PaperMoney(self.spriteName, self.anchor, self.topAnchor, self.getName(), self.points)
+    return PaperMoney(self.spriteName, self.getName(), self.points)
 
   def getAdminActions(self):
     """ Returns the admin available options.

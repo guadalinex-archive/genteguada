@@ -8,11 +8,10 @@ class Tile(ggmodel.GGModel):
   Defines a tile object.
   """
 
-  def __init__(self, position, spriteName, anchor, room):
+  def __init__(self, position, spriteName, room):
     """ Class constructor.
     position: tile position.
     spriteName: sprite name used on the tile.
-    anchor: image offset on screen.
     room: tile's room.
     """  
     ggmodel.GGModel.__init__(self)
@@ -20,12 +19,11 @@ class Tile(ggmodel.GGModel):
     self.__room = room
     self.position = position
     self.spriteName = spriteName
-    self.anchor = anchor
 
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['position', 'spriteName', 'anchor']
+    return ['position', 'spriteName']
 
   def getOptions(self):
     """ Returns the item's available options.
@@ -192,15 +190,3 @@ class Tile(ggmodel.GGModel):
       #self.triggerEvent("imageChange", newImage = image)
       self.__room.tileImageChange(self.position, image)
     
-  def getAccAnchor(self, itemName):
-    """ Returns the accumulated anchor for an item.
-    itemName: item name.
-    """  
-    accAnchorX = accAnchorY = startCount = 0
-    for item in self.__items:
-      if startCount:
-        accAnchorX += item.anchor[0]  
-        accAnchorY += item.anchor[1]
-      else:
-        if item.getName() == itemName:
-          accAnchor = 1    

@@ -900,3 +900,12 @@ def getOffset(imageFile):
   else:
     offsetY = GG.utils.FLOOR_SHIFT[1]
   return [offsetX, offsetY]
+
+
+def getTopOffset(anchor ,imageFile):
+  try:
+    yTopOffset = GG.utils.STACKS_TOPANCHOR[os.path.split(imageFile)[-1]]
+  except:
+    yTopOffset = 0
+  yTopAnchor = GG.utils.TILE_SZ[1] + anchor[1] + yTopOffset
+  return [0,yTopAnchor]

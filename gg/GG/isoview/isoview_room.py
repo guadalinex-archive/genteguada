@@ -219,8 +219,8 @@ class IsoViewRoom(isoview.IsoView):
     tile = self.__tileList[pos[0]][pos[1]].getModel()
     if not itemList:
       itemList = tile.getItems()
-    accHeight = tile.anchor[0]
-    accWidth = tile.anchor[1]
+    accHeight = 0
+    accWidth = 0
     i = 0
     for item in itemList:
       ivIt = self.findIVItem(item)
@@ -233,8 +233,8 @@ class IsoViewRoom(isoview.IsoView):
           zOrder += 2
         ivIt.setScreenPosition([scPos[0] + accWidth, scPos[1] - accHeight])
         ivIt.updateZOrder(zOrder)
-        accWidth += item.topAnchor[0] 
-        accHeight += item.topAnchor[1]
+        accWidth += ivIt.topAnchor[0] 
+        accHeight += ivIt.topAnchor[1]
           
   def getFutureScreenPosition(self, ivItem, pos, itemList):
     """ Returns the future screen cords for an item moving to a room position.
@@ -243,13 +243,14 @@ class IsoViewRoom(isoview.IsoView):
     itemList: items located on the selected room position.
     """  
     tile = self.__tileList[pos[0]][pos[1]].getModel()
-    accHeight = tile.anchor[0]
-    accWidth = tile.anchor[1]
+    accHeight = 0
+    accWidth = 0 
     itemModel = ivItem.getModel()
     listaAux = itemList
     for item in listaAux:
-      accWidth += item.topAnchor[0] 
-      accHeight += item.topAnchor[1]
+      ivIt = self.findIVItem(item)
+      accWidth += ivIt.topAnchor[0] 
+      accHeight += ivIt.topAnchor[1]
     scPos = GG.utils.p3dToP2d(pos, ivItem.anchor)
     return [scPos[0] - accWidth, scPos[1] - accHeight]
           

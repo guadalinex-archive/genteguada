@@ -15,6 +15,7 @@ JUMP_ANIMATION_TIME = 100
 JUMP_DISTANCE = 70
 JUMP_OVER_DISTANCE = JUMP_DISTANCE + 50
 ANCHOR_PLAYER = [2*GG.utils.CHAR_SZ[0]-57, GG.utils.CHAR_SZ[1]-30]
+TOPANCHOR_PLAYER = [0, GG.utils.TILE_SZ[1] + ANCHOR_PLAYER[1] - 20]
 # =============================================================
 
 class IsoViewPlayer(isoview_item.IsoViewItem):
@@ -31,6 +32,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """
     isoview_item.IsoViewItem.__init__(self, model, screen, room, parent)
     self.anchor = ANCHOR_PLAYER
+    self.topAnchor = TOPANCHOR_PLAYER 
     self.__movieAnimation = None
     self.__destination = None
     self.__tempTimestamp = None

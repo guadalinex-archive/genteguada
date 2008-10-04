@@ -8,14 +8,12 @@ class GGBoxHeavy(room_item.GGRoomItem):
   Defines a heavy box item behaviour.
   """
  
-  def __init__(self, spriteName, anchor, topAnchor, label):
+  def __init__(self, spriteName, label):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
-    anchor: image anchor on screen.
-    topAnchor: image top anchor on screen.
     label: item's label
     """
-    room_item.GGRoomItem.__init__(self, spriteName, anchor, topAnchor, label)
+    room_item.GGRoomItem.__init__(self, spriteName, label)
     self.setPoints(2)
  
   def load(self, dict):
@@ -25,7 +23,7 @@ class GGBoxHeavy(room_item.GGRoomItem):
   def copyObject(self):
     """ Creates and returns a copy of this item.
     """  
-    return GGBoxHeavy(self.spriteName, self.anchor, self.topAnchor, self.getName())
+    return GGBoxHeavy(self.spriteName, self.getName())
     
   def getOptions(self):
     """ Returns the item options.
