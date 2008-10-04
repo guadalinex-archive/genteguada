@@ -2,6 +2,7 @@
 
 import room_item
 import GG.utils
+import os
 
 class GGPickableItem(room_item.GGRoomItem):
   """ GGPickableItem class.
@@ -85,7 +86,7 @@ class GGPickableItem(room_item.GGRoomItem):
 
 class PaperMoney(GGPickableItem):
 
-  def __init__(self, spriteName, anchor, topAnchor, label, value):
+  def __init__(self, spriteName, anchor, topAnchor):
     """ Class builder.
     spriteName: sprite used to paint the item on the screen game zone.
     anchor: image anchor on screen.
@@ -93,8 +94,8 @@ class PaperMoney(GGPickableItem):
     label: item's label
     value: item's value
     """
-    GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, label)
-    self.points = value
+    GGPickableItem.__init__(self, spriteName, anchor, topAnchor, spriteName, GG.utils.MONEY_LABEL[os.path.split(spriteName)[-1]])
+    self.points = GG.utils.MONEY_VALUE[os.path.split(spriteName)[-1]]
 
   def objectToPersist(self):
     dict = GGPickableItem.objectToPersist(self)
