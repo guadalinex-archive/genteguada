@@ -818,6 +818,21 @@ class CreateItemsWindow(AuxWindow):
     if "exitPosition" in keys:
       self.__paintDoubleTextField(iPos, "Posición de salida", attrDict["exitPosition"], "exitPosition")
       iPos += 1
+    if "key" in keys:
+      self.__paintTextField(iPos, "Etiqueta llave", attrDict["key"], "key")
+      iPos += 1
+    if "pointsGiver" in keys:
+      self.__paintTextField(iPos, "Puntos que abren", attrDict["pointsGiver"], "pointsGiver")
+      iPos += 1
+    if "pressedTile1" in keys:
+      self.__paintDoubleTextField(iPos, "Celda presionada", attrDict["pressedTile1"], "pressedTile1")
+      iPos += 1
+    if "pressedTile2" in keys:
+      self.__paintDoubleTextField(iPos, "Celda presionada", attrDict["pressedTile2"], "pressedTile2")
+      iPos += 1
+    if "url" in keys:
+      self.__paintTextField(iPos, "Dirección web", attrDict["url"], "url")
+      iPos += 1
     if "images" in keys:
       self.__paintImage(iPos, attrDict["images"])
     """
@@ -867,7 +882,7 @@ class CreateItemsWindow(AuxWindow):
           fCount += 1
         self.editableFields[key] = fields
       iPos += 1
-  """
+    """
 
   def __paintTextField(self, iPos, title, label, key):
     self.__paintTitleField(title, iPos)
@@ -898,8 +913,14 @@ class CreateItemsWindow(AuxWindow):
       return 250
     elif iPos == 2:
       return 220
+    elif iPos == 3:
+      return 180
     elif iPos == 4:
       return 150
+    elif iPos == 5:
+      return 100
+    elif iPos == 6:
+      return 60
     return 60
 
   def __paintTitleField(self, title, iPos):

@@ -473,12 +473,17 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Sets an item as selected.
     item: selected item.
     """
+    print item
+    print self.__selected
     if self.__selected != item:
+      print "Envio el evento"
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
                         options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 
-                        highlight=1)
+                        highlight=True)
+    else:
+      "los elementos seleccionados son iguales"
   
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't highlights it.

@@ -817,6 +817,7 @@ class OcempEditLine(ocempgui.widgets.Entry):
       # Any other case is okay, so show it.
       else:
         self._text = self._text[:self._caret] + event.unicode.encode("iso-8859-15") + self._text[self._caret:]
+        #self._text = self._text[:self._caret] + event.unicode + self._text[self._caret:]
         self._caret += 1
       handled = True
 

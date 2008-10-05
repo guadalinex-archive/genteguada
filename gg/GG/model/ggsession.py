@@ -15,6 +15,7 @@ import room_item
 import box_heavy
 import pickable_item
 import teleport
+import web_item
 
     
 # ======================= CONSTANTS ===========================    
@@ -214,138 +215,30 @@ class GGSession(ggmodel.GGModel):
     if not self.__player.getAccessMode():
       return None  
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
+    """           
+    "PenguinQuiz": {"position": pos, "label": [""], "filePath": [GG.utils.QUESTIONS_PATH], "images": IMAGES_DICT["PenguinTalker"].keys() },  
+    "PenguinTalker": {"position": pos, "label": [""], "message": [""], "images": IMAGES_DICT["PenguinTalker"].keys() },
+    "PenguinTrade": { "position": pos, "label": [""], "gift": [""], "message": [""], "images": IMAGES_DICT["PenguinTrade"].keys()},
+    """
     self.objectsDict = {
-      "Muros":{
-        "position": pos,
-        "images": GG.utils.WALLS
-      },
-      "Decoradores":{
-        "position": pos,
-        "images": GG.utils.DECORATORS
-      },
-      "Apilables":{
-        "position": pos,
-        "label": "",
-        "images": GG.utils.STACKS
-      },
-      "Llaves":{
-        "position": pos,
-        "label": "",
-        "images": GG.utils.KEYS
-      },
-      "Rios":{
-        "position": pos,
-        "images": GG.utils.RIVERS
-      },
-      "Inventario": {
-        "position": pos,
-        "label": "",
-        "images": GG.utils.INVENTORYS                     
-      },
-      "Dinero": {
-        "position": pos,
-        "images": GG.utils.MONEYS
-      },
-      "Puertas":{
-        "position": pos,
-        "destinationRoom": "",
-        "exitPosition": [1, 1],
-        "label": "", 
-        "images": GG.utils.DOORS                     
-      },
+      "Muros":{ "position": pos, "images": GG.utils.WALLS },
+      "Decorativos":{ "position": pos, "images": GG.utils.DECORATORS },
+      "Apilables":{ "position": pos, "label": "", "images": GG.utils.STACKS },
+      "Llaves":{ "position": pos, "label": "", "images": GG.utils.KEYS },
+      "Rios":{ "position": pos, "images": GG.utils.RIVERS },
+      "Inventario": { "position": pos, "label": "", "images": GG.utils.INVENTORYS },
+      "Dinero": { "position": pos, "images": GG.utils.MONEYS },
+      "Puertas":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "images": GG.utils.DOORS },
+      "Puertas con llave":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "",  "key": "", "images": GG.utils.DOORS },
+      "Puertas con puntos": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pointsGiver": "", "images": GG.utils.DOORS},
+      "Puertas con celdas": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pressedTile1": [0, 0], 
+          "pressedTile2": [0, 0], "images": GG.utils.DOORS},
+      "Enlaces web": { "position": pos, "label": "", "url": "", "images": GG.utils.WEBS },
+      "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()}
     }
     return self.objectsDict
 
-    """                   
-                   "BoxHeavy": {
-                            "position": pos,
-                            "label": [""],
-                            "images": IMAGES_DICT["BoxHeavy"].keys() 
-                            },
-                   "Door": {
-                            "position": pos,
-                            "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0],
-                            "label": [""], 
-                            "images": IMAGES_DICT["Door"].keys()                     
-                            },
-                   "DoorWithKey": {
-                            "position": pos,
-                            "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0],
-                            "label": [""],
-                            "key": [""],        
-                            "images": IMAGES_DICT["DoorWithKey"].keys()                     
-                            },
-                   "DoorOpenedByPoints": {
-                            "position": pos,
-                            "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0],
-                            "label": [""],
-                            "pointsGiver": [""], 
-                            "images": IMAGES_DICT["DoorOpenedByPoints"].keys()                     
-                            },
-                   "DoorPressedTiles": {
-                            "position": pos,
-                            "destinationRoom": [self.__player.getRoom().label],
-                            "exitPosition": [0, 0],
-                            "label": [""],
-                            "pressedTile1": [0, 0], 
-                            "pressedTile2": [0, 0], 
-                            "images": IMAGES_DICT["DoorPressedTiles"].keys()                     
-                            },
-                   "GiverNpc": {
-                            "position": pos,
-                            "label": [""],
-                            "images": IMAGES_DICT["GiverNpc"].keys()     
-                            },
-                   "PenguinQuiz": {
-                            "position": pos,
-                            "label": [""],
-                            "filePath": [GG.utils.QUESTIONS_PATH],        
-                            "images": IMAGES_DICT["PenguinTalker"].keys()                     
-                            },
-                   "PenguinTalker": {
-                            "position": pos,
-                            "label": [""],
-                            "message": [""],        
-                            "images": IMAGES_DICT["PenguinTalker"].keys()                     
-                            },
-                   "PenguinTrade": {
-                            "position": pos,
-                            "label": [""],
-                            "gift": [""],        
-                            "message": [""],        
-                            "images": IMAGES_DICT["PenguinTrade"].keys()                     
-                            },
-                   "RoomItem": {
-                            "position": pos,
-                            "images": IMAGES_DICT["RoomItem"].keys()                     
-                            },
-                   "WebItem": {
-                            "position": pos,
-                            "label": [""],
-                            "url": [""],
-                            "images": IMAGES_DICT["WebItem"].keys()                     
-                            },
-                   "PickableItem": {
-                            "position": pos,
-                            "label": [""],
-                            "images": IMAGES_DICT["PickableItem"].keys()                     
-                            },
-                   "PaperMoney": {
-                            "position": pos,
-                            "label": [""],
-                            "images": IMAGES_DICT["PaperMoney"].keys()           
-                            },
-                   "WebGift": {
-                            "position": pos,
-                            "label": [""],
-                            "images": IMAGES_DICT["WebGift"].keys(),           
-                            "imagesGift": self.getImagesGift()          
-                            }
-    """
-
+    
   def __getImageCreateObject(self, img):
     if not img:
       self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
@@ -374,14 +267,26 @@ class GGSession(ggmodel.GGModel):
     if label[0] == "":
       self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
       return None
-    return label[0]
+    return str(label[0])
 
   def __getDestinationRoomCreateObject(self, roomLabel):
-    room = self.__system.getRoom(roomLabel[0]) 
+    room = self.__system.getRoom(str(roomLabel[0])) 
     if not room:
       self.__player.newChatMessage("La habitación destino no existe", 1)
       return None
     return room
+
+  def __getKeyCreateObject(self, key, text):
+    if key[0] == "":
+      self.__player.newChatMessage("Debe introducir la eiqueta " + text + "la puerta.", 1)
+      return None
+    return str(key[0])
+
+  def __getUrlCreateObject(self, url):
+    if url[0] == "":
+      self.__player.newChatMessage("Debe introducir una direccion web para el objeto.", 1)
+      return None
+    return str(url[0])
 
 
   def __createObjectImagesPosition(self, data, room, objectLabel):
@@ -389,11 +294,11 @@ class GGSession(ggmodel.GGModel):
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     if images and position:
       if objectLabel in ["Muros","Decoradores"]:
-        object = room_item.GGRoomItem(images, [0,0], [0,0])
+        object = room_item.GGRoomItem(images)
       elif objectLabel == "Rios":
-        object = room_item.GGRiver(images, [0,0], [0,0])
+        object = room_item.GGRiver(images)
       elif objectLabel == "Dinero":
-        object = pickable_item.PaperMoney(images, [0, 0], [0, 0])
+        object = pickable_item.PaperMoney(images)
       room.addItemFromVoid(object, position)
 
   def __createObjectImagesPositionLabel(self, data, room, objectLabel):
@@ -420,18 +325,64 @@ class GGSession(ggmodel.GGModel):
       door = teleport.GGTeleport(images, exitPosition, destinationRoom.getName(), label)
       room.addItemFromVoid(door, position)
 
+  def __createObjectTeleportKeyPoints(self, data, room, objectName):
+    images = self.__getImageCreateObject(data["images"])
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
+    exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
+    label = self.__getLabelCreateObject(data["label"])
+    if objectName == "Puertas con llave":
+      key = self.__getKeyCreateObject(data["key"], " de la llave que abre ")
+    elif objectName == "Puertas con puntos":
+      key = self.__getKeyCreateObject(data["pointsGiver"], " del objeto que da los puntos para abrir ")
+    else:
+      key = None
+    if images and position and destinationRoom and exitPosition and key: 
+      if objectName == "Puertas con llave":
+        object = teleport.GGDoorWithKey(images, exitPosition, destinationRoom.getName(), label, key)
+      else:
+        object = teleport.GGDoorOpenedByPoints(images, exitPosition, destinationRoom.getName(), label, key)
+      room.addItemFromVoid(object, position)
+
+  def __createObjectTeleportPressed(self, data, room):
+    images = self.__getImageCreateObject(data["images"])
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
+    exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
+    label = self.__getLabelCreateObject(data["label"])
+    pressedTile1 = self.__getPositionCreateObject(data["pressedTile1"], room, "pressedTile1")
+    pressedTile2 = self.__getPositionCreateObject(data["pressedTile2"], room, "pressedTile2")
+    if images and position and destinationRoom and exitPosition and pressedTile1 and pressedTile2: 
+      door = teleport.GGDoorPressedTiles(images, exitPosition, destinationRoom.getName(), label, [pressedTile1, pressedTile2])
+      room.addItemFromVoid(door, position)
+
+  def __createObjectWeb(self, data, room):
+    images = self.__getImageCreateObject(data["images"])
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    url = self.__getUrlCreateObject(data["url"])
+    if images and position and label and url:
+      webobject = web_item.GGWebItem(images, url, label)
+      room.addItemFromVoid(webobject, position)
+
   def createObject(self, name, data):
     """ Creates a new object.
     name: object type.
     data: object data.
     """  
     room = self.__player.getRoom()
-    if name in ["Muros", "Decoradores", "Rios", "Dinero"]:
+    if name in ["Muros", "Decorativos", "Rios", "Dinero"]:
       self.__createObjectImagesPosition(data, room, name)
     elif name in ["Apilables","Llaves","Inventario"]:
       self.__createObjectImagesPositionLabel(data, room, name)
     elif name == "Puertas":
       self.__createObjectTeleport(data, room)
+    elif name in ["Puertas con llave", "Puertas con puntos"]:
+      self.__createObjectTeleportKeyPoints(data, room, name)
+    elif name == "Puertas con celdas":
+      self.__createObjectTeleportPressed(data, room)
+    elif name == "Enlaces web":
+      self.__createObjectWeb(data, room)
     """
     try: 
       posX = int(data["position"][0])    

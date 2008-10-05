@@ -191,11 +191,6 @@ class GGDoorWithKey(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.getDestinationRoom().isFull():
-      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
-      return
-    if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      return False
     if not clicker.hasItemLabeledInInventory(self.__key):
       clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar', 2)  
       return False
@@ -210,12 +205,11 @@ class GGDoorWithKey(GGTeleport):
     if self.__key == oldLabel:
       self.__key = newLabel    
       
-      
   def getAdminActions(self):
     """ Returns the possible admin actions.
     """  
     dict = GGTeleport.getAdminActions(self)
-    dict["Key": [self.__key]]
+    dict["Key"] = [self.__key]
     return dict
     
 # ===============================================================
@@ -277,17 +271,11 @@ class GGDoorPressedTiles(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.getDestinationRoom().isFull():
-      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
-      clicker.setUnselectedItem()
-      return
-    if not GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()):
-      return False
     for tile in self.__pressedTiles:
       if tile:  
         if not self.getRoom().getBlocked(tile):
           clicker.newChatMessage('El resorte no esta activado.', 2)  
-          clicker.setUnselectedItem()
+          clicker.setUnelectedItem()
           return False
     self.transportTo(clicker)
 
@@ -340,9 +328,6 @@ class GGDoorOpenedByPoints(GGTeleport):
     """ Teleports a player to another location.
     clicker: player to teleport.
     """
-    if self.getDestinationRoom().isFull():
-      clicker.newChatMessage("La habitacion esta completa. Volvere a intentarlo mas tarde", 1)
-      return
     if not clicker.checkPointGiver(self.pointsGiver):
       self.newChatMessage('Si no has obtenido puntos de ' + self.pointsGiver + 'no puedo dejarte pasar')
       return False
