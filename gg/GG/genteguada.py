@@ -14,7 +14,7 @@ import GG.utils
 import GG.isoview.guiobjects
 
 #Constants
-VERSION = "GenteGuada 0.5.0-1"
+VERSION = "GenteGuada 0.6.0-1"
 CLEAR_CACHE_WEEKS = 4
 LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
 LOADING_BACKGROUND_POSITION = [0, 0]
@@ -124,8 +124,8 @@ class GenteGuada:
     self.__fullScreen = params.fullscreen
     self.__loadingScreen()
     winLogin = GG.isoview.login.Login(self.__screen, self)
-    #self.__session = winLogin.draw()
-    self.__session = winLogin.draw(params.user, params.password)
+    self.__session = winLogin.draw()
+    #self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
     user = self.__session.getPlayer()
     userAdmin = False
