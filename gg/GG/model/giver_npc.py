@@ -101,14 +101,14 @@ class GGGiverNpc(room_item.GGRoomItem):
 
 class WebGift(GGGiverNpc):
     
-  def __init__(self, spriteName, spriteInventory, label, creator):
+  def __init__(self, spriteInventory, label, creator):
     """ Class constructor.
     spriteName: image name.
     spriteInventory: sprite used to paint this object on player's inventory.
     label: item label.
     creator: item's creator.
     """
-    GGGiverNpc.__init__(self, spriteName, spriteInventory, label)
+    GGGiverNpc.__init__(self, GG.utils.GIFT, spriteInventory, label)
     self.__creator = creator
     self.__idGift = self.generateId()
     #print self.__idGift
@@ -145,7 +145,7 @@ class WebGift(GGGiverNpc):
     player: selected player.
     """  
     player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.getName(), \
-                self.getName().getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
+                self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
     return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), \
                                                     self.getPosition(), self.__idGift), self.getPosition()
                                                     
