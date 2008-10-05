@@ -4,6 +4,10 @@ import isoview
 import ocempgui.widgets
 import pygame
 import GG
+import guiobjects
+import os
+
+NEW_SIZE = [60, 60]
 
 class IsoViewInventoryItem(isoview.IsoView):
   """ IsoViewInventoryItem class.
@@ -78,7 +82,10 @@ class IsoViewInventoryItem(isoview.IsoView):
     """ Draws an inventory item.
     render: widget container. 
     """
-    imgInventory = ocempgui.widgets.ImageButton(GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName))
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(self.__spriteName)
+    tempFileName = os.path.join(GG.utils.LOCAL_DATA_PATH,"INVENTORY-"+str(self.__spriteName.replace(os.sep, "-")))
+    guiobjects.generateImageSize(imgPath, NEW_SIZE, tempFileName)
+    imgInventory = ocempgui.widgets.ImageButton(tempFileName)
     imgInventory.border = 0
     imgInventory.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.selected)
     render.get_managers()[0].add_high_priority_object(imgInventory, ocempgui.widgets.Constants.SIG_MOUSEDOWN)

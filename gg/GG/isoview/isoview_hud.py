@@ -1419,7 +1419,7 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to open a teleporter item.
     """
     self.__player.open(self.__selectedItem)
-    self.itemUnselected()
+    #self.itemUnselected()
 
   def itemToUrl(self):
     """ Attempts to open an url adress.
@@ -1728,8 +1728,8 @@ class IsoViewHud(isoview.IsoView):
     position = self.__isoviewRoom.getModel().getNearestEmptyCell([posX, posY])
     if position:
       itemCopy = self.__selectedItem.copyObject()
-      self.__isoviewRoom.getModel().addItemFromVoid(itemCopy, position)
       self.itemUnselected()
+      self.room.addItemFromVoid(itemCopy, position)
       self.__player.setSelectedItem(itemCopy)
     else:
       self.__player.newChatMessage("No hay sitio en la habitación", 1)

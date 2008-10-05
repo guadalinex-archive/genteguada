@@ -269,8 +269,9 @@ DOOR_RIGHT = os.path.join(FURNITURE_PATH, "rightArrow.png")
 DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png"]
 
 
+#=============== DOORS ==================================================================
 
-
+WEBS = WALLS + DECORATORS + STACKS + KEYS + INVENTORYS + DOORS
 
 
 
