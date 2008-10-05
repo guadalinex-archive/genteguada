@@ -16,6 +16,7 @@ import box_heavy
 import pickable_item
 import teleport
 import web_item
+import GG.utils
 
     
 # ======================= CONSTANTS ===========================    
@@ -237,13 +238,15 @@ class GGSession(ggmodel.GGModel):
       "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()}
     }
     return self.objectsDict
-
     
-  def __getImageCreateObject(self, img):
+  def __getImageCreateObject(self, img, name):
     if not img:
       self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
       return None
-    return os.path.join(GG.utils.FURNITURE_PATH, img)
+    if name == "Regalos":
+      return os.path.join(GG.utils.IMAGES_GIFT, img)
+    else:
+      return os.path.join(GG.utils.FURNITURE_PATH, img)
     
   def __getPositionCreateObject(self, value, room, key):
     if not room:
@@ -288,9 +291,8 @@ class GGSession(ggmodel.GGModel):
       return None
     return str(url[0])
 
-
   def __createObjectImagesPosition(self, data, room, objectLabel):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], objectLabel)
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     if images and position:
       if objectLabel in ["Muros","Decoradores"]:
@@ -302,7 +304,7 @@ class GGSession(ggmodel.GGModel):
       room.addItemFromVoid(object, position)
 
   def __createObjectImagesPositionLabel(self, data, room, objectLabel):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], objectLabel)
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     label = self.__getLabelCreateObject(data["label"])
     if images and position and label:
@@ -316,7 +318,7 @@ class GGSession(ggmodel.GGModel):
       room.addItemFromVoid(object, position)
 
   def __createObjectTeleport(self, data, room):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
     exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
@@ -326,7 +328,7 @@ class GGSession(ggmodel.GGModel):
       room.addItemFromVoid(door, position)
 
   def __createObjectTeleportKeyPoints(self, data, room, objectName):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], objectName)
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
     exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
@@ -345,7 +347,7 @@ class GGSession(ggmodel.GGModel):
       room.addItemFromVoid(object, position)
 
   def __createObjectTeleportPressed(self, data, room):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
     exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
@@ -357,13 +359,21 @@ class GGSession(ggmodel.GGModel):
       room.addItemFromVoid(door, position)
 
   def __createObjectWeb(self, data, room):
-    images = self.__getImageCreateObject(data["images"])
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     label = self.__getLabelCreateObject(data["label"])
     url = self.__getUrlCreateObject(data["url"])
     if images and position and label and url:
       webobject = web_item.GGWebItem(images, url, label)
       room.addItemFromVoid(webobject, position)
+
+  def __createObjectGift(self, data, room, objectName):
+    images = self.__getImageCreateObject(data["imagesGift"], objectName)
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    if images and position and label:
+      gift = giver_npc.WebGift(images, label, self.__player.username)
+      room.addItemFromVoid(gift, position)
 
   def createObject(self, name, data):
     """ Creates a new object.
@@ -383,344 +393,8 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectTeleportPressed(data, room)
     elif name == "Enlaces web":
       self.__createObjectWeb(data, room)
-    """
-    try: 
-      posX = int(data["position"][0])    
-      posY = int(data["position"][1])
-    except ValueError: 
-      self.__player.newChatMessage('Valor "Position" incorrecto', 1) 
-      return
-    if not room.getTile([posX, posY]).stepOn():
-      self.__player.newChatMessage('No se puede colocar un objeto en esa posicion', 1) 
-      return
-    if name != "RoomItem":
-      label = data["label"][0]  
-      if label == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
-    img = data["images"]
-    if not img:
-      self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
-      return
-    if not (0 <= posX < roomSz[0] and 0 <= posY < roomSz[1]):
-      self.__player.newChatMessage("Las coordenadas del objeto no son correctas.", 1)
-      return
-    #===============================================
-    if name == "BoxHeavy":
-      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label)
-    #===============================================
-    elif name == "Door":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGTeleport(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label)
-    #===============================================
-    elif name == "DoorWithKey":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
-        return
-      if data["key"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, data["key"][0])
-    #===============================================
-    elif name == "DoorOpenedByPoints":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      pointsGiver = data["pointsGiver"][0]
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGDoorOpenedByPoints(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, pointsGiver)
-    #===============================================
-    elif name == "DoorPressedTiles":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      try: 
-        pt1PosX = int(data["pressedTile1"][0])    
-        pt1PosY = int(data["pressedTile1"][1])
-        pt2PosX = int(data["pressedTile2"][0])    
-        pt2PosY = int(data["pressedTile2"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valores "pressedTiles" incorrectos', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      if not (0 <= pt1PosX < roomSz[0] and 0 <= pt1PosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
-        return
-      pt1 = [pt1PosX, pt1PosY]
-      if pt2PosX == "" and pt2PosY == "":
-        pt2 = None
-      else:
-        if not (0 <= pt2PosX < roomSz[0] and 0 <= pt2PosY < roomSz[1]):
-          self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
-          return
-        pt2 = [pt2PosX, pt2PosY]
-      box = GG.model.teleport.GGDoorPressedTiles(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, [pt1, pt2])
-    #===============================================
-    elif name == "GiverNpc":
-      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
-    #===============================================
-    elif name == "RoomItem":
-      box = GG.model.room_item.GGRoomItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1])
-    #===============================================
-    elif name == "PenguinTalker":
-      if data["message"][0] == "":
-        self.__player.newChatMessage("Debe introducir un mensaje.", 1)
-        return
-      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0])
-    #===============================================
-    elif name == "PenguinTrade":
-      room = self.__player.getRoom()
-      if data["gift"][0] == "":
-        self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
-        return
-      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0], data["gift"][0])
-    #===============================================
-    elif name == "PenguinQuiz":
-      if data["filePath"][0] == "":
-        self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
-        return
-      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["filePath"][0])
-    #===============================================
-    elif name == "PickableItem":
-      box = GG.model.pickable_item.GGPickableItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
-    #===============================================
-    elif name == "PaperMoney":
-      spriteImg = os.path.join("furniture", img)
-      moneyValue = int(img[0:img.find("G")])
-      box = GG.model.pickable_item.PaperMoney(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
-    #===============================================
-    elif name == "WebGift":
-      imgGift = data["imagesGift"]
-      if not imgGift:
-        self.__player.newChatMessage("Debe seleccionar una imagen de premio para el objeto.", 1)
-        return
-      spriteImgGift = os.path.join(GG.utils.IMAGES_GIFT, imgGift) 
-      spriteImg = os.path.join("furniture", img)
-      box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label, self.__player.username)
-    #===============================================
-    elif name == "WebItem":
-      url = data["url"][0]    
-      box = GG.model.web_item.GGWebItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], url, label)
-    #===============================================
-    room.addItemFromVoid(box, [posX, posY])
-  """
-
-
-
-  def createObject2(self, name, data):
-    """ Creates a new object.
-    name: object type.
-    data: object data.
-    """  
-    room = self.__player.getRoom()
-    roomSz = room.size
-    try: 
-      posX = int(data["position"][0])    
-      posY = int(data["position"][1])
-    except ValueError: 
-      self.__player.newChatMessage('Valor "Position" incorrecto', 1) 
-      return
-    if not room.getTile([posX, posY]).stepOn():
-      self.__player.newChatMessage('No se puede colocar un objeto en esa posicion', 1) 
-      return
-    if name != "RoomItem":
-      label = data["label"][0]  
-      if label == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
-    img = data["images"]
-    if not img:
-      self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
-      return
-    if not (0 <= posX < roomSz[0] and 0 <= posY < roomSz[1]):
-      self.__player.newChatMessage("Las coordenadas del objeto no son correctas.", 1)
-      return
-    #===============================================
-    if name == "BoxHeavy":
-      box = GG.model.box_heavy.GGBoxHeavy(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label)
-    #===============================================
-    elif name == "Door":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGTeleport(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label)
-    #===============================================
-    elif name == "DoorWithKey":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitaci�n.", 1)
-        return
-      if data["key"][0] == "":
-        self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGDoorWithKey(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, data["key"][0])
-    #===============================================
-    elif name == "DoorOpenedByPoints":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      pointsGiver = data["pointsGiver"][0]
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      box = GG.model.teleport.GGDoorOpenedByPoints(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, pointsGiver)
-    #===============================================
-    elif name == "DoorPressedTiles":
-      destinationRoom = self.__system.existsRoom(data["destinationRoom"][0])
-      if not room or not destinationRoom:
-        self.__player.newChatMessage("No existe esa habitación.", 1)
-        return
-      try: 
-        exPosX = int(data["exitPosition"][0])    
-        exPosY = int(data["exitPosition"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valor "exitPosition" incorrecto', 1) 
-        return
-      try: 
-        pt1PosX = int(data["pressedTile1"][0])    
-        pt1PosY = int(data["pressedTile1"][1])
-        pt2PosX = int(data["pressedTile2"][0])    
-        pt2PosY = int(data["pressedTile2"][1])
-      except ValueError: 
-        self.__player.newChatMessage('Valores "pressedTiles" incorrectos', 1) 
-        return
-      roomSz = destinationRoom.size
-      if not (0 <= exPosX < roomSz[0] and 0 <= exPosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de destino no son correctas.", 1)
-        return
-      if not (0 <= pt1PosX < roomSz[0] and 0 <= pt1PosY < roomSz[1]):
-        self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
-        return
-      pt1 = [pt1PosX, pt1PosY]
-      if pt2PosX == "" and pt2PosY == "":
-        pt2 = None
-      else:
-        if not (0 <= pt2PosX < roomSz[0] and 0 <= pt2PosY < roomSz[1]):
-          self.__player.newChatMessage("Las coordenadas de celda no son correctas.", 1)
-          return
-        pt2 = [pt2PosX, pt2PosY]
-      box = GG.model.teleport.GGDoorPressedTiles(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], [exPosX, exPosY], destinationRoom.getName(), label, [pt1, pt2])
-    #===============================================
-    elif name == "GiverNpc":
-      box = GG.model.giver_npc.GGGiverNpc(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
-    #===============================================
-    elif name == "RoomItem":
-      box = GG.model.room_item.GGRoomItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1])
-    #===============================================
-    elif name == "PenguinTalker":
-      if data["message"][0] == "":
-        self.__player.newChatMessage("Debe introducir un mensaje.", 1)
-        return
-      box = GG.model.penguin.GGPenguinTalker(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0])
-    #===============================================
-    elif name == "PenguinTrade":
-      room = self.__player.getRoom()
-      if data["gift"][0] == "":
-        self.__player.newChatMessage("Debe introducir el nombre del objeto regalo recibido.", 1)
-        return
-      box = GG.model.penguin.GGPenguinTrade(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["message"][0], data["gift"][0])
-    #===============================================
-    elif name == "PenguinQuiz":
-      if data["filePath"][0] == "":
-        self.__player.newChatMessage("Debe introducir el nombre del fichero de preguntas.", 1)
-        return
-      box = GG.model.penguin.GGPenguinQuiz(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, data["filePath"][0])
-    #===============================================
-    elif name == "PickableItem":
-      box = GG.model.pickable_item.GGPickableItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], os.path.join("furniture", img), label)
-    #===============================================
-    elif name == "PaperMoney":
-      spriteImg = os.path.join("furniture", img)
-      moneyValue = int(img[0:img.find("G")])
-      box = GG.model.pickable_item.PaperMoney(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], label, moneyValue)
-    #===============================================
-    elif name == "WebGift":
-      imgGift = data["imagesGift"]
-      if not imgGift:
-        self.__player.newChatMessage("Debe seleccionar una imagen de premio para el objeto.", 1)
-        return
-      spriteImgGift = os.path.join(GG.utils.IMAGES_GIFT, imgGift) 
-      spriteImg = os.path.join("furniture", img)
-      box = GG.model.giver_npc.WebGift(spriteImg, IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], spriteImgGift, label, self.__player.username)
-    #===============================================
-    elif name == "WebItem":
-      url = data["url"][0]    
-      box = GG.model.web_item.GGWebItem(os.path.join("furniture", img), IMAGES_DICT[name][img][0], IMAGES_DICT[name][img][1], url, label)
-    #===============================================
-    room.addItemFromVoid(box, [posX, posY])
+    elif name == "Regalos":
+      self.__createObjectGift(data, room, name)
 
   def getImagesGift(self):
     """ Returns all available images for an admin created gift.

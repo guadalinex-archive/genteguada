@@ -727,70 +727,6 @@ class CreateItemsWindow(AuxWindow):
     defaultButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [90, 340], ["Restaurar valores por defecto", self.showTooltip, self.removeTooltip], self.__restoreDefault)
     self.container.add_child(defaultButton)
 
-  def __selectionChange2(self):
-    """ Changes the default values, according to the selected item.
-    """
-    name = self.__objectsArea.getSelectedName()
-    if not name:
-      return  
-    labelShift = [153, 10]
-    spacing = 45
-    self.editableFields = []
-    attrDict = self.__objectsDict[name]
-    for label in self.activeLabels:
-      self.container.remove_child(label)
-      label.destroy()
-    self.activeLabels = []  
-    self.editableFields = {}
-    iPos = 0
-    keys = attrDict.keys()
-    keys.sort()
-    for key in keys:
-      label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
-      label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
-      self.container.add_child(label)
-      self.activeLabels.append(label)
-      if key == "images":
-        height = 60
-        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), FURNITURE)  
-        self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-        iPos += 1
-        self.container.add_child(self.images)  
-        self.activeLabels.append(self.images)
-        self.editableFields[key] = self.images
-      elif key == "imagesGift":
-        self.imagesGiftList = attrDict[key]
-        height = 60
-        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)
-        self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-        iPos += 1
-        self.container.add_child(self.imagesgift)  
-        self.activeLabels.append(self.imagesgift)
-        self.editableFields[key] = self.imagesgift
-        buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + labelShift[0], 40 + iPos*spacing + 40 + labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
-        self.container.add_child(buttonFileChooser)
-        self.activeLabels.append(buttonFileChooser)
-        iPos += 1
-      else:  
-        fCount = 0
-        fields = []
-        for field in attrDict[key]:
-          entryLabel = guiobjects.OcempEditLine()
-          entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-          entryLabel.text = str(field)
-          entryLabel.border = 1
-          entryLabel.topleft = 10 + fCount*65 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-          if len(attrDict[key]) == 1:
-            entryLabel.set_minimum_size(125, 20)
-          else:    
-            entryLabel.set_minimum_size(50, 20)
-          self.container.add_child(entryLabel)
-          self.activeLabels.append(entryLabel)
-          fields.append(entryLabel)
-          fCount += 1
-        self.editableFields[key] = fields
-      iPos += 1
-
   def __selectionChange(self):
     """ Changes the default values, according to the selected item.
     """
@@ -833,56 +769,10 @@ class CreateItemsWindow(AuxWindow):
     if "url" in keys:
       self.__paintTextField(iPos, "Dirección web", attrDict["url"], "url")
       iPos += 1
+    if "imagesGift" in keys:
+      self.__paintImageGift(iPos, attrDict["imagesGift"])
     if "images" in keys:
       self.__paintImage(iPos, attrDict["images"])
-    """
-    keys.sort()
-    for key in keys:
-      label = guiobjects.OcempLabel(key, guiobjects.STYLES["itemLabel"])
-      label.topleft = 10 + labelShift[0], 25 + iPos*spacing + labelShift[1]
-      self.container.add_child(label)
-      self.activeLabels.append(label)
-      if key == "images":
-        height = 60
-        self.images = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), FURNITURE)  
-        self.images.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-        iPos += 1
-        self.container.add_child(self.images)  
-        self.activeLabels.append(self.images)
-        self.editableFields[key] = self.images
-      elif key == "imagesGift":
-        self.imagesGiftList = attrDict[key]
-        height = 60
-        self.imagesgift = guiobjects.OcempImageList(190, height, sorted(attrDict[key]), GG.utils.IMAGES_GIFT)
-        self.imagesgift.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-        iPos += 1
-        self.container.add_child(self.imagesgift)  
-        self.activeLabels.append(self.imagesgift)
-        self.editableFields[key] = self.imagesgift
-        buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + labelShift[0], 40 + iPos*spacing + 40 + labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
-        self.container.add_child(buttonFileChooser)
-        self.activeLabels.append(buttonFileChooser)
-        iPos += 1
-      else:  
-        fCount = 0
-        fields = []
-        for field in attrDict[key]:
-          entryLabel = guiobjects.OcempEditLine()
-          entryLabel.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-          entryLabel.text = str(field)
-          entryLabel.border = 1
-          entryLabel.topleft = 10 + fCount*65 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
-          if len(attrDict[key]) == 1:
-            entryLabel.set_minimum_size(125, 20)
-          else:    
-            entryLabel.set_minimum_size(50, 20)
-          self.container.add_child(entryLabel)
-          self.activeLabels.append(entryLabel)
-          fields.append(entryLabel)
-          fCount += 1
-        self.editableFields[key] = fields
-      iPos += 1
-    """
 
   def __paintTextField(self, iPos, title, label, key):
     self.__paintTitleField(title, iPos)
@@ -891,8 +781,21 @@ class CreateItemsWindow(AuxWindow):
 
   def __paintImage(self, iPos, images):
     self.__paintTitleField("Imagenes", iPos)
-    imagesArea = self.__paintImagesField(iPos, images)
+    imagesArea = self.__paintImagesField(iPos, images, FURNITURE)
     self.editableFields["images"] = imagesArea
+
+  def __paintImageGift(self, iPos, images):
+    self.imagesGiftList = images 
+    self.__paintTitleField("Regalo", iPos)
+    imagesArea = self.__paintImagesField(iPos, images, GG.utils.IMAGES_GIFT)
+    fileChooser = self.__paintButtonFileChooser(iPos+4)
+    self.editableFields["imagesGift"] = imagesArea
+
+  def __paintButtonFileChooser(self, iPos):
+    buttonFileChooser = guiobjects.createButton(GG.utils.FILE_BUTTON_IMAGE, [10 + self.labelShift[0], 40 + iPos * self.spacing + 40 + self.labelShift[1]], ["subir imagen", self.showTooltip, self.removeTooltip], self.openFileDialog)
+    self.container.add_child(buttonFileChooser)
+    self.activeLabels.append(buttonFileChooser)
+    return buttonFileChooser
 
   def __paintDoubleTextField(self, iPos, title, values, key):
     self.__paintTitleField(title, iPos)
@@ -900,20 +803,23 @@ class CreateItemsWindow(AuxWindow):
     entryPosY = self.__paintSortField(values[1], iPos, 1)
     self.editableFields[key] = [entryPosX, entryPosY]
  
+  def __paintImagesField(self, iPos, images, imagesDir):
+    self.imagesArea = guiobjects.OcempImageList(190, self.__getImagesFieldHeight(iPos, imagesDir), sorted(images), imagesDir)  
+    self.imagesArea.topleft = 10 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
+    self.container.add_child(self.imagesArea)  
+    self.activeLabels.append(self.imagesArea)
+    return self.imagesArea
 
-  def __paintImagesField(self, iPos, images):
-    imagesArea = guiobjects.OcempImageList(190, self.__getImagesFieldHeight(iPos), sorted(images), FURNITURE)  
-    imagesArea.topleft = 10 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
-    self.container.add_child(imagesArea)  
-    self.activeLabels.append(imagesArea)
-    return imagesArea
-
-  def __getImagesFieldHeight(self, iPos):
+  def __getImagesFieldHeight(self, iPos, dir):
+    print iPos
     if iPos == 1:
       return 250
     elif iPos == 2:
-      return 220
-    elif iPos == 3:
+      if dir == GG.utils.IMAGES_GIFT:
+        return 180
+      else:
+        return 220
+    elif iPos == 3: 
       return 180
     elif iPos == 4:
       return 150
@@ -951,7 +857,6 @@ class CreateItemsWindow(AuxWindow):
     self.activeLabels.append(entryLabel)
     return entryLabel
 
-
   def openFileDialog(self):
     """ Opens the file explorer dialog.
     """  
@@ -988,19 +893,16 @@ class CreateItemsWindow(AuxWindow):
       fileName = "imagesgift-"+resultado
       shutil.copy(self.origFilePath, os.path.join(GG.utils.LOCAL_DATA_PATH, fileName))
       self.imagesGiftList.append(resultado)
-      self.container.remove_child(self.imagesgift)
-      self.activeLabels.remove(self.imagesgift)
+      self.container.remove_child(self.imagesArea)
+      self.activeLabels.remove(self.imagesArea)
       del self.editableFields["imagesGift"]
-      self.imagesgift.destroy()
-      height = 60
-      labelShift = [153, 10]
-      spacing = 45
-      self.imagesgift = guiobjects.OcempImageList(190, height, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)
-      self.imagesgift.topleft = 10 + labelShift[0], 40 + 2*spacing + 18 + labelShift[1]
-      self.container.add_child(self.imagesgift)
-      self.activeLabels.append(self.imagesgift)
-      self.editableFields["imagesGift"] = self.imagesgift
-      
+      self.imagesArea.destroy()
+      self.imagesArea = guiobjects.OcempImageList(190, 180, sorted(self.imagesGiftList), GG.utils.IMAGES_GIFT)  
+      self.imagesArea.topleft = 10 + self.labelShift[0], 40 + 2 * self.spacing + 18 + self.labelShift[1]
+      self.container.add_child(self.imagesArea)  
+      self.activeLabels.append(self.imagesArea)
+      self.editableFields["imagesGift"] = self.imagesArea
+
   def accept(self):
     """ Gets and checks all data to create a new room.
     """  

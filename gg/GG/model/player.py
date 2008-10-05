@@ -473,10 +473,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Sets an item as selected.
     item: selected item.
     """
-    print item
-    print self.__selected
     if self.__selected != item:
-      print "Envio el evento"
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
@@ -491,7 +488,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if self.__selected != item:
       self.__selected = item
-      #self.triggerEvent('selectedItem', item=item, position=self.getPosition(), highlight=0)
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
                         options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 

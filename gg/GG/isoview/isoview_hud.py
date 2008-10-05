@@ -964,12 +964,10 @@ class IsoViewHud(isoview.IsoView):
     isTile: sets the selected item as tile or not.
     adminActions: item's available admin actions.
     """  
-    #actions = self.__selectedItem.getAdminActions()
     actions = adminActions
     if not actions:
       return
     YShift = 50
-    #self.buttonBarAdminActions = guiobjects.OcempPanel(150, 300, [GG.utils.SCREEN_SZ[0] - 151, 129], GG.utils.ADMIN_ACTIONS_BACKGROUND)
     self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [GG.utils.SCREEN_SZ[0] - 151, 1], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
@@ -986,7 +984,7 @@ class IsoViewHud(isoview.IsoView):
       label.topleft = 10, 30 + iPos*YShift
       self.buttonBarAdminActions.add_child(label)
       if key == "image":
-        height = 80
+        height = 300
         self.tileImages = guiobjects.OcempImageList(145, height, GG.utils.TILES, GG.utils.TILE)  
         self.tileImages.topleft = 5, 40 + iPos*YShift + 27
         self.buttonBarAdminActions.add_child(self.tileImages)  
@@ -1419,7 +1417,6 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to open a teleporter item.
     """
     self.__player.open(self.__selectedItem)
-    #self.itemUnselected()
 
   def itemToUrl(self):
     """ Attempts to open an url adress.
