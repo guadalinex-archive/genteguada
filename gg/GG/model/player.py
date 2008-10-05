@@ -28,7 +28,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     admin: sets the player as game administrator.
     """
     filename = GG.utils.getSpriteName(GG.utils.STATE[1], GG.utils.HEADING[2], 0, timestamp)
-    item_with_inventory.GGItemWithInventory.__init__(self, filename, ANCHOR_PLAYER, TOP_ANCHOR_PLAYER)
+    item_with_inventory.GGItemWithInventory.__init__(self, filename)
     self.username = username
     self.__visited = [] # Not used outside this class
     self.__heading = GG.utils.HEADING[2]

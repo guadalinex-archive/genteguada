@@ -1,3 +1,9 @@
+genteguada (0.6.0-1) gutsy; urgency=low
+
+  * Nueva creacion de items
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Sun, 05 Oct 2008 19:26:40 +0200
+
 genteguada (0.5.4-1) unstable; urgency=low
 
   * Baldosas definitivas y solucion de algunos problemas encontrados

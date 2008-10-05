@@ -85,7 +85,7 @@ class GGRoom(ggmodel.GGModel):
       line = []  
       for j in range(0, self.size[1]):
         image = os.path.join(GG.utils.TILE, self.spriteFull[random.randint(0, len(self.spriteFull)-1)])  
-        line.append(tile.Tile([i, j], image, [0, 0], self))
+        line.append(tile.Tile([i, j], image, self))
       self.__tiles.append(line)  
     for dataTile in dict["tiles"]:
       self.__tiles[dataTile["position"][0]][dataTile["position"][1]].setImage(dataTile["spriteName"],True)
