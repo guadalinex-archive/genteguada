@@ -39,10 +39,9 @@ class IsoViewItem(positioned_view.PositionedView):
       infoPackage = model.getItemBuildPackage()
       self.__position = infoPackage["position"]
       self.__imagePath = infoPackage["imagepath"]
-      self.__imageName = None
+      self.__imageName = infoPackage["spriteName"]
     self.__img = None
     self.loadImage(self.__imagePath)
-    #self.getModel().subscribeEvent('position', self.positionChanged)
         
   def loadImage(self, imagePath=None):
     """ Loads the item's image.

@@ -361,7 +361,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     itemList.reverse()
     for itemToInv in itemList:
       self.addPoints(itemToInv.points, itemToInv.label)
-      item_with_inventory.GGItemWithInventory.addToInventoryFromRoom(self, itemToInv)
+      item_with_inventory.GGItemWithInventory.addToInventory(self, itemToInv)
     self.save("player")
     
   def addToRoomFromInventory(self, item):
@@ -530,12 +530,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: item to lift.
     """
     if self.__state == GG.utils.STATE[3] or self.__state == GG.utils.STATE[4]:
-      self.newChatMessage("Ya tengo algo cogido. �No puedo aguantar m�s peso!", 1)
+      self.newChatMessage("Ya tengo algo cogido. !No puedo aguantar más peso!", 1)
       self.setUnselectedItem()
       return
     self.setState(GG.utils.STATE[3])
     item.setPosition(self.getPosition())
-    self.triggerEvent('liftItem', item=item, position=item.getPosition())
+    self.triggerEvent('liftItem', item=item, position=item.getPosition(), itemList = item.getItemsOnMyTile())
     self.setUnselectedItem()
     
   def drop(self, item):
@@ -665,9 +665,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     for item in listOut:
       self.removeFromInventory(item)
-      self.__exchangeTo.addToInventoryFromVoid(item, self.getPosition())
+      self.__exchangeTo.addToInventory(item, self.getPosition())
     for item in listIn:
-      self.addToInventoryFromVoid(item, self.__exchangeTo.getPosition())
+      self.addToInventory(item, self.__exchangeTo.getPosition())
       self.__exchangeTo.removeFromInventory(item)
     self.__exchangeTo.cancelExchangeTo(1)
     self.cancelExchangeTo(1)
@@ -807,10 +807,16 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: new item.
     """  
     if item.isTopItem():  
-      self.addToInventoryFromRoom(item)
+      self.addToInventory(item)
       self.setUnselectedItem()
     else:      
-      self.newChatMessage('No puedo coger eso, hay algo encima', 1)     
+      self.newChatMessage('No puedo coger eso, hay algo encima', 1)  
+  
+  def tryToInventoryCopy(self, item):
+    itemCopy, pos = item.getCopyFor(self) 
+    if itemCopy:
+      self.addToInventory(itemCopy, pos)
+      self.setUnselectedItem()
     
   def tryToPocket(self, item):
     """ Attempts to pick a new paper money item.
@@ -820,6 +826,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setUnselectedItem()
       item.addPointsTo(self)
       return True  
+    return False
   
   def removeAllData(self):
     """ Removes all data for this player.
@@ -832,5 +839,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       shutil.rmtree(imagesPath)
     if os.path.isfile(maskImage):
       os.remove(maskImage)  
-      
-    
+
+  def tryOutToInventory(self, item):
+    if item.inventoryOnly():
+      self.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
+    else:   
+      self.addToRoomFromInventory(item)
+      self.setUnselectedItem()
+

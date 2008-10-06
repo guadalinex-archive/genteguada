@@ -14,7 +14,7 @@ class IsoViewInventoryItem(isoview.IsoView):
   Defines an inventory item view.
   """
     
-  def __init__(self, model, screen, isohud):
+  def __init__(self, model, screen, isohud, name = None):
     """ Class constructor.
     model: inventory item model.
     screen: screen handler.
@@ -22,7 +22,10 @@ class IsoViewInventoryItem(isoview.IsoView):
     """
     isoview.IsoView.__init__(self, model, screen)
     self.__spriteName = model.spriteInventory
-    self.__label = model.getName()
+    if name:
+      self.__label = name
+    else:
+      self.__label = model.getName()
     self.__count = 0
     self.__isohud = isohud
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)
@@ -30,7 +33,6 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.rect = self.__img.image.get_rect()
     self.__img.zOrder = 10001
-    #self.__img = guiobjects.loadSprite(model.spriteInventory, True, None, 10001)
     
   def updateZOrder(self):
     """ Updates the item image zOrder value.

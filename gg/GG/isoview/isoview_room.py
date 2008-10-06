@@ -148,8 +148,8 @@ class IsoViewRoom(isoview.IsoView):
       return
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     event.getParams()['item'].subscribeEvent( "position", ivItem.positionChanged)
-    self.addIsoViewItem(ivItem)
-    self.__parent.addItemToRoomFromVoid(ivItem)
+    self.addIsoViewItem(ivItem, event.getParams()["itemList"])
+    self.__parent.addItemToRoomFromVoid(ivItem, event.getParams()["itemList"])
     
   def itemAddedFromInventory(self, event):
     """ Updates the room view when an item add event happens.
@@ -157,8 +157,9 @@ class IsoViewRoom(isoview.IsoView):
     """
     ivItem = event.getParams()['item'].defaultView(self.getScreen(), self, self.__parent)
     event.getParams()['item'].subscribeEvent( "position", ivItem.positionChanged)
-    self.addIsoViewItem(ivItem)
-    self.__parent.addItemToRoomFromInventory(ivItem)
+    listItems = event.getParams()['itemList']
+    self.addIsoViewItem(ivItem, listItems)
+    self.__parent.addItemToRoomFromInventory(ivItem, listItems )
         
   def itemRemoved(self, event):
     """ Updates the room view when an item remove event happens.
@@ -170,7 +171,7 @@ class IsoViewRoom(isoview.IsoView):
       raise Exception("Error: vista de item no eliminada")
     self.removeIsoViewItem(ivItem)
         
-  def addIsoViewItem(self, ivItem):
+  def addIsoViewItem(self, ivItem, itemList = None):
     """ Inserts a new item view.
     ivItem: item view.
     """
@@ -178,7 +179,7 @@ class IsoViewRoom(isoview.IsoView):
     self.__parent.addSprite(ivItem.getImg())
     self.__spritesDict[ivItem.getImg()] = ivItem
     pos = ivItem.getPosition()
-    self.updateScreenPositionsOn(pos)
+    self.updateScreenPositionsOn(pos, itemList)
 
   def removeIsoViewItem(self, ivPlayer):
     """ Removes an isometric player viewer from the viewers list.

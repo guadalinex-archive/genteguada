@@ -48,6 +48,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     infoPackage = {}
     infoPackage["position"] = self.getPosition() 
     infoPackage["imagepath"] = self.getImagePath()
+    infoPackage["spriteName"] = self.getSpriteName()
     return infoPackage
 
   def copyObject(self):

@@ -244,7 +244,7 @@ class GGRoom(ggmodel.GGModel):
       item.setStartPosition(item.getTile().position)
       self.__items.append(item)
       item.setRoom(self)
-      self.triggerEvent('addItemFromVoid', item=item)
+      self.triggerEvent('addItemFromVoid', item=item, itemList = self.__tiles[pos[0]][pos[1]].getItems())
       if isinstance(item, player.GGPlayer):
         self.__population += 1
       else:
@@ -266,7 +266,7 @@ class GGRoom(ggmodel.GGModel):
       self.__items.append(item)
       item.setRoom(self)
       item.setPlayer(None)
-      self.triggerEvent('addItemFromInventory', item=item, room=self)
+      self.triggerEvent('addItemFromInventory', item=item, room=self, itemList = self.__tiles[pos[0]][pos[1]].getItems())
       self.save("room")
       return True
     return False

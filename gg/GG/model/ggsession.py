@@ -229,7 +229,8 @@ class GGSession(ggmodel.GGModel):
     images = self.__getImageCreateObject(data["images"], objectLabel)
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     if images and position:
-      if objectLabel in ["Muros","Decoradores"]:
+      print objectLabel
+      if objectLabel in ["Muros","Decorativos"]:
         object = room_item.GGRoomItem(images)
       elif objectLabel == "Rios":
         object = room_item.GGRiver(images)
@@ -242,7 +243,6 @@ class GGSession(ggmodel.GGModel):
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     label = self.__getLabelCreateObject(data["label"])
     if images and position and label:
-      print objectLabel
       if objectLabel == "Apilables":
         object = box_heavy.GGBoxHeavy(images, label)
       elif objectLabel == "Llaves":

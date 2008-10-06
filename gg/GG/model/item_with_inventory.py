@@ -56,22 +56,15 @@ class GGItemWithInventory(room_item.GGRoomItem):
         return True  
     return False    
     
-  def addToInventoryFromRoom(self, item):
+  def addToInventory(self, item, position = None):
     """ Adds a new item to inventory from room.
     item: new item.
     """  
     self.__inventory.append(item)
     item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=item.getPosition())
-    self.save("player")
-    
-  def addToInventoryFromVoid(self, item, position):
-    """ Adds a new item to inventory from nowhere.
-    item: new item.
-    """  
-    self.__inventory.append(item)
-    item.setPlayer(self)
-    self.triggerEvent('addToInventory', item=item, position=position)
+    if not position:
+      position = item.getPosition()
+    self.triggerEvent('addToInventory', item=item, position = position, itemName = item.getName())
     self.save("player")
     
   def removeFromInventory(self, item):
@@ -101,7 +94,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     self.__inventory.remove(item)
     item.setPlayer(None)
     self.save("player")
-    self.triggerEvent('chat', actor=item, receiver=self, msg=item.label+" depositado en el suelo")
+    self.newChatMessage(item.getName() + " depositado en el suelo", 1)
     
   def tick(self, now):
     """ Call for an update on item.
