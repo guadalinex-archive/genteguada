@@ -19,8 +19,9 @@ class IsoViewQuiz(positioned_view.PositionedView):
     isohud: isoview_hud handler.
     """
     self.__isohud = isohud
-    self.__answers = model.getAnswers()
-    self.__position = model.getPosition()
+    infoPackage = model.getInfoPackage()
+    self.__answers = infoPackage["answers"]
+    self.__position = infoPackage["position"]
     
     positioned_view.PositionedView.__init__(self, model, screen)
     self.container = ocempgui.widgets.Box(358, 258)
@@ -29,7 +30,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
     
-    label = guiobjects.OcempLabel(model.getMessage(), guiobjects.STYLES["quizLabel"])
+    label = guiobjects.OcempLabel(infoPackage["message"], guiobjects.STYLES["quizLabel"])
     label.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["quizLabel"]))
     label.topleft = 20, 40
     self.container.add_child(label)

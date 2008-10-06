@@ -153,30 +153,6 @@ class IsoViewHud(isoview.IsoView):
     subscriptionList.append(['finish', self.finishGame])
     subscriptionList.append(['destination', self.destinationChanged])
     self.__player.subscribeListEvent(subscriptionList)
-    """
-    self.__player.subscribeEvent('quizAdded', self.quizAdded)
-    self.__player.subscribeEvent('room', self.roomChanged)
-    self.__player.subscribeEvent('liftItem', self.updateScreenItemPosition)
-    self.__player.subscribeEvent('dropItem', self.updateScreenItemPosition)
-    self.__player.subscribeEvent('addToInventory', self.addItemToInventory)
-    self.__player.subscribeEvent('removeFromInventory', self.inventoryRemoved)
-    #self.__player.subscribeEvent('selectedItem', self.itemSelected)
-    self.__player.subscribeEvent('unselectedItem', self.itemUnselected)
-    self.__player.subscribeEvent('points', self.pointsAdded)
-    #self.__player.subscribeEvent('clock', self.clockAdded)
-    self.__player.subscribeEvent('exp', self.expAdded)
-    self.__player.subscribeEvent('initExchange', self.initExchange)
-    self.__player.subscribeEvent('cancelExchange', self.cancelExchange)
-    self.__player.subscribeEvent('listExchange', self.addListExchange)
-    self.__player.subscribeEvent('contactDialog', self.newContactDialog)
-    self.__player.subscribeEvent('contactAdded', self.newContactAdded)
-    self.__player.subscribeEvent("privateChatReceived", self.privateChatReceived)
-    self.__player.subscribeEvent("removeContactRemote", self.removeContactRemote)
-    self.__player.subscribeEvent('avatarConfiguration', self.playerConfigurationChanged)
-    self.__player.subscribeEvent('contactMask', self.contactMaskChanged)
-    self.__player.subscribeEvent('finish', self.finishGame)
-    #self.__player.subscribeEvent('destination', self.destinationChanged)
-    """
     self.__selectedItem = None
     
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_SELECTED)  
@@ -184,14 +160,12 @@ class IsoViewHud(isoview.IsoView):
     self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__selectedImage.rect = self.__selectedImage.image.get_rect()
     self.__selectedImage.zOrder = 0
-    #self.__selectedImage = guiobjects.loadSprite(TILE_SELECTED, True, None, 1)
       
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_TARGET)
     self.__targetTile = None
     self.__targetTileImage = pygame.sprite.Sprite()
     self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
     self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
-    #self.__targetTileImage = guiobjects.loadSprite(TILE_TARGET, True, None, None)
     
     self.__activeActions = []
     self.__restoreActiveActionButtonsList()
@@ -1390,14 +1364,13 @@ class IsoViewHud(isoview.IsoView):
     if self.__selectedItem:
       item = self.__player.talkAndGetFrom(self.__selectedItem)
       if item:
-        self.__player.addToInventoryFromVoid(item, self.__player.getPosition())          
+        self.__player.addToInventory(item, self.__player.getPosition())          
       self.itemUnselected()
  
   def itemToTalk(self):
     """ Talks to an item.
     """
     self.__player.talkTo(self.__selectedItem)
-    self.itemUnselected()
 
   def exchangeItemPlayer(self):
     """ Shows the trade window.

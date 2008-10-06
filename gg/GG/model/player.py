@@ -562,7 +562,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         return
       self.setState(GG.utils.STATE[1])
       item.setPosition(dropLocation)
-      self.triggerEvent('dropItem', item=item, position=item.getPosition())
+      self.triggerEvent('dropItem', item=item, position=item.getPosition(), itemList = item.getItemsOnMyTile())
       self.setUnselectedItem()
   
   def climb(self, itemToClimb):

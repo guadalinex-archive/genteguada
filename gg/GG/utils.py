@@ -103,7 +103,7 @@ TILES_MOZARABE = ["mozarabe1.png","mozarabe2.png"]
 TILES_FOOTBALL = ["futbol1.png","futbol2.png","futbol3.png"] 
 TILES_CHESS = ["ajedrez1.png","ajedrez1b.png","ajedrez2.png","ajedrez2b.png"]
 
-TILES = TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + ["asfalto.png"]
+TILES = TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + ["asfalto.png","actuador.png"]
 
 #================== WALL ============================================================================
 
@@ -146,8 +146,9 @@ RACK = os.path.join(FURNITURE_PATH, "perchero.png")
 PINE_1 = os.path.join(FURNITURE_PATH, "pino.png")
 PINE_2 = os.path.join(FURNITURE_PATH, "pino2.png")
 ROCK3 = os.path.join(FURNITURE_PATH, "roca3.png")
+COW = os.path.join(FURNITURE_PATH, "vaca.png")
 
-DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png"]
+DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png","vaca.png"]
 
 #=============== STACKS ==================================================================
 
@@ -157,6 +158,8 @@ WEIGHS = os.path.join(FURNITURE_PATH, "pesa.png")
 BOX = os.path.join(FURNITURE_PATH, "caja.png")
 ROCK2 = os.path.join(FURNITURE_PATH, "roca2.png")
 POT = os.path.join(FURNITURE_PATH, "maceta.png")
+CHAIR2 = os.path.join(FURNITURE_PATH, "silla2.png")
+CHAIR1 = os.path.join(FURNITURE_PATH, "silla1.png")
 
 STACKS_TOPANCHOR = {}
 STACKS_TOPANCHOR["heno.png"] = -12
@@ -165,8 +168,10 @@ STACKS_TOPANCHOR["pesa.png"] = -12
 STACKS_TOPANCHOR["caja.png"] = -12
 STACKS_TOPANCHOR["roca2.png"] = -25
 STACKS_TOPANCHOR["maceta.png"] = -12
+STACKS_TOPANCHOR["silla2.png"] = -100
+STACKS_TOPANCHOR["silla1.png"] = -100
 
-STACKS = ["heno.png","mesa.png","pesa.png","caja.png","roca2.png","maceta.png"]
+STACKS = ["heno.png","mesa.png","pesa.png","caja.png","roca2.png","maceta.png","silla2.png","silla1.png"]
 
 
 #=============== KEYS ==================================================================
@@ -188,26 +193,47 @@ GIFT = os.path.join(FURNITURE_PATH, "regalo.png")
 MUSHROOMS = os.path.join(FURNITURE_PATH, "setas.png")
 SARDINES = os.path.join(FURNITURE_PATH, "sardinas.png")
 ROCK1 = os.path.join(FURNITURE_PATH, "roca1.png")
+CD = os.path.join(FURNITURE_PATH, "cd_guadalinex.png")
+CRAB = os.path.join(FURNITURE_PATH, "cangrejo.png")
+CLAM = os.path.join(FURNITURE_PATH, "almeja.png")
 
-INVENTORYS = ["regalo.png","setas.png","sardinas.png","roca1.png"]
+
+INVENTORYS = ["regalo.png","setas.png","sardinas.png","roca1.png","cd_guadalinex.png","cangrejo.png","almeja.png"]
 
 #=============== MONEY ==================================================================
 
 TICKET_5 = os.path.join(FURNITURE_PATH, "5Guadapuntos.png")
 TICKET_10 = os.path.join(FURNITURE_PATH, "10Guadapuntos.png")
 TICKET_50 = os.path.join(FURNITURE_PATH, "50Guadapuntos.png")
+CURRENCY = os.path.join(FURNITURE_PATH, "moneda.png")
 
 MONEY_VALUE = {}
 MONEY_VALUE["5Guadapuntos.png"] = 5
 MONEY_VALUE["10Guadapuntos.png"] = 10
 MONEY_VALUE["50Guadapuntos.png"] = 50
+MONEY_VALUE["moneda.png"] = 1
 
 MONEY_LABEL = {}
 MONEY_LABEL["5Guadapuntos.png"] = "Billete 5"
 MONEY_LABEL["10Guadapuntos.png"] = "Billete 10"
 MONEY_LABEL["50Guadapuntos.png"] = "Billete 50"
+MONEY_LABEL["moneda.png"] = "Moneda 1"
 
-MONEYS = ["5Guadapuntos.png","10Guadapuntos.png","50Guadapuntos.png"]
+MONEYS = ["5Guadapuntos.png","10Guadapuntos.png","50Guadapuntos.png","moneda.png"]
+
+#=============== COAST ==================================================================
+
+COAST_UP = os.path.join(FURNITURE_PATH, "costaUp.png")
+COAST_DOWN = os.path.join(FURNITURE_PATH, "costaDown.png")
+COAST_LEFT = os.path.join(FURNITURE_PATH, "costaLeft.png")
+COAST_RIGHT = os.path.join(FURNITURE_PATH, "costaRight.png")
+
+COAST_UP_2 = os.path.join(FURNITURE_PATH, "costa2Up.png")
+COAST_DOWN_2 = os.path.join(FURNITURE_PATH, "costa2Down.png")
+COAST_LEFT_2 = os.path.join(FURNITURE_PATH, "costa2Left.png")
+COAST_RIGHT_2 = os.path.join(FURNITURE_PATH, "costa2Right.png")
+
+COASTS = ["costaUp.png","costaDown.png","costaLeft.png","costaRight.png","costa2Up.png","costa2Down.png","costa2Left.png","costa2Right.png"]
 
 #=============== RIVER ==================================================================
 
@@ -247,18 +273,29 @@ DOOR_WALL_LEFT = os.path.join(FURNITURE_PATH, "puertaMuroLeft.png")
 DOOR_ROAD_UP = os.path.join(FURNITURE_PATH, "puertaCarreteraUp.png")
 DOOR_ROAD_LEFT = os.path.join(FURNITURE_PATH, "puertaCarreteraLeft.png")
 
+DOOR_FENCE_UP = os.path.join(FURNITURE_PATH, "puertaVallaUp.png")
+DOOR_FENCE_LEFT = os.path.join(FURNITURE_PATH, "puertaVallaLeft.png")
+
 DOOR_DOWN = os.path.join(FURNITURE_PATH, "downArrow.png")
 DOOR_UP = os.path.join(FURNITURE_PATH, "upArrow.png")
 DOOR_LEFT = os.path.join(FURNITURE_PATH, "leftArrow.png")
 DOOR_RIGHT = os.path.join(FURNITURE_PATH, "rightArrow.png")
 
-DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png"]
+DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png","puertaVallaUp.png","puertaVallaLeft.png"]
 
 
 #=============== DOORS ==================================================================
 
 WEBS = WALLS + DECORATORS + STACKS + KEYS + INVENTORYS + DOORS
 
+
+#=============== ANDATUZ ==================================================================
+
+ANDATUZ_DOWN = os.path.join(FURNITURE_PATH, "andatuzDown.png")
+ANDATUZ_RIGHT = os.path.join(FURNITURE_PATH, "andatuzRight.png")
+ANDATUZ_UP = os.path.join(FURNITURE_PATH, "andatuzUp.png")
+
+PENGUINS = ["andatuzDown.png","andatuzRight.png","andatuzUp.png"]
 
 # ======================= SOUNDS ===========================
 
