@@ -109,11 +109,11 @@ class IsoViewHud(isoview.IsoView):
     isoview.IsoView.__init__(self, model, screen)
     self.__player = user
     self.__isoviewInventory = []
-    inven = self.__player.getInventory()
+    inventoryData = self.__player.getInventory()
     self.room = self.__player.getRoom()
     self.roomName = self.room.getName()
-    for invItem in inven:
-      self.__isoviewInventory.append(isoview_inventoryitem.IsoViewInventoryItem(invItem, screen, self))
+    for key in inventoryData:
+      self.__isoviewInventory.append(isoview_inventoryitem.IsoViewInventoryItem(inventoryData[key]["object"], screen, self, inventoryData[key]["name"]))
     self.__allSprites = guiobjects.GroupSprite()
     self.__isoviewRoom = None    
     self.__textArea = None
@@ -692,14 +692,6 @@ class IsoViewHud(isoview.IsoView):
     """ Attempts to move an item from the inventory to the active room.
     """  
     self.__player.tryOutToInventory(self.__selectedItem)
-    """
-    if self.__selectedItem.inventoryOnly():
-      self.__player.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
-      self.paintItemsInventory()
-    else:   
-      self.__player.addToRoomFromInventory(self.__selectedItem)
-    self.__player.setUnselectedItem()
-    """
     
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the inventory.
