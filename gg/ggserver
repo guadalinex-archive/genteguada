@@ -34,7 +34,7 @@ if __name__ == "__main__":
                   [GG.model.ggsystem.GGSystem, 'login', onLogin]
                 ]
 
-  print "Iniciado el servidor del juego Gente Guada V. 0.6.0-1"
+  print "Iniciado el servidor del juego Gente Guada V. 0.6.1-1"
   dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),
                             port = params.port,
                             onDisconnection = onDisconnection,

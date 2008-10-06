@@ -1,8 +1,14 @@
-genteguada (0.6.0-1) gutsy; urgency=low
+genteguada (0.6.1-1) unstable; urgency=low
+
+  * Imagenes finales del juego, eliminadas algunas llamadas de mas al servidor
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 06 Oct 2008 21:12:24 +0200
+
+genteguada (0.6.0-1) unstable; urgency=low 
 
   * Nueva creacion de items
 
- -- Joseba Mariscal <jmariscal@jmariscal>  Sun, 05 Oct 2008 19:26:40 +0200
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Sun, 05 Oct 2008 19:26:40 +0200
 
 genteguada (0.5.4-1) unstable; urgency=low
 
