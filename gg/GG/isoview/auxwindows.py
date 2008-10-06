@@ -769,6 +769,15 @@ class CreateItemsWindow(AuxWindow):
     if "url" in keys:
       self.__paintTextField(iPos, "Dirección web", attrDict["url"], "url")
       iPos += 1
+    if "filePath" in keys:
+      self.__paintTextField(iPos, "Directorio preguntas", attrDict["filePath"], "filePath")
+      iPos += 1
+    if "message" in keys:
+      self.__paintTextField(iPos, "Mensaje", attrDict["message"], "message")
+      iPos += 1
+    if "gift" in keys:
+      self.__paintTextField(iPos, "Regalo", attrDict["gift"], "gift")
+      iPos += 1
     if "imagesGift" in keys:
       self.__paintImageGift(iPos, attrDict["imagesGift"])
     if "images" in keys:

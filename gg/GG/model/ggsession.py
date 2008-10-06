@@ -17,6 +17,7 @@ import pickable_item
 import teleport
 import web_item
 import GG.utils
+import penguin
 
     
 # ======================= CONSTANTS ===========================    
@@ -150,13 +151,9 @@ class GGSession(ggmodel.GGModel):
     if not self.__player.getAccessMode():
       return None  
     pos = self.__player.getRoom().getNearestEmptyCell(self.__player.getPosition())
-    """           
-    "PenguinQuiz": {"position": pos, "label": [""], "filePath": [GG.utils.QUESTIONS_PATH], "images": IMAGES_DICT["PenguinTalker"].keys() },  
-    "PenguinTalker": {"position": pos, "label": [""], "message": [""], "images": IMAGES_DICT["PenguinTalker"].keys() },
-    "PenguinTrade": { "position": pos, "label": [""], "gift": [""], "message": [""], "images": IMAGES_DICT["PenguinTrade"].keys()},
-    """
     self.objectsDict = {
       "Muros":{ "position": pos, "images": GG.utils.WALLS },
+      "Costa":{ "position": pos, "images": GG.utils.COASTS },
       "Decorativos":{ "position": pos, "images": GG.utils.DECORATORS },
       "Apilables":{ "position": pos, "label": "", "images": GG.utils.STACKS },
       "Llaves":{ "position": pos, "label": "", "images": GG.utils.KEYS },
@@ -169,6 +166,9 @@ class GGSession(ggmodel.GGModel):
       "Puertas con celdas": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pressedTile1": [0, 0], 
           "pressedTile2": [0, 0], "images": GG.utils.DOORS},
       "Enlaces web": { "position": pos, "label": "", "url": "", "images": GG.utils.WEBS },
+      "Andatuz pregunton": {"position": pos, "label": "", "filePath": GG.utils.QUESTIONS_PATH, "images": GG.utils.PENGUINS },  
+      "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS },
+      "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS },
       "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()}
     }
     return self.objectsDict
@@ -206,6 +206,24 @@ class GGSession(ggmodel.GGModel):
       return None
     return str(label[0])
 
+  def __getQuizCreateObject(self, quiz):
+    if quiz[0] == "":
+      self.__player.newChatMessage("Debe introducir la ruta de las preguntas.", 1)
+      return None
+    return str(quiz[0])
+
+  def __getMessageCreateObject(self, message):
+    if message[0] == "":
+      self.__player.newChatMessage("Debe introducir el mensaje del piguino.", 1)
+      return None
+    return str(message[0])
+
+  def __getGiftCreateObject(self, gift):
+    if gift[0] == "":
+      self.__player.newChatMessage("Debe introducir la etiqueta del regalo.", 1)
+      return None
+    return str(gift[0])
+
   def __getDestinationRoomCreateObject(self, roomLabel):
     room = self.__system.getRoom(str(roomLabel[0])) 
     if not room:
@@ -229,8 +247,7 @@ class GGSession(ggmodel.GGModel):
     images = self.__getImageCreateObject(data["images"], objectLabel)
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
     if images and position:
-      print objectLabel
-      if objectLabel in ["Muros","Decorativos"]:
+      if objectLabel in ["Muros","Decorativos","Costa"]:
         object = room_item.GGRoomItem(images)
       elif objectLabel == "Rios":
         object = room_item.GGRiver(images)
@@ -309,13 +326,41 @@ class GGSession(ggmodel.GGModel):
       gift = giver_npc.WebGift(images, label, self.__player.username)
       room.addItemFromVoid(gift, position)
 
+  def __createObjectPenguinQuiz(self, data, room):
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    quizDir = self.__getQuizCreateObject(data["filePath"])
+    if images and position and label and quizDir:
+      penguinQuiz = penguin.GGPenguinQuiz(images, label, quizDir)
+      room.addItemFromVoid(penguinQuiz, position)
+
+  def __createObjectPenguinTalker(self, data, room):
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    message = self.__getMessageCreateObject(data["message"])
+    if images and position and label and message:
+      penguinTalker = penguin.GGPenguinTalker(images, label, message)
+      room.addItemFromVoid(penguinTalker, position)
+
+  def __createObjectPenguinTrader(self, data, room):
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    message = self.__getMessageCreateObject(data["message"])
+    gift = self.__getGiftCreateObject(data["gift"])
+    if images and position and label and message:
+      penguinTrade = penguin.GGPenguinTrade(images, label, message, gift)
+      room.addItemFromVoid(penguinTrade, position)
+
   def createObject(self, name, data):
     """ Creates a new object.
     name: object type.
     data: object data.
     """  
     room = self.__player.getRoom()
-    if name in ["Muros", "Decorativos", "Rios", "Dinero"]:
+    if name in ["Muros", "Decorativos", "Rios", "Dinero", "Costa"]:
       self.__createObjectImagesPosition(data, room, name)
     elif name in ["Apilables","Llaves","Inventario"]:
       self.__createObjectImagesPositionLabel(data, room, name)
@@ -329,6 +374,13 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectWeb(data, room)
     elif name == "Regalos":
       self.__createObjectGift(data, room, name)
+    elif name == "Andatuz pregunton":
+      self.__createObjectPenguinQuiz(data, room)
+    elif name == "Andatuz hablador":
+      self.__createObjectPenguinTalker(data, room)
+    elif name == "Andatuz cambiador":
+      self.__createObjectPenguinTrader(data, room)
+
 
   def getImagesGift(self):
     """ Returns all available images for an admin created gift.

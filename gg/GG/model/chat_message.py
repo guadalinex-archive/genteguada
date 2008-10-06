@@ -122,7 +122,14 @@ class ChatQuiz(ChatMessage):
     else:  
       self.__rightAnswer = 3
     quizFile.close()
-  
+ 
+  def getInfoPackage(self):
+    infoPackage = {}
+    infoPackage["answers"] = self.getAnswers()
+    infoPackage["position"] = self.getPosition()
+    infoPackage["message"] = self.getMessage()
+    return infoPackage
+
   def removeRightAnsweredQuestion(self):  
     """ Removes a question from the questions list.
     """
