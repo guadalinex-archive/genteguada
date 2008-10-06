@@ -37,6 +37,7 @@ class GGGeneratedInventoryItem(inventory_item.GGInventoryItem):
     infoPackage = {}
     infoPackage["position"] = self.getPosition() 
     infoPackage["imagepath"] = self.getImagePath()
+    infoPackage["spriteName"] = self.spriteInventory
     return infoPackage
   
   def variablesToSerialize(self):

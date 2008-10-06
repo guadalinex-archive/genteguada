@@ -198,7 +198,7 @@ class IsoViewHud(isoview.IsoView):
     self.__buttonActions = {
         "inventory":      {"image":MOVE_IN_IMAGE,       "action": self.itemToInventory,     "tooltip":"Al inventario (P)"},
         "copy":           {"image":MOVE_IN_IMAGE,       "action": self.itemCopyToInventory, "tooltip":"Al inventario (C)"},
-        "gift":           {"image":MOVE_IN_IMAGE,       "action": self.itemGiftToInventory, "tooltip":"Al inventario"},
+        "gift":           {"image":MOVE_IN_IMAGE,       "action": self.itemCopyToInventory, "tooltip":"Al inventario"},
         "removeInventory":{"image":MOVE_OUT_IMAGE,      "action": self.itemOutInventory,    "tooltip":"Sacar del inventario (M)"},
         "jumpOver":       {"image":JUMP_IMAGE,          "action": self.itemToJumpOver,      "tooltip":"Saltar (J)"},
         "lift":           {"image":LIFT_IMAGE,          "action": self.itemToLift,          "tooltip":"Levantar (I)"},
@@ -441,9 +441,10 @@ class IsoViewHud(isoview.IsoView):
     """ 
     item = event.getParams()["item"]  
     pos = event.getParams()["position"]
+    itemList = event.getParams()["itemList"]
     ivItem = self.__isoviewRoom.findIVItem(item)  
     if ivItem:
-      self.__isoviewRoom.updateScreenPositionsOn(pos)  
+      self.__isoviewRoom.updateScreenPositionsOn(pos, itemList)  
       
   def addItemToInventory(self, event):
     """ Triggers after receiving an item added to inventory event.
@@ -451,14 +452,15 @@ class IsoViewHud(isoview.IsoView):
     """ 
     item = event.getParams()["item"]
     posOrigin = event.getParams()["position"]
+    itemName = event.getParams()["itemName"]
     posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
     posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
     pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
     ivItem = self.findIVItem(item)
-    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self)
+    invItem = isoview_inventoryitem.IsoViewInventoryItem(item, self.getScreen(), self, itemName)
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, GG.utils.p3dToP2d(posOrigin, ivItem.anchor), pos, True)
-      positionAnim.setOnStop(item.getRoom().removeItem, item)
+      positionAnim.setOnStop(self.room.removeItem, item)
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     else:
       ivItem = item.defaultView(self.getScreen(), self.__isoviewRoom, self)
@@ -467,40 +469,40 @@ class IsoViewHud(isoview.IsoView):
       positionAnim.setOnStop(self.removeSprite, ivItem.getImg())
     positionAnim.setOnStop(self.__isoviewInventory.append, invItem)
     positionAnim.setOnStop(self.paintItemsInventory, None)
-    positionAnim.setOnStop(self.__player.save, "player")
     self.__isoviewRoom.itemUnselected(item)
-    self.__player.setUnselectedItem()
     ivItem.setAnimation(positionAnim)
         
-  def addItemToRoomFromInventory(self, ivItem):
+  def addItemToRoomFromInventory(self, ivItem, listItems = None):
     """ Removes an item from the inventory item list and creates an animation from the inventory to the room.
     ivItem: isoview item associated to the item model.
     """
     item = ivItem.getModel()
     itemPos = ivItem.getPosition()
     ivInventItem = self.findIVInventoryItem(item)
+    if not listItems:
+      listItems =  item.getTile().getItems()
     if ivItem:    
       posX = len(self.__isoviewInventory)%GG.utils.INV_ITEM_COUNT[0]
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
-      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems()), True)
+      positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, listItems), True)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       if self.__sound:
         positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
-        #guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       ivItem.setAnimation(positionAnim)
       if ivInventItem:
         self.__isoviewInventory.remove(ivInventItem)
         self.paintItemsInventory()
       
-  def addItemToRoomFromVoid(self, ivItem):
+  def addItemToRoomFromVoid(self, ivItem, itemList = None):
     """ Creates an animation from the top of the screen to the room.
     ivItem: isoview item associated to the item model.
     """
     item = ivItem.getModel()
     itemPos = ivItem.getPosition()
-    #endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getTile().getItems())
-    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, item.getItemsOnMyTile())
+    if not itemList:
+      itemList = item.getItemsOnMyTile()
+    endPos = self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, itemList)
     if ivItem:
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, [endPos[0], -500], endPos, True)
       ivItem.setAnimation(positionAnim)
@@ -509,7 +511,6 @@ class IsoViewHud(isoview.IsoView):
         ivItem.setMovieAnimation(movieAnim)
       if self.__sound:
         positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
-        #guiobjects.playSound(GG.utils.SOUND_DROPITEM)
       positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
       positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
       
@@ -716,12 +717,15 @@ class IsoViewHud(isoview.IsoView):
   def itemOutInventory(self):
     """ Attempts to move an item from the inventory to the active room.
     """  
+    self.__player.tryOutToInventory(self.__selectedItem)
+    """
     if self.__selectedItem.inventoryOnly():
       self.__player.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
       self.paintItemsInventory()
     else:   
       self.__player.addToRoomFromInventory(self.__selectedItem)
     self.__player.setUnselectedItem()
+    """
     
   def paintItemOnInventory(self, invItem, position):
     """ Paints an item on the inventory.
@@ -1371,21 +1375,8 @@ class IsoViewHud(isoview.IsoView):
     """ Brings an item from the room to the player's inventory.
     """
     if self.__selectedItem:
-      item, pos = self.__selectedItem.getCopyFor(self.__player)
-      if item:
-        self.__player.addToInventoryFromVoid(item, pos)
-      self.__player.setUnselectedItem()
+      self.__player.tryToInventoryCopy(self.__selectedItem)
  
-  def itemGiftToInventory(self):
-    """ Gets a gift from the room to the player's inventory.
-    """
-    if self.__selectedItem:
-      selectedItem = self.__selectedItem
-      item, pos = self.__selectedItem.getGiftFor(self.__player)
-      self.__player.addToInventoryFromVoid(item, pos)
-      self.__player.setUnselectedItem()
-      self.__player.getRoom().removeItem(selectedItem)
-      
   def itemToClone(self):
     """ Clones an item from the room and inserts it on the player's inventory
     """
@@ -1607,7 +1598,7 @@ class IsoViewHud(isoview.IsoView):
         size = self.__isoviewRoom.getModel().size
         if 0 <= posX < size[0]:
           if 0 <= posY < size[1]:
-            self.__isoviewRoom.getModel().moveStack([posX, posY], selectedItem)  
+            self.room.moveStack([posX, posY], selectedItem)  
             self.__selectedImage.rect.topleft = GG.utils.p3dToP2d([posX, posY], SELECTED_FLOOR_SHIFT)
       elif key == "Url":
         url = self.editableFields[key][0].text

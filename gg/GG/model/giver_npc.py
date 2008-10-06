@@ -69,16 +69,13 @@ class GGGiverNpc(room_item.GGRoomItem):
     """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
     player: selected player.
     """  
-    header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.getName() + "]: "
     if player.hasItemLabeledInInventory(self.getName()):
       message = "Ya has obtenido " + self.getName()
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, 
-                 self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
+      player.newChatMessage(message, 2)
       return None, [-1, -1]
     else:  
       message = "Obtienes " + self.getName()
-      player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage(message, \
-                self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), text=message, header=header)
+      player.newChatMessage(message, 2)
       return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.getName(), self.getPosition()), self.getPosition()
   
   def inventoryOnly(self):
@@ -97,7 +94,6 @@ class GGGiverNpc(room_item.GGRoomItem):
     """  
     return False
 
-# ===============================================================
 
 class WebGift(GGGiverNpc):
     
@@ -140,14 +136,12 @@ class WebGift(GGGiverNpc):
     """   
     return WebGift(self.spriteName, self.spriteInventory, self.getName(), self.__creator)
   
-  def getGiftFor(self, player):
+  def getCopyFor(self, player):
     """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
     player: selected player.
-    """  
-    player.triggerEvent('chatAdded', message=GG.model.chat_message.ChatMessage("Obtienes " + self.getName(), \
-                self.getName(), GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))
-    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), \
-                                                    self.getPosition(), self.__idGift), self.getPosition()
+    """ 
+    player.newChatMessage("Obtienes " + self.getName(), 2)
+    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), self.getPosition(), self.__idGift), self.getPosition()
                                                     
   def generateId(self):
     """ Generates an unique id for this item.
