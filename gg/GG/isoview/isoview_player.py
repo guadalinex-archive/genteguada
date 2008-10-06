@@ -52,14 +52,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     subscriptionList.append(['avatarConfiguration', self.avatarConfigurationChanged])
     subscriptionList.append(['timestamp', self.timestampChanged])
     self.getModel().subscribeListEvent(subscriptionList)
-    """
-    self.getModel().subscribeEvent('heading', self.headingChanged)
-    self.getModel().subscribeEvent('state', self.stateChanged)
-    self.getModel().subscribeEvent('jump', self.onJump)
-    self.getModel().subscribeEvent('jumpOver', self.onJumpOver)
-    self.getModel().subscribeEvent('avatarConfiguration', self.avatarConfigurationChanged)
-    self.getModel().subscribeEvent('timestamp', self.timestampChanged)
-    """
 
   def __getAvatarImages(self):
     """ Grabs a new set of images for player's avatar. 
