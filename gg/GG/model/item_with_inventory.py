@@ -41,7 +41,6 @@ class GGItemWithInventory(room_item.GGRoomItem):
       dictInventory[i] = {"name":invItem.getName(), "object":invItem}
       i+=1
     return dictInventory  
-    return self.__inventory
   
   def setInventory(self, inventory):
     """ Sets a new player's inventory.

@@ -186,14 +186,14 @@ class GGPenguinTrade(GGPenguin):
     """
     giftItem = talker.getItemFromInventory(self.__giftLabel)
     if giftItem:
-      self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
-                                                 self.getPosition(), 2), self.__msg)
+      self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), self.__msg)
       talker.removeFromInventory(giftItem)
-      return generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.getPosition())
+      item = generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.getPosition()) 
+      talker.addToInventory(item, talker.getPosition())
+      return True 
     else:
-      chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..."
-      self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
-                                                 self.getPosition(), 2), chatMessage)
+      chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..." 
+      self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), chatMessage)
     talker.setUnselectedItem()
     return None
 
