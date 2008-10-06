@@ -1355,9 +1355,6 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__selectedItem:
       item = self.__player.talkAndGetFrom(self.__selectedItem)
-      if item:
-        self.__player.addToInventory(item, self.__player.getPosition())          
-      self.itemUnselected()
  
   def itemToTalk(self):
     """ Talks to an item.
