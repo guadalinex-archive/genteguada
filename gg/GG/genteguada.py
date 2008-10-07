@@ -71,7 +71,8 @@ class GenteGuada:
     """  
     #print dMVC.utils.statClient.strClient()
     #print dMVC.utils.statEventTriggered.strEvent()
-    self.__session.getPlayer().setState(GG.utils.STATE[1])    
+    if self.__session:
+      self.__session.getPlayer().setState(GG.utils.STATE[1])    
     if self.__exitCondition is None:
       #pygame.quit()
       sys.exit(0)

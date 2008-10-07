@@ -140,7 +140,7 @@ class GGSystem(dMVC.model.Model):
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
@@ -161,6 +161,7 @@ class GGSystem(dMVC.model.Model):
   def __loadData(self):
     """ Loads all system data.
     """  
+    """
     import createworld
     world = createworld.CreateWorld(self)
     world.create()
@@ -170,7 +171,6 @@ class GGSystem(dMVC.model.Model):
       self.__rooms.append(room)
       if room.getStartRoom():
         self.__startRooms.append(room) 
-    """
 
   def setStartRoom(self, room, startRoom):
     """ Sets a room as start room or not.

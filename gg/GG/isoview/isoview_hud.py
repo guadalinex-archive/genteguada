@@ -460,7 +460,7 @@ class IsoViewHud(isoview.IsoView):
       posY = len(self.__isoviewInventory)/GG.utils.INV_ITEM_COUNT[1]
       pos = [INV_OR[0] + (posX * INV_ITEM_SZ[0]), INV_OR[1] + (posY * INV_ITEM_SZ[1])]
       positionAnim = animation.ScreenPositionAnimation(ANIM_INVENTORY_TIME, ivItem, pos, self.__isoviewRoom.getFutureScreenPosition(ivItem, itemPos, listItems), True)
-      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos, listItems)
       if self.__sound:
         positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
       ivItem.setAnimation(positionAnim)
@@ -486,7 +486,7 @@ class IsoViewHud(isoview.IsoView):
       if self.__sound:
         positionAnim.setOnStop(guiobjects.playSound, GG.utils.SOUND_DROPITEM)     
       positionAnim.setOnStop(ivItem.stopFallingAndRestore, None)
-      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos)
+      positionAnim.setOnStop(self.__isoviewRoom.updateScreenPositionsOn, itemPos, itemList)
       
   def draw(self):
     """ Updates the changed zones on the room view and draws the hud.
