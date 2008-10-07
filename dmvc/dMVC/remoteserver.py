@@ -212,7 +212,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       return True
     except:
       #utils.logger.exception("Can''t send an object, probable conexion lost")
-      self.finish()
+      #self.finish()
       return False
 
   def sendCommand(self, command): 
@@ -220,6 +220,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     return True
 
   def finish(self): 
+    SocketServer.BaseRequestHandler.finish(self)
     utils.logger.debug("Close the connection with "+str(self.client_address))
     handler = dMVC.getRServer()._onDisconnection
     if handler:

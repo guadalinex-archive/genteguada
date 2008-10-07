@@ -21,7 +21,7 @@ import GG.genteguada
 # Lectura de parametros de la linea de comandos 
 __usage__ = "\n  %s -d directorio destino"%sys.argv[0]
 parser = OptionParser( usage = __usage__ )
-parser.add_option("-i",dest="ip",help="ip",default=None) 
+parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
 parser.add_option("-u",dest="user",help="usuario",default="pepe") 
 parser.add_option("-p",dest="password",help="clave",default="1234") 
 parser.add_option("-f",dest="fullscreen", help="pantalla completa",default=False)

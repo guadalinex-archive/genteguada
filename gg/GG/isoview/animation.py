@@ -127,21 +127,21 @@ class Animation(object):
       else:    
         method[0](method[1])
 
-  def setOnStop(self, method, params):
+  def setOnStop(self, method, *args):
     """ Adds a new method to be executed at animation end.
     method: method to be executed.
     params: method params.
     """  
-    self.__endMethods.append([method, params])
+    self.__endMethods.append([method, args])
     
   def onStop(self):
     """ Runs some methods at animation end.
     """
     for method in self.__endMethods:
-      if method[1] == None:
+      if len(method[1]) == 1 and str(*method[1]) == "None":
         method[0]()
       else:    
-        method[0](method[1])
+        method[0](*method[1])
     
   def isFinished(self, now):
     """ Checks if the animation is finished.
