@@ -7,11 +7,11 @@ import weakref
 import pickle
 import glob
 import sys
+import GG.utils 
 
-SAVE_DATA = os.path.join(GG.utils.DATA_PATH, "savedata")
-SAVE_DATA_ROOM = os.path.join(SAVE_DATA, "rooms")
-SAVE_DATA_PLAYER = os.path.join(SAVE_DATA, "players")
-MODEL_ID_FILE = os.path.join(SAVE_DATA, "modelid.txt")
+SAVE_DATA_ROOM = os.path.join(GG.utils.SAVE_DATA, "rooms")
+SAVE_DATA_PLAYER = os.path.join(GG.utils.SAVE_DATA, "players")
+MODEL_ID_FILE = os.path.join(GG.utils.SAVE_DATA, "modelid.txt")
 
 try:
   f = open(MODEL_ID_FILE, "r")

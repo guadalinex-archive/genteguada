@@ -13,6 +13,7 @@ import random
 import GG.avatargenerator.generator
 import Queue
 import ggmodel
+import mailbox
 
 import urllib2
 import urllib
@@ -28,15 +29,15 @@ class GGSystem(dMVC.model.Model):
     dMVC.model.Model.__init__(self)
     self.__rooms = []
     self.__startRooms = []
-    self.__players = []
+    self.__mailBox = None
+    self.__loadData()
     self.__sessions = [] # Variable privada solo para uso interno.
     self.__avatarGeneratorHandler = GG.avatargenerator.generator.AvatarGenerator()
     self.__avatarGeneratorProcessQueue = Queue.Queue()
     thread.start_new(self.__start, ())
     GGSystem.instance = self
-    self.__loadData()
      
-  def getEntryRoom(self):
+  def __getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
     """
     roomsCopy = self.__startRooms
@@ -47,55 +48,8 @@ class GGSystem(dMVC.model.Model):
       else:
         return room    
     return None
-      
-  def getEntryRooms(self):
-    """ Returns all start rooms.
-    """  
-    return self.__startRooms      
-      
-  # self.__players
   
-  def getPlayers(self):
-    """ Returns the players list.
-    """
-    return self.__players
-  
-  def setPlayers(self, players):
-    """ Sets a new players list.
-    players: new players list.
-    """
-    if not self.__players == players:
-      self.__players = players
-      self.triggerEvent('players', players=players)
-      return True
-    return False
-    
-  def addPlayer(self, player):
-    """ Adds a new player to the players list.
-    player: new player.
-    """
-    if not player in self.__players:
-      self.__players.append(player)
-      self.triggerEvent('addPlayer', player=player)
-      return True
-    return False
-    
-  def removePlayer(self, player):
-    """ Remove a player from the players list.
-    player: player to be removed.
-    """
-    if player in self.__players:
-      self.__players.remove(player)
-      self.triggerEvent('removePlayer', player=player)
-      return True
-    return False
-
-  def getPlayerObject(self, username):
-    for sess in self.__sessions:
-      if sess.getPlayer().username == username:
-        return sess.getPlayer()
-    return None
-
+  @dMVC.synchronized.synchronized(lockName='accessSession')
   def login(self, username, password):
     """ Attempts to login on an user. If succesfull, returns a ggsession model.
     username: user name.
@@ -118,7 +72,7 @@ class GGSystem(dMVC.model.Model):
   def __accessUserIntoRoom(self, user):
     newRoom = user.getRoom()
     if not newRoom:
-      newRoom = self.getEntryRoom()
+      newRoom = self.__getEntryRoom()
       if not newRoom:
         return False
     else:
@@ -133,6 +87,7 @@ class GGSystem(dMVC.model.Model):
       player = GG.model.player.GGPlayer(username, "")
     if accessMode == "A":
       player.admin = True
+    self.mailBox.newPlayerActive(player)
     return player
   
   def loginGuadalinex(self, user, passwd):
@@ -151,11 +106,11 @@ class GGSystem(dMVC.model.Model):
       return False
     return data[3]
     
+  @dMVC.synchronized.synchronized(lockName='accessSession')
   def logout(self, session):
     """ Logs out a player and ends his session.
     session: player's session.
     """  
-    #session.getPlayer().getRoom().removeItem(session.getPlayer())  
     self.__sessions.remove(session)
 
   def __loadData(self):
@@ -171,6 +126,7 @@ class GGSystem(dMVC.model.Model):
       self.__rooms.append(room)
       if room.getStartRoom():
         self.__startRooms.append(room) 
+    self.mailBox = mailbox.MailBox()
 
   def setStartRoom(self, room, startRoom):
     """ Sets a room as start room or not.
@@ -186,6 +142,7 @@ class GGSystem(dMVC.model.Model):
     elif not foundRoom and startRoom:
       self.__startRooms.append(room)
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def createRoom(self, spriteFull, label, size, maxUsers, enabled, startRoom, copyRoom=None):
     """ Creates a new room.
     spriteFull: sprite used to paint the room floor.
@@ -211,6 +168,7 @@ class GGSystem(dMVC.model.Model):
       self.__startRooms.append(newRoom)    
     return newRoom
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def deleteRoom(self, label):
     """ Deletes a room.
     label: room label.
@@ -230,37 +188,6 @@ class GGSystem(dMVC.model.Model):
     chosenRoom = None
     return True
       
-  def createPlayer(self, player):
-    """ Creates a new player.
-    player: new player.
-    """
-    if player in self.__players:
-      return False
-    self.__players.append(player)
-    return True
-    
-  def insertItemIntoRoom(self, item, room, isPlayer):
-    """ Inserts a new item into a room.
-    item: new item.
-    room: existing room.
-    isPlayer: flag used to check it the item is a player or not.
-    """
-    if room.addItem(item):
-      if isPlayer:
-        if item in self.__players:
-          return
-        self.__players.append(item)
-    
-  def removeItem(self, item, isPlayer):
-    """ Removes an item.
-    item: existing item.
-    isPlayer: flag used to check it the item is a player or not.
-    """
-    if item.getRoom():
-      item.getRoom().removeItem(item)    
-    if isPlayer and item in self.__players:
-      self.__players.remove(item)
-
   def __start(self):
     """ Starts the program.
     """
@@ -274,6 +201,7 @@ class GGSystem(dMVC.model.Model):
     except:
       dMVC.utils.logger.exception('Exception in __start')
     
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def __tick(self, now):
     """ Calls for a time tick on all rooms.
     now: timestamp.
@@ -378,6 +306,7 @@ class GGSystem(dMVC.model.Model):
   def getInstance():
     return GGSystem.instance
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def getRoom(self, label):
     """ Returns a selected room.
     label: room's label.
@@ -387,15 +316,7 @@ class GGSystem(dMVC.model.Model):
         return room
     return None
 
-  def existsRoom(self, name):
-    """ Checks if a room exists.
-    name: room label.
-    """  
-    for room in self.__rooms:
-      if room.label == name:
-        return room  
-    return None
-
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def getRoomLabels(self):
     """ Returns a list containing all room labels.
     """  
@@ -404,6 +325,7 @@ class GGSystem(dMVC.model.Model):
       listLabels.append(room.label)
     return listLabels  
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def labelChange(self, oldLabel, newLabel):
     """ Changes an item label.
     oldLabel: old item label.
@@ -427,28 +349,13 @@ class GGSystem(dMVC.model.Model):
         filePlayerImage.close()
     return files
     
-  def getPlayersList(self):
-    """ Returns the active players list.
-    """  
-    pList = []  
-    for session in self.__sessions:
-      pList.append(session.getPlayer().username)
-    return pList
-
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def getRooms(self):
     """ Returns the rooms list.
     """  
     return self.__rooms  
 
-  def getSpecificPlayer(self, name):
-    """ Returns a specific player.
-    name: player name.
-    """  
-    for player in self.__players:
-      if player.getName() == name:
-        return player
-    return None  
-
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def newBroadcastMessage(self, line, player):
     """ Sends a new broadcast message.
     line: message text.
@@ -457,64 +364,57 @@ class GGSystem(dMVC.model.Model):
     for room in self.__rooms:
       room.newChatMessage(line, player, 3)    
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
   def deleteGift(self, idGift, username=None):
     """ Deletes a web gift from the game.
     idGift: gift id.
     username: gift owner.
     """  
-    markedItem = None
-    markedRoom = None
-    markedPlayer = None
     if username:
-      player = self.getSpecificPlayer(username)  
+      player = self.getPlayerConnected(username)
       if player:
-        inventory = player.getInventory()
-        for item in inventory:
-          if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
-            if item.getIdGift() == idGift:
-              markedItem = item
-              markedPlayer = player
+        return player.deleteGift(idGift)
+      else:
+        return self.mailBox.newEventDeleteGift(self.getConnectedPlayers(), idGift, username)
     else:
-      for player in self.__players:
-        inventory = player.getInventory()
-        for item in inventory:
-          if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
+      for room in self.__rooms:
+        items = room.getItems()
+        for item in items:
+          if isinstance(item, GG.model.giver_npc.WebGift):
             if item.getIdGift() == idGift:
-              markedItem = item
-              markedPlayer = player
-    if markedItem:
-      markedPlayer.removeFromInventory(markedItem)
-      return True
-    markedItem = None
-    markedRoom = None
-    markedPlayer = None
-    for room in self.__rooms:
-      items = room.getItems()
-      for item in items:
-        if isinstance(item, GG.model.giver_npc.WebGift):
-          if item.getIdGift() == idGift:
-            markedItem = item
-            markedRoom = room
-    if markedItem:
-      markedRoom.removeItem(markedItem)
-      return True
-    return False  
+              room.removeItem(item)
+              return True
+      return self.mailBox.newEventDeleteGift(self.getConnectedPlayers(), idGift)
             
   def deletePlayer(self, username):
     """ Deletes a player and all references to him from the game.
     username: player name.
     """  
-    markedPlayer = None
-    markedSession = None
-    for player in self.__players:
+    playerDelete = self.getPlayerConnected(username)
+    if playerDelete:
+      playerDelete.kick()
+    else:
+      playerDelete = ggmodel.GGModel.read(username, "player")
+    if playerDelete:
+      self.mailBox.newEventDeletePlayer(self.getConnectedPlayers(), username)
+      playerDelete.removeAllData()
+      playerDelete.deleteObject("player")
+      return True
+    return False
+
+  @dMVC.synchronized.synchronized(lockName='accessSession')
+  def getPlayerConnected(self,username):
+    for session in self.__sessions:
+      player = session.getPlayer()
       if player.username == username:
-        markedPlayer = player
-      else:
-        player.removePlayerContactFromAgenda(username)  
-    if not markedPlayer:
-      return False
-    markedPlayer.kick()
-    markedPlayer.removeAllData()
-    self.__players.remove(markedPlayer)
-    return True
-    
+        return player
+    return None
+
+  @dMVC.synchronized.synchronized(lockName='accessSession')
+  def getConnectedPlayers(self):
+    result = {}
+    for session in self.__sessions:
+      player = session.getPlayer()
+      result[player.username] = player
+    return result
+
