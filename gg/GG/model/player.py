@@ -847,3 +847,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.addToRoomFromInventory(item)
       self.setUnselectedItem()
 
+  def deleteGift(self, idGift):
+    for item in self.__inventory:
+      if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
+        if item.getIdGift() == idGift:
+          self.removeFromInventory(item)
+          return True
+    return False
+
+

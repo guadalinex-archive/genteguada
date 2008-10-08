@@ -19,7 +19,7 @@ class PrivateContact(ggmodel.GGModel):
     self.__chat = []
 
   def getPlayerObject(self):
-    return ggsystem.GGSystem.getInstance().getPlayerObject(self.__player)
+    return ggsystem.GGSystem.getInstance().getPlayerConnected(self.__player)
 
   def getPlayer(self):
     """ Returns the contact.
