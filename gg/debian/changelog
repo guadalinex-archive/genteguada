@@ -1,3 +1,10 @@
+genteguada (0.6.2-1) unstable; urgency=low
+
+  * Solucion a los errores 0001866, 0001867, 0001868, 0001869
+  * Nuevo tipo de objeto, posicion aleatoria
+
+ -- Joseba Mariscal <jmariscal@igosoftware>  Thu, 09 Oct 2008 21:54:58 +0200
+
 genteguada (0.6.1-1) unstable; urgency=low
 
   * Imagenes finales del juego, eliminadas algunas llamadas de mas al servidor
