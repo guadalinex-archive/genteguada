@@ -24,7 +24,7 @@ WAITING_LABEL_POSITION = [314, 335]
 UPLOAD_MASK = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
 ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
-ICON = os.path.join(GG.utils.ICONS_PATH, "icon64.png") 
+ICON = os.path.join("icons", "icon64.png") 
 
 class GenteGuada:
   """ GenteGuada class.
@@ -121,7 +121,7 @@ class GenteGuada:
     self.__setSystem(params.ip, params.port)
     pygame.init()
     pygame.display.set_caption(VERSION)
-    icon = pygame.image.load(ICON)
+    icon = pygame.image.load(self.getDataPath(ICON))
     pygame.display.set_icon(icon) 
     self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:
