@@ -144,7 +144,7 @@ class Login:
     """ Paints the screen background. 
     """  
     imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
-    imgBackgroundRight.topleft = 0, 0
+    imgBackgroundRight.topleft = 1, 0
     self.window.add_child(imgBackgroundRight)
 
   def __paintTextLabels(self):
