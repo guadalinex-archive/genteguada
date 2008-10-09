@@ -299,9 +299,22 @@ RANDOMS = KEYS + INVENTORYS
 ANDATUZ_DOWN = os.path.join(FURNITURE_PATH, "andatuzDown.png")
 ANDATUZ_RIGHT = os.path.join(FURNITURE_PATH, "andatuzRight.png")
 ANDATUZ_UP = os.path.join(FURNITURE_PATH, "andatuzUp.png")
-ANDATUZ_TALKER_UP = os.path.join(FURNITURE_PATH, "andatuzHablanteUp.png")
 
-PENGUINS = ["andatuzDown.png","andatuzRight.png","andatuzUp.png","andatuzHablanteUp.png"]
+ANDATUZ_TALKER_LEFT = os.path.join(FURNITURE_PATH, "andatuzHabladorLeft.png")
+ANDATUZ_TALKER_UP = os.path.join(FURNITURE_PATH, "andatuzHabladorUp.png")
+
+ANDATUZ_GIVER_LEFT = os.path.join(FURNITURE_PATH, "andatuzGenerosoLeft.png")
+ANDATUZ_GIVER_UP = os.path.join(FURNITURE_PATH, "andatuzGenerosoUp.png")
+
+ANDATUZ_QUIZ_LEFT = os.path.join(FURNITURE_PATH, "andatuzPreguntonLeft.png")
+ANDATUZ_QUIZ_UP = os.path.join(FURNITURE_PATH, "andatuzPreguntonUp.png")
+
+PENGUINS = ["andatuzDown.png","andatuzRight.png","andatuzUp.png"]
+PENGUINS_TALKERS = ["andatuzHabladorUp.png","andatuzHabladorLeft.png"]
+PENGUINS_GIVERS = ["andatuzGenerosoUp.png","andatuzGenerosoLeft.png"]
+PENGUINS_QUIZS = ["andatuzPreguntonUp.png","andatuzPreguntonLeft.png"]
+
+ALL_PENGUINS = PENGUINS + PENGUINS_TALKERS + PENGUINS_GIVERS + PENGUINS_QUIZS
 
 # ======================= SOUNDS ===========================
 

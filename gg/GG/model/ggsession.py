@@ -166,9 +166,9 @@ class GGSession(ggmodel.GGModel):
       "Puertas con celdas": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pressedTile1": [0, 0], 
           "pressedTile2": [0, 0], "images": GG.utils.DOORS},
       "Enlaces web": { "position": pos, "label": "", "url": "", "images": GG.utils.WEBS },
-      "Andatuz pregunton": {"position": pos, "label": "", "filePath": GG.utils.QUESTIONS_PATH, "images": GG.utils.PENGUINS },  
-      "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS },
-      "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS },
+      "Andatuz pregunton": {"position": pos, "label": "", "filePath": GG.utils.QUESTIONS_PATH, "images": GG.utils.PENGUINS_QUIZS },  
+      "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS_TALKERS },
+      "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS_GIVERS },
       "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()},
       "Posicion aleatoria":{ "position": pos, "label": "", "images": GG.utils.RANDOMS }
     }
