@@ -11,7 +11,6 @@ class MailBox:
   def __init__(self):
     self.__boxes = {}
     self.__loadBox()
-    print self.__boxes
 
   def __loadBox(self):
     if os.path.isfile(MAILBOX_FILE):

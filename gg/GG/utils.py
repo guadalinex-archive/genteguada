@@ -24,6 +24,7 @@ SOUND_PATH = "sound"
 MASKS_PATH = "masks"
 INTERFACE_AVATARS = "avatars"
 TILE = "tiles"
+ICONS_PATH = os.path.join(DATA_PATH,"icons")
 IMAGES_GIFT = "imagesgift"
 IMAGES_GIFT_PATH = os.path.join(DATA_PATH, "imagesgift")
 SAVE_DATA = os.path.join(DATA_PATH, "savedata")

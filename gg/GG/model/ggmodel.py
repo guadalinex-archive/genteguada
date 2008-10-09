@@ -59,14 +59,10 @@ class GGModel(dMVC.model.Model):
       else:
         fileSerialized = os.path.join(SAVE_DATA_PLAYER, str(id)+".serialized")
       try:
-        print fileSerialized
         f = open(fileSerialized, "r")
-        print "voy a ver que es lo que pasa"
         dict = pickle.load(f)
-        print dict
         f.close()
       except:
-        print "Peta al abrir"
         return None
     __import__(dict["module"])
     mod = sys.modules[dict["module"]]
