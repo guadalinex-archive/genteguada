@@ -112,6 +112,7 @@ class IsoViewHud(isoview.IsoView):
     inventoryData = self.__player.getInventory()
     self.room = self.__player.getRoom()
     self.roomName = self.room.getName()
+    self.roomMaxUser = self.room.getMaxUsers()
     for key in inventoryData:
       self.__isoviewInventory.append(isoview_inventoryitem.IsoViewInventoryItem(inventoryData[key]["object"], screen, self, inventoryData[key]["name"]))
     self.__allSprites = guiobjects.GroupSprite()
@@ -217,7 +218,7 @@ class IsoViewHud(isoview.IsoView):
       adminInitData = model.getAdminInitData()
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model, adminInitData["objectsData"])
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player, adminInitData["roomListInfo"])
-      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player, self.room, self.roomName)
+      self.__editRoomWindow = auxwindows.EditRoomWindow(self, self.__player, self.room, self.roomName, self.roomMaxUser)
       self.__broadcastWindow = auxwindows.BroadcastWindow(self)
       self.__teleportWindow = auxwindows.TeleportWindow(self, adminInitData["roomListInfo"].keys())
       self.__deleteRoomWindow = auxwindows.DeleteRoomWindow(self, adminInitData["roomListInfo"].keys())
@@ -1546,7 +1547,6 @@ class IsoViewHud(isoview.IsoView):
         result[key] = self.editableFields[key].getSelectedName()
       else:
         result[key] = self.editableFields[key][0].text
-    print result
     pos = selectedItem.applyChanges(result, self.__player, self.room)
     if pos:
       self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(pos, SELECTED_FLOOR_SHIFT)

@@ -158,18 +158,12 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def clearRoom(self):
     """ Sets the item's room as none.    
     """
-    if self.__room == None:
-      raise Exception("Error en limpieza de room")
     self.__setRoom(None)
     
   def setRoom(self, room):
     """ Sets a new room for the player.
     room: new room.
     """
-    if self.__room != None:
-      raise Exception("Error: el item ya tiene un room")
-    if room == None:
-      raise Exception("Error: habitacion = None")
     self.__setRoom(room)
       
   def __setRoom(self, room):

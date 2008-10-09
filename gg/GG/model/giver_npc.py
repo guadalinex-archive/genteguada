@@ -37,11 +37,6 @@ class GGGiverNpc(room_item.GGRoomItem):
     """  
     return GGGiverNpc(self.spriteName, self.spriteInventory, self.getName())
     
-  def variablesToSerialize(self):
-    """ Sets some vars to be used as locals.
-    """
-    return GG.model.room_item.GGRoomItem.variablesToSerialize(self)
-    
   def getOptions(self):
     """ Returns the item's available options.
     """
@@ -148,3 +143,30 @@ class WebGift(GGGiverNpc):
     """ Returns the gift id.
     """  
     return self.__idGift  
+
+
+class RandomPositionGiverNPC(GGGiverNpc):
+
+  def __init__(self, spriteName, spriteInventory, label):
+    GGGiverNpc.__init__(self, spriteName, spriteInventory, label)
+
+  def copyObject(self): 
+    """ Copies and returns this object.
+    """  
+    return RandomPositionGiverNPC(self.spriteName, self.spriteInventory, self.getName())
+
+  def getCopyFor(self, player):
+    """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
+    player: selected player.
+    """  
+    if player.hasItemLabeledInInventory(self.getName()):
+      message = "Ya has obtenido " + self.getName()
+      player.newChatMessage(message, 2)
+      return None, [-1, -1]
+    else:  
+      message = "Obtienes " + self.getName()
+      player.newChatMessage(message, 2)
+      ggsystem.GGSystem.getInstance().changeItemRandomPosition(self, player)
+      return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.getName(), self.getPosition()), self.getPosition()
+    
+

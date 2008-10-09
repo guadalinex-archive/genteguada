@@ -169,7 +169,8 @@ class GGSession(ggmodel.GGModel):
       "Andatuz pregunton": {"position": pos, "label": "", "filePath": GG.utils.QUESTIONS_PATH, "images": GG.utils.PENGUINS },  
       "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS },
       "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS },
-      "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()}
+      "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()},
+      "Posicion aleatoria":{ "position": pos, "label": "", "images": GG.utils.RANDOMS }
     }
     return self.objectsDict
     
@@ -266,6 +267,8 @@ class GGSession(ggmodel.GGModel):
         object = giver_npc.GGGiverNpc(images, images, label)
       elif objectLabel == "Inventario":
         object = pickable_item.GGPickableItem(images, images, label)
+      elif objectLabel == "Posicion aleatoria":
+        object = giver_npc.RandomPositionGiverNPC(images, images, label)
       room.addItemFromVoid(object, position)
 
   def __createObjectTeleport(self, data, room):
@@ -362,7 +365,7 @@ class GGSession(ggmodel.GGModel):
     room = self.__player.getRoom()
     if name in ["Muros", "Decorativos", "Rios", "Dinero", "Costa"]:
       self.__createObjectImagesPosition(data, room, name)
-    elif name in ["Apilables","Llaves","Inventario"]:
+    elif name in ["Apilables","Llaves","Inventario","Posicion aleatoria"]:
       self.__createObjectImagesPositionLabel(data, room, name)
     elif name == "Puertas":
       self.__createObjectTeleport(data, room)
@@ -380,7 +383,6 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectPenguinTalker(data, room)
     elif name == "Andatuz cambiador":
       self.__createObjectPenguinTrader(data, room)
-
 
   def getImagesGift(self):
     """ Returns all available images for an admin created gift.
