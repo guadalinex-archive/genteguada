@@ -419,3 +419,10 @@ class GGSystem(dMVC.model.Model):
       result[player.username] = player
     return result
 
+  @dMVC.synchronized.synchronized(lockName='accessRoom')
+  def changeItemRandomPosition(self, item, player):
+    room = self.__rooms[random.randint(0, len(self.__rooms) - 1)]
+    posX = random.randint(0, room.size[0] - 1)
+    posY = random.randint(0, room.size[1] - 1)
+    player.setUnselectedItem()
+    item.changeRoom(room, [posX, posY]) 

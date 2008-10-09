@@ -286,18 +286,22 @@ DOOR_RIGHT = os.path.join(FURNITURE_PATH, "rightArrow.png")
 DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png","puertaVallaUp.png","puertaVallaLeft.png"]
 
 
-#=============== DOORS ==================================================================
+#=============== WEBS ==================================================================
 
 WEBS = WALLS + DECORATORS + STACKS + KEYS + INVENTORYS + DOORS
 
+#=============== RANDOMS ==================================================================
+
+RANDOMS = KEYS + INVENTORYS
 
 #=============== ANDATUZ ==================================================================
 
 ANDATUZ_DOWN = os.path.join(FURNITURE_PATH, "andatuzDown.png")
 ANDATUZ_RIGHT = os.path.join(FURNITURE_PATH, "andatuzRight.png")
 ANDATUZ_UP = os.path.join(FURNITURE_PATH, "andatuzUp.png")
+ANDATUZ_TALKER_UP = os.path.join(FURNITURE_PATH, "andatuzHablanteUp.png")
 
-PENGUINS = ["andatuzDown.png","andatuzRight.png","andatuzUp.png"]
+PENGUINS = ["andatuzDown.png","andatuzRight.png","andatuzUp.png","andatuzHablanteUp.png"]
 
 # ======================= SOUNDS ===========================
 

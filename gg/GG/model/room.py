@@ -117,9 +117,7 @@ class GGRoom(ggmodel.GGModel):
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.
     """
-    return ['spriteFull', 'size', 'maxUsers']
-
-  # self.label
+    return ['spriteFull', 'size']
 
   @dMVC.synchronized.synchronized(lockName='accessLabel')
   def getName(self):
@@ -132,45 +130,70 @@ class GGRoom(ggmodel.GGModel):
     """ Sets a new room label.
     name: room label.
     """  
-    self.label = label    
+    self.label = name    
 
-  # self.__population
+  @dMVC.synchronized.synchronized(lockName='accessMaxUser')
+  def getMaxUsers(self):
+    """ Returns the room label.
+    """  
+    return self.maxUsers
+  
+  @dMVC.synchronized.synchronized(lockName='accessMaxUser')
+  def setMaxUsers(self, maxUser):
+    """ Sets a new room label.
+    name: room label.
+    """  
+    self.maxUsers = maxUser    
 
+  @dMVC.synchronized.synchronized(lockName='accessPopulation')
   def getPopulation(self):
     """ Returns the current population of this room.
     """  
     return self.__population
 
-  # self.__enabled
+  @dMVC.synchronized.synchronized(lockName='accessPopulation')
+  def __incPopulation(self):
+    """ Returns the current population of this room.
+    """  
+    self.__population += 1
 
+  @dMVC.synchronized.synchronized(lockName='accessPopulation')
+  def __decPopulation(self):
+    """ Returns the current population of this room.
+    """  
+    self.__population -= 1
+
+  @dMVC.synchronized.synchronized(lockName='accessEnabled')
   def getEnabled(self):
     """ Returns the room's state.
     """  
     return self.__enabled
 
+  @dMVC.synchronized.synchronized(lockName='accessEnabled')
   def setEnabled(self, enabled):
     """ Sets this room as enabled/disabled.
     enabled: new enabled value.
     """  
     self.__enabled = enabled    
-    self.save("room")
 
+  @dMVC.synchronized.synchronized(lockName='accessStartRoom')
   def getStartRoom(self):
     """ Returns the startRoom flag.
     """  
     return self.__startRoom
 
+  @dMVC.synchronized.synchronized(lockName='accessStartRoom')
   def setStartRoom(self, value):
     """ Sets a new startRoom flag value.
     value: new value.
     """  
     self.__startRoom = value    
-    self.save("room")
 
+  @dMVC.synchronized.synchronized(lockName='accessPopulation')
   def isFull(self):
     """ Checks if this room is already full or not.
     """  
-    if self.__population >= self.maxUsers:
+    if self.__population >= self.getMaxUsers():
       return True
     else:
       return False    
@@ -196,8 +219,6 @@ class GGRoom(ggmodel.GGModel):
     self.__tiles[pos2[0]][pos2[1]].stackItem(item)
     item.setTile(self.__tiles[pos2[0]][pos2[1]])
     
-  # self.__items
-
   def getItems(self):
     """ Return the items shown on the room.
     """
@@ -211,7 +232,7 @@ class GGRoom(ggmodel.GGModel):
       self.__items = items
       for item in self.__items:
         if isinstance(item, player.GGPlayer):
-          self.__population += 1    
+          self.__incPopulation()
         self.__tiles[item.getPosition()[0]][item.getPosition()[1]].stackItem(item)
       self.triggerEvent('items', items=items)
       self.save("room")
@@ -240,7 +261,7 @@ class GGRoom(ggmodel.GGModel):
       item.setRoom(self)
       self.triggerEvent('addItemFromVoid', item=item, itemList = self.__tiles[pos[0]][pos[1]].getItems())
       if isinstance(item, player.GGPlayer):
-        self.__population += 1
+        self.__incPopulation()
       else:
         self.save("room")
       return True
@@ -276,17 +297,15 @@ class GGRoom(ggmodel.GGModel):
       item.clearRoom()
       self.triggerEvent('removeItem', item=item)
       if isinstance(item, player.GGPlayer):
-        self.__population -= 1
+        self.__decPopulation()
       else:
         self.save("room")
-      return
-    raise Exception("Error: item no eliminado")
 
   def exitPlayer(self, item):
     """ Exits a player from the game.
     item: player.
     """
-    self.__population -= 1
+    self.__decPopulation()
     pos = item.getPosition()
     itemList = self.__tiles[pos[0]][pos[1]].getItemsAndRemoveFrom(item)
     itemList.remove(item)
@@ -297,7 +316,6 @@ class GGRoom(ggmodel.GGModel):
     item.clearRoom()
     item.setState(GG.utils.STATE[1])
     self.triggerEvent('removeItem', item=item)
-    self.save("room")
     
   def getSpecialTiles(self):
     """ Return the special tiles list.
@@ -357,7 +375,7 @@ class GGRoom(ggmodel.GGModel):
         if bottom:
           bottom.clickedBy(clickerPlayer)
         else:
-          if self.getNextDirection(clickerPlayer.getPosition(), target)[0] == "none":
+          if not self.getNextDirection(clickerPlayer.getPosition(), target)[0]:
             clickerPlayer.newChatMessage("No puedo llegar hasta ese lugar.", 2)
             return
           clickerPlayer.setDestination(target)
@@ -415,7 +433,7 @@ class GGRoom(ggmodel.GGModel):
       else:
         if dataDist[1] < startingDistance:
           return dataDist[0], dataDist[2]
-    return "none", None  
+    return None, None  
 
   def tick(self, now):
     """ Calls for an update on all player movements.
@@ -495,22 +513,22 @@ class GGRoom(ggmodel.GGModel):
     startRoom: sets the room as starter room or not.
     newTile: sets a new tile design for the room floor.
     """  
-    self.maxUsers = maxUsers
-    self.label = self.setName(newLabel)
-    self.__enabled = enabled
-    self.__startRoom = startRoom
-    if not len(newTile):
-      return
-    tilesList = []
-    for x in range(len(self.__tiles)):
-      subList = []
-      for y in range(len(self.__tiles[x])):
-        singleTile = newTile[random.randint(0, len(newTile)-1)]
-        imgName = os.path.join(GG.utils.TILE, singleTile)
-        self.__tiles[x][y].setImage(imgName, True)
-        subList.append(singleTile)  
-      tilesList.append(subList)  
-    self.triggerEvent('floorChanged', newTile=tilesList)    
+    self.setMaxUsers(maxUsers)
+    self.setName(newLabel)
+    self.__enabled = self.setEnabled(enabled)
+    self.__startRoom = self.setStartRoom(startRoom)
+    if len(newTile):
+      tilesList = []
+      for x in range(len(self.__tiles)):
+        subList = []
+        for y in range(len(self.__tiles[x])):
+          singleTile = newTile[random.randint(0, len(newTile)-1)]
+          imgName = os.path.join(GG.utils.TILE, singleTile)
+          self.__tiles[x][y].setImage(imgName, True)
+          subList.append(singleTile)  
+        tilesList.append(subList)  
+      self.triggerEvent('floorChanged', newTile=tilesList)
+    self.save("room")
         
   def labelChange(self, oldLabel, newLabel):
     """ Propagates a room label change all over its items.

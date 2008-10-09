@@ -36,7 +36,7 @@ class IsoViewRoom(isoview.IsoView):
         pos = [int(varPos[0]), int(varPos[1])]
         k = 0
         for specTile in specialTiles:
-          if specTile[0] == [corx, 0, corz]:    
+          if specTile[0] == [corx, corz]:    
             isotile = isoview_tile.IsoViewTile(tiles[corx][corz], [pos[0], pos[1]], \
                     [pos[0] + GG.utils.TILE_SZ[0], pos[1] + GG.utils.TILE_SZ[1]], [corx, corz], specTile[1], self.__parent)
             k = 1
@@ -69,15 +69,6 @@ class IsoViewRoom(isoview.IsoView):
     subscriptionList.append(['floorChanged', self.floorChanged])
     subscriptionList.append(['tileImageChange', self.tileImageChange])
     self.getModel().subscribeListEvent(subscriptionList)
-    """
-    self.getModel().subscribeEvent('addItemFromVoid', self.itemAddedFromVoid)
-    self.getModel().subscribeEvent('addItemFromInventory', self.itemAddedFromInventory)
-    self.getModel().subscribeEvent('removeItem', self.itemRemoved)
-    self.getModel().subscribeEvent('setSpecialTile', self.specialTileAdded)
-    self.getModel().subscribeEvent('updateScreenPos', self.updateScreenPos)
-    self.getModel().subscribeEvent('floorChanged', self.floorChanged)
-    self.getModel().subscribeEvent('tileImageChange', self.tileImageChange)
-    """
     
   def getSpritesDict(self):
     """ Returns the sprites dictionary.
@@ -167,8 +158,6 @@ class IsoViewRoom(isoview.IsoView):
     """
     item = event.getParams()['item']
     ivItem = self.findIVItem(item)
-    if ivItem == None:
-      raise Exception("Error: vista de item no eliminada")
     self.removeIsoViewItem(ivItem)
         
   def addIsoViewItem(self, ivItem, itemList = None):

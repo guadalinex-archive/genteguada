@@ -320,7 +320,7 @@ class EditRoomWindow(AuxWindow):
   Defines the edit room window.
   """
 
-  def __init__(self, hud, player, room, roomName):
+  def __init__(self, hud, player, room, roomName, roomMaxUser):
     """ Class constructor.
     hud: isometric view hud handler.
     player: active player.
@@ -328,6 +328,7 @@ class EditRoomWindow(AuxWindow):
     self.__hud = hud
     self.__player = player
     self.room = room
+    self.roomMaxUser = roomMaxUser
     self.imageName = room.getTile([0, 0]).spriteName
     self.imageName = self.imageName[self.imageName.rfind("/")+1:]
     self.activeLabels = []
@@ -344,7 +345,7 @@ class EditRoomWindow(AuxWindow):
     """ Shows or hides the edit room window.
     """  
     if self.hide:
-      self.editRoomMaxUsers.text = str(self.__hud.room.maxUsers)  
+      self.editRoomMaxUsers.text = str(self.roomMaxUser)  
       self.roomLabel.text = self.__hud.roomName.decode("utf-8")
       self.imageName = self.__hud.room.getTile([0, 0]).spriteName
       self.imageName = self.imageName[self.imageName.rfind("/")+1:]
@@ -375,7 +376,7 @@ class EditRoomWindow(AuxWindow):
     self.container.add_child(label)
     self.editRoomMaxUsers = guiobjects.OcempEditLine()
     self.editRoomMaxUsers.set_style(ocempgui.widgets.WidgetStyle(guiobjects.STYLES["textFieldChat"]))
-    self.editRoomMaxUsers.text = str(self.room.maxUsers)
+    self.editRoomMaxUsers.text = str(self.roomMaxUser)
     self.editRoomMaxUsers.border = 1
     self.editRoomMaxUsers.topleft = 10 + labelShift[0], 40 + iPos*spacing + 18 + labelShift[1]
     self.editRoomMaxUsers.set_minimum_size(50, 20)
@@ -614,7 +615,7 @@ class CreateRoomWindow(AuxWindow):
         room = self.dictInfoRooms[key] 
         self.sizeX.text = str(room.size[0])  
         self.sizeY.text = str(room.size[1])  
-        self.maxUsers.text = str(room.maxUsers)
+        self.maxUsers.text = str(room.getMaxUsers())
         imgNames = []
         for singleSprite in room.spriteFull:
           imgNames.append(singleSprite[singleSprite.rfind("/")+1:])  
@@ -820,7 +821,6 @@ class CreateItemsWindow(AuxWindow):
     return self.imagesArea
 
   def __getImagesFieldHeight(self, iPos, dir):
-    print iPos
     if iPos == 1:
       return 250
     elif iPos == 2:

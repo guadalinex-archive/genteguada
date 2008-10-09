@@ -410,6 +410,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       if playedTime:
         self.updateSessionTiming()
       if self.getPosition() == self.__destination:
+        if self.__selected:
+          self.setHeading(GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition()))
         if self.__state == GG.utils.STATE[2]:
           self.setState(GG.utils.STATE[1])
           return
@@ -435,7 +437,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setHeading(direction)
       self.__visited.append(nextPos)
       items = self.getTile().getItemsFrom(self)
-      #listItems = self.getRoom().getTile(nextPos).getItems()
       for item in items:
         item.setPosition(nextPos)
 
