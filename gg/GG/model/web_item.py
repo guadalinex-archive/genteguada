@@ -3,6 +3,7 @@
 import room_item
 import GG.utils
 import ggmodel
+import ggsystem
 
 class GGWebItem(room_item.GGRoomItem):
   """ GGWebItem class.
@@ -38,16 +39,24 @@ class GGWebItem(room_item.GGRoomItem):
     return ["url", "jumpOver"]
       
   def getAdminActions(self):
-    """ Returns the item's available admin actions.
+    """ Returns the admin available options.
     """  
-    dic = {"Position": self.getTile().position, "Url": [self.__url], "Label": [self.getName()]}
-    return dic  
-        
-  def getImageLabel(self):
-    """ Returns the item's image file name.
-    """  
-    return self.spriteName
-  
+    adminDict = room_item.GGRoomItem.getAdminActions(self)
+    adminDict["Etiqueta"] = [self.getName()]
+    adminDict["Url"] = [self.__url]
+    return adminDict    
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    if "Url" in keys:
+      self.setUrl(fields["Url"])
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
+
   def getUrl(self):
     """ Returns saved internet address.
     """  

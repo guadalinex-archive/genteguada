@@ -3,6 +3,7 @@
 import room_item
 import GG.utils
 import os
+import ggsystem
 
 class GGPickableItem(room_item.GGRoomItem):
   """ GGPickableItem class.
@@ -54,14 +55,20 @@ class GGPickableItem(room_item.GGRoomItem):
     """ Returns the admin available options.
     """  
     if self.getRoom():
-      dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-      return dic
-    return None
-         
-  def getImageLabel(self):
-    """ Returns the item's image filename.
-    """  
-    return self.spriteInventory
+      adminDict = room_item.GGRoomItem.getAdminActions(self)
+      adminDict["Etiqueta"] = [self.getName()]
+      return adminDict
+    else:
+      return None
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
@@ -76,12 +83,6 @@ class GGPickableItem(room_item.GGRoomItem):
     """  
     return True
 
-  def stepOn(self):
-    """ Checks if other items can be placed on top of this one.
-    """  
-    return False
-
-# ===============================================================
 
 class PaperMoney(GGPickableItem):
 
@@ -106,22 +107,10 @@ class PaperMoney(GGPickableItem):
   def copyObject(self):
     """ Copies and returns this item.
     """  
-    return PaperMoney(self.spriteName, self.getName(), self.points)
+    return PaperMoney(self.spriteName)
 
-  def getAdminActions(self):
-    """ Returns the admin available options.
-    """  
-    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-    return dic    
-    
   def getOptions(self):
     """ Returns the item's available options.
     """
     return ["money", "jumpOver"]
-    
-  def addPointsTo(self, player):
-    """ Gives points to a player.
-    player: player to give points to.
-    """  
-    player.addPoints(self.points, self.getName())  
-    
+

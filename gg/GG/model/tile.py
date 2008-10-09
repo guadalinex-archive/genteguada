@@ -2,6 +2,7 @@
 
 import ggmodel
 import GG.utils
+import os
 
 class Tile(ggmodel.GGModel):
   """ Tile class.
@@ -179,6 +180,11 @@ class Tile(ggmodel.GGModel):
     """ Checks if this is a tile object.
     """  
     return True  
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "image" in keys:
+      self.setImage(os.path.join(GG.utils.TILE, fields["image"]))
 
   def setImage(self, image, noTrigger=None):
     """ Sets a new image for the tile.

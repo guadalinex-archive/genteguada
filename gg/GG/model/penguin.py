@@ -7,6 +7,7 @@ import room_item
 import chat_message
 import GG.utils
 import generated_inventory_item
+import ggsystem
 
 class GGPenguin(room_item.GGRoomItem):
   """ GGPenguin class.
@@ -33,14 +34,19 @@ class GGPenguin(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-    return dic    
-      
-  def getImageLabel(self):
-    """ Returns the item's image filename.
-    """  
-    return self.spriteName
+    adminDict = room_item.GGRoomItem.getAdminActions(self)
+    adminDict["Etiqueta"] = [self.getName()]
+    return adminDict    
 
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
+      
   def clickedBy(self, clicker):
     """ Triggers an event when the penguin receives a click by a player.
     clicker: player who clicks.
@@ -60,7 +66,6 @@ class GGPenguin(room_item.GGRoomItem):
     header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + self.label + "]: "
     talker.triggerEvent('chatAdded', message=chatMessage, text=text, header=header)
 
-# ===============================================================
 
 class GGPenguinTalker(GGPenguin):
   """ GGPenguinTalker class.
@@ -103,18 +108,23 @@ class GGPenguinTalker(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg], "Label": [self.getName()]}
-    return dic  
-  
+    adminDict = GGPenguin.getAdminActions(self)
+    adminDict["Mensaje"] = [self.__msg]
+    return adminDict  
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Mensaje" in keys:
+      self.setMessage(fields["Mensaje"])
+    return GGPenguin.applyChanges(self, fields, player, room)
+
   def talkedBy(self, talker):
     """ Method executed after being talked by a player.
     talker: player.
     """
-    self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], 
-                                                 self.getPosition(), 2), self.__msg)
+    self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), self.__msg)
     talker.setUnselectedItem()
     
-# ===============================================================
 
 class GGPenguinTrade(GGPenguin):
   """ GGPenguinTrade class.
@@ -156,8 +166,18 @@ class GGPenguinTrade(GGPenguin):
   def getAdminActions(self):
     """ Returns the possible admin actions on this item.
     """  
-    dic = {"Position": self.getTile().position, "Message": [self.__msg], "GiftLabel": [self.__giftLabel], "Label": [self.getName()]}
-    return dic  
+    adminDict = GGPenguin.getAdminActions(self)
+    adminDict["Mensaje"] = [self.__msg]
+    adminDict["Regalo"] = [self.__giftLabel]
+    return adminDict  
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Mensaje" in keys:
+      self.setMessage(fields["Mensaje"])
+    if "Regalo" in keys:
+      self.setGiftLabel(fields["Regalo"])
+    return GGPenguin.applyChanges(self, fields, player, room)
 
   def getMessage(self):
     """ Returns the message.
@@ -197,7 +217,6 @@ class GGPenguinTrade(GGPenguin):
     talker.setUnselectedItem()
     return None
 
-# ===============================================================
      
 class GGPenguinQuiz(GGPenguin):
   """ GGPenguinQuiz class.
@@ -278,4 +297,4 @@ class GGPenguinQuiz(GGPenguin):
     talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))   
     talker.setUnselectedItem()
-            
+ 

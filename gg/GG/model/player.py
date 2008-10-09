@@ -824,7 +824,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     if item.isTopItem():
       self.setUnselectedItem()
-      item.addPointsTo(self)
+      self.__points += item.points
+      self.triggerEvent('points', points=self.__points)
+      self.save("player")
       return True  
     return False
   

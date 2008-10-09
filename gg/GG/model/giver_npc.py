@@ -5,6 +5,7 @@ import time
 import GG.utils
 import room_item
 import generated_inventory_item
+import ggsystem
 
 class GGGiverNpc(room_item.GGRoomItem):
   """GGGiverNpc class.
@@ -45,18 +46,23 @@ class GGGiverNpc(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["copy", "jumpOver"]   
-      
+ 
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-    return dic    
-         
-  def getImageLabel(self):
-    """ Returns the item's image filename.
-    """  
-    return self.spriteInventory
+    adminDict = room_item.GGRoomItem.getAdminActions(self)
+    adminDict["Etiqueta"] = [self.getName()]
+    return adminDict    
 
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
+         
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
@@ -78,22 +84,12 @@ class GGGiverNpc(room_item.GGRoomItem):
       player.newChatMessage(message, 2)
       return generated_inventory_item.GGGeneratedInventoryItem(self.spriteInventory, self.getName(), self.getPosition()), self.getPosition()
   
-  def inventoryOnly(self):
-    """ Checks if this is an inventory item or not.
-    """  
-    return False
-  
   def tick(self, now):
     """ Call for an update on item. Do NOT delete.
     now: current timestamp.
     """
     pass
   
-  def isStackable(self):
-    """ Checks if this item is stackable or not.
-    """  
-    return False
-
 
 class WebGift(GGGiverNpc):
     
@@ -107,7 +103,6 @@ class WebGift(GGGiverNpc):
     GGGiverNpc.__init__(self, GG.utils.GIFT, spriteInventory, label)
     self.__creator = creator
     self.__idGift = self.generateId()
-    #print self.__idGift
 
   def objectToPersist(self):
     dict = GGGiverNpc.objectToPersist(self)
@@ -124,24 +119,24 @@ class WebGift(GGGiverNpc):
     """ Returns the item's available options.
     """
     return ["gift", "jumpOver"]   
-      
-  def getAdminActions(self):
-    """ Returns the admin available options.
-    """  
-    dic = {"Position": self.getPosition()}
-    return dic    
 
   def copyObject(self):
     """ Copies and returns this item.
     """   
-    return WebGift(self.spriteName, self.spriteInventory, self.getName(), self.__creator)
+    return WebGift(self.spriteInventory, self.getName(), self.__creator)
   
   def getCopyFor(self, player):
     """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
     player: selected player.
     """ 
-    player.newChatMessage("Obtienes " + self.getName(), 2)
-    return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), self.getPosition(), self.__idGift), self.getPosition()
+    if player.hasItemLabeledInInventory(self.getName()):
+      message = "Ya has obtenido " + self.getName()
+      player.newChatMessage(message, 2)
+      return None, [-1, -1]
+    else:  
+      message = "Obtienes " + self.getName()
+      player.newChatMessage(message, 2)
+      return generated_inventory_item.GGGeneratedGift(self.spriteInventory, self.getName(), self.getPosition(), self.__idGift), self.getPosition()
                                                     
   def generateId(self):
     """ Generates an unique id for this item.

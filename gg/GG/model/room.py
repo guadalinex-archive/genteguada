@@ -10,6 +10,7 @@ import ggmodel
 import tile
 import chat_message
 import dMVC.model
+import dMVC.synchronized
 import player
 
 class GGRoom(ggmodel.GGModel):
@@ -120,11 +121,13 @@ class GGRoom(ggmodel.GGModel):
 
   # self.label
 
+  @dMVC.synchronized.synchronized(lockName='accessLabel')
   def getName(self):
     """ Returns the room label.
     """  
     return self.label
-
+  
+  @dMVC.synchronized.synchronized(lockName='accessLabel')
   def setName(self, name):
     """ Sets a new room label.
     name: room label.
@@ -183,15 +186,6 @@ class GGRoom(ggmodel.GGModel):
     """  
     return self.__tiles
 
-  def getItemTile(self, item):
-    """ Returns the tile where a given item is.
-    item: given item.
-    """  
-    if item in self.__items:
-      pos = item.getPosition()
-      return self.__tiles[pos[0]][pos[1]]
-    return None                        
-  
   def moveItem(self, pos1, pos2, item):
     """ Moves an item from one position to another.
     pos1: starting position.
@@ -446,8 +440,7 @@ class GGRoom(ggmodel.GGModel):
     msgType: message type.
     """
     header = time.strftime("%H:%M", time.localtime(time.time())) + " [" + player.username + "]: "
-    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, \
-                    GG.utils.TEXT_COLOR["black"], player.getPosition(), msgType), text=message, header=header)    
+    self.triggerEvent('chatAdded', message=chat_message.ChatMessage(message, player.username, GG.utils.TEXT_COLOR["black"], player.getPosition(), msgType), text=message, header=header)    
     
   def getEmptyCell(self):
     """ Returns a list with the room's empty cells.
@@ -483,16 +476,6 @@ class GGRoom(ggmodel.GGModel):
     """  
     return self.__tiles[pos[0]][pos[1]].getTopItem()
     
-  def setUnselectedFor(self, item):
-    """ Sets an item as unselected.
-    item: unselected item.  
-    """  
-    for itemPlayer in self.__items:
-      if isinstance(itemPlayer, player.GGPlayer):
-        if itemPlayer.getSelected() == item:
-          itemPlayer.setUnselectedItem()  
-          self.save("room")
-
   def getSelecter(self, selectee):
     """ Returns selected item's selecter.
     selectee: selected item.
@@ -513,7 +496,7 @@ class GGRoom(ggmodel.GGModel):
     newTile: sets a new tile design for the room floor.
     """  
     self.maxUsers = maxUsers
-    self.label = newLabel
+    self.label = self.setName(newLabel)
     self.__enabled = enabled
     self.__startRoom = startRoom
     if not len(newTile):

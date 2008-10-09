@@ -254,13 +254,6 @@ class IsoViewHud(isoview.IsoView):
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
-        """  
-        if self.__adminMenu:
-          self.__moveItemPositionAdmin()
-        elif not self.__windowOpen():
-          self.__clickOnMap()
-        """  
-        #self.__clickOnMap()
         if self.__accessMode:
           if self.__adminMenu or not self.__createItemsWindow.hide:
             self.__moveItemPositionAdmin()
@@ -295,10 +288,10 @@ class IsoViewHud(isoview.IsoView):
       if not self.__createItemsWindow.hide:
         if not self.__createItemsWindow.isInside([cordX, cordY]):  
           self.__createItemsWindow.setNewPosition(dest)    
-      if self.__adminMenu and "Position" in self.editableFields.keys():
+      if self.__adminMenu and "Posicion" in self.editableFields.keys():
         if not self.buttonBarAdminActions.isInside([cordX, cordY]):
-          self.editableFields["Position"][0].text = str(dest[0])
-          self.editableFields["Position"][1].text = str(dest[1])
+          self.editableFields["Posicion"][0].text = str(dest[0])
+          self.editableFields["Posicion"][1].text = str(dest[1])
   
   def __clickOnMap(self):
     """ Processes a mouse click on the room.
@@ -1544,7 +1537,21 @@ class IsoViewHud(isoview.IsoView):
   def applyChanges(self):
     """ Applies the changes to the selected item attributes.
     """  
+    result = {}
     selectedItem = self.__selectedItem
+    for key in self.editableFields:
+      if key in ["Posicion", "Posicion salida"]:
+        result[key] = [self.editableFields[key][0].text,self.editableFields[key][1].text]
+      elif key == "image":
+        result[key] = self.editableFields[key].getSelectedName()
+      else:
+        result[key] = self.editableFields[key][0].text
+    print result
+    pos = selectedItem.applyChanges(result, self.__player, self.room)
+    if pos:
+      self.__selectedImage.rect.topleft = GG.utils.p3dToP2d(pos, SELECTED_FLOOR_SHIFT)
+    return 
+
     if not self.__selectedItem:
       return
     values = self.editableFields.keys()
@@ -1670,10 +1677,10 @@ class IsoViewHud(isoview.IsoView):
     """ Copies the selected room item.
     """  
     try: 
-      posX = int(self.editableFields['Position'][0].text)    
-      posY = int(self.editableFields['Position'][1].text)    
+      posX = int(self.editableFields['Posicion'][0].text)    
+      posY = int(self.editableFields['Posicion'][1].text)    
     except ValueError:
-      self.__player.newChatMessage('Valor "Position" incorrecto', 1)
+      self.__player.newChatMessage('Valor "Posicion" incorrecto', 1)
       return
     position = self.__isoviewRoom.getModel().getNearestEmptyCell([posX, posY])
     if position:
