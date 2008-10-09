@@ -30,12 +30,12 @@ class GGSystem(dMVC.model.Model):
     self.__rooms = []
     self.__startRooms = []
     self.__mailBox = None
-    self.__loadData()
     self.__sessions = [] # Variable privada solo para uso interno.
     self.__avatarGeneratorHandler = GG.avatargenerator.generator.AvatarGenerator()
     self.__avatarGeneratorProcessQueue = Queue.Queue()
     thread.start_new(self.__start, ())
     GGSystem.instance = self
+    self.__loadData()
      
   def __getEntryRoom(self):
     """ Returns the room used as lobby for all new players.
@@ -123,9 +123,10 @@ class GGSystem(dMVC.model.Model):
     """
     roomList = ggmodel.GGModel.readAll("room") 
     for room in roomList:
-      self.__rooms.append(room)
-      if room.getStartRoom():
-        self.__startRooms.append(room) 
+      if room:
+        self.__rooms.append(room)
+        if room.getStartRoom():
+          self.__startRooms.append(room) 
     self.mailBox = mailbox.MailBox()
 
   def setStartRoom(self, room, startRoom):

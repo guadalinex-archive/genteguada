@@ -2,6 +2,7 @@
 
 import room_item
 import GG.utils
+import ggsystem
 
 class GGBoxHeavy(room_item.GGRoomItem):
   """ GGBoxHeavy class.
@@ -53,21 +54,25 @@ class GGBoxHeavy(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.getPosition(), "Label": [self.getName()]}
-    return dic    
+    adminDict = room_item.GGRoomItem.getAdminActions(self)
+    adminDict["Etiqueta"] = [self.getName()]
+    return adminDict    
 
-  def getImageLabel(self):
-    """ Returns the item's image filename.
-    """  
-    return self.spriteName
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
     clicker: player who clicks.
     """
     room_item.GGRoomItem.clickedBy(self, clicker)
-    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()) \
-        or (self.getPosition() == clicker.getPosition()):
+    if GG.utils.checkNeighbour(clicker.getPosition(), self.getPosition()) or self.getPosition() == clicker.getPosition():
       clicker.setSelectedItem(self)
     
   def isStackable(self):

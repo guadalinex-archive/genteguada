@@ -47,20 +47,45 @@ class GGTeleport(room_item.GGRoomItem):
     return ["open", "jumpOver"]    
       
   def getAdminActions(self):
-    """ Returns the possible admin actions.
+    """ Returns the admin available options.
     """  
-    if self.__destinationRoom:  
-      dic = {"Position": self.getTile().position, "DestinationRoom": [self.__destinationRoom], \
-           "ExitPosition": self.__exitPosition, "Label": [self.getName()]}
+    adminDict = room_item.GGRoomItem.getAdminActions(self)
+    adminDict["Etiqueta"] = [self.getName()]
+    if self.__destinationRoom:
+      adminDict["Habitacion destino"] = [self.__destinationRoom]
     else:
-      dic = {"Position": self.getTile().position, "DestinationRoom": [""], \
-           "ExitPosition": self.__exitPosition, "Label": [self.getName()]}    
-    return dic  
-      
-  def getImageLabel(self):
-    """ Returns the teleporter's image file name.
-    """  
-    return self.spriteName
+      adminDict["Habitacion destino"] = [""]
+    adminDict["Posicion salida"] = self.__exitPosition
+    return adminDict    
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Etiqueta" in keys:
+      oldLabel = self.getName()
+      newLabel = fields["Etiqueta"]
+      if self.setName(newLabel):
+        ggsystem.GGSystem.getInstance().labelChange(oldLabel, newLabel)
+    if "Habitacion destino" in keys:
+      destRoom = ggsystem.GGSystem.getInstance().getRoom(fields["Habitacion destino"])
+      if not destRoom:
+        player.newChatMessage('Valor "Habitacion destino" incorrecto', 1)
+        return None  
+      else:
+        self.setDestinationRoom(fields["Habitacion destino"]) 
+    if "Posicion salida" in keys:
+      try: 
+        posX = int(fields["Posicion salida"][0])
+        posY = int(fields["Posicion salida"][1])    
+      except ValueError:
+        player.newChatMessage('Valor "Posicion salida" incorrecto', 1)
+        return None
+      roomSize = ggsystem.GGSystem.getInstance().getRoom(self.getDestinationRoom()).size
+      if 0 < posX < roomSize[0] and  0 < posY < roomSize[1]: 
+        self.setExitPosition([posX, posY])
+      else:
+        player.newChatMessage('Valor "Posicion salida" incorrecto', 1)
+        return None
+    return room_item.GGRoomItem.applyChanges(self, fields, player, room)
 
   # self.__exitPosition
   
@@ -155,7 +180,6 @@ class GGTeleport(room_item.GGRoomItem):
     if self.__destinationRoom == oldLabel:
       self.__destinationRoom = newLabel      
 
-# ===============================================================
 
 class GGDoorWithKey(GGTeleport):
   """ GGDoorWithKey class.
@@ -239,17 +263,6 @@ class GGDoorPressedTiles(GGTeleport):
     GGTeleport.load(self, dict)
     self.__pressedTiles = dict["pressedTiles"]
 
-  def getAdminActions(self):
-    """ Returns the possible admin actions.
-    """  
-    dict = GGTeleport.getAdminActions(self)
-    index = 1
-    for tile in self.__pressedTiles:
-      if tile: 
-        dict["PressedTile" + str(index)] = tile
-      index += 1
-    return dict
-
   def copyObject(self):
     """ Copies and returns this item.
     """  
@@ -306,13 +319,6 @@ class GGDoorOpenedByPoints(GGTeleport):
     GGTeleport.load(self, dict)
     self.pointsGiver = dict["pointsGiver"]
 
-  def getAdminActions(self):
-    """ Returns the possible admin actions.
-    """  
-    dict = GGTeleport.getAdminActions(self)
-    dict["PointsGiver"] = [self.pointsGiver]
-    return dict
-
   def getPointsGiver(self):
     return self.pointsGiver
 
@@ -329,7 +335,7 @@ class GGDoorOpenedByPoints(GGTeleport):
     clicker: player to teleport.
     """
     if not clicker.checkPointGiver(self.pointsGiver):
-      self.newChatMessage('Si no has obtenido puntos de ' + self.pointsGiver + 'no puedo dejarte pasar')
+      self.newChatMessage('Si no has obtenido puntos de ' + self.pointsGiver + ' no puedo dejarte pasar')
       return False
     self.transportTo(clicker)
 

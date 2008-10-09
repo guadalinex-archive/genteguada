@@ -71,8 +71,25 @@ class GGRoomItem(inventory_item.GGInventoryItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    dic = {"Position": self.__tile.position}
-    return dic  
+    adminDic = {"Posicion": self.__tile.position}
+    return adminDic 
+
+  def applyChanges(self, fields, player, room):
+    keys = fields.keys()
+    if "Posicion" in keys:
+      try: 
+        posX = int(fields["Posicion"][0])    
+        posY = int(fields["Posicion"][1])    
+      except ValueError:
+        player.newChatMessage('Valor "Posicion" incorrecto', 1)
+        return None
+      size = room.size
+      if 0 <= posX < size[0] and  0 <= posY < size[1]:
+        room.moveStack([posX, posY], self)  
+      else:
+        player.newChatMessage('Valor "Posicion" incorrecto', 1)
+        return None
+    return [posX, posY]
         
   def getImageLabel(self):
     """ Returns the item image sprite name.
