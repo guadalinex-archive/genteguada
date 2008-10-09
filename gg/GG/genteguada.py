@@ -43,6 +43,7 @@ class GenteGuada:
     self.__exitCondition = None
     self.__singleMode = False
     self.__clearCache()
+    self.avatarConfigurationData = None
     GenteGuada.instance = self
     
   @staticmethod
@@ -167,7 +168,6 @@ class GenteGuada:
     isohud = self.__isoHud
     intentedFPS = 30
     frameCounter = 0
-    # Avoid name resolution inside the loop
     theClock = pygame.time.Clock()
     theClock_tick = theClock.tick
     get_ticks = pygame.time.get_ticks
@@ -182,21 +182,10 @@ class GenteGuada:
     while not self.__exitCondition:
       time_sleep(0.01) # Minor sleep to give opportunity to another thread to execute
       theClock_tick(FPS)
-      #theClock_tick(intentedFPS)
       client_processEvents()
       now = get_ticks()
+      self.checkUploadFileMaskFinish()
       isohud.updateFrame(pygame_event_get(), now)
-      """ 
-      # FPS statistics
-      if (frameCounter == intentedFPS):
-        averageTimePerFrame = float(now - last) / frameCounter
-        print "Average: Time per Frame=" + str(averageTimePerFrame) +  "ms, FPS=" + str(1000 / averageTimePerFrame)
-
-        frameCounter = 0
-        last = now
-      else:
-        frameCounter += 1
-      """
     pygame.quit()
 
   def getDataPath(self, img):
@@ -276,13 +265,23 @@ class GenteGuada:
       finishMethod(None)
       return 
     self.__system.async(self.__system.uploadFile, finishMethod, [name, ext], dataFile, dirDest)
-  
+ 
+  def checkUploadFileMaskFinish(self):
+    if self.avatarConfigurationData:
+      if self.avatarConfigurationData["mask"]:
+        self.__system.changeAvatarConfiguration(self.avatarConfigurationData["configuracion"], self.avatarConfigurationData["player"], self.avatarConfigurationData["mask"])
+        self.avatarConfigurationData = None
+
   def uploadAvatarConfiguration(self, configuration, player):
     """ Uploads an avatar configuration.
     configuration: avatar configuration data.
     player: avatar's owner.
     """  
     if configuration["mask"]:
+      self.avatarConfigurationData = {}
+      self.avatarConfigurationData["configuracion"] = configuration
+      self.avatarConfigurationData["player"] =  player
+      self.avatarConfigurationData["mask"] = None
       self.asyncUploadFile(UPLOAD_MASK, self.uploadMaskFileFinish)
     else:
       self.__system.changeAvatarConfiguration(configuration, player, None) 
@@ -292,7 +291,7 @@ class GenteGuada:
     resultado: upload result.
     """  
     if resultado:
-      self.__system.changeAvatarConfiguration(configuration, player, resultado) 
+      self.avatarConfigurationData["mask"] = resultado
 
   def getRoom(self, label):
     """ Returns an specific room.
