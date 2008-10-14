@@ -83,13 +83,17 @@ class GGRoomItem(inventory_item.GGInventoryItem):
       except ValueError:
         player.newChatMessage('Valor "Posicion" incorrecto', 1)
         return None
-      size = room.size
-      if 0 <= posX < size[0] and  0 <= posY < size[1]:
-        room.moveStack([posX, posY], self)  
-      else:
-        player.newChatMessage('Valor "Posicion" incorrecto', 1)
-        return None
-    return [posX, posY]
+      if not self.getPosition() == [posX, posY]:
+        if not room.getTile([posX, posY]).stepOn():
+          player.newChatMessage('No se puede colocar un objeto en esa posicion', 1) 
+          return None
+        size = room.size
+        if 0 <= posX < size[0] and  0 <= posY < size[1]:
+          room.moveStack([posX, posY], self)  
+        else:
+          player.newChatMessage('Valor "Posicion" incorrecto', 1)
+          return None
+      return [posX, posY]
         
   def getImageLabel(self):
     """ Returns the item image sprite name.
