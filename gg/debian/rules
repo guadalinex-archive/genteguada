@@ -56,9 +56,12 @@ install: build
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/mask
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/font
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/error
 	cp GG/cache/font/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/font
+	cp GG/cache/error/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/error
 	rm -rf GG/cache/mask
 	rm -rf GG/cache/font
+	rm -rf GG/cache/error
 	cp GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
 	dh_testdir
 	#finalizo
