@@ -46,6 +46,8 @@ CANCEL_BUTTON_IMAGE = os.path.join(PATH_EDITOR_INTERFACE, "cancel_button.png")
 
 UPLOAD_BACKGROUND = os.path.join(BACKGROUNDS, "uploadWindow.png")
 
+IMG_ERROR = os.path.join(LOCAL_DATA_PATH, "error", "error.png")
+
 # ======================= CONSTANTS ===========================
 # Screen & General values
 TILE_SZ = [120, 60]
