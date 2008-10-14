@@ -593,6 +593,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if dest == None or self.getRoom().getTile(dest).getDepth():
       self.newChatMessage("No puedo saltar allí", 1)
       return
+    self.setUnselectedItem()
     self.setHeading(heading)
     self.setDestination(dest)
     self.setPosition(dest, 1)

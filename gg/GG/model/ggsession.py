@@ -170,7 +170,8 @@ class GGSession(ggmodel.GGModel):
       "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS_TALKERS },
       "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS_GIVERS },
       "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()},
-      "Posicion aleatoria":{ "position": pos, "label": "", "images": GG.utils.RANDOMS }
+      "Posicion aleatoria":{ "position": pos, "label": "", "images": GG.utils.RANDOMS},
+      "Panel publicitario":{ "position": pos, "images": GG.utils.PANNELS}
     }
     return self.objectsDict
     
@@ -254,6 +255,8 @@ class GGSession(ggmodel.GGModel):
         object = room_item.GGRiver(images)
       elif objectLabel == "Dinero":
         object = pickable_item.PaperMoney(images)
+      elif objectLabel == "Panel publicitario":
+        object = web_item.GGWebItem(images, "http://www.opensourceworldconference.com", "Panel conferencia")
       room.addItemFromVoid(object, position)
 
   def __createObjectImagesPositionLabel(self, data, room, objectLabel):
@@ -363,7 +366,7 @@ class GGSession(ggmodel.GGModel):
     data: object data.
     """  
     room = self.__player.getRoom()
-    if name in ["Muros", "Decorativos", "Rios", "Dinero", "Costa"]:
+    if name in ["Muros", "Decorativos", "Rios", "Dinero", "Costa", "Panel publicitario"]:
       self.__createObjectImagesPosition(data, room, name)
     elif name in ["Apilables","Llaves","Inventario","Posicion aleatoria"]:
       self.__createObjectImagesPositionLabel(data, room, name)

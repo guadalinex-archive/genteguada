@@ -95,7 +95,7 @@ class GGSystem(dMVC.model.Model):
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
@@ -215,9 +215,12 @@ class GGSystem(dMVC.model.Model):
     img: resource path.
     date: current date.
     """
-    imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
-    imgData = imgFile.read()
-    imgFile.close()
+    try:
+      imgFile = open(os.path.join(GG.utils.DATA_PATH, img), "rb")
+      imgData = imgFile.read()
+      imgFile.close()
+    except:
+      imgData = None
     return imgData
 
   def uploadFile(self, fileName, fileData, dirDest = None):

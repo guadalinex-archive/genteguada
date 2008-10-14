@@ -10,6 +10,9 @@ if False:
 import sys
 from optparse import OptionParser
 import GG.genteguada
+import atexit
+import traceback
+
 
 #try:
 #  import psyco
@@ -28,8 +31,29 @@ parser.add_option("-f",dest="fullscreen", help="pantalla completa",default=False
 parser.add_option("-P",dest="port", help="pantalla completa",default=8000, type = int)
 (params, args) = parser.parse_args()
 
+
+import atexit
+import traceback
+
+
+@atexit.register
+def goodbye():
+  try:
+    sys.last_traceback
+    f = open("prueba.txt", "w")
+    traceback.print_last(limit=None, file=f)
+    f.close()
+    ggInstance = GG.genteguada.GenteGuada.getInstance()
+    ggSession = ggInstance.getSession()
+    if ggSession:
+      print "tenemos conexion con el server" 
+      os.remove("prueba.txt")
+  except:
+    pass
+
 if __name__ == "__main__":
-  print params.port
   genteguada = GG.genteguada.GenteGuada()
   genteguada.start(params)
-  
+
+
+
