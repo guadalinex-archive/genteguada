@@ -129,6 +129,7 @@ class IsoViewHud(isoview.IsoView):
     self.__fullscreenButton = None
     self.__privateChatButton = None
     self.__buttonBarActions = None
+    self.windowAdminActions = None
     model.subscribeEvent('chatAdded', self.chatAdded)
     subscriptionList = []
     subscriptionList.append(['quizAdded', self.quizAdded])
@@ -250,8 +251,6 @@ class IsoViewHud(isoview.IsoView):
         else:  
           if event.key == K_LCTRL or event.key == K_RCTRL:
             self.__ctrl = True 
-          if event.key == K_ESCAPE:
-            GG.genteguada.GenteGuada.getInstance().finish()
           elif event.key == K_RETURN:
             self.__processEnterKey()
       elif event_type == MOUSEBUTTONDOWN:
@@ -290,7 +289,7 @@ class IsoViewHud(isoview.IsoView):
         if not self.__createItemsWindow.isInside([cordX, cordY]):  
           self.__createItemsWindow.setNewPosition(dest)    
       if self.__adminMenu and "Posicion" in self.editableFields.keys():
-        if not self.buttonBarAdminActions.isInside([cordX, cordY]):
+        if not guiobjects.isInside(self.windowAdminActions, [cordX, cordY]):
           self.editableFields["Posicion"][0].text = str(dest[0])
           self.editableFields["Posicion"][1].text = str(dest[1])
   
@@ -931,8 +930,12 @@ class IsoViewHud(isoview.IsoView):
     actions = adminActions
     if not actions:
       return
+    self.windowAdminActions = ocempgui.widgets.Window("Edición de objetos".decode("utf-8"))
+    self.windowAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 1]
+    self.windowAdminActions.zOrder = 15000
     YShift = 50
-    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [GG.utils.SCREEN_SZ[0] - 151, 1], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
+    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [0, 0], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
+    self.windowAdminActions.child = self.buttonBarAdminActions
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
     img = guiobjects.OcempImageButtonTransparent(TOOLBAR_IMAGE)
@@ -988,9 +991,8 @@ class IsoViewHud(isoview.IsoView):
     self.buttonBarAdminActions.add_child(okButton)
     cancelButton = guiobjects.createButton(GG.utils.TINY_CANCEL_IMAGE, [80, 35 + buttonsHeight], ["Descartar cambios", self.showTooltip, self.removeTooltip], self.discardChanges)
     self.buttonBarAdminActions.add_child(cancelButton)
-    self.buttonBarAdminActions.zOrder = 10000
-    self.addSprite(self.buttonBarAdminActions)
-    self.widgetContainer.add_widget(self.buttonBarAdminActions)
+    self.addSprite(self.windowAdminActions)
+    self.widgetContainer.add_widget(self.windowAdminActions)
     self.__adminMenu = True
   
   def itemSelectedByUser(self, itemName, itemImageLabel, options):
@@ -1310,8 +1312,9 @@ class IsoViewHud(isoview.IsoView):
     for child in self.buttonBarAdminActions.children:
       self.buttonBarAdminActions.remove_child(child)
       child.destroy()
-    self.widgetContainer.remove_widget(self.buttonBarAdminActions)
-    self.buttonBarAdminActions.destroy()
+    self.widgetContainer.remove_widget(self.windowAdminActions)
+    self.windowAdminActions.destroy()
+    self.windowAdminActions = None
     self.__adminMenu = False
 
   def itemToInventory(self):

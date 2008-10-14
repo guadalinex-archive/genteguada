@@ -888,12 +888,11 @@ def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
     image.zOrder = 0    
   return image  
     
-
 def getOffset(imageFile):
   im = Image.open(imageFile)
   sizeImage = im.size
   if sizeImage[0] > GG.utils.TILE_SZ[0]:
-    offsetX = GG.utils.FLOOR_SHIFT[0] - ((sizeImage[0] - GG.utils.TILE_SZ[0]) / 2)
+    offsetX = GG.utils.FLOOR_SHIFT[0] + ((sizeImage[0] - GG.utils.TILE_SZ[0]) / 2)
   else:
     offsetX = GG.utils.FLOOR_SHIFT[0]
   if sizeImage[1] > GG.utils.TILE_SZ[1]:
@@ -902,7 +901,6 @@ def getOffset(imageFile):
     offsetY = GG.utils.FLOOR_SHIFT[1]
   return [offsetX, offsetY]
 
-
 def getTopOffset(anchor ,imageFile):
   try:
     yTopOffset = GG.utils.STACKS_TOPANCHOR[os.path.split(imageFile)[-1]]
@@ -910,3 +908,10 @@ def getTopOffset(anchor ,imageFile):
     yTopOffset = 0
   yTopAnchor = GG.utils.TILE_SZ[1] + anchor[1] + yTopOffset
   return [0,yTopAnchor]
+
+def isInside(window, pos):
+  if (window.topleft[0] <= pos[0] <= (window.topleft[0] + window.width)): 
+    if (window.topleft[1] <= pos[1] <= (window.topleft[1] + window.height)):
+      return True
+  return False
+

@@ -65,8 +65,7 @@ ANIM_WALKING_TIME = int(TICK_DELAY*ANIM_WALKING_COUNT*100)
 TEXT_COLOR = {"black": 0, "blue": 1}
 
 # Player headings.
-HEADING = {0: "none", 1: "up", 2: "down", 3: "left", 4: "right",
-           5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
+HEADING = {0: None, 1: "up", 2: "down", 3: "left", 4: "right", 5: "topleft", 6: "bottomright", 7: "bottomleft", 8: "topright"}
 # Player states.
 STATE = {1: "standing", 2: "walking", 3: "standing_carrying", 4: "walking_carrying", 5: "standing_sleeping"}
 
@@ -259,36 +258,57 @@ RIVERS = ["rioCurvaDchDown.png","rioCurvaDchUp.png","rioCurvaIzqDown.png","rioCu
 
 DOOR_CORINTHIAN_UP = os.path.join(FURNITURE_PATH, "puertaCorintiaUp.png")
 DOOR_CORINTHIAN_LEFT = os.path.join(FURNITURE_PATH, "puertaCorintiaLeft.png")
+DOOR_CORINTHIAN_DOWN = os.path.join(FURNITURE_PATH, "puertaCorintiaDown.png")
+DOOR_CORINTHIAN_RIGHT = os.path.join(FURNITURE_PATH, "puertaCorintiaRight.png")
 
 DOOR_DORIC_UP = os.path.join(FURNITURE_PATH, "puertaDoricaUp.png")
 DOOR_DORIC_LEFT = os.path.join(FURNITURE_PATH, "puertaDoricaLeft.png")
+DOOR_DORIC_DOWN = os.path.join(FURNITURE_PATH, "puertaDoricaDown.png")
+DOOR_DORIC_RIGHT = os.path.join(FURNITURE_PATH, "puertaDoricaRight.png")
 
 DOOR_IONIAN_UP = os.path.join(FURNITURE_PATH, "puertaJonicaUp.png")
 DOOR_IONIAN_LEFT = os.path.join(FURNITURE_PATH, "puertaJonicaLeft.png")
+DOOR_IONIAN_DOWN = os.path.join(FURNITURE_PATH, "puertaJonicaDown.png")
+DOOR_IONIAN_RIGHT = os.path.join(FURNITURE_PATH, "puertaJonicaRight.png")
 
 DOOR_SALOMONIC_UP = os.path.join(FURNITURE_PATH, "puertaSalomonicaUp.png")
 DOOR_SALOMINIC_LEFT = os.path.join(FURNITURE_PATH, "puertaSalomonicaLeft.png")
+DOOR_SALOMINIC_DOWN = os.path.join(FURNITURE_PATH, "puertaSalomonicaDown.png")
+DOOR_SALOMINIC_RIGHT = os.path.join(FURNITURE_PATH, "puertaSalomonicaRight.png")
 
 DOOR_WALL_UP = os.path.join(FURNITURE_PATH, "puertaMuroUp.png")
 DOOR_WALL_LEFT = os.path.join(FURNITURE_PATH, "puertaMuroLeft.png")
+DOOR_WALL_DOWN = os.path.join(FURNITURE_PATH, "puertaMuroDown.png")
+DOOR_WALL_RIGHT = os.path.join(FURNITURE_PATH, "puertaMuroRight.png")
 
 DOOR_ROAD_UP = os.path.join(FURNITURE_PATH, "puertaCarreteraUp.png")
 DOOR_ROAD_LEFT = os.path.join(FURNITURE_PATH, "puertaCarreteraLeft.png")
+DOOR_ROAD_DOWN = os.path.join(FURNITURE_PATH, "puertaCarreteraDown.png")
+DOOR_ROAD_RIGHT = os.path.join(FURNITURE_PATH, "puertaCarreteraRight.png")
 
 DOOR_FENCE_UP = os.path.join(FURNITURE_PATH, "puertaVallaUp.png")
 DOOR_FENCE_LEFT = os.path.join(FURNITURE_PATH, "puertaVallaLeft.png")
+DOOR_FENCE_DOWN = os.path.join(FURNITURE_PATH, "puertaVallaDown.png")
+DOOR_FENCE_RIGHT = os.path.join(FURNITURE_PATH, "puertaVallaRight.png")
 
 DOOR_DOWN = os.path.join(FURNITURE_PATH, "downArrow.png")
 DOOR_UP = os.path.join(FURNITURE_PATH, "upArrow.png")
 DOOR_LEFT = os.path.join(FURNITURE_PATH, "leftArrow.png")
 DOOR_RIGHT = os.path.join(FURNITURE_PATH, "rightArrow.png")
 
-DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png","puertaVallaUp.png","puertaVallaLeft.png"]
+DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","puertaDoricaLeft.png","puertaJonicaUp.png","puertaJonicaLeft.png","puertaSalomonicaUp.png","puertaSalomonicaLeft.png","puertaMuroUp.png","puertaMuroLeft.png","puertaCarreteraUp.png","puertaCarreteraLeft.png","downArrow.png","upArrow.png","leftArrow.png","rightArrow.png","puertaVallaUp.png","puertaVallaLeft.png","puertaCorintiaDown.png","puertaCorintiaRight.png","puertaDoricaDown.png","puertaDoricaRight.png","puertaJonicaDown.png","puertaJonicaRight.png","puertaSalomonicaDown.png","puertaSalomonicaRight.png","puertaCarreteraDown.png","puertaCarreteraRight.png","puertaMuroDown.png","puertaMuroRight.png","puertaVallaDown.png","puertaVallaRight.png"]
 
+
+#=============== PANNELS ==================================================================
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUp.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeft.png")
+
+PANNELS = ["panelUp.png", "panelLeft.png"]
 
 #=============== WEBS ==================================================================
 
-WEBS = WALLS + DECORATORS + STACKS + KEYS + INVENTORYS + DOORS
+WEBS = WALLS + DECORATORS + STACKS + KEYS + INVENTORYS + DOORS + PANNELS
 
 #=============== RANDOMS ==================================================================
 
