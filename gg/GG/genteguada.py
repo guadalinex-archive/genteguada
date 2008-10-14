@@ -25,7 +25,6 @@ UPLOAD_MASK = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
 ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
 ICON = os.path.join("icons", "icon64.png") 
-IMG_ERROR = os.path.join(GG.utils.LOCAL_DATA_PATH, "error", "error.png")
 
 class GenteGuada:
   """ GenteGuada class.
@@ -207,7 +206,7 @@ class GenteGuada:
           imgFile.write(imgData)
           imgFile.close()
         else:
-          return IMG_ERROR
+          return GG.utils.IMG_ERROR
       return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
 
   def getListDataPath(self, imgList):
