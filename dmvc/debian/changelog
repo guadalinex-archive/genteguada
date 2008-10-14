@@ -1,3 +1,9 @@
+dmvc (0.7.1-1) unstable; urgency=low
+
+  * activado el log
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 14 Oct 2008 23:01:34 +0200
+
 dmvc (0.5.4-1) unstable; urgency=low
 
   * solucionados problemas de velocidad en el envio de comandos rpc
