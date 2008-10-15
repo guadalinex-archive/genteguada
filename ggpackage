@@ -50,6 +50,7 @@ print "Generando el paquete genteguada...."
 os.chdir(dirTempSVN+"/gg")
 output = commands.getstatusoutput(comandoDEB)
 if not output[0] == 0:
+  print output
   error("No se pudo generar el paquete genteguada")
 else:
   info("se genero el paquete genteguada")

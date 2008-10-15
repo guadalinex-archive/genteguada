@@ -29,11 +29,25 @@ class RServer(synchronized.Synchronized):
     self._onDisconnection = onDisconnection
     self._onExecution = onExecution
     signal.signal(signal.SIGINT, self.__finish)
+    self.__listHandlers = []
     self.__start()
 
+  @synchronized.synchronized(lockName='handler')
+  def registerHandler(self, handler):
+    if not handler in self.__listHandlers:
+      self.__listHandlers.append(handler)
+
+  @synchronized.synchronized(lockName='handler')
+  def unregisterHandler(self, handler):
+    if handler in self.__listHandlers:
+      self.__listHandlers.remove(handler)
+
   def __finish(self, signal, frame):
-    print "Finalizando el servidor del juego"
-    self.__con.server_close()
+    for handler in self.__listHandlers:
+      player = handler.ggSession.getPlayer()
+      player.kick()
+    while not len(self.__listHandlers) == 0:
+      pass
     self.__activeServer = False
 
   @synchronized.synchronized(lockName='models')
@@ -53,6 +67,9 @@ class RServer(synchronized.Synchronized):
   def getRootModel(self): 
     return self.__rootModel
 
+  def getSocket(self):
+    return self.__con
+
   def __start(self): 
     utils.logger.debug("RServer.__start")
     self.__con = SocketServer.ThreadingTCPServer(('', self.__port), RServerHandler)
@@ -62,6 +79,8 @@ class RServer(synchronized.Synchronized):
     self.__activeServer = True
     while self.__activeServer:
       time.sleep(2)
+    time.sleep(2)
+    self.__con.server_close()
 
 
 class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
@@ -82,6 +101,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     self.__asyncCommandQueue = Queue.Queue()
     thread.start_new(self.__sendCommandQueue, ())
     self.__sendInitialData()
+    dMVC.getRServer().registerHandler(self)
     handler = dMVC.getRServer()._onConnection
     if handler:
       handler(self)
@@ -212,7 +232,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
       return True
     except:
       #utils.logger.exception("Can''t send an object, probable conexion lost")
-      #self.finish()
+      self.finish()
       return False
 
   def sendCommand(self, command): 
@@ -222,6 +242,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
   def finish(self): 
     SocketServer.BaseRequestHandler.finish(self)
     utils.logger.debug("Close the connection with "+str(self.client_address))
+    dMVC.getRServer().unregisterHandler(self)
     handler = dMVC.getRServer()._onDisconnection
     if handler:
       handler(self)

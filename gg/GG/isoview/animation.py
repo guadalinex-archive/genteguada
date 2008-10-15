@@ -248,11 +248,12 @@ class MovieAnimation(Animation):
         listFrame = frame.split("_")
         if len(listFrame) == 5:
           frame = ""
-          for i in range(3):
+          for i in range(4):
             frame += listFrame[i] 
-            if i == 3:
+            if not i == 3:
               frame += "_"
         imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH, "avatars-ghost-"+str(frame))
+        print imgPath
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
           
   def step(self, now):
