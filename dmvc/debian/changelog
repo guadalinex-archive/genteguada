@@ -1,3 +1,9 @@
+dmvc (0.8.1-1) unstable; urgency=low
+
+  * mejorada la desconexion de los clientes
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 15 Oct 2008 22:26:25 +0200
+
 dmvc (0.7.1-1) unstable; urgency=low
 
   * activado el log
