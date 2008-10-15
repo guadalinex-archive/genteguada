@@ -8,6 +8,7 @@ if False:
 
 
 import GG.model.ggsystem
+import dMVC
 import dMVC.remoteserver
 from optparse import OptionParser
 import sys
@@ -28,14 +29,10 @@ if __name__ == "__main__":
     if hasattr(rhandler, 'ggSession'):
       if rhandler.ggSession:
         rhandler.ggSession.logout()
+        server = dMVC.getRServer().getSocket()
+        server.finish_request(rhandler.request, rhandler.client_address)
 
-
-  onExecution = [
-                  [GG.model.ggsystem.GGSystem, 'login', onLogin]
-                ]
+  onExecution = [ [GG.model.ggsystem.GGSystem, 'login', onLogin] ]
 
   print "Iniciado el servidor del juego Gente Guada V. 0.7.1-1"
-  dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),
-                            port = params.port,
-                            onDisconnection = onDisconnection,
-                            onExecution = onExecution)
+  dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(),port = params.port, onDisconnection = onDisconnection, onExecution = onExecution)

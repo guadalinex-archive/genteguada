@@ -190,6 +190,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     if oldRoom:
       oldRoom.removeItem(self)
     room.addItemFromVoid(self, pos)
+    self.__room = room
     self.triggerEvent('roomChanged', oldRoom=oldRoom)
     
   @dMVC.model.localMethod 

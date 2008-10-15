@@ -60,9 +60,10 @@ class GGSession(ggmodel.GGModel):
     oldRoom = event.getParams()['oldRoom']
     if oldRoom:
       oldRoom.unsubscribeEventMethod(self.chatAdded)
-    newRoom = self.__player.getRoom()
-    if newRoom: 
-      newRoom.subscribeEvent('chatAdded', self.chatAdded)
+    if self.__player:
+      newRoom = self.__player.getRoom()
+      if newRoom: 
+        newRoom.subscribeEvent('chatAdded', self.chatAdded)
       
   @dMVC.model.localMethod
   def defaultView(self, screen, fullscreen, user, accesMode):

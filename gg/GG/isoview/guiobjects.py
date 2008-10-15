@@ -861,11 +861,14 @@ def playSound(sound):
   sound: sound file name.
   """  
   sndPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.SOUND_PATH, sound))
-  if not os.path.isfile(sndPath):
+  if not os.path.isfile(sndPath) or sndPath == GG.utils.IMG_ERROR:
     return False
-  if not pygame.mixer.get_busy():
-    pygame.mixer.music.load(sndPath)
-    pygame.mixer.music.play()
+  try:
+    if not pygame.mixer.get_busy():
+      pygame.mixer.music.load(sndPath)
+      pygame.mixer.music.play()
+  except:
+    pass
 
 # ===============================================================
 

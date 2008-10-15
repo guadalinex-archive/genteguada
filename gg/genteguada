@@ -44,10 +44,9 @@ def goodbye():
     traceback.print_last(limit=None, file=f)
     f.close()
     ggInstance = GG.genteguada.GenteGuada.getInstance()
-    ggSession = ggInstance.getSession()
-    if ggSession:
-      print "tenemos conexion con el server" 
-      os.remove("prueba.txt")
+    ggInstance.finish()
+    print "finalizamos la conexion con el server" 
+    os.remove("prueba.txt")
   except:
     pass
 
