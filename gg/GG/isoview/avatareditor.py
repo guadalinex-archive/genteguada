@@ -270,6 +270,11 @@ class AvatarEditor:
     """ Paints the avatar's mask.
     """
     if self.avatarConfiguration["mask"]:
+      if not os.path.isfile(MASK_UPLOAD):
+        image = self.parent.getPlayer().getImageLabel()
+        filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+        guiobjects.generateImageSize(filePath, [244, 244], IMG_UPLOAD)
+        self.generateMask("imgUpload.png")
       imgPath = MASK_UPLOAD
     else:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(PATH_EDITOR_IMG, self.avatarConfiguration["gender"], self.avatarConfiguration["headSize"], "mask.png"))
@@ -479,6 +484,10 @@ class AvatarEditor:
     else:
       img = options[0]
     if tag == "mask" and self.avatarConfiguration["mask"]:
+      if not os.path.isfile(IMG_UPLOAD):
+        image = self.parent.getPlayer().getImageLabel()
+        filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
+        guiobjects.generateImageSize(filePath, [244, 244], IMG_UPLOAD)
       self.imgOptionsTab = guiobjects.OcempImageMapTransparent(IMG_UPLOAD)
     else:
       self.imgOptionsTab = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.PATH_EDITOR_INTERFACE, img)))
