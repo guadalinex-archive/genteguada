@@ -36,6 +36,7 @@ class GGInventoryItem(ggmodel.GGModel):
     self.spriteInventory = dict["spriteInventory"]
     self.label = dict["label"]
     self.__imagePath = dict["imagePath"]
+    self.__player = None
 
   def variablesToSerialize(self):
     """ Sets some vars to be used as locals.

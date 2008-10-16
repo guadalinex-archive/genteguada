@@ -4,6 +4,7 @@ import room_item
 import GG.utils
 import os
 import ggsystem
+import dMVC
 
 class GGPickableItem(room_item.GGRoomItem):
   """ GGPickableItem class.
@@ -19,6 +20,7 @@ class GGPickableItem(room_item.GGRoomItem):
     """
     room_item.GGRoomItem.__init__(self, spriteName, label)
     self.spriteInventory = spriteInventory
+    self.__disabled = False
     
   def objectToPersist(self):
     dict = room_item.GGRoomItem.objectToPersist(self)
@@ -28,6 +30,7 @@ class GGPickableItem(room_item.GGRoomItem):
   def load(self, dict):
     room_item.GGRoomItem.load(self, dict)
     self.spriteInventory = dict["spriteInventory"]
+    self.__disabled = False
 
   def copyObject(self):
     """ Copies and returns this item.
@@ -43,7 +46,7 @@ class GGPickableItem(room_item.GGRoomItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    if self.getRoom():
+    if self.getRoom() and self.getTile():
       return ["inventory", "jumpOver"]
     else:
       if self.getPlayer().isExchange():
@@ -54,7 +57,7 @@ class GGPickableItem(room_item.GGRoomItem):
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
-    if self.getRoom():
+    if self.getRoom() and self.getTile():
       adminDict = room_item.GGRoomItem.getAdminActions(self)
       adminDict["Etiqueta"] = [self.getName()]
       return adminDict
@@ -82,6 +85,18 @@ class GGPickableItem(room_item.GGRoomItem):
     """ Checks if this item is stackable or not.
     """  
     return True
+
+  @dMVC.synchronized.synchronized(lockName='capture')
+  def capture(self):
+    if not self.__disabled:
+      self.__disabled = True
+      return True
+    else:
+      return False
+
+  @dMVC.synchronized.synchronized(lockName='capture')
+  def setEnabled(self):
+    self.__disabled = False
 
 
 class PaperMoney(GGPickableItem):

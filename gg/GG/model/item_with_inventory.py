@@ -27,8 +27,8 @@ class GGItemWithInventory(room_item.GGRoomItem):
     self.__inventory = []
     for itemDict in dict["inventory"]:
       item = ggmodel.GGModel.read(itemDict["id"], "player", itemDict)
-      self.__inventory.append(item)
       item.setPlayer(self)
+      self.__inventory.append(item)
 
   # self.__inventory
   
@@ -67,6 +67,7 @@ class GGItemWithInventory(room_item.GGRoomItem):
     """  
     self.__inventory.append(item)
     item.setPlayer(self)
+    #item.clearRoom()
     if not position:
       position = item.getPosition()
     self.triggerEvent('addToInventory', item=item, position = position, itemName = item.getName())

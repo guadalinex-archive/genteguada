@@ -108,9 +108,6 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     """  
     self.points = points
 
-  def getPlayer(self):
-    return self.__player
-
   # self.__tile
 
   def getItemsOnMyTile(self):
