@@ -740,11 +740,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
     else:
-      if player.getAccessMode():
-        player.newChatMessage("No puedes entregarle una tarjeta a este usuario.", 1)
-      else:  
-        player.newChatMessage("Preguntando a " + self.username + "...", 1)  
-        self.triggerEvent("contactDialog", contact=player)
+      player.newChatMessage("Preguntando a " + self.username + "...", 1)  
+      self.triggerEvent("contactDialog", contact=player)
     
   def addContact(self, player):
     """ Adds a new contact to the agenda.
