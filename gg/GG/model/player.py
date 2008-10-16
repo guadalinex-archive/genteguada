@@ -410,7 +410,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       if playedTime:
         self.updateSessionTiming()
       if self.getPosition() == self.__destination:
-        if self.__selected:
+        if self.__selected and not self.__selected.getPlayer():
           self.setHeading(GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition()))
         if self.__state == GG.utils.STATE[2]:
           self.setState(GG.utils.STATE[1])
@@ -470,10 +470,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """  
     return self.__selected  
   
-  def setSelectedItem(self, item):
+  def setSelectedItem(self, item, inventory = None):
     """ Sets an item as selected.
     item: selected item.
     """
+    if inventory:
+      self.setUnselectedItem()
     if self.__selected != item:
       self.__selected = item
       self.triggerEvent('selectedItem', item=item, position=self.getPosition(), name=item.getName(), 
