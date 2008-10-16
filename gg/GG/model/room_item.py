@@ -90,6 +90,8 @@ class GGRoomItem(inventory_item.GGInventoryItem):
         size = room.size
         if 0 <= posX < size[0] and  0 <= posY < size[1]:
           room.moveStack([posX, posY], self)  
+          if self.__room:
+            self.__room.unselectedItemOtherPlayers(self, player)
         else:
           player.newChatMessage('Valor "Posicion" incorrecto', 1)
           return None
@@ -105,7 +107,10 @@ class GGRoomItem(inventory_item.GGInventoryItem):
     points: new points value.
     """  
     self.points = points
-      
+
+  def getPlayer(self):
+    return self.__player
+
   # self.__tile
 
   def getItemsOnMyTile(self):

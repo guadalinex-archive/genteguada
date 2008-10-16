@@ -859,4 +859,3 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
           return True
     return False
 
-

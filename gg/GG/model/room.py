@@ -557,4 +557,11 @@ class GGRoom(ggmodel.GGModel):
     image: new tile image.
     """  
     self.triggerEvent("tileImageChange", pos=tilePos, image=image)
-    
+
+  def unselectedItemOtherPlayers(self, item, player):
+    otherPlayers = self.getPlayers()
+    for otherPlayer in otherPlayers:
+      if not otherPlayer.username == player.username: 
+        if otherPlayer.getSelected() == item:
+          otherPlayer.setUnselectedItem()
+
