@@ -679,7 +679,7 @@ class IsoViewHud(isoview.IsoView):
     invIsoItem: selected item.
     """
     item = invIsoItem.getModel()
-    self.__player.setSelectedItem(item)
+    self.__player.setSelectedItem(item, True)
 
   def itemOutInventory(self):
     """ Attempts to move an item from the inventory to the active room.
