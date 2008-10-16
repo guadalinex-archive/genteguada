@@ -480,8 +480,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
                         imageLabel=item.getImageLabel(), inventoryOnly=item.inventoryOnly(), 
                         options=item.getOptions(), adminActions=item.getAdminActions(), isTile=item.isTile(), 
                         highlight=True)
-    else:
-      "los elementos seleccionados son iguales"
   
   def setSelectedItemWithoutHighlight(self, item):
     """ Sets an item as selected, but it doesn't highlights it.
@@ -809,8 +807,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: new item.
     """  
     if item.isTopItem():  
-      self.addToInventory(item)
-      self.setUnselectedItem()
+      if item.capture():
+        self.addToInventory(item)
+        self.setUnselectedItem()
+        item.setEnabled()
+      else:
+        self.newChatMessage("alguien se nos ha adelantado", 1)
     else:      
       self.newChatMessage('No puedo coger eso, hay algo encima', 1)  
   
@@ -825,11 +827,15 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     item: new paper money item.
     """  
     if item.isTopItem():
-      self.setUnselectedItem()
-      self.__points += item.points
-      self.triggerEvent('points', points=self.__points)
-      self.save("player")
-      return True  
+      if item.capture():
+        self.setUnselectedItem()
+        self.__points += item.points
+        self.triggerEvent('points', points=self.__points)
+        self.save("player")
+        item.setEnabled()
+        return True  
+      else:
+        self.newChatMessage("alguien se nos ha adelantado", 1)
     return False
   
   def removeAllData(self):
