@@ -1,8 +1,8 @@
-genteguada (0.9.1-1ubuntu1) gutsy; urgency=low
+genteguada (0.9.1-1) unstable; urgency=low
 
   * algunas mejoras en la seleccion de items
 
- -- Joseba Mariscal <jmariscal@jmariscal>  Thu, 16 Oct 2008 21:53:54 +0200
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 16 Oct 2008 21:53:54 +0200
 
 genteguada (0.8.1-1) unstable; urgency=low
 
