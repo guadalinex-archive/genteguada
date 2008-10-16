@@ -99,7 +99,11 @@ class GGSession(ggmodel.GGModel):
     if self.__system:
       self.__system.logout(self)
       self.__system = None
-    self.__player = None
+    if self.__player:
+      room = self.__player.getRoom()
+      if room:
+        room.exitPlayer(self.__player)
+      self.__player = None
     
   def getRoomLabels(self):
     """ Returns rooms labels.
