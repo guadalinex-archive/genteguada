@@ -67,7 +67,6 @@ class GGItemWithInventory(room_item.GGRoomItem):
     """  
     self.__inventory.append(item)
     item.setPlayer(self)
-    #item.clearRoom()
     if not position:
       position = item.getPosition()
     self.triggerEvent('addToInventory', item=item, position = position, itemName = item.getName())
