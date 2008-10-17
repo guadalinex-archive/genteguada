@@ -30,7 +30,6 @@ class CreateWorld:
 
   def __createExampleWorld(self):
     self.__beachRoom = self.__system.createRoom(GG.utils.TILES_BEACH, "Playa", [8, 8], 12, True, True)
-    """
     self.__desertRoom = self.__system.createRoom(GG.utils.TILES_DESERT, "Desierto", [8, 8], 12, True, True)
     self.__gravelRoom = self.__system.createRoom(GG.utils.TILES_GRAVEL, "Gravilla", [8, 8], 12, True, True)
     self.__alberoRoom = self.__system.createRoom(GG.utils.TILES_ALBERO, "Albero", [8, 8], 12, True, True)
@@ -51,7 +50,6 @@ class CreateWorld:
     self.__decorateMud()
     self.__decorateChess()
     self.__decorateRoad()
-    """
 
   def __decorateBeach(self):
     self.__beachRoom.addItemFromVoid(room_item.GGRoomItem(GG.utils.CORNER_WIRE), [0, 0])

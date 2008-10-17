@@ -95,7 +95,7 @@ class GGSystem(dMVC.model.Model):
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
@@ -127,6 +127,14 @@ class GGSystem(dMVC.model.Model):
         self.__rooms.append(room)
         if room.getStartRoom():
           self.__startRooms.append(room) 
+    if len(self.__rooms) == 0:
+      print "creando el mundo"
+      import createworld
+      word = createworld.CreateWorld(self)
+      word.create()
+      #newRoom = GG.model.room.GGRoom(GG.utils.TILES_SNOW, "Habitacion entrada", [8, 8], 12, True, True)
+      #self.__rooms.append(newRoom)
+      #self.__startRooms.append(newRoom)    
     self.mailBox = mailbox.MailBox()
 
   def setStartRoom(self, room, startRoom):
