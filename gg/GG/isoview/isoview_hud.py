@@ -1586,13 +1586,13 @@ class IsoViewHud(isoview.IsoView):
     self.widgetContainer.remove_widget(self.__deleteConfirmDialog)
     self.__deleteConfirmDialog = None
 
-  def changeAvatarImages(self, avatar, path):
+  def changeAvatarImages(self, avatar, path, timestamp):
     """ Changes the player's avatar images.
     avatar: player's avatar.
     path: new image path.
     """  
     if self.__isoviewRoom:
-      self.__isoviewRoom.changeAvatarImages(avatar, path) 
+      self.__isoviewRoom.changeAvatarImages(avatar, path, timestamp) 
 
   def reloadImage(self, img):
     """ Reloads the selected image.

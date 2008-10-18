@@ -303,14 +303,14 @@ class IsoViewRoom(isoview.IsoView):
         return ivItem
     return None  
 
-  def changeAvatarImages(self, avatar, path):
+  def changeAvatarImages(self, avatar, path, timestamp):
     """ Changes the avatar images.
     avatar: player's avatar.
     path: new images path.
     """  
     isoAvatar = self.findIVItem(avatar)
     if isoAvatar:
-      isoAvatar.changeAvatarImages(path) 
+      isoAvatar.changeAvatarImages(path, timestamp) 
       
   def updateScreenPositions(self):
     """ Updates screen positions for all items on all room positions.

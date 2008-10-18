@@ -335,15 +335,14 @@ class GenteGuada:
     """ Saves all created avatar images.
     resultado: avatar images creation result.
     """  
-    #path = resultado["path"].replace("/", "-")
     path = resultado["path"].replace(os.sep, "-")
     for key in resultado.keys():
-      if not key in ["path", "avatar"]:
+      if not key in ["path", "avatar", "timestamp"]:
         fileName = path + key
         avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
-    self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"])
+    self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"], resultado["timestamp"])
     if resultado["avatar"].username in self.__avatarDownloadImages:
       self.__avatarDownloadImages.remove(resultado["avatar"].username)
 
