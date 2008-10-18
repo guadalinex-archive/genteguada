@@ -29,13 +29,6 @@ class IsoViewTile(isoview.IsoView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
     self.__img.zOrder = -1
-    #model.subscribeEvent('imageChange', self.imageChange)
-
-  """
-  def imageChange(self, event):
-    img = event.getParams()["newImage"]
-    self.setImg(img)
-  """  
     
   def getImg(self):
     """ Returns the tile image.

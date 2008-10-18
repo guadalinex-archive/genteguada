@@ -6,6 +6,7 @@ import GG.utils
 import animation
 import positioned_view
 import guiobjects
+import isoview_player
 
 # ======================= CONSTANTS ===========================
 COLOR_SHIFT = 80
@@ -41,7 +42,8 @@ class IsoViewItem(positioned_view.PositionedView):
       self.__imagePath = infoPackage["imagepath"]
       self.__imageName = infoPackage["spriteName"]
     self.__img = None
-    self.loadImage(self.__imagePath)
+    if not isinstance(self, isoview_player.IsoViewPlayer):
+      self.loadImage(self.__imagePath)
         
   def loadImage(self, imagePath=None):
     """ Loads the item's image.
@@ -66,7 +68,27 @@ class IsoViewItem(positioned_view.PositionedView):
     self.__img.rect = self.__img.image.get_rect()
     self.__img.rect.topleft = scrPos
     self.__img.zOrder = zOrder
-            
+
+  def loadAvatarImage(self, path, timestamp):
+    """ Loads the item's image.
+    imagePath: item's image path.
+    """
+    image = "standing_bottomright_0001"
+    if not timestamp == "":
+      image += "_"+str(timestamp)
+    print image
+    print path
+    imageName = os.path.join(path, image)  
+    self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
+    pos = self.__position
+    scrPos = GG.utils.p3dToP2d(pos, self.anchor)
+    zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
+    self.__img = pygame.sprite.Sprite()
+    self.__img.image = pygame.image.load(self.imgPath).convert_alpha()
+    self.__img.rect = self.__img.image.get_rect()
+    self.__img.rect.topleft = scrPos
+    self.__img.zOrder = zOrder
+
   def getPosition(self):
     """ Returns the item's position on the room.
     """  
@@ -115,7 +137,7 @@ class IsoViewItem(positioned_view.PositionedView):
     return self.__img   
   
   def setImg(self, img, path=None):
-    """ Sets a new image for the item.
+    """ Sets a new image for the player.
     img: image name.
     path: image path.
     """
@@ -124,6 +146,8 @@ class IsoViewItem(positioned_view.PositionedView):
     else:
       imageName = os.path.join(self.getModel().getImagePath(), img)
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
+    if imgPath == GG.utils.IMG_ERROR:
+      return None
     self.__img.image = pygame.image.load(imgPath).convert_alpha()
     self.__img.dirty = 1
     

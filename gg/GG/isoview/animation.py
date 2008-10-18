@@ -244,16 +244,6 @@ class MovieAnimation(Animation):
       path = self.isoview.getModel().getImagePath()
     for frame in self.__frames:
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(path, frame))
-      if imgPath == GG.utils.IMG_ERROR:
-        listFrame = frame.split("_")
-        if len(listFrame) == 5:
-          frame = ""
-          for i in range(4):
-            frame += listFrame[i] 
-            if not i == 3:
-              frame += "_"
-        imgPath = os.path.join(GG.utils.LOCAL_DATA_PATH, "avatars-ghost-"+str(frame))
-        print imgPath
       self.__sprites.append(pygame.image.load(imgPath).convert_alpha())
           
   def step(self, now):
