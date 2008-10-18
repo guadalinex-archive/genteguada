@@ -1,3 +1,9 @@
+genteguada (0.10.1-1) unstable; urgency=low
+
+  * Mejoras en la generacion de imagenes
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Sat, 18 Oct 2008 21:50:42 +0200
+
 genteguada (0.9.1-1) unstable; urgency=low
 
   * algunas mejoras en la seleccion de items
