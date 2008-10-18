@@ -52,6 +52,9 @@ class IsoViewItem(positioned_view.PositionedView):
     if not self.__imageName: 
       self.__imageName = self.getModel().getSpriteName()
     imageName = os.path.join(imagePath, self.__imageName)  
+    print imagePath
+    print self.__imageName
+    print imageName
     self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     self.anchor = guiobjects.getOffset(self.imgPath)
     self.topAnchor = guiobjects.getTopOffset(self.anchor, imageName)

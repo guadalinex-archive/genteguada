@@ -128,7 +128,6 @@ class GGSystem(dMVC.model.Model):
         if room.getStartRoom():
           self.__startRooms.append(room) 
     if len(self.__rooms) == 0:
-      print "creando el mundo"
       import createworld
       word = createworld.CreateWorld(self)
       word.create()
@@ -353,6 +352,7 @@ class GGSystem(dMVC.model.Model):
     dirPlayerImages = os.path.join(GG.utils.DATA_PATH, avatar.getImagePath())
     files = {}
     files["path"] = avatar.getImagePath()
+    files["timestamp"] = avatar.getTimestamp()
     files["avatar"] = avatar
     for playerImage in os.listdir(dirPlayerImages):
       if os.path.isfile(os.path.join(dirPlayerImages, playerImage)):
