@@ -5,7 +5,6 @@ import datetime
 import os
 import pygame
 import pygame.locals
-import stat
 import time
 import dMVC.remoteclient
 import ocempgui.widgets
@@ -14,7 +13,8 @@ import GG.utils
 import GG.isoview.guiobjects
 
 #Constants
-VERSION = "GenteGuada 0.10.1-1"
+VERSION = "0.10.1-1"
+VERSION_TITLE = "GenteGuada "+VERSION
 CLEAR_CACHE_WEEKS = 4
 LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
 LOADING_BACKGROUND_POSITION = [0, 0]
@@ -71,12 +71,9 @@ class GenteGuada:
   def finish(self):
     """ Closes the program and all its services.
     """  
-    #print dMVC.utils.statClient.strClient()
-    #print dMVC.utils.statEventTriggered.strEvent()
     if self.__session:
       self.__session.getPlayer().setState(GG.utils.STATE[1])    
     if self.__exitCondition is None:
-      #pygame.quit()
       sys.exit(0)
     self.__isoHud.getModel().unsubscribeEvents()
     self.__isoHud.getIVRoom().getModel().exitPlayer(self.__isoHud.getPlayer())
@@ -120,7 +117,7 @@ class GenteGuada:
     """  
     self.__setSystem(params.ip, params.port)
     pygame.init()
-    pygame.display.set_caption(VERSION)
+    pygame.display.set_caption(VERSION_TITLE)
     icon = pygame.image.load(self.getDataPath(ICON))
     pygame.display.set_icon(icon) 
     self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
@@ -157,10 +154,19 @@ class GenteGuada:
         print excep, ERROR_CONNECTION
         self.finish()
       self.__system = self.__client.getRootModel()
+      if not self.validateVersion(self.__client.getVersion()):
+        print "Version del cliente incompatible con el servidor"
+        print "Version del servidor "+self.__client.getVersion()
+        self.finish()
     else:
       import GG.model.ggsystem
       self.__singleMode = True
       self.__system = GG.model.ggsystem.GGSystem()
+
+  def validateVersion(self, version):
+    if version == VERSION:
+      return True
+    return False
 
   def __initGame(self, user, accesMode):
     """ Initializes all start parameters and runs the game's main process.
@@ -189,6 +195,7 @@ class GenteGuada:
       now = get_ticks()
       self.checkUploadFileMaskFinish()
       isohud.updateFrame(pygame_event_get(), now)
+    self.__exitCondition = None
     pygame.quit()
 
   def getDataPath(self, img):
@@ -197,17 +204,18 @@ class GenteGuada:
     if self.__singleMode:
       return os.path.join(GG.utils.DATA_PATH, img)
     else:
-      newImgName = img.replace(os.sep,"-")
-      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, img)
       if not os.path.isfile(pathFile):
         imgData = self.__system.getResource(img) 
         if imgData:
-          imgFile = open(os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName), "wb")
+          if not os.path.isdir(os.path.dirname(pathFile)):
+            GG.utils.createRecursiveDir(os.path.dirname(pathFile))
+          imgFile = open(pathFile, "wb")
           imgFile.write(imgData)
           imgFile.close()
         else:
           return GG.utils.IMG_ERROR
-      return os.path.join(GG.utils.LOCAL_DATA_PATH, newImgName)
+      return pathFile
 
   def getListDataPath(self, imgList):
     """ Returns the data path for an item image list.
@@ -224,16 +232,7 @@ class GenteGuada:
     now = datetime.datetime.today()
     limitDate = now - datetime.timedelta(weeks=CLEAR_CACHE_WEEKS)
     limitTime = time.mktime(limitDate.timetuple())
-    toRemove = []
-    for fileName in os.listdir(GG.utils.LOCAL_DATA_PATH):
-      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
-      if os.path.isfile(pathFile):
-        accessTime = os.stat(pathFile)[stat.ST_ATIME]
-        if accessTime < limitTime:
-          toRemove.append(fileName)
-    for fileName in toRemove:
-      pathFile = os.path.join(GG.utils.LOCAL_DATA_PATH, fileName) 
-      os.remove(pathFile)
+    GG.utils.clearCache(GG.utils.LOCAL_DATA_PATH, limitTime)
 
   def uploadFile(self, upFile, dirDest=None):
     """ Uploads a new file and copies it.
@@ -335,11 +334,12 @@ class GenteGuada:
     """ Saves all created avatar images.
     resultado: avatar images creation result.
     """  
-    path = resultado["path"].replace(os.sep, "-")
+    path = resultado["path"]
+    if not os.path.isdir(os.path.join(GG.utils.LOCAL_DATA_PATH, path)):
+      GG.utils.createRecursiveDir(os.path.join(GG.utils.LOCAL_DATA_PATH, path)) 
     for key in resultado.keys():
       if not key in ["path", "avatar", "timestamp"]:
-        fileName = path + key
-        avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, fileName), "wb")
+        avatarImage = open(os.path.join(GG.utils.LOCAL_DATA_PATH, path, key), "wb")
         avatarImage.write(resultado[key])
         avatarImage.close()
     self.__isoHud.changeAvatarImages(resultado["avatar"], resultado["path"], resultado["timestamp"])
@@ -353,3 +353,12 @@ class GenteGuada:
 
   def isAvatarDownload(self, avatar):
     return avatar.username in self.__avatarDownloadImages
+
+  def sendError(self):
+    if os.path.isfile("error.txt"):
+      fileError = open("error.txt","r")
+      errorData = fileError.read()
+      fileError.close()
+      send = self.__system.sendError(errorData)
+      if send:
+        os.remove("error.txt")

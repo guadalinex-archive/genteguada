@@ -54,7 +54,7 @@ class ExchangeWindow:
   def __paintBackground(self):
     """ Paints the exchange window background.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/exchangeWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNS,"exchangeWindow.png"))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)

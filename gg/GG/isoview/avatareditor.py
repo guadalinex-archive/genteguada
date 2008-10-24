@@ -65,6 +65,13 @@ SKIRT_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_back.png")
 SKIRT_DISABLED = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skirt_disabled.png")
 SHOES_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "shoes_back.png")
 
+GENDER_FRONT = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "gender_front.png")
+SKIN_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "skin_back.png")
+HEAD_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "head_back.png")
+BODY_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "body_back.png")
+MASK_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "mask_back.png")
+HAIR_BACK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "hair_back.png")
+
 # =============================================================
 
 class AvatarEditor:
@@ -126,17 +133,17 @@ class AvatarEditor:
     """ Loads the editor images.
     """  
     dictionary = {}
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/gender_front.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GENDER_FRONT)
     dictionary["gender"] = guiobjects.OcempImageButtonTransparent(imgPath)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/skin_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(SKIN_BACK)
     dictionary["skin"] =  guiobjects.OcempImageButtonTransparent(imgPath)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/head_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(HEAD_BACK)
     dictionary["head"] = guiobjects.OcempImageButtonTransparent(imgPath)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/body_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BODY_BACK)
     dictionary["body"] = guiobjects.OcempImageButtonTransparent(imgPath)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/mask_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(MASK_BACK)
     dictionary["mask"] = guiobjects.OcempImageButtonTransparent(imgPath)
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(GG.utils.PATH_EDITOR_INTERFACE + "/hair_back.png")
+    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(HAIR_BACK)
     dictionary["hair"] = guiobjects.OcempImageButtonTransparent(imgPath)
     if self.avatarConfiguration["gender"] == "boy":
       imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(SHIRT_BACK)

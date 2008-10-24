@@ -302,9 +302,6 @@ STYLES = {
                             }
          }
 
-# ===============================================================
-# ===============================================================
-# ===============================================================
 
 class GroupSprite(pygame.sprite.Group):
   """ GroupSprite class.
@@ -325,7 +322,6 @@ class GroupSprite(pygame.sprite.Group):
     keys.sort(lambda x, y : (x.zOrder - y.zOrder))
     return keys
 
-# ===============================================================
 
 class OcempPanel(ocempgui.widgets.Box):
   """ OcempPanel class.
@@ -356,7 +352,6 @@ class OcempPanel(ocempgui.widgets.Box):
         return True
     return False
 
-# ===============================================================
 
 class OcempLabel(ocempgui.widgets.Label):
   """ OcempLabel class.
@@ -372,7 +367,7 @@ class OcempLabel(ocempgui.widgets.Label):
       self.label = text.decode("utf-8")
     except:
       self.label = text
-    self.typeFont = GG.utils.LOCAL_DATA_PATH+"/font/Domestic_Manners.ttf"
+    self.typeFont = os.path.join(GG.utils.LOCAL_DATA_PATH, "font", "Domestic_Manners.ttf")
     self.sizeFont = style["font"]["size"]
     self.aliasFont = style["font"]["alias"]
     self.colorFont = style["fgcolor"][0]
@@ -390,7 +385,6 @@ class OcempLabel(ocempgui.widgets.Label):
     """  
     self._image = ocempgui.draw.String.draw_string (self.label, self.typeFont, self.sizeFont, self.aliasFont, self.colorFont)
 
-# ===============================================================
 
 class OcempLabelNotTransparent(ocempgui.widgets.Label):
   """ OcempLabelNotTransparent class.
@@ -423,7 +417,6 @@ class OcempLabelNotTransparent(ocempgui.widgets.Label):
     self.multiline = True
     self.set_align(ocempgui.widgets.Constants.ALIGN_LEFT | ocempgui.widgets.Constants.ALIGN_TOP)
 
-# ===============================================================
 
 class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
   """ OcempImageMapTransparent class.
@@ -441,7 +434,6 @@ class OcempImageMapTransparent(ocempgui.widgets.ImageMap):
     """  
     self._image = self.picture
       
-# ===============================================================
 
 class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
   """ OcempImageButtonTransparent class.
@@ -472,7 +464,6 @@ class OcempImageButtonTransparent(ocempgui.widgets.ImageButton):
     """  
     self.draw()
   
-# ===============================================================
 
 class OcempContactListItem(ocempgui.widgets.components.FileListItem):
   """ OcempContactListItem class.
@@ -488,13 +479,16 @@ class OcempContactListItem(ocempgui.widgets.components.FileListItem):
     filePath = GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     size = 46, 31 
     try:
-      generateImageSize(filePath, [46, 31], os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png"))
+      if not image == "chatEntry.png":
+        generateImageSize(filePath, size, os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel", name))
     except:
       return 
-    filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel" + name + ".png")
+    if not image == "chatEntry.png":
+      filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "imageLabel", name)
+    else:
+      filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, "chatEntry.png")
     self._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
     
-# ===============================================================
 
 class OcempImageFileList(ocempgui.widgets.FileList):
   """ OcempImageFileList class.
@@ -549,7 +543,6 @@ class OcempImageFileList(ocempgui.widgets.FileList):
         return fileName
     return None
 
-# ===============================================================
   
 class OcempImageContactList(OcempImageFileList):
   """ OcempImageContactList class.
@@ -626,7 +619,6 @@ class OcempImageContactList(OcempImageFileList):
         filePath = os.path.join(GG.utils.LOCAL_DATA_PATH, name)
         item._icon = ocempgui.draw.Image.load_image(filePath).convert_alpha()
         
-# ===============================================================
   
 class OcempImageObjectList(OcempImageFileList):
   """ OcempImageObjectList class.
@@ -669,7 +661,6 @@ class OcempImageObjectList(OcempImageFileList):
           self._set_cursor(prevSelected[0], False)
         self._set_cursor(item, True)
         
-# ===============================================================
   
 class OcempImageList(OcempImageFileList):
   """ OcempImageList class.
@@ -741,7 +732,6 @@ class OcempImageList(OcempImageFileList):
       if item.text in imgNames:
         self._set_cursor(item, True)
 
-# ===============================================================
 
 class OcempEditLine(ocempgui.widgets.Entry):
   """ OcempEditLine class.
@@ -764,34 +754,28 @@ class OcempEditLine(ocempgui.widgets.Entry):
         self._text = self._temp # Undo text input.
         self.run_signal_handlers (ocempgui.widgets.Constants.SIG_INPUT)
       handled = True
-
     elif event.key in (pygame.locals.K_RETURN, pygame.locals.K_KP_ENTER):
       if self.editable:
         self._temp = self.text
         self.run_signal_handlers (ocempgui.widgets.Constants.SIG_INPUT)
       handled = True
-            
     # Move caret right and left on the corresponding key press.
     elif event.key == pygame.locals.K_RIGHT:
       if self._caret < len (self._text):
         self._caret += 1
       handled = True
-
     elif event.key == pygame.locals.K_LEFT:
       if self._caret > 0:
         self._caret -= 1
       handled = True
-
     # Go the start (home) of the text.
     elif event.key == pygame.locals.K_HOME:
       self._caret = 0
       handled = True
-
     # Go to the end (end) of the text.
     elif event.key == pygame.locals.K_END:
       self._caret = len (self._text)
       handled = True
-
     # The next statements directly influence the text, thus we have
     # to check, if it is editable or not.
     elif self.editable:
@@ -800,30 +784,28 @@ class OcempEditLine(ocempgui.widgets.Entry):
         if self._caret < len (self._text):
           self._text = self._text[:self._caret] + self._text[self._caret + 1:]
         handled = True
-
       # Delete backwards (backspace).
       elif event.key == pygame.locals.K_BACKSPACE:
         if self._caret > 0:
           self._text = self._text[:self._caret - 1] + self._text[self._caret:]
           self._caret -= 1
         handled = True
-
       # Non-printable characters or maximum exceeded.
       elif (len (event.unicode) == 0) or (ord (event.unicode) < 32):
         # Any unicode character smaller than 0x0020 (32, SPC) is
         # ignored as those are control sequences.
         return False
-
       # Any other case is okay, so show it.
       else:
         self._text = self._text[:self._caret] + event.unicode.encode("iso-8859-15") + self._text[self._caret:]
         #self._text = self._text[:self._caret] + event.unicode + self._text[self._caret:]
         self._caret += 1
       handled = True
-
     self.dirty = True
     return handled
 
+# ===============================================================
+# =========================== METHODS ===========================
 # ===============================================================
 
 def createButton(imgPath, topleft, tooltip, action, *params):
@@ -842,19 +824,17 @@ def createButton(imgPath, topleft, tooltip, action, *params):
   button.topleft = topleft
   return button
 
-# ===============================================================
-
 def generateImageSize(origFilePath, size, destFilePath):
   """ Copies and resizes an image.
   origFilePath: original image path.
   size: image name.
   destFilePath: image copy path.
   """  
+  if not os.path.isdir(os.path.dirname(destFilePath)):
+    GG.utils.createRecursiveDir(os.path.dirname(destFilePath))
   img = Image.open(origFilePath)
   img.thumbnail(size, Image.ANTIALIAS)
   img.save(destFilePath)
-
-# ===============================================================
 
 def playSound(sound):
   """ Plays a sound.
@@ -870,9 +850,7 @@ def playSound(sound):
   except:
     pass
 
-# ===============================================================
-
-def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
+def getSprite(imageName, topleft = None, zOrder = None):
   """ Loads a new sprite.
   imageName: sprite file name.
   loadRect: rectangle load flag.
@@ -880,17 +858,17 @@ def loadSprite(imageName, loadRect, topleft=None, zOrder=None):
   zOrder: sprite zOrder value.
   """  
   image = pygame.sprite.Sprite()
-  image.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)).convert_alpha()
-  if loadRect:
-    image.rect = image.image.get_rect()
+  imageFile = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)
+  image.image = pygame.image.load(imageFile).convert_alpha()
+  image.rect = image.image.get_rect()
   if topleft:
     image.rect.topleft = topleft
-  if zOrder:  
+  if zOrder:
     image.zOrder = zOrder
   else:
     image.zOrder = 0    
   return image  
-    
+
 def getOffset(imageFile):
   im = Image.open(imageFile)
   sizeImage = im.size

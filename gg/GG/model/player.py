@@ -47,9 +47,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.__agenda = []
     self.__timestamp = timestamp
     if not self.__timestamp == "":
-      self.setImagePath("avatars/"+self.username+"/")
+      self.setImagePath(os.path.join(GG.utils.INTERFACE_AVATARS, self.username))
     else:
-      self.setImagePath("avatars/ghost/")
+      self.setImagePath(os.path.join(GG.utils.INTERFACE_AVATARS, "ghost"))
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
@@ -95,6 +95,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
+    print "En el player"
+    print self.getRoom()
 
   def getPlayerBuildPackage(self):
     """ Returns item info used to create the isometric view object.
@@ -148,8 +150,8 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.spriteName = spriteNameTemp
     timestamp = str(timestamp)
     self.__timestamp = timestamp
-    self.setImagePath("avatars/"+self.username+"/")
-    self.triggerEvent('timestamp', timestamp=timestamp, imgPath = "avatars/"+self.username+"/")
+    self.setImagePath(os.path.join(GG.utils.INTERFACE_AVATARS, self.username))
+    self.triggerEvent('timestamp', timestamp=timestamp, imgPath = os.path.join(GG.utils.INTERFACE_AVATARS, self.username))
     self.save("player")
       
   def getName(self):
@@ -160,10 +162,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def getImageLabel(self):
     """ Returns the player's mask filename.
     """  
-    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.username + ".png")):
-      return "avatars/masks/"+self.username+".png"
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, GG.utils.MASKS_DIR, self.username + ".png")):
+      return os.path.join(GG.utils.MASKS_DIR, self.username+".png")
     else:
-      return "interface/editor/masko.png"
+      return os.path.join(GG.utils.EDITOR, "masko.png")
 
   def startSessionTiming(self):
     """ Saves the current time.
@@ -223,7 +225,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     avatarConfiguration: new avatar configuration.
     timestamp: current timestamp.
     """
-    self.setImagePath("avatars/"+self.username+"/")
+    self.setImagePath(os.path.join(GG.utils.INTERFACE_AVATARS, self.username))
     self.__avatarConfiguration = avatarConfiguration
     self.triggerEvent('avatarConfiguration', avatarConfiguration=avatarConfiguration, imageLabel = self.getImageLabel())
     self.setTimestamp(timestamp)

@@ -26,11 +26,12 @@ class RClient(synchronized.Synchronized):
 
     self.__rootModel = None
     self.__sessionID = None
+    self.__version = None
     self.__initialDataSemaphore = threading.Semaphore(0)
 
     self.__answersCommandsList = []
 
-    self.__remoteSuscriptions = {}  ## TODO: Use weak references
+    self.__remoteSuscriptions = {}  
 
     self.__socket = None
     self.__connect()
@@ -73,7 +74,6 @@ class RClient(synchronized.Synchronized):
     utils.logger.debug("connecting to server")
     self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.__socket.connect((self.__serverIP, self.__serverPort))
-    #self.__socket.setblocking(0)
     utils.logger.debug("connected to server")
 
   @synchronized.synchronized(lockName='commandsList')
@@ -89,6 +89,7 @@ class RClient(synchronized.Synchronized):
       raise Exception('The receiver already has a rootModel')
     self.__rootModel = dMVC.clientMaterialize(initialData['rootModel'], self)
     self.__sessionID = dMVC.clientMaterialize(initialData['sessionID'], self)
+    self.__version = dMVC.clientMaterialize(initialData['version'], self)
     self.__initialDataSemaphore.release()
 
   def getRootModel(self): 
@@ -96,6 +97,9 @@ class RClient(synchronized.Synchronized):
     result = self.__rootModel
     self.__initialDataSemaphore.release()   
     return result
+
+  def getVersion(self):
+    return self.__version
 
   def getSessionID(self): 
     self.__initialDataSemaphore.acquire()

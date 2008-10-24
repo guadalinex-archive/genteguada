@@ -71,6 +71,7 @@ class GGSystem(dMVC.model.Model):
   @dMVC.synchronized.synchronized(lockName='accessRoom')
   def __accessUserIntoRoom(self, user):
     newRoom = user.getRoom()
+    print newRoom
     if not newRoom:
       newRoom = self.__getEntryRoom()
       if not newRoom:
@@ -95,7 +96,7 @@ class GGSystem(dMVC.model.Model):
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
@@ -279,13 +280,13 @@ class GGSystem(dMVC.model.Model):
       data = maskFile.read()
       maskFile.close()
       self.__avatarGeneratorHandler.copyImageMask(nameMask, data)
-      maskFile = open(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png"),"wb")
+      maskFile = open(os.path.join(GG.utils.DATA_PATH, GG.utils.MASKS_DIR, player.username + ".png"),"wb")
       maskFile.write(data)
       maskFile.close()
       os.remove(os.path.join(GG.utils.DATA_PATH, nameMask))
     else:
-      if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png")):
-        os.remove(os.path.join(GG.utils.DATA_PATH, "avatars/masks", player.username + ".png"))
+      if os.path.isfile(os.path.join(GG.utils.DATA_PATH, GG.utils.MASKS_DIR, player.username + ".png")):
+        os.remove(os.path.join(GG.utils.DATA_PATH, GG.utils.MASKS_DIR, player.username + ".png"))
     execCommand = self.__avatarGeneratorHandler.executeCommand(configuration, player, nameMask)
     if execCommand:
       images = self.__avatarGeneratorHandler.getImages(player)
@@ -299,8 +300,7 @@ class GGSystem(dMVC.model.Model):
     images: images to copy.
     player: given player.
     """  
-    #dir = "/home/jmariscal/proyectos/genteguada/src/gg/GG/data/avatars"
-    dirImage = GG.utils.DATA_PATH + "/avatars/"+player.username
+    dirImage = os.path.join(GG.utils.DATA_PATH, GG.utils.INTERFACE_AVATARS, player.username)
     if os.path.isdir(dirImage):
       for fileName in os.listdir(dirImage):
         os.remove(os.path.join(dirImage, fileName))
@@ -437,3 +437,10 @@ class GGSystem(dMVC.model.Model):
     posY = random.randint(0, room.size[1] - 1)
     player.setUnselectedItem()
     item.changeRoom(room, [posX, posY]) 
+
+  def sendError(self, errorData):
+    fileName = os.path.join(GG.utils.DIR_FILES_CLIENT_ERROR, "error"+str(int(time.time()))+".txt" )
+    fileError = open(fileName, "w")
+    fileError.write(errorData)
+    fileError.close()
+    return True

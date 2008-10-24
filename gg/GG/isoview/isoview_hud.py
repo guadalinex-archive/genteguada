@@ -156,19 +156,9 @@ class IsoViewHud(isoview.IsoView):
     subscriptionList.append(['destination', self.destinationChanged])
     self.__player.subscribeListEvent(subscriptionList)
     self.__selectedItem = None
-    
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_SELECTED)  
-    self.__selectedImage = pygame.sprite.Sprite()
-    self.__selectedImage.image = pygame.image.load(imgPath).convert_alpha()
-    self.__selectedImage.rect = self.__selectedImage.image.get_rect()
-    self.__selectedImage.zOrder = 0
-      
-    imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(TILE_TARGET)
+    self.__selectedImage = guiobjects.getSprite(TILE_SELECTED)
     self.__targetTile = None
-    self.__targetTileImage = pygame.sprite.Sprite()
-    self.__targetTileImage.image = pygame.image.load(imgPath).convert_alpha()
-    self.__targetTileImage.rect = self.__targetTileImage.image.get_rect()
-    
+    self.__targetTileImage = guiobjects.getSprite(TILE_TARGET)
     self.__activeActions = []
     self.__restoreActiveActionButtonsList()
     self.__buttonActions = {
@@ -521,13 +511,7 @@ class IsoViewHud(isoview.IsoView):
   def __paintImgBlack(self):
     """ Paints the game zone background.
     """  
-    bgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(BG_BLACK)
-    self.__bg = pygame.sprite.Sprite()
-    self.__bg.image = pygame.image.load(bgPath).convert_alpha()
-    self.__bg.rect = self.__bg.image.get_rect()
-    self.__bg.rect.topleft = BG_FULL_OR
-    self.__bg.zOrder = -200
-    #self.__bg = guiobjects.loadSprite(BG_BLACK, True, BG_FULL_OR, -200)
+    self.__bg = guiobjects.getSprite(BG_BLACK, BG_FULL_OR, -200)
     self.__allSprites.add(self.__bg)
     
   def updateFrame(self, events ,elapsedTime):

@@ -24,11 +24,7 @@ class IsoViewTile(isoview.IsoView):
     self.__bottomRight = bottomRight
     self.__position = position
     self.__hud = hud
-    self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(GG.genteguada.GenteGuada.getInstance().getDataPath(img)).convert_alpha()
-    self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT)
-    self.__img.zOrder = -1
+    self.__img = guiobjects.getSprite(img, GG.utils.p3dToP2d(position, GG.utils.FLOOR_SHIFT), -1)
     
   def getImg(self):
     """ Returns the tile image.

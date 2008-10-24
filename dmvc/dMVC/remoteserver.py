@@ -15,13 +15,14 @@ import weakref
 
 class RServer(synchronized.Synchronized):
 
-  def __init__(self, rootModel, port=8000, onConnection=None, onDisconnection=None, onExecution=[]): 
+  def __init__(self, rootModel, version = None ,port=8000, onConnection=None, onDisconnection=None, onExecution=[]): 
     utils.logger.debug("RServer.__init__")
     synchronized.Synchronized.__init__(self)
     dMVC.setRServer(self)
-    self.__models = {}
-    #self.__models = weakref.WeakValueDictionary()
+    #self.__models = {}
+    self.__models = weakref.WeakValueDictionary()
     self.__rootModel = rootModel
+    self.__version = version
     self.__port = port
     self.__con = None
     self.__activeServer = False
@@ -82,6 +83,9 @@ class RServer(synchronized.Synchronized):
     time.sleep(2)
     self.__con.server_close()
 
+  def getVersion(self):
+    return self.__version
+
 
 class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized):
 
@@ -91,6 +95,7 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     initialData = {}
     initialData['rootModel'] = dMVC.getRServer().getRootModel()
     initialData['sessionID'] = self.__sessionID
+    initialData['version'] = dMVC.getRServer().getVersion()
     self.sendCommand(initialData)
 
   def setup(self): 
@@ -143,30 +148,34 @@ class RServerHandler(SocketServer.BaseRequestHandler, synchronized.Synchronized)
     sizeInt = struct.calcsize("i")
     while True:
       time.sleep(0.01)
-      read, write, error = select.select ([self.request],[self.request],[self.request],0)
-      if self.request in read:
-        size = self.request.recv(sizeInt)
-        if len(size):
-          size = struct.unpack("i", size)[0]
-          data = ""
-          while len(data) < size:
-            data += self.request.recv(size - len(data))
-          data = gzip.zlib.decompress(data)
-          commandOrFragment = pickle.loads(data)
-          print commandOrFragment
-          if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
-            self.__processCommand(commandOrFragment, size)
-          elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
-            self.__processFragment(commandOrFragment, size)
+      try:
+        read, write, error = select.select ([self.request],[self.request],[self.request],0)
+        if self.request in read:
+          size = self.request.recv(sizeInt)
+          if len(size):
+            size = struct.unpack("i", size)[0]
+            data = ""
+            while len(data) < size:
+              data += self.request.recv(size - len(data))
+            data = gzip.zlib.decompress(data)
+            commandOrFragment = pickle.loads(data)
+            print commandOrFragment
+            if (isinstance(commandOrFragment, dMVC.remotecommand.RCommand)):
+              self.__processCommand(commandOrFragment, size)
+            elif (isinstance(commandOrFragment, dMVC.remotecommand.RFragment)):
+              self.__processFragment(commandOrFragment, size)
+            else:
+              raise "Not valid reading from socket: " + str(commandOrFragment)
           else:
-            raise "Not valid reading from socket: " + str(commandOrFragment)
+            # The conection is lost
+            self.finish()
+            break
         else:
-          # The conection is lost
-          self.finish()
-          break
-      else:
-        if not self.request in write:
-          self.__sendAsyncFragment()
+          if not self.request in write:
+            self.__sendAsyncFragment()
+      except:
+        self.finish()
+        break
 
   def __processCommand(self, command, size):
     utils.logger.debug("Receive from the client "+str(self.client_address)+" the command: " + str(command) + " (" + str(size) + "b)")
