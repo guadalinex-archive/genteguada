@@ -54,20 +54,13 @@ class IsoViewItem(positioned_view.PositionedView):
     if not self.__imageName: 
       self.__imageName = self.getModel().getSpriteName()
     imageName = os.path.join(imagePath, self.__imageName)  
-    print imagePath
-    print self.__imageName
-    print imageName
     self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     self.anchor = guiobjects.getOffset(self.imgPath)
     self.topAnchor = guiobjects.getTopOffset(self.anchor, imageName)
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.anchor)
     zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
-    self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(self.imgPath).convert_alpha()
-    self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = scrPos
-    self.__img.zOrder = zOrder
+    self.__img = guiobjects.getSprite(imageName, scrPos, zOrder)
 
   def loadAvatarImage(self, path, timestamp):
     """ Loads the item's image.
@@ -76,18 +69,12 @@ class IsoViewItem(positioned_view.PositionedView):
     image = "standing_bottomright_0001"
     if not timestamp == "":
       image += "_"+str(timestamp)
-    print image
-    print path
     imageName = os.path.join(path, image)  
     self.imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(imageName)  
     pos = self.__position
     scrPos = GG.utils.p3dToP2d(pos, self.anchor)
     zOrder = (pow(pos[0], 2) + pow(pos[1], 2))*10
-    self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(self.imgPath).convert_alpha()
-    self.__img.rect = self.__img.image.get_rect()
-    self.__img.rect.topleft = scrPos
-    self.__img.zOrder = zOrder
+    self.__img = guiobjects.getSprite(imageName, scrPos, zOrder)
 
   def getPosition(self):
     """ Returns the item's position on the room.

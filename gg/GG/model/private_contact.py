@@ -46,8 +46,8 @@ class PrivateContact(ggmodel.GGModel):
   def getImageLabel(self):
     """ Returns the player's mask filename.
     """  
-    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, "avatars/masks", self.__player + ".png")):
-      return "avatars/masks/"+self.__player+".png"
+    if os.path.isfile(os.path.join(GG.utils.DATA_PATH, GG.utils.MASKS_DIR, self.__player + ".png")):
+      return os.path.join(GG.utils.MASKS_DIR, self.__player+".png")
     else:
-      return "interface/editor/masko.png"
+      return os.path.join(GG.utils.EDITOR, "masko.png")
 

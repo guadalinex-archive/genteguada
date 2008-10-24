@@ -74,7 +74,6 @@ class AuxBox:
         return True
     return False
 
-# ===============================================================
 
 class TeleportWindow(AuxBox):
   """ TeleportWindow class.
@@ -123,7 +122,6 @@ class TeleportWindow(AuxBox):
     self.listItems.topleft = 20, 40
     self.window.add_child(self.listItems) 
 
-# ===============================================================
 
 class DeleteRoomWindow(TeleportWindow):
   """ DeleteRoomWindow class.
@@ -150,7 +148,6 @@ class DeleteRoomWindow(TeleportWindow):
     self.showOrHide()
     self.hud.applyDeleteRoom(roomLabel)
 
-# ===============================================================
 
 class KickPlayerWindow(TeleportWindow):
   """ KickPlayerWindow class.
@@ -188,7 +185,6 @@ class KickPlayerWindow(TeleportWindow):
     self.listItems.topleft = 20, 40
     self.window.add_child(self.listItems) 
 
-# ===============================================================
 
 class AuxWindow:
   """ AuxWindow class.
@@ -261,7 +257,6 @@ class AuxWindow:
         return True
     return False
 
-# ===============================================================
  
 class BroadcastWindow(AuxWindow):
   """ BroadcastWindow class.
@@ -313,7 +308,6 @@ class BroadcastWindow(AuxWindow):
     self.hud.newBroadcastMessage(self.__textField.text)
     self.__textField.text = ""
 
-# ===============================================================
 
 class EditRoomWindow(AuxWindow):
   """ EditRoomWindow class.
@@ -330,7 +324,7 @@ class EditRoomWindow(AuxWindow):
     self.room = room
     self.roomMaxUser = roomMaxUser
     self.imageName = room.getTile([0, 0]).spriteName
-    self.imageName = self.imageName[self.imageName.rfind("/")+1:]
+    self.imageName = self.imageName[self.imageName.rfind(os.sep)+1:]
     self.activeLabels = []
     self.images = None
     self.maxUsers = None
@@ -348,7 +342,7 @@ class EditRoomWindow(AuxWindow):
       self.editRoomMaxUsers.text = str(self.roomMaxUser)  
       self.roomLabel.text = self.__hud.roomName.decode("utf-8")
       self.imageName = self.__hud.room.getTile([0, 0]).spriteName
-      self.imageName = self.imageName[self.imageName.rfind("/")+1:]
+      self.imageName = self.imageName[self.imageName.rfind(os.sep)+1:]
       self.newTileImages.selectItem(self.imageName)
     AuxWindow.showOrHide(self)
   
@@ -456,7 +450,6 @@ class EditRoomWindow(AuxWindow):
     """  
     self.showOrHide() 
   
-# ===============================================================
 
 class CreateRoomWindow(AuxWindow):
   """ CreateRoomWindow class.
@@ -618,7 +611,7 @@ class CreateRoomWindow(AuxWindow):
         self.maxUsers.text = str(room.getMaxUsers())
         imgNames = []
         for singleSprite in room.spriteFull:
-          imgNames.append(singleSprite[singleSprite.rfind("/")+1:])  
+          imgNames.append(singleSprite[singleSprite.rfind(os.sep)+1:])  
         self.images.selectItems(imgNames)
         self.enabledChecker.set_active(room.getEnabled())
         self.startRoomChecker.set_active(room.getStartRoom())
@@ -668,7 +661,6 @@ class CreateRoomWindow(AuxWindow):
     self.hud.createRoom(label, [posX, posY], image, maxUsers, enabled, startRoom, room)
     self.showOrHide()
     
-# ===============================================================
 
 class CreateItemsWindow(AuxWindow):
   """ CreateItemsWindow class.

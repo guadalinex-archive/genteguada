@@ -6,6 +6,7 @@ import GG.utils
 import isoview
 import positioned_view
 import guiobjects
+import os
 
 class IsoViewQuiz(positioned_view.PositionedView):
   """ IsoViewQuiz class.
@@ -25,7 +26,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     
     positioned_view.PositionedView.__init__(self, model, screen)
     self.container = ocempgui.widgets.Box(358, 258)
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/trivialWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "trivialWindow.png"))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
@@ -41,13 +42,13 @@ class IsoViewQuiz(positioned_view.PositionedView):
       label.topleft = 80, 85 + i *50
       self.container.add_child(label)
       i = i + 1
-    buttonA = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerA.png"))
+    buttonA = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH,"answerA.png")))
     buttonA.topleft = [22, 70]
     buttonA.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)
-    buttonB = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerB.png"))
+    buttonB = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath((os.path.join(GG.utils.HUD_PATH,"answerB.png")))
     buttonB.topleft = [22, 120]
     buttonB.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 2)
-    buttonC = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/hud/answerC.png"))
+    buttonC = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath((os.path.join(GG.utils.HUD_PATH,"answerC.png")))
     buttonC.topleft = [22, 170]
     buttonC.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
     self.container.add_child(buttonA)

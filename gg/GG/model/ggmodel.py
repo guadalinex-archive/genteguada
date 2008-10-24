@@ -39,9 +39,9 @@ class GGModel(dMVC.model.Model):
   def readAll(obj):
     instanceList = []
     if obj == "room":
-      listFile = glob.glob(SAVE_DATA_ROOM+"/*.serialized")
+      listFile = glob.glob(SAVE_DATA_ROOM + os.sep + "*.serialized")
     else:
-      listFile = glob.glob(SAVE_DATA_PLAYER+"/*.serialized")
+      listFile = glob.glob(SAVE_DATA_PLAYER + os.sep + "*.serialized")
     for file in listFile:
       filePath, fileName = os.path.split(file)
       idModel, extFile = os.path.splitext(fileName) 
@@ -51,8 +51,8 @@ class GGModel(dMVC.model.Model):
   @staticmethod
   def read(id, obj, dict = None):
     #syncronizar el acceso a Model.instances
-    if (GGModel.instances.has_key(id)):
-      return GGModel.instances[id]
+    #if (GGModel.instances.has_key(id)):
+    #  return GGModel.instances[id]
     if not dict:
       if obj == "room":
         fileSerialized = os.path.join(SAVE_DATA_ROOM, str(id)+".serialized")
@@ -71,7 +71,7 @@ class GGModel(dMVC.model.Model):
     instance.__class__ = klass
     instance.load(dict)
     #syncronizar el acceso a Model.instances
-    GGModel.instances[id] = instance
+    #GGModel.instances[id] = instance
     return instance
 
   def __getModelId(self):

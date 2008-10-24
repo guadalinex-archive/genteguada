@@ -35,7 +35,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     self.topAnchor = TOPANCHOR_PLAYER 
     self.__movieAnimation = None
     self.__destination = None
-    #self.__tempTimestamp = None
     infoPackage = model.getPlayerBuildPackage()
     self.__timestamp = infoPackage["timestamp"]
     self.__heading = infoPackage["heading"]
@@ -57,12 +56,12 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
-        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001"
+        imageAvatar = os.path.join(self.__path + "standing_bottomright_0001")
       else:
-        imageAvatar = self.__path.replace(os.sep,"-") + "standing_bottomright_0001_" + self.__timestamp
+        imageAvatar = os.path.join(self.__path, "standing_bottomright_0001_" + self.__timestamp)
       if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
         if not GG.genteguada.GenteGuada.getInstance().isAvatarDownload(self.getModel()):
-          self.__path = "avatars/ghost/"
+          self.__path = os.path.join("avatars", "ghost")
           self.__timestamp = ""
           GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
       
@@ -100,8 +99,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """ Triggers after receiving a timestamp changed method.
     event: event info.
     """  
-    #self.__tempTimestamp = event.getParams()["timestamp"]
-    #self.__path = "avatars/ghost/"
     GG.genteguada.GenteGuada.getInstance().getAvatarImages(self.getModel())
         
   def headingChanged(self, event):
@@ -294,9 +291,6 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     self.__path = path
     self.__timestamp = timestamp
-    #if self.__tempTimestamp:
-    #  self.__timestamp =  self.__tempTimestamp
-    #  self.__tempTimestamp = None
     self.setImg(GG.utils.getSpriteName(self.__state, self.__heading, 0, self.__timestamp), self.__path)
     
   def unselected(self):

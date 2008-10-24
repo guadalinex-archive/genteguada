@@ -208,7 +208,7 @@ class GGPenguinTrade(GGPenguin):
     if giftItem:
       self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), self.__msg)
       talker.removeFromInventory(giftItem)
-      item = generated_inventory_item.GGGeneratedInventoryItem("furniture/shirt.png", "Camiseta GenteGuada", self.getPosition()) 
+      item = generated_inventory_item.GGGeneratedInventoryItem(os.path.join(GG.utils.FURNITURE_PATH, "shirt.png"), "Camiseta GenteGuada", self.getPosition()) 
       talker.addToInventory(item, talker.getPosition())
       return True 
     else:

@@ -2,6 +2,7 @@
 
 import math
 import os
+import stat
 
 # ======================= GENERAL PATHS ===========================
 
@@ -17,12 +18,15 @@ if os.path.isdir("gg/GG/data"):
 else:
   DATA_PATH = "/usr/share/pixmaps/genteguada/data"
 
+DIR_FILES_CLIENT_ERROR = os.path.join(DATA_PATH, "clienterror")
+
 #PATHS IMAGE
 INTERFACE_PATH = "interface"
 FURNITURE_PATH = "furniture"
 SOUND_PATH = "sound"
 MASKS_PATH = "masks"
 INTERFACE_AVATARS = "avatars"
+MASKS_DIR = os.path.join(INTERFACE_AVATARS, MASKS_PATH)
 TILE = "tiles"
 ICONS_PATH = os.path.join(DATA_PATH,"icons")
 IMAGES_GIFT = "imagesgift"
@@ -46,7 +50,9 @@ CANCEL_BUTTON_IMAGE = os.path.join(PATH_EDITOR_INTERFACE, "cancel_button.png")
 
 UPLOAD_BACKGROUND = os.path.join(BACKGROUNDS, "uploadWindow.png")
 
+DIR_ERROR = os.path.join(LOCAL_DATA_PATH, "error")
 IMG_ERROR = os.path.join(LOCAL_DATA_PATH, "error", "error.png")
+DIR_FONT = os.path.join(LOCAL_DATA_PATH, "font")
 
 # ======================= CONSTANTS ===========================
 # Screen & General values
@@ -381,8 +387,6 @@ def getJumpDestination(pos, heading, size):
       return dest
   return None    
 
-# ===============================================================
-
 def getSpriteName(state, heading, frame, timestamp):
   """ Returns a composed sprite file name created using a player and current timestamp.
   state: player's state.
@@ -407,8 +411,6 @@ def getSpriteName(state, heading, frame, timestamp):
   else:  
     fileName = state + "_" + heading + "_00" + str(frame)
   return fileName + tail
-
-# ===============================================================
 
 def getNextDirection(pos1, pos2):
   """ Obtiene la siguiente posicion en el trayecto entre 2 puntos.
@@ -437,8 +439,6 @@ def getNextDirection(pos1, pos2):
       retVar = "up"
   return retVar
 
-# ===============================================================
-
 def checkNeighbour(pos1, pos2):
   """ Checks if 2 points are neighbours or not.
   pos1: point 1.
@@ -462,8 +462,6 @@ def checkNeighbour(pos1, pos2):
   elif pos1 == [pos2[0] + 1, pos2[1] - 1]:
     kValue = True
   return kValue  
-
-# ===============================================================
 
 def getFrontPosition(pos, heading, size):
   """ Returns the tile coords in front of the player.
@@ -490,8 +488,6 @@ def getFrontPosition(pos, heading, size):
     retVar = [pos[0] + 1, pos[1] - 1]
   return retVar
     
-# ===============================================================
-
 def p2pDistance(point1, point2):
   """ Calculates the distance between 2 points.
   point1: starting point.
@@ -501,8 +497,6 @@ def p2pDistance(point1, point2):
     return 0
   return '%.3f' % math.sqrt(pow((point2[0] - point1[0]), 2) + pow((point2[1] - point1[1]), 2))
     
-# ===============================================================
-
 def p3dToP2d(cord3d, anchor):
   """ Returns the physical 2d coordinates of a 3d virtual point.
   cord3d: 3d virtual point.
@@ -516,8 +510,6 @@ def p3dToP2d(cord3d, anchor):
   corY2d -= anchor[1]
   return corX2d, corY2d
  
-# ===============================================================
-
 def compare(x, y):
   """ Checks two images and compares their zOrder attribute values.
   x: first image.
@@ -525,6 +517,31 @@ def compare(x, y):
   """  
   return y.zOrder - x.zOrder
 
+def createRecursiveDir(newdir):
+  if os.path.isdir(newdir):
+    pass
+  elif os.path.isfile(newdir):
+    raise OSError("Un fichero con el mismo nombre que el directorio , '%s', ya existe." % newdir)
+  else:
+    head, tail = os.path.split(newdir)
+    if head and not os.path.isdir(head):
+      createRecursiveDir(head)
+    if tail:
+      os.mkdir(newdir)
 
+def clearCache(dir, limitTime):
+  toRemove = []
+  for fileName in os.listdir(dir):
+    pathFile = os.path.join(dir, fileName) 
+    if os.path.isdir(pathFile) and not pathFile in [DIR_ERROR, DIR_FONT, PATH_PHOTO_MASK, os.path.join(LOCAL_DATA_PATH, ".svn")]:
+      clearCache(pathFile, limitTime)
+    elif os.path.isfile(pathFile):
+      accessTime = os.stat(pathFile)[stat.ST_ATIME]
+      if accessTime < limitTime:
+        toRemove.append(fileName)
+  for fileName in toRemove:
+    pathFile = os.path.join(dir, fileName) 
+    os.remove(pathFile)
+  if len(os.listdir(dir)) == 0:
+    os.rmdir(dir)
 
-   

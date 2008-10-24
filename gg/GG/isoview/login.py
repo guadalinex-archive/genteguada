@@ -83,7 +83,7 @@ class Login:
     self.widgetContainer.set_screen(self.__screen)
     self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
     
-    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/TEMP_accessMode.png"))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "TEMP_accessMode.png")))
     imgBackgroundRight.topleft = 0, 0
     self.window.add_child(imgBackgroundRight)
    
@@ -94,13 +94,13 @@ class Login:
     notificationLabel.set_minimum_size(230, 40)
     self.window.add_child(notificationLabel)
     
-    imgPath = "interface/editor/admin_ok_button.png"
+    imgPath = os.path.join(GG.utils.EDITOR, "ok_button.png")
     buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [370, 450]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeAdmin)
     self.window.add_child(buttonOK)
      
-    imgPath = "interface/editor/admin_cancel_button.png"
+    imgPath = os.path.join(GG.utils.EDITOR, "cancel_button.png")
     buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonCancel.topleft = [550, 450]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.accessModeNormal)
@@ -143,7 +143,7 @@ class Login:
   def __paintScreen(self):
     """ Paints the screen background. 
     """  
-    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/startGG.png"))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "startGG.png")))
     imgBackgroundRight.topleft = 1, 0
     self.window.add_child(imgBackgroundRight)
 
@@ -185,13 +185,13 @@ class Login:
   def __paintButtons(self):
     """ Paints accept and cancel buttons on screen.
     """  
-    imgPath = "interface/editor/ok_button.png"
+    imgPath = os.path.join(GG.utils.EDITOR, "ok_button.png")
     buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonOK.topleft = [750, 690]
     buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.acceptLogin)
     self.window.add_child(buttonOK)
      
-    imgPath = "interface/editor/cancel_button.png"
+    imgPath = os.path.join(GG.utils.EDITOR, "cancel_button.png")
     buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
     buttonCancel.topleft = [870, 690]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
@@ -215,7 +215,7 @@ class Login:
     if self.dialog:
       return
     self.container = ocempgui.widgets.Box(516, 197)
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath("interface/backgrounds/alertWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "alertWindow.png"))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)

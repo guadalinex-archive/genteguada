@@ -29,10 +29,7 @@ class IsoViewInventoryItem(isoview.IsoView):
     self.__count = 0
     self.__isohud = isohud
     imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(model.spriteInventory)
-    self.__img = pygame.sprite.Sprite()
-    self.__img.image = pygame.image.load(imgPath).convert_alpha()
-    self.__img.rect = self.__img.image.get_rect()
-    self.__img.zOrder = 10001
+    self.__img = guiobjects.getSprite(model.spriteInventory, None, 10001)
     
   def updateZOrder(self):
     """ Updates the item image zOrder value.
