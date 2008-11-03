@@ -3,13 +3,14 @@
 import cgi
 import os
 import pickle
+import GG.utils
 
 print "Content-Type: text/plain\r\n\r\n"
 
 form = cgi.FieldStorage()
 name = form.getvalue("user")
-dir = "/home/jmariscal/proyectos/genteguada/gg/GG/data/savedata/players"
-file = os.path.join(dir,name+".serialized")
+SAVE_DATA_PLAYER = os.path.join(GG.utils.SAVE_DATA, "players")
+file = os.path.join(SAVE_DATA_PLAYER,name+".serialized")
 if not os.path.isfile(file):
   print "ERROR!!! no se tienen datos del usuario"
 else:
