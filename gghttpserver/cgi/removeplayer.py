@@ -5,6 +5,9 @@ import GG.model.ggsystem
 
 print "Content-Type: text/plain\r\n\r\n"
 
+#ERROR:02 => El servidor de genteguada no esta levantado
+#ERROR:04 => el jugador no se pudo eliminar debiado a un error
+
 form = cgi.FieldStorage()
 name = form.getvalue("user")
 try:
@@ -12,8 +15,8 @@ try:
   if system.deletePlayer(name):
     print "el jugador se elimino correctamente"
   else:
-    print "ocurrio un error al eliminar el jugador"
+    print "ERROR:04"
 except:
-  print "El servidor del juego no esta levantado"
+  print "ERROR:02"
 
 

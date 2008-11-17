@@ -5,6 +5,9 @@ import GG.model.ggsystem
 
 print "Content-Type: text/plain\r\n\r\n"
 
+#ERROR:02 => El servidor de genteguada no esta levantado
+#ERROR:03 => el regalo no se pudo eliminar debiado a un error
+
 form = cgi.FieldStorage()
 name = form.getvalue("user")
 idgift = form.getvalue("id")
@@ -13,6 +16,6 @@ try:
   if system.deleteGift(idgift, name):
     print "el regalo se elimino correctamente"
   else:
-    print "ocurrio un error al eliminar el regalo"
+    print "ERROR:03"
 except:
-  print "El servidor del juego no esta levantado"
+  print "ERROR:02"
