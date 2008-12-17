@@ -1,3 +1,9 @@
+gghttpserver (0.0.2-1) unstable; urgency=low
+
+  * Cambiamos el acceso al system del servidor del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 17 Dec 2008 16:47:03 +0100
+
 gghttpserver (0.0.1-1) unstable; urgency=low
 
   * Initial release. (Closes: #XXXXXX)
