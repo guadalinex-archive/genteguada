@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import cgi
-import GG.model.ggsystem
+import dMVC.remoteclient
 
 print "Content-Type: text/plain\r\n\r\n"
 
@@ -11,7 +11,8 @@ print "Content-Type: text/plain\r\n\r\n"
 form = cgi.FieldStorage()
 name = form.getvalue("user")
 try:
-  system = GG.model.ggsystem.GGSystem.getInstance()
+  client = dMVC.remoteclient.RClient("localhost", 770)
+  system = client.getRootModel()
   if system.deletePlayer(name):
     print "el jugador se elimino correctamente"
   else:

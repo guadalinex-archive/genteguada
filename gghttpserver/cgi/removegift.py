@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import cgi
-import GG.model.ggsystem
+import dMVC.remoteclient
 
 print "Content-Type: text/plain\r\n\r\n"
 
@@ -12,7 +12,8 @@ form = cgi.FieldStorage()
 name = form.getvalue("user")
 idgift = form.getvalue("id")
 try:
-  system = GG.model.ggsystem.GGSystem.getInstance()
+  client = dMVC.remoteclient.RClient("localhost", 770)
+  system = client.getRootModel()
   if system.deleteGift(idgift, name):
     print "el regalo se elimino correctamente"
   else:
