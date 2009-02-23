@@ -891,7 +891,7 @@ class CreateItemsWindow(AuxWindow):
     """ Reloads the item pannel after an image upload finishes.
     """  
     if resultado:
-      fileName = "imagesgift-"+resultado
+      fileName = os.path.join("imagesgift",resultado)
       shutil.copy(self.origFilePath, os.path.join(GG.utils.LOCAL_DATA_PATH, fileName))
       self.imagesGiftList.append(resultado)
       self.container.remove_child(self.imagesArea)

@@ -638,6 +638,7 @@ class OcempImageObjectList(OcempImageFileList):
     """ Creates the list items.
     """  
     items = ocempgui.widgets.components.ListItemCollection ()
+    self.objectLabelList.sort()
     for objectLabel in self.objectLabelList:
       items.append (OcempContactListItem (objectLabel, "chatEntry.png"))
     self.set_items (items)

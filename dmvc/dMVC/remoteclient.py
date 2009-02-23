@@ -244,6 +244,7 @@ class RClient(synchronized.Synchronized):
           utils.logger.debug("Receive from the server the command: " + str(command) + " (" + str(size) + "b)")
           if isinstance(command, remotecommand.RCompositeCommand):
             for eachCommand in command.commandList:
+              utils.logger.debug("JOSEBA => "+str(eachCommand))
               #print "recibimos ",size , eachCommand
               self.__processCommand(eachCommand)
           else:
@@ -258,7 +259,8 @@ class RClient(synchronized.Synchronized):
       self.__addAnswererCommand(command)
     elif isinstance(command, remotecommand.RFragment):
       self.__processFragment(command)
-    else:
+    #else:
+    elif isinstance(command, remotecommand.RCommand):
       self.__commandQueue.put(command)
 
   def __processFragment(self, fragment):

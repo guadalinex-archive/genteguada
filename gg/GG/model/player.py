@@ -551,7 +551,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     tile = self.getRoom().getTile(dropLocation)
     if tile.getDepth():
       if not tile.getTopItem().stepOn():  
-        self.newChatMessage("No puedo soltarlo encima de eso, podr�a aplastarlo.", 1)
+        self.newChatMessage("No puedo soltarlo encima de eso, podría aplastarlo.", 1)
         self.setUnselectedItem()
       else:
         self.setState(GG.utils.STATE[1])
