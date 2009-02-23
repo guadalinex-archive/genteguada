@@ -59,7 +59,7 @@ install: build
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
-	cp GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
+	cp -r GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
 	dh_testdir
 	#finalizo
 	rm -f build-stamp configure-stamp
