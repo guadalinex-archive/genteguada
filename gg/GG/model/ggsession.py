@@ -417,3 +417,9 @@ class GGSession(ggmodel.GGModel):
     for room in rooms:
       roomsDict[room.getName()] = room
     return roomsDict
+
+  def copyObject(self, object, room, position, player):
+    itemCopy = object.copyObject()
+    room.addItemFromVoid(itemCopy, position)
+    return itemCopy
+

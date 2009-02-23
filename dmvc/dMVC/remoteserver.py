@@ -19,8 +19,8 @@ class RServer(synchronized.Synchronized):
     utils.logger.debug("RServer.__init__")
     synchronized.Synchronized.__init__(self)
     dMVC.setRServer(self)
-    #self.__models = {}
-    self.__models = weakref.WeakValueDictionary()
+    self.__models = {}
+    #self.__models = weakref.WeakValueDictionary()
     self.__rootModel = rootModel
     self.__version = version
     self.__port = port

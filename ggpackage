@@ -9,8 +9,8 @@ dirActual = os.getcwd()
 
 def error(text):
   print "  \033[1;31m[ERROR]\033[0m "+text
-  comando = "rm -rf "+dirTempSVN
-  output = commands.getstatusoutput(comando)
+  #comando = "rm -rf "+dirTempSVN
+  #output = commands.getstatusoutput(comando)
   sys.exit(0)
 
 def info(text):

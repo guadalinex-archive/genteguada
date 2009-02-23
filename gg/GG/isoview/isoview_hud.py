@@ -1596,9 +1596,9 @@ class IsoViewHud(isoview.IsoView):
       return
     position = self.__isoviewRoom.getModel().getNearestEmptyCell([posX, posY])
     if position:
-      itemCopy = self.__selectedItem.copyObject()
+      objectSelected = self.__selectedItem
       self.itemUnselected()
-      self.room.addItemFromVoid(itemCopy, position)
+      itemCopy = self.getModel().copyObject(objectSelected,self.__isoviewRoom.getModel(),position,self.__player)
       self.__player.setSelectedItem(itemCopy)
     else:
       self.__player.newChatMessage("No hay sitio en la habitación", 1)
