@@ -51,7 +51,7 @@ install: build
 	$(PYTHON) setup-client.py build_py --no-compile --build-lib=$(PACKAGECLIENTDIR)/usr/share/${PACKAGECLIENT}
 	$(PYTHON) setup-client.py build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/games/
 	mkdir fonts
-	cp fonts/ /GG/cache/font/
+	cp GG/cache/font/* fonts/
 	rm -r GG/cache
 	$(PYTHON) copyData
 	rm -r GG/cache/clienterror
