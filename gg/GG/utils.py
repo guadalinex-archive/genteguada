@@ -542,6 +542,6 @@ def clearCache(dir, limitTime):
   for fileName in toRemove:
     pathFile = os.path.join(dir, fileName) 
     os.remove(pathFile)
-  if len(os.listdir(dir)) == 0:
-    os.rmdir(dir)
+  #if len(os.listdir(dir)) == 0:
+  #  os.rmdir(dir)
 

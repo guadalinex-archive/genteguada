@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 echo -n "Cambiando permiso a los directorios..."
-chmod -r 777 /usr/share/pixmaps/genteguada/cache
+chmod -R 777 /usr/share/pixmaps/genteguada/cache
 #chmod 777 /usr/share/pixmaps/genteguada/cache/mask
 
 if [ -d /usr/lib/python2.4/site-packages ]; then
