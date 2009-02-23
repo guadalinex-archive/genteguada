@@ -1,8 +1,8 @@
 #!/bin/sh -e
 
 echo -n "Cambiando permiso a los directorios..."
-chmod 777 /usr/share/pixmaps/genteguada/cache
-chmod 777 /usr/share/pixmaps/genteguada/cache/mask
+chmod -r 777 /usr/share/pixmaps/genteguada/cache
+#chmod 777 /usr/share/pixmaps/genteguada/cache/mask
 
 if [ -d /usr/lib/python2.4/site-packages ]; then
   echo -n "Instalamos el path para python 2.4\n"
