@@ -64,5 +64,5 @@ output = commands.getstatusoutput(comando)
 comando = "cp "+dirTempSVN+"/*.deb ggdeb/" 
 output = commands.getstatusoutput(comando)
 info("finalizo el proceso")
-comando = "rm -rf "+dirTempSVN
-output = commands.getstatusoutput(comando)
+#comando = "rm -rf "+dirTempSVN
+#output = commands.getstatusoutput(comando)
