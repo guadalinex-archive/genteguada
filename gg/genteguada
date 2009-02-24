@@ -33,6 +33,7 @@ parser.add_option("-P",dest="port", help="pantalla completa",default=8000, type 
 parser.add_option("-d",dest="debug", help="debug",default=False)
 (params, args) = parser.parse_args()
 
+"""
 @atexit.register
 def finishClient():
   ggInstance = GG.genteguada.GenteGuada.getInstance()
@@ -49,9 +50,11 @@ def excepthook(type, value, tb):
   fileError.write("=========================================\n\n")
   fileError.close()
 
+"""
+
 if __name__ == "__main__":
-  if not params.debug:
-    sys.excepthook = excepthook
+  #if not params.debug:
+  #  sys.excepthook = excepthook
   genteguada = GG.genteguada.GenteGuada()
   genteguada.start(params)
 
