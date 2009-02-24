@@ -19,8 +19,10 @@ parser = OptionParser( usage = __usage__ )
 parser.add_option("-P",dest="port", help="puerto",default=8000, type = int)
 (params, args) = parser.parse_args()
 
+"""
 def excepthook(type, value, tb):
   traceback.print_exception(type, value, tb)
+"""
 
 if __name__ == "__main__":
   def onLogin(rhandler, result, error):
@@ -36,8 +38,8 @@ if __name__ == "__main__":
         server = dMVC.getRServer().getSocket()
         server.finish_request(rhandler.request, rhandler.client_address)
 
-  VERSION = "0.10.1-1"
-  sys.excepthook = excepthook
+  VERSION = "0.11.1-1"
+  #sys.excepthook = excepthook
   onExecution = [ [GG.model.ggsystem.GGSystem, 'login', onLogin] ]
   print "Iniciado el servidor del juego Gente Guada V "+VERSION
   dMVC.remoteserver.RServer(GG.model.ggsystem.GGSystem(), version = VERSION ,port = params.port, onDisconnection = onDisconnection, onExecution = onExecution)
