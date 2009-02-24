@@ -156,8 +156,9 @@ PINE_1 = os.path.join(FURNITURE_PATH, "pino.png")
 PINE_2 = os.path.join(FURNITURE_PATH, "pino2.png")
 ROCK3 = os.path.join(FURNITURE_PATH, "roca3.png")
 COW = os.path.join(FURNITURE_PATH, "vaca.png")
+LINCE = os.path.join(FURNITURE_PATH, "lince.png")
 
-DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png","vaca.png"]
+DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png","vaca.png","lince.png"]
 
 #=============== STACKS ==================================================================
 
