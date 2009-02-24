@@ -1,3 +1,9 @@
+genteguada (0.11.1-1) unstable; urgency=low
+
+  * Version que soluciona algunos errores e inserta la imagen del lince
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 24 Feb 2009 10:53:31 +0100
+
 genteguada (0.10.2-1) unstable; urgency=low
 
   * Errores encontrados por el cliente
