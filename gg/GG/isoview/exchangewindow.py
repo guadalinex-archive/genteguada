@@ -21,7 +21,7 @@ class ExchangeWindow:
     """  
     title = "Ventana de intercambio"
     self.window = ocempgui.widgets.Window(title.decode("utf-8"))
-    self.window.topleft = 200, 200
+    self.window.topleft = 200, 100
 
     self.container = ocempgui.widgets.Box(585, 258)
     self.window.zOrder = 10000
@@ -54,7 +54,8 @@ class ExchangeWindow:
   def __paintBackground(self):
     """ Paints the exchange window background.
     """  
-    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNS,"exchangeWindow.png"))
+    dir = os.path.join(GG.utils.BACKGROUNDS,"exchangeWindow.png")
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS,"exchangeWindow.png"))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
     self.container.add_child(imgBackground)
