@@ -45,10 +45,10 @@ class IsoViewQuiz(positioned_view.PositionedView):
     buttonA = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH,"answerA.png")))
     buttonA.topleft = [22, 70]
     buttonA.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 1)
-    buttonB = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath((os.path.join(GG.utils.HUD_PATH,"answerB.png")))
+    buttonB = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH,"answerB.png")))
     buttonB.topleft = [22, 120]
     buttonB.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 2)
-    buttonC = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath((os.path.join(GG.utils.HUD_PATH,"answerC.png")))
+    buttonC = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.HUD_PATH,"answerC.png")))
     buttonC.topleft = [22, 170]
     buttonC.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.actionButton, 3)
     self.container.add_child(buttonA)
@@ -72,13 +72,10 @@ class IsoViewQuiz(positioned_view.PositionedView):
     """ 
     header = time.strftime("%H:%M", time.localtime(time.time())) + " [Andatuz]: "
     if option == self.getModel().getRightAnswer():
-      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("!Respuesta correcta!", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "!Respuesta correcta!", header)
-      self.__isohud.getPlayer().addPoints(0, self.getModel().question)
+      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("!Respuesta correcta!", 'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "!Respuesta correcta!", header)
       self.getModel().removeRightAnsweredQuestion()
     else:   
-      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("Respuesta incorrecta", \
-                'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "Respuesta incorrecta", header)
+      self.__isohud.newChatMessage(GG.model.chat_message.ChatMessage("Respuesta incorrecta", 'Andatuz', GG.utils.TEXT_COLOR["black"], self.__position, 2), "Respuesta incorrecta", header)
     self.__isohud.widgetContainer.remove_widget(self.container)
     self.__isohud.setActiveWindow(False)
     self.container.destroy()
