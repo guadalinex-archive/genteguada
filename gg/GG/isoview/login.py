@@ -261,6 +261,5 @@ class Login:
     if loginData[0] == True:
       return loginData[1]
     else:
-      print loginData[1]
       sys.exit(0)
 

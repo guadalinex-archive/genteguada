@@ -155,7 +155,6 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     """  
     line = self.sliceLine(string)  
     otherPlayer = self.selected.getPlayerObject()
-    print otherPlayer
     if otherPlayer:
       otherPlayer.newPrivateChatReceived(line, self.player)
     self.__layoutTextArea.add_child(self.createChatMessage(line))

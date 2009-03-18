@@ -279,6 +279,7 @@ class GGPenguinQuiz(GGPenguin):
     """  
     name = player.getName()
     self.__availableQuestions[name].remove(question)
+    player.addPoints(0, self.label)
     if len(self.__availableQuestions[name]) == 0:
       player.addPoints(0, "Penguin Quiz")
       

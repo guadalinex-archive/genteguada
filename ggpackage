@@ -16,6 +16,7 @@ def error(text):
 def info(text):
   print "  \033[1;32m[OK]\033[0m "+text
 
+
 os.system("clear")
 print "Generando los paquetes del proyecto GenteGuada"
 comando = "rm -rf "+dirTempSVN
@@ -64,5 +65,5 @@ output = commands.getstatusoutput(comando)
 comando = "cp "+dirTempSVN+"/*.deb ggdeb/" 
 output = commands.getstatusoutput(comando)
 info("finalizo el proceso")
-#comando = "rm -rf "+dirTempSVN
-#output = commands.getstatusoutput(comando)
+comando = "rm -rf "+dirTempSVN
+output = commands.getstatusoutput(comando)

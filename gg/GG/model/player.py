@@ -95,8 +95,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
-    print "En el player"
-    print self.getRoom()
 
   def getPlayerBuildPackage(self):
     """ Returns item info used to create the isometric view object.

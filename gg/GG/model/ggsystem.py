@@ -71,7 +71,6 @@ class GGSystem(dMVC.model.Model):
   @dMVC.synchronized.synchronized(lockName='accessRoom')
   def __accessUserIntoRoom(self, user):
     newRoom = user.getRoom()
-    print newRoom
     if not newRoom:
       newRoom = self.__getEntryRoom()
       if not newRoom:
@@ -96,7 +95,7 @@ class GGSystem(dMVC.model.Model):
     user: user name.
     passwd: user password.
     """  
-    #return "A"
+    return "A"
     #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
