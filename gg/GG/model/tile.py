@@ -195,4 +195,7 @@ class Tile(ggmodel.GGModel):
     if not noTrigger:
       #self.triggerEvent("imageChange", newImage = image)
       self.__room.tileImageChange(self.position, image)
+
+  def getPlayer(self):
+    return None
     
