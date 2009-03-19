@@ -419,6 +419,8 @@ def getNextDirection(pos1, pos2):
   pos2: posicion de destino.
   """
   retVar = "down"
+  if pos1 == pos2:
+    return None
   if pos1[0] < pos2[0]:
     if pos1[1] < pos2[1]:
       retVar = "bottomright"
