@@ -253,6 +253,10 @@ class GGDoorPressedTiles(GGTeleport):
     """
     GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
     self.__pressedTiles = pressedTiles
+    #tile1 = self.getRoom().getTile(pressedTiles[0])
+    #tile1.setImage(GG.utils.PRESSED_TILE,True)
+    #tile2 = self.getRoom().getTile(pressedTiles[1])
+    #tile2.setImage(GG.utils.PRESSED_TILE,True)
 
   def objectToPersist(self):
     dict = GGTeleport.objectToPersist(self)

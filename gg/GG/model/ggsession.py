@@ -318,6 +318,8 @@ class GGSession(ggmodel.GGModel):
     pressedTile2 = self.__getPositionCreateObject(data["pressedTile2"], room, "pressedTile2")
     if images and position and destinationRoom and exitPosition and pressedTile1 and pressedTile2: 
       door = teleport.GGDoorPressedTiles(images, exitPosition, destinationRoom.getName(), label, [pressedTile1, pressedTile2])
+      tile1 = room.getTile(pressedTile1).setImage(GG.utils.PRESSED_TILE)
+      tile2 = room.getTile(pressedTile2).setImage(GG.utils.PRESSED_TILE)
       room.addItemFromVoid(door, position)
 
   def __createObjectWeb(self, data, room):
