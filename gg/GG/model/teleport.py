@@ -288,7 +288,7 @@ class GGDoorPressedTiles(GGTeleport):
       if tile:  
         if not self.getRoom().getBlocked(tile):
           clicker.newChatMessage('El resorte no esta activado.', 2)  
-          clicker.setUnelectedItem()
+          clicker.setUnselectedItem()
           return False
     self.transportTo(clicker)
 
