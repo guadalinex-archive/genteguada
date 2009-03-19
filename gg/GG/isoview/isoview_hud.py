@@ -985,7 +985,6 @@ class IsoViewHud(isoview.IsoView):
     itemImageLabel: selected item's image name.
     options: item's available options.
     """  
-    #options = self.__selectedItem.getOptions()
     if not len(options):
       return
     self.__buttonBarActions = guiobjects.OcempPanel(259, 95, [GG.utils.SCREEN_SZ[0] - 260, 431], USER_ACTIONS_BACKGROUND)

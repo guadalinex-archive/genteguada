@@ -292,9 +292,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Sets a new heading direction for the item.
     heading: new heading direction.
     """
-    if self.__heading != heading:
-      self.__heading = heading
-      self.triggerEvent('heading', heading=heading, state=self.__state)
+    if heading != None:
+      if self.__heading != heading:
+        self.__heading = heading
+        self.triggerEvent('heading', heading=heading, state=self.__state)
 
   # self.__state
   
@@ -589,14 +590,15 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """ Jumps over an item.
     """  
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
-    dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
-    if dest == None or self.getRoom().getTile(dest).getDepth():
-      self.newChatMessage("No puedo saltar allí", 1)
-      return
-    self.setUnselectedItem()
-    self.setHeading(heading)
-    self.setDestination(dest)
-    self.setPosition(dest, 1)
+    if heading:
+      dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
+      if dest == None or self.getRoom().getTile(dest).getDepth():
+        self.newChatMessage("No puedo saltar allí", 1)
+        return
+      self.setUnselectedItem()
+      self.setHeading(heading)
+      self.setDestination(dest)
+      self.setPosition(dest, 1)
     
   def turnRight(self):
     """ Turns the player to the right.
