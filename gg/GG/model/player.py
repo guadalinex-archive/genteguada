@@ -53,6 +53,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     self.admin = False 
     self.__accessMode = False
     self.startSessionTiming()
+    self.numEntradasForo = 0
     self.save("player")
 
   def objectToPersist(self):
@@ -866,3 +867,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
           return True
     return False
 
+  def setNumEntradasForo(self, numEntradasForo):
+    self.numEntradasForo = numEntradasForo
+  
+  def checkEntradasForo(self, numEntradasForo):
+    if self.numEntradasForo < numEntradasForo:
+      return False
+    else:
+      return True
