@@ -753,6 +753,9 @@ class CreateItemsWindow(AuxWindow):
     if "pointsGiver" in keys:
       self.__paintTextField(iPos, "Puntos que abren", attrDict["pointsGiver"], "pointsGiver")
       iPos += 1
+    if "numEntradasForo" in keys:
+      self.__paintTextField(iPos, "Entradas en el foro", attrDict["numEntradasForo"], "numEntradasForo")
+      iPos += 1
     if "pressedTile1" in keys:
       self.__paintDoubleTextField(iPos, "Celda presionada", attrDict["pressedTile1"], "pressedTile1")
       iPos += 1

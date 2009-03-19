@@ -168,6 +168,7 @@ class GGSession(ggmodel.GGModel):
       "Puertas":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "images": GG.utils.DOORS },
       "Puertas con llave":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "",  "key": "", "images": GG.utils.DOORS },
       "Puertas con puntos": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pointsGiver": "", "images": GG.utils.DOORS},
+      "Puertas foro": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "numEntradasForo": "", "images": GG.utils.DOORS},
       "Puertas con celdas": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pressedTile1": [0, 0], 
           "pressedTile2": [0, 0], "images": GG.utils.DOORS},
       "Enlaces web": { "position": pos, "label": "", "url": "", "images": GG.utils.WEBS },
@@ -206,6 +207,17 @@ class GGSession(ggmodel.GGModel):
         self.__player.newChatMessage('No se puede colocar un objeto en esa posicion', 1) 
         return None
     return [posX, posY]
+
+  def __getNumEntradas(self, numEntradasForo):
+    if numEntradasForo[0] == "":
+      self.__player.newChatMessage("Debe introducir un numero de entradas para poder abrir la puerta.", 1)
+      return None
+    try: 
+      value = int(numEntradasForo[0])    
+    except ValueError: 
+      self.__player.newChatMessage("Debe introducir un numero entero", 1) 
+      return None
+    return value
 
   def __getLabelCreateObject(self, label):
     if label[0] == "":
@@ -322,6 +334,18 @@ class GGSession(ggmodel.GGModel):
       tile2 = room.getTile(pressedTile2).setImage(GG.utils.PRESSED_TILE)
       room.addItemFromVoid(door, position)
 
+  def __createObjectTeleportForo(self, data, room):
+    images = self.__getImageCreateObject(data["images"], "noRegalo")
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    destinationRoom = self.__getDestinationRoomCreateObject(data["destinationRoom"])
+    exitPosition = self.__getPositionCreateObject(data["exitPosition"], destinationRoom, "posicionSalida")
+    label = self.__getLabelCreateObject(data["label"])
+    numEntradas = self.__getNumEntradas(data["numEntradasForo"])
+    if images and position and destinationRoom and exitPosition and numEntradas: 
+      door = teleport.GGDoorOpenedByForo(images, exitPosition, destinationRoom.getName(), label, numEntradas)
+      room.addItemFromVoid(door, position)
+
+
   def __createObjectWeb(self, data, room):
     images = self.__getImageCreateObject(data["images"], "noRegalo")
     position = self.__getPositionCreateObject(data["position"], room, "posicion")
@@ -383,6 +407,8 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectTeleportKeyPoints(data, room, name)
     elif name == "Puertas con celdas":
       self.__createObjectTeleportPressed(data, room)
+    elif name == "Puertas foro":
+      self.__createObjectTeleportForo(data, room)
     elif name == "Enlaces web":
       self.__createObjectWeb(data, room)
     elif name == "Regalos":

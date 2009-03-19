@@ -343,3 +343,49 @@ class GGDoorOpenedByPoints(GGTeleport):
       return False
     self.transportTo(clicker)
 
+
+class GGDoorOpenedByForo(GGTeleport):
+  """ GGDoorOpenedByPoints class.
+  Defines a door object opened if the clicker received points from another item.
+  """
+
+  def __init__(self, sprite, exitPosition, destinationRoom, label, numEntradasForo):
+    """ Class builder.
+    sprite: sprite used to paint the teleporter.
+    exitPosition: teleporter exit position on the new room.
+    destinationRoom: room the teleporter will carry players to.
+    label: teleporter label.
+    pointsGiver: item who gave points to the player.
+    """
+    GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
+    self.numEntradasForo = numEntradasForo 
+
+  def objectToPersist(self):
+    dict = GGTeleport.objectToPersist(self)
+    dict["numEntradasForo"] = self.numEntradasForo
+    return dict
+
+  def load(self, dict):
+    GGTeleport.load(self, dict)
+    self.numEntradasForo = dict["numEntradasForo"]
+
+  def getNumEntradasForo(self):
+    return self.numEntradasForo
+
+  def setNumEntradasForo(self, numEntradasForo):
+    self.numEntradasForo = numEntradasForo    
+
+  def copyObject(self):
+    """ Copies and returns this item.
+    """  
+    return GGDoorOpenedByForo(self.spriteName, self.getExitPosition(), self.getDestinationRoom(), self.getName(), self.numEntradasForo)
+
+  def openedBy(self, clicker):
+    """ Teleports a player to another location.
+    clicker: player to teleport.
+    """
+    if not clicker.checkEntradasForo(self.numEntradasForo):
+      self.newChatMessage('Si no has participado en el foro ' + str(self.numEntradasForo) + ' o mas veces no puedo dejarte pasar')
+      return False
+    self.transportTo(clicker)
+
