@@ -111,6 +111,7 @@ TILES_MUD = ["barro1.png","barro2.png","barro3.png"]
 TILES_MOZARABE = ["mozarabe1.png","mozarabe2.png"] 
 TILES_FOOTBALL = ["futbol1.png","futbol2.png","futbol3.png"] 
 TILES_CHESS = ["ajedrez1.png","ajedrez1b.png","ajedrez2.png","ajedrez2b.png"]
+PRESSED_TILE = os.path.join("tiles","actuador.png")
 
 TILES = TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + ["asfalto.png","actuador.png"]
 
