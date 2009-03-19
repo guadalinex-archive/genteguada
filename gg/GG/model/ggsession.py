@@ -66,13 +66,15 @@ class GGSession(ggmodel.GGModel):
         newRoom.subscribeEvent('chatAdded', self.chatAdded)
       
   @dMVC.model.localMethod
-  def defaultView(self, screen, fullscreen, user, accesMode):
+  #def defaultView(self, screen, fullscreen, user, accesMode):
+  def defaultView(self, screen, fullscreen, user):
     """ Creates the isoview hud.
     screen: screen handler.
     fullscreen: sets view as fullscreen or windowed mode.
     """
     import GG.isoview.isoview_hud
-    return GG.isoview.isoview_hud.IsoViewHud(self, screen, fullscreen, user, accesMode)
+    #return GG.isoview.isoview_hud.IsoViewHud(self, screen, fullscreen, user, accesMode)
+    return GG.isoview.isoview_hud.IsoViewHud(self, screen, fullscreen, user)
     
   def chatAdded(self, event):
     """ Triggers after receiving a chat added event.

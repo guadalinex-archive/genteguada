@@ -94,13 +94,16 @@ MASKUSER_IMAGE = os.path.join(GG.utils.LOCAL_DATA_PATH,"imgMaskUser.png")
 CONTACT_WINDOW_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "contactWindow.png")
 OK_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "ok_button.png")
 CANCEL_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "cancel_button.png")
+ADMIN_IMAGE = os.path.join(GG.utils.HUD_PATH, "tools.png")
+NOADMIN_IMAGE = os.path.join(GG.utils.HUD_PATH, "tools.png")
 
 class IsoViewHud(isoview.IsoView): 
   """ IsoViewHud class.
   Defines the HUD.
   """
   
-  def __init__(self, model, screen, fullscreen, user, accesMode):
+  #def __init__(self, model, screen, fullscreen, user, accesMode):
+  def __init__(self, model, screen, fullscreen, user):
     """ Class constructor.
     model: ggsession model.
     screen: screen handler.
@@ -203,9 +206,11 @@ class IsoViewHud(isoview.IsoView):
     self.__isoviewRoom = self.room.defaultView(self.getScreen(), self)
     self.__isoviewRoom.updateScreenPositions()
     
-    self.__accessMode = accesMode 
+    #self.__accessMode = accesMode 
+    self.__accessMode = False 
     
-    if self.__accessMode:
+    #if self.__accessMode:
+    if self.__player.admin:
       adminInitData = model.getAdminInitData()
       self.__createItemsWindow = auxwindows.CreateItemsWindow(self, model, adminInitData["objectsData"])
       self.__createRoomWindow = auxwindows.CreateRoomWindow(self, self.__player, adminInitData["roomListInfo"])
@@ -312,14 +317,27 @@ class IsoViewHud(isoview.IsoView):
         if not window.hide:
           return True
     return False
-    
+  
+  def __closeAllWindow(self):
+    windowsList = [self.__kickPlayerWindow, self.__deleteRoomWindow, self.__teleportWindow, 
+                   self.__privateChatWindow, self.__createItemsWindow, self.__broadcastWindow, 
+                   self.__createRoomWindow, self.__editRoomWindow]
+    for window in windowsList:
+      if window:
+        if not window.hide:
+          window.showOrHide()
+    if self.__adminMenu:
+      self.removeSprite(self.windowAdminActions)
+      self.widgetContainer.remove_widget(self.windowAdminActions)
+      self.__adminMenu = False
+
   def __restoreActiveActionButtonsList(self):
     """ Restores the active action button list.
     """  
     self.__activeActions = []  
     self.__activeActions.append(self.finishGame)
     self.__activeActions.append(self.showFullScreen)
-    self.__activeActions.append(self.showSoundControl)
+    self.__activeActions.append(self.showAdminActions)
     self.__activeActions.append(self.showDresser)
     self.__activeActions.append(self.jump)
     self.__activeActions.append(self.turnRight)
@@ -1072,11 +1090,14 @@ class IsoViewHud(isoview.IsoView):
       {"image":EXIT_IMAGE,      "action": self.finishGame,        "tooltip":"Finalizar (X)"},
       {"image":MAXIMIZE_IMAGE,  "action": self.showFullScreen,    "tooltip":"Maximizar o minimizar pantalla (F)"},
       {"image":SOUND_IMAGE,     "action": self.showSoundControl,  "tooltip":"Controles de sonido (S)"},
+      {"image":ADMIN_IMAGE,     "action": self.showAdminActions,  "tooltip":"Cambiar/eliminar vista administrador"}
     ]
     if self.__fullScreen:
       ACTIONS[1]["image"] = MINIMIZE_IMAGE
     i = 0
     for buttonData in ACTIONS:
+      if buttonData['action'] == self.showAdminActions and not self.__player.admin:
+        break
       button = guiobjects.createButton(buttonData['image'], [16 + i*60, 10], [buttonData['tooltip'], self.showTooltip, self.removeTooltip], buttonData['action'])
       if buttonData['action'] == self.showFullScreen:
         self.__fullscreenButton = button
@@ -1084,6 +1105,20 @@ class IsoViewHud(isoview.IsoView):
         self.__soundButton = button
       i += 1
       self.hud.add_child(button)
+
+  def showAdminActions(self):
+    if self.__accessMode:
+      self.__accessMode = False
+      self.removeSprite(self.adminOptions)
+      self.widgetContainer.remove_widget(self.adminOptions)
+      self.__closeAllWindow()
+    else: 
+      self.__accessMode = True
+      self.paintAdminOptions()
+    self.itemUnselected()
+    self.removeSprite(self.roomInfo)
+    self.widgetContainer.remove_widget(self.roomInfo)
+    self.__paintRoomInfo()
       
   def newBroadcastMessage(self, line):
     """ Sends a new broadcast message.
