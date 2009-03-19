@@ -130,12 +130,14 @@ class GenteGuada:
     #self.__session = winLogin.draw(params.user, params.password)
     self.__loadingScreen()
     user = self.__session.getPlayer()
-    userAdmin = False
-    if user.admin:
-      userAdmin = winLogin.drawAccessMode()  
-      user.setAccessMode(userAdmin)
+    #userAdmin = False
+    #if user.admin:
+    #  userAdmin = winLogin.drawAccessMode()  
+    #  user.setAccessMode(userAdmin)
+    user.setAccessMode(True)
     self.__loadingScreen()
-    self.__initGame(user, userAdmin)
+    #self.__initGame(user, userAdmin)
+    self.__initGame(user)
 
   def getSystem(self):
     """ Returns the system object.
@@ -168,10 +170,12 @@ class GenteGuada:
       return True
     return False
 
-  def __initGame(self, user, accesMode):
+  #def __initGame(self, user, accesMode):
+  def __initGame(self, user):
     """ Initializes all start parameters and runs the game's main process.
     """  
-    self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen, user, accesMode)
+    #self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen, user, accesMode)
+    self.__isoHud = self.__session.defaultView(self.__screen, self.__fullScreen, user)
     self.__screen.fill([0, 0, 0])
     self.__isoHud.draw()
     isohud = self.__isoHud
