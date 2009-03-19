@@ -56,7 +56,7 @@ class IsoViewPlayer(isoview_item.IsoViewItem):
     """  
     if not GG.genteguada.GenteGuada.getInstance().isSingleMode():
       if self.__timestamp == "":
-        imageAvatar = os.path.join(self.__path + "standing_bottomright_0001")
+        imageAvatar = os.path.join(self.__path, "standing_bottomright_0001")
       else:
         imageAvatar = os.path.join(self.__path, "standing_bottomright_0001_" + self.__timestamp)
       if not os.path.isfile(os.path.join(GG.utils.LOCAL_DATA_PATH, imageAvatar)):
