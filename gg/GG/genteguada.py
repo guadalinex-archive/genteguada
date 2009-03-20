@@ -131,10 +131,10 @@ class GenteGuada:
     self.__loadingScreen()
     user = self.__session.getPlayer()
     #userAdmin = False
-    #if user.admin:
+    if user.admin:
     #  userAdmin = winLogin.drawAccessMode()  
     #  user.setAccessMode(userAdmin)
-    user.setAccessMode(True)
+      user.setAccessMode(True)
     self.__loadingScreen()
     #self.__initGame(user, userAdmin)
     self.__initGame(user)

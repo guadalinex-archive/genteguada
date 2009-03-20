@@ -228,6 +228,8 @@ class IsoViewHud(isoview.IsoView):
       self.__deleteRoomWindow = None
       self.__kickPlayerWindow = None
     self.addItemToRoomFromVoid(self.findIVItem(self.__player))  
+    self.__player.setAccessMode(False)
+
     
   def processEvent(self, events):
     """ Processes the input events.
@@ -1109,11 +1111,13 @@ class IsoViewHud(isoview.IsoView):
   def showAdminActions(self):
     if self.__accessMode:
       self.__accessMode = False
+      self.__player.setAccessMode(False)
       self.removeSprite(self.adminOptions)
       self.widgetContainer.remove_widget(self.adminOptions)
       self.__closeAllWindow()
     else: 
       self.__accessMode = True
+      self.__player.setAccessMode(True)
       self.paintAdminOptions()
     self.itemUnselected()
     self.removeSprite(self.roomInfo)
