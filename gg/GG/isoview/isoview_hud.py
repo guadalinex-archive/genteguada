@@ -95,7 +95,7 @@ CONTACT_WINDOW_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "contactWindow.pn
 OK_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "ok_button.png")
 CANCEL_BUTTON_IMAGE = os.path.join(GG.utils.EDITOR, "cancel_button.png")
 ADMIN_IMAGE = os.path.join(GG.utils.HUD_PATH, "tools.png")
-NOADMIN_IMAGE = os.path.join(GG.utils.HUD_PATH, "tools.png")
+NOADMIN_IMAGE = os.path.join(GG.utils.HUD_PATH, "notools.png")
 
 class IsoViewHud(isoview.IsoView): 
   """ IsoViewHud class.
@@ -129,6 +129,7 @@ class IsoViewHud(isoview.IsoView):
     self.__fullScreen = fullscreen
     self.__sound = True
     self.__soundButton = None
+    self.__adminButton = None
     self.__fullscreenButton = None
     self.__privateChatButton = None
     self.__buttonBarActions = None
@@ -1101,6 +1102,8 @@ class IsoViewHud(isoview.IsoView):
       if buttonData['action'] == self.showAdminActions and not self.__player.admin:
         break
       button = guiobjects.createButton(buttonData['image'], [16 + i*60, 10], [buttonData['tooltip'], self.showTooltip, self.removeTooltip], buttonData['action'])
+      if buttonData['action'] == self.showAdminActions:
+        self.__adminButton = button
       if buttonData['action'] == self.showFullScreen:
         self.__fullscreenButton = button
       elif  buttonData['action'] == self.showSoundControl:
@@ -1115,14 +1118,19 @@ class IsoViewHud(isoview.IsoView):
       self.removeSprite(self.adminOptions)
       self.widgetContainer.remove_widget(self.adminOptions)
       self.__closeAllWindow()
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(ADMIN_IMAGE)
     else: 
       self.__accessMode = True
       self.__player.setAccessMode(True)
       self.paintAdminOptions()
+      imgPath = GG.genteguada.GenteGuada.getInstance().getDataPath(NOADMIN_IMAGE)
     self.itemUnselected()
     self.removeSprite(self.roomInfo)
     self.widgetContainer.remove_widget(self.roomInfo)
     self.__paintRoomInfo()
+    self.__adminButton.picture = ocempgui.draw.Image.load_image(imgPath)
+    self.hud.remove_child(self.__adminButton)
+    self.hud.add_child(self.__adminButton)
       
   def newBroadcastMessage(self, line):
     """ Sends a new broadcast message.
