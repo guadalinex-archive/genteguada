@@ -105,7 +105,11 @@ class GGSystem(dMVC.model.Model):
     data = result.split(";")
     if not len(data) == 4:
       return False
-    return data[3],data[0]
+    try:
+      numForo = int(data[0])
+    except:
+      numForo = 0
+    return data[3],numForo
     
   @dMVC.synchronized.synchronized(lockName='accessSession')
   def logout(self, session):
