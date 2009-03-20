@@ -31,6 +31,7 @@ else:
 
 comandoDEB = "dpkg-buildpackage -rfakeroot -us -uc -i -b"
 
+"""
 print "Generando el paquete avatareditor...."
 os.chdir(dirTempSVN+"/avatargenerator")
 output = commands.getstatusoutput(comandoDEB)
@@ -46,7 +47,7 @@ if not output[0] == 0:
   error("No se pudo generar el paquete dmvc")
 else:
   info("se genero el paquete dmvc")
-
+"""
 print "Generando el paquete genteguada...."
 os.chdir(dirTempSVN+"/gg")
 output = commands.getstatusoutput(comandoDEB)
