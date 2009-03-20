@@ -1,3 +1,9 @@
+genteguada (0.12.1-1ubuntu1) unstable; urgency=low
+
+  * Solucion de errores e implementacion de algunas sugenencias
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Fri, 20 Mar 2009 13:57:23 +0100
+
 genteguada (0.11.1-1) unstable; urgency=low
 
   * Version que soluciona algunos errores e inserta la imagen del lince
