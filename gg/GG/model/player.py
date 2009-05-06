@@ -560,7 +560,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
         self.setUnselectedItem()
     else:
       if dropLocation == [-1, -1]:
-        self.newChatMessage("No puedo soltarlo ah�.", 1)
+        self.newChatMessage("No puedo soltarlo ahi.", 1)
         self.setUnselectedItem()
         return
       self.setState(GG.utils.STATE[1])
@@ -743,7 +743,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     if self.checkContactOnAgenda(player):
       player.newChatMessage("Ya tienes a " + self.username + " en tu agenda.", 1)
     else:
-      player.newChatMessage("Preguntando a " + self.username + "...", 1)  
+      player.newChatMessage("Preguntando a " + self.username + " ...", 1)  
       self.triggerEvent("contactDialog", contact=player)
     
   def addContact(self, player):

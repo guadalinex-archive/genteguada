@@ -216,7 +216,7 @@ class GGDoorWithKey(GGTeleport):
     clicker: player to teleport.
     """
     if not clicker.hasItemLabeledInInventory(self.__key):
-      clicker.newChatMessage('Necesitas ' + self.__key + 'para poder pasar', 2)  
+      clicker.newChatMessage('Necesitas ' + self.__key + ' para poder pasar', 2)  
       return False
     self.transportTo(clicker)
   
