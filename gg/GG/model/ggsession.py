@@ -235,7 +235,7 @@ class GGSession(ggmodel.GGModel):
 
   def __getMessageCreateObject(self, message):
     if message[0] == "":
-      self.__player.newChatMessage("Debe introducir el mensaje del piguino.", 1)
+      self.__player.newChatMessage("Debe introducir el mensaje del pinguino.", 1)
       return None
     return str(message[0])
 
@@ -254,7 +254,7 @@ class GGSession(ggmodel.GGModel):
 
   def __getKeyCreateObject(self, key, text):
     if key[0] == "":
-      self.__player.newChatMessage("Debe introducir la eiqueta " + text + "la puerta.", 1)
+      self.__player.newChatMessage("Debe introducir la etiqueta " + text + " la puerta.", 1)
       return None
     return str(key[0])
 
