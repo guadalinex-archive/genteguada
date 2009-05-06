@@ -163,7 +163,7 @@ class KickPlayerWindow(TeleportWindow):
   def draw(self):
     """ Draws all window parts on screen.
     """  
-    self.title = "Escaja jugador"
+    self.title = "Escoja jugador"
     self.tooltipLabel = "Expulsar jugador"
     #self.listItems = self.hud.getModel().getPlayersList()
     TeleportWindow.draw(self)
