@@ -295,7 +295,7 @@ class GGPenguinQuiz(GGPenguin):
       talker.setUnselectedItem()
       return  
     question = random.randint(0, len(self.__availableQuestions[name])-1)
-    talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__availableQuestions[name][question], talker, 'Andatuz',  
+    talker.triggerEvent('quizAdded', message=chat_message.ChatQuiz(self, self.__filePath,self.__availableQuestions[name][question], talker, 'Andatuz',  
                                         GG.utils.TEXT_COLOR["black"], self.getPosition(), 2))   
     talker.setUnselectedItem()
  
