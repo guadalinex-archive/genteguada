@@ -85,7 +85,7 @@ class ChatQuiz(ChatMessage):
   Defines a quiz message.
   """
      
-  def __init__(self, parent, question, player, sender, color, position, chatType):
+  def __init__(self, parent, filePath, question, player, sender, color, position, chatType):
     """ Class constructor.
     parent: isohud handler.
     question: quiz question.
@@ -97,6 +97,7 @@ class ChatQuiz(ChatMessage):
     """
     self.__parent = parent
     self.question = question
+    self.filePath = os.path.join(filePath,question)
     self.player = player
     self.__msgQuestion = ""
     self.__msgAnswers = []
@@ -107,8 +108,7 @@ class ChatQuiz(ChatMessage):
   def loadQuestion(self):
     """ Loads a quiz question from a file.
     """  
-    filePath = os.path.join("gg","GG","data","questions", self.question)
-    quizFile = codecs.open(filePath, "r", "utf-8" )
+    quizFile = codecs.open(self.filePath, "r", "utf-8" )
     self.__msgQuestion = quizFile.readline()[:-1]
     self.__msgAnswers = []
     self.__msgAnswers.append(quizFile.readline()[:-1])
