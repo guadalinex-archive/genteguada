@@ -556,6 +556,7 @@ class GGRoom(ggmodel.GGModel):
     tilePos: tile position.
     image: new tile image.
     """  
+    self.save("room")
     self.triggerEvent("tileImageChange", pos=tilePos, image=image)
 
   def unselectedItemOtherPlayers(self, item, player = None):
