@@ -1210,6 +1210,7 @@ class IsoViewHud(isoview.IsoView):
     configuration: avatar configuration.
     """  
     if configuration:
+      self.__player.newChatMessage("Hemos mandado a confeccionar tu nuevo traje, en cuanto este listo, te lo cambiaremos por el que tienes",1)
       self.setAvatarConfiguration(configuration)
     self.widgetContainer.remove_widget(self.__winWardrobe)  
     self.removeSprite(self.__winWardrobe)
