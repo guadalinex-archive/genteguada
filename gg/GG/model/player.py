@@ -172,17 +172,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     tmp = time.localtime(time.time())
     self.__startPlayedTime = tmp
 
-  def updateSessionTiming(self):
+  def updateSessionTiming(self, now):
     """ Updates the session playing time.
     """  
-    tmp = time.localtime(time.time())
-    #var1 = (self.__startPlayedTime[4]*60 + self.__startPlayedTime[5])
-    #var2 = (tmp[4]*60 + tmp[5])
-    var1 = self.__startPlayedTime[4]
-    var2 = tmp[4]
-    playedTime = var2 - var1
-    self.__startPlayedTime = tmp  
-    self.__playedTime += playedTime
+    self.__startPlayedTime = now  
+    self.__playedTime += 1
+    self.save("player")
     self.triggerEvent('clock', clock=self.__playedTime)
   
   def updateExp(self, room):
@@ -410,7 +405,7 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       tmp = time.localtime(time.time())
       playedTime = tmp[4] - self.__startPlayedTime[4]
       if playedTime:
-        self.updateSessionTiming()
+        self.updateSessionTiming(tmp)
       if self.getPosition() == self.__destination:
         if self.__selected and not self.__selected.getPlayer():
           self.setHeading(GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition()))
@@ -449,7 +444,6 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     if room:
       self.updateExp(room)
-      self.updateSessionTiming()
     room_item.GGRoomItem.changeRoom(self, room, pos)
     self.save("player")
     

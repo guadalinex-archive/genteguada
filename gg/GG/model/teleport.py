@@ -355,7 +355,6 @@ class GGDoorOpenedByForo(GGTeleport):
     exitPosition: teleporter exit position on the new room.
     destinationRoom: room the teleporter will carry players to.
     label: teleporter label.
-    pointsGiver: item who gave points to the player.
     """
     GGTeleport.__init__(self, sprite, exitPosition, destinationRoom, label)
     self.numEntradasForo = numEntradasForo 
