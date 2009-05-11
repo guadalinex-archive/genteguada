@@ -41,10 +41,13 @@ def changeTexture(objectName,pathNewTexture,defaultTexture):
 	
 #Escale the axis of the object as parameters
 def scaleObject(nameObject, dimX, dimY, dimZ):
+  print "Escalando", nameObject
   obj = Blender.Object.Get(nameObject)
+  print "Dimensiones Actuales: ", obj.SizeX, obj.SizeY, obj.SizeZ
   obj.SizeX = obj.SizeX + dimX
   obj.SizeY = obj.SizeY + dimY
   obj.SizeZ = obj.SizeZ + dimZ
+  print "Nuevas Dimensiones:", obj.SizeX, obj.SizeY, obj.SizeZ
   Blender.Redraw()
 
 #DEPRECATED: Escale the object proportionally to parameter 
@@ -161,12 +164,12 @@ if bodySize <> "":
 		print "Body size selected XL"
  		valueSize = 0.3
         valueSize2 = valueSize2 * 2
-#	scaleObject(avatar + "Body", valueSize, valueSize, valueSizeDefault)
-#	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSizeDefault)
-#	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSizeDefault)
-#	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSizeDefault)
-#	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSizeDefault)
-#	scaleObject("bagHandle",valueSize2, valueSizeDefault, valueSizeDefault)
+	scaleObject(avatar + "Body", valueSize, valueSize, valueSizeDefault)
+	scaleObject(avatar + "LeftArm", valueSize, valueSizeDefault, valueSizeDefault)
+	scaleObject(avatar + "RightArm",valueSize, valueSizeDefault, valueSizeDefault)
+	scaleObject(avatar + "LeftLeg", valueSize, valueSize, valueSizeDefault)
+	scaleObject(avatar + "RightLeg", valueSize, valueSize, valueSizeDefault)
+	scaleObject("bagHandle",valueSize2, valueSizeDefault, valueSizeDefault)
 	
 	
 if shirt <> "" and gender == "male":
@@ -268,8 +271,6 @@ for act in actList:
   action = actDict[act]
   action.setActive(arm)
   action.getFrameNumbers()[-1]
-#  if os.path.exists("imagesGenerated/") == False:
-#    os.mkdir("imagesGenerated/")
   for rot in rotations:
 	fileName = ""
 	rotateObject("cameraAnchor", rot)
