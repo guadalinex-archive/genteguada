@@ -169,7 +169,7 @@ class GGSession(ggmodel.GGModel):
       "Dinero": { "position": pos, "images": GG.utils.MONEYS },
       "Puertas":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "images": GG.utils.DOORS },
       "Puertas con llave":{ "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "",  "key": "", "images": GG.utils.DOORS },
-      "Puertas con puntos": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pointsGiver": "", "images": GG.utils.DOORS},
+      "Puertas Andatuz": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pointsGiver": "", "images": GG.utils.DOORS},
       "Puertas foro": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "numEntradasForo": "", "images": GG.utils.DOORS},
       "Puertas con celdas": { "position": pos, "destinationRoom": "", "exitPosition": [1, 1], "label": "", "pressedTile1": [0, 0], 
           "pressedTile2": [0, 0], "images": GG.utils.DOORS},
@@ -311,7 +311,7 @@ class GGSession(ggmodel.GGModel):
     label = self.__getLabelCreateObject(data["label"])
     if objectName == "Puertas con llave":
       key = self.__getKeyCreateObject(data["key"], " de la llave que abre ")
-    elif objectName == "Puertas con puntos":
+    elif objectName == "Puertas Andatuz":
       key = self.__getKeyCreateObject(data["pointsGiver"], " del objeto que da los puntos para abrir ")
     else:
       key = None
@@ -405,7 +405,7 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectImagesPositionLabel(data, room, name)
     elif name == "Puertas":
       self.__createObjectTeleport(data, room)
-    elif name in ["Puertas con llave", "Puertas con puntos"]:
+    elif name in ["Puertas con llave", "Puertas Andatuz"]:
       self.__createObjectTeleportKeyPoints(data, room, name)
     elif name == "Puertas con celdas":
       self.__createObjectTeleportPressed(data, room)
