@@ -13,7 +13,7 @@ import GG.utils
 import GG.isoview.guiobjects
 
 #Constants
-VERSION = "0.12.1-1"
+VERSION = "0.13.1-1"
 VERSION_TITLE = "GenteGuada "+VERSION
 CLEAR_CACHE_WEEKS = 4
 LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")

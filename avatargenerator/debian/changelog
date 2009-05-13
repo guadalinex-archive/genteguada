@@ -1,3 +1,9 @@
+avatargenerator (0.5.1-1) unstable; urgency=low
+
+  * Solucionados errores en el color de pelo.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 13 May 2009 11:33:05 +0200
+
 avatargenerator (0.4.1-1) unstable; urgency=low
 
   * Finalizada la edicion del juego
