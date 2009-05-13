@@ -280,7 +280,7 @@ class GGPenguinQuiz(GGPenguin):
     name = player.getName()
     self.__availableQuestions[name].remove(question)
     if len(self.__availableQuestions[name]) == 0:
-      player.addPointsSinGiver(30)
+      player.addPointsSinGiver(20)
     else: 
       player.addPoints(10, self.label)
       
