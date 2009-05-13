@@ -30,7 +30,7 @@ class AvatarGenerator(dMVC.model.Model):
 
   def executeCommand(self, configuration, player, nameMask):
     comando = self.__generateRenderCommand(player.username, configuration, nameMask)
-    #print comando
+    print comando
     #return False
     output = commands.getstatusoutput(comando)
     if not output[0] == 0:
@@ -66,8 +66,6 @@ class AvatarGenerator(dMVC.model.Model):
     command += " " + self.__adaptIntConfiguration(configuration["skirt"])
     #shoes
     command += " " + self.__adaptIntConfiguration(configuration["shoes"])
-
-    print command
     return command
 
   def __adaptGender(self, gender):
