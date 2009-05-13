@@ -751,7 +751,7 @@ class CreateItemsWindow(AuxWindow):
       self.__paintTextField(iPos, "Etiqueta llave", attrDict["key"], "key")
       iPos += 1
     if "pointsGiver" in keys:
-      self.__paintTextField(iPos, "Puntos que abren", attrDict["pointsGiver"], "pointsGiver")
+      self.__paintTextField(iPos, "Etiqueta Andatuz", attrDict["pointsGiver"], "pointsGiver")
       iPos += 1
     if "numEntradasForo" in keys:
       self.__paintTextField(iPos, "Entradas en el foro", attrDict["numEntradasForo"], "numEntradasForo")
