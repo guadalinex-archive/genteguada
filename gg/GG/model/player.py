@@ -250,6 +250,12 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
     """
     return None
 
+  def addPointsSinGiver(self, points):
+    self.__points += points
+    if points != 0:
+      self.triggerEvent('points', points=self.__points)
+    self.save("player")
+
   def addPoints(self, points, giverLabel):
     """ Adds points to the player's point pool.
     points: points added.

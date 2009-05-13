@@ -339,7 +339,7 @@ class GGDoorOpenedByPoints(GGTeleport):
     clicker: player to teleport.
     """
     if not clicker.checkPointGiver(self.pointsGiver):
-      self.newChatMessage('Si no has obtenido puntos de ' + self.pointsGiver + ' no puedo dejarte pasar')
+      self.newChatMessage('No has respondido correctamente a la pregunta de  ' + self.pointsGiver + ' ,no puedo dejarte pasar')
       return False
     self.transportTo(clicker)
 

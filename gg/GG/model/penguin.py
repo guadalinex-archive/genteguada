@@ -279,9 +279,10 @@ class GGPenguinQuiz(GGPenguin):
     """  
     name = player.getName()
     self.__availableQuestions[name].remove(question)
-    player.addPoints(0, self.label)
     if len(self.__availableQuestions[name]) == 0:
-      player.addPoints(0, "Penguin Quiz")
+      player.addPointsSinGiver(30)
+    else: 
+      player.addPoints(10, self.label)
       
   def talkedBy(self, talker):
     """ Method executed after being talked by a player.

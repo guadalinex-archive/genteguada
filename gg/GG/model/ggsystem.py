@@ -97,7 +97,6 @@ class GGSystem(dMVC.model.Model):
     passwd: user password.
     """  
     return "A",10
-    #return True
     params = urllib.urlencode({"usuario": user, "password": passwd})  
     guadalinexLogin = urllib2.urlopen("http://www.guadalinex.org/usrdata?" +params)  
     result = guadalinexLogin.read()  

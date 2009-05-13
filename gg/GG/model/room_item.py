@@ -269,7 +269,7 @@ class GGRoomItem(inventory_item.GGInventoryItem):
 class GGRiver(GGRoomItem):
 
   def __init__(self, spriteName):
-    GGRoomItem.__init__(self, spriteName)
+    GGRoomItem.__init__(self, spriteName, "Rio")
 
   def clickedBy(self, clicker):
     """ Triggers an event when the item receives a click by a player.
@@ -281,7 +281,7 @@ class GGRiver(GGRoomItem):
       clicker.setHeading(GG.utils.getNextDirection(clickerPos, selfPos))
       if not GG.utils.checkNeighbour(clickerPos, self.getTile().position):
         direction = self.getRoom().getNextDirection(self.getTile().position, clickerPos)
-        destination = GG.utils.getFrontPosition(self.getTile.position, direction[0], self.getRoom().size)
+        destination = GG.utils.getFrontPosition(self.getTile().position, direction[0], self.getRoom().size)
         if destination != clickerPos and destination != [-1, -1]:
           clicker.setDestination(destination)
       clicker.setSelectedItem(self)
