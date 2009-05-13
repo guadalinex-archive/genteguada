@@ -8,11 +8,22 @@ if False:
 
 
 import sys
+
+pathDMVC = "/usr/share/dmvc"
+pathClient = "/usr/share/genteguada-client"
+if not pathDMVC in sys.path:
+  sys.path.append(pathDMVC)
+if not pathClient in sys.path: 
+  sys.path.append(pathClient)
+
 from optparse import OptionParser
 import GG.genteguada
 import atexit
 import traceback
 import time
+
+
+
 
 
 #try:

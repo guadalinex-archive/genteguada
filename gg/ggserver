@@ -7,11 +7,19 @@ if False:
   import pychecker.checker
 
 
+import sys
+
+pathDMVC = "/usr/share/dmvc"
+pathServer = "/usr/share/genteguada-server"
+if not pathDMVC in sys.path:
+  sys.path.append(pathDMVC)
+if not pathServer in sys.path: 
+  sys.path.append(pathServer)
+
 import GG.model.ggsystem
 import dMVC
 import dMVC.remoteserver
 from optparse import OptionParser
-import sys
 import traceback
 
 __usage__ = "\n  %s -P puerto"%sys.argv[0]
