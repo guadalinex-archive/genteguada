@@ -1555,6 +1555,7 @@ class IsoViewHud(isoview.IsoView):
     event: event info.
     """  
     image = event.getParams()['imageLabel']
+    os.remove(GG.genteguada.GenteGuada.getInstance().getDataPath(image))
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     guiobjects.generateImageSize(filePath, [64, 64], MASKUSER_IMAGE)
     img = ocempgui.draw.Image.load_image(MASKUSER_IMAGE)
