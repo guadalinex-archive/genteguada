@@ -131,11 +131,13 @@ class ExchangeWindow:
       return
 
     elif self.__step == 5:
+      self.removeTooltip()
       self.__isohud.getPlayer().finishExchange(self.__listIn, self.__listOut)
 
   def koExchange(self):
     """ Cancels the proposed exchange.
     """  
+    self.removeTooltip()
     self.__isohud.getPlayer().cancelExchangeTo(self.__step)
 
   def __paintListItems(self):
