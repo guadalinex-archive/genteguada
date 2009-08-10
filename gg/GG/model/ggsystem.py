@@ -79,7 +79,7 @@ class GGSystem(dMVC.model.Model):
     else:
       #comprobar que hay sitio en la habitacion
       user.clearRoom()
-    user.changeRoom(newRoom, newRoom.getNearestEmptyCell([1, 1]))
+    user.changeRoom(newRoom, newRoom.getNearestEmptyCell([4, 4]))
     return True
 
   def __getPlayer(self, username, accessMode):
