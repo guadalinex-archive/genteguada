@@ -126,7 +126,7 @@ class PrivateChatWindow(auxwindows.AuxWindow):
     """ Adds a new message to the chat area.
     """  
     if self.selected:
-      text = self.selected.getPlayer() + ": " + self.__textField.text
+      text = self.player.username + ": " + self.__textField.text
       self.selected.addChatLine(self.player, text)
       if not text.strip() == "" and self.contactsArea.getSelectedName():
         self.writeChatMessage(text)
