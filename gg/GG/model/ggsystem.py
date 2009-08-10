@@ -103,7 +103,7 @@ class GGSystem(dMVC.model.Model):
     guadalinexLogin.close()  
     data = result.split(";")
     if not len(data) == 4:
-      return False
+      return False,None
     try:
       numForo = int(data[0])
     except:
