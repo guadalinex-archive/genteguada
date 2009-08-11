@@ -100,7 +100,7 @@ TAGS = [GENDER_TAG, SKIN_TAG, HEAD_TAG, BODY_TAG, MASK_TAG, HAIR_TAG, SHIRT_TAG,
 
 #================== TILES ============================================================================
 
-TILES_BEACH = ["arena1.png","arena2.png","arena3.png","arena4.png"] 
+TILES_BEACH = ["arena1.png","arena2.png","arena3.png","arena4.png", "costaTileCornerDown.png" , "costaTileCornerUp.png","costaTileCornerLeft.png" ,"costaTileCornerRight.png"] 
 TILES_DESERT = ["desierto1.png","desierto2.png","desierto3.png"] 
 TILES_GRAVEL = ["gravilla1.png"] 
 TILES_ALBERO = ["albero1.png","albero2.png"] 
@@ -111,9 +111,16 @@ TILES_MUD = ["barro1.png","barro2.png","barro3.png"]
 TILES_MOZARABE = ["mozarabe1.png","mozarabe2.png"] 
 TILES_FOOTBALL = ["futbol1.png","futbol2.png","futbol3.png"] 
 TILES_CHESS = ["ajedrez1.png","ajedrez1b.png","ajedrez2.png","ajedrez2b.png"]
+TILES_SEA = ["mar_piedra.png"]
+TILES_RIVER = ["aguaRio.png","rio_piedra.png","costaRiverTileCornerDown.png","costaRiverTileCornerUp.png","costaRiverTileCornerLeft.png","costaRiverTileCornerRight.png","costaTileRiverDown.png","costaTileRiverUp.png","costaTileRiverRight.png","costaTileRiverLeft.png","costaBarroRioCornerDown.png","costaBarroRioCornerLeft.png",
+"costaBarroRioCornerRight.png","costaBarroRioCornerUp.png","costaBarroTileRioDown.png","costaBarroTileRioUp.png","costaBarroTileRioLeft.png","costaBarroTileRioRight.png","costaNieveRioRight.png","costaNieveRioLeft.png","costaNieveRioUp.png","costaNieveRioDown.png","costaNieveRioCornerDown.png","costaNieveRioCornerUp.png",
+"costaNieveRioCornerRight.png","costaNieveRioCornerLeft.png"]
+
+
+
 PRESSED_TILE = os.path.join("tiles","actuador.png")
 
-TILES = TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + ["asfalto.png","actuador.png"]
+TILES = TILES_SEA + TILES_BEACH + TILES_DESERT + TILES_GRAVEL + TILES_ALBERO + TILES_GRASS + TILES_SNOW + TILES_TERRAZO + TILES_MUD + TILES_MOZARABE + TILES_FOOTBALL + TILES_CHESS + TILES_RIVER + ["asfalto.png","actuador.png"]
 
 #================== WALL ============================================================================
 
@@ -157,9 +164,12 @@ PINE_1 = os.path.join(FURNITURE_PATH, "pino.png")
 PINE_2 = os.path.join(FURNITURE_PATH, "pino2.png")
 ROCK3 = os.path.join(FURNITURE_PATH, "roca3.png")
 COW = os.path.join(FURNITURE_PATH, "vaca.png")
+COW_2 = os.path.join(FURNITURE_PATH, "vaca2.png")
+COW_violet= os.path.join(FURNITURE_PATH, "vaca_morada.png")
+COW_2_violet= os.path.join(FURNITURE_PATH, "vaca2_morada.png")
 LINCE = os.path.join(FURNITURE_PATH, "lince.png")
 
-DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png","vaca.png","lince.png"]
+DECORATORS = ["abeto.png","arbusto.png","cactus1.png","cactus2.png","columna.png","estanteria1.png","estanteria2.png","farola.png","fuente.png","naranjo.png","olivo.png","perchero.png","pino.png","pino2.png","roca3.png","vaca.png","vaca2.png","lince.png","vaca_morada.png","vaca2_morada.png"]
 
 #=============== STACKS ==================================================================
 
@@ -239,12 +249,68 @@ COAST_DOWN = os.path.join(FURNITURE_PATH, "costaDown.png")
 COAST_LEFT = os.path.join(FURNITURE_PATH, "costaLeft.png")
 COAST_RIGHT = os.path.join(FURNITURE_PATH, "costaRight.png")
 
+COAST_LEFT = os.path.join(FURNITURE_PATH, "mar.png")
+
 COAST_UP_2 = os.path.join(FURNITURE_PATH, "costa2Up.png")
 COAST_DOWN_2 = os.path.join(FURNITURE_PATH, "costa2Down.png")
 COAST_LEFT_2 = os.path.join(FURNITURE_PATH, "costa2Left.png")
 COAST_RIGHT_2 = os.path.join(FURNITURE_PATH, "costa2Right.png")
 
-COASTS = ["costaUp.png","costaDown.png","costaLeft.png","costaRight.png","costa2Up.png","costa2Down.png","costa2Left.png","costa2Right.png"]
+COAST_CORNER_UP = os.path.join(FURNITURE_PATH, "costaCornerUp.png")
+COAST_CORNER_DOWN = os.path.join(FURNITURE_PATH, "costaCornerDown.png")
+COAST_CORNER_RIGHT = os.path.join(FURNITURE_PATH, "costaCornerRight.png")
+COAST_CORNER_LEFT = os.path.join(FURNITURE_PATH, "costaCornerLeft.png")
+
+COAST_RIVER_CORNER_DOWN = os.path.join(FURNITURE_PATH, "costaRioCornerDown.png")
+COAST_RIVER_CORNER_LEFT = os.path.join(FURNITURE_PATH, "costaRioCornerLeft.png")
+COAST_RIVER_CORNER_RIGHT = os.path.join(FURNITURE_PATH, "costaRioCornerRight.png")
+COAST_RIVER_CORNER_UP = os.path.join(FURNITURE_PATH, "costaRioCornerUp.png")
+
+COAST_RIVER_CORNER2_RIGHT = os.path.join(FURNITURE_PATH, "costaRightPico.png")
+
+COAST_RIVER_DOWN = os.path.join(FURNITURE_PATH, "costaRioDown.png")
+COAST_RIVER_LEFT = os.path.join(FURNITURE_PATH, "costaRioLeft.png")
+COAST_RIVER_RIGHT = os.path.join(FURNITURE_PATH, "costaRioRight.png")
+COAST_RIVER_UP = os.path.join(FURNITURE_PATH, "costaRioUp.png")
+
+COAST_RIVER_PICO_DOWN = os.path.join(FURNITURE_PATH, "costaRioPicoDown.png")
+COAST_RIVER_PICO_LEFT = os.path.join(FURNITURE_PATH, "costaRioPicoLeft.png")
+COAST_RIVER_PICO_RIGHT = os.path.join(FURNITURE_PATH, "costaRioPicoRight.png")
+COAST_RIVER_PICO_UP = os.path.join(FURNITURE_PATH, "costaRioPicoUp.png")
+
+COAST_MUD_RIVER_CORNER_DOWN = os.path.join(FURNITURE_PATH, "costaBarroRioCornerDown.png")
+COAST_MUD_RIVER_CORNER_LEFT = os.path.join(FURNITURE_PATH, "costaBarroRioCornerLeft.png")
+COAST_MUD_RIVER_CORNER_RIGHT = os.path.join(FURNITURE_PATH, "costaBarroRioCornerRight.png")
+COAST_MUD_RIVER_CORNER_UP = os.path.join(FURNITURE_PATH, "costaBarroRioCornerUp.png")
+
+COAST_MUD_RIVER_DOWN = os.path.join(FURNITURE_PATH, "costaBarroRioDown.png")
+COAST_MUD_RIVER_LEFT = os.path.join(FURNITURE_PATH, "costaBarroRioLeft.png")
+COAST_MUD_RIVER_RIGHT = os.path.join(FURNITURE_PATH, "costaBarroRioRight.png")
+COAST_MUD_RIVER_UP = os.path.join(FURNITURE_PATH, "costaBarroRioUp.png")
+
+COAST_MUD_RIVER_PICO_DOWN = os.path.join(FURNITURE_PATH, "costaBarroRioPicoDown.png")
+COAST_MUD_RIVER_PICO_LEFT = os.path.join(FURNITURE_PATH, "costaBarroRioPicoLeft.png")
+COAST_MUD_RIVER_PICO_RIGHT = os.path.join(FURNITURE_PATH, "costaBarroRioPicoRight.png")
+COAST_MUD_RIVER_PICO_UP = os.path.join(FURNITURE_PATH, "costaBarroRioPicoUp.png")
+
+COAST_WATER_RIVER = os.path.join(FURNITURE_PATH, "aguaRio.png")
+COAST_WATER_RIVER1 = os.path.join(FURNITURE_PATH, "aguaRio1.png")
+COAST_WATER_RIVER2 = os.path.join(FURNITURE_PATH, "aguaRio2.png")
+COAST_WATER_RIVER3 = os.path.join(FURNITURE_PATH, "aguaRio3.png")
+COAST_WATER_RIVER4 = os.path.join(FURNITURE_PATH, "aguaRio4.png")
+COAST_WATER_RIVER5 = os.path.join(FURNITURE_PATH, "aguaRio5.png")
+COAST_WATER_RIVER6 = os.path.join(FURNITURE_PATH, "aguaRio6.png")
+
+
+COASTS = ["costaUp.png","costaDown.png","costaLeft.png","costaRight.png","costa2Up.png","costa2Down.png","costa2Left.png","costa2Right.png","costaCornerUp.png", "costaCornerDown.png","costaCornerRight.png","costaCornerLeft.png","costaRioCornerDown.png","costaRioCornerLeft.png","costaRioCornerRight.png",
+"costaRioCornerUp.png","costaRioDown.png","costaRioLeft.png","costaRioRight.png","costaRioUp.png","costaBarroRioCornerDown.png","costaBarroRioCornerLeft.png",
+"costaBarroRioCornerRight.png","costaBarroRioCornerUp.png","costaBarroRioDown.png","costaBarroRioLeft.png","costaBarroRioRight.png","costaBarroRioUp.png"
+,"aguaRio.png","aguaRio1.png","aguaRio2.png","aguaRio3.png","aguaRio4.png","aguaRio5.png","aguaRio6.png","costaRioPicoDown.png","costaRioPicoLeft.png",
+"costaRioPicoRight.png","costaRioPicoUp.png","costaBarroRioPicoDown.png","costaBarroRioPicoLeft.png","costaBarroRioPicoRight.png","costaBarroRioPicoUp.png", 
+"costaNieveRioRight.png","costaNieveRioLeft.png","costaNieveRioUp.png","costaNieveRioDown.png","costaNieveRioCornerDown.png","costaNieveRioCornerUp.png",
+"costaNieveRioCornerRight.png","costaNieveRioCornerLeft.png", "costaNieveRioPicoDown.png","costaNieveRioPicoUp.png","costaNieveRioPicoLeft.png","costaNieveRioPicoRight.png"]
+
+
 
 #=============== RIVER ==================================================================
 
@@ -261,7 +327,9 @@ RIVER_FINISH_RIGHT = os.path.join(FURNITURE_PATH, "rioFinalRight.png")
 RIVER_RECT_UP = os.path.join(FURNITURE_PATH, "rioRectoUp.png")
 RIVER_RECT_LEFT = os.path.join(FURNITURE_PATH, "rioRectoLeft.png")
 
-RIVERS = ["rioCurvaDchDown.png","rioCurvaDchUp.png","rioCurvaIzqDown.png","rioCurvaIzqUp.png","rioFinalUp.png","rioFinalDown.png","rioFinalLeft.png","rioFinalRight.png","rioRectoUp.png","rioRectoLeft.png"]
+RIVER_ROCK = os.path.join(FURNITURE_PATH, "mar_saltable.png")
+
+RIVERS = ["rioCurvaDchDown.png","rioCurvaDchUp.png","rioCurvaIzqDown.png","rioCurvaIzqUp.png","rioFinalUp.png","rioFinalDown.png","rioFinalLeft.png","rioFinalRight.png","rioRectoUp.png","rioRectoLeft.png", "mar.png","mar_saltable.png"]
 
 
 #=============== DOORS ==================================================================
@@ -314,7 +382,32 @@ DOORS = ["puertaCorintiaUp.png","puertaCorintiaLeft.png","puertaDoricaUp.png","p
 PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUp.png")
 PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeft.png")
 
-PANNELS = ["panelUp.png", "panelLeft.png"]
+
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpEdukanda.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftEdukanda.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpGuadaSoft.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftGuadaSoft.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpkiddia.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftkiddia.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpWikanda.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftWikanda.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpGuadalinfo.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftGuadalinfo.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpGuadalinex_ant.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftGuadalinex_ant.png")
+
+PANNEL_UP = os.path.join(FURNITURE_PATH, "panelUpGuadaV6.png")
+PANNEL_LEFT = os.path.join(FURNITURE_PATH, "panelLeftGuadaV6.png")
+
+
+PANNELS = ["panelUp.png","panelLeft.png","panelUpEdukanda.png","panelLeftEdukanda.png","panelUpGuadaSoft.png","panelLeftGuadaSoft.png","panelUpkiddia.png","panelLeftkiddia.png","panelUpWikanda.png","panelLeftWikanda.png","panelUpGuadalinfo.png","panelLeftGuadalinfo.png","panelUpGuadalinex_ant.png","panelLeftGuadalinex_ant.png","panelUpGuadaV6.png","panelLeftGuadaV6.png"]
+
 
 #=============== WEBS ==================================================================
 
