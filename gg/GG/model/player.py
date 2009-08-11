@@ -860,7 +860,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       self.setUnselectedItem()
 
   def deleteGift(self, idGift):
-    for item in self.__inventory:
+    dictItems = self.getInventory()
+    for key in dictItems.keys():
+      item = dictItems[key]["object"]
       if isinstance(item, GG.model.generated_inventory_item.GGGeneratedGift):
         if item.getIdGift() == idGift:
           self.removeFromInventory(item)

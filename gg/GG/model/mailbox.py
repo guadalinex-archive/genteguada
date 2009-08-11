@@ -30,13 +30,13 @@ class MailBox:
           player.removePlayerContactFromAgenda(event["username"])
         elif event["type"] == "deleteGift":
           if player.deleteGift(event["gift"]):
-            self.__deleteEventDeleteGift(event["gift"])
+            self.deleteEventDeleteGift(event["gift"])
     self.__boxes[username] = []
     self.__save()
 
   def newEventDeletePlayer(self, connectedPlayers, username):
     connectedUsername = connectedPlayers.keys()
-    for key in self.__boxes.keys:
+    for key in self.__boxes.keys():
       if not key == username:
         if key in connectedUsername:
           connectedPlayers[key].removePlayerContactFromAgenda(username)
@@ -58,7 +58,7 @@ class MailBox:
     else:
       connectedUsername = connectedPlayers.keys()
       eventKeys = []
-      for key in self.__boxes.keys:
+      for key in self.__boxes.keys():
         if key in connectedUsername:
           if connectedPlayers[key].deleteGift(idGift):
             return True
@@ -70,7 +70,7 @@ class MailBox:
       return True
  
   def deleteEventDeleteGift(self, idGift):
-    for key in self.__boxes.keys:
+    for key in self.__boxes.keys():
       for event in self.__boxes[key]:
         if event["type"] == "deleteGift":
           if event["gift"] == idGift:
