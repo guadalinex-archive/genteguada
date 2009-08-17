@@ -1,3 +1,9 @@
+genteguada (0.14.1-1) unstable; urgency=low
+
+  * Solucionados algunos errores encontrados por el cliente.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 17 Aug 2009 17:58:48 +0200
+
 genteguada (0.13.1-1) unstable; urgency=low
 
   * solucionado errores encontrados por el cliente.
