@@ -1253,6 +1253,7 @@ class IsoViewHud(isoview.IsoView):
     """ Finishes the game.
     """  
     GG.genteguada.GenteGuada.getInstance().finish()
+
     
   def showFullScreen(self):
     """ Toggles the fullscreen mode.
@@ -1371,6 +1372,7 @@ class IsoViewHud(isoview.IsoView):
     """
     if self.__selectedItem:
       self.__player.tryToInventoryCopy(self.__selectedItem)
+      self.room.removeItem(self.__selectedItem)
  
   def itemToClone(self):
     """ Clones an item from the room and inserts it on the player's inventory
