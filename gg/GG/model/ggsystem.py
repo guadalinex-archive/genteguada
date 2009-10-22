@@ -60,7 +60,10 @@ class GGSystem(dMVC.model.Model):
         return False, "El usuario tiene una sesion abierta"    
     accessMode, numEntradaForo = self.loginGuadalinex(username, password)
     if not accessMode:
-      return False, "No se ha podido autenticar en guadalinex"
+      if numEntradaForo is None:
+        return False, "No se ha podido autenticar en guadalinex"
+      else:
+        return "Condiciones", numEntradaForo
     user = self.__getPlayer(username, accessMode)
     user.setNumEntradasForo(numEntradaForo)
     if not self.__accessUserIntoRoom(user):
@@ -103,6 +106,8 @@ class GGSystem(dMVC.model.Model):
     guadalinexLogin.close()  
     data = result.split(";")
     if not len(data) == 4:
+      if len(data) == 2:
+        return False,data[1]
       return False,None
     try:
       numForo = int(data[0])

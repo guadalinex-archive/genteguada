@@ -35,7 +35,10 @@ def excepthook(type, value, tb):
 if __name__ == "__main__":
   def onLogin(rhandler, result, error):
     if result[0]:
-      rhandler.ggSession = result[1]
+      if result[0] == "Condiciones":
+        rhandler.ggSession = None
+      else:
+        rhandler.ggSession = result[1]
     else:
       rhandler.ggSession = None
   
