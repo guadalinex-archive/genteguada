@@ -11,6 +11,7 @@ import guiobjects
 from pygame.locals import * # faster name resolution
 
 BUTTON_CANCEL = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")
+BUTTON_OK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png")
 
 class Login:
   """ Login class.
@@ -30,6 +31,7 @@ class Login:
     self.__session = None
     self.dialog = None
     self.__accessMode = None
+    self.__urlPolicy = None
   
   def draw(self, user=None, passw=None):
     """ Draws the login screen.
@@ -203,11 +205,51 @@ class Login:
     user = self.__textFieldUsername.text 
     passw = self.__textFieldPassword.text
     loginData = self.__parent.getSystem().login(user, passw)
-    if loginData[0] == True:
+    if loginData[0] == "Condiciones":
+      self.__urlPolicy = loginData[1]
+      self.__showPolicyDialog()
+    elif loginData[0] == True:
       self.__session = loginData[1]
       self.finishLogin()
     else:
       self.__showErrorDialog()
+
+  def __showPolicyDialog(self):
+    if self.dialog:
+      return
+    self.container = ocempgui.widgets.Box(516, 197)
+    filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "alertWindow.png"))
+    imgBackground = guiobjects.OcempImageMapTransparent(filePath)
+    imgBackground.topleft = 0, 0
+    self.container.add_child(imgBackground)
+    self.dialog = ocempgui.widgets.DialogWindow("Error")
+    self.dialog.topleft = 254, 50
+    self.dialog.child = self.container
+    self.widgetContainer.add_widget(self.dialog)
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(BUTTON_CANCEL))
+    buttonCancel.topleft = [400, 140]
+    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__closeDialog)
+    self.container.add_child(buttonCancel)
+    buttonOK = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(BUTTON_OK))
+    buttonOK.topleft = [280, 140]
+    buttonOK.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.__showPolicy)
+    self.container.add_child(buttonOK)
+
+    labelAlert = guiobjects.OcempLabel("Debe aceptar las normas del juego", guiobjects.STYLES["dialogFont"])
+    labelAlert.topleft = 160, 50
+    labelAlert2 = guiobjects.OcempLabel("antes de poder acceder", guiobjects.STYLES["dialogFont"])
+    labelAlert2.topleft = 160, 65
+    labelAlert3 = guiobjects.OcempLabel("Continuar .... ", guiobjects.STYLES["dialogFont"])
+    labelAlert3.topleft = 160, 100
+    self.container.add_child(labelAlert)
+    self.container.add_child(labelAlert2)
+    self.container.add_child(labelAlert3)
+    return self.dialog
+
+  def __showPolicy(self):
+    import webbrowser
+    webbrowser.open(self.__urlPolicy)
+    self.__closeDialog()
 
   def __showErrorDialog (self):
     """ Shows an error dialog.  
