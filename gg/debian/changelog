@@ -1,3 +1,9 @@
+genteguada (0.15.1-1) unstable; urgency=low
+
+  * El usuario acepta la politica del juego
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Thu, 22 Oct 2009 21:06:24 +0200
+
 genteguada (0.14.1-1) unstable; urgency=low
 
   * Solucionados algunos errores encontrados por el cliente.
