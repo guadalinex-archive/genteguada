@@ -49,7 +49,7 @@ ANIM_INVENTORY_TIME = 1000
 ANIM_CHAT_TIME2 = 1000
 
 BG_BLACK = "bg_black.png"
-INTERFACE_LOWER = os.path.join(GG.utils.HUD_PATH, "interface_lower.png")
+INTERFACE_LOWER = os.path.join(GG.utils.HUD_PATH, "interface_lowerv2.png")
 
 TILE_SELECTED = os.path.join(GG.utils.TILE, "selected.png")
 TILE_TARGET = os.path.join(GG.utils.TILE, "target.png")
@@ -626,7 +626,7 @@ class IsoViewHud(isoview.IsoView):
     self.hud.add_child(labelChat)
     
     labelProfile = guiobjects.OcempLabel("Mi perfil: ", guiobjects.STYLES["hudLabel"])
-    labelProfile.topleft = 555, 75
+    labelProfile.topleft = 525, 75
     self.hud.add_child(labelProfile)
     
     labelInventory = guiobjects.OcempLabel("Inventario", guiobjects.STYLES["hudLabel"])
@@ -939,7 +939,7 @@ class IsoViewHud(isoview.IsoView):
     self.windowAdminActions.topleft = [GG.utils.SCREEN_SZ[0] - 151, 1]
     self.windowAdminActions.zOrder = 15000
     YShift = 50
-    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [0, 0], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
+    self.buttonBarAdminActions = guiobjects.OcempPanel(150, 427, [1, 1], GG.utils.ADMIN_ACTIONS_LARGE_BACKGROUND)
     self.windowAdminActions.child = self.buttonBarAdminActions
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(itemImageLabel)
     guiobjects.generateImageSize(filePath, [23,23], TOOLBAR_IMAGE)
@@ -1292,19 +1292,19 @@ class IsoViewHud(isoview.IsoView):
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(image)
     guiobjects.generateImageSize(filePath, [64, 64], MASKUSER_IMAGE)
     self.imgMask = guiobjects.OcempImageButtonTransparent(MASKUSER_IMAGE)
-    self.imgMask.topleft = 548, 110
+    self.imgMask.topleft = 524, 110
     self.hud.add_child(self.imgMask)
     labelUserName = guiobjects.OcempLabel(self.__player.username, guiobjects.STYLES["userName"])
-    labelUserName.topleft = 655, 75
+    labelUserName.topleft = 622, 75
     self.hud.add_child(labelUserName)
     self.__pointsLabel = guiobjects.OcempLabel("GuadaPuntos: " + str(expPackage["points"]), guiobjects.STYLES["pointLabel"])
-    self.__pointsLabel.topleft = 627, 110
+    self.__pointsLabel.topleft = 590, 110
     self.hud.add_child(self.__pointsLabel)
     self.__labelOld = guiobjects.OcempLabel("ClockPuntos: " + str(expPackage["playedTime"]), guiobjects.STYLES["pointLabel"])
-    self.__labelOld.topleft = 627, 135
+    self.__labelOld.topleft = 590, 135
     self.hud.add_child(self.__labelOld)
     self.__expLabel = guiobjects.OcempLabel("Experiencia: " + str(expPackage["exp"]), guiobjects.STYLES["pointLabel"])
-    self.__expLabel.topleft = 627, 160
+    self.__expLabel.topleft = 590, 160
     self.hud.add_child(self.__expLabel)
 
   def jump(self):
@@ -1478,7 +1478,7 @@ class IsoViewHud(isoview.IsoView):
     if self.__activeContactDialog:
       return  
     newContact = event.getParams()["contact"]
-    self.confirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)
+    self.confirmDialog = guiobjects.OcempPanel(300, 120, [1, 1], CONTACT_WINDOW_BACKGROUND)
     cad = "Intercambiar tarjetas con " + newContact.username 
     questionLabel = guiobjects.OcempLabel(cad, guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 22, 20 
@@ -1593,7 +1593,7 @@ class IsoViewHud(isoview.IsoView):
   def removeSelectedItemConfirmation(self):
     """ Shows the confirmation dialog to delete the selected item.
     """  
-    self.__deleteConfirmDialog = guiobjects.OcempPanel(300, 120, [0, 0], CONTACT_WINDOW_BACKGROUND)
+    self.__deleteConfirmDialog = guiobjects.OcempPanel(300, 120, [1, 1], CONTACT_WINDOW_BACKGROUND)
     questionLabel = guiobjects.OcempLabel("Eliminar objeto seleccionado", guiobjects.STYLES["dialogFont"])
     questionLabel.topleft = 38, 20 
     self.__deleteConfirmDialog.add_child(questionLabel)

@@ -280,7 +280,7 @@ class BroadcastWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the window background.
     """  
-    self.container = guiobjects.OcempPanel(303, 123, [0, 0], BROADCAST_BACKGROUND)
+    self.container = guiobjects.OcempPanel(303, 123, [1, 1], BROADCAST_BACKGROUND)
     self.window.child = self.container
     labelChat = guiobjects.OcempLabel("Mensaje", guiobjects.STYLES["userName"])
     labelChat.topleft = 115, 10
@@ -692,7 +692,7 @@ class CreateItemsWindow(AuxWindow):
   def __paintBackground(self):
     """ Paints the background image.
     """  
-    self.container = guiobjects.OcempPanel(373, 410, [0, 0], CREATE_ITEM_BACKGROUND)
+    self.container = guiobjects.OcempPanel(373, 410, [1, 1], CREATE_ITEM_BACKGROUND)
     self.window.child = self.container
     itemsLabel = guiobjects.OcempLabel("Objetos", guiobjects.STYLES["pointLabel"])
     itemsLabel.topleft = 20, 10
@@ -774,10 +774,15 @@ class CreateItemsWindow(AuxWindow):
     if "gift" in keys:
       self.__paintTextField(iPos, "Regalo", attrDict["gift"], "gift")
       iPos += 1
+    if "label_gift" in keys:
+      self.__paintTextField(iPos, "Etiqueta Regalo", attrDict["label_gift"], "label_gift")
+      iPos += 1
     if "imagesGift" in keys:
       self.__paintImageGift(iPos, attrDict["imagesGift"])
     if "images" in keys:
       self.__paintImage(iPos, attrDict["images"])
+    if "images_trader" in keys:
+      self.__paintImageTrader(iPos, attrDict["images_trader"])
 
   def __paintTextField(self, iPos, title, label, key):
     self.__paintTitleField(title, iPos)
@@ -788,6 +793,11 @@ class CreateItemsWindow(AuxWindow):
     self.__paintTitleField("Imagenes", iPos)
     imagesArea = self.__paintImagesField(iPos, images, FURNITURE)
     self.editableFields["images"] = imagesArea
+
+  def __paintImageTrader(self, iPos, images):
+    self.__paintTitleField("Imagenes", iPos)
+    imagesArea = self.__paintImagesField(iPos, images, FURNITURE, GG.utils.IMAGES_GIFT)
+    self.editableFields["images_trader"] = imagesArea
 
   def __paintImageGift(self, iPos, images):
     self.imagesGiftList = images 
@@ -808,8 +818,8 @@ class CreateItemsWindow(AuxWindow):
     entryPosY = self.__paintSortField(values[1], iPos, 1)
     self.editableFields[key] = [entryPosX, entryPosY]
  
-  def __paintImagesField(self, iPos, images, imagesDir):
-    self.imagesArea = guiobjects.OcempImageList(190, self.__getImagesFieldHeight(iPos, imagesDir), sorted(images), imagesDir)  
+  def __paintImagesField(self, iPos, images, imagesDir, otherImageDir = None):
+    self.imagesArea = guiobjects.OcempImageList(190, self.__getImagesFieldHeight(iPos, imagesDir), sorted(images), imagesDir, otherImageDir)  
     self.imagesArea.topleft = 10 + self.labelShift[0], 40 + iPos * self.spacing + 18 + self.labelShift[1]
     self.container.add_child(self.imagesArea)  
     self.activeLabels.append(self.imagesArea)
@@ -917,7 +927,7 @@ class CreateItemsWindow(AuxWindow):
     data = {}
     keys = self.editableFields.keys()
     for key in keys:
-      if key in ["images","imagesGift"]:
+      if key in ["images","imagesGift","images_trader"]:
         data[key] = self.editableFields[key].getSelectedName()
       else:      
         values = []

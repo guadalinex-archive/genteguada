@@ -25,7 +25,7 @@ class IsoViewQuiz(positioned_view.PositionedView):
     self.__position = infoPackage["position"]
     
     positioned_view.PositionedView.__init__(self, model, screen)
-    self.container = ocempgui.widgets.Box(358, 258)
+    self.container = ocempgui.widgets.Box(585, 258)
     filePath =  GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "trivialWindow2.png"))
     imgBackground = guiobjects.OcempImageMapTransparent(filePath)
     imgBackground.topleft = 0, 0
