@@ -126,6 +126,7 @@ class GGPenguinTalker(GGPenguin):
     talker.setUnselectedItem()
     
 
+
 class GGPenguinTrade(GGPenguin):
   """ GGPenguinTrade class.
   Defines a trade penguin behaviour.
@@ -209,6 +210,41 @@ class GGPenguinTrade(GGPenguin):
       self.newChatMessage(talker, chat_message.ChatMessage(self.__msg, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), self.__msg)
       talker.removeFromInventory(giftItem)
       item = generated_inventory_item.GGGeneratedInventoryItem(os.path.join(GG.utils.FURNITURE_PATH, "shirt.png"), "Camiseta GenteGuada", self.getPosition()) 
+      talker.addToInventory(item, talker.getPosition())
+      return True 
+    else:
+      chatMessage = "Si me trajeras un regalo, podría darte algo a cambio..." 
+      self.newChatMessage(talker, chat_message.ChatMessage(chatMessage, 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), chatMessage)
+    talker.setUnselectedItem()
+    return None
+
+class GGNewPenguinTrade(GGPenguinTrade):
+
+  def __init__(self, sprite, label, message, gift, labelGift, spriteGift):
+    GGPenguinTrade.__init__(self, sprite, label, message, gift)
+    self.__labelGift = labelGift
+    self.__spriteGift = spriteGift
+
+  def objectToPersist(self):
+    dict = GGPenguinTrade.objectToPersist(self)
+    dict["labelGift"] = self.__labelGift
+    dict["spriteGift"] = self.__spriteGift
+    return dict
+
+  def load(self, dict):
+    GGPenguinTrade.load(self, dict)
+    self.__labelGift = dict["labelGift"]
+    self.__spriteGift = dict["spriteGift"]
+
+  def talkAndGet(self, talker):
+    """ Method executed after being talked by a player.
+    talker: player.
+    """
+    giftItem = talker.getItemFromInventory(self.getGiftLabel())
+    if giftItem:
+      self.newChatMessage(talker, chat_message.ChatMessage(self.getMessage(), 'Andatuz', GG.utils.TEXT_COLOR["black"], self.getPosition(), 2), self.getMessage())
+      talker.removeFromInventory(giftItem)
+      item = generated_inventory_item.GGGeneratedInventoryItem(self.__spriteGift, self.__labelGift, self.getPosition()) 
       talker.addToInventory(item, talker.getPosition())
       return True 
     else:
