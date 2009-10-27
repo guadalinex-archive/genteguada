@@ -1,3 +1,9 @@
+genteguada (0.16.1-1) unstable; urgency=low
+
+  * El pinguino que da regalos puede dar cualquier tipo de regalo 
+
+ -- Joseba Mariscal <joseba@jtrunks>  Tue, 27 Oct 2009 18:25:07 +0100
+
 genteguada (0.15.1-1) unstable; urgency=low
 
   * El usuario acepta la politica del juego

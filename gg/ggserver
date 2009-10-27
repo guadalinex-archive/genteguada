@@ -49,7 +49,7 @@ if __name__ == "__main__":
         server = dMVC.getRServer().getSocket()
         server.finish_request(rhandler.request, rhandler.client_address)
 
-  VERSION = "0.15.1-1"
+  VERSION = "0.16.1-1"
   #sys.excepthook = excepthook
   onExecution = [ [GG.model.ggsystem.GGSystem, 'login', onLogin] ]
   print "Iniciado el servidor del juego Gente Guada V "+VERSION
