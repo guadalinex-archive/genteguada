@@ -176,7 +176,8 @@ class GGSession(ggmodel.GGModel):
       "Enlaces web": { "position": pos, "label": "", "url": "", "images": GG.utils.WEBS },
       "Andatuz pregunton": {"position": pos, "label": "", "filePath": GG.utils.QUESTIONS_PATH, "images": GG.utils.PENGUINS_QUIZS },  
       "Andatuz hablador": {"position": pos, "label": "", "message": "", "images": GG.utils.PENGUINS_TALKERS },
-      "Andatuz cambiador": { "position": pos, "label": "", "gift": "", "message": "", "images": GG.utils.PENGUINS_GIVERS },
+      "Andatuz D cambiador": { "position": pos, "label": "", "gift": "", "message": "", "label_gift": "", "images_trader": GG.utils.PENGUINS_GIF + self.getImagesGift()},
+      "Andatuz I cambiador": { "position": pos, "label": "", "gift": "", "message": "", "label_gift": "", "images_trader": GG.utils.PENGUINS_GIF + self.getImagesGift()},
       "Regalos":{ "position": pos, "label": "", "imagesGift": self.getImagesGift()},
       "Posicion aleatoria":{ "position": pos, "label": "", "images": GG.utils.RANDOMS},
       "Panel publicitario":{ "position": pos, "images": GG.utils.PANNELS}
@@ -187,7 +188,12 @@ class GGSession(ggmodel.GGModel):
     if not img:
       self.__player.newChatMessage("Debe seleccionar una imagen para el objeto.", 1)
       return None
-    if name == "Regalos":
+    if name == "ambos":
+      if os.path.isfile(os.path.join(GG.utils.DATA_PATH,GG.utils.IMAGES_GIFT, img)):
+        return os.path.join(GG.utils.IMAGES_GIFT, img)
+      else:
+        return os.path.join(GG.utils.FURNITURE_PATH, img)
+    elif name == "Regalos":
       return os.path.join(GG.utils.IMAGES_GIFT, img)
     else:
       return os.path.join(GG.utils.FURNITURE_PATH, img)
@@ -224,6 +230,12 @@ class GGSession(ggmodel.GGModel):
   def __getLabelCreateObject(self, label):
     if label[0] == "":
       self.__player.newChatMessage("Debe introducir un nombre para el objeto.", 1)
+      return None
+    return str(label[0])
+
+  def __getLabelGiftCreateObject(self, label):
+    if label[0] == "":
+      self.__player.newChatMessage("Debe introducir la etiqueta del regalo que va a dar el pinguino.", 1)
       return None
     return str(label[0])
 
@@ -393,6 +405,21 @@ class GGSession(ggmodel.GGModel):
       penguinTrade = penguin.GGPenguinTrade(images, label, message, gift)
       room.addItemFromVoid(penguinTrade, position)
 
+  def __createObjectNewPenguinTrader(self, data, room, name):
+    images = self.__getImageCreateObject(data["images_trader"], "ambos")
+    print images
+    position = self.__getPositionCreateObject(data["position"], room, "posicion")
+    label = self.__getLabelCreateObject(data["label"])
+    message = self.__getMessageCreateObject(data["message"])
+    gift = self.__getGiftCreateObject(data["gift"])
+    labelgift = self.__getLabelGiftCreateObject(data["label_gift"])
+    if images and position and label and message and gift and labelgift:
+      if name == "Andatuz D cambiador":
+        penguinTrade = penguin.GGNewPenguinTrade(os.path.join(GG.utils.FURNITURE_PATH, "andatuzGenerosoUp.png"), label, message, gift, labelgift, images)
+      else:
+        penguinTrade = penguin.GGNewPenguinTrade(os.path.join(GG.utils.FURNITURE_PATH, "andatuzGenerosoLeft.png"), label, message, gift, labelgift, images)
+      room.addItemFromVoid(penguinTrade, position)
+
   def createObject(self, name, data):
     """ Creates a new object.
     name: object type.
@@ -419,8 +446,8 @@ class GGSession(ggmodel.GGModel):
       self.__createObjectPenguinQuiz(data, room)
     elif name == "Andatuz hablador":
       self.__createObjectPenguinTalker(data, room)
-    elif name == "Andatuz cambiador":
-      self.__createObjectPenguinTrader(data, room)
+    elif name in ["Andatuz D cambiador","Andatuz I cambiador"]:
+      self.__createObjectNewPenguinTrader(data, room, name)
 
   def getImagesGift(self):
     """ Returns all available images for an admin created gift.
