@@ -668,7 +668,7 @@ class OcempImageList(OcempImageFileList):
   Defines an image list.
   """
   
-  def __init__(self, width, height, imagesList, relativePath):
+  def __init__(self, width, height, imagesList, relativePath, otherPath= None):
     """ Class constructor.
     width: list width.
     height: list height.
@@ -677,6 +677,7 @@ class OcempImageList(OcempImageFileList):
     """  
     self.imagesList = imagesList
     self.relativePath = relativePath
+    self.otherPath = otherPath
     self.set_selectionmode(ocempgui.widgets.Constants.SELECTION_SINGLE)
     OcempImageFileList.__init__(self, width, height)
     
@@ -685,7 +686,13 @@ class OcempImageList(OcempImageFileList):
     """  
     items = ocempgui.widgets.components.ListItemCollection()
     for image in self.imagesList:
-      items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
+      if self.otherPath is not None:
+        if os.path.isfile(os.path.join(GG.utils.DATA_PATH,self.otherPath, image)):
+          items.append (OcempContactListItem (image, os.path.join(self.otherPath, image)))
+        else:
+          items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
+      else:
+        items.append (OcempContactListItem (image, os.path.join(self.relativePath, image)))
     self.set_items (items)
     
   def getImagesList(self):

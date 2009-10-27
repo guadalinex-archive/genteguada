@@ -439,6 +439,7 @@ PENGUINS_QUIZS = ["andatuzPreguntonUp.png","andatuzPreguntonLeft.png"]
 
 ALL_PENGUINS = PENGUINS + PENGUINS_TALKERS + PENGUINS_GIVERS + PENGUINS_QUIZS
 
+PENGUINS_GIF = KEYS + INVENTORYS 
 # ======================= SOUNDS ===========================
 
 SOUND_OCEAN = "ocean.ogg"
