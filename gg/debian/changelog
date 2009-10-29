@@ -1,3 +1,9 @@
+genteguada (0.16.1-2) unstable; urgency=low
+
+  * Añado una imagen que se habia pasado en el ultimo empaqutamiento
+
+ -- Joseba Mariscal <joseba@jtrunks>  Thu, 29 Oct 2009 20:37:30 +0100
+
 genteguada (0.16.1-1) unstable; urgency=low
 
   * El pinguino que da regalos puede dar cualquier tipo de regalo 
