@@ -41,7 +41,7 @@ class GGGiverNpc(room_item.GGRoomItem):
     """ Returns the item's available options.
     """
     return ["copy", "jumpOver"]   
- 
+
   def getAdminActions(self):
     """ Returns the admin available options.
     """  
@@ -154,6 +154,11 @@ class RandomPositionGiverNPC(GGGiverNpc):
     """ Copies and returns this object.
     """  
     return RandomPositionGiverNPC(self.spriteName, self.spriteInventory, self.getName())
+
+  def getOptions(self):
+    """ Returns the item's available options.
+    """
+    return ["copyRemove", "jumpOver"] 
 
   def getCopyFor(self, player):
     """ If selected player does not have this item on his inventory, creates a new item and gives it to him.
