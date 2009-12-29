@@ -13,6 +13,75 @@ from pygame.locals import * # faster name resolution
 BUTTON_CANCEL = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "cancel_button.png")
 BUTTON_OK = os.path.join(GG.utils.PATH_EDITOR_INTERFACE, "ok_button.png")
 
+
+class ErrorConnection:
+
+  def __init__(self, screen, parent):
+    self.__screen = screen
+    #self.__finish = False
+    #self.__parent = parent
+    #self.__session = None
+
+  def draw(self):
+    self.widgetContainer = ocempgui.widgets.Renderer()
+    self.widgetContainer.set_screen(self.__screen)
+    self.window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])  
+    self.__paintScreen()
+    self.__paintTextLabels()
+    self.__paintButtons()
+    self.widgetContainer.add_widget(self.window)
+    return self.__start()
+
+  def __paintScreen(self):
+    """ Paints the screen background. 
+    """  
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "startGG.png")))
+    imgBackgroundRight.topleft = 1, 0
+    self.window.add_child(imgBackgroundRight)
+
+  def __paintTextLabels(self):
+    """ Paints text labels on screen.
+    """  
+    usernameLabel = guiobjects.OcempLabel("No hay conexión", ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelWaiting"]))
+    usernameLabel.topleft = 650, 390
+    usernameLabel.border = 1
+    usernameLabel.set_minimum_size(230, 40)
+    self.window.add_child(usernameLabel)
+    passwordLabel = guiobjects.OcempLabel("con el servidor", ocempgui.widgets.WidgetStyle(guiobjects.STYLES["labelWaiting"]))
+    passwordLabel.topleft = 650, 450
+    passwordLabel.border = 1
+    passwordLabel.set_minimum_size(230, 40)
+    self.window.add_child(passwordLabel)
+
+
+  def __paintButtons(self):
+    """ Paints accept and cancel buttons on screen.
+    """  
+    imgPath = os.path.join(GG.utils.EDITOR, "cancel_button.png")
+    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    buttonCancel.topleft = [870, 690]
+    buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
+    self.window.add_child(buttonCancel)
+
+  def cancelLogin(self):
+    """ Cancels the login dialog.
+    """  
+    sys.exit(0)
+
+  def __start(self):
+    """ Starts the keyboard input event capture.
+    """  
+    while True:
+      time.sleep(0.02)
+      events = pygame.event.get()
+      for event in events:
+        if event.type == QUIT:
+          sys.exit(0)
+        if event.type == KEYDOWN:
+          if event.key == K_ESCAPE:
+            sys.exit(0)
+      self.widgetContainer.distribute_events(*events)
+
 class Login:
   """ Login class.
   Defines attributes and methods for a Login class.
@@ -305,3 +374,6 @@ class Login:
     else:
       sys.exit(0)
 
+
+
+  

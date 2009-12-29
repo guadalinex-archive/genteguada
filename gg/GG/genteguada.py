@@ -81,6 +81,21 @@ class GenteGuada:
     pygame.mixer.music.stop()
     self.__exitCondition = True
 
+  def __connectScreen(self):
+    """ Loads the "loading screen".
+    """  
+    widgetContainer = ocempgui.widgets.Renderer()
+    widgetContainer.set_screen(self.__screen)
+    window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
+    imgPath = self.getDataPath(LOADING_BACKGROUND)
+    imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
+    imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
+    window.add_child(imgBackgroundRight)
+    loadingLabel = GG.isoview.guiobjects.OcempLabel("Conectando ...", GG.isoview.guiobjects.STYLES["labelWaiting"])
+    loadingLabel.topleft = WAITING_LABEL_POSITION
+    window.add_child(loadingLabel)
+    widgetContainer.add_widget(window)
+
   def __loadingScreen(self):
     """ Loads the "loading screen".
     """  
@@ -115,7 +130,6 @@ class GenteGuada:
     """ Creates all necessary objects and initializes attributes.
     params: application start parameters.
     """  
-    self.__setSystem(params.ip, params.port)
     pygame.init()
     pygame.display.set_caption(VERSION_TITLE)
     icon = pygame.image.load(self.getDataPath(ICON))
@@ -124,6 +138,11 @@ class GenteGuada:
     if params.fullscreen:
       pygame.display.toggle_fullscreen()
     self.__fullScreen = params.fullscreen
+    self.__connectScreen()
+    self.__setSystem(params.ip, params.port)
+    if self.__system is None:
+      errorConnection = GG.isoview.login.ErrorConnection(self.__screen, self)
+      errorConnection.draw()
     self.__loadingScreen()
     winLogin = GG.isoview.login.Login(self.__screen, self)
     self.__session = winLogin.draw()
@@ -154,12 +173,12 @@ class GenteGuada:
         self.__client = dMVC.remoteclient.RClient(ipAddress, port = port, autoEvents=False)
       except Exception, excep:
         print excep, ERROR_CONNECTION
-        self.finish()
-      self.__system = self.__client.getRootModel()
-      if not self.validateVersion(self.__client.getVersion()):
-        print "Version del cliente incompatible con el servidor"
-        print "Version del servidor "+self.__client.getVersion()
-        self.finish()
+      if self.__client is not None:
+        self.__system = self.__client.getRootModel()
+        #if not self.validateVersion(self.__client.getVersion()):
+        #  print "Version del cliente incompatible con el servidor"
+        #  print "Version del servidor "+self.__client.getVersion()
+        #  self.finish()
     else:
       import GG.model.ggsystem
       self.__singleMode = True

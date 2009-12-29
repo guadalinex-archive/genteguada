@@ -123,12 +123,15 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
   def getOptions(self):
     """ Returns the item's available options.
     """
-    return ["url"]  
+    if self.getPlayer().isExchange():
+      return ["toExchange"]
+    else:
+      return ["url"]  
       
   def getUrl(self):
     """ Returns the internet address.
     """  
-    return "www.google.com"  
+    return "http://www.guadalinex.org/genteguada/inventario"  
  
   def getIdGift(self):
     """ Returns the gift id value.

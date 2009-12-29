@@ -287,10 +287,12 @@ class GGRiver(GGRoomItem):
       clicker.setSelectedItem(self)
 
   def getOptions(self):
-    print "paso por aqui"
     return ["jumpOver"]
 
   def copyObject(self):
     copy = GGRiver(self.spriteName)
     return copy
 
+  def load(self, dict):
+    GGRoomItem.load(self, dict)
+    self.label = "Rio"

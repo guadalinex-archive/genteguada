@@ -590,6 +590,9 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
   def jumpOver(self):  
     """ Jumps over an item.
     """  
+    if not self.isTopItem():
+      self.newChatMessage("No puedo saltar con tanto peso", 1)
+      return
     heading = GG.utils.getNextDirection(self.getPosition(), self.__selected.getPosition())
     if heading:
       dest = GG.utils.getJumpDestination(self.getPosition(), heading, self.getRoom().size)
