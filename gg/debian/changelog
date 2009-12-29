@@ -1,3 +1,9 @@
+genteguada (0.17.1-1) unstable; urgency=low
+
+  * Revisadas incidencias informadas el dia 29 de diciembre
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Tue, 29 Dec 2009 19:20:51 +0100
+
 genteguada (0.16.1-2) unstable; urgency=low
 
   * Añado una imagen que se habia pasado en el ultimo empaqutamiento
