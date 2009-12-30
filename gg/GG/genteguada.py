@@ -13,7 +13,7 @@ import GG.utils
 import GG.isoview.guiobjects
 
 #Constants
-VERSION = "0.17.1-1"
+VERSION = "0.17.1-2"
 VERSION_TITLE = "GenteGuada "+VERSION
 CLEAR_CACHE_WEEKS = 4
 LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
@@ -175,17 +175,17 @@ class GenteGuada:
         print excep, ERROR_CONNECTION
       if self.__client is not None:
         self.__system = self.__client.getRootModel()
-        #if not self.validateVersion(self.__client.getVersion()):
-        #  print "Version del cliente incompatible con el servidor"
-        #  print "Version del servidor "+self.__client.getVersion()
-        #  self.finish()
+        if not self.validateVersion(self.__client.getVersion()):
+          import GG.isoview.login
+          errorVersion = GG.isoview.login.ErrorVersion(self.__screen, self)
+          errorVersion.draw()
     else:
       import GG.model.ggsystem
       self.__singleMode = True
       self.__system = GG.model.ggsystem.GGSystem()
 
   def validateVersion(self, version):
-    if version == VERSION:
+    if version in [VERSION,"0.17.1-1"]:
       return True
     return False
 
