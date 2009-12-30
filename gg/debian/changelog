@@ -1,3 +1,9 @@
+genteguada (0.17.1-2) unstable; urgency=low
+
+  * Control de version en el cliente 
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Wed, 30 Dec 2009 18:31:04 +0100
+
 genteguada (0.17.1-1) unstable; urgency=low
 
   * Revisadas incidencias informadas el dia 29 de diciembre
