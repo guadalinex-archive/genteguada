@@ -60,6 +60,8 @@ install: build
 	rm -r GG/cache/savedata
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage
+	cp GG/initimage/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage/
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
 	cp -r GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/mask

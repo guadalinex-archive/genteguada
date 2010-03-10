@@ -13,10 +13,10 @@ import GG.utils
 import GG.isoview.guiobjects
 
 #Constants
-VERSION = "0.17.1-2"
+VERSION = "0.17.1-3"
 VERSION_TITLE = "GenteGuada "+VERSION
 CLEAR_CACHE_WEEKS = 4
-LOADING_BACKGROUND = os.path.join(GG.utils.BACKGROUNDS, "loadingGG.png")
+LOADING_BACKGROUND = os.path.join(GG.utils.INIT_IMAGE_PATH, "loadingGG.png")
 LOADING_BACKGROUND_POSITION = [0, 0]
 LOADING_LABEL = "Cargando..."
 LOADING_LABEL_POSITION = [350, 300]
@@ -24,7 +24,7 @@ WAITING_LABEL_POSITION = [314, 335]
 UPLOAD_MASK = os.path.join(GG.utils.PATH_PHOTO_MASK,"imgUpload.png")
 ERROR_CONNECTION = "No hay conexion con el servidor"
 FPS = 30
-ICON = os.path.join("icons", "icon64.png") 
+ICON = os.path.join(GG.utils.INIT_IMAGE_PATH, "icon64.png") 
 
 class GenteGuada:
   """ GenteGuada class.
@@ -87,7 +87,7 @@ class GenteGuada:
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
-    imgPath = self.getDataPath(LOADING_BACKGROUND)
+    imgPath = LOADING_BACKGROUND
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
     window.add_child(imgBackgroundRight)
@@ -102,7 +102,7 @@ class GenteGuada:
     widgetContainer = ocempgui.widgets.Renderer()
     widgetContainer.set_screen(self.__screen)
     window = ocempgui.widgets.Box(GG.utils.SCREEN_SZ[0], GG.utils.SCREEN_SZ[1])
-    imgPath = self.getDataPath(LOADING_BACKGROUND)
+    imgPath = LOADING_BACKGROUND
     imgBackgroundRight = GG.isoview.guiobjects.OcempImageMapTransparent(imgPath)
     imgBackgroundRight.topleft = LOADING_BACKGROUND_POSITION
     window.add_child(imgBackgroundRight)
@@ -132,7 +132,7 @@ class GenteGuada:
     """  
     pygame.init()
     pygame.display.set_caption(VERSION_TITLE)
-    icon = pygame.image.load(self.getDataPath(ICON))
+    icon = pygame.image.load(ICON)
     pygame.display.set_icon(icon) 
     self.__screen = pygame.display.set_mode(GG.utils.SCREEN_SZ, pygame.HWSURFACE | pygame.DOUBLEBUF, 0)
     if params.fullscreen:

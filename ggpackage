@@ -39,7 +39,6 @@ if not output[0] == 0:
   error("No se pudo generar el paquete avatareditor")
 else:
   info("se genero el paquete avatareditor")
-
 print "Generando el paquete dmvc...."
 os.chdir(dirTempSVN+"/dmvc")
 output = commands.getstatusoutput(comandoDEB)
