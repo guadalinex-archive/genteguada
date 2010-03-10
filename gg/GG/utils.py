@@ -6,6 +6,12 @@ import stat
 
 # ======================= GENERAL PATHS ===========================
 
+#imageinit
+if os.path.isdir("gg/GG/initimage"):
+  INIT_IMAGE_PATH = "gg/GG/initimage"
+else:
+  INIT_IMAGE_PATH = "/usr/share/pixmaps/genteguada/initimage"
+
 #cache
 if os.path.isdir("gg/GG/cache"):
   LOCAL_DATA_PATH = "gg/GG/cache"

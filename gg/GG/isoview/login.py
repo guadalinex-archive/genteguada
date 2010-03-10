@@ -31,7 +31,7 @@ class ErrorVersion:
   def __paintScreen(self):
     """ Paints the screen background. 
     """  
-    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "startGG.png")))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.INIT_IMAGE_PATH, "startGG.png"))
     imgBackgroundRight.topleft = 1, 0
     self.window.add_child(imgBackgroundRight)
 
@@ -68,8 +68,8 @@ class ErrorVersion:
   def __paintButtons(self):
     """ Paints accept and cancel buttons on screen.
     """  
-    imgPath = os.path.join(GG.utils.EDITOR, "cancel_button.png")
-    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    imgPath = os.path.join(GG.utils.INIT_IMAGE_PATH, "cancel_button.png")
+    buttonCancel = guiobjects.OcempImageButtonTransparent(imgPath)
     buttonCancel.topleft = [870, 690]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
     self.window.add_child(buttonCancel)
@@ -116,7 +116,7 @@ class ErrorConnection:
   def __paintScreen(self):
     """ Paints the screen background. 
     """  
-    imgBackgroundRight = guiobjects.OcempImageMapTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(os.path.join(GG.utils.BACKGROUNDS, "startGG.png")))
+    imgBackgroundRight = guiobjects.OcempImageMapTransparent(os.path.join(GG.utils.INIT_IMAGE_PATH, "startGG.png"))
     imgBackgroundRight.topleft = 1, 0
     self.window.add_child(imgBackgroundRight)
 
@@ -138,8 +138,8 @@ class ErrorConnection:
   def __paintButtons(self):
     """ Paints accept and cancel buttons on screen.
     """  
-    imgPath = os.path.join(GG.utils.EDITOR, "cancel_button.png")
-    buttonCancel = guiobjects.OcempImageButtonTransparent(GG.genteguada.GenteGuada.getInstance().getDataPath(imgPath))
+    imgPath = os.path.join(GG.utils.INIT_IMAGE_PATH, "cancel_button.png")
+    buttonCancel = guiobjects.OcempImageButtonTransparent(imgPath)
     buttonCancel.topleft = [870, 690]
     buttonCancel.connect_signal(ocempgui.widgets.Constants.SIG_CLICKED, self.cancelLogin)
     self.window.add_child(buttonCancel)
