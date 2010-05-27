@@ -1,3 +1,9 @@
+genteguada (0.17.1-4) lucid; urgency=low
+
+  * Debianized for Guadalinex v7
+
+ -- Álvaro Pinel <alvaropinel@gmail.com>  Wed, 26 May 2010 13:20:56 +0100
+
 genteguada (0.17.1-3) unstable; urgency=low
 
   * Imagenes constantes en el cliente
