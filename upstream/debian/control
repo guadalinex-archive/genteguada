@@ -2,7 +2,8 @@ Source: genteguada
 Section: python
 Priority: optional
 Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
-Build-Depends: debhelper (>= 5)
+Uploaders: Alvaro Pinel <alvaropinel@gmail.com>, David Amian <amialinux@gmail.com>
+Build-Depends: debhelper (>= 5), python-setuptools
 Standards-Version: 3.7.2
 
 Package: genteguada-server
