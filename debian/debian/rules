@@ -1,0 +1,90 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DH_COMPAT=5
+PYTHON = /usr/bin/python
+VERSION = $(shell pyversions -vd)
+
+#nombre del paquete
+PACKAGE= genteguada
+PACKAGESERVER= genteguada-server
+PACKAGECLIENT= genteguada-client
+
+#directorio de construccion del paquete
+PACKAGEDIR=debian/${PACKAGE}
+PACKAGESERVERDIR=debian/${PACKAGESERVER}
+PACKAGECLIENTDIR=debian/${PACKAGECLIENT}
+
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf build
+	rm -rf doc/*.html
+	rm -rf debian/${PACKAGE}
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	#genteguada server
+	$(PYTHON) setup-server.py build_py --no-compile --build-lib=$(PACKAGESERVERDIR)/usr/share/${PACKAGESERVER}
+	$(PYTHON) setup-server.py build_scripts --build-dir=$(PACKAGESERVERDIR)/usr/bin/
+	dh_install GG/data/* /usr/share/pixmaps/$(PACKAGE)/data 
+	#genteguada client
+	$(PYTHON) setup-client.py build_py --no-compile --build-lib=$(PACKAGECLIENTDIR)/usr/share/${PACKAGECLIENT}
+	$(PYTHON) setup-client.py build_scripts --build-dir=$(PACKAGECLIENTDIR)/usr/games/
+	mkdir fonts
+	cp GG/cache/font/* fonts/
+	rm -r GG/cache
+	$(PYTHON) copyData
+	rm -r GG/cache/clienterror
+	rm -r GG/cache/editor
+	rm -r GG/cache/questions
+	rm -r GG/cache/savedata
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage
+	cp GG/initimage/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage/
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
+	cp -r GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/mask
+	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/font
+	cp fonts/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/font/
+	rm -r fonts
+	dh_testdir
+	#finalizo
+	rm -f build-stamp configure-stamp
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdeb
+	dh_compress
+	dh_fixperms
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch: build install
+#we have nothing to do here.
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
