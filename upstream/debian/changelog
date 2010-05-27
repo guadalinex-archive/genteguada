@@ -1,3 +1,9 @@
+genteguada (0.17.2-0guada1) lucid; urgency=low
+
+  * New upstream code
+
+ -- Álvaro Pinel  <alvaropinel@gmail.com> Wed, 26 May 2010 17:58:09 +0200
+
 genteguada (0.17.1-4) lucid; urgency=low
 
   * Debianized for Guadalinex v7
