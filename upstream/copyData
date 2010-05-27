@@ -1,0 +1,27 @@
+#! /usr/bin/python
+
+import os
+import shutil
+
+"""
+def copyDirImages(dir, prefix):
+  for item in os.listdir(dir):
+    if os.path.isdir(os.path.join(dir,item)):
+      if prefix == "":
+        copyDirImages(os.path.join(dir,item),item)
+      else:
+        copyDirImages(os.path.join(dir,item),prefix+"-"+item)
+    else:
+      if prefix == "":
+        shutil.copy(os.path.join(dir,item),os.path.join(dirCache,item))
+      else:
+        shutil.copy(os.path.join(dir,item),os.path.join(dirCache,prefix+"-"+item))
+"""
+print "Precargando la cache.....\n"
+
+dirData = "GG/data"
+dirCache = "GG/cache"
+
+print "Copiamos las imagenes en cache...\n"
+shutil.copytree(dirData, dirCache)
+#copyDirImages(dirData,"")
