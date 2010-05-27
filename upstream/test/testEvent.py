@@ -2,6 +2,7 @@ import sys
 import pygame
 import unittest
 
+
 sys.path.append("../client")
 sys.path.append("../common")
 
