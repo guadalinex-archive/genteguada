@@ -1,0 +1,73 @@
+#!/usr/bin/python
+
+if False:
+  # see: http://pychecker.sourceforge.net/
+  import os
+  os.environ['PYCHECKER'] = '--stdlib -100'
+  import pychecker.checker
+
+
+import sys
+
+pathDMVC = "/usr/share/dmvc"
+pathClient = "/usr/share/genteguada-client"
+if not pathDMVC in sys.path:
+  sys.path.append(pathDMVC)
+if not pathClient in sys.path: 
+  sys.path.append(pathClient)
+
+from optparse import OptionParser
+import GG.genteguada
+import atexit
+import traceback
+import time
+
+
+
+
+
+#try:
+#  import psyco
+#  psyco.full()
+#except ImportError:
+#  print 'Psyco not installed, the program will just run slower'
+
+
+# Lectura de parametros de la linea de comandos 
+__usage__ = "\n  %s -d directorio destino"%sys.argv[0]
+parser = OptionParser( usage = __usage__ )
+parser.add_option("-i",dest="ip",help="ip",default="127.0.0.1") 
+parser.add_option("-u",dest="user",help="usuario",default="pepe") 
+parser.add_option("-p",dest="password",help="clave",default="1234") 
+parser.add_option("-f",dest="fullscreen", help="pantalla completa",default=False)
+parser.add_option("-P",dest="port", help="pantalla completa",default=8000, type = int)
+parser.add_option("-d",dest="debug", help="debug",default=False)
+(params, args) = parser.parse_args()
+
+"""
+@atexit.register
+def finishClient():
+  ggInstance = GG.genteguada.GenteGuada.getInstance()
+  if ggInstance:
+    ggInstance.sendError()
+    ggInstance.finish()
+
+def excepthook(type, value, tb):
+  fileError = open("error.txt", "a")
+  fileError.write("===========NEW ERROR=====================\n")
+  fileError.write("Date: "+time.asctime()+"\n")
+  fileError.write("Error: "+str(value)+"\n")
+  traceback.print_exception(type, value, tb, file = fileError)
+  fileError.write("=========================================\n\n")
+  fileError.close()
+
+"""
+
+if __name__ == "__main__":
+  #if not params.debug:
+  #  sys.excepthook = excepthook
+  genteguada = GG.genteguada.GenteGuada()
+  genteguada.start(params)
+
+
+
