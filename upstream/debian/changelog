@@ -1,0 +1,170 @@
+genteguada (0.17.1-3) unstable; urgency=low
+
+  * Imagenes constantes en el cliente
+
+ -- Joseba Mariscal <joseba@jtrunks>  Wed, 10 Mar 2010 19:28:56 +0100
+
+genteguada (0.17.1-2) unstable; urgency=low
+
+  * Control de version en el cliente 
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Wed, 30 Dec 2009 18:31:04 +0100
+
+genteguada (0.17.1-1) unstable; urgency=low
+
+  * Revisadas incidencias informadas el dia 29 de diciembre
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Tue, 29 Dec 2009 19:20:51 +0100
+
+genteguada (0.16.1-2) unstable; urgency=low
+
+  * Añado una imagen que se habia pasado en el ultimo empaqutamiento
+
+ -- Joseba Mariscal <joseba@jtrunks>  Thu, 29 Oct 2009 20:37:30 +0100
+
+genteguada (0.16.1-1) unstable; urgency=low
+
+  * El pinguino que da regalos puede dar cualquier tipo de regalo 
+
+ -- Joseba Mariscal <joseba@jtrunks>  Tue, 27 Oct 2009 18:25:07 +0100
+
+genteguada (0.15.1-1) unstable; urgency=low
+
+  * El usuario acepta la politica del juego
+
+ -- Joseba Mariscal <joseba@igosoftware.es>  Thu, 22 Oct 2009 21:06:24 +0200
+
+genteguada (0.14.1-1) unstable; urgency=low
+
+  * Solucionados algunos errores encontrados por el cliente.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 17 Aug 2009 17:58:48 +0200
+
+genteguada (0.13.1-1) unstable; urgency=low
+
+  * solucionado errores encontrados por el cliente.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 13 May 2009 11:35:44 +0200
+
+genteguada (0.12.1-1ubuntu1) unstable; urgency=low
+
+  * Solucion de errores e implementacion de algunas sugenencias
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Fri, 20 Mar 2009 13:57:23 +0100
+
+genteguada (0.11.1-1) unstable; urgency=low
+
+  * Version que soluciona algunos errores e inserta la imagen del lince
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 24 Feb 2009 10:53:31 +0100
+
+genteguada (0.10.2-1) unstable; urgency=low
+
+  * Errores encontrados por el cliente
+
+ -- Joseba Mariscal <jmariscal@jmariscal>  Mon, 23 Feb 2009 17:01:14 +0100
+
+genteguada (0.10.1-1) unstable; urgency=low
+
+  * Mejoras en la generacion de imagenes
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Sat, 18 Oct 2008 21:50:42 +0200
+
+genteguada (0.9.1-1) unstable; urgency=low
+
+  * algunas mejoras en la seleccion de items
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 16 Oct 2008 21:53:54 +0200
+
+genteguada (0.8.1-1) unstable; urgency=low
+
+  * mejorada la desconexion del cliente
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 15 Oct 2008 22:24:50 +0200
+
+genteguada (0.7.1-1) unstable; urgency=low
+
+  * solucionadas algunas incidencias
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 14 Oct 2008 23:00:39 +0200
+
+genteguada (0.6.2-1) unstable; urgency=low
+
+  * Solucion a los errores 0001866, 0001867, 0001868, 0001869
+  * Nuevo tipo de objeto, posicion aleatoria
+
+ -- Joseba Mariscal <jmariscal@igosoftware>  Thu, 09 Oct 2008 21:54:58 +0200
+
+genteguada (0.6.1-1) unstable; urgency=low
+
+  * Imagenes finales del juego, eliminadas algunas llamadas de mas al servidor
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 06 Oct 2008 21:12:24 +0200
+
+genteguada (0.6.0-1) unstable; urgency=low 
+
+  * Nueva creacion de items
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Sun, 05 Oct 2008 19:26:40 +0200
+
+genteguada (0.5.4-1) unstable; urgency=low
+
+  * Baldosas definitivas y solucion de algunos problemas encontrados
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 01 Oct 2008 21:17:33 +0200
+
+genteguada (0.5.3-1) unstable; urgency=low
+
+  * Mejora la velocidad en el cambio de habitaciones
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 29 Sep 2008 18:00:03 +0200
+
+genteguada (0.5.2-1) unstable; urgency=low
+
+  * Solucionados fallos a la hora de generar los avatares
+
+ -- Joseba Mariscal <jmariscal@jmariscal@igosoftware.es>  Fri, 26 Sep 2008 14:08:49 +0200
+
+genteguada (0.5.1-1) unstable; urgency=low
+
+  * Version de prueba en el servidor 
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Fri, 26 Sep 2008 10:57:56 +0200
+
+genteguada (0.4.1-1) unstable ; urgency=low
+
+  * Finalizada la edicion del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 11 Sep 2008 17:58:14 +0200
+
+genteguada (0.3.1-1) unstable; urgency=low
+
+  * Herramienta de administrador del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 14 Aug 2008 10:40:49 +0200
+
+genteguada (0.2.0-1) unstable; urgency=low
+
+  * mejorando el empaquetamiento
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 28 Jul 2008 13:47:58 +0200
+
+genteguada (0.1.1-2) unstable; urgency=low
+
+  * Desarrollo de la funcionalidad del cliente
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 27 May 2008 17:17:46 +0200
+
+genteguada (0.1.1-1) unstable; urgency=low
+
+  * Chat entre los jugadores
+  * Solucionado error del inventario
+  * Cambio de habitaciones
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 14 May 2008 12:10:54 +0200
+
+genteguada (0.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.com>  Tue, 06 May 2008 16:07:46 +0200

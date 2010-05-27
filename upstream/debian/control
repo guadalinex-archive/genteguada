@@ -1,0 +1,20 @@
+Source: genteguada
+Section: python
+Priority: optional
+Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: genteguada-server
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4), dmvc
+Description: servuidor Juego colaborativo isometrico
+ servidor de Juego colaborativo isometrico  a traves de Internet, en el 
+ que el objetivo sera colaborar con otros jugadores para conseguir premios.
+
+Package: genteguada-client
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python (>=2.4), dmvc, python-pygame, python-ocempgui, python-imaging
+Description: cliente Juego colaborativo isometrico
+ cliente de Juego colaborativo isometrico a traves de Internet, en el que
+ el objetivo sera colaborar con otros jugadores para conseguir premios.
