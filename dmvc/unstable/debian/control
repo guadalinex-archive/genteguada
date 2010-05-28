@@ -1,0 +1,13 @@
+Source: dmvc
+Section: python
+Priority: optional
+Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: dmvc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python (>= 2.4)
+Description: distributed model view controller
+ model or remote model with distributed event and rpc calling. 
+

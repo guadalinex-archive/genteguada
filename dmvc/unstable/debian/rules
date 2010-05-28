@@ -1,0 +1,61 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DH_COMPAT=5
+PYTHON = /usr/bin/python
+VERSION = $(shell pyversions -vd)
+
+#nombre del paquete
+PACKAGE= dmvc
+
+#directorio de construccion del paquete
+PACKAGEDIR=debian/${PACKAGE}
+
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf build
+	rm -rf doc/*.html
+	rm -rf debian/${PACKAGE}
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/share/${PACKAGE}
+	#$(PYTHON) setup.py build_py --no-compile --build-lib=$(PACKAGEDIR)/usr/lib/python${VERSION}/site-packages/
+	rm -f build-stamp configure-stamp
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdeb
+	dh_compress
+	dh_fixperms
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch: build install
+#we have nothing to do here.
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
