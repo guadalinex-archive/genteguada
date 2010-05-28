@@ -1,0 +1,8 @@
+#!/usr/bin/python
+
+import models
+import dMVC.remoteserver
+
+if __name__ == "__main__":
+  rootModel = models.TestModel()
+  dMVC.remoteserver.RServer(rootModel)
