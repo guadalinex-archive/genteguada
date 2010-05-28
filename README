@@ -1,0 +1,11 @@
+Información de los diferentes Branches:
+
+1- avatargenerator: contiene el código fuente necesario para la creación de avatares.
+
+2- dmvc: código fuente de la dependencia necesaria para genteguada. (Modelo
+vista controlador dinámico)
+
+3- genteguada-main: contiene el código fuente necesario para "genteguada-client"
+y "genteguada-server"
+
+4- old_files: contiene ficheros de código fuente obsoletos.
