@@ -1,0 +1,16 @@
+Source: avatargenerator
+Section: python
+Priority: optional
+Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: avatargenerator
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python2.5, libsdl1.2debian, libsdl1.2debian-alsa, libglut3, libxmu6, libxi6
+Description: Generador de avatares de Gente Guada
+ Generador de avatares, creado en Blender, para el juego 
+ colaborativo 3D Gente Guada.
+ Crea una imagen .png del avatar por cada 45 grados y 
+ para cada una de las animaciones definidas.
+
