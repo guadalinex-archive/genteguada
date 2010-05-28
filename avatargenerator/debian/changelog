@@ -1,0 +1,48 @@
+avatargenerator (0.5.1-1) unstable; urgency=low
+
+  * Solucionados errores en el color de pelo.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 13 May 2009 11:33:05 +0200
+
+avatargenerator (0.4.1-1) unstable; urgency=low
+
+  * Finalizada la edicion del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 11 Sep 2008 17:58:58 +0200
+
+avatargenerator (0.3.1-1) unstable; urgency=low
+
+  * Herramienta de adminsistracion del juego
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 14 Aug 2008 10:43:16 +0200
+
+avatargenerator (0.0.4-1) unstable; urgency=low
+
+  * Eliminamos el directorio plugins del blender y solo tenemos el blender
+    compilado
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 28 Jul 2008 10:09:37 +0200
+
+avatargenerator (0.0.3-1) unstable; urgency=low
+
+  * Solucionada la captura de parametros despues de las pruebas
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Wed, 16 Jul 2008 13:47:59 +0200
+
+avatargenerator (0.0.2-1) unstable; urgency=low
+
+  * Version de prueba en el servidor genteguada
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Tue, 15 Jul 2008 14:35:32 +0200
+
+avatargenerator (0.0.1-1) unstable; urgency=low
+
+  * Incluimos blender 2.6 en el proyecto 
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Mon, 14 Jul 2008 18:37:08 +0200
+
+avatargenerator (0.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Joseba Mariscal <jmariscal@igosoftware.es>  Thu, 10 Jul 2008 11:51:09 +0200
