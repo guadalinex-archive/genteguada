@@ -1,0 +1,10 @@
+Package: gghttpserver
+Version: 0.0.2-1
+Architecture: i386
+Maintainer: Joseba Mariscal <jmariscal@igosoftware.es>
+Installed-Size: 68
+Depends: python (>= 2.4), genteguada-server
+Section: python
+Priority: optional
+Description: servidor http del juego genteguada
+ servidor web del juego, para acceder a datos del mismo mediante navegador
