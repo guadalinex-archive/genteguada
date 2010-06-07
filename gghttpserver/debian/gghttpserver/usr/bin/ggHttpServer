@@ -1,0 +1,5 @@
+#bin/sh
+
+cd /usr/share/genteguada-server/HTTPServer/
+python server.py -P $1
+

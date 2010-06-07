@@ -1,0 +1,12 @@
+dh_install
+dh_installdirs
+dh_install
+dh_installdirs
+dh_install
+dh_installchangelogs
+dh_installdeb
+dh_compress
+dh_fixperms
+dh_gencontrol
+dh_md5sums
+dh_builddeb

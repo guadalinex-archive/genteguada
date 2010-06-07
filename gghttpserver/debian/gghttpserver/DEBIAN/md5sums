@@ -1,0 +1,7 @@
+ec49209c3b54b75e8a91e6e8cd7ead39  usr/bin/ggHttpServer
+02acbe78e33657493f67ab5eef441040  usr/share/genteguada-server/HTTPServer/cgi/removegift.py
+52419cf35004450459f2d94f86b8c70d  usr/share/genteguada-server/HTTPServer/cgi/exportplayer.py
+e5ba36ccb34fd764180e6eda205b32a3  usr/share/genteguada-server/HTTPServer/cgi/removeplayer.py
+f0c38a0ffb961be824ab495fed2f3190  usr/share/genteguada-server/HTTPServer/cgi/error.py
+d20fe1a82a9d8ff8687518261587b73a  usr/share/genteguada-server/HTTPServer/server.py
+b8a9ea9169a5cf6885bc6927b582718c  usr/share/doc/gghttpserver/changelog.Debian.gz
