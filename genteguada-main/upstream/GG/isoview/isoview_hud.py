@@ -1357,8 +1357,9 @@ class IsoViewHud(isoview.IsoView):
   def itemToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
-    if self.__selectedItem:
-      self.__player.tryToInventory(self.__selectedItem)
+    if self.__compruebaNumeroItemsInventario():
+      if self.__selectedItem:
+        self.__player.tryToInventory(self.__selectedItem)
 
   def moneyToInventory(self):
     """ Picks up money from the room and deletes the money object.
@@ -1374,28 +1375,32 @@ class IsoViewHud(isoview.IsoView):
   def itemCopyToInventory(self):
     """ Brings an item from the room to the player's inventory.
     """
-    if self.__selectedItem:
-      self.__player.tryToInventoryCopy(self.__selectedItem)
+    if self.__compruebaNumeroItemsInventario():
+      if self.__selectedItem:
+        self.__player.tryToInventoryCopy(self.__selectedItem)
 
   def itemCopyToInventoryRemove(self):
     """ Brings an item from the room to the player's inventory.
     """
-    if self.__selectedItem:
-      self.__player.tryToInventoryCopy(self.__selectedItem)
-      self.room.removeItem(self.__selectedItem)
+    if self.__compruebaNumeroItemsInventario():
+      if self.__selectedItem:
+        self.__player.tryToInventoryCopy(self.__selectedItem)
+        self.room.removeItem(self.__selectedItem)
 
   def itemToClone(self):
     """ Clones an item from the room and inserts it on the player's inventory
     """
-    clone = self.__selectedItem.getClone()
-    self.__player.addInventory(clone)
-    self.itemUnselected()
+    if self.__compruebaNumeroItemsInventario():
+      clone = self.__selectedItem.getClone()
+      self.__player.addInventory(clone)
+      self.itemUnselected()
     
   def itemToTalkAndGet(self):
     """ Talks to an item and gets another one.
     """
-    if self.__selectedItem:
-      item = self.__player.talkAndGetFrom(self.__selectedItem)
+    if self.__compruebaNumeroItemsInventario():
+      if self.__selectedItem:
+        item = self.__player.talkAndGetFrom(self.__selectedItem)
  
   def itemToTalk(self):
     """ Talks to an item.
@@ -1663,3 +1668,16 @@ class IsoViewHud(isoview.IsoView):
       self.__player.setSelectedItem(itemCopy)
     else:
       self.__player.newChatMessage("No hay sitio en la habitación", 1)
+
+  def __compruebaNumeroItemsInventario(self):
+    if len(self.__isoviewInventory) == 8:
+      self.__player.newChatMessage('Recuerda!!! tienes ya 9 objetos en el inventario, el máximo es 10', 1)
+      return True;
+    if len(self.__isoviewInventory) == 9:
+      self.__player.newChatMessage('Recuerda!!! Tienes el numero máximo de objetos en el inventario, no podras coger más', 1)
+      return True;
+    if len(self.__isoviewInventory) > 9:
+      self.__player.newChatMessage('tienes 10 o más objetos en el inventario, tienes que ir soltando algunos, ya que no te caben más', 1)
+      return False;
+    return True
+
