@@ -88,7 +88,7 @@ class GGGiverNpc(room_item.GGRoomItem):
 
 class WebGift(GGGiverNpc):
     
-  def __init__(self, spriteInventory, label, creator):
+  def __init__(self, spriteInventory, label, creator, idgift = None):
     """ Class constructor.
     spriteName: image name.
     spriteInventory: sprite used to paint this object on player's inventory.
@@ -97,7 +97,10 @@ class WebGift(GGGiverNpc):
     """
     GGGiverNpc.__init__(self, GG.utils.GIFT, spriteInventory, label)
     self.__creator = creator
-    self.__idGift = self.generateId()
+    if idgift is None:
+      self.__idGift = self.generateId()
+    else:
+      self.__idGift = idgift
 
   def objectToPersist(self):
     dict = GGGiverNpc.objectToPersist(self)
