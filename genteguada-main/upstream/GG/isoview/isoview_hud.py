@@ -231,6 +231,9 @@ class IsoViewHud(isoview.IsoView):
       self.__kickPlayerWindow = None
     self.addItemToRoomFromVoid(self.findIVItem(self.__player))  
     self.__player.setAccessMode(False)
+    if len(inventoryData.keys()) > 9:
+      self.__player.newChatMessage('tienes 10 o más objetos en el inventario, tienes que ir soltando algunos, ya que no te caben más', 1)
+
 
     
   def processEvent(self, events):
