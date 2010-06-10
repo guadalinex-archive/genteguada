@@ -857,7 +857,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
 
   def tryOutToInventory(self, item):
     if item.inventoryOnly():
-      self.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
+     if item.__class__ == GG.model.generated_inventory_item.GGGeneratedInventoryItem:
+        self.removeFromInventory(item)
+        self.setUnselectedItem()
+      else:
+        self.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
     else:   
       self.addToRoomFromInventory(item)
       self.setUnselectedItem()
