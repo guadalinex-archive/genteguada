@@ -860,6 +860,11 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
      if item.__class__ == GG.model.generated_inventory_item.GGGeneratedInventoryItem:
         self.removeFromInventory(item)
         self.setUnselectedItem()
+      elif item.__class__ ==GG.model.generated_inventory_item.GGGeneratedGift:
+        newitem = GG.model.giver_npc.WebGift(item.spriteName, item.label, self.username, item.getIdGift())
+        if self.addToRoomFromInventoryNewItem(newitem):
+          self.removeFromInventory(item)
+        self.setUnselectedItem()
       else:
         self.newChatMessage("Mejor no. Creo que puede ser util más adelante.", 2) 
     else:   
@@ -884,3 +889,18 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
       return False
     else:
       return True
+
+
+  def addToRoomFromInventoryNewItem(self, item):
+    """ Removes an item from the inventory and drops it in front of the player.
+    item: item to drop.
+    """
+    dropLocation = GG.utils.getFrontPosition(self.getPosition(), self.__heading, self.getRoom().size)
+    if not self.getRoom().getTile(dropLocation).stepOn() or dropLocation == [-1, -1]:
+      self.newChatMessage("No puedo soltarlo ahí", 1)
+      return False
+    else:    
+      item_with_inventory.GGItemWithInventory.addToRoomFromInventoryNewItem(self, item, dropLocation)
+    self.save("player")
+    return True
+

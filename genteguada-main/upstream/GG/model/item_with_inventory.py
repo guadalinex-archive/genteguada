@@ -100,6 +100,23 @@ class GGItemWithInventory(room_item.GGRoomItem):
     item.setPlayer(None)
     self.save("player")
     self.newChatMessage(item.getName() + " depositado en el suelo", 1)
+
+  def addToRoomFromInventoryNewItem(self, item, dropLocation):
+    """ Removes an item from the inventory and drops it in front of the player.
+    item: item to drop.
+    dropLocation: item's drop location.
+    """
+    itemOnPosition = self.getRoom().getItemOnPosition(dropLocation)
+    if dropLocation == [-1, -1]: 
+      return False
+    if itemOnPosition != None:
+      if not itemOnPosition.isStackable():
+        return False
+    if not self.getRoom().addItemFromInventory(item, dropLocation):
+      return False
+    self.save("player")
+    self.newChatMessage(item.getName() + " depositado en el suelo", 1)
+
     
   def tick(self, now):
     """ Call for an update on item.
