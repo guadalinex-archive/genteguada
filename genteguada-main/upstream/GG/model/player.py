@@ -857,10 +857,10 @@ class GGPlayer(item_with_inventory.GGItemWithInventory):
 
   def tryOutToInventory(self, item):
     if item.inventoryOnly():
-     if item.__class__ == GG.model.generated_inventory_item.GGGeneratedInventoryItem:
+      if item.__class__ == GG.model.generated_inventory_item.GGGeneratedInventoryItem:
         self.removeFromInventory(item)
         self.setUnselectedItem()
-      elif item.__class__ ==GG.model.generated_inventory_item.GGGeneratedGift:
+      elif item.__class__ == GG.model.generated_inventory_item.GGGeneratedGift:
         newitem = GG.model.giver_npc.WebGift(item.spriteName, item.label, self.username, item.getIdGift())
         if self.addToRoomFromInventoryNewItem(newitem):
           self.removeFromInventory(item)
