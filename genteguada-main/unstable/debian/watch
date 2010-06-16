@@ -1,0 +1,2 @@
+version=3
+http://launchpad.net/genteguada/+download http://launchpad.net/genteguada/(.*)/genteguada-(.*)\.tar\.gz
