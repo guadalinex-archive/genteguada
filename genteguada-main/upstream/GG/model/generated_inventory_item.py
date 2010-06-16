@@ -126,7 +126,7 @@ class GGGeneratedGift(GGGeneratedInventoryItem):
     if self.getPlayer().isExchange():
       return ["toExchange"]
     else:
-      return ["url"]  
+      return ["url","removeInventory"]  
       
   def getUrl(self):
     """ Returns the internet address.
