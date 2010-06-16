@@ -1,3 +1,9 @@
+genteguada (0.17.4-0guada1) lucid; urgency=low
+
+  * Fixed users profiles
+
+ -- Álvaro Pinel Bueno <alvaropinel@gmail.com>  Wed, 16 Jun 2010 12:58:28 +0200
+
 genteguada (0.17.3-0guada1) lucid; urgency=low
 
   * Added desktop icon 
