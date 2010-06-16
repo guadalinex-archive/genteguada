@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GenteGuada
+Name[es]=GenteGuada
+Comment=Descubre el mundo virtual de Guadalinex en GenteGuada 
+Comment[es]=El mundo virtual de Guadalinex en GenteGuada
+Exec=genteguada -i unmundo.genteguada.es -P 770
+Icon=/usr/share/pixmaps/genteguada.png
+Terminal=false
+Type=Application
+Categories=GNOME;Game;BoardGame;
+StartupNotify=true
+
