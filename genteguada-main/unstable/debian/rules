@@ -61,6 +61,7 @@ install: build
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage
+	cp genteguada.png $(PACKAGECLIENTDIR)/usr/share/pixmaps/
 	cp GG/initimage/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/initimage/
 	mkdir $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache
 	cp -r GG/cache/* $(PACKAGECLIENTDIR)/usr/share/pixmaps/$(PACKAGE)/cache/
